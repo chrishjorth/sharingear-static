@@ -7,6 +7,7 @@ define([
 	'jquery'
 ], function(_, $) {
 	var defaults = {
+		name: '',
 		$element: $(''),
 		template: '', //A template string
 		labels: {}
@@ -23,17 +24,19 @@ define([
 
 	_.extend(ViewController.prototype, {
 		render: render,
-		localize: localize,
+		//localize: localize,
 		close: close,
-		setupEvent: setupEvent,
-		unbindEvents: unbindEvents
+		//setupEvent: setupEvent,
+		//unbindEvents: unbindEvents
 	});
 
-	return {
+	/*return {
 		inherit: inherit
-	};
+	};*/
 
-	function inherit(inheritOptions) {
+	return ViewController;
+
+	/*function inherit(inheritOptions) {
 		if(typeof inheritOptions !== 'object') {
 			inheritOptions = {};
 		}
@@ -46,7 +49,7 @@ define([
 		Inherited.prototype = new ViewController();
 		Inherited.prototype.constructor = Inherited;
 		return Inherited;
-	}
+	}*/
 
 	function render() {
 		var template = this.template();
@@ -56,7 +59,7 @@ define([
 		}
 	}
 
-	function localize($containerElement) {
+	/*function localize($containerElement) {
 		var $localizeElement = this.$element,
 			key, $element;
 		if($containerElement) {
@@ -73,10 +76,10 @@ define([
 				}
 			}
 		}
-	}
+	}*/
 
 	function close() {
-		this.unbindEvents();
+		//this.unbindEvents();
 		this.$element.empty();
 		if(this.didClose && typeof this.didClose == 'function') {
 			this.didClose();
@@ -84,21 +87,21 @@ define([
 	}
 
 	//A wrapper for jQuery events that allows automatic unbinding on view disposal
-	function setupEvent(eventType, element, data, callback) {
+	/*function setupEvent(eventType, element, data, callback) {
 		this.$element.on(eventType, element, data, callback);
 		this.userEvents.push({
 			eventType: eventType,
 			element: element,
 			callback: callback
 		});
-	}
+	}*/
 
-	function unbindEvents() {
+	/*function unbindEvents() {
 		var i, userEvent;
 		for(i = this.userEvents.length - 1; i >= 0; i--) {
 			userEvent = this.userEvents[i];
 			this.$element.off(userEvent.eventType, userEvent.element, userEvent.callback);
 			this.userEvents.pop();
 		}
-	}
+	}*/
 });

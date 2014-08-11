@@ -6,7 +6,8 @@
 define(
 	['viewcontroller'],
 	function(ViewController) {
-		var Header = ViewController.inherit();
+		//var Header = ViewController.inherit();
+		var Header = ViewController;
 		return Header;
 	}
 );

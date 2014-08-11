@@ -6,7 +6,8 @@
 define(
 	['viewcontroller'],
 	function(ViewController) {
-		var Home = ViewController.inherit();
+		//var Home = ViewController.inherit();
+		var Home = ViewController; 
 		return Home;
 	}
 );
