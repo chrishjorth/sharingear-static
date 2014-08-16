@@ -45,7 +45,12 @@ require(
 				'../test/js/specs/viewcontrollers/home.spec',
 				'../test/js/specs/viewcontrollers/navigation-header.spec'
 			], function() {
-				mocha.run();
+				if(window.mochaPhantomJS) {
+					mochaPhantomJS.run();
+				}
+				else { 
+					mocha.run();
+				}
 			});
 		});
 	}
