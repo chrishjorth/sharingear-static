@@ -23,7 +23,7 @@ define(
 
 			it('Can add routes', function() {
 				Router.addRoutes('home');
-				expect(Router.routeExists('homes')).to.equal(true);
+				expect(Router.routeExists('home')).to.equal(true);
 			});
 
 			it('Can load a view', function(done) {
