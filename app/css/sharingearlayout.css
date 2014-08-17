@@ -248,7 +248,7 @@ background-position: center bottom;
 	height: 46px;
 }
 
-._searchbutton { <!-- global settings --> 
+._searchbutton { /*<!-- global settings --> */
   display: block;
   position: absolute;
   text-align: center;
@@ -275,8 +275,6 @@ background-position: center bottom;
   border-radius: 3px;
   color: rgb(0, 0, 0);
 }
-
-
 
 
 
@@ -994,7 +992,7 @@ border-radius: -17px;
 .panel-body {
 margin-top: -22px;
 margin-left: 17px;
-}
+
 }
 
 
@@ -1198,13 +1196,13 @@ width: 82%;
 
 
 
-
+/*
 
 body {
   background-color: rgb(255, 255, 255);
   font: 300 0.75em/1.38 Lato;
   color: rgb(255, 255, 255);
-}
+}*/
 
 .bluelineheader {
   position: absolute;
@@ -1843,11 +1841,14 @@ width: 82%;
 
 
 
-body {
-  background-color: rgb(247, 247, 247); /* f7f7f7 */
+/*body {
+  background-color: rgb(247, 247, 247); 
   font: 300 0.75em/1.38 Lato;
   color: rgb(255, 255, 255);
 }
+*/
+
+
 
 .bluelineheader {
   position: absolute;
@@ -2778,11 +2779,13 @@ width: 82%;
 
 
 
-body {
-  background-color: rgb(247, 247, 247); /* f7f7f7 */
+/*body {
+  background-color: rgb(247, 247, 247);
   font: 300 0.75em/1.38 Lato;
   color: rgb(255, 255, 255);
 }
+*/
+
 
 .bluelineheader {
   position: absolute;
@@ -3547,11 +3550,6 @@ width: 82%;
 
 
 /* ------------------------ FOOTER ----------------------------- */
-
-
-
-
-
 
 
 
