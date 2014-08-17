@@ -8,7 +8,8 @@ requirejs.config({
 	paths: {
 		text: 'libraries/text',
 		underscore: 'libraries/underscore-min',
-		jquery: 'libraries/jquery-2.1.1.min'
+		jquery: 'libraries/jquery-2.1.1.min',
+		bootstrap: 'libraries/bootstrap.min'
 	},
 	shim: {
 		underscore: {
@@ -16,13 +17,16 @@ requirejs.config({
 		},
 		jquery: {
 			exports: '$'
+		},
+		bootstrap: {
+			deps: ['jquery']
 		}
 	}
 });
 
 require(
-	['underscore', 'app'],
-	function(_, App) {
+	['underscore', 'bootstrap', 'app'],
+	function(_, bootstrap, App) {
 		//Configure underscore templates to use Handlebars style
 		_.templateSettings = {
 			evaluate: /\{\{=(.+?)\}\}/g,
