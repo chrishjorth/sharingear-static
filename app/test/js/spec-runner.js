@@ -45,7 +45,8 @@ require(
 				'../test/js/specs/viewcontrollers/home.spec',
 				'../test/js/specs/viewcontrollers/navigation-header.spec',
 				'../test/js/specs/viewcontrollers/dashboard.spec',
-				'../test/js/specs/viewcontrollers/listyourgear.spec'
+				'../test/js/specs/viewcontrollers/listyourgear.spec',
+				'../test/js/specs/viewcontrollers/profile.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
 					mochaPhantomJS.run();
