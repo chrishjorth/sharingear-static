@@ -32,6 +32,9 @@ define(
 				var router = App.router;
 				expect(router.routeExists('home')).to.equal(true);
 				expect(router.routeExists('listyourgear')).to.equal(true);
+				expect(router.routeExists('profile')).to.equal(true);
+				expect(router.routeExists('yourgear')).to.equal(true);
+				expect(router.routeExists('yourreservations')).to.equal(true);
 			});
 		});
 	}
