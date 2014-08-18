@@ -29,7 +29,7 @@ define(
 				router = this.router,
 				hash = '';
 
-			router.addRoutes('home');
+			router.addRoutes('home', 'listyourgear');
 
 			$(document).ready(function() {
 				var route = null;
