@@ -4,10 +4,18 @@
  */
 
 define(
-	['viewcontroller'],
-	function(ViewController) {
-		//var Home = ViewController.inherit();
-		var Home = ViewController; 
+	['underscore', 'viewcontroller'],
+	function(_, ViewController) {
+		var Home = ViewController;
+
+		_.extend(Home.prototype, {
+			didRender: didRender
+		});
+
 		return Home;
+
+		function didRender() {
+			//Setup event for search button
+		}
 	}
 );

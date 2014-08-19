@@ -27,7 +27,6 @@ define(
 			});
 
 			it('Can load a view', function(done) {
-				console.log('load ze view');
 				Router.loadView('error', '', function() {
 					expect(Router.currentViewController.name).to.equal('error');
 					done();

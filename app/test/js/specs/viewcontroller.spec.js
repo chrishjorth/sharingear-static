@@ -10,6 +10,7 @@ define(
 			});
 
 			afterEach(function() {
+				this.vc.close();
 				this.$fixtures.empty();
 			});
 
@@ -27,10 +28,23 @@ define(
 				expect(this.$fixtures.html()).to.equal('<div>Test Template</div>');
 			});
 
+			it('Can handle events', function(done) {
+				var $testButton = $('<button type="button" href="javascript:;" class="testButton">Test button</button>'),
+					vc = this.vc;
+				this.$fixtures.append($testButton);
+				vc.setupEvent('click', '.testButton', null, function() {
+					vc.unbindEvents();
+					expect(vc.userEvents.length).to.equal(0);
+					done();
+				});
+				$testButton.click();
+			});
+
 			it('Can close', function() {
 				this.vc.close();
 				expect(this.$fixtures.html()).to.equal('');
 			});
+
 		});
 	}
 );
