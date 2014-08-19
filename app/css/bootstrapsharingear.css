@@ -3567,10 +3567,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   float: left;
   
 }
-.nav-pills > li > a {
+/*.nav-pills > li > a {
   border-radius: 0px;
    margin-top: 5px;
-}
+}*/
 .nav-pills > li + li {
   margin-left: 0px;
 }
