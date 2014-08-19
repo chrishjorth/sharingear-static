@@ -10,7 +10,8 @@ define([
 		name: '',
 		$element: $(''),
 		template: '', //A template string
-		labels: {}
+		labels: {},
+		path: '' //URL path in the following form mainView/subView fx dashboard/profile
 	};
 
 	function ViewController(options) {

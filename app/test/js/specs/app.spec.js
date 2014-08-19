@@ -32,6 +32,7 @@ define(
 				var router = App.router;
 				expect(router.routeExists('home')).to.equal(true);
 				expect(router.routeExists('listyourgear')).to.equal(true);
+				expect(router.routeExists('dashboard')).to.equal(true);
 				expect(router.routeExists('dashboard/profile')).to.equal(true);
 				expect(router.routeExists('dashboard/yourgear')).to.equal(true);
 				expect(router.routeExists('dashboard/yourreservations')).to.equal(true);

@@ -32,12 +32,21 @@ define(
 		}
 
 		function navigateTo(route, callback) {
-			var view = route;
-			if(this.routeExists(route) === false) {
-				view = 'error';
+			var view = route,
+				routeRoot;
+
+			//Extract route root
+			routeRoot = route.substring(0, route.indexOf('/'));
+			if(routeRoot.length <= 0) {
+				routeRoot = view;
 			}
 
-			this.loadView(view, callback);
+			if(this.routeExists(routeRoot) === false) {
+				console.log("Error: no view for route '" + routeRoot + "'");
+				routeRoot = 'error';
+			}
+
+			this.loadView(routeRoot, route, callback);
 		}
 
 		/**
@@ -54,13 +63,13 @@ define(
 			return false;
 		}
 
-		function loadView(view, callback) {
+		function loadView(view, path, callback) {
 			var router = this;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
 				if(router.currentViewController !== null) {
 					router.currentViewController.close();
 				}
-				router.currentViewController = new ViewController({name: view, $element: $(router.mainViewContainer), labels: {}, template: ViewTemplate});
+				router.currentViewController = new ViewController({name: view, $element: $(router.mainViewContainer), labels: {}, template: ViewTemplate, path: path});
 				router.currentViewController.render();
 				if(callback && typeof callback === 'function') {
 					callback();

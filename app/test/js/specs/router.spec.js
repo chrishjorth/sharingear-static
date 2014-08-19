@@ -27,7 +27,8 @@ define(
 			});
 
 			it('Can load a view', function(done) {
-				Router.loadView('error', function() {
+				console.log('load ze view');
+				Router.loadView('error', '', function() {
 					expect(Router.currentViewController.name).to.equal('error');
 					done();
 				});
@@ -43,6 +44,13 @@ define(
 							done();
 						});
 					});
+				});
+			});
+
+			it('Can navigate to path', function(done) {
+				Router.navigateTo('home/test', function() {
+					expect(Router.currentViewController.name).to.equal('home');
+					done();
 				});
 			});
 		});

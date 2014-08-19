@@ -32,6 +32,7 @@ define(
 			router.addRoutes(
 				'home',
 				'listyourgear',
+				'dashboard',
 				'dashboard/profile',
 				'dashboard/yourgear',
 				'dashboard/yourreservations',
