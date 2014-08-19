@@ -29,7 +29,16 @@ define(
 				router = this.router,
 				hash = '';
 
-			router.addRoutes('home');
+			router.addRoutes(
+				'home',
+				'listyourgear',
+				'dashboard/profile',
+				'dashboard/yourgear',
+				'dashboard/yourreservations',
+				'dashboard/calendar',
+				'dashboard/settings',
+				'gearprofile'
+			);
 
 			$(document).ready(function() {
 				var route = null;

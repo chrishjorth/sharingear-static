@@ -4,12 +4,15 @@ define(
 		var expect = chai.expect;
 		
 		describe('App', function() {
-			beforeEach(function() {
+			before(function(done) {
 				sinon.spy(App, 'loadHeader');
 				sinon.spy(App, 'loadFooter');
+				App.run(function() {
+					done();
+				});
 			});
 
-			afterEach(function() {
+			after(function() {
 				App.loadHeader.restore();
 				App.loadFooter.restore();
 			});
@@ -18,27 +21,23 @@ define(
 				expect(App).to.be.an('object');
 			});
 
-			it('Can load header', function(done) {
-				App.loadHeader(function() {
-					done();
-				});
+			it('Can initialize Sharingear', function() {
+				sinon.assert.calledOnce(App.loadHeader);
+				sinon.assert.calledOnce(App.loadFooter);
+
+				expect(App.router.currentViewController.name).to.equal('home');
 			});
 
-			it('Can load footer', function(done) {
-				App.loadFooter(function() {
-					done();
-				});
-			});
-
-			it('Can initialize Sharingear', function(done) {
-				App.run(function() {
-					sinon.assert.calledOnce(App.loadHeader);
-					sinon.assert.calledOnce(App.loadFooter);
-
-					expect(App.router.currentViewController.name).to.equal('home');
-
-					done();
-				});
+			it('Has correct routes', function() {
+				var router = App.router;
+				expect(router.routeExists('home')).to.equal(true);
+				expect(router.routeExists('listyourgear')).to.equal(true);
+				expect(router.routeExists('dashboard/profile')).to.equal(true);
+				expect(router.routeExists('dashboard/yourgear')).to.equal(true);
+				expect(router.routeExists('dashboard/yourreservations')).to.equal(true);
+				expect(router.routeExists('dashboard/calendar')).to.equal(true);
+				expect(router.routeExists('dashboard/settings')).to.equal(true);
+				expect(router.routeExists('gearprofile')).to.equal(true);
 			});
 		});
 	}

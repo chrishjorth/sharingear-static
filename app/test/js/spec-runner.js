@@ -44,7 +44,16 @@ require(
 				'../test/js/specs/viewcontrollers/footer.spec',
 				'../test/js/specs/viewcontrollers/home.spec',
 				'../test/js/specs/viewcontrollers/navigation-header.spec',
-				'../test/js/specs/viewcontrollers/dashboard.spec'
+				'../test/js/specs/viewcontrollers/dashboard.spec',
+				'../test/js/specs/viewcontrollers/listyourgear.spec',
+				'../test/js/specs/viewcontrollers/profile.spec',
+				'../test/js/specs/viewcontrollers/yourgear.spec',
+				'../test/js/specs/viewcontrollers/yourreservations.spec',
+				'../test/js/specs/viewcontrollers/calendar.spec',
+				'../test/js/specs/viewcontrollers/settings.spec',
+				'../test/js/specs/viewcontrollers/gearprofile.spec',
+				'../test/js/specs/viewcontrollers/gearform.spec',
+				'../test/js/specs/viewcontrollers/gearpricing.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
 					mochaPhantomJS.run();
