@@ -31,26 +31,7 @@ define([
 		unbindEvents: unbindEvents
 	});
 
-	/*return {
-		inherit: inherit
-	};*/
-
 	return ViewController;
-
-	/*function inherit(inheritOptions) {
-		if(typeof inheritOptions !== 'object') {
-			inheritOptions = {};
-		}
-
-		var Inherited = function(options) {
-			_.extend(inheritOptions, options);
-			ViewController.call(this, inheritOptions);
-		};
-
-		Inherited.prototype = new ViewController();
-		Inherited.prototype.constructor = Inherited;
-		return Inherited;
-	}*/
 
 	function render() {
 		var template = this.template();

@@ -7,7 +7,6 @@ define(
 			it('Provides the Dashboard ViewController', function() {
 				var dashboardVC = new Dashboard();
 				expect(Dashboard).to.be.a('function');
-				expect(dashboardVC.constructor.name).to.equal('ViewController');
 			});
 		});
 	}

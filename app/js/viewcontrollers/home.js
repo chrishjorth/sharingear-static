@@ -4,18 +4,28 @@
  */
 
 define(
-	['underscore', 'viewcontroller'],
-	function(_, ViewController) {
-		var Home = ViewController;
+	['underscore', 'utilities', 'viewcontroller'],
+	function(_, Utilities, ViewController) {
 
-		_.extend(Home.prototype, {
-			didRender: didRender
+		var Home = Utilities.inherit(ViewController, {
+			didRender: didRender,
+			setupEvents: setupEvents,
+			handleSearch: handleSearch
 		});
 
 		return Home;
 
 		function didRender() {
-			//Setup event for search button
+			this.setupEvents();
+		}
+
+		function setupEvents() {
+			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
+		}
+
+		function handleSearch() {
+			console.log('Search');
+			return false;
 		}
 	}
 );

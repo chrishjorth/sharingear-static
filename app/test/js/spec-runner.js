@@ -40,6 +40,7 @@ require(
 				'../test/js/specs/app.spec',
 				'../test/js/specs/router.spec',
 				'../test/js/specs/viewcontroller.spec',
+				'../test/js/specs/utilities.spec',
 				'../test/js/specs/viewcontrollers/error.spec',
 				'../test/js/specs/viewcontrollers/footer.spec',
 				'../test/js/specs/viewcontrollers/home.spec',

@@ -4,11 +4,9 @@
  */
 
 define(
-	['underscore', 'viewcontroller'],
-	function(_, ViewController) {
-		var Dashboard = ViewController;
-
-		_.extend(Dashboard.prototype, {
+	['underscore', 'utilities', 'viewcontroller'],
+	function(_, Utilities, ViewController) {
+		var Dashboard = Utilities.inherit(ViewController, {
 			didRender: didRender
 		});
 
