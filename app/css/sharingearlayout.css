@@ -49,8 +49,6 @@ background-image: url("../images/listyourgearbluebg.jpg");
   background-position: left 50%;
 }
 
-}
-
 .billboard-header {
  background-image: url("../images/mainpic.jpg");
 background-position: center bottom;
@@ -70,7 +68,7 @@ background-position: center bottom;
   text-align: center; 
   padding: 0;
   margin-top: -194px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 
 }
 
@@ -133,7 +131,6 @@ background-position: center bottom;
   position: absolute;
   left: 0;
   z-index: 16;
-  width: 100%;
   background-color: rgba(255, 255, 255, 0);
 
 }
@@ -181,7 +178,7 @@ background-position: center bottom;
   left: 1.3480392156%;
   z-index: 29;
   min-height: 67px;
-  <!--font-size: 3.75em;-->
+  font-size: 3.75em;
   line-height: 1.38;
   text-indent: 5px;
   color: rgb(255, 255, 255);
@@ -194,7 +191,7 @@ background-position: center bottom;
   z-index: 28;
   min-height: 42px;
   margin: 20px 0 0 1.275510204%;
-  <!--font-size: 2.167em;--> 
+  font-size: 2.167em;
   line-height: 1.38;
   text-indent: 5px;
   color: rgb(255, 255, 255);
@@ -458,13 +455,6 @@ footer {
    
 }
 
-/*
-footer a {
-    color: #fff;
-
-}
-*/
-
 
 footer a:hover {
     color: #00aeff;
@@ -573,12 +563,36 @@ color: #000000;
     float: right; 
 }
 
-
+/*----------------------------- typography --------------------------- */
+.emphasize {
+  font-weight: bold;
+}
 
 
 /*----------------------------- search results ----------------------- */
 
-#ad-title {
+.search-result {
+  margin: 10px 10% 10px 10%;
+  padding: 20px;
+  border-width: 1px;
+  border-color: #dddddd;
+  border-style: solid;
+  border-radius: 3px;
+  background-color: #ffffff;
+  color: #333333;
+}
+
+.search-result .row {
+  margin-bottom: 10px;
+}
+
+.search-result .profile-image {
+  width: 82px;
+  height: 82px;
+  margin-left: 10px;
+}
+
+/*#ad-title {
 font-size: 0.9em;
 font-weight: bold;
 margin-right: 20px;
@@ -665,7 +679,7 @@ font-size: 20px;
 color:#636363;
 padding: 10px 7px 7px; 
 
-}
+}*/
 
 
 
@@ -805,7 +819,7 @@ float: none;
 display: table-cell;
 }
 
-.col-3,  {
+.col-3  {
 float: left;
 position: relative;
 min-height: 1px;
@@ -828,7 +842,7 @@ padding-left: 50px;
 padding: 0;
 display: inline;
 }
-}
+
 
 
 
@@ -3424,12 +3438,6 @@ color: #fff;
 background-color: #56aac9;
 border-color: #dedede;
 }
-
-
-.bgclr {
- color: #00aeff;
-}
-
 
 
 .box .price-boxes .price {
