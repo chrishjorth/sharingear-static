@@ -37,6 +37,19 @@ define(
 						done();
 					});
 				});
+
+				it('Can get profile parameters', function() {
+					var parameters = this.dashboard.getProfileParameters();
+					expect(parameters).to.have.property('name');
+					expect(parameters).to.have.property('hometown');
+					expect(parameters).to.have.property('bio');
+					expect(parameters).to.have.property('genres');
+				});
+
+				it('Can get subview parameters', function() {
+					var parameters = this.dashboard.getSubviewParameters();
+					expect(parameters).to.be.an('object');
+				});
 			});
 		});
 	}
