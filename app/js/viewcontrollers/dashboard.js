@@ -25,7 +25,7 @@ define(
 		}
 
 		function didRender() {
-			this.$subViewContainer = $(this.subViewContainerID);
+			this.$subViewContainer = $('#' + this.subViewContainerID);
 			this.loadSubView();
 		}
 
