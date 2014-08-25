@@ -45,7 +45,42 @@ define(
 				description: 'blah blah',
 				photos: 'url,url,url',
 				price: 100.5,
-				seller_user_id: 0
+				seller_user_id: 0,
+				city: 'Copenhagen',
+				address: '',
+				price1: 4,
+				price2: 15,
+				price3: 75
+			}, {
+				id: 0,
+				type: 0,
+				subtype: 0,
+				brand: 0,
+				model: 'Gibson Guitar',
+				description: 'blah blah',
+				photos: 'url,url,url',
+				price: 100.5,
+				seller_user_id: 0,
+				city: 'Copenhagen',
+				address: '',
+				price1: 4,
+				price2: 15,
+				price3: 75
+			}, {
+				id: 0,
+				type: 0,
+				subtype: 0,
+				brand: 0,
+				model: 'Gibson Guitar',
+				description: 'blah blah',
+				photos: 'url,url,url',
+				price: 100.5,
+				seller_user_id: 0,
+				city: 'Copenhagen',
+				address: '',
+				price1: 4,
+				price2: 15,
+				price3: 75
 			}]);
 
 			return false;
@@ -60,9 +95,29 @@ define(
 			$searchBlock.empty();
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
-					i;
+					defaultSearchResults, searchResult, i;
+
+				defaultSearchResults = {
+					id: 0,
+					type: 0,
+					subtype: 0,
+					brand: 0,
+					model: '',
+					description: '',
+					photos: '',
+					price: 0,
+					seller_user_id: 0,
+					city: '',
+					address: '',
+					price1: 0,
+					price2: 0,
+					price3: 0
+				};
+
 				for(i = 0; i < searchResults.length; i++) {
-					$searchBlock.append(searchResultTemplate(searchResults[i]));
+					searchResult = searchResults[i];
+					_.extend(defaultSearchResults, searchResult);
+					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 				}
 				if(callback && typeof callback === 'function') {
 					callback();

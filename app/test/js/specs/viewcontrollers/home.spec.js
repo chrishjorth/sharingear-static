@@ -44,18 +44,8 @@ define(
 				it('Can populate search results', function(done) {
 					var $searchBlock = $('#' + this.home.searchBlockID),
 						searchResults;
-
-					searchResults = [{
-						id: 0,
-						type: 0,
-						subtype: 0,
-						brand: 0,
-						model: 'Gibson Guitar',
-						description: 'blah blah',
-						photos: 'url,url,url',
-						price: 100.5,
-						seller_user_id: 0
-					}];
+						
+					searchResults = [{}];
 
 					this.home.populateSearchBlock(searchResults, function() {
 						expect($('.search-result', $searchBlock).length).to.equal(1);
