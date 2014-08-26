@@ -56,7 +56,8 @@ require(
 				'../test/js/specs/viewcontrollers/gearform.spec',
 				'../test/js/specs/viewcontrollers/gearpricing.spec',
 				'../test/js/specs/viewcontrollers/aboutus.spec',
-				'../test/js/specs/viewcontrollers/contactus.spec'
+				'../test/js/specs/viewcontrollers/contactus.spec',
+				'../test/js/specs/viewcontrollers/insurance.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
 					mochaPhantomJS.run();
