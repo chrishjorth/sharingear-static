@@ -39,7 +39,8 @@ define(
 				'dashboard/calendar',
 				'dashboard/settings',
 				'gearprofile',
-				'aboutus'
+				'aboutus',
+				'contactus'
 			);
 
 			$(document).ready(function() {
