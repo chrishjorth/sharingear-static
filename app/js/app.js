@@ -38,7 +38,8 @@ define(
 				'dashboard/yourreservations',
 				'dashboard/calendar',
 				'dashboard/settings',
-				'gearprofile'
+				'gearprofile',
+				'aboutus'
 			);
 
 			$(document).ready(function() {
