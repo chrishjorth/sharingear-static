@@ -40,7 +40,9 @@ define(
 				'dashboard/settings',
 				'gearprofile',
 				'aboutus',
-				'contactus'
+				'contactus',
+				'insurance',
+				'privacy'
 			);
 
 			$(document).ready(function() {
