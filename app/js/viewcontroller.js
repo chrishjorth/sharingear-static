@@ -33,11 +33,16 @@ define([
 
 	return ViewController;
 
-	function render() {
+	function render(callback) {
 		var template = this.template();
 		this.$element.html(this.template());
 		if(this.didRender && typeof this.didRender == 'function') {
-			this.didRender();
+			this.didRender(callback);
+		}
+		else {
+			if(callback && typeof callback === 'function') {
+				callback();
+			}
 		}
 	}
 

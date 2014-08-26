@@ -10,11 +10,12 @@ define(
 					this.$fixtures = $('#fixtures');
 					this.dashboard = new Dashboard({name: 'testVC', $element: this.$fixtures, labels: {}, template: DashboardTemplate, path: 'dashboard'});
 					sinon.spy(this.dashboard, 'loadSubView');
-					this.dashboard.render();
+					sinon.spy(this.dashboard, 'renderSubView');
 				});
 
 				afterEach(function() {
 					this.dashboard.loadSubView.restore();
+					this.dashboard.renderSubView.restore();
 					this.dashboard.close();
 					this.$fixtures.empty();
 				});
@@ -28,12 +29,11 @@ define(
 					expect(this.dashboard.subPath).to.equal('profile');
 				});
 
-				it('Can render', function() {
-					sinon.assert.calledOnce(this.dashboard.loadSubView);
-				});
-
-				it('Can load subview', function(done) {
-					this.dashboard.loadSubView(function() {
+				it('Can render', function(done) {
+					var spec = this;
+					this.dashboard.render(function() {
+						sinon.assert.calledOnce(spec.dashboard.loadSubView);
+						sinon.assert.calledOnce(spec.dashboard.renderSubView);
 						done();
 					});
 				});
@@ -49,6 +49,12 @@ define(
 				it('Can get subview parameters', function() {
 					var parameters = this.dashboard.getSubviewParameters();
 					expect(parameters).to.be.an('object');
+				});
+
+				it('Can render your gear', function(done) {
+					this.dashboard.renderYourGear([{}], function() {
+						done();
+					});
 				});
 			});
 		});

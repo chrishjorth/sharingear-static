@@ -17,7 +17,7 @@ define(
 			loadSubView: loadSubView,
 			getSubviewParameters: getSubviewParameters,
 			getProfileParameters: getProfileParameters,
-			renderSubview: renderSubview,
+			renderSubView: renderSubView,
 			renderYourGear: renderYourGear
 		});
 
@@ -30,9 +30,9 @@ define(
 			this.subPath = this.path.substring(this.path.indexOf('/') + 1);
 		}
 
-		function didRender() {
+		function didRender(callback) {
 			this.$subViewContainer = $('#' + this.subViewContainerID);
-			this.loadSubView();
+			this.loadSubView(callback);
 		}
 
 		function loadSubView(callback) {
@@ -40,7 +40,7 @@ define(
 			require(['text!../templates/dashboard-' + router.subPath + '.html'], function(SubViewTemplate) {
 				var template = _.template(SubViewTemplate);
 				router.$subViewContainer.html(template(router.getSubviewParameters()));
-				router.renderSubview();
+				router.renderSubView();
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
@@ -67,66 +67,66 @@ define(
 			return profileParameters;
 		}
 
-		function renderSubview() {
+		function renderSubView() {
+			var yourGear = [{
+				id: 0,
+				type: 0,
+				subtype: 0,
+				brand: 0,
+				model: 'Gibson Guitar',
+				description: 'blah blah',
+				photos: 'url,url,url',
+				price: 100.5,
+				seller_user_id: 0,
+				city: 'Copenhagen',
+				address: '',
+				price1: 4,
+				price2: 15,
+				price3: 75
+			}, {
+				id: 0,
+				type: 0,
+				subtype: 0,
+				brand: 0,
+				model: 'Gibson Guitar',
+				description: 'blah blah',
+				photos: 'url,url,url',
+				price: 100.5,
+				seller_user_id: 0,
+				city: 'Copenhagen',
+				address: '',
+				price1: 4,
+				price2: 15,
+				price3: 75
+			}, {
+				id: 0,
+				type: 0,
+				subtype: 0,
+				brand: 0,
+				model: 'Gibson Guitar',
+				description: 'blah blah',
+				photos: 'url,url,url',
+				price: 100.5,
+				seller_user_id: 0,
+				city: 'Copenhagen',
+				address: '',
+				price1: 4,
+				price2: 15,
+				price3: 75
+			}];
+
 			switch(this.subPath) {
 				case 'yourgear':
-					this.renderYourGear();
+					this.renderYourGear(yourGear);
 					break;
 			}
 		}
 
-		function renderYourGear(callback) {
+		function renderYourGear(yourGear, callback) {
 			var view = this;
 			require(['text!../templates/yourgear-item.html'], function(YourGearItemTemplate) {
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
-					yourGear, defaultGear, gear;
-
-				yourGear = [{
-					id: 0,
-					type: 0,
-					subtype: 0,
-					brand: 0,
-					model: 'Gibson Guitar',
-					description: 'blah blah',
-					photos: 'url,url,url',
-					price: 100.5,
-					seller_user_id: 0,
-					city: 'Copenhagen',
-					address: '',
-					price1: 4,
-					price2: 15,
-					price3: 75
-				}, {
-					id: 0,
-					type: 0,
-					subtype: 0,
-					brand: 0,
-					model: 'Gibson Guitar',
-					description: 'blah blah',
-					photos: 'url,url,url',
-					price: 100.5,
-					seller_user_id: 0,
-					city: 'Copenhagen',
-					address: '',
-					price1: 4,
-					price2: 15,
-					price3: 75
-				}, {
-					id: 0,
-					type: 0,
-					subtype: 0,
-					brand: 0,
-					model: 'Gibson Guitar',
-					description: 'blah blah',
-					photos: 'url,url,url',
-					price: 100.5,
-					seller_user_id: 0,
-					city: 'Copenhagen',
-					address: '',
-					price1: 4,
-					price2: 15,
-					price3: 75
-				}];
+					defaultGear, gear;
 
 				defaultGear = {
 					id: 0,
