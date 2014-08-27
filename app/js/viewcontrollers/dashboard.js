@@ -10,6 +10,8 @@ define(
 			subViewContainerID: 'dashboard-subview-container',
 			$subViewContainer: $(''),
 			subPath: '',
+			currentSubViewController: null,
+
 			didInitialize: didInitialize,
 			didRender: didRender,
 			loadSubView: loadSubView
@@ -24,16 +26,19 @@ define(
 			this.subPath = this.path.substring(this.path.indexOf('/') + 1);
 		}
 
-		function didRender() {
+		function didRender(callback) {
 			this.$subViewContainer = $('#' + this.subViewContainerID);
-			this.loadSubView();
+			this.loadSubView(callback);
 		}
 
 		function loadSubView(callback) {
-			var router = this;
-			require(['text!../templates/dashboard-' + router.subPath + '.html'], function(SubViewTemplate) {
-				var template = _.template(SubViewTemplate);
-				router.$subViewContainer.html(template());
+			var dashboard = this;
+			require(['viewcontrollers/dashboard-' + dashboard.subPath, 'text!../templates/dashboard-' + dashboard.subPath + '.html'], function(SubViewController, SubViewTemplate) {
+				if(dashboard.currentSubViewController !== null) {
+					dashboard.currentSubViewController.close();
+				}
+				dashboard.currentSubViewController = new SubViewController({name: dashboard.subPath, $element: dashboard.$subViewContainer, labels: {}, template: SubViewTemplate, path: dashboard.path});
+				dashboard.currentSubViewController.render();
 				if(callback && typeof callback === 'function') {
 					callback();
 				}

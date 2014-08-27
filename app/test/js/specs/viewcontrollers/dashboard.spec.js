@@ -10,7 +10,6 @@ define(
 					this.$fixtures = $('#fixtures');
 					this.dashboard = new Dashboard({name: 'testVC', $element: this.$fixtures, labels: {}, template: DashboardTemplate, path: 'dashboard'});
 					sinon.spy(this.dashboard, 'loadSubView');
-					this.dashboard.render();
 				});
 
 				afterEach(function() {
@@ -28,12 +27,10 @@ define(
 					expect(this.dashboard.subPath).to.equal('profile');
 				});
 
-				it('Can render', function() {
-					sinon.assert.calledOnce(this.dashboard.loadSubView);
-				});
-
-				it('Can load subview', function(done) {
-					this.dashboard.loadSubView(function() {
+				it('Can render', function(done) {
+					var spec = this;
+					this.dashboard.render(function() {
+						sinon.assert.calledOnce(spec.dashboard.loadSubView);
 						done();
 					});
 				});

@@ -19,7 +19,11 @@ define(
 		};
 
 		window.onhashchange = function() {
-			Router.navigateTo(window.location.hash.substring(1));
+			var hash = window.location.hash.substring(1);
+			if(hash === '') {
+				hash = 'home';
+			}
+			Router.navigateTo(hash);
 		};
 
 		return Router;

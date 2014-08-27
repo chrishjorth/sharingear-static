@@ -10,6 +10,7 @@ define([
 		name: '',
 		$element: $(''),
 		template: '', //A template string
+		templateParameters: {},
 		labels: {},
 		path: '' //URL path in the following form mainView/subView fx dashboard/profile
 	};
@@ -33,11 +34,16 @@ define([
 
 	return ViewController;
 
-	function render() {
-		var template = this.template();
-		this.$element.html(this.template());
+	function render(callback) {
+		var template = this.template(this.templateParameters);
+		this.$element.html(template);
 		if(this.didRender && typeof this.didRender == 'function') {
-			this.didRender();
+			this.didRender(callback);
+		}
+		else {
+			if(callback && typeof callback === 'function') {
+				callback();
+			}
 		}
 	}
 

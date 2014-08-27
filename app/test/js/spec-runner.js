@@ -46,15 +46,19 @@ require(
 				'../test/js/specs/viewcontrollers/home.spec',
 				'../test/js/specs/viewcontrollers/navigation-header.spec',
 				'../test/js/specs/viewcontrollers/dashboard.spec',
+				'../test/js/specs/viewcontrollers/dashboard-profile.spec',
+				'../test/js/specs/viewcontrollers/dashboard-yourgear.spec',
 				'../test/js/specs/viewcontrollers/listyourgear.spec',
-				'../test/js/specs/viewcontrollers/profile.spec',
-				'../test/js/specs/viewcontrollers/yourgear.spec',
 				'../test/js/specs/viewcontrollers/yourreservations.spec',
 				'../test/js/specs/viewcontrollers/calendar.spec',
 				'../test/js/specs/viewcontrollers/settings.spec',
 				'../test/js/specs/viewcontrollers/gearprofile.spec',
 				'../test/js/specs/viewcontrollers/gearform.spec',
-				'../test/js/specs/viewcontrollers/gearpricing.spec'
+				'../test/js/specs/viewcontrollers/gearpricing.spec',
+				'../test/js/specs/viewcontrollers/aboutus.spec',
+				'../test/js/specs/viewcontrollers/contactus.spec',
+				'../test/js/specs/viewcontrollers/insurance.spec',
+				'../test/js/specs/viewcontrollers/privacy.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
 					mochaPhantomJS.run();

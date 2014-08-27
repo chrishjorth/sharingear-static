@@ -38,7 +38,11 @@ define(
 				'dashboard/yourreservations',
 				'dashboard/calendar',
 				'dashboard/settings',
-				'gearprofile'
+				'gearprofile',
+				'aboutus',
+				'contactus',
+				'insurance',
+				'privacy'
 			);
 
 			$(document).ready(function() {
@@ -72,7 +76,7 @@ define(
 		function loadHeader(callback) {
 			var header = this.header;
 			require(['viewcontrollers/navigation-header', 'text!../templates/navigation-header.html'], function(HeaderController, HeaderTemplate) {
-				header = new HeaderController({$element: $('.navigation-header'), labels: {}, template: HeaderTemplate});
+				header = new HeaderController({name: 'header', $element: $('.navigation-header'), labels: {}, template: HeaderTemplate});
 				header.render();
 				if(callback && typeof callback === 'function') {
 					callback();
@@ -86,7 +90,7 @@ define(
 		function loadFooter(callback) {
 			var footer = this.footer;
 			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
-				footer = new FooterController({$element: $('.footer'), labels: {}, template: FooterTemplate});
+				footer = new FooterController({name: 'footer', $element: $('.footer'), labels: {}, template: FooterTemplate});
 				footer.render();
 				if(callback && typeof callback === 'function') {
 					callback();

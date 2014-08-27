@@ -4,10 +4,16 @@
  */
 
 define(
-	['viewcontroller'],
-	function(ViewController) {
-		//var Home = ViewController.inherit();
-		var GearProfile = ViewController; 
+	['underscore', 'utilities', 'viewcontroller'],
+	function(_, Utilities, ViewController) {
+		var GearProfile = Utilities.inherit(ViewController, {
+			didRender: didRender
+		});
+
 		return GearProfile;
+
+		function didRender() {
+			
+		}
 	}
 );

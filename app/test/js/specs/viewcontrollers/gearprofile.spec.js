@@ -7,7 +7,6 @@ define(
 			it('Provides the Gear profile ViewController', function() {
 				var gearProfileVC = new GearProfile();
 				expect(GearProfile).to.be.a('function');
-				expect(gearProfileVC.constructor.name).to.equal('ViewController');
 			});
 		});
 	}
