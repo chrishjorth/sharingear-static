@@ -11,11 +11,13 @@ define(
 					this.editGear = new EditGear({name: 'testVC', $element: this.$fixtures, labels: {}, template: EditGearTemplate, path: 'editgear'});
 					sinon.spy(this.editGear, 'setupEvents');
 					sinon.stub(App.router, 'closeModalView');
+					sinon.stub(App.router, 'openModalView');
 				});
 
 				afterEach(function() {
 					this.editGear.setupEvents.restore();
 					App.router.closeModalView.restore();
+					App.router.openModalView.restore();
 					this.editGear.close();
 					this.$fixtures.empty();
 				});
@@ -39,14 +41,24 @@ define(
 					});
 				});
 
-				it('Can handle save', function() {
-					this.editGear.handleSave();
-					sinon.assert.calledOnce(App.router.closeModalView);
+				it('Can handle cancel', function(done) {
+					var spec = this;
+					this.editGear.render(function() {
+						expect($('#editgear-form .btn-cancel', spec.$fixtures).length).to.equal(1);
+						spec.editGear.handleCancel();
+						sinon.assert.calledOnce(App.router.closeModalView);
+						done();
+					});
 				});
 
-				it('Can handle cancel', function() {
-					this.editGear.handleCancel();
-					sinon.assert.calledOnce(App.router.closeModalView);
+				it('Can handle next', function(done) {
+					var spec = this;
+					this.editGear.render(function() {
+						expect($('#editgear-form .btn-cancel', spec.$fixtures).length).to.equal(1);
+						spec.editGear.handleNext();
+						sinon.assert.calledOnce(App.router.openModalView);
+						done();
+					});
 				});
 			});
 		});

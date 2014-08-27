@@ -43,7 +43,8 @@ define(
 				'contactus',
 				'insurance',
 				'privacy',
-				'editgear'
+				'editgear',
+				'gearpricing'
 			);
 
 			$(document).ready(function() {

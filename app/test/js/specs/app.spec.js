@@ -44,6 +44,7 @@ define(
 				expect(router.routeExists('insurance')).to.equal(true);
 				expect(router.routeExists('privacy')).to.equal(true);
 				expect(router.routeExists('editgear')).to.equal(true);
+				expect(router.routeExists('gearpricing')).to.equal(true);
 			});
 		});
 	}

@@ -11,7 +11,7 @@ define(
 			didRender: didRender,
 			setupEvents: setupEvents,
 			handleCancel: handleCancel,
-			handleSave: handleSave
+			handleNext: handleNext
 		}); 
 		return EditGear;
 
@@ -29,15 +29,15 @@ define(
 
 		function setupEvents() {
 			this.setupEvent('click', '#editgear-form .btn-cancel', this, this.handleCancel);
-			this.setupEvent('click', '#editgear-form .btn-save', this, this.handleSave);
+			this.setupEvent('click', '#editgear-form .btn-next', this, this.handleNext);
 		}
 
 		function handleCancel(event) {
 			App.router.closeModalView();
 		}
 
-		function handleSave(event) {
-			App.router.closeModalView();
+		function handleNext(event) {
+			App.router.openModalView('gearpricing');
 		}
 	}
 );

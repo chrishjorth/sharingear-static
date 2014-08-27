@@ -1,1 +1,27 @@
-<div>Gear pricing dummy</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12"><h2>Price your gear</h2></div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<form id="gearpricing-form" onsubmit="return false;">
+				<div class="controls">
+					<label for="">Daily Rental Price</label>
+					<div class="price"><span class="symbol">$</span><input id="daily_price" name="daily_price" size="7" type="text" value="0"></div>
+					<p class="small">The average daily price is $18</p>
+				</div>
+				<div class="controls">
+					<label for="ride_pricing_per_hour_string">Hourly Rental Price</label>
+					<div class="price"><span class="symbol">$</span><input id="hourly_price" name="hourly_price" size="7" type="text" value="0"></div>
+					<p class="small">Any rental under 4 hours is charged at this hourly rate</p>
+				</div>
+				<div class="controls">
+					<label for="ride_pricing_per_week_string">Weekly Rental Price</label>
+					<div class="price"><span class="symbol">$</span><input id="weekly_price" name="weekly_price" size="7" type="text" value="0"></div>
+					<p class="small">An 8 day rental will be charged as 1 week and 1 day</p>
+				</div>
+				<div class="pull-right"><button class="btn btn-default btn-cancel">Cancel</button><button class="btn btn-primary btn-save">Save</button></div>
+			</form>
+		</div>
+	</div>
+</div>
