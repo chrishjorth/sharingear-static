@@ -571,34 +571,7 @@ color: #000000;
 }
 
 
-/*----------------------------- modal view --------------------------- */
-.modal-view-lightbox {
-  z-index: 100;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.75);
-}
-
-.modal-view-container {
-  z-index: 101;
-  width: 80%;
-  min-height: 50%;
-  position: relative;
-  left: 10%;
-  top: 14%;
-  background-color: #ffffff;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #dddddd;
-  border-radius: 4px;
-  color: #333333;
-}
-
-/*----------------------------- search results ----------------------- */
+/*----------------------------- SEARCH RESULTS ----------------------- */
 
 .search-result {
   margin: 10px 10% 10px 10%;
@@ -851,12 +824,30 @@ padding-left: 50px;
 .form {
 
   margin: 0;
+<<<<<<< HEAD
+  padding: 0;
+  display: inline;
+=======
 padding: 0;
 display: inline;
+>>>>>>> a9df88d997faa85d11d09796aed03960f8014c20
 }
 
 /* ------------------ END - LIST YOUR GEAR --------------- */
-<<<<<<< Updated upstream
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2570,132 +2561,11 @@ padding: 10px 7px 7px;
 
 
 
-<<<<<<< Updated upstream
-
-}
 
 
 
 
 
-
-
-
-
-.row.row-table {
-width: 100%;
-width: calc(100% + 25px);
-}
-
-.row-space-top-5 {
-margin-top: 32.25px;
-padding-right: 20px; 
-}
-
-.row-space-5 {
-margin-bottom: 31.25px;
-}
-
-
-.row-table {
-display: table;
-}
-
-
-
-
-
-
-
-.fieldset .btn {
-padding: 16px 35px;
-font-weight: normal;
-font-size: 16px; 
-border-color: #CFCFCF;
-background: #FFD200;
-color: #FFFFFF;
-}
-
-
-.iconbtn {
-margin-right: 10px; 
-margin-left: -20px; 
-}
-
-
-.fieldset {
-  padding-left: 12.5px;
-  padding-right: 12.5px;
-}
-
-.fieldset_city {
-  padding-left: 25px;
-  padding-right: 25px;
-
-}
-
-
-.col-middle, .col-bottom {
-float: none;
-display: table-cell;
-}
-
-.col-6 {
-width: 50%;
-
-}
-
-#city_p {
-background-color: #FFD200; 
-
-}
-
-.col-3 {
-  width: 25%; 
-}
-
-
-.thispanelbg {
-  background-color: #FFD200;
-}
-
-
-
-
-.col-middle {
-vertical-align: middle;
-}
-
-
-.col-middle, .col-bottom {
-float: none;
-display: table-cell;
-}
-
-.col-3,  {
-float: left;
-position: relative;
-min-height: 1px;
-}
-
-
-.text-right {
-text-align: right;
-color: #000000; 
-padding-right: 10px; 
-padding-left: 50px; 
-}
-
-
-
-
-.form {
-
-  margin: 0;
-padding: 0;
-display: inline;
-}
-}
 
 
 
