@@ -26,11 +26,10 @@ define(
 				expect(Router.routeExists('home')).to.equal(true);
 			});
 
-			it('Can load a view', function(done) {
-				Router.loadView('error', '', function() {
-					expect(Router.currentViewController.name).to.equal('error');
-					done();
-				});
+			it('Can get route', function() {
+				expect(Router.getRoute('home')).to.equal('home');
+				expect(Router.getRoute('blahblah')).to.equal('error');
+				expect(Router.getRoute('')).to.equal('error');
 			});
 
 			it('Can navigate to route', function(done) {
@@ -50,6 +49,38 @@ define(
 				Router.navigateTo('home/test', function() {
 					expect(Router.currentViewController.name).to.equal('home');
 					done();
+				});
+			});
+
+			it('Can load a view', function(done) {
+				Router.loadView('error', '', function() {
+					expect(Router.currentViewController.name).to.equal('error');
+					done();
+				});
+			});
+
+			it('Can open a modal view', function(done) {
+				Router.openModalView('error', function() {
+					expect(Router.currentModalViewController.name).to.equal('error');
+					done();
+				});
+			});
+
+			it('Can load a modal view', function(done) {
+				Router.loadModalView('error', '', function() {
+					expect(Router.currentModalViewController.name).to.equal('error');
+					done();
+				});
+			});
+
+			it('Can close a modal view', function(done) {
+				Router.loadModalView('error', '', function() {
+					sinon.spy(Router.currentModalViewController, 'close');
+					Router.closeModalView(function() {
+						sinon.assert.calledOnce(Router.currentModalViewController.close);
+						Router.currentModalViewController.close.restore();
+						done();
+					});
 				});
 			});
 		});

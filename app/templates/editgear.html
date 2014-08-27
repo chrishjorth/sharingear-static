@@ -1,0 +1,35 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12"><h2>{{brand}} {{model}}</h2></div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<form id="editgear-form" onsubmit="return false;">
+				<div class="form-group">
+					<label for="type">Instrument type:</label>
+					<select name="type" id="type">
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="subtype">Instrument subtype:</label>
+					<select name="subtype" id="subtype">
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="">Brand:</label>
+					<select name="brand" id="brand">
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="model">Model</label>
+					<input type="text" name="model" id="model" placeholder="{{model}}">
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					<textarea name="description" id="description">{{description}}</textarea>
+				</div>
+				<div class="pull-right"><button class="btn btn-default btn-cancel">Cancel</button><button class="btn btn-primary btn-save">Save</button></div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -38,12 +38,11 @@ define([
 		var template = this.template(this.templateParameters);
 		this.$element.html(template);
 		if(this.didRender && typeof this.didRender == 'function') {
-			this.didRender(callback);
+			this.didRender();
 		}
-		else {
-			if(callback && typeof callback === 'function') {
-				callback();
-			}
+		
+		if(callback && typeof callback === 'function') {
+			callback();
 		}
 	}
 

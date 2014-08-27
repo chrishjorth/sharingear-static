@@ -42,7 +42,8 @@ define(
 				'aboutus',
 				'contactus',
 				'insurance',
-				'privacy'
+				'privacy',
+				'editgear'
 			);
 
 			$(document).ready(function() {

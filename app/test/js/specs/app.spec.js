@@ -39,6 +39,11 @@ define(
 				expect(router.routeExists('dashboard/calendar')).to.equal(true);
 				expect(router.routeExists('dashboard/settings')).to.equal(true);
 				expect(router.routeExists('gearprofile')).to.equal(true);
+				expect(router.routeExists('aboutus')).to.equal(true);
+				expect(router.routeExists('contactus')).to.equal(true);
+				expect(router.routeExists('insurance')).to.equal(true);
+				expect(router.routeExists('privacy')).to.equal(true);
+				expect(router.routeExists('editgear')).to.equal(true);
 			});
 		});
 	}

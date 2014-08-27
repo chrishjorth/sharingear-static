@@ -4,13 +4,15 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller'],
-	function(_, Utilities, ViewController) {
+	['underscore', 'utilities', 'viewcontroller', 'app'],
+	function(_, Utilities, ViewController, App) {
 		var YourGear = Utilities.inherit(ViewController, {
 			gearBlockID: 'yourgear-gear-block',
 			
 			didRender: didRender,
-			populateYourGear: populateYourGear
+			populateYourGear: populateYourGear,
+			setupEvents: setupEvents,
+			handleEditGearItem: handleEditGearItem
 		}); 
 		return YourGear;
 
@@ -63,6 +65,8 @@ define(
 			}];
 
 			this.populateYourGear(yourGear);
+
+			this.setupEvents();
 		}
 
 		function populateYourGear(yourGear, callback) {
@@ -99,6 +103,14 @@ define(
 				}
 
 			});
+		}
+
+		function setupEvents() {
+			this.setupEvent('click', '.yourgear-item .btn-edit', this, this.handleEditGearItem);
+		}
+
+		function handleEditGearItem(event) {
+			App.router.openModalView('editgear');
 		}
 	}
 );

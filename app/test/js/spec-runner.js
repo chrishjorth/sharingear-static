@@ -53,12 +53,12 @@ require(
 				'../test/js/specs/viewcontrollers/calendar.spec',
 				'../test/js/specs/viewcontrollers/settings.spec',
 				'../test/js/specs/viewcontrollers/gearprofile.spec',
-				'../test/js/specs/viewcontrollers/gearform.spec',
 				'../test/js/specs/viewcontrollers/gearpricing.spec',
 				'../test/js/specs/viewcontrollers/aboutus.spec',
 				'../test/js/specs/viewcontrollers/contactus.spec',
 				'../test/js/specs/viewcontrollers/insurance.spec',
-				'../test/js/specs/viewcontrollers/privacy.spec'
+				'../test/js/specs/viewcontrollers/privacy.spec',
+				'../test/js/specs/viewcontrollers/editgear.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
 					mochaPhantomJS.run();
