@@ -1,5 +1,5 @@
 define(
-	['jquery', 'chai', 'sinon', 'viewcontrollers/calendar'],
+	['jquery', 'chai', 'sinon', 'viewcontrollers/dashboard-calendar'],
 	function($, chai, Sinon, Calendar) {
 		var expect = chai.expect;
 		

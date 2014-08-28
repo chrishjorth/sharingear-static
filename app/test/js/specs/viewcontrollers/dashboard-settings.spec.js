@@ -1,5 +1,5 @@
 define(
-	['jquery', 'chai', 'sinon', 'viewcontrollers/settings'],
+	['jquery', 'chai', 'sinon', 'viewcontrollers/dashboard-settings'],
 	function($, chai, Sinon, Settings) {
 		var expect = chai.expect;
 		
