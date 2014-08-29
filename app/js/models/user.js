@@ -12,6 +12,13 @@ define(
 		return User;
 
 		function login(callback) {
+			this.data = {
+				name: 'Chris Hjorth',
+				hometown: 'Aalborg',
+				bio: 'Blah blah',
+				genres: ''
+			};
+
 			if(callback && typeof callback === 'function') {
 				callback();
 			}

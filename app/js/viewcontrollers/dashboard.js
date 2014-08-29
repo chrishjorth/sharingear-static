@@ -4,8 +4,8 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller'],
-	function(_, Utilities, ViewController) {
+	['underscore', 'utilities', 'viewcontroller', 'app'],
+	function(_, Utilities, ViewController, App) {
 		var Dashboard = Utilities.inherit(ViewController, {
 			subViewContainerID: 'dashboard-subview-container',
 			$subViewContainer: $(''),
@@ -20,6 +20,10 @@ define(
 		return Dashboard;
 
 		function didInitialize() {
+			if(App.user.data === null) {
+				App.router.navigateTo('home');
+			}
+
 			if(this.path === 'dashboard') {
 				this.path = 'dashboard/profile';
 			}

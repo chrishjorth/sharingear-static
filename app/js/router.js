@@ -44,7 +44,12 @@ define(
 		}
 
 		function navigateTo(route, callback) {
-			this.loadView(this.getRoute(route), route, callback);
+			this.loadView(this.getRoute(route), route, function() {
+				window.location.hash = route;
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
+			});
 		}
 
 		/**
