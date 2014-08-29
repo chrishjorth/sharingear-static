@@ -3,11 +3,9 @@
  * @author: Chris Hjorth
  */
 define(
-	['utilities', 'model', 'app'],
-	function(Utilities, Model, App) {
+	['utilities', 'model'],
+	function(Utilities, Model) {
 		var GearList = Utilities.inherit(Model, {
-			rootURL: App.API_URL,
-
 			search: search
 		});
 

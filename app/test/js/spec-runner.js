@@ -60,7 +60,8 @@ require(
 				'../test/js/specs/viewcontrollers/privacy.spec',
 				'../test/js/specs/viewcontrollers/editgear.spec',
 				'../test/js/specs/viewcontrollers/gearpricing.spec',
-				'../test/js/specs/models/gearlist.spec'
+				'../test/js/specs/models/gearlist.spec',
+				'../test/js/specs/models/user.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
 					mochaPhantomJS.run();

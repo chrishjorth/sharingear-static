@@ -4,13 +4,14 @@
  */
 
 define(
-	['jquery', 'router'],
-	function($, Router) {
+	['jquery', 'router', 'models/user'],
+	function($, Router, User) {
 		var App = {
 			router: Router,
 			header: null,
 			footer: null,
 			API_URL: 'http://localhost:1339',
+			user: null,
 			
 			run: run,
 			loadHeader: loadHeader,
@@ -48,6 +49,10 @@ define(
 				'editgear',
 				'gearpricing'
 			);
+
+			this.user = new User({
+				rootURL: this.API_URL
+			});
 
 			$(document).ready(function() {
 				var route = null;

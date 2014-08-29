@@ -4,19 +4,27 @@
  */
 
 define(
-	['underscore', 'viewcontroller'],
-	function(_, ViewController) {
-		//var Header = ViewController.inherit();
-		var Header = ViewController;
-
-		Header.didRender = function() {
-			//console.log('did render');
-		};
+	['utilities', 'viewcontroller', 'app'],
+	function(Utilities, ViewController, App) {
+		var Header = Utilities.inherit(ViewController, {
+			didRender: didRender,
+			handleLogin: handleLogin
+		});
 
 		return Header;
 
-		function render() {
-			console.log('Navigation header rendered.');
+		function didRender() {
+			this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+		}
+
+		function handleLogin(event, callback) {
+			var user = App.user;
+			user.login(function() {
+				App.router.navigateTo('dashboard');
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
+			});
 		}
 	}
 );

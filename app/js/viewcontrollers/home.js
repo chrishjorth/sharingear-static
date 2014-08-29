@@ -4,11 +4,13 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'models/gearlist'],
-	function(_, Utilities, ViewController, GearList) {
+	['underscore', 'utilities', 'viewcontroller', 'models/gearlist', 'app'],
+	function(_, Utilities, ViewController, GearList, App) {
 
 		var Home = Utilities.inherit(ViewController, {
-			gearList: new GearList(),
+			gearList: new GearList({
+				rootURL: App.API_URL
+			}),
 
 			searchBlockID: 'home-search-block',
 			didRender: didRender,
