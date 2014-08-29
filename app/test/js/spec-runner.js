@@ -40,6 +40,7 @@ require(
 				'../test/js/specs/app.spec',
 				'../test/js/specs/router.spec',
 				'../test/js/specs/viewcontroller.spec',
+				'../test/js/specs/model.spec',
 				'../test/js/specs/utilities.spec',
 				'../test/js/specs/viewcontrollers/error.spec',
 				'../test/js/specs/viewcontrollers/footer.spec',
@@ -58,7 +59,8 @@ require(
 				'../test/js/specs/viewcontrollers/insurance.spec',
 				'../test/js/specs/viewcontrollers/privacy.spec',
 				'../test/js/specs/viewcontrollers/editgear.spec',
-				'../test/js/specs/viewcontrollers/gearpricing.spec'
+				'../test/js/specs/viewcontrollers/gearpricing.spec',
+				'../test/js/specs/models/gearlist.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
 					mochaPhantomJS.run();

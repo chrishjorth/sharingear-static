@@ -28,17 +28,21 @@ define(
 					expect(this.home.userEvents[0].element).to.equal('#home-search-form');
 				});
 
-				it('Can perform a search', function() {
+				it('Can perform a search', function(done) {
 					//Check that form HTML is correct
-					var $searchForm = $('#home-search-form');
+					var spec = this,
+						$searchForm = $('#home-search-form');
+
 					expect($searchForm.attr('action')).to.equal('');
 					expect($searchForm.attr('onsubmit')).to.equal('return false;');
 
 					//Simulate the event object
 					this.home.handleSearch({
 						data: this.home
+					}, function() {
+						sinon.assert.calledOnce(spec.home.populateSearchBlock);
+						done();
 					});
-					sinon.assert.calledOnce(this.home.populateSearchBlock);
 				});
 
 				it('Can populate search results', function(done) {

@@ -10,6 +10,8 @@ define(
 			router: Router,
 			header: null,
 			footer: null,
+			API_URL: 'http://localhost:1339',
+			
 			run: run,
 			loadHeader: loadHeader,
 			loadFooter: loadFooter

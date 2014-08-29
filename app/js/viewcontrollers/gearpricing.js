@@ -24,7 +24,6 @@ define(
 		}
 
 		function handleCancel() {
-			console.log('CANCEL!');
 			App.router.closeModalView();
 		}
 

@@ -849,15 +849,11 @@ padding-left: 50px;
 
 
 .form {
-
   margin: 0;
-<<<<<<< HEAD
   padding: 0;
   display: inline;
-=======
-padding: 0;
-display: inline;
->>>>>>> a9df88d997faa85d11d09796aed03960f8014c20
+  padding: 0;
+  display: inline;
 }
 
 /* ------------------ END - LIST YOUR GEAR --------------- */
@@ -1542,7 +1538,7 @@ background-position: center bottom;
   height: 46px;
 }
 
-._searchbutton { <!-- global settings --> 
+._searchbutton { /* global settings */
   display: block;
   position: absolute;
   text-align: center;
@@ -2120,7 +2116,7 @@ background-position: center bottom;
   left: 1.3480392156%;
   z-index: 29;
   min-height: 67px;
-  <!--font-size: 3.75em;-->
+  /*font-size: 3.75em;*/
   line-height: 1.38;
   text-indent: 5px;
   color: rgb(255, 255, 255);
@@ -2133,7 +2129,7 @@ background-position: center bottom;
   z-index: 28;
   min-height: 42px;
   margin: 20px 0 0 1.275510204%;
-  <!--font-size: 2.167em;--> 
+  /*font-size: 2.167em;*/
   line-height: 1.38;
   text-indent: 5px;
   color: rgb(255, 255, 255);
@@ -2187,7 +2183,7 @@ background-position: center bottom;
   height: 46px;
 }
 
-._searchbutton { <!-- global settings --> 
+._searchbutton { /* global settings */
   display: block;
   position: absolute;
   text-align: center;
@@ -2897,7 +2893,7 @@ background-position: center bottom;
   left: 1.3480392156%;
   z-index: 29;
   min-height: 67px;
-  <!--font-size: 3.75em;-->
+  /*font-size: 3.75em;*/
   line-height: 1.38;
   text-indent: 5px;
   color: rgb(255, 255, 255);
@@ -2910,7 +2906,7 @@ background-position: center bottom;
   z-index: 28;
   min-height: 42px;
   margin: 20px 0 0 1.275510204%;
-  <!--font-size: 2.167em;--> 
+  /*font-size: 2.167em;*/
   line-height: 1.38;
   text-indent: 5px;
   color: rgb(255, 255, 255);
@@ -2964,7 +2960,7 @@ background-position: center bottom;
   height: 46px;
 }
 
-._searchbutton { <!-- global settings --> 
+._searchbutton { /* global settings */
   display: block;
   position: absolute;
   text-align: center;

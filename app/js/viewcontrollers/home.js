@@ -4,10 +4,12 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller'],
-	function(_, Utilities, ViewController) {
+	['underscore', 'utilities', 'viewcontroller', 'models/gearlist'],
+	function(_, Utilities, ViewController, GearList) {
 
 		var Home = Utilities.inherit(ViewController, {
+			gearList: new GearList(),
+
 			searchBlockID: 'home-search-block',
 			didRender: didRender,
 			setupEvents: setupEvents,
@@ -25,7 +27,7 @@ define(
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 		}
 
-		function handleSearch(event) {
+		function handleSearch(event, callback) {
 			var view = event.data;
 
 			//Remove promo block and billboard
@@ -36,52 +38,12 @@ define(
 				display: 'none'
 			});
 
-			view.populateSearchBlock([{
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}, {
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}, {
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}]);
+			view.gearList.search('Copenhagen', 'Marshall amp', '20140828-20140901', function(searchResults) {
+				view.populateSearchBlock(searchResults);
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
+			});
 
 			return false;
 		}

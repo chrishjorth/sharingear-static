@@ -3467,7 +3467,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #FFF; <!-- bagrundsfarven på knapper --> 
+  background-color: #FFF; /* bagrundsfarven på knapper */
 }
 .nav > li.disabled > a {
   color: #999;
@@ -3578,7 +3578,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
   color: #000;
-  background-color: #ffd200; <!-- LIST YOUR GEAR i top nav --> 
+  background-color: #ffd200; /* LIST YOUR GEAR i top nav */
 }
 .nav-stacked > li {
   float: none;
@@ -3646,7 +3646,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 50px; <!--- HEIGHT ON THE FUCKING NAVBAR - HUSK DET!! --> 
+  min-height: 50px; /* HEIGHT ON THE FUCKING NAVBAR - HUSK DET!! */ 
   margin-bottom: 10px;
   border: 0px solid transparent;
 }
@@ -3979,14 +3979,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   background-color: transparent;
 }
 .navbar-default .navbar-toggle {
-  border-color: #00aeff; <!--- kantfarve på navknap -->
+  border-color: #00aeff; /* kantfarve på navknap */
 }
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
   background-color: #FFFFFF;
 }
 .navbar-default .navbar-toggle .icon-bar {
-  background-color: #00aeff; <!-- de 3 streger i navknappen--> 
+  background-color: #00aeff; /* de 3 streger i navknappen*/
 }
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
