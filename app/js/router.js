@@ -15,6 +15,7 @@ define(
 			mainViewContainer: '.view-container',
 			modalViewLightbox: '.modal-view-lightbox',
 			modalViewContainer: '.modal-view-container',
+			hashUpdated: false,
 
 			addRoutes: addRoutes,
 			getRoute: getRoute,
@@ -26,7 +27,11 @@ define(
 			closeModalView: closeModalView
 		};
 
-		window.onhashchange = function() {
+		window.onhashchange = function(event) {
+			/*if(Router.hashUpdated === true) {
+				Router.hashUpdated = false;
+				return;
+			}*/
 			var hash = window.location.hash.substring(1);
 			if(hash === '') {
 				hash = 'home';
@@ -44,10 +49,15 @@ define(
 		}
 
 		function navigateTo(route, callback) {
-			this.loadView(this.getRoute(route), route, function() {
-				window.location.hash = route;
+			var router = this;
+			console.log('NAV TO ROUTE: ' + route);
+			this.loadView(this.getRoute(route), route, function(error) {
+				if(!error) {
+					router.hashUpdated = true;
+					window.location.hash = route;
+				}
 				if(callback && typeof callback === 'function') {
-					callback();
+					callback(error);
 				}
 			});
 		}
@@ -86,14 +96,37 @@ define(
 
 		function loadView(view, path, callback) {
 			var router = this;
+			//If the view is already loaded just update the path and call render subviews
+			if(this.currentViewController !== null && this.currentViewController.name === view) {
+				//We run the callback before proceeding to rendering the subviews
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
+				this.currentViewController.path = path;
+				this.currentViewController.setSubPath();
+				this.currentViewController.renderSubviews();
+				return;
+			}
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
+				//Close the previous controller properly before loading a new one
 				if(router.currentViewController !== null) {
 					router.currentViewController.close();
 				}
 				router.currentViewController = new ViewController({name: view, $element: $(router.mainViewContainer), labels: {}, template: ViewTemplate, path: path});
-				router.currentViewController.render();
-				if(callback && typeof callback === 'function') {
-					callback();
+				//The ready property is so a controller can abort loading, useful if a redirect is being called
+				if(router.currentViewController.ready === true) {
+					router.currentViewController.render(function() {
+						//We run the callback before proceeding to rendering the subviews
+						if(callback && typeof callback === 'function') {
+							callback(null);
+						}
+						router.currentViewController.renderSubviews();
+					});
+				}
+				else {
+					if(callback && typeof callback === 'function') {
+						callback({error: 'Load aborted'});
+					}
 				}
 			});
 		}
@@ -117,7 +150,9 @@ define(
 				}
 
 				router.currentModalViewController = new ViewController({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path});
-				router.currentModalViewController.render();
+				if(router.currentModalViewController.ready === true) {
+					router.currentModalViewController.render();
+				}
 				
 				if(callback && typeof callback === 'function') {
 					callback();

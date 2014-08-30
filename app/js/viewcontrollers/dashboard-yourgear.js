@@ -4,10 +4,13 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'app'],
-	function(_, Utilities, ViewController, App) {
+	['underscore', 'utilities', 'viewcontroller', 'app', 'models/gearlist'],
+	function(_, Utilities, ViewController, App, GearList) {
 		var YourGear = Utilities.inherit(ViewController, {
 			gearBlockID: 'yourgear-gear-block',
+			gearList: new GearList({
+				rootURL: App.API_URL
+			}),
 			
 			didRender: didRender,
 			populateYourGear: populateYourGear,
@@ -17,56 +20,12 @@ define(
 		return YourGear;
 
 		function didRender() {
-			var yourGear = [{
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}, {
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}, {
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}];
+			var view = this;
 
-			this.populateYourGear(yourGear);
-
-			this.setupEvents();
+			this.gearList.getUserGear(App.user.data.id, function(userGear) {
+				view.populateYourGear(userGear);
+				view.setupEvents();
+			});
 		}
 
 		function populateYourGear(yourGear, callback) {

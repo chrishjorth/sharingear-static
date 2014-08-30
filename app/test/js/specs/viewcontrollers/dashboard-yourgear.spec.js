@@ -20,13 +20,16 @@ define(
 				});
 
 				it('Provides the Dashboard Your gear ViewController', function() {
-					var yourGearVC = new YourGear();
 					expect(YourGear).to.be.a('function');
 				});
 
-				it('Can render', function() {
+				it('Can render', function(done) {
+					var spec = this;
+					sinon.stub(this.yourgear.gearList, 'getUserGear', function() {
+						spec.yourgear.gearList.getUserGear.restore();
+						done();
+					});
 					this.yourgear.render();
-					sinon.assert.calledOnce(this.yourgear.populateYourGear);
 				});
 
 				it('Can handle edit gear event', function() {

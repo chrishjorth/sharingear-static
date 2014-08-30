@@ -13,40 +13,27 @@ define(
 			currentSubViewController: null,
 
 			didInitialize: didInitialize,
-			didRender: didRender,
-			loadSubView: loadSubView
+			didRender: didRender
 		});
 
 		return Dashboard;
 
 		function didInitialize() {
 			if(App.user.data === null) {
+				this.ready = false;
 				App.router.navigateTo('home');
+				return;
 			}
 
 			if(this.path === 'dashboard') {
-				this.path = 'dashboard/profile';
+				App.router.navigateTo('dashboard/profile');
 			}
-			this.subPath = this.path.substring(this.path.indexOf('/') + 1);
 		}
 
 		function didRender(callback) {
 			this.$subViewContainer = $('#' + this.subViewContainerID);
-			this.loadSubView(callback);
 		}
 
-		function loadSubView(callback) {
-			var dashboard = this;
-			require(['viewcontrollers/dashboard-' + dashboard.subPath, 'text!../templates/dashboard-' + dashboard.subPath + '.html'], function(SubViewController, SubViewTemplate) {
-				if(dashboard.currentSubViewController !== null) {
-					dashboard.currentSubViewController.close();
-				}
-				dashboard.currentSubViewController = new SubViewController({name: dashboard.subPath, $element: dashboard.$subViewContainer, labels: {}, template: SubViewTemplate, path: dashboard.path});
-				dashboard.currentSubViewController.render();
-				if(callback && typeof callback === 'function') {
-					callback();
-				}
-			});
-		}
+		
 	}
 );

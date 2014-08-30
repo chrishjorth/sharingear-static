@@ -12,13 +12,17 @@ define([
 		template: '', //A template string
 		templateParameters: {},
 		labels: {},
-		path: '' //URL path in the following form mainView/subView fx dashboard/profile
+		path: '', //URL path in the following form mainView/subView fx dashboard/profile
+		$subViewContainer: $(''),
+		subPath: '',
+		ready: true
 	};
 
 	function ViewController(options) {
 		_.extend(this, defaults, options);
 		this.template = _.template(this.template);
 		this.userEvents = [];
+		this.setSubPath();
 		if(this.didInitialize && typeof this.didInitialize == 'function') {
 			this.didInitialize();
 		}
@@ -26,6 +30,9 @@ define([
 
 	_.extend(ViewController.prototype, {
 		render: render,
+		setSubPath: setSubPath,
+		renderSubviews: renderSubviews,
+		loadSubView: loadSubView,
 		//localize: localize,
 		close: close,
 		setupEvent: setupEvent,
@@ -44,6 +51,35 @@ define([
 		if(callback && typeof callback === 'function') {
 			callback();
 		}
+	}
+
+	function setSubPath() {
+		var slashIndex = -1;
+		slashIndex = this.path.indexOf('/');
+		if(slashIndex >= 0) {
+			this.subPath = this.path.substring(slashIndex + 1);
+		}
+	}
+
+	function renderSubviews(callback) {
+		console.log('Render subview: ' + this.subPath);
+		if(this.subPath !== '') {
+			this.loadSubView(callback);
+		}
+	}
+
+	function loadSubView(callback) {
+		var vc = this;
+		require(['viewcontrollers/' + vc.name + '-' + vc.subPath, 'text!../templates/' + vc.name + '-' + vc.subPath + '.html'], function(SubViewController, SubViewTemplate) {
+			if(vc.currentSubViewController !== null) {
+				vc.currentSubViewController.close();
+			}
+			vc.currentSubViewController = new SubViewController({name: vc.subPath, $element: vc.$subViewContainer, labels: {}, template: SubViewTemplate, path: vc.path});
+			vc.currentSubViewController.render();
+			if(callback && typeof callback === 'function') {
+				callback();
+			}
+		});
 	}
 
 	/*function localize($containerElement) {

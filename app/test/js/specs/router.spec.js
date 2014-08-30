@@ -38,6 +38,7 @@ define(
 					Router.navigateTo('error', function() {
 						expect(Router.currentViewController.name).to.equal('error');
 						Router.navigateTo('nonexistingroute', function() {
+							console.log('ERROR');
 							expect(Router.currentViewController.name).to.equal('error');
 							done();
 						});
@@ -46,8 +47,9 @@ define(
 			});
 
 			it('Can navigate to path', function(done) {
-				Router.navigateTo('home/test', function() {
-					expect(Router.currentViewController.name).to.equal('home');
+				Router.addRoutes('dashboard');
+				Router.navigateTo('dashboard/profile', function() {
+					expect(Router.currentViewController.name).to.equal('dashboard');
 					done();
 				});
 			});

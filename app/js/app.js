@@ -11,7 +11,9 @@ define(
 			header: null,
 			footer: null,
 			API_URL: 'http://localhost:1339',
-			user: null,
+			user: new User({
+				rootURL: this.API_URL
+			}),
 			
 			run: run,
 			loadHeader: loadHeader,
@@ -50,10 +52,6 @@ define(
 				'gearpricing'
 			);
 
-			this.user = new User({
-				rootURL: this.API_URL
-			});
-
 			$(document).ready(function() {
 				var route = null;
 
@@ -70,8 +68,6 @@ define(
 				}
 
 				router.navigateTo(route, callback);
-
-				//TODO: Make the router implement HTML5 history push pop
 
 				app.loadFooter();
 			});

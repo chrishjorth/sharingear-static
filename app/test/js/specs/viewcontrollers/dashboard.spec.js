@@ -1,12 +1,13 @@
 define(
-	['jquery', 'chai', 'sinon', 'viewcontrollers/dashboard'],
-	function($, chai, Sinon, Dashboard) {
+	['jquery', 'chai', 'sinon', 'viewcontrollers/dashboard', 'app'],
+	function($, chai, Sinon, Dashboard, App) {
 		require(['text!../templates/dashboard.html'], function(DashboardTemplate) {
 			var expect = chai.expect;
 		
 			describe('Dashboard ViewController', function() {
 
 				beforeEach(function() {
+					sinon.stub(App.router, 'navigateTo');
 					this.$fixtures = $('#fixtures');
 					this.dashboard = new Dashboard({name: 'testVC', $element: this.$fixtures, labels: {}, template: DashboardTemplate, path: 'dashboard'});
 					sinon.spy(this.dashboard, 'loadSubView');
@@ -16,6 +17,7 @@ define(
 					this.dashboard.loadSubView.restore();
 					this.dashboard.close();
 					this.$fixtures.empty();
+					App.router.navigateTo.restore();
 				});
 
 				it('Provides the Dashboard ViewController', function() {
@@ -23,16 +25,7 @@ define(
 				});
 
 				it('Can initialize correctly', function() {
-					expect(this.dashboard.path).to.equal('dashboard/profile');
-					expect(this.dashboard.subPath).to.equal('profile');
-				});
-
-				it('Can render', function(done) {
-					var spec = this;
-					this.dashboard.render(function() {
-						sinon.assert.calledOnce(spec.dashboard.loadSubView);
-						done();
-					});
+					sinon.assert.calledOnce(App.router.navigateTo);
 				});
 			});
 		});
