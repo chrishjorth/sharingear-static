@@ -7,7 +7,8 @@ define(
 	function(Utilities, Model) {
 		var GearList = Utilities.inherit(Model, {
 			search: search,
-			getUserGear: getUserGear
+			getUserGear: getUserGear,
+			getUserReservations: getUserReservations
 		});
 
 		return GearList;
@@ -30,6 +31,17 @@ define(
 				}
 				else {
 					callback(userGear);
+				}
+			});
+		}
+
+		function getUserReservations(userID, callback) {
+			this.get('/users/' + userID + '/reservations', function(error, userReservations) {
+				if(error) {
+					callback([]);
+				}
+				else {
+					callback(userReservations);
 				}
 			});
 		}

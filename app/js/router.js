@@ -50,7 +50,6 @@ define(
 
 		function navigateTo(route, callback) {
 			var router = this;
-			console.log('NAV TO ROUTE: ' + route);
 			this.loadView(this.getRoute(route), route, function(error) {
 				if(!error) {
 					router.hashUpdated = true;

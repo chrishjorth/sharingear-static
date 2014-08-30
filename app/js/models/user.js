@@ -13,6 +13,7 @@ define(
 
 		function login(callback) {
 			this.data = {
+				id: 0,
 				name: 'Chris Hjorth',
 				hometown: 'Aalborg',
 				bio: 'Blah blah',

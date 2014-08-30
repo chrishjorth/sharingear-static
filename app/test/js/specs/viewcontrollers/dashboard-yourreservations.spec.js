@@ -21,9 +21,13 @@ define(
 					expect(YourReservations).to.be.a('function');
 				});
 
-				it('Can render', function() {
+				it('Can render', function(done) {
+					var spec = this;
+					sinon.stub(this.yourReservations.gearList, 'getUserReservations', function() {
+						spec.yourReservations.gearList.getUserReservations.restore();
+						done();
+					});
 					this.yourReservations.render();
-					sinon.assert.calledOnce(this.yourReservations.populateYourReservations);
 				});
 			});
 		});

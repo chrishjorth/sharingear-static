@@ -4,10 +4,13 @@
  */
 
 define(
-	['utilities', 'viewcontroller'],
-	function(Utilities, ViewController) {
+	['utilities', 'viewcontroller', 'app', 'models/gearlist'],
+	function(Utilities, ViewController, App, GearList) {
 		var YourReservations = Utilities.inherit(ViewController, {
 			reservationBlockID: 'yourreservations-gear-block',
+			gearList: new GearList({
+				rootURL: App.API_URL
+			}),
 
 			didRender: didRender,
 			populateYourReservations: populateYourReservations
@@ -15,54 +18,10 @@ define(
 		return YourReservations;
 
 		function didRender() {
-			var yourReservations = [{
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}, {
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}, {
-				id: 0,
-				type: 0,
-				subtype: 0,
-				brand: 0,
-				model: 'Gibson Guitar',
-				description: 'blah blah',
-				photos: 'url,url,url',
-				price: 100.5,
-				seller_user_id: 0,
-				city: 'Copenhagen',
-				address: '',
-				price1: 4,
-				price2: 15,
-				price3: 75
-			}];
-
-			this.populateYourReservations(yourReservations);
+			var view = this;
+			this.gearList.getUserReservations(App.user.data.id, function(yourReservations) {
+				view.populateYourReservations(yourReservations);
+			});
 		}
 
 		function populateYourReservations(yourReservations, callback) {

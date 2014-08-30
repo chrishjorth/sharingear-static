@@ -62,7 +62,6 @@ define([
 	}
 
 	function renderSubviews(callback) {
-		console.log('Render subview: ' + this.subPath);
 		if(this.subPath !== '') {
 			this.loadSubView(callback);
 		}
