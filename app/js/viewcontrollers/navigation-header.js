@@ -19,8 +19,10 @@ define(
 
 		function handleLogin(event, callback) {
 			var user = App.user;
-			user.login(function() {
-				App.router.navigateTo('dashboard');
+			user.login(function(error) {
+				if(!error) {
+					App.router.navigateTo('dashboard');
+				}
 				if(callback && typeof callback === 'function') {
 					callback();
 				}

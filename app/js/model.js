@@ -45,8 +45,26 @@ define(
 			});
 		}
 
-		function post() {
+		function post(url, data, callback) {
+			var encodedURL = encodeURI(this.rootURL + url);
 
+			$.ajax({
+				dataType: 'json',
+				type: 'POST',
+				data: data,
+				url: encodedURL,
+				error: function(jqXHR, textStatus, errorThrown) {
+					callback('Error executing POST request: ' + errorThrown);
+				},
+				success: function(data, textStatus, jqXHR) {
+					if(data.error) {
+						callback('Error sending resource to server: ' + data.error);
+					}
+					else {
+						callback(null, data);
+					}
+				}
+			});
 		}
 
 		function put() {

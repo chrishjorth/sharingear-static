@@ -18,8 +18,14 @@ define(
 		return YourReservations;
 
 		function didRender() {
-			var view = this;
-			this.gearList.getUserReservations(App.user.data.id, function(yourReservations) {
+			var view = this,
+				userID = null;
+
+			if(App.user.data) {
+				userID = App.user.data.id;
+			}
+
+			this.gearList.getUserReservations(userID, function(yourReservations) {
 				view.populateYourReservations(yourReservations);
 			});
 		}

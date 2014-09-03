@@ -11,14 +11,16 @@ define(
 			header: null,
 			footer: null,
 			API_URL: 'http://localhost:1339',
-			user: new User({
-				rootURL: this.API_URL
-			}),
+			user: null,
 			
 			run: run,
 			loadHeader: loadHeader,
 			loadFooter: loadFooter
 		};
+
+		App.user = new User({
+			rootURL: this.API_URL
+		});
 
 		return App;
 
@@ -70,6 +72,8 @@ define(
 				router.navigateTo(route, callback);
 
 				app.loadFooter();
+
+				App.user.getLoginStatus();
 			});
 
 			console.log('Sharingear initialized.');

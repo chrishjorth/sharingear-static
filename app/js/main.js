@@ -9,7 +9,8 @@ requirejs.config({
 		text: 'libraries/text',
 		underscore: 'libraries/underscore-min',
 		jquery: 'libraries/jquery-2.1.1.min',
-		bootstrap: 'libraries/bootstrap.min'
+		bootstrap: 'libraries/bootstrap.min',
+		facebook: 'https://connect.facebook.net/en_US/all'
 	},
 	shim: {
 		underscore: {
@@ -20,6 +21,9 @@ requirejs.config({
 		},
 		bootstrap: {
 			deps: ['jquery']
+		},
+		'facebook' : {
+			exports: 'FB'
 		}
 	}
 });

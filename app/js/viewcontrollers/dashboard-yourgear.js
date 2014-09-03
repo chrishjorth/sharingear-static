@@ -20,9 +20,14 @@ define(
 		return YourGear;
 
 		function didRender() {
-			var view = this;
+			var view = this,
+				userID = null;
 
-			this.gearList.getUserGear(App.user.data.id, function(userGear) {
+			if(App.user.data && App.user.data.id) {
+				userID = App.user.data.id;
+			}
+
+			this.gearList.getUserGear(userID, function(userGear) {
 				view.populateYourGear(userGear);
 				view.setupEvents();
 			});
