@@ -268,11 +268,15 @@ th {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
-html {
+/*html {
   font-size: 62.5%;
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
+
+- This is interfering with the ListYourGear layout, therefore I turned it off. Mircea 
+
+
+}*/
 body {
   /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
   font-family: "Lato", "LatoLatin", sans-serif;
@@ -289,6 +293,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  margin-bottom: -1px; 
 }
 a {
   color: #00aeff;
@@ -366,8 +371,8 @@ h6,
 .h5,
 .h6 {
   font-family: inherit;
-  font-weight: 500;
-  line-height: 1.1;
+ /* font-weight: 500;*/
+/*  line-height: 1.1;*/
   color: inherit;
 }
 h1 small,
@@ -3316,11 +3321,13 @@ input[type="button"].btn-block {
 .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .btn {
-  height: 46px;
-  padding: 10px 16px;
-  font-size: 18px;
+  height: 47px;
+  padding: 5px 16px;
+  font-size: 16px;
   line-height: 1.33;
-  border-radius: 6px;
+  border-radius: 30px;
+  background-color: #FFFFFF;
+
 }
 select.input-group-lg > .form-control,
 select.input-group-lg > .input-group-addon,
@@ -3647,7 +3654,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar {
   position: relative;
   min-height: 50px; /* HEIGHT ON THE FUCKING NAVBAR - HUSK DET!! */ 
-  margin-bottom: 10px;
+  margin-bottom: 3px;
   border: 0px solid transparent;
 }
 @media (min-width: 768px) {
@@ -4633,11 +4640,12 @@ a.thumbnail.active {
 }
 .list-group-item {
   position: relative;
-  display: block;
-  padding: 10px 15px;
-  margin-bottom: -1px;
-  background-color: #fff;
-  border: 1px solid #ddd;
+display: block;
+padding: 10px 24px;
+margin-bottom: 0px;
+background-color: #FFF;
+/* border: 1px solid #ddd; */
+}
 }
 .list-group-item:first-child {
   border-top-left-radius: 4px;
@@ -5673,9 +5681,9 @@ button.close {
 .pull-right {
   float: right !important;
 }
-.pull-left {
+/*.pull-left {
   float: left !important;
-}
+}*/
 .hide {
   display: none !important;
 }

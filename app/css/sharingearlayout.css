@@ -1,6 +1,6 @@
 body {
   background-color: rgb(247, 247, 247); /* f7f7f7 */
-  font: 300 0.75em/1.38 Lato;
+  font: 300 0.9em/2.2 Lato; 
   color: rgb(255, 255, 255);
 }
 
@@ -709,6 +709,7 @@ padding: 10px 7px 7px;
 
 
 /* ------------------ LIST YOUR GEAR --------------- */
+/*
 
 .testimonials {
 position: static;
@@ -738,7 +739,7 @@ padding-top: 18px;
 padding-bottom: 12px;
 background-color: rgba(255, 255, 255, 0.45);
 opacity: 0.4;
-/*font-family: 'Droid Sans', sans-serif; */
+
 color: #404f5f;
 font-size: 23px;
 line-height: 31px;
@@ -856,10 +857,190 @@ padding-left: 50px;
   display: inline;
 }
 
+*/
+
+
+
+
+/*------------- LIST YOUR GEAR --------------------*/
+
+.submitstyle {
+color: #00aeff; 
+padding-top: 12px; 
+background-color: #00aeff; 
+}
+
+.topadd-a {
+left: 0px;
+top: 49px;
+right: 0px;
+min-width: 0px;
+margin-top: -7px;
+padding-top: 18px;
+padding-bottom: 12px;
+background-color: rgba(255, 255, 255, 0.45);
+opacity: 0.4;
+color: #404f5f;
+font-size: 23px;
+line-height: 31px;
+text-align: center;
+}
+
+
+
+.row.row-table {
+width: 100%;
+width: calc(100% + 25px);
+}
+
+.row-space-top-5 {
+margin-top: 32.25px;
+padding-right: 20px; 
+}
+
+.row-space-5 {
+margin-bottom: 31.25px;
+}
+
+
+
+.row {
+margin-left: -12.5px;
+margin-right: -12.5px;
+}
+
+
+
+.row-table {
+display: table;
+}
+
+
+
+.fieldset .btn {
+padding: 16px 35px;
+font-weight: normal;
+font-size: 16px; 
+border-color: #CFCFCF;
+background: #FFD200;
+color: #000000;
+}
+
+
+.submitstyle {
+color: #FFF;
+padding-top: 11px;
+padding-bottom: 11px;
+padding-right: 33px;
+padding-left: 31px;
+background-color: #00aeff;
+margin-bottom: 49px;
+margin-top: -19px;
+margin-left: 7px;
+border-color: #FFFFFF;
+}
+
+/* overskriver hover på submit btn i listyourgear i bootstrap */
+.btn-primary:hover {
+  color: #FFF;
+  background-color: #00aeff;
+  border-color: #FFFFFF;
+}
+
+
+.iconbtn {
+margin-right: 10px; 
+margin-left: -20px; 
+}
+
+
+.fieldset {
+  padding-left: 12.5px;
+  padding-right: 12.5px;
+}
+
+.fieldset_city {
+  padding-left: 25px;
+  padding-right: 25px;
+
+}
+
+
+.col-middle, .col-bottom {
+float: none;
+display: table-cell;
+}
+
+.col-6 {
+width: 50%;
+
+}
+
+#city_p {
+background-color: #FFD200; 
+
+}
+
+.col-3 {
+  width: 25%; 
+}
+
+
+.thispanelbg {
+  background-color: #FFD200;
+}
+
+
+
+
+.col-middle {
+vertical-align: middle;
+}
+
+
+.col-middle, .col-bottom {
+float: none;
+display: table-cell;
+}
+
+.col-3,  {
+float: left;
+position: relative;
+min-height: 1px;
+}
+
+
+.text-right {
+text-align: right;
+color: #000000; 
+padding-right: 10px; 
+padding-left: 50px; 
+}
+
+
+
+
+.form {
+margin: 0;
+padding: 0;
+display: inline;
+}
+
+
+
 /* ------------------ END - LIST YOUR GEAR --------------- */
 
 
 /* ------------------ START - DASHBOARD ------------------ */
+
+.dashboardtitle {
+  color: #00aeff; 
+  height: 49px;
+
+}
+
+
+
 .dashboard {
   color: #333333;
 }
@@ -867,15 +1048,16 @@ padding-left: 50px;
 .dashboard .menu {
   margin: 20px 0 20px 0;
   border-radius: 4px;
-  border-width: 1px;
+  border-width: 0px;
   border-style: solid;
   border-color: #dddddd;
 }
 .dashboard .menu li {
-  height: 64px;
-  border-bottom-width: 1px;
-  border-style: solid;
-  border-color: #dddddd;
+ height: 70px;
+border-bottom-width: 1px;
+border-style: solid;
+border-color: #FAFAFA;
+}
 }
 .dashboard .menu li:last-child {
   border-bottom: none;
@@ -931,6 +1113,15 @@ padding-left: 50px;
 }
 
 /* ------------------ START - DASHBOARD  add gear --------------- */
+
+.list-group-item  {
+position: relative;
+display: block;
+padding: 10px 15px;
+margin-bottom: 0px;
+background-color: #fff;
+/*border: 1px solid #ddd;*/
+}
 
 
 #accordion .glyphicon {
@@ -1077,10 +1268,10 @@ border-radius: -17px;
 
 
 
-
 .panel-body {
-margin-top: -22px;
-margin-left: 17px;
+margin-top: -34px;
+margin-left: -5px;
+margin-bottom: -13px;
 
 }
 
@@ -1106,7 +1297,7 @@ margin-left: 17px;
 }
 
 .icon {
-    font-size:23px;
+    font-size:37px;
     color:#197BB5;
 }
 
@@ -2554,11 +2745,10 @@ background-position: center bottom;
 }
 
 .lead {
-  font-size: 72px;
-  color: #888888;
-  line-height: 1.5em;
+font-size: 72px;
+color: #00aeff;
+line-height: 1.3em;
 }
-
 
 .heading-title {
   text-align: center;
