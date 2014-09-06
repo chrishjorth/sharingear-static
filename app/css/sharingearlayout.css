@@ -1143,6 +1143,14 @@ border-color: #FAFAFA;
 
 /* ------------------ START - DASHBOARD  add gear --------------- */
 
+
+
+
+
+
+
+
+
 .list-group-item  {
 position: relative;
 display: block;
@@ -1210,6 +1218,7 @@ color: #000000;
 
 
 .btnDropdown {
+  background: #ebebeb; 
 display: inline-block;
 padding: 8px 74px;
 margin-bottom: 0;
@@ -1247,8 +1256,8 @@ display: block;
 
 
 .btnaddgear {
-  color: #ffffff; 
-background-color: #000000;  
+color: #000000; 
+background-color: #ffd200;  
 display: inline-block;
 padding: 5px 31px;
 margin-bottom: 0;
@@ -1362,6 +1371,16 @@ color: #000000;
 font-size: 20px;
 color: #00aeff;
 }
+
+
+
+
+.yourprofilefieldsize {
+  width: 54%; 
+
+}
+
+
 
 
 /* ------------------------ FOOTER ----------------------------- */
@@ -2642,20 +2661,24 @@ margin-top: 2px;
 }
 
 
+.panel-default {
+  margin-top: 20px;
+  background: #ffffff; 
+  border-color: #ffffff; 
+}
 
+.panel-heading {
+border-bottom: 12px solid transparent;
 
-
+}
 
 .panel-default > .panel-heading {
 color: #fff;
-background-color: #56aac9;
-border-color: #dedede;
+background-color: #FFF;
+border-color: #00aeff;
+margin-bottom: 30px; 
 }
-.panel-default > .panel-heading {
-color: #fff;
-background-color: #56aac9;
-border-color: #dedede;
-}
+
 
 
 .bgclr {
@@ -3291,7 +3314,7 @@ margin-top: 2px;
 
 
 
-
+/*
 
 .panel-default > .panel-heading {
 color: #fff;
@@ -3302,7 +3325,7 @@ border-color: #dedede;
 color: #fff;
 background-color: #56aac9;
 border-color: #dedede;
-}
+}*/
 
 
 .box .price-boxes .price {
