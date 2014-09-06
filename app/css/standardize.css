@@ -272,6 +272,9 @@ legend {
  * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
  */
 
+
+
+/*----------------- turned this off cause it interferes with the design of 
 button,
 input,
 select,
@@ -282,6 +285,8 @@ textarea {
     margin: 0; /* 3 */
     padding: 0;
 }
+
+
 
 /**
  * Remove the default button background color that browsers set

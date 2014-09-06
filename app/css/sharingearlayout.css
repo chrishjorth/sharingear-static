@@ -452,7 +452,7 @@ padding-left: 10px;
 footer {
     background-color: #000;
     color: #FFF;
-    padding: 80px 0px;
+    padding: 40px 0px;
     text-align: center; 
    
 }
@@ -493,7 +493,7 @@ footer a:hover {
      padding: 8px 32px;
     /*height: 193px; */
     margin: 32px auto 0;
-    width: 193px; 
+    width: 260px; 
 }
 
 .footer-icon {
@@ -506,9 +506,9 @@ footer a:hover {
 
 .copyright {
     margin-bottom: 0;
-    color: #2f2f2f;
-    font-size: 80%;
-    letter-spacing: 3px;
+   /* color: #2f2f2f;*/
+    font-size: 49%;
+    letter-spacing: 1px;
     /*padding: 8px 0 0
        
 */
@@ -864,6 +864,29 @@ padding-left: 50px;
 
 /*------------- LIST YOUR GEAR --------------------*/
 
+
+.testimonials {
+position: static;
+left: 0px;
+top: 0px;
+right: 0px;
+display: block;
+overflow-x: visible;
+overflow-y: visible;
+padding-top: 20px;
+padding-bottom: 35px;
+float: none;
+clear: none;
+background-color: rgb(251, 249, 248);
+background-size: 100% auto;
+background-image: url("../images/drumsbg2.jpg");
+opacity: 1;
+}
+
+
+
+
+
 .submitstyle {
 color: #00aeff; 
 padding-top: 12px; 
@@ -1036,8 +1059,14 @@ display: inline;
 .dashboardtitle {
   color: #00aeff; 
   height: 49px;
-
+  
 }
+/*
+.dashboardbgcolor {
+background-color: rgb(56,143,192);
+
+}*/
+
 
 
 
@@ -1340,11 +1369,11 @@ color: #00aeff;
 
 
 .footer  {
-  position: absolute; 
+  /*position: absolute; */
   /*padding: 50px 20px;*/
-  font-size: 12px;
+  font-size: 18px;
   width: 100%;
-  height: 272px;
+  height: 0px;
   background-color: rgb(0, 0, 0);
 }
 
@@ -1385,9 +1414,9 @@ color: #00aeff;
 }
 
 .footer .copyright {
-    color: #fff;
-    line-height: 5px;
-    margin-top: 10px;
+    color: #C9C9C9;
+    line-height: 0px;
+    margin-top: 8px;
     display: block
     
 }
@@ -1961,14 +1990,14 @@ footer a:hover {
 
 
 
-.footer-logo {
+/*.footer-logo {
     display: block;
      padding: 8px 32px;
-    /*height: 193px; */
-    margin: 32px auto 0;
-    width: 193px; 
+*/    /*height: 193px; */
+/*    margin: 32px auto 0;
+    width: 260px; 
 }
-
+*/
 .footer-icon {
     display: block;
 
@@ -1977,7 +2006,7 @@ footer a:hover {
 
 }
 
-.copyright {
+/*.copyright {
     margin-bottom: 0;
     color: #2f2f2f;
     font-size: 80%;
@@ -1985,7 +2014,7 @@ footer a:hover {
     /*padding: 8px 0 0
        
 */
-}
+/*}*/
 
 .followusfooter {
   font-size: 100%;
@@ -2486,15 +2515,15 @@ padding-left: 10px;
 
 
 
-
+/*
 .footer-logo {
     display: block;
-     padding: 8px 32px;
+     padding: 8px 32px;*/
     /*height: 193px; */
-    margin: 32px auto 0;
+    /*margin: 32px auto 0;
     width: 193px; 
 }
-
+*/
 .footer-icon {
     display: block;
 
@@ -2502,16 +2531,14 @@ padding-left: 10px;
     width: 32px;
 
 }
-
+/*
 .copyright {
     margin-bottom: 0;
     color: #2f2f2f;
     font-size: 80%;
     letter-spacing: 3px;
-    /*padding: 8px 0 0
-       
-*/
-}
+  
+}*/
 
 .followusfooter {
   font-size: 100%;
@@ -3136,14 +3163,14 @@ padding-left: 10px;
 
 
 
-.footer-logo {
+/*.footer-logo {
     display: block;
-     padding: 8px 32px;
+     padding: 8px 32px;*/
     /*height: 193px; */
-    margin: 32px auto 0;
+    /*margin: 32px auto 0;
     width: 193px; 
 }
-
+*/
 .footer-icon {
     display: block;
 
@@ -3151,16 +3178,14 @@ padding-left: 10px;
     width: 32px;
 
 }
-
+/*
 .copyright {
     margin-bottom: 0;
     color: #2f2f2f;
     font-size: 80%;
     letter-spacing: 3px;
-    /*padding: 8px 0 0
-       
-*/
-}
+
+}*/
 
 .followusfooter {
   font-size: 100%;
