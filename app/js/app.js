@@ -10,7 +10,7 @@ define(
 			router: Router,
 			header: null,
 			footer: null,
-			API_URL: 'http://localhost:1339',
+			API_URL: 'http://130.211.111.234',
 			user: null,
 			
 			run: run,
