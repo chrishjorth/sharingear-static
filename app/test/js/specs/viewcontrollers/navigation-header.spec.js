@@ -1,6 +1,6 @@
 define(
-	['jquery', 'chai', 'sinon', 'viewcontrollers/navigation-header'],
-	function($, chai, Sinon, NavigationHeader) {
+	['jquery', 'chai', 'sinon', 'viewcontrollers/navigation-header', 'app', 'models/User'],
+	function($, chai, Sinon, NavigationHeader, App, User) {
 		require(['text!../templates/navigation-header.html'], function(NavigationHeaderTemplate) {
 			var expect = chai.expect;
 		
@@ -22,6 +22,15 @@ define(
 				});
 
 				it('Can login', function(done) {
+					App.user = new User({
+						rootURL: App.API_URL
+					});
+
+					sinon.stub(App.user, 'login', function() {
+						App.user.login.restore();
+						done();
+					});
+
 					this.navHeader.handleLogin({
 						data: this.navHeader
 					}, function() {

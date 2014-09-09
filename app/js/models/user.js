@@ -8,6 +8,11 @@ define(
 
 		var User = Utilities.inherit(Model, {
 			fbStatus: '',
+			data: {
+				id: null,
+				name: '',
+				surname: ''
+			},
 
 			getLoginStatus: getLoginStatus,
 			login: login,
@@ -35,10 +40,7 @@ define(
 
 			//We need to make sure Facebook has not changed the status on their side.
 			this.getLoginStatus(function(response) {
-				console.log('login status response: ');
-				console.log(response);
 				if(user.fbStatus !== 'connected') {
-					console.log('performing FB login');
 					FB.login(function(response) {
 						var error;
 						if(response.status === 'connected') {
@@ -52,44 +54,28 @@ define(
 						else {
 							error = {error: 'FB login failed'};
 						}
-						console.log('login call response: ');
-						console.log(response);
 
 						user.fbStatus = response.status;
 
 						if(callback && typeof callback === 'function') {
 							callback(error);
 						}
-					});
+					}, {scope: 'email'});
 				}
 				else {
 					user.loginToBackend(response, callback);
-
-					/*if(callback && typeof callback === 'function') {
-						callback(null);
-					}*/
 				}
 			});
 		}
 
 		function loginToBackend(FBResponse, callback) {
-			var authData = FBResponse.authResponse,
+			var user = this,
+				authData = FBResponse.authResponse,
 				postData;
 
-			console.log('FB accessToken: ' + authData.accessToken);
-			console.log(authData);
-
 			postData = {
-				id: authData.userID,
+				fbid: authData.userID,
 				accesstoken: authData.accessToken
-			};
-			this.data = {
-				id: authData.userID,
-				accessToken: authData.accessToken,
-				name: 'Chris Hjorth',
-				hometown: 'Aalborg',
-				bio: 'Blah blah',
-				genres: ''
 			};
 
 			this.post('/users/login', postData, function(error, data) {
@@ -99,12 +85,15 @@ define(
 					}
 					return;
 				}
-				console.log('successfully logged into backend');
+				if(user.data === null) {
+					user.data = {};
+				}
 				console.log(data);
+				_.extend(user.data, data);
+				console.log('LOGGED IN');
 				if(callback && typeof callback === 'function') {
 					callback(null, data);
 				}
-				
 			});
 		}
 	}

@@ -21,11 +21,13 @@ define(
 				expect(App).to.be.an('object');
 			});
 
+			it('Connects to development API', function() {
+				expect(App.API_URL).to.equal('http://api.sharingear.com');
+			});
+
 			it('Can initialize Sharingear', function() {
 				sinon.assert.calledOnce(App.loadHeader);
 				sinon.assert.calledOnce(App.loadFooter);
-
-				expect(App.router.currentViewController.name).to.equal('home');
 			});
 
 			it('Has correct routes', function() {
