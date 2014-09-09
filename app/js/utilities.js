@@ -21,6 +21,7 @@ define([
 			if(typeof options !== 'object') {
 				options = {};
 			}
+
 			_.extend(inheritOptions, options);
 			
 			object.call(this, inheritOptions);

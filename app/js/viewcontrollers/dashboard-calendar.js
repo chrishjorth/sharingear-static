@@ -4,10 +4,10 @@
  */
 
 define(
-	['viewcontroller'],
-	function(ViewController) {
-		//var Home = ViewController.inherit();
-		var Calendar = ViewController; 
+	['utilities', 'viewcontroller'],
+	function(Utilities, ViewController) {
+		var Calendar = Utilities.inherit(ViewController, {
+		});
 		return Calendar;
 	}
 );

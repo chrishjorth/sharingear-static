@@ -10,7 +10,8 @@ define(
 			router: Router,
 			header: null,
 			footer: null,
-			API_URL: 'http://130.211.111.234',
+			//API_URL: 'http://0.0.0.0:1337',
+			API_URL: 'http://api.sharingear.com',
 			user: null,
 			
 			run: run,
@@ -19,7 +20,7 @@ define(
 		};
 
 		App.user = new User({
-			rootURL: this.API_URL
+			rootURL: App.API_URL
 		});
 
 		return App;

@@ -32,11 +32,13 @@ define(
 
 		function login(callback) {
 			var user = this;
+
 			//We need to make sure Facebook has not changed the status on their side.
 			this.getLoginStatus(function(response) {
 				console.log('login status response: ');
 				console.log(response);
 				if(user.fbStatus !== 'connected') {
+					console.log('performing FB login');
 					FB.login(function(response) {
 						var error;
 						if(response.status === 'connected') {
@@ -63,9 +65,9 @@ define(
 				else {
 					user.loginToBackend(response, callback);
 
-					if(callback && typeof callback === 'function') {
+					/*if(callback && typeof callback === 'function') {
 						callback(null);
-					}
+					}*/
 				}
 			});
 		}
@@ -74,9 +76,11 @@ define(
 			var authData = FBResponse.authResponse,
 				postData;
 
-			console.log('root url: ' + this.rootURL);
+			console.log('FB accessToken: ' + authData.accessToken);
+			console.log(authData);
 
 			postData = {
+				id: authData.userID,
 				accesstoken: authData.accessToken
 			};
 			this.data = {
@@ -90,11 +94,17 @@ define(
 
 			this.post('/users/login', postData, function(error, data) {
 				if(error) {
-					console.log('Error logging into backend: ' + error);
+					if(callback && typeof callback === 'function') {
+						callback('Error logging into backend: ' + error);
+					}
 					return;
 				}
 				console.log('successfully logged into backend');
 				console.log(data);
+				if(callback && typeof callback === 'function') {
+					callback(null, data);
+				}
+				
 			});
 		}
 	}

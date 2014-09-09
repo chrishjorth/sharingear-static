@@ -29,6 +29,12 @@ define(
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 		}
 
+		/**
+		 * Displays search results from the model.
+		 * @param event: jQuery event object
+		 * @param callback: callback function
+		 * @return Always false to avoid triggering HTML form
+		 */
 		function handleSearch(event, callback) {
 			var view = event.data;
 
