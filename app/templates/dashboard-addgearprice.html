@@ -1,1 +1,35 @@
-<div>Price dummy.</div>
+<div class="addgear subview">
+    <div class="panel panel-default">
+        <div class="panel-heading addgearpanel">
+            <div class="btn-group">
+                <a href="addgear.html"><button class="btn-large btnaddgear">ADD GEAR &gt;&gt;</button></a>
+            </div>
+            <div class="btn-group">
+                  <a href="priceandlocation.html"><button class="btn-large btnaddgeartwo">PRICE &amp; LOCATION &gt;&gt;</button></a>
+            </div>
+            <div class="btn-group">
+                <a href="profile.html"> <button class="btn-large btnaddgeartwo">PREVIEW</button></a>
+            </div>
+        </div>
+        <div class="panel-body">
+        	<form id="dashboard-addgearprice-form" onsubmit="return false;">
+        		<div class="form-group">
+        			<label>Hourly rental price:</label>
+        			<input type="text" name="price_a" id="price_a">
+        			<div>The average hourly rental price is 18$.</div>
+        		</div>
+        		<div class="form-group">
+        			<label>Daily rental price:</label>
+        			<input type="text" name="price_b" id="price_b">
+        			<div>The average daily rental price is 18$.</div>
+        		</div>
+        		<div class="form-group">
+        			<label>Weekly rental price:</label>
+        			<input type="text" name="price_c" id="price_c">
+        			<div>The average weekly rental price is 18$.</div>
+        		</div>
+        		<input type="submit" id="submit" value="Save" class="btn btn-info pull-right">
+        	</form>
+        </div>
+    </div>
+</div>

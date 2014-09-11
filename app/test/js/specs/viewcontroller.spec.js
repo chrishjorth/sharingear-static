@@ -6,7 +6,7 @@ define(
 		describe('ViewController', function() {
 			beforeEach(function() {
 				this.$fixtures = $('#fixtures');
-				this.vc = new ViewController({name: 'testVC', $element: this.$fixtures, labels: {}, template: '<div>Test Template</div>'});
+				this.vc = new ViewController.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: '<div>Test Template</div>'});
 			});
 
 			afterEach(function() {
@@ -15,12 +15,12 @@ define(
 			});
 
 			it('Provides the viewcontroller object', function() {
-				expect(ViewController).to.be.a('function');
+				expect(ViewController).to.have.property('constructor');
+				expect(ViewController.constructor).to.be.a('function');
 			});
 
 			it('Can be constructed', function() {
-				this.vc = new ViewController();
-				expect(this.vc.constructor.name).to.equal('ViewController');
+				this.vc = new ViewController.constructor();
 			});
 
 			it('Can render', function() {

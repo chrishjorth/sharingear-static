@@ -1,6 +1,8 @@
 body {
   background-color: rgb(247, 247, 247); /* f7f7f7 */
-  font: 300 0.9em/2.2 Lato; 
+  /*font: 300 0.9em/2.2 Lato; */
+  font-weight: 300;
+  line-height: 2.2;
   color: rgb(255, 255, 255);
 }
 
@@ -45,6 +47,9 @@ body {
   background-color: rgb(255, 255, 255);
 }
 
+.nav-pills > li > a {
+  border-radius: 0;
+}
 
 .billboard {
 background-image: url("../images/listyourgearbluebg.jpg");
@@ -55,8 +60,6 @@ background-image: url("../images/listyourgearbluebg.jpg");
  background-image: url("../images/mainpic.jpg");
 background-position: center bottom;
 }
-
-
 
 .billboard-wrapper {
   max-width: 1170px;
@@ -73,7 +76,6 @@ background-position: center bottom;
   margin-bottom: 0;
 
 }
-
 
 .billboard-how-it-works {
  background-image: url("../images/mainbgcrowd.jpg");
@@ -452,7 +454,7 @@ padding-left: 10px;
 footer {
     background-color: #000;
     color: #FFF;
-    padding: 40px 0px;
+    padding: 40px 0;
     text-align: center; 
    
 }
@@ -1026,7 +1028,7 @@ float: none;
 display: table-cell;
 }
 
-.col-3,  {
+.col-3  {
 float: left;
 position: relative;
 min-height: 1px;
@@ -1044,9 +1046,9 @@ padding-left: 50px;
 
 
 .form {
-margin: 0;
+/*margin: 0;*/
 padding: 0;
-display: inline;
+/*display: inline;*/
 }
 
 
@@ -1077,7 +1079,7 @@ background-color: rgb(56,143,192);
 .dashboard .menu {
   margin: 20px 0 20px 0;
   border-radius: 4px;
-  border-width: 0px;
+  border-width: 0;
   border-style: solid;
   border-color: #dddddd;
 }
@@ -1087,7 +1089,7 @@ border-bottom-width: 1px;
 border-style: solid;
 border-color: #FAFAFA;
 }
-}
+
 .dashboard .menu li:last-child {
   border-bottom: none;
 }
@@ -1143,13 +1145,37 @@ border-color: #FAFAFA;
 
 /* ------------------ START - DASHBOARD  add gear --------------- */
 
+.custom-radio {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 52px;
+}
 
+.custom-radio input[type="radio"] {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
 
+.custom-radio input[type="radio"] + label {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.5;
+}
 
-
-
-
-
+.custom-radio input[type="radio"]:checked + label {
+  opacity: 1;
+}
 
 .list-group-item  {
 position: relative;
@@ -2056,16 +2082,6 @@ footer a:hover {
 
 }
 
-
-/*body {
-  background-color: rgb(247, 247, 247); 
-  font: 300 0.75em/1.38 Lato;
-  color: rgb(255, 255, 255);
-}
-*/
-
-
-
 .bluelineheader {
   position: absolute;
   top: 50px;
@@ -2707,15 +2723,6 @@ color:#636363;
 padding: 10px 7px 7px; 
 
 }
-
-
-/*body {
-  background-color: rgb(247, 247, 247);
-  font: 300 0.75em/1.38 Lato;
-  color: rgb(255, 255, 255);
-}
-*/
-
 
 .bluelineheader {
   position: absolute;

@@ -7,7 +7,7 @@ define(
 			describe('Dashboard Your gear ViewController', function() {
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.yourgear = new YourGear({name: 'testVC', $element: this.$fixtures, labels: {}, template: YourGearTemplate, path: 'dashboard/yourgear'});
+					this.yourgear = new YourGear.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: YourGearTemplate, path: 'dashboard/yourgear'});
 					sinon.spy(this.yourgear, 'populateYourGear');
 					sinon.stub(App.router, 'openModalView');
 				});
@@ -20,7 +20,7 @@ define(
 				});
 
 				it('Provides the Dashboard Your gear ViewController', function() {
-					expect(YourGear).to.be.a('function');
+					expect(YourGear.constructor).to.be.a('function');
 				});
 
 				it('Can render', function(done) {

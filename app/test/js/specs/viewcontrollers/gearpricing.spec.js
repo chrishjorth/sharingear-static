@@ -7,7 +7,7 @@ define(
 			describe('Gear pricing ViewController', function() {
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.gearPricing = new GearPricing({name: 'testVC', $element: this.$fixtures, labels: {}, template: GearPricingTemplate, path: 'gearpricing'});
+					this.gearPricing = new GearPricing.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: GearPricingTemplate, path: 'gearpricing'});
 					sinon.spy(this.gearPricing, 'setupEvents');
 					sinon.stub(App.router, 'closeModalView');
 				});
@@ -20,7 +20,7 @@ define(
 				});
 
 				it('Provides the Gear pricing ViewController', function() {
-					expect(GearPricing).to.be.a('function');
+					expect(GearPricing.constructor).to.be.a('function');
 				});
 
 				it('Can render', function(done) {

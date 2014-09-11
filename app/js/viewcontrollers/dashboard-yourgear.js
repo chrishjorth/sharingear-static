@@ -4,11 +4,11 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'app', 'models/gearlist'],
-	function(_, Utilities, ViewController, App, GearList) {
-		var YourGear = Utilities.inherit(ViewController, {
+	['underscore', 'viewcontroller', 'app', 'models/gearlist'],
+	function(_, ViewController, App, GearList) {
+		var YourGear = ViewController.inherit({
 			gearBlockID: 'yourgear-gear-block',
-			gearList: new GearList({
+			gearList: new GearList.constructor({
 				rootURL: App.API_URL
 			}),
 			

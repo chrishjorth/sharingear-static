@@ -5,9 +5,7 @@ define(
 		
 		describe('Footer ViewController', function() {
 			it('Provides the Footer ViewController', function() {
-				var footerVC = new Footer();
-				expect(Footer).to.be.a('function');
-				expect(footerVC.constructor.name).to.equal('ViewController');
+				expect(Footer.constructor).to.be.a('function');
 			});
 		});
 	}

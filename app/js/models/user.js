@@ -3,10 +3,10 @@
  * @author: Chris Hjorth
  */
 define(
-	['utilities', 'model', 'facebook'],
-	function(Utilities, Model, FB) {
+	['model', 'facebook'],
+	function(Model, FB) {
 
-		var User = Utilities.inherit(Model, {
+		var User = Model.inherit({
 			fbStatus: '',
 			data: {
 				id: null,
@@ -88,9 +88,7 @@ define(
 				if(user.data === null) {
 					user.data = {};
 				}
-				console.log(data);
 				_.extend(user.data, data);
-				console.log('LOGGED IN');
 				if(callback && typeof callback === 'function') {
 					callback(null, data);
 				}

@@ -5,9 +5,7 @@ define(
 		
 		describe('Error ViewController', function() {
 			it('Provides the Error ViewController', function() {
-				var errorVC = new Error();
-				expect(Error).to.be.a('function');
-				expect(errorVC.constructor.name).to.equal('ViewController');
+				expect(Error.constructor).to.be.a('function');
 			});
 		});
 	}

@@ -13,11 +13,13 @@ define([
 	 * @return A new object that has the same properties as object but with the added properties inheritOptions
 	 */
 	function inherit(object, inheritOptions) {
+		var Inherited;
+
 		if(typeof inheritOptions !== 'object') {
 			inheritOptions = {};
 		}
 
-		var Inherited = function(options) {
+		Inherited = function(options) {
 			if(typeof options !== 'object') {
 				options = {};
 			}
@@ -26,8 +28,8 @@ define([
 			
 			object.call(this, inheritOptions);
 		};
-
-		Inherited.prototype = new object();
+		
+		//Inherited.prototype = new object();
 		Inherited.prototype.constructor = Inherited;
 		return Inherited;
 	}

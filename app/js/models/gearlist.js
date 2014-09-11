@@ -3,9 +3,9 @@
  * @author: Chris Hjorth
  */
 define(
-	['utilities', 'model'],
-	function(Utilities, Model) {
-		var GearList = Utilities.inherit(Model, {
+	['model'],
+	function(Model) {
+		var GearList = Model.inherit({
 			search: search,
 			getUserGear: getUserGear,
 			getUserReservations: getUserReservations

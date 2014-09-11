@@ -4,9 +4,9 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'app'],
-	function(_, Utilities, ViewController, App) {
-		var EditGear = Utilities.inherit(ViewController, {
+	['viewcontroller', 'app'],
+	function(ViewController, App) {
+		var EditGear = ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 			setupEvents: setupEvents,

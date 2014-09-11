@@ -4,9 +4,9 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'app'],
-	function(_, Utilities, ViewController, App) {
-		var Profile = Utilities.inherit(ViewController, {
+	['underscore', 'viewcontroller', 'app'],
+	function(_, ViewController, App) {
+		var Profile = ViewController.inherit({
 			didInitialize: didInitialize
 		}); 
 		return Profile;

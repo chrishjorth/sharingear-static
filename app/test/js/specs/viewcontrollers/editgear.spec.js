@@ -8,7 +8,7 @@ define(
 
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.editGear = new EditGear({name: 'testVC', $element: this.$fixtures, labels: {}, template: EditGearTemplate, path: 'editgear'});
+					this.editGear = new EditGear.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: EditGearTemplate, path: 'editgear'});
 					sinon.spy(this.editGear, 'setupEvents');
 					sinon.stub(App.router, 'closeModalView');
 					sinon.stub(App.router, 'openModalView');
@@ -23,7 +23,7 @@ define(
 				});
 
 				it('Provides the EditGear ViewController', function() {
-					expect(EditGear).to.be.a('function');
+					expect(EditGear.constructor).to.be.a('function');
 				});
 
 				it('Has correct template parameters', function() {

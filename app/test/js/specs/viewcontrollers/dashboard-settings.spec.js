@@ -5,9 +5,7 @@ define(
 		
 		describe('Settings ViewController', function() {
 			it('Provides the Settings ViewController', function() {
-				var settingsVC = new Settings();
-				expect(Settings).to.be.a('function');
-				expect(settingsVC.constructor.name).to.equal('ViewController');
+				expect(Settings.constructor).to.be.a('function');
 			});
 		});
 	}

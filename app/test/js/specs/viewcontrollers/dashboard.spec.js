@@ -9,7 +9,7 @@ define(
 				beforeEach(function() {
 					sinon.stub(App.router, 'navigateTo');
 					this.$fixtures = $('#fixtures');
-					this.dashboard = new Dashboard({name: 'testVC', $element: this.$fixtures, labels: {}, template: DashboardTemplate, path: 'dashboard'});
+					this.dashboard = new Dashboard.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: DashboardTemplate, path: 'dashboard'});
 					sinon.spy(this.dashboard, 'loadSubView');
 				});
 
@@ -21,7 +21,7 @@ define(
 				});
 
 				it('Provides the Dashboard ViewController', function() {
-					expect(Dashboard).to.be.a('function');
+					expect(Dashboard.constructor).to.be.a('function');
 				});
 
 				it('Can initialize correctly', function() {

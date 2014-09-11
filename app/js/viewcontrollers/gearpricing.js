@@ -4,9 +4,9 @@
  */
 
 define(
-	['utilities', 'viewcontroller', 'app'],
-	function(Utilities, ViewController, App) {
-		var GearPricing = Utilities.inherit(ViewController, {
+	['viewcontroller', 'app'],
+	function(ViewController, App) {
+		var GearPricing = ViewController.inherit({
 			didRender: didRender,
 			setupEvents: setupEvents,
 			handleCancel: handleCancel,

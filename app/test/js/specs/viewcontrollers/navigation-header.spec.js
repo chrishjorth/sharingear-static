@@ -7,7 +7,7 @@ define(
 			describe('NavigationHeader ViewController', function() {
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.navHeader = new NavigationHeader({name: 'testVC', $element: this.$fixtures, labels: {}, template: NavigationHeaderTemplate});
+					this.navHeader = new NavigationHeader.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: NavigationHeaderTemplate});
 					this.navHeader.render();
 				});
 
@@ -17,12 +17,11 @@ define(
 				});
 
 				it('Provides the NavigationHeader ViewController', function() {
-					var navHeadVC = new NavigationHeader();
-					expect(NavigationHeader).to.be.a('function');
+					expect(NavigationHeader.constructor).to.be.a('function');
 				});
 
 				it('Can login', function(done) {
-					App.user = new User({
+					App.user = new User.constructor({
 						rootURL: App.API_URL
 					});
 
