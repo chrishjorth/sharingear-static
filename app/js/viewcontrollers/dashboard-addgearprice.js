@@ -4,8 +4,8 @@
  */
 
 define(
-	['underscore', 'viewcontroller'],
-	function(_, ViewController) {
+	['underscore', 'viewcontroller', 'app'],
+	function(_, ViewController, App) {
 		var AddGearPrice = ViewController.inherit({
 			didRender: didRender,
 			handleSave: handleSave
@@ -25,7 +25,7 @@ define(
 			newGear.data.price_b = $('#dashboard-addgearprice-form #price_b', view.$element).val();
 			newGear.data.price_c = $('#dashboard-addgearprice-form #price_c', view.$element).val();
 
-			console.log(newGear);
+			newGear.createGear(App.user);
 		}
 	}
 );

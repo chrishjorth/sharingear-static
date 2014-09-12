@@ -57,7 +57,7 @@ define(
 			
 			gearSubtypes = gearClassification[$(this).val()];
 			for(i = 0; i < gearSubtypes.length; i++) {
-				html += '<option>' + gearSubtypes[i] + '</option>';
+				html += '<option value="' + gearSubtypes[i] + '">' + gearSubtypes[i] + '</option>';
 			}
 			$subtypeSelect.append(html);
 			view.setupEvent('change', '#gear-subtype-container select', view, view.handleSelectSubtype);
@@ -75,7 +75,7 @@ define(
 			$brandSelect.empty();
 
 			for(i = 0; i < brands.length; i++) {
-				html += '<option>' + brands[i] + '</option>';
+				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
 			}
 			$brandSelect.append(html);
 		}
@@ -84,19 +84,20 @@ define(
 			var view = event.data,
 				gear;
 
+			console.log($('#dashboard-addgear-form-subtype option:selected'));
+
 			//Create new gear model object from form data
 			gear = new Gear.constructor({
 				rootURL: App.API_URL,
 				data: {
-					type: 'Amp',
-					subtype: 'Guitar amp',
-					brand: 'Marshall',
-					model: 'JCM 900',
-					description: 'Blah blah blah...'
+					type: $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked').val(),
+					subtype: $('#dashboard-addgear-form-subtype option:selected').val(),
+					brand: $('#dashboard-addgear-form-brand option:selected').val(),
+					model: $('#dashboard-addgear-form-model').val(),
+					description: $('#dashboard-addgear-form-description').val()
 				}
 			});
 
-			console.log('NAVIGATE TO PRICE');
 			App.router.navigateTo('dashboard/addgearprice', gear);
 		}
 	}

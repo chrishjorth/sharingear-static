@@ -113,8 +113,6 @@ define(
 				}
 				this.currentViewController.path = path;
 				this.currentViewController.setSubPath();
-				console.log('load subview with data');
-				console.log(data);
 				this.currentViewController.renderSubviews(data);
 				return;
 			}
