@@ -19,7 +19,7 @@ define(
 		return Dashboard;
 
 		function didInitialize() {
-			if(App.user.data === null) {
+			if(App.user.data.id === null) {
 				this.ready = false;
 				App.router.navigateTo('home');
 				return;
