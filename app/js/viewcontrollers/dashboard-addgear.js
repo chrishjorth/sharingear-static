@@ -84,8 +84,6 @@ define(
 			var view = event.data,
 				gear;
 
-			console.log($('#dashboard-addgear-form-subtype option:selected'));
-
 			//Create new gear model object from form data
 			gear = new Gear.constructor({
 				rootURL: App.API_URL,
