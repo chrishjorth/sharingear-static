@@ -21,6 +21,8 @@ if (!isset($_FILES[FILENAME]) || empty($_FILES[FILENAME]) || $_FILES[FILENAME]['
 $filename = $_POST['fileName'];
 
 $tmpPath = __DIR__ . '/uploads/' . $filename;
+echo '{"url": "' . $tmpPath . '"}';
+exit;
 if (!move_uploaded_file($_FILES[FILENAME]['tmp_name'], $tmpPath)) {
     echo json_encode([
         'status' => 'error',
