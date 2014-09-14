@@ -8,7 +8,17 @@ define('SHARINGEAR_SECRET', '95b95a4a2e59ddc98136ce54b8a0f8d2');
 
 header('Content-Type: application/json');
 
-if (!isset($_FILES[FILENAME]) || empty($_FILES[FILENAME]) || $_FILES[FILENAME]['error'] || !$_FILES[FILENAME]['tmp_name'] || !$_FILES[FILENAME]['name']) {
+//Abort if we are not on the server, ie. localhost
+if(strcmp($_SERVER['HTTP_HOST'], 'dev.sharingear.com') !== 0) {
+	echo json_encode([
+        'status' => 'error',
+        'message' => 'Not on server.',
+        'code' => '401'
+    ]);
+    exit;
+}
+
+if(!isset($_FILES[FILENAME]) || empty($_FILES[FILENAME]) || $_FILES[FILENAME]['error'] || !$_FILES[FILENAME]['tmp_name'] || !$_FILES[FILENAME]['name']) {
     echo json_encode([
         'status' => 'error',
         'message' => 'Upload failed - no file.',
@@ -24,7 +34,7 @@ $tmpPath = __DIR__ . '/uploads/' . $filename;
 //$tmpPath = '/usr/share/nginx/www/uploads/' . $filename;
 //echo '{"url": "' . $tmpPath . '"}';
 //exit;
-if (!move_uploaded_file($_FILES[FILENAME]['tmp_name'], $tmpPath)) {
+if(!move_uploaded_file($_FILES[FILENAME]['tmp_name'], $tmpPath)) {
     echo json_encode([
         'status' => 'error',
         'message' => 'Upload failed',
@@ -35,7 +45,7 @@ if (!move_uploaded_file($_FILES[FILENAME]['tmp_name'], $tmpPath)) {
 
 //Check extension
 $ext = strtolower(pathinfo($tmpPath, PATHINFO_EXTENSION));
-if ($ext !== 'jpg' && $ext !== 'jpeg' && $ext !== 'jpe' && $ext !== 'png') {
+if($ext !== 'jpg' && $ext !== 'jpeg' && $ext !== 'jpe' && $ext !== 'png') {
     // Delete invalidly uploaded files
     @unlink($tmpPath);
 
@@ -63,5 +73,4 @@ if(strcmp($secretproof, $hmac) !== 0) {
 
 $url = 'http' . (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'uploads/' . $filename;
 
-echo '{"url": "' . $_SERVER['HTTP_HOST'] . '"}';
-//echo '{"url": "' . $url . '"}';
+echo '{"url": "' . $url . '"}';
