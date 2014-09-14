@@ -67,6 +67,7 @@ define(
 						}
 						return;
 					}
+					console.log(data);
 					callback(null, data.url);
 				});
 			});
