@@ -1280,57 +1280,83 @@ cursor: inherit;
 display: block;
 }
 
-
-.btnaddgear {
-color: #000000; 
-background-color: #ffd200;  
-display: inline-block;
-padding: 5px 31px;
-margin-bottom: 0;
-font-size: 11px;
-font-weight: normal;
-line-height: 1.428571;
-text-align: center;
-white-space: nowrap;
-vertical-align: middle;
-cursor: pointer;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-background-image: none;
-border: 6px solid transparent;
-border-radius: -17px;
-
+.addgearpanel .boxaddgear {
+  color: #000000; 
+  background-color: #ffd200;
+  display: inline-block;
+  padding: 5px 31px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.428571;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-image: none;
+  border: 6px solid transparent;
+  border-radius: -17px;
 }
 
-
-
-.btnaddgeartwo {
-    color: #000000; 
-background-color: #cccccc;  
-display: inline-block;
-padding: 5px 31px;
-margin-bottom: 0;
-font-size: 11px;
-font-weight: normal;
-line-height: 1.428571;
-text-align: center;
-white-space: nowrap;
-vertical-align: middle;
-cursor: pointer;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-background-image: none;
-border: 6px solid transparent;
-border-radius: -17px;
-
+.addgearpanel .boxaddgeartwo {
+  color: #000000; 
+  background-color: #cccccc;
+  display: inline-block;
+  padding: 5px 31px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.428571;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-image: none;
+  border: 6px solid transparent;
+  border-radius: -17px;
 }
 
+.addgearpanel .btnaddgear {
+  color: #000000;
+  background-color: #ffd200;
+  display: inline-block;
+  padding: 5px 31px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.428571;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 6px solid transparent;
+  border-radius: -17px;
+}
 
-
+.addgearpanel .btnaddgeartwo {
+  color: #000000; 
+  background-color: #cccccc;  
+  display: inline-block;
+  padding: 5px 31px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.428571;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 6px solid transparent;
+  border-radius: -17px;
+}
 
 .panel-body {
 margin-top: -34px;

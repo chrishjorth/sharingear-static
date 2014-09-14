@@ -4,8 +4,8 @@
  */
 
 define(
-	['viewcontroller', 'app', 'models/gear'],
-	function(ViewController, App, Gear) {
+	['underscore', 'viewcontroller', 'app', 'models/gear'],
+	function(_, ViewController, App, Gear) {
 		var AddGear = ViewController.inherit({
 			newGear: null,
 
@@ -15,7 +15,10 @@ define(
 			handleGearRadio: handleGearRadio,
 			handleSelectSubtype: handleSelectSubtype,
 			handleNext: handleNext,
-			handleImageUpload: handleImageUpload
+			//handleImageUpload: handleImageUpload,
+			populateSubtypeSelect: populateSubtypeSelect,
+			populateBrandSelect: populateBrandSelect,
+			prepopulate: prepopulate
 		}); 
 		return AddGear;
 
@@ -26,15 +29,23 @@ define(
 					images: ''
 				}
 			});
+
+			if(this.passedData) {
+				_.extend(this.newGear, this.passedData);
+			}
 		}
 
 		function didRender() {
-			this.addGearIcons();
+			var view = this;
+			this.addGearIcons(function() {
+				view.prepopulate();
+			});
+
 			this.setupEvent('submit', '#dashboard-addgear-form', this, this.handleNext);
-			this.setupEvent('change', '#dashboard-addgear-form-imageupload', this, this.handleImageUpload);
+			//this.setupEvent('change', '#dashboard-addgear-form-imageupload', this, this.handleImageUpload);
 		}
 
-		function addGearIcons() {
+		function addGearIcons(callback) {
 			var view = this;
 			App.gearClassification.getClassification(function(gearClassification) {
 				var $gearbuttonlistContainer = $('.gearbuttonlist-container', this.$element),
@@ -45,51 +56,62 @@ define(
 				}
 				$gearbuttonlistContainer.append(html);
 				view.setupEvent('change', '#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]', view, view.handleGearRadio);
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
 			});
 		}
 
-		/**
-		 * @assertion: gearClassification has been loaded
-		 */
-		function handleGearRadio(event) {
-			var view = event.data,
-				gearClassification = App.gearClassification.data.classification,
+		function populateSubtypeSelect(gearType) {
+			var gearClassification = App.gearClassification.data.classification,
 				html = '<option> Choose type: </option>',
 				$subtypeSelect, $brandSelectContainer, gearSubtypes, i;
 
-			$('#gear-subtype-container', view.$element).removeClass('hidden');
+			$('#gear-subtype-container', this.$element).removeClass('hidden');
 
-			$subtypeSelect = $('#gear-subtype-container select', view.$element);
+			$subtypeSelect = $('#gear-subtype-container select', this.$element);
 			$subtypeSelect.empty();
 			
-			$brandSelectContainer = $('#gear-brand-container', view.$element);
+			$brandSelectContainer = $('#gear-brand-container', this.$element);
 			if($brandSelectContainer.hasClass('hidden') === false) {
 				$brandSelectContainer.addClass('hidden');
 			}
 			
-			gearSubtypes = gearClassification[$(this).val()];
+			gearSubtypes = gearClassification[gearType];
 			for(i = 0; i < gearSubtypes.length; i++) {
 				html += '<option value="' + gearSubtypes[i] + '">' + gearSubtypes[i] + '</option>';
 			}
 			$subtypeSelect.append(html);
-			view.setupEvent('change', '#gear-subtype-container select', view, view.handleSelectSubtype);
+			this.setupEvent('change', '#gear-subtype-container select', this, this.handleSelectSubtype);
 		}
 
-		function handleSelectSubtype(event) {
-			var view = event.data,
-				brands = App.gearClassification.data.brands,
+		function populateBrandSelect() {
+			var brands = App.gearClassification.data.brands,
 				html = '<option> Choose brand: </option>',
 				$brandSelect, i;
 
-			$('#gear-brand-container', view.$element).removeClass('hidden');
+			$('#gear-brand-container', this.$element).removeClass('hidden');
 
-			$brandSelect = $('#gear-brand-container select', view.$element);
+			$brandSelect = $('#gear-brand-container select', this.$element);
 			$brandSelect.empty();
 
 			for(i = 0; i < brands.length; i++) {
 				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
 			}
 			$brandSelect.append(html);
+		}
+
+		/**
+		 * @assertion: gearClassification has been loaded
+		 */
+		function handleGearRadio(event) {
+			var view = event.data;
+			view.populateSubtypeSelect($(this).val());
+		}
+
+		function handleSelectSubtype(event) {
+			var view = event.data;
+			view.populateBrandSelect();
 		}
 
 		function handleNext(event) {
@@ -111,7 +133,7 @@ define(
 			App.router.navigateTo('dashboard/addgearprice', view.newGear);
 		}
 
-		function handleImageUpload(event) {
+		/*function handleImageUpload(event) {
 			var view = event.data
 				$file = $(this);
 			view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
@@ -126,6 +148,30 @@ define(
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
 			});
+		}*/
+
+		/**
+		 * Prefills the form with passed data.
+		 */
+		function prepopulate() {
+			var newGear;
+			if(this.passedData === null) {
+				return;
+			}
+			newGear = this.passedData.data;
+			if(newGear.type.length >= 0) {
+				$('#dashboard-addgear-form .gearbuttonlist-container #gear-radio-' + newGear.type.toLowerCase() + '').prop("checked", true);
+				this.populateSubtypeSelect(newGear.type);
+				if(newGear.subtype.length >= 0) {
+					$('#gear-subtype-container select').val(newGear.subtype);
+					this.populateBrandSelect();
+					if(newGear.brand.length >= 0) {
+						$('#gear-brand-container select').val(newGear.brand);
+					}
+				}
+			}
+			$('#dashboard-addgear-form-model').val(newGear.model);
+			$('#dashboard-addgear-form-description').val(newGear.description);
 		}
 	}
 );
