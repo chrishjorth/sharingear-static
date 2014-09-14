@@ -63,4 +63,5 @@ if(strcmp($secretproof, $hmac) !== 0) {
 
 $url = 'http' . (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'uploads/' . $filename;
 
-echo '{"url": "' . $url . '"}';
+echo '{"url": "' . $_SERVER['HTTP_HOST'] . '"}';
+//echo '{"url": "' . $url . '"}';
