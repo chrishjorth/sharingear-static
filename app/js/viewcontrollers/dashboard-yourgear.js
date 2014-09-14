@@ -40,26 +40,25 @@ define(
 					defaultGear, gear;
 
 				defaultGear = {
-					id: 0,
-					type: 0,
-					subtype: 0,
-					brand: 0,
+					id: null,
+					type: '',
+					subtype: '',
+					brand: '',
 					model: '',
 					description: '',
-					photos: '',
-					price: 0,
-					seller_user_id: 0,
-					city: '',
-					address: '',
-					country: '',
-					price1: 0,
-					price2: 0,
-					price3: 0
+					img_url: 'images/logotop.png',
+					price_a: 0,
+					price_b: 0,
+					price_c: 0,
+					owner_id: null
 				};
 
 				for(i = 0; i < yourGear.length; i++) {
 					gear = yourGear[i];
 					_.extend(defaultGear, gear);
+					if(gear.images.length > 0) {
+						defaultGear.img_url = gear.images.split(',')[0];
+					}
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
 				if(callback && typeof callback === 'function') {
