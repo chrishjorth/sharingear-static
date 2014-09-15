@@ -40,21 +40,20 @@ define(
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
 					defaultGear, gear;
 
-				defaultGear = {
-					id: null,
-					type: '',
-					subtype: '',
-					brand: '',
-					model: '',
-					description: '',
-					img_url: 'images/logotop.png',
-					price_a: 0,
-					price_b: 0,
-					price_c: 0,
-					owner_id: null
-				};
-
 				for(i = 0; i < yourGear.length; i++) {
+					defaultGear = {
+						id: null,
+						type: '',
+						subtype: '',
+						brand: '',
+						model: '',
+						description: '',
+						img_url: 'images/logotop.png',
+						price_a: 0,
+						price_b: 0,
+						price_c: 0,
+						owner_id: null
+					};
 					gear = yourGear[i];
 					_.extend(defaultGear, gear);
 					if(gear.images.length > 0) {
