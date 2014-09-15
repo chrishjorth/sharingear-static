@@ -170,7 +170,8 @@ define(
 		}
 
 		function closeModalView(callback) {
-			var $modalViewLightbox = $(this.modalViewLightbox);
+			var router = this,
+				$modalViewLightbox = $(this.modalViewLightbox);
 
 			if(this.currentModalViewController !== null) {
 				this.currentModalViewController.close();
@@ -179,6 +180,11 @@ define(
 			if($modalViewLightbox.hasClass('hidden') === false) {
 				$modalViewLightbox.addClass('hidden');
 			}
+
+			//Render the underlying view again so that data gets updated
+			this.currentViewController.render(function() {
+				router.currentViewController.renderSubviews();
+			});
 
 			if(callback && typeof callback === 'function') {
 				callback();

@@ -31,6 +31,7 @@ define(
 			var view = this;
 			this.get('/users/' + userID + '/gear', function(error, userGear) {
 				if(error) {
+					console.log(error);
 					callback([]);
 				}
 				else {
@@ -44,6 +45,7 @@ define(
 			var view = this;
 			this.get('/users/' + userID + '/reservations', function(error, userReservations) {
 				if(error) {
+					console.log(error);
 					callback([]);
 				}
 				else {

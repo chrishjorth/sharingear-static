@@ -27,7 +27,6 @@ define(
 			if(App.user.data && App.user.data.id) {
 				userID = App.user.data.id;
 			}
-
 			this.gearList.getUserGear(userID, function(userGear) {
 				view.populateYourGear(userGear);
 				view.setupEvents();

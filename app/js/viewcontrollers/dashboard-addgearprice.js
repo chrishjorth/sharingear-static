@@ -7,6 +7,8 @@ define(
 	['underscore', 'viewcontroller', 'app', 'models/gear'],
 	function(_, ViewController, App, Gear) {
 		var AddGearPrice = ViewController.inherit({
+			newGear: null,
+			
 			didInitialize: didInitialize,
 			didRender: didRender,
 			handleSave: handleSave,

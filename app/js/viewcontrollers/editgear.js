@@ -68,7 +68,7 @@ define(
 		function setupEvents() {
 			this.setupEvent('click', '#editgear-form .btn-cancel', this, this.handleCancel);
 			this.setupEvent('click', '#editgear-form .btn-next', this, this.handleNext);
-			this.setupEvent('change', '#dashboard-addgear-form-imageupload', this, this.handleImageUpload);
+			this.setupEvent('change', '#editgear-form-imageupload', this, this.handleImageUpload);
 		}
 
 		function handleCancel(event) {
@@ -76,7 +76,25 @@ define(
 		}
 
 		function handleNext(event) {
-			App.router.openModalView('gearpricing');
+			var view = event.data,
+				updatedGearData;
+
+			updatedGearData = {
+				brand: $('#editgear-brand option:selected', view.$element).val(),
+				model: $('#editgear-model', view.$element).val(),
+				description: $('#editgear-description', view.$element).val()
+			};
+
+			_.extend(view.gear.data, updatedGearData);
+
+			view.gear.save(App.user.data.id, function(error, gear) {
+				if(error) {
+					console.log(error);
+					return;
+				}
+			});
+
+			App.router.openModalView('gearpricing', view.gear);
 		}
 
 		function handleImageUpload(event) {
@@ -84,7 +102,7 @@ define(
 				$file = $(this);
 			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
 				var $thumbList, html;
-				$('#dashboard-addgear-form-imageupload').val('');
+				$('#editgear-form-imageupload').val('');
 				if(error) {
 					alert('Error uploading file.');
 					console.log(error);

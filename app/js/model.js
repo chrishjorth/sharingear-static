@@ -42,6 +42,7 @@ define(
 
 		function get(url, callback) {
 			var encodedURL = encodeURI(this.rootURL + url);
+
 			$.ajax({
 				dataType: 'json',
 				type: 'GET',
@@ -85,8 +86,27 @@ define(
 			});
 		}
 
-		function put() {
+		function put(url, data, callback) {
+			var encodedURL = encodeURI(this.rootURL + url);
 
+			$.ajax({
+				dataType: 'json',
+				type: 'PUT',
+				data: data,
+				url: encodedURL,
+				error: function(jqXHR, textStatus, errorThrown) {
+					callback('Error executing PUT request: ' + errorThrown);
+				},
+				success: function(data, textStatus, jqXHR) {
+					if(data.error) {
+						console.log(data.error);
+						callback('Error putting resource to server: ' + data.error);
+					}
+					else {
+						callback(null, data);
+					}
+				}
+			});
 		}
 
 		function del() {

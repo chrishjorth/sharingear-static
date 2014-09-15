@@ -65,7 +65,9 @@ define(
 					var spec = this;
 					this.editGear.render(function() {
 						expect($('#editgear-form .btn-cancel', spec.$fixtures).length).to.equal(1);
-						spec.editGear.handleNext();
+						spec.editGear.handleNext({
+							data: spec.editGear
+						});
 						sinon.assert.calledOnce(App.router.openModalView);
 						done();
 					});

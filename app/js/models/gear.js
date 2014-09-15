@@ -7,7 +7,8 @@ define(
 	function(Utilities, Model) {
 		var Gear = Model.inherit({
 			createGear: createGear,
-			uploadImage: uploadImage
+			uploadImage: uploadImage,
+			save: save
 		});
 
 		return Gear;
@@ -86,6 +87,30 @@ define(
 						callback(null, data.url);
 					});
 				});
+			});
+		}
+
+		function save(userID, callback) {
+			var saveData = {
+				brand: this.data.brand,
+				model: this.data.model,
+				description: this.data.description,
+				images: this.data.images,
+				price_a: this.data.price_a,
+				price_b: this.data.price_b,
+				price_c: this.data.price_c
+			};
+			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
+				if(error) {
+					if(callback && typeof callback === 'function') {
+						callback('Error saving gear: ' + error);
+					}
+					return;
+				}
+
+				if(callback && typeof callback === 'function') {
+					callback(null, data);
+				}
 			});
 		}
 	}
