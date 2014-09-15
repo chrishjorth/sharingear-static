@@ -61,14 +61,30 @@ define(
 					return;
 				}
 				Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+					var postData;
 					if(error) {
 						if(callback && typeof callback === 'function') {
 							callback('Error uploading file: ' + error);
 						}
 						return;
 					}
-					console.log(data);
-					callback(null, data.url);
+					//Add image url to backend
+					postData = {
+						user_id: userID,
+						gear_id: model.data.id,
+						image_url: data.url
+					};
+					model.post('/gear/image', postData, function(error, images) {
+						if(error) {
+							//TODO: In this case the image should be deleted from the server
+							if(callback && typeof callback === 'function') {
+								callback('Error uploading file: ' + error);
+							}
+							return;
+						}
+						model.data.images = images;
+						callback(null, data.url);
+					});
 				});
 			});
 		}

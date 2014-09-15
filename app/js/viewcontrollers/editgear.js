@@ -4,32 +4,56 @@
  */
 
 define(
-	['viewcontroller', 'app'],
-	function(ViewController, App) {
+	['viewcontroller', 'app', 'models/gear'],
+	function(ViewController, App, Gear) {
 		var EditGear = ViewController.inherit({
+			gear: null,
+
 			didInitialize: didInitialize,
 			didRender: didRender,
+			populateBrandSelect: populateBrandSelect,
 			setupEvents: setupEvents,
 			handleCancel: handleCancel,
-			handleNext: handleNext
+			handleNext: handleNext,
+			handleImageUpload: handleImageUpload
 		}); 
 		return EditGear;
 
 		function didInitialize() {
-			this.templateParameters = {
-				brand: 'Marshall',
-				model: 'JCM 900',
-				description: 'blah blah'
-			};
+			this.templateParameters = this.passedData;
+			this.gear = new Gear.constructor({
+				rootURL: App.API_URL,
+				data: this.passedData
+			});
 		}
 
 		function didRender() {
+			this.populateBrandSelect();
+			$('#editgear-brand', this.$element).val(this.passedData.brand);
 			this.setupEvents();
+		}
+
+		function populateBrandSelect() {
+			var brands = App.gearClassification.data.brands,
+				html = '<option> Choose brand: </option>',
+				$brandSelect, i;
+			if(!brands) {
+				brands = [];
+			}
+
+			$brandSelect = $('#editgear-brand', this.$element);
+			$brandSelect.empty();
+
+			for(i = 0; i < brands.length; i++) {
+				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
+			}
+			$brandSelect.append(html);
 		}
 
 		function setupEvents() {
 			this.setupEvent('click', '#editgear-form .btn-cancel', this, this.handleCancel);
 			this.setupEvent('click', '#editgear-form .btn-next', this, this.handleNext);
+			this.setupEvent('change', '#dashboard-addgear-form-imageupload', this, this.handleImageUpload);
 		}
 
 		function handleCancel(event) {
@@ -38,6 +62,23 @@ define(
 
 		function handleNext(event) {
 			App.router.openModalView('gearpricing');
+		}
+
+		function handleImageUpload(event) {
+			var view = event.data
+				$file = $(this);
+			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
+				var $thumbList, html;
+				if(error) {
+					alert('Error uploading file.');
+					console.log(error);
+					return;
+				}
+				view.gear.data.images += url + ',';
+				$thumbList = $('#editgear-form .thumb-list-container ul', view.$element);
+				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
+				$thumbList.append(html);
+			});
 		}
 	}
 );

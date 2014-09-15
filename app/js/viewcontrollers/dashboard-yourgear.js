@@ -9,7 +9,8 @@ define(
 		var YourGear = ViewController.inherit({
 			gearBlockID: 'yourgear-gear-block',
 			gearList: new GearList.constructor({
-				rootURL: App.API_URL
+				rootURL: App.API_URL,
+				data: []
 			}),
 			
 			didRender: didRender,
@@ -73,7 +74,8 @@ define(
 		}
 
 		function handleEditGearItem(event) {
-			App.router.openModalView('editgear');
+			var view = event.data;
+			App.router.openModalView('editgear', view.gearList.getGearItem($(this).data('yourgearid')));
 		}
 	}
 );

@@ -8,42 +8,59 @@ define(
 		var GearList = Model.inherit({
 			search: search,
 			getUserGear: getUserGear,
-			getUserReservations: getUserReservations
+			getUserReservations: getUserReservations,
+			getGearItem: getGearItem
 		});
 
 		return GearList;
 
 		function search(location, gear, daterange, callback) {
+			var view = this;
 			this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
 				if(error) {
 					callback([]);
 				}
 				else {
-					callback(searchResults);
+					view.data = searchResults;
+					callback(view.data);
 				}
 			});
 		}
 
 		function getUserGear(userID, callback) {
+			var view = this;
 			this.get('/users/' + userID + '/gear', function(error, userGear) {
 				if(error) {
 					callback([]);
 				}
 				else {
-					callback(userGear);
+					view.data = userGear;
+					callback(view.data);
 				}
 			});
 		}
 
 		function getUserReservations(userID, callback) {
+			var view = this;
 			this.get('/users/' + userID + '/reservations', function(error, userReservations) {
 				if(error) {
 					callback([]);
 				}
 				else {
-					callback(userReservations);
+					view.data = userReservations;
+					callback(view.data);
 				}
 			});
+		}
+
+		function getGearItem(gearID) {
+			var i;
+			for(i = 0; i < this.data.length; i++) {
+				if(this.data[i].id === gearID) {
+					return this.data[i];
+				}
+			}
+			return null;
 		}
 	}
 );

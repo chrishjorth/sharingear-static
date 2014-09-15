@@ -33,7 +33,9 @@ define(
 				});
 
 				it('Can handle edit gear event', function() {
-					this.yourgear.handleEditGearItem();
+					this.yourgear.handleEditGearItem({
+						data: this.yourgear
+					});
 					sinon.assert.calledOnce(App.router.openModalView);
 				});
 			});

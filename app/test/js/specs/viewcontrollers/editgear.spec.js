@@ -1,6 +1,6 @@
 define(
-	['jquery', 'chai', 'sinon', 'viewcontrollers/editgear', 'app'],
-	function($, chai, Sinon, EditGear, App) {
+	['jquery', 'chai', 'sinon', 'viewcontrollers/editgear', 'app', 'models/gear'],
+	function($, chai, Sinon, EditGear, App, Gear) {
 		require(['text!../templates/editgear.html'], function(EditGearTemplate) {
 			var expect = chai.expect;
 		
@@ -8,7 +8,16 @@ define(
 
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.editGear = new EditGear.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: EditGearTemplate, path: 'editgear'});
+					this.testGear = new Gear.constructor({
+						data: {
+							type: '',
+							subtype: '',
+							brand: '',
+							model: '',
+							description: ''
+						}
+					});
+					this.editGear = new EditGear.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: EditGearTemplate, path: 'editgear', passedData: this.testGear.data});
 					sinon.spy(this.editGear, 'setupEvents');
 					sinon.stub(App.router, 'closeModalView');
 					sinon.stub(App.router, 'openModalView');

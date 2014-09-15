@@ -62,21 +62,21 @@ define(
 			});
 
 			it('Can open a modal view', function(done) {
-				Router.openModalView('error', function() {
+				Router.openModalView('error', null, function() {
 					expect(Router.currentModalViewController.name).to.equal('error');
 					done();
 				});
 			});
 
 			it('Can load a modal view', function(done) {
-				Router.loadModalView('error', '', function() {
+				Router.loadModalView('error', '', null, function() {
 					expect(Router.currentModalViewController.name).to.equal('error');
 					done();
 				});
 			});
 
 			it('Can close a modal view', function(done) {
-				Router.loadModalView('error', '', function() {
+				Router.loadModalView('error', '', null, function() {
 					sinon.spy(Router.currentModalViewController, 'close');
 					Router.closeModalView(function() {
 						sinon.assert.calledOnce(Router.currentModalViewController.close);

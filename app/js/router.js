@@ -140,11 +140,11 @@ define(
 			});
 		}
 
-		function openModalView(route, callback) {
-			this.loadModalView(this.getRoute(route), route, callback);
+		function openModalView(route, data, callback) {
+			this.loadModalView(this.getRoute(route), route, data, callback);
 		}
 
-		function loadModalView(view, path, callback) {
+		function loadModalView(view, path, data, callback) {
 			var router = this;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
 				var $modalViewLightbox = $(router.modalViewLightbox),
@@ -158,7 +158,7 @@ define(
 					$modalViewLightbox.removeClass('hidden');
 				}
 
-				router.currentModalViewController = new ViewController.constructor({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path});
+				router.currentModalViewController = new ViewController.constructor({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path, passedData: data});
 				if(router.currentModalViewController.ready === true) {
 					router.currentModalViewController.render();
 				}
