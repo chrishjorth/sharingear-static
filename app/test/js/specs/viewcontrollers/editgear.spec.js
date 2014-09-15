@@ -14,7 +14,8 @@ define(
 							subtype: '',
 							brand: '',
 							model: '',
-							description: ''
+							description: '',
+							images: ''
 						}
 					});
 					this.editGear = new EditGear.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: EditGearTemplate, path: 'editgear', passedData: this.testGear.data});

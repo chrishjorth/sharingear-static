@@ -12,6 +12,7 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populateBrandSelect: populateBrandSelect,
+			populateImages: populateImages,
 			setupEvents: setupEvents,
 			handleCancel: handleCancel,
 			handleNext: handleNext,
@@ -30,6 +31,7 @@ define(
 		function didRender() {
 			this.populateBrandSelect();
 			$('#editgear-brand', this.$element).val(this.passedData.brand);
+			this.populateImages();
 			this.setupEvents();
 		}
 
@@ -48,6 +50,19 @@ define(
 				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
 			}
 			$brandSelect.append(html);
+		}
+
+		function populateImages() {
+			var images = this.gear.data.images.split(','),
+				html = '',
+				i;
+			for(i = 0; i < images.length; i++) {
+				//Avoid empty url strings because of trailing ','
+				if(images[i].length > 0) {
+					html += '<li><img src="' + images[i] + '" alt="Gear thumb"></li>';
+				}
+			}
+			$('#editgear-form .thumb-list-container ul', this.$element).append(html);
 		}
 
 		function setupEvents() {
