@@ -84,6 +84,7 @@ define(
 				$file = $(this);
 			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
 				var $thumbList, html;
+				$('#dashboard-addgear-form-imageupload').val('');
 				if(error) {
 					alert('Error uploading file.');
 					console.log(error);
