@@ -84,7 +84,9 @@ define(
 							}
 							return;
 						}
-						model.data.images = images;
+						console.log('returned images');
+						console.log(images);
+						model.data.images = images.images;
 						callback(null, data.url);
 					});
 				});
