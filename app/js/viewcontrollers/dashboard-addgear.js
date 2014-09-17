@@ -114,7 +114,7 @@ define(
 
 		function handleNext(event) {
 			var view = event.data,
-				newData;
+				newData, callback;
 
 			//Create new gear model object from form data
 
@@ -128,6 +128,14 @@ define(
 
 			_.extend(view.newGear.data, newData);
 
+			callback = function(error, data) {
+				if(error) {
+					alert('Error saving gear');
+					return;
+				}
+				App.router.navigateTo('dashboard/addgearphotos', view.newGear);
+			}
+
 			if(view.newGear.data.id === null) {
 				view.newGear.createGear(App.user);
 			}
@@ -135,8 +143,6 @@ define(
 				//Case of the user breadcrumbing back
 				view.newGear.save(App.user.data.id);
 			}
-
-			App.router.navigateTo('dashboard/addgearphotos', view.newGear);
 		}
 
 		/**
