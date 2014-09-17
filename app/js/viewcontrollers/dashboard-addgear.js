@@ -137,11 +137,11 @@ define(
 			}
 
 			if(view.newGear.data.id === null) {
-				view.newGear.createGear(App.user);
+				view.newGear.createGear(App.user, callback);
 			}
 			else {
 				//Case of the user breadcrumbing back
-				view.newGear.save(App.user.data.id);
+				view.newGear.save(App.user.data.id, callback);
 			}
 		}
 
