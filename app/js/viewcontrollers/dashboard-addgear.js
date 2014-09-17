@@ -133,10 +133,13 @@ define(
 					alert('Error saving gear');
 					return;
 				}
+				console.log('GEAR SAVED');
+				return;
 				App.router.navigateTo('dashboard/addgearphotos', view.newGear);
 			}
 
 			if(view.newGear.data.id === null) {
+				console.log('Create gear');
 				view.newGear.createGear(App.user, callback);
 			}
 			else {
