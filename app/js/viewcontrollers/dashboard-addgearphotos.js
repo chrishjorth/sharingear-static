@@ -11,6 +11,7 @@ define(
 			
 			didInitialize: didInitialize,
 			didRender: didRender,
+			populatePhotos: populatePhotos,
 			handleImageUpload: handleImageUpload,
 			handleNext: handleNext,
 			handleBreadcrumbBack: handleBreadcrumbBack
@@ -29,9 +30,23 @@ define(
 		}
 
 		function didRender() {
+			this.populatePhotos();
 			this.setupEvent('change', '#dashboard-addgearphotos-form-imageupload', this, this.handleImageUpload);
 			this.setupEvent('submit', '#dashboard-addgearphotos-form', this, this.handleNext);
 			this.setupEvent('click', '.addgearpanel .btnaddgeartwo', this, this.handleBreadcrumbBack);
+		}
+
+		function populatePhotos() {
+			var images = this.newGear.data.images.split(','),
+				html = '',
+				i;
+			for(i = 0; i < images.length; i++) {
+				//Avoid empty url strings because of trailing ','
+				if(images[i].length > 0) {
+					html += '<li><img src="' + images[i] + '" alt="Gear thumb"></li>';
+				}
+			}
+			$('#dashboard-addgearphotos-form .thumb-list-container ul', this.$element).append(html);
 		}
 
 		function handleImageUpload(event) {
@@ -45,7 +60,7 @@ define(
 					return;
 				}
 				view.newGear.data.images += url + ',';
-				$thumbList = $('#dashboard-addgear-form .thumb-list-container ul', view.$element);
+				$thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
 			});
