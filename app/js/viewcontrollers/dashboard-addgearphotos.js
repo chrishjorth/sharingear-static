@@ -26,13 +26,8 @@ define(
 				}
 			});
 
-			console.log('AddGearPhotos passed data:');
-			console.log(this.passedData);
-
 			if(this.passedData) {
 				_.extend(this.newGear.data, this.passedData.data);
-				console.log('after passed data merge');
-				console.log(JSON.stringify(this.newGear.data));
 			}
 		}
 
@@ -47,8 +42,6 @@ define(
 			var images = this.newGear.data.images.split(','),
 				html = '',
 				i;
-			console.log('after split');
-			console.log(JSON.stringify(this.newGear.data));
 			for(i = 0; i < images.length; i++) {
 				//Avoid empty url strings because of trailing ','
 				if(images[i].length > 0) {
