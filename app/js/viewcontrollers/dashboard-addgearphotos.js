@@ -31,6 +31,8 @@ define(
 
 			if(this.passedData) {
 				_.extend(this.newGear.data, this.passedData.data);
+				console.log('after passed data merge');
+				console.log(this.newGear);
 			}
 		}
 
@@ -45,6 +47,8 @@ define(
 			var images = this.newGear.data.images.split(','),
 				html = '',
 				i;
+			console.log('after split');
+			console.log(this.newGear);
 			for(i = 0; i < images.length; i++) {
 				//Avoid empty url strings because of trailing ','
 				if(images[i].length > 0) {
@@ -64,8 +68,8 @@ define(
 					console.log(error);
 					return;
 				}
-				console.log('images:');
-				console.log(view.newGear.data.images);
+				console.log('gear data:');
+				console.log(view.newGear.data);
 				console.log('url:');
 				console.log(url);
 				view.newGear.data.images += url + ',';
