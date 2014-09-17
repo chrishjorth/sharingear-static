@@ -76,7 +76,6 @@ define(
 				},
 				success: function(data, textStatus, jqXHR) {
 					if(data.error) {
-						console.log(data.error);
 						callback('Error sending resource to server: ' + data.error);
 					}
 					else {

@@ -6,6 +6,9 @@ define(
 	['utilities', 'model'],
 	function(Utilities, Model) {
 		var Gear = Model.inherit({
+			data: {
+				id: null
+			},
 			createGear: createGear,
 			uploadImage: uploadImage,
 			save: save
@@ -34,15 +37,13 @@ define(
 			this.post('/gear', postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
-						callback();
+						callback(error);
 					}
 					return;
 				}
 				_.extend(model.data, data);
-				console.log('Gear created:');
-				console.log(data);
 				if(callback && typeof callback === 'function') {
-					callback();
+					callback(null);
 				}
 			});
 		}

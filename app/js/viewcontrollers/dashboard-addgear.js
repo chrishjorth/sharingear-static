@@ -25,6 +25,7 @@ define(
 			this.newGear = new Gear.constructor({
 				rootURL: App.API_URL,
 				data: {
+					id: null,
 					images: ''
 				}
 			});
@@ -117,7 +118,6 @@ define(
 				newData, callback;
 
 			//Create new gear model object from form data
-
 			newData = {
 				type: $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked').val(),
 				subtype: $('#dashboard-addgear-form-subtype option:selected').val(),
@@ -133,13 +133,10 @@ define(
 					alert('Error saving gear');
 					return;
 				}
-				console.log('GEAR SAVED');
-				return;
 				App.router.navigateTo('dashboard/addgearphotos', view.newGear);
 			}
 
 			if(view.newGear.data.id === null) {
-				console.log('Create gear');
 				view.newGear.createGear(App.user, callback);
 			}
 			else {
