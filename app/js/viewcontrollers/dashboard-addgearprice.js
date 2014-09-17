@@ -19,11 +19,15 @@ define(
 		function didInitialize() {
 			this.newGear = new Gear.constructor({
 				rootURL: App.API_URL,
-				data: {}
+				data: {
+					price_a: 0,
+					price_b: 0,
+					price_c: 0
+				}
 			});
 
 			if(this.passedData) {
-				_.extend(this.newGear, this.passedData);
+				_.extend(this.newGear.data, this.passedData.data);
 			}
 		}
 
@@ -40,13 +44,12 @@ define(
 		function handleSave(event) {
 			var view = event.data,
 				newGear;
-			newGear = view.passedData;
-			console.log(newGear);
+			newGear = this.newGear;
 			newGear.data.price_a = $('#dashboard-addgearprice-form #price_a', view.$element).val();
 			newGear.data.price_b = $('#dashboard-addgearprice-form #price_b', view.$element).val();
 			newGear.data.price_c = $('#dashboard-addgearprice-form #price_c', view.$element).val();
 
-			newGear.createGear(App.user);
+			newGear.save(App.user.data.id);
 		}
 
 		function handleBreadcrumbBack(event) {
@@ -58,7 +61,9 @@ define(
 				price_c: $('#dashboard-addgearprice-form #price_c', view.$element).val()
 			});
 
-			App.router.navigateTo('dashboard/addgear', view.newGear);
+			newGear.save(App.user.data.id);
+
+			App.router.navigateTo('dashboard/addgearphotos', view.newGear);
 		}
 	}
 );

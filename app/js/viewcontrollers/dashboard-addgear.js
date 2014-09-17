@@ -15,7 +15,6 @@ define(
 			handleGearRadio: handleGearRadio,
 			handleSelectSubtype: handleSelectSubtype,
 			handleNext: handleNext,
-			//handleImageUpload: handleImageUpload,
 			populateSubtypeSelect: populateSubtypeSelect,
 			populateBrandSelect: populateBrandSelect,
 			prepopulate: prepopulate
@@ -31,7 +30,7 @@ define(
 			});
 
 			if(this.passedData) {
-				_.extend(this.newGear, this.passedData);
+				_.extend(this.newGear.data, this.passedData.data);
 			}
 		}
 
@@ -42,7 +41,6 @@ define(
 			});
 
 			this.setupEvent('submit', '#dashboard-addgear-form', this, this.handleNext);
-			//this.setupEvent('change', '#dashboard-addgear-form-imageupload', this, this.handleImageUpload);
 		}
 
 		function addGearIcons(callback) {
@@ -130,25 +128,16 @@ define(
 
 			_.extend(view.newGear.data, newData);
 
-			App.router.navigateTo('dashboard/addgearprice', view.newGear);
-		}
+			if(view.newGear.data.id === null) {
+				view.newGear.createGear(App.user);
+			}
+			else {
+				//Case of the user breadcrumbing back
+				view.newGear.save(App.user.data.id);
+			}
 
-		/*function handleImageUpload(event) {
-			var view = event.data
-				$file = $(this);
-			view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
-				var $thumbList, html;
-				if(error) {
-					alert('Error uploading file.');
-					console.log(error);
-					return;
-				}
-				view.newGear.data.images += url + ',';
-				$thumbList = $('#dashboard-addgear-form .thumb-list-container ul', view.$element);
-				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
-				$thumbList.append(html);
-			});
-		}*/
+			App.router.navigateTo('dashboard/addgearphotos', view.newGear);
+		}
 
 		/**
 		 * Prefills the form with passed data.
@@ -159,13 +148,13 @@ define(
 				return;
 			}
 			newGear = this.passedData.data;
-			if(newGear.type.length >= 0) {
+			if(newGear.type && newGear.type.length >= 0) {
 				$('#dashboard-addgear-form .gearbuttonlist-container #gear-radio-' + newGear.type.toLowerCase() + '').prop("checked", true);
 				this.populateSubtypeSelect(newGear.type);
-				if(newGear.subtype.length >= 0) {
+				if(newGear.subtype && newGear.subtype.length >= 0) {
 					$('#gear-subtype-container select').val(newGear.subtype);
 					this.populateBrandSelect();
-					if(newGear.brand.length >= 0) {
+					if(newGear.brand && newGear.brand.length >= 0) {
 						$('#gear-brand-container select').val(newGear.brand);
 					}
 				}
