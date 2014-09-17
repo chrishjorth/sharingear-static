@@ -32,7 +32,7 @@ define(
 			if(this.passedData) {
 				_.extend(this.newGear.data, this.passedData.data);
 				console.log('after passed data merge');
-				console.log(this.newGear);
+				console.log(JSON.stringify(this.newGear.data));
 			}
 		}
 
@@ -48,7 +48,7 @@ define(
 				html = '',
 				i;
 			console.log('after split');
-			console.log(this.newGear);
+			console.log(JSON.stringify(this.newGear.data));
 			for(i = 0; i < images.length; i++) {
 				//Avoid empty url strings because of trailing ','
 				if(images[i].length > 0) {
@@ -72,7 +72,7 @@ define(
 				console.log(view.newGear.data);
 				console.log('url:');
 				console.log(url);
-				view.newGear.data.images += url + ',';
+				view.newGear.data.images = view.newGear.data.images + url + ',';
 				$thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
