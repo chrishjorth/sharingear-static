@@ -26,6 +26,9 @@ define(
 				}
 			});
 
+			console.log('AddGearPhotos passed data:');
+			console.log(this.passedData);
+
 			if(this.passedData) {
 				_.extend(this.newGear.data, this.passedData.data);
 			}
