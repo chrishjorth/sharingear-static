@@ -64,6 +64,10 @@ define(
 					console.log(error);
 					return;
 				}
+				console.log('images:');
+				console.log(view.newGear.data.images);
+				console.log('url:');
+				console.log(url);
 				view.newGear.data.images += url + ',';
 				$thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
