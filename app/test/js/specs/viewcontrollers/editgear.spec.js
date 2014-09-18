@@ -1,6 +1,6 @@
 define(
-	['jquery', 'chai', 'sinon', 'viewcontrollers/editgear', 'app'],
-	function($, chai, Sinon, EditGear, App) {
+	['jquery', 'chai', 'sinon', 'viewcontrollers/editgear', 'app', 'models/gear'],
+	function($, chai, Sinon, EditGear, App, Gear) {
 		require(['text!../templates/editgear.html'], function(EditGearTemplate) {
 			var expect = chai.expect;
 		
@@ -8,7 +8,17 @@ define(
 
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.editGear = new EditGear({name: 'testVC', $element: this.$fixtures, labels: {}, template: EditGearTemplate, path: 'editgear'});
+					this.testGear = new Gear.constructor({
+						data: {
+							type: '',
+							subtype: '',
+							brand: '',
+							model: '',
+							description: '',
+							images: ''
+						}
+					});
+					this.editGear = new EditGear.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: EditGearTemplate, path: 'editgear', passedData: this.testGear.data});
 					sinon.spy(this.editGear, 'setupEvents');
 					sinon.stub(App.router, 'closeModalView');
 					sinon.stub(App.router, 'openModalView');
@@ -23,7 +33,7 @@ define(
 				});
 
 				it('Provides the EditGear ViewController', function() {
-					expect(EditGear).to.be.a('function');
+					expect(EditGear.constructor).to.be.a('function');
 				});
 
 				it('Has correct template parameters', function() {
@@ -55,7 +65,9 @@ define(
 					var spec = this;
 					this.editGear.render(function() {
 						expect($('#editgear-form .btn-cancel', spec.$fixtures).length).to.equal(1);
-						spec.editGear.handleNext();
+						spec.editGear.handleNext({
+							data: spec.editGear
+						});
 						sinon.assert.calledOnce(App.router.openModalView);
 						done();
 					});

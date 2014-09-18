@@ -1,26 +1,41 @@
 define(
-	['jquery', 'chai', 'sinon', 'viewcontrollers/gearpricing', 'app'],
-	function($, chai, Sinon, GearPricing, App) {
+	['jquery', 'chai', 'sinon', 'viewcontrollers/gearpricing', 'app', 'models/gear'],
+	function($, chai, Sinon, GearPricing, App, Gear) {
 		require(['text!../templates/gearpricing.html'], function(GearPricingTemplate) {
 			var expect = chai.expect;
 		
 			describe('Gear pricing ViewController', function() {
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.gearPricing = new GearPricing({name: 'testVC', $element: this.$fixtures, labels: {}, template: GearPricingTemplate, path: 'gearpricing'});
+					this.testGear = new Gear.constructor({
+						data: {
+							type: '',
+							subtype: '',
+							brand: '',
+							model: '',
+							description: '',
+							images: '',
+							price_a: 0,
+							price_b: 0,
+							price_c: 0
+						}
+					});
+					this.gearPricing = new GearPricing.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: GearPricingTemplate, path: 'gearpricing', passedData: this.testGear});
 					sinon.spy(this.gearPricing, 'setupEvents');
 					sinon.stub(App.router, 'closeModalView');
+					sinon.stub(App.router, 'openModalView');
 				});
 
 				afterEach(function() {
 					this.gearPricing.setupEvents.restore();
 					App.router.closeModalView.restore();
+					App.router.openModalView.restore();
 					this.gearPricing.close();
 					this.$fixtures.empty();
 				});
 
 				it('Provides the Gear pricing ViewController', function() {
-					expect(GearPricing).to.be.a('function');
+					expect(GearPricing.constructor).to.be.a('function');
 				});
 
 				it('Can render', function(done) {
@@ -31,12 +46,14 @@ define(
 					});
 				});
 
-				it('Can handle cancel', function(done) {
+				it('Can handle back', function(done) {
 					var spec = this;
 					this.gearPricing.render(function() {
 						expect($('#gearpricing-form .btn-cancel', spec.$fixtures).length).to.equal(1);
-						spec.gearPricing.handleCancel();
-						sinon.assert.calledOnce(App.router.closeModalView);
+						spec.gearPricing.handleBack({
+							data: spec.gearPricing
+						});
+						sinon.assert.calledOnce(App.router.openModalView);
 						done();
 					});
 				});
@@ -45,7 +62,9 @@ define(
 					var spec = this;
 					this.gearPricing.render(function() {
 						expect($('#gearpricing-form .btn-cancel', spec.$fixtures).length).to.equal(1);
-						spec.gearPricing.handleSave();
+						spec.gearPricing.handleSave({
+							data: spec.gearPricing
+						});
 						sinon.assert.calledOnce(App.router.closeModalView);
 						done();
 					});

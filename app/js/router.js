@@ -16,10 +16,12 @@ define(
 			modalViewLightbox: '.modal-view-lightbox',
 			modalViewContainer: '.modal-view-container',
 			hashUpdated: false,
+			navigateToViewCalled: false,
 
 			addRoutes: addRoutes,
 			getRoute: getRoute,
 			routeExists: routeExists,
+			handleHashChange: handleHashChange,
 			navigateTo: navigateTo,
 			loadView: loadView,
 			openModalView: openModalView,
@@ -27,17 +29,7 @@ define(
 			closeModalView: closeModalView
 		};
 
-		window.onhashchange = function(event) {
-			/*if(Router.hashUpdated === true) {
-				Router.hashUpdated = false;
-				return;
-			}*/
-			var hash = window.location.hash.substring(1);
-			if(hash === '') {
-				hash = 'home';
-			}
-			Router.navigateTo(hash);
-		};
+		window.onhashchange = handleHashChange;
 
 		return Router;
 
@@ -46,19 +38,6 @@ define(
 			for(i = 0; i < arguments.length; i++) {
 				this.routes.push(arguments[i]);
 			}
-		}
-
-		function navigateTo(route, callback) {
-			var router = this;
-			this.loadView(this.getRoute(route), route, function(error) {
-				if(!error) {
-					router.hashUpdated = true;
-					window.location.hash = route;
-				}
-				if(callback && typeof callback === 'function') {
-					callback(error);
-				}
-			});
 		}
 
 		/**
@@ -93,7 +72,38 @@ define(
 			return false;
 		}
 
-		function loadView(view, path, callback) {
+		function handleHashChange(event) {
+			if(Router.navigateToViewCalled === false){
+				//Origin of event is URL or direct link
+				Router.hashUpdated = true;
+				Router.navigateTo(window.location.hash.substring(1), null);
+			}
+			else {
+				//Origin of event is navigateTo
+				Router.navigateToViewCalled = false;
+			}
+		}
+
+		function navigateTo(route, data, callback) {
+			var router = this;
+			if(router.hashUpdated === false) {
+				//Hash change event not fired
+				router.navigateToViewCalled = true;
+				window.location.hash = '#' + route;
+			}
+			else {
+				//Hash change event fired
+				router.hashUpdated = false;
+			}
+
+			this.loadView(this.getRoute(route), route, data, function(error) {
+				if(callback && typeof callback === 'function') {
+					callback(error);
+				}
+			});
+		}
+
+		function loadView(view, path, data, callback) {
 			var router = this;
 			//If the view is already loaded just update the path and call render subviews
 			if(this.currentViewController !== null && this.currentViewController.name === view) {
@@ -103,7 +113,7 @@ define(
 				}
 				this.currentViewController.path = path;
 				this.currentViewController.setSubPath();
-				this.currentViewController.renderSubviews();
+				this.currentViewController.renderSubviews(data);
 				return;
 			}
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
@@ -111,7 +121,7 @@ define(
 				if(router.currentViewController !== null) {
 					router.currentViewController.close();
 				}
-				router.currentViewController = new ViewController({name: view, $element: $(router.mainViewContainer), labels: {}, template: ViewTemplate, path: path});
+				router.currentViewController = new ViewController.constructor({name: view, $element: $(router.mainViewContainer), labels: {}, template: ViewTemplate, path: path, passedData: data});
 				//The ready property is so a controller can abort loading, useful if a redirect is being called
 				if(router.currentViewController.ready === true) {
 					router.currentViewController.render(function() {
@@ -130,11 +140,11 @@ define(
 			});
 		}
 
-		function openModalView(route, callback) {
-			this.loadModalView(this.getRoute(route), route, callback);
+		function openModalView(route, data, callback) {
+			this.loadModalView(this.getRoute(route), route, data, callback);
 		}
 
-		function loadModalView(view, path, callback) {
+		function loadModalView(view, path, data, callback) {
 			var router = this;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
 				var $modalViewLightbox = $(router.modalViewLightbox),
@@ -148,7 +158,7 @@ define(
 					$modalViewLightbox.removeClass('hidden');
 				}
 
-				router.currentModalViewController = new ViewController({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path});
+				router.currentModalViewController = new ViewController.constructor({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path, passedData: data});
 				if(router.currentModalViewController.ready === true) {
 					router.currentModalViewController.render();
 				}
@@ -160,7 +170,8 @@ define(
 		}
 
 		function closeModalView(callback) {
-			var $modalViewLightbox = $(this.modalViewLightbox);
+			var router = this,
+				$modalViewLightbox = $(this.modalViewLightbox);
 
 			if(this.currentModalViewController !== null) {
 				this.currentModalViewController.close();
@@ -169,6 +180,11 @@ define(
 			if($modalViewLightbox.hasClass('hidden') === false) {
 				$modalViewLightbox.addClass('hidden');
 			}
+
+			//Render the underlying view again so that data gets updated
+			this.currentViewController.render(function() {
+				router.currentViewController.renderSubviews();
+			});
 
 			if(callback && typeof callback === 'function') {
 				callback();

@@ -5,8 +5,7 @@ define(
 		
 		describe('Contact us ViewController', function() {
 			it('Provides the Contact us ViewController', function() {
-				var contactUsVC = new ContactUs();
-				expect(ContactUs).to.be.a('function');
+				expect(ContactUs.constructor).to.be.a('function');
 			});
 		});
 	}

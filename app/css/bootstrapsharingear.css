@@ -280,7 +280,6 @@ th {
 body {
   /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
   font-family: "Lato", "LatoLatin", sans-serif;
-  
   font-size: 14px;
   line-height: 1.42857143;
   color: #FFF; /* påvirker farven på payoff...*/ 

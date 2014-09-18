@@ -7,7 +7,7 @@ define(
 			describe('Dashboard Profile ViewController', function() {
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.profile = new Profile({name: 'testVC', $element: this.$fixtures, labels: {}, template: ProfileTemplate, path: 'dashboard/profile'});
+					this.profile = new Profile.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: ProfileTemplate, path: 'dashboard/profile'});
 				});
 
 				afterEach(function() {
@@ -16,8 +16,7 @@ define(
 				});
 
 				it('Provides the Dashboard Profile ViewController', function() {
-					var profileVC = new Profile();
-					expect(Profile).to.be.a('function');
+					expect(Profile.constructor).to.be.a('function');
 				});
 
 				it('Has correct template parameters', function() {

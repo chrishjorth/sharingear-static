@@ -4,11 +4,11 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'models/gearlist', 'app'],
-	function(_, Utilities, ViewController, GearList, App) {
+	['underscore', 'viewcontroller', 'models/gearlist', 'app'],
+	function(_, ViewController, GearList, App) {
 
-		var Home = Utilities.inherit(ViewController, {
-			gearList: new GearList({
+		var Home = ViewController.inherit({
+			gearList: new GearList.constructor({
 				rootURL: App.API_URL
 			}),
 

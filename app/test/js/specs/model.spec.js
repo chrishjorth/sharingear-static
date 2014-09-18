@@ -15,12 +15,11 @@ define(
 			});
 
 			it('Provides the model object', function() {
-				expect(Model).to.be.a('function');
+				expect(Model.constructor).to.be.a('function');
 			});
 
 			it('Can be constructed', function() {
-				this.model = new Model();
-				expect(this.model.constructor.name).to.equal('Model');
+				this.model = new Model.constructor();
 			});
 
 			it('Can perform GET requests', function(done) {

@@ -5,8 +5,7 @@ define(
 		
 		describe('Calendar ViewController', function() {
 			it('Provides the Calendar ViewController', function() {
-				var calendarVC = new Calendar();
-				expect(Calendar).to.be.a('function');
+				expect(Calendar.constructor).to.be.a('function');
 			});
 		});
 	}

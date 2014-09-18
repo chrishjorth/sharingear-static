@@ -4,12 +4,13 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'app', 'models/gearlist'],
-	function(_, Utilities, ViewController, App, GearList) {
-		var YourGear = Utilities.inherit(ViewController, {
+	['underscore', 'viewcontroller', 'app', 'models/gearlist'],
+	function(_, ViewController, App, GearList) {
+		var YourGear = ViewController.inherit({
 			gearBlockID: 'yourgear-gear-block',
-			gearList: new GearList({
-				rootURL: App.API_URL
+			gearList: new GearList.constructor({
+				rootURL: App.API_URL,
+				data: []
 			}),
 			
 			didRender: didRender,
@@ -26,7 +27,6 @@ define(
 			if(App.user.data && App.user.data.id) {
 				userID = App.user.data.id;
 			}
-
 			this.gearList.getUserGear(userID, function(userGear) {
 				view.populateYourGear(userGear);
 				view.setupEvents();
@@ -39,27 +39,26 @@ define(
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
 					defaultGear, gear;
 
-				defaultGear = {
-					id: 0,
-					type: 0,
-					subtype: 0,
-					brand: 0,
-					model: '',
-					description: '',
-					photos: '',
-					price: 0,
-					seller_user_id: 0,
-					city: '',
-					address: '',
-					country: '',
-					price1: 0,
-					price2: 0,
-					price3: 0
-				};
-
 				for(i = 0; i < yourGear.length; i++) {
+					defaultGear = {
+						id: null,
+						type: '',
+						subtype: '',
+						brand: '',
+						model: '',
+						description: '',
+						img_url: 'images/logotop.png',
+						price_a: 0,
+						price_b: 0,
+						price_c: 0,
+						owner_id: null
+					};
 					gear = yourGear[i];
 					_.extend(defaultGear, gear);
+					if(gear.images.length > 0) {
+						console.log(gear.images.split(','));
+						defaultGear.img_url = gear.images.split(',')[0];
+					}
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
 				if(callback && typeof callback === 'function') {
@@ -74,7 +73,8 @@ define(
 		}
 
 		function handleEditGearItem(event) {
-			App.router.openModalView('editgear');
+			var view = event.data;
+			App.router.openModalView('editgear', view.gearList.getGearItem($(this).data('yourgearid')));
 		}
 	}
 );

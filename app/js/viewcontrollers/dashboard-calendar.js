@@ -4,9 +4,9 @@
  */
 
 define(
-	['utilities', 'viewcontroller'],
-	function(Utilities, ViewController) {
-		var Calendar = Utilities.inherit(ViewController, {
+	['viewcontroller'],
+	function(ViewController) {
+		var Calendar = ViewController.inherit({
 		});
 		return Calendar;
 	}

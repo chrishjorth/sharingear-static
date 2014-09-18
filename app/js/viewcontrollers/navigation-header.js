@@ -4,9 +4,9 @@
  */
 
 define(
-	['utilities', 'viewcontroller', 'app'],
-	function(Utilities, ViewController, App) {
-		var Header = Utilities.inherit(ViewController, {
+	['viewcontroller', 'app'],
+	function(ViewController, App) {
+		var Header = ViewController.inherit({
 			didRender: didRender,
 			handleLogin: handleLogin
 		});

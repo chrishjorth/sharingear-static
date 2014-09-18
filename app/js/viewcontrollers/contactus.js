@@ -6,7 +6,7 @@
 define(
 	['viewcontroller'],
 	function(ViewController) {
-		var ContactUs = ViewController; 
+		var ContactUs = ViewController.inherit({}); 
 		return ContactUs;
 	}
 );

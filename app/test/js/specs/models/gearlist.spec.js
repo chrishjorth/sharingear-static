@@ -5,14 +5,14 @@ define(
 		
 		describe('GearList model', function() {
 			beforeEach(function() {
-				this.gearList = new GearList();
+				this.gearList = new GearList.constructor();
 			});
 
 			afterEach(function() {
 			});
 
 			it('Provides the GearList model', function() {
-				expect(GearList).to.be.a('function');
+				expect(GearList.constructor).to.be.a('function');
 			});
 
 			it('Can search', function(done) {

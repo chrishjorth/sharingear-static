@@ -3,26 +3,42 @@
  * @author: Chris Hjorth
  */
 define(
-	['underscore', 'jquery'], 
-	function(_, $) {
-		var defaults = {
+	['underscore', 'jquery', 'utilities'], 
+	function(_, $, Utilities) {
+		var defaults, methods, constructor, inherit;
+
+		defaults = {
 			id: null,
 			rootURL: '',
 			data: null
 		};
 
-		function Model(options) {
-			_.extend(this, defaults, options);
-		}
-
-		_.extend(Model.prototype, {
+		methods = {
 			get: get,
 			post: post,
 			put: put,
 			del: del
-		});
+		};
 
-		return Model;
+		constructor = function(options) {
+			_.extend(this, defaults, methods, options);
+			
+			if(this.didInitialize && typeof this.didInitialize == 'function') {
+				this.didInitialize();
+			}
+		};
+
+		inherit = function(inheritOptions) {
+			var inherited = {
+				constructor: Utilities.inherit(this.constructor, inheritOptions)
+			};
+			return inherited;
+		}
+
+		return {
+			constructor: constructor,
+			inherit: inherit
+		};
 
 		function get(url, callback) {
 			var encodedURL = encodeURI(this.rootURL + url);
@@ -32,6 +48,8 @@ define(
 				type: 'GET',
 				url: encodedURL,
 				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(jqXHR);
+					console.log(textStatus);
 					callback('Error executing GET request: ' + errorThrown);
 				},
 				success: function(data, textStatus, jqXHR) {
@@ -58,7 +76,6 @@ define(
 				},
 				success: function(data, textStatus, jqXHR) {
 					if(data.error) {
-						console.log(data.error);
 						callback('Error sending resource to server: ' + data.error);
 					}
 					else {
@@ -68,8 +85,27 @@ define(
 			});
 		}
 
-		function put() {
+		function put(url, data, callback) {
+			var encodedURL = encodeURI(this.rootURL + url);
 
+			$.ajax({
+				dataType: 'json',
+				type: 'PUT',
+				data: data,
+				url: encodedURL,
+				error: function(jqXHR, textStatus, errorThrown) {
+					callback('Error executing PUT request: ' + errorThrown);
+				},
+				success: function(data, textStatus, jqXHR) {
+					if(data.error) {
+						console.log(data.error);
+						callback('Error putting resource to server: ' + data.error);
+					}
+					else {
+						callback(null, data);
+					}
+				}
+			});
 		}
 
 		function del() {

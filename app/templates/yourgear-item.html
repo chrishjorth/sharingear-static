@@ -1,16 +1,16 @@
 <div class="row yourgear-item">
     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-        <img src="images/marshallcabthumb.jpg" alt="{{model}}">
+        <img src="{{img_url}}" alt="{{model}}">
     </div>
     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
         <div class="clearfix">
             <div class="pull-left">
-                <span class="symbolyourgear">{{price}}</span>
+                <span class="symbolyourgear">{{price_a}}</span>
             </div>
-            <div class="pull-right textyourgear">{{address}} | {{city}} | {{country}}</div>
+            <div class="pull-right textyourgear">Location</div>
         </div>
         <div>
-            <h4><span class="fa moretextyourgear icon"></span> Marshall Cabinet</h4>
+            <h4><span class="fa moretextyourgear icon"></span> {{brand}} {{subtype}} {{model}}</h4>
             <div class="fa fa-lock icon pull-right">Booked</div>
             <div class="clearfix"></div>
             <div class="pull-right"><button type="button" class="btn btn-primary btn-edit" data-yourgearid="{{id}}">Edit</button></div>

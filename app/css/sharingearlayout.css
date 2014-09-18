@@ -1,9 +1,11 @@
 body {
-    background-color: rgb(247, 247, 247);
-    /* f7f7f7 */
-    font: 300 0.9em/2.2 Lato;
-    color: rgb(255, 255, 255);
-}
+ 
+  background-color: rgb(247, 247, 247); /* f7f7f7 */
+  /*font: 300 0.9em/2.2 Lato; */
+  font-weight: 300;
+  line-height: 2.2;
+  color: rgb(255, 255, 255);
+ }
 /*-------------Navigation------------------ */
 
 .bluelineheader {
@@ -40,6 +42,11 @@ body {
     margin: 0 auto;
     background-color: rgb(255, 255, 255);
 }
+ 
+.nav-pills > li > a {
+  border-radius: 0;
+}
+ 
 .billboard {
     background-image: url("../images/listyourgearbluebg.jpg");
     background-position: left 50%;
@@ -47,8 +54,9 @@ body {
 .billboard-header {
     background-image: url("../images/mainpic.jpg");
     background-position: center bottom;
-}
-.billboard-wrapper {
+} 
+
+ .billboard-wrapper {
     max-width: 1170px;
     margin: 0 auto;
     padding: 400px 30px 20px;
@@ -60,6 +68,7 @@ body {
     margin-top: -194px;
     margin-bottom: 0;
 }
+  
 .billboard-how-it-works {
     background-image: url("../images/mainbgcrowd.jpg");
     background-position: center;
@@ -366,10 +375,11 @@ body {
 footer {
     background-color: #000;
     color: #FFF;
-    padding: 40px 0px;
+     padding: 40px 0px;
     text-align: center;
     margin-top: 50px;
-}
+     
+ }
 footer a:hover {
     color: #00aeff;
     text-decoration: none
@@ -849,11 +859,13 @@ padding-left: 50px;
     float: none;
     display: table-cell;
 }
-.col-3, {
-    float: left;
-    position: relative;
-    min-height: 1px;
-}
+ 
+.col-3  {
+float: left;
+position: relative;
+min-height: 1px;
+ }
+
 .text-right {
     text-align: right;
     color: #000000;
@@ -861,10 +873,12 @@ padding-left: 50px;
     padding-left: 50px;
 }
 .form {
-    margin: 0;
+     margin: 0;
     padding: 0;
     display: inline;
-}
+ 
+/*display: inline;*/
+ }
 /* ------------------ END - LIST YOUR GEAR --------------- */
 
 /* ------------------ START - DASHBOARD ------------------ */
@@ -883,19 +897,20 @@ background-color: rgb(56,143,192);
     color: #333333;
 }
 .dashboard .menu {
-    margin: 20px 0 20px 0;
-    border-radius: 4px;
-    border-width: 0px;
-    border-style: solid;
-    border-color: #dddddd;
-}
+ 
+  margin: 20px 0 20px 0;
+  border-radius: 4px;
+  border-width: 0;
+  border-style: solid;
+  border-color: #dddddd;
+ }
 .dashboard .menu li {
     height: 70px;
     border-bottom-width: 1px;
     border-style: solid;
     border-color: #FAFAFA;
 }
-}
+
 .dashboard .menu li:last-child {
     border-bottom: none;
 }
@@ -946,13 +961,55 @@ background-color: rgb(56,143,192);
 }
 /* ------------------ START - DASHBOARD  add gear --------------- */
 
-.list-group-item {
+ .list-group-item {
     position: relative;
     display: block;
     padding: 10px 15px;
     margin-bottom: 0px;
     background-color: #fff;
     /*border: 1px solid #ddd;*/
+  }
+ 
+ .custom-radio {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 52px;
+}
+
+.custom-radio input[type="radio"] {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.custom-radio input[type="radio"] + label {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.custom-radio input[type="radio"]:checked + label {
+  opacity: 1;
+}
+
+.list-group-item  {
+position: relative;
+display: block;
+padding: 10px 15px;
+margin-bottom: 0px;
+background-color: #fff;
+/*border: 1px solid #ddd;*/
+>>>>>>> FETCH_HEAD
 }
 #accordion .glyphicon {
     margin-right: 10px;
@@ -1033,7 +1090,7 @@ background-color: rgb(56,143,192);
     cursor: inherit;
     display: block;
 }
-.btnaddgear {
+ .btnaddgear {
     color: #000000;
     background-color: #ffd200;
     display: inline-block;
@@ -1075,7 +1132,86 @@ background-color: rgb(56,143,192);
     border: 6px solid transparent;
     border-radius: -17px;
 }
-.panel-body {
+ 
+.addgearpanel .boxaddgear {
+  color: #000000; 
+  background-color: #ffd200;
+  display: inline-block;
+  padding: 5px 31px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.428571;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-image: none;
+  border: 6px solid transparent;
+  border-radius: -17px;
+}
+
+.addgearpanel .boxaddgeartwo {
+  color: #000000; 
+  background-color: #cccccc;
+  display: inline-block;
+  padding: 5px 31px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.428571;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-image: none;
+  border: 6px solid transparent;
+  border-radius: -17px;
+}
+
+.addgearpanel .btnaddgear {
+  color: #000000;
+  background-color: #ffd200;
+  display: inline-block;
+  padding: 5px 31px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.428571;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 6px solid transparent;
+  border-radius: -17px;
+}
+
+.addgearpanel .btnaddgeartwo {
+  color: #000000; 
+  background-color: #cccccc;  
+  display: inline-block;
+  padding: 5px 31px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.428571;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 6px solid transparent;
+  border-radius: -17px;
+}
+
+ .panel-body {
     margin-top: -34px;
     margin-left: -5px;
     margin-bottom: -13px;
@@ -1714,12 +1850,12 @@ footer a:hover {
     max-width:500px;
     display:inline-block;
 }
-/*body {
+ /*body {
   background-color: rgb(247, 247, 247); 
   font: 300 0.75em/1.38 Lato;
   color: rgb(255, 255, 255);
 }
-*/
+*/ 
 
 .bluelineheader {
     position:absolute;
@@ -2216,12 +2352,12 @@ footer a:hover {
     color:#636363;
     padding:10px 7px 7px;
 }
-/*body {
+ /*body {
   background-color: rgb(247, 247, 247);
   font: 300 0.75em/1.38 Lato;
   color: rgb(255, 255, 255);
 }
-*/
+*/ 
 
 .bluelineheader {
     position:absolute;
@@ -2810,8 +2946,8 @@ font-weight: 400;
 }
 
 .prof_subview  img.pull-right {
-height: 30px;
-margin-top: 4px;
+height: 22px;
+margin-top: 0px;
 }
 
 .profile_im{

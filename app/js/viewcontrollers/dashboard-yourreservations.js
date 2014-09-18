@@ -4,11 +4,11 @@
  */
 
 define(
-	['utilities', 'viewcontroller', 'app', 'models/gearlist'],
-	function(Utilities, ViewController, App, GearList) {
-		var YourReservations = Utilities.inherit(ViewController, {
+	['viewcontroller', 'app', 'models/gearlist'],
+	function(ViewController, App, GearList) {
+		var YourReservations = ViewController.inherit({
 			reservationBlockID: 'yourreservations-gear-block',
-			gearList: new GearList({
+			gearList: new GearList.constructor({
 				rootURL: App.API_URL
 			}),
 

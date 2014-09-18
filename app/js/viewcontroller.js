@@ -3,10 +3,11 @@
  * @author: Chris Hjorth
  */
 define([
-	'underscore',
-	'jquery'
-], function(_, $) {
-	var defaults = {
+	'underscore', 'jquery', 'utilities'
+], function(_, $, Utilities) {
+	var defaults, methods, constructor, inherit;
+
+	defaults = {
 		name: '',
 		$element: $(''),
 		template: '', //A template string
@@ -15,20 +16,11 @@ define([
 		path: '', //URL path in the following form mainView/subView fx dashboard/profile
 		$subViewContainer: $(''),
 		subPath: '',
+		passedData: null, //stores extra data passed to the view
 		ready: true
 	};
 
-	function ViewController(options) {
-		_.extend(this, defaults, options);
-		this.template = _.template(this.template);
-		this.userEvents = [];
-		this.setSubPath();
-		if(this.didInitialize && typeof this.didInitialize == 'function') {
-			this.didInitialize();
-		}
-	}
-
-	_.extend(ViewController.prototype, {
+	methods = {
 		render: render,
 		setSubPath: setSubPath,
 		renderSubviews: renderSubviews,
@@ -37,9 +29,33 @@ define([
 		close: close,
 		setupEvent: setupEvent,
 		unbindEvents: unbindEvents
-	});
+	};
 
-	return ViewController;
+	constructor = function(options) {
+		_.extend(this, defaults, methods, options);
+
+		this.template = _.template(this.template);
+		this.userEvents = [];
+		
+		this.setSubPath();
+		
+		if(this.didInitialize && typeof this.didInitialize == 'function') {
+			this.didInitialize();
+		}
+	};
+
+	inherit = function(inheritOptions) {
+		var inherited = {
+			constructor: Utilities.inherit(this.constructor, inheritOptions)
+		};
+		return inherited;
+	}
+
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	return {
+		constructor: constructor,
+		inherit: inherit
+	};
 
 	function render(callback) {
 		var template = this.template(this.templateParameters);
@@ -61,19 +77,19 @@ define([
 		}
 	}
 
-	function renderSubviews(callback) {
+	function renderSubviews(data, callback) {
 		if(this.subPath !== '') {
-			this.loadSubView(callback);
+			this.loadSubView(data, callback);
 		}
 	}
 
-	function loadSubView(callback) {
+	function loadSubView(data, callback) {
 		var vc = this;
 		require(['viewcontrollers/' + vc.name + '-' + vc.subPath, 'text!../templates/' + vc.name + '-' + vc.subPath + '.html'], function(SubViewController, SubViewTemplate) {
 			if(vc.currentSubViewController !== null) {
 				vc.currentSubViewController.close();
 			}
-			vc.currentSubViewController = new SubViewController({name: vc.subPath, $element: vc.$subViewContainer, labels: {}, template: SubViewTemplate, path: vc.path});
+			vc.currentSubViewController = new SubViewController.constructor({name: vc.subPath, $element: vc.$subViewContainer, labels: {}, template: SubViewTemplate, path: vc.path, passedData: data});
 			vc.currentSubViewController.render();
 			if(callback && typeof callback === 'function') {
 				callback();
