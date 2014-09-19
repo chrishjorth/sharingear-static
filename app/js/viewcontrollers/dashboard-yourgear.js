@@ -56,7 +56,6 @@ define(
 					gear = yourGear[i];
 					_.extend(defaultGear, gear);
 					if(gear.images.length > 0) {
-						console.log(gear.images.split(','));
 						defaultGear.img_url = gear.images.split(',')[0];
 					}
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
