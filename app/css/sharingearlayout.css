@@ -2868,7 +2868,7 @@ border-color: #dedede;
     color:#636363;
     padding:10px 7px 7px;
 }
-/*================================== SHARING GEAR CSS ======================================*/
+/*================================== GEAR PROFILE ======================================*/
 
 .share_banner {
     background:url("../images/mainbgcrowdbw.jpg") no-repeat center center fixed;
@@ -2891,7 +2891,7 @@ border-color: #dedede;
     margin-top:10px;
 }
 .subview_book {
-    border:0px solid rgba(221, 221, 221, 0.5);
+    border:0 solid rgba(221, 221, 221, 0.5);
     background-color:#ffffff;
     margin-top:10px;
     padding:0;
@@ -2899,11 +2899,11 @@ border-color: #dedede;
     background:rgb(133, 133, 199);
     text-align:center;
     font-size:30px;
-    padding:8px 0px;
+    padding:8px 0;
     font-weight:500;
 }
 .subview_book:hover {
-    border:0px solid rgba(221, 221, 221, 0.5);
+    border:0 solid rgba(221, 221, 221, 0.5);
     background-color:#ffffff;
     margin-top:10px;
     padding:0;
@@ -2911,7 +2911,7 @@ border-color: #dedede;
     background:rgb(140, 140, 190);
     text-align:center;
     font-size:30px;
-    padding:8px 0px;
+    padding:8px 0;
     font-weight:500;
 }
 .instr_title {
@@ -2931,7 +2931,11 @@ border-color: #dedede;
 }
 
 .gmap{
-      padding: 0px;
+      padding: 0;
+}
+
+#gearprofile-map {
+    height: 300px;
 }
 
 .no_border_subview {
@@ -2950,7 +2954,7 @@ font-size: 25px;
 
 .adress_click {
 color: #4989af;
-padding: 0px;
+padding: 0;
 margin: 0;
 line-height: initial;
 font-weight: 400;
@@ -2958,7 +2962,7 @@ font-weight: 400;
 
 .adress_click:hover {
 color: #498990;
-padding: 0px;
+padding: 0;
 margin: 0;
 line-height: initial;
 font-weight: 400;
@@ -2966,7 +2970,7 @@ font-weight: 400;
 
 .prof_subview  img.pull-right {
 height: 22px;
-margin-top: 0px;
+margin-top: 0;
 }
 
 .profile_im{

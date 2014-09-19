@@ -4,14 +4,16 @@
  */
 
 define(
-	['viewcontroller', 'galleria', 'app', 'models/gear'],
-	function(ViewController, Galleria,App, Gear) {
+	['viewcontroller', 'galleria', 'app', 'models/gear', 'googlemaps'],
+	function(ViewController, Galleria,App, Gear, GoogleMaps) {
 		var GearProfile = ViewController.inherit({
 			gear: null,
+			map: null,
 
 			didInitialize: didInitialize,
 			didRender: didRender,
-			renderGearPictures: renderGearPictures
+			renderGearPictures: renderGearPictures,
+			renderMap: renderMap
 		});
 
 		return GearProfile;
@@ -44,6 +46,7 @@ define(
 
 		function didRender() {
 			this.renderGearPictures();
+			this.renderMap();
 			Galleria.run('.galleria');
 		}
 
@@ -60,6 +63,26 @@ define(
 				}
 			}
 			$('#gearprofile-galleria', this.$element).append(html);
+		}
+
+		function renderMap() {
+			var gear = this.gear.data,
+				mapOptions, latlong, marker;
+			if(gear.latitude !== null && gear.longitude !== null) {
+				latlong = new GoogleMaps.LatLng(gear.latitude, gear.longitude);
+				mapOptions = {
+					center: latlong,
+					zoom: 8
+				};
+				this.map = new GoogleMaps.Map(document.getElementById('gearprofile-map'), mapOptions);
+				var marker = new GoogleMaps.Marker({
+					position: latlong,
+					map: this.map,
+					title: 'BOOM!'
+				});
+			}
+
+			$('.adress_click', this.$element).html(gear.address + ' ' + gear.postal_code + ' ' + gear.city + ' ' + gear.region + ' ' + gear.country);
 		}
 	}
 );
