@@ -2615,6 +2615,26 @@ color: #000000;
 
 /*----------------------------- search results ----------------------- */
 
+
+.pricerow {
+  margin-top: -90px;
+}
+
+.priceplacement {
+  margin-left: -12%
+}
+
+.imagesizesearch {
+  width: 25%;
+}
+
+
+.headlinesearch {
+  /*margin-top: -60px;*/
+  margin-bottom: -65px;
+
+}
+
 #ad-title {
 font-size: 0.9em;
 font-weight: bold;
