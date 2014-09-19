@@ -31,8 +31,14 @@ define(
 				price_a: newGear.price_a,
 				price_b: newGear.price_b,
 				price_c: newGear.price_c,
-				owner_id: user.data.id,
-				fb_token: user.data.fb_token
+				address: newGear.address,
+				postalcode: newGear.postalcode,
+				city: newGear.city,
+				region: newGear.region,
+				country: newGear.country,
+				latitude: newGear.latitude,
+				longitude: newGear.longitude,
+				owner_id: user.data.id
 			};
 			this.post('/gear', postData, function(error, data) {
 				if(error) {
@@ -99,7 +105,14 @@ define(
 				images: this.data.images,
 				price_a: this.data.price_a,
 				price_b: this.data.price_b,
-				price_c: this.data.price_c
+				price_c: this.data.price_c,
+				address: this.data.address,
+				postalcode: this.data.postalcode,
+				city: this.data.city,
+				region: this.data.region,
+				country: this.data.country,
+				latitude: this.data.latitude,
+				longitude: this.data.longitude
 			};
 			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
 				if(error) {
