@@ -1003,13 +1003,12 @@ background-color: rgb(56,143,192);
 }
 
 .list-group-item  {
-position: relative;
-display: block;
-padding: 10px 15px;
-margin-bottom: 0px;
-background-color: #fff;
-/*border: 1px solid #ddd;*/
->>>>>>> FETCH_HEAD
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 0px;
+    background-color: #fff;
+    /*border: 1px solid #ddd;*/
 }
 #accordion .glyphicon {
     margin-right: 10px;
