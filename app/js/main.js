@@ -11,7 +11,8 @@ requirejs.config({
 		underscore: 'libraries/underscore-min',
 		jquery: 'libraries/jquery-2.1.1.min',
 		bootstrap: 'libraries/bootstrap.min',
-		facebook: 'https://connect.facebook.net/en_US/all'
+		facebook: 'https://connect.facebook.net/en_US/all',
+		galleria: 'libraries/galleria-1.4.2.min'
 	},
 	shim: {
 		underscore: {
@@ -25,6 +26,10 @@ requirejs.config({
 		},
 		'facebook' : {
 			exports: 'FB'
+		},
+		'galleria': {
+			deps: ['jquery'],
+			exports: 'Galleria'
 		}
 	}
 });
@@ -33,7 +38,7 @@ requirejs.config({
 // convert Google Maps into an AMD module
 //
 define('googlemaps', ['async!http://maps.googleapis.com/maps/api/js'], function(){
-    // return the gmaps namespace for brevity
+    // return the googlemaps namespace for brevity
     return window.google.maps;
 });
 

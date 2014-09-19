@@ -12,7 +12,8 @@ requirejs.config({
 		mocha: '../test/js/libraries/mocha/mocha',
 		chai: '../test/js/libraries/chai',
 		sinon: '../test/js/libraries/sinon-1.10.3',
-		facebook: 'https://connect.facebook.net/en_US/all'
+		facebook: 'https://connect.facebook.net/en_US/all',
+		galleria: 'libraries/galleria-1.4.2.min'
 	},
 	shim: {
 		underscore: {
@@ -23,6 +24,10 @@ requirejs.config({
 		},
 		'facebook' : {
 			exports: 'FB'
+		},
+		'galleria': {
+			deps: ['jquery'],
+			exports: 'Galleria'
 		}
 	}
 });

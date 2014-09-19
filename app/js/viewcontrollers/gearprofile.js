@@ -4,16 +4,22 @@
  */
 
 define(
-	['viewcontroller'],
-	function(ViewController) {
+	['viewcontroller', 'galleria'],
+	function(ViewController, Galleria) {
 		var GearProfile = ViewController.inherit({
+			didInitialize: didInitialize,
 			didRender: didRender
 		});
 
 		return GearProfile;
 
-		function didRender() {
+		function didInitialize() {
+			Galleria.loadTheme('js/libraries/galleria_themes/classic/galleria.classic.js');
 			
+		}
+
+		function didRender() {
+			Galleria.run('.galleria');
 		}
 	}
 );
