@@ -4,9 +4,9 @@
  */
 
 define(
-	['utilities', 'viewcontroller', 'app'],
-	function(Utilities, ViewController, App) {
-		var Header = Utilities.inherit(ViewController, {
+	['viewcontroller', 'app'],
+	function(ViewController, App) {
+		var Header = ViewController.inherit({
 			didRender: didRender,
 			handleLogin: handleLogin
 		});
@@ -19,11 +19,6 @@ define(
 
 		function handleLogin(event, callback) {
 			var user = App.user;
-			user.data = {
-				id: 0
-			};
-			App.router.navigateTo('dashboard');
-			return;
 			user.login(function(error) {
 				if(!error) {
 					App.router.navigateTo('dashboard');

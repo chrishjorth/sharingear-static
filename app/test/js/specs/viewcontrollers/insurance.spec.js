@@ -5,9 +5,7 @@ define(
 		
 		describe('Insurance ViewController', function() {
 			it('Provides the Insurance ViewController', function() {
-				var insuranceVC = new Insurance();
-				expect(Insurance).to.be.a('function');
-				expect(insuranceVC.constructor.name).to.equal('ViewController');
+				expect(Insurance.constructor).to.be.a('function');
 			});
 		});
 	}

@@ -6,8 +6,7 @@
 define(
 	['viewcontroller'],
 	function(ViewController) {
-		//var Footer = ViewController.inherit();
-		var Footer = ViewController;
+		var Footer = ViewController.inherit();
 		return Footer;
 	}
 );

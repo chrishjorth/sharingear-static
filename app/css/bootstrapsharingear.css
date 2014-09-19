@@ -280,7 +280,6 @@ th {
 body {
   /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
   font-family: "Lato", "LatoLatin", sans-serif;
-  
   font-size: 14px;
   line-height: 1.42857143;
   color: #FFF; /* påvirker farven på payoff...*/ 
@@ -475,6 +474,7 @@ h6,
 }
 p {
   margin: 0 0 10px;
+  line-height:1.4;
 }
 .lead {
   margin-bottom: 20px;

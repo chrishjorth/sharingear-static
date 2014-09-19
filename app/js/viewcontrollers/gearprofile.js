@@ -4,9 +4,9 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller'],
-	function(_, Utilities, ViewController) {
-		var GearProfile = Utilities.inherit(ViewController, {
+	['viewcontroller'],
+	function(ViewController) {
+		var GearProfile = ViewController.inherit({
 			didRender: didRender
 		});
 
@@ -17,3 +17,4 @@ define(
 		}
 	}
 );
+

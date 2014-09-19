@@ -5,9 +5,7 @@ define(
 		
 		describe('Privacy ViewController', function() {
 			it('Provides the Privacy ViewController', function() {
-				var privacyVC = new Privacy();
-				expect(Privacy).to.be.a('function');
-				expect(privacyVC.constructor.name).to.equal('ViewController');
+				expect(Privacy.constructor).to.be.a('function');
 			});
 		});
 	}

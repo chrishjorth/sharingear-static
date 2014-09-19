@@ -4,9 +4,9 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'app'],
-	function(_, Utilities, ViewController, App) {
-		var Dashboard = Utilities.inherit(ViewController, {
+	['viewcontroller', 'app'],
+	function(ViewController, App) {
+		var Dashboard = ViewController.inherit({
 			subViewContainerID: 'dashboard-subview-container',
 			$subViewContainer: $(''),
 			subPath: '',
@@ -19,13 +19,14 @@ define(
 		return Dashboard;
 
 		function didInitialize() {
-			if(App.user.data === null) {
+			if(App.user.data.id === null) {
 				this.ready = false;
 				App.router.navigateTo('home');
 				return;
 			}
 
 			if(this.path === 'dashboard') {
+				this.ready = false; //We abort loading the view
 				App.router.navigateTo('dashboard/profile');
 			}
 		}

@@ -3,11 +3,16 @@
  * @author: Chris Hjorth
  */
 define(
-	['utilities', 'model', 'facebook'],
-	function(Utilities, Model, FB) {
+	['model', 'facebook'],
+	function(Model, FB) {
 
-		var User = Utilities.inherit(Model, {
+		var User = Model.inherit({
 			fbStatus: '',
+			data: {
+				id: null,
+				name: '',
+				surname: ''
+			},
 
 			getLoginStatus: getLoginStatus,
 			login: login,
@@ -32,10 +37,9 @@ define(
 
 		function login(callback) {
 			var user = this;
+
 			//We need to make sure Facebook has not changed the status on their side.
 			this.getLoginStatus(function(response) {
-				console.log('login status response: ');
-				console.log(response);
 				if(user.fbStatus !== 'connected') {
 					FB.login(function(response) {
 						var error;
@@ -50,51 +54,44 @@ define(
 						else {
 							error = {error: 'FB login failed'};
 						}
-						console.log('login call response: ');
-						console.log(response);
 
 						user.fbStatus = response.status;
 
 						if(callback && typeof callback === 'function') {
 							callback(error);
 						}
-					});
+					}, {scope: 'email'});
 				}
 				else {
 					user.loginToBackend(response, callback);
-
-					if(callback && typeof callback === 'function') {
-						callback(null);
-					}
 				}
 			});
 		}
 
 		function loginToBackend(FBResponse, callback) {
-			var authData = FBResponse.authResponse,
+			var user = this,
+				authData = FBResponse.authResponse,
 				postData;
 
-			console.log('root url: ' + this.rootURL);
-
 			postData = {
+				fbid: authData.userID,
 				accesstoken: authData.accessToken
-			};
-			this.data = {
-				id: authData.userID,
-				accessToken: authData.accessToken,
-				name: 'Chris Hjorth',
-				hometown: 'Aalborg',
-				bio: 'Blah blah',
-				genres: ''
 			};
 
 			this.post('/users/login', postData, function(error, data) {
 				if(error) {
-					console.log('Error logging into backend: ' + error);
+					if(callback && typeof callback === 'function') {
+						callback('Error logging into backend: ' + error);
+					}
 					return;
 				}
-				console.log('successfully logged into backend');
-				console.log(data);
+				if(user.data === null) {
+					user.data = {};
+				}
+				_.extend(user.data, data);
+				if(callback && typeof callback === 'function') {
+					callback(null, data);
+				}
 			});
 		}
 	}

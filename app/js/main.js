@@ -7,6 +7,7 @@ requirejs.config({
 	baseUrl: 'js',
 	paths: {
 		text: 'libraries/text',
+		async: 'libraries/async',
 		underscore: 'libraries/underscore-min',
 		jquery: 'libraries/jquery-2.1.1.min',
 		bootstrap: 'libraries/bootstrap.min',
@@ -27,6 +28,15 @@ requirejs.config({
 		}
 	}
 });
+
+//Based on http://blog.millermedeiros.com/requirejs-2-0-delayed-module-evaluation-and-google-maps/
+// convert Google Maps into an AMD module
+//
+define('googlemaps', ['async!http://maps.googleapis.com/maps/api/js'], function(){
+    // return the gmaps namespace for brevity
+    return window.google.maps;
+});
+
 
 require(
 	['underscore', 'bootstrap', 'app'],

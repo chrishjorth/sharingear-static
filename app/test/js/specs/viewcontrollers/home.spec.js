@@ -7,7 +7,7 @@ define(
 			describe('Home ViewController', function() {
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.home = new Home({name: 'testVC', $element: this.$fixtures, labels: {}, template: HomeTemplate});
+					this.home = new Home.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: HomeTemplate});
 					sinon.spy(this.home, 'populateSearchBlock');
 					this.home.render();
 				});
@@ -19,8 +19,7 @@ define(
 				});
 
 				it('Provides the Home ViewController', function() {
-					var homeVC = new Home();
-					expect(Home).to.be.a('function');
+					expect(Home.constructor).to.be.a('function');
 				});
 
 				it('Sets up events', function() {

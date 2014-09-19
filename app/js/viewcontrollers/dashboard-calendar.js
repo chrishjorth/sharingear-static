@@ -6,8 +6,8 @@
 define(
 	['viewcontroller'],
 	function(ViewController) {
-		//var Home = ViewController.inherit();
-		var Calendar = ViewController; 
+		var Calendar = ViewController.inherit({
+		});
 		return Calendar;
 	}
 );

@@ -5,9 +5,7 @@ define(
 		
 		describe('List your gear ViewController', function() {
 			it('Provides the ListYourGear ViewController', function() {
-				var listYourGearVC = new ListYourGear();
-				expect(ListYourGear).to.be.a('function');
-				expect(listYourGearVC.constructor.name).to.equal('ViewController');
+				expect(ListYourGear.constructor).to.be.a('function');
 			});
 		});
 	}

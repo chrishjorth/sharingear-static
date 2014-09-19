@@ -33,11 +33,11 @@ define(
 			});
 
 			it('Can navigate to route', function(done) {
-				Router.navigateTo('home', function() {
+				Router.navigateTo('home', null, function() {
 					expect(Router.currentViewController.name).to.equal('home');
-					Router.navigateTo('error', function() {
+					Router.navigateTo('error', null, function() {
 						expect(Router.currentViewController.name).to.equal('error');
-						Router.navigateTo('nonexistingroute', function() {
+						Router.navigateTo('nonexistingroute', null, function() {
 							console.log('ERROR');
 							expect(Router.currentViewController.name).to.equal('error');
 							done();
@@ -48,35 +48,35 @@ define(
 
 			it('Can navigate to path', function(done) {
 				Router.addRoutes('dashboard');
-				Router.navigateTo('dashboard/profile', function() {
+				Router.navigateTo('dashboard/profile', null, function() {
 					expect(Router.currentViewController.name).to.equal('dashboard');
 					done();
 				});
 			});
 
 			it('Can load a view', function(done) {
-				Router.loadView('error', '', function() {
+				Router.loadView('error', '', null, function() {
 					expect(Router.currentViewController.name).to.equal('error');
 					done();
 				});
 			});
 
 			it('Can open a modal view', function(done) {
-				Router.openModalView('error', function() {
+				Router.openModalView('error', null, function() {
 					expect(Router.currentModalViewController.name).to.equal('error');
 					done();
 				});
 			});
 
 			it('Can load a modal view', function(done) {
-				Router.loadModalView('error', '', function() {
+				Router.loadModalView('error', '', null, function() {
 					expect(Router.currentModalViewController.name).to.equal('error');
 					done();
 				});
 			});
 
 			it('Can close a modal view', function(done) {
-				Router.loadModalView('error', '', function() {
+				Router.loadModalView('error', '', null, function() {
 					sinon.spy(Router.currentModalViewController, 'close');
 					Router.closeModalView(function() {
 						sinon.assert.calledOnce(Router.currentModalViewController.close);

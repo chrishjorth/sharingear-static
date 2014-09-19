@@ -4,22 +4,24 @@
  */
 
 define(
-	['jquery', 'router', 'models/user'],
-	function($, Router, User) {
+	['jquery', 'router', 'models/user', 'models/gearclassification'],
+	function($, Router, User, GearClassification) {
 		var App = {
 			router: Router,
 			header: null,
 			footer: null,
-			API_URL: 'http://130.211.111.234',
+			//API_URL: 'http://0.0.0.0:1337',
+			API_URL: 'http://api.sharingear.com',
 			user: null,
+			gearClassification: null,
 			
 			run: run,
 			loadHeader: loadHeader,
 			loadFooter: loadFooter
 		};
 
-		App.user = new User({
-			rootURL: this.API_URL
+		App.user = new User.constructor({
+			rootURL: App.API_URL
 		});
 
 		return App;
@@ -60,6 +62,14 @@ define(
 				//Load header and footer
 				app.loadHeader();
 
+				app.loadFooter();
+
+				App.user.getLoginStatus();
+
+				App.gearClassification = new GearClassification.constructor({
+					rootURL: App.API_URL
+				});
+
 				//Load initial page
 				hash = window.location.hash;
 				if(hash.length > 0) {
@@ -68,12 +78,11 @@ define(
 				else {
 					route = 'home';
 				}
-
-				router.navigateTo(route, callback);
-
-				app.loadFooter();
-
-				App.user.getLoginStatus();
+				
+				router.navigateTo(route);
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
 			});
 
 			console.log('Sharingear initialized.');
@@ -85,7 +94,7 @@ define(
 		function loadHeader(callback) {
 			var header = this.header;
 			require(['viewcontrollers/navigation-header', 'text!../templates/navigation-header.html'], function(HeaderController, HeaderTemplate) {
-				header = new HeaderController({name: 'header', $element: $('.navigation-header'), labels: {}, template: HeaderTemplate});
+				header = new HeaderController.constructor({name: 'header', $element: $('.navigation-header'), labels: {}, template: HeaderTemplate});
 				header.render();
 				if(callback && typeof callback === 'function') {
 					callback();
@@ -99,7 +108,7 @@ define(
 		function loadFooter(callback) {
 			var footer = this.footer;
 			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
-				footer = new FooterController({name: 'footer', $element: $('.footer'), labels: {}, template: FooterTemplate});
+				footer = new FooterController.constructor({name: 'footer', $element: $('.footer'), labels: {}, template: FooterTemplate});
 				footer.render();
 				if(callback && typeof callback === 'function') {
 					callback();

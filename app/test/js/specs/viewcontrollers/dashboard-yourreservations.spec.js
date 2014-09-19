@@ -7,7 +7,7 @@ define(
 			describe('Dashboard Your reservations ViewController', function() {
 				beforeEach(function() {
 					this.$fixtures = $('#fixtures');
-					this.yourReservations = new YourReservations({name: 'testVC', $element: this.$fixtures, labels: {}, template: YourReservationsTemplate, path: 'dashboard/yourreservations'});
+					this.yourReservations = new YourReservations.constructor({name: 'testVC', $element: this.$fixtures, labels: {}, template: YourReservationsTemplate, path: 'dashboard/yourreservations'});
 					sinon.spy(this.yourReservations, 'populateYourReservations');
 				});
 
@@ -18,7 +18,7 @@ define(
 				});
 
 				it('Provides the Dashboard Your reservations ViewController', function() {
-					expect(YourReservations).to.be.a('function');
+					expect(YourReservations.constructor).to.be.a('function');
 				});
 
 				it('Can render', function(done) {
