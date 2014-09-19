@@ -7,11 +7,29 @@ define(
 	function(Utilities, Model) {
 		var Gear = Model.inherit({
 			data: {
-				id: null
+				id: null,
+				type: '',
+				subtype: '',
+				brand: '',
+				model: '',
+				description: '',
+				images: '',
+				price_a: '',
+				price_b: '',
+				price_c: '',
+				address: '',
+				postalcode: '',
+				city: '',
+				region: '',
+				country: '',
+				latitude: null,
+				longitude: null,
+				owner_id: null
 			},
 			createGear: createGear,
 			uploadImage: uploadImage,
-			save: save
+			save: save,
+			update: update
 		});
 
 		return Gear;
@@ -125,6 +143,19 @@ define(
 				if(callback && typeof callback === 'function') {
 					callback(null, data);
 				}
+			});
+		}
+
+		function update(userID, callback) {
+			var model = this;
+			this.get('/gear/' + this.data.id, function(error, gear) {
+				if(error) {
+					console.log(error);
+					callback(error);
+					return;
+				}
+				model.data = gear;
+				callback(null);
 			});
 		}
 	}

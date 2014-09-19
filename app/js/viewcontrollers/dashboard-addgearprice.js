@@ -52,7 +52,11 @@ define(
 
 		function handleSave(event) {
 			var view = event.data;
-			view.save();
+			view.save(function(error) {
+				if(!error) {
+					App.router.navigateTo('dashboard/addgearend', view.newGear);
+				}
+			});
 		}
 
 		function handleBreadcrumbBack(event) {
@@ -94,7 +98,7 @@ define(
 				currentRegion === newGearData.region &&
 				currentCountry === newGearData.country);
 
-			saveCall = function() {
+			saveCall = function(callback) {
 				view.newGear.save(App.user.data.id, function(error) {
 					if(error) {
 						alert('Error saving data');
@@ -113,7 +117,7 @@ define(
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.newGear.data.longitude = results[0].geometry.location.lng();
 						view.newGear.data.latitude = results[0].geometry.location.lat();
-						saveCall();
+						saveCall(callback);
 					}
 					else {
 						console.log('Error geocoding: ' + status);
@@ -121,7 +125,7 @@ define(
 				});
 			}
 			else {
-				saveCall();
+				saveCall(callback);
 			}
 		}
 	}

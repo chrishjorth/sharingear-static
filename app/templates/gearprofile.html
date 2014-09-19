@@ -2,7 +2,7 @@
 	<div class="share_banner">
 		<div class="banner_wrapper">
 			<div class="text-center">
-				<h2><strong>Bla bla bla an instrument and bla bla your music</strong></h2>
+				<h2><strong>Share your instrument, make money, play live!</strong></h2>
 			</div>
 		</div>
 	</div>
@@ -10,7 +10,7 @@
 <div class="container">
 	<div class="row-fluid col-md-7 col-md-offset-1 ">
 		<div class="col-md-12 instr_title subview">
-			<h3>Guitar Model and Brand and bla bla bla</h3>
+			<h3>{{brand}} {{subtype}} {{model}}</h3>
 		</div>
 		<!--<div class="col-md-12 instr_title subview">
 			<div class="col-md-10 ">
@@ -22,16 +22,17 @@
 			
 		</div>-->
 		<div class="col-md-12 instr_title subview">
-			<div class="row galleria">
+			<div class="row galleria" id="gearprofile-galleria">
+				<!--<img src="./images/gibsongold.jpg" data-title="My title" data-description="My description">
 				<img src="./images/gibsongold.jpg" data-title="My title" data-description="My description">
 				<img src="./images/gibsongold.jpg" data-title="My title" data-description="My description">
 				<img src="./images/gibsongold.jpg" data-title="My title" data-description="My description">
-				<img src="./images/gibsongold.jpg" data-title="My title" data-description="My description">
-				<img src="./images/gibsongold.jpg" data-title="My title" data-description="My description">
+				<img src="./images/gibsongold.jpg" data-title="My title" data-description="My description">-->
 			</div>
 			<div class="row-fluid ">
 				<h3 class="descr"><strong>Description</strong></h3>
-				<p>ti rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru
+				<p>
+				 {{description}}
 				</p>
 			</div>
 		</div>
@@ -42,9 +43,9 @@
 			<div  style="cursor:pointer;">Book Now</div>
 		</div>
 		<div class="col-md-12 no_border_subview">
-			<div class="col-md-4 left text-center"><p><span class="num">50kr</span><br>per hour</p></div>
-			<div class="col-md-4 left text-center"><p><span class="num">50kr</span><br>per hour</p></div>
-			<div class="col-md-4 text-center"><p><span class="num">50kr</span><br>per hour</p></div>
+			<div class="col-md-4 left text-center"><p><span class="num">{{price_a}} DKK</span><br>per hour</p></div>
+			<div class="col-md-4 left text-center"><p><span class="num">{{price_b}} DKK</span><br>per hour</p></div>
+			<div class="col-md-4 text-center"><p><span class="num">{{price_c}} DKK</span><br>per hour</p></div>
 		</div>
 		<div class="col-md-12  gmap">
 			<iframe src="http://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d8997.567711214837!2d12.57671!3d55.682173499999905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sdk!4v1411030811264" width="100%" height="300" frameborder="0" style="border:0; padding:0;"></iframe>
@@ -53,17 +54,10 @@
 		<div class="col-md-12  instr_title prof_subview">
 			<div class="col-md-12"><h4>Tony <img class="pull-right" src="images/icon-fbicon.png"></h4></div>
 			<img  class="profile_im" src="images/iommi.jpg">
-			<div class="col-md-12"><p>ti rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou 
-				</p></div>
-
+			<div class="col-md-12">
+				<p>ti rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou ri ri rou ru i rou 
+				</p>
+			</div>
  		</div>
 	</div>
-	
-	
 </div>
-<!--<script src="js/libraries/galleria-1.4.2.min.js"></script>-->
-<!--<script src="js/libraries/galleria_themes/classic/galleria.classic.js"></script>-->
-<!--<script>
-Galleria.loadTheme('js/libraries/galleria_themes/classic/galleria.classic.js');
-Galleria.run('.galleria');
-</script>-->
