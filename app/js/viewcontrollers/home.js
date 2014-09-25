@@ -4,13 +4,14 @@
  */
 
 define(
-	['underscore', 'viewcontroller', 'models/gearlist', 'app'],
-	function(_, ViewController, GearList, App) {
+	['underscore', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps'],
+	function(_, ViewController, GearList, App, GoogleMaps) {
 
 		var Home = ViewController.inherit({
 			gearList: new GearList.constructor({
 				rootURL: App.API_URL
 			}),
+			geocoder: new GoogleMaps.Geocoder(),
 
 			searchBlockID: 'home-search-block',
 			didRender: didRender,
@@ -36,7 +37,8 @@ define(
 		 * @return Always false to avoid triggering HTML form
 		 */
 		function handleSearch(event, callback) {
-			var view = event.data;
+			var view = event.data,
+				location;
 
 			//Remove promo block and billboard
 			$('#home-promo-block').css({
@@ -46,10 +48,20 @@ define(
 				display: 'none'
 			});
 
-			view.gearList.search('Copenhagen', 'Marshall amp', '20140828-20140901', function(searchResults) {
-				view.populateSearchBlock(searchResults);
-				if(callback && typeof callback === 'function') {
-					callback();
+			location = $('#home-search-form #search-location', view.$element).val();
+			view.geocoder.geocode({address: location}, function(results, status) {
+				var locationData;
+				if(status === GoogleMaps.GeocoderStatus.OK) {
+					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
+					view.gearList.search(locationData, $('#home-search-form #search-gear', this.$element).val(), '20140828-20140901', function(searchResults) {
+						view.populateSearchBlock(searchResults);
+						if(callback && typeof callback === 'function') {
+							callback();
+						}
+					});
+				}
+				else {
+					console.log('Error geocoding: ' + status);
 				}
 			});
 

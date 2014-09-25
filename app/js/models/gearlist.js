@@ -16,8 +16,10 @@ define(
 
 		function search(location, gear, daterange, callback) {
 			var view = this;
+
 			this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
 				if(error) {
+					console.log(error);
 					callback([]);
 				}
 				else {
