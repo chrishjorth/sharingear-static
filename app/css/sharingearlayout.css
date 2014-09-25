@@ -1263,6 +1263,48 @@ background-color: rgb(56,143,192);
 .yourprofilefieldsize {
     width: 54%;
 }
+
+/* ------------------------ DASHBOARD - CALENDAR --------------- */
+.dashboard .subview .week-calendar .row {
+    border: none;
+}
+
+.week-calendar .calendar-header .col-md-1 {
+    padding: 0;
+    text-align: center;
+}
+
+.week-calendar .hour-row .col-md-1 {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #cccccc;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #cccccc;
+    height: 30px;
+}
+
+.week-calendar .hour-row .col-md-1:last-child {
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #cccccc;
+}
+
+.week-calendar .hour-row:last-child .col-md-1 {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #cccccc;
+}
+
+.week-calendar .hour-row .col-md-offset-1 {
+    border: none;
+    text-align: right;
+}
+
+.week-calendar .hour-row:last-child .col-md-offset-1 {
+    border: none;
+}
+
 /* ------------------------ FOOTER ----------------------------- */
 
 .footer {
