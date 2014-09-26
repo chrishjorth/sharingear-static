@@ -1,13 +1,16 @@
-<div class="calendar subview">
+<div class="dashboard-calendar subview">
 	<div class="row">
 		<div class="col-md-12"><h3>Calendar</h3></div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-6">
 			<button class="btn btn-default">Today</button><button class="btn btn-default">Previous</button><button class="btn btn-default">Next</button>
 		</div>
+		<div class="col-md-6">
+			<button class="btn btn-default" id="dashboard-calendar-weeks-btn">Weeks</button><button class="btn btn-default" id="dashboard-calendar-months-btn">Months</button>
+		</div>
 	</div>
-	<div class="week-calendar" id="calendar-week-container">
+	<div class="calendar week-calendar" id="calendar-weeks-container">
 		<div class="row calendar-header">
 			<div class="col-md-1 col-md-offset-1"></div>
 			<div class="col-md-1">Monday</div>
@@ -259,5 +262,76 @@
 			<div class="col-md-1"></div>
 		</div>
 	</div>
-	<div class="row" id="calendar-month-container"></div>
+	<div class="calendar month-calendar hidden" id="calendar-months-container">
+		<div class="row calendar-header">
+			<div class="col-md-1 col-md-offset-1"></div>
+			<div class="col-md-1">Monday</div>
+			<div class="col-md-1">Tuesday</div>
+			<div class="col-md-1">Wednesday</div>
+			<div class="col-md-1">Thursday</div>
+			<div class="col-md-1">Friday</div>
+			<div class="col-md-1">Saturday</div>
+			<div class="col-md-1">Sunday</div>
+		</div>
+		<div class="row day-row">
+			<div class="col-md-1 col-md-offset-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+		</div>
+		<div class="row day-row">
+			<div class="col-md-1 col-md-offset-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+		</div>
+		<div class="row day-row">
+			<div class="col-md-1 col-md-offset-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+		</div>
+		<div class="row day-row">
+			<div class="col-md-1 col-md-offset-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+		</div>
+		<div class="row day-row">
+			<div class="col-md-1 col-md-offset-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+		</div>
+		<div class="row day-row">
+			<div class="col-md-1 col-md-offset-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+			<div class="col-md-1"></div>
+		</div>
+	</div>
 </div>
