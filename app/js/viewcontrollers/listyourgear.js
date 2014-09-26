@@ -6,8 +6,7 @@
 define(
 	['viewcontroller'],
 	function(ViewController) {
-		//var Home = ViewController.inherit();
-		var ListYourGear = ViewController; 
+		var ListYourGear = ViewController.inherit({});
 		return ListYourGear;
 	}
 );
