@@ -4,7 +4,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-6">
-			<button class="btn btn-default">Today</button><button class="btn btn-default">Previous</button><button class="btn btn-default">Next</button>
+			<button class="btn btn-default" id="dashboard-calendar-today-btn">Today</button><button class="btn btn-default" id="dashboard-calendar-previous-btn">Previous</button><button class="btn btn-default" id="dashboard-calendar-next-btn">Next</button>
 		</div>
 		<div class="col-md-6">
 			<button class="btn btn-default" id="dashboard-calendar-weeks-btn">Weeks</button><button class="btn btn-default" id="dashboard-calendar-months-btn">Months</button>
@@ -13,13 +13,34 @@
 	<div class="calendar week-calendar" id="calendar-weeks-container">
 		<div class="row calendar-header">
 			<div class="col-md-1 col-md-offset-1"></div>
-			<div class="col-md-1">Monday</div>
-			<div class="col-md-1">Tuesday</div>
-			<div class="col-md-1">Wednesday</div>
-			<div class="col-md-1">Thursday</div>
-			<div class="col-md-1">Friday</div>
-			<div class="col-md-1">Saturday</div>
-			<div class="col-md-1">Sunday</div>
+			<div class="col-md-1">
+				<div>Monday</div>
+				<div class="date"></div>
+			</div>
+			<div class="col-md-1">
+				<div>Tuesday</div>
+				<div class="date"></div>
+			</div>
+			<div class="col-md-1">
+				<div>Wednesday</div>
+				<div class="date"></div>
+			</div>
+			<div class="col-md-1">
+				<div>Thursday</div>
+				<div class="date"></div>
+			</div>
+			<div class="col-md-1">
+				<div>Friday</div>
+				<div class="date"></div>
+			</div>
+			<div class="col-md-1">
+				<div>Saturday</div>
+				<div class="date"></div>
+			</div>
+			<div class="col-md-1">
+				<div>Sunday</div>
+				<div class="date"></div>
+			</div>
 		</div>
 		<div class="row hour-row" id="hour-1">
 			<div class="col-md-1 col-md-offset-1">12am</div>

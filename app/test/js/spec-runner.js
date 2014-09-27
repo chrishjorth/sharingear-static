@@ -10,6 +10,7 @@ requirejs.config({
 		async: 'libraries/async',
 		underscore: 'libraries/underscore-min',
 		jquery: 'libraries/jquery-2.1.1.min',
+		moment: 'libraries/moment.min',
 		mocha: '../test/js/libraries/mocha/mocha',
 		chai: '../test/js/libraries/chai',
 		sinon: '../test/js/libraries/sinon-1.10.3',
