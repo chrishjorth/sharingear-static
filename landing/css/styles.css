@@ -180,6 +180,20 @@ h5 {
     font-weight: 300;
 }
 
+.manifesttype {
+    color: #00aeff; 
+}
+
+
+.fontto {
+font-size: 18px;
+font-weight: 100;
+color: #fff;
+padding-bottom: 50px;
+}
+
+
+
 /*---------------------------------------
    CUSTOM BUTTON              
 -----------------------------------------*/
@@ -354,7 +368,7 @@ header .only-logo .navbar .navbar-header {
 
 header .intro-section {
     margin: auto;
-    padding-top: 15%;
+    padding-top: 0%;
 }
 
 header .intro-section .intro {
@@ -369,6 +383,29 @@ header .intro-section h5 {
 header .intro-section .buttons {
     margin-top: 35px;
 }
+
+
+
+/* INTRO */
+
+header .intro-section2 {
+    margin: auto;
+    padding-top: 5%;
+}
+
+header .intro-section2 .intro2 {
+    color: #ffffff;
+    margin-bottom: 36px;
+}
+
+header .intro-section2 h5 {
+    color: #ffffff;
+}
+
+header .intro-section2 .buttons {
+    margin-top: 35px;
+}
+
 
 /*---------------------------------------
    SECTION:  FEATURES                 
@@ -563,7 +600,9 @@ object {
 }
 
 .testimonials .feedback .company-info {
-    font-size: 12px;
+    font-size: 30px;
+    padding-bottom:100px;
+    color: #00aeff; 
 }
 
 .testimonials .owl-theme .owl-controls .owl-page span {
@@ -778,8 +817,32 @@ height: 55px;
 }
 
 
+.iconc-guitar::before {
+    content: "\e609";  
+}
 
 
+.iconc-amp::before {
+    content: "\e60a";  
+}
+
+
+.iconc-cabinet::before {
+    content: "\e605";  
+}
+
+.iconc-drums::before {
+    content: "\e608";  
+}
+
+
+.iconc-band::before {
+    content: "\e60b";  
+}
+
+.iconc-bass::before {
+    content: "\e603";  
+}
 
 .calltoaction {
 
