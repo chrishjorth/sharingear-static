@@ -933,6 +933,10 @@ footer .contact-box .expanded-contact-form .textarea-box:active {
     color: #000;
 }
 
+footer #mailReg {
+    margin-bottom: 50px;
+}
+
 footer .social-icons {
     margin-top: 30px;
     border-bottom: 1px solid #e5e5e5;
