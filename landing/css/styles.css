@@ -765,15 +765,13 @@ height: 55px;
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-    height: 50px;
-    color: pink;
 
         /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-.iconc-test {
+.iconc-test::before {
     content: "\e600";  
 
 

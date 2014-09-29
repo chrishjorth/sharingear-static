@@ -9,12 +9,14 @@ define(
 		var Calendar = ViewController.inherit({
 			weekMode: true, //if false then it is months mode
 			shownWeek: 0,
+			shownMonth: 0,
 			shownYear: 0,
 
 			didInitialize: didInitialize,
 			didRender: didRender,
 
 			setupWeekCalendar: setupWeekCalendar,
+			setupMonthCalendar: setupMonthCalendar,
 
 			switchToWeeks: switchToWeeks,
 			switchToMonths: switchToMonths,
@@ -33,6 +35,7 @@ define(
 				}
 			});
 			this.shownWeek = Moment().week();
+			this.shownMonth = Moment().month();
 			this.shownYear = Moment().year();
 		}
 
@@ -57,6 +60,17 @@ define(
 			$('.col-md-1:nth-child(0n+6) .date', $weekCalHeader).html((week.weekday(4).date()) + '/' + (week.weekday(4).month() + 1));
 			$('.col-md-1:nth-child(0n+7) .date', $weekCalHeader).html((week.weekday(5).date()) + '/' + (week.weekday(5).month() + 1));
 			$('.col-md-1:nth-child(0n+8) .date', $weekCalHeader).html((week.weekday(6).date()) + '/' + (week.weekday(6).month() + 1));
+		}
+
+		/**
+		 * @param currentMonth: zero indexed month number
+		 */
+		function setupMonthCalendar(currentMonth) {
+			var $calendarContainer = $('#calendar-months-container', this.$element),
+				month = Moment({year: this.shownYear}).month(currentMonth),
+				startDay = month.date(1).weekday();
+			
+			$('.day-row:nth-child(0n+2) .col-md-1:nth-child(0n+' + (2 + startDay) + ')', $calendarContainer).html(1);
 		}
 
 		function switchToWeeks(event) {
@@ -84,6 +98,7 @@ define(
 				$weeksContainer.addClass('hidden');
 			}
 			$('#calendar-months-container', view.$element).removeClass('hidden');
+			view.setupMonthCalendar(view.shownMonth);
 			view.weekMode = false;
 		}
 
