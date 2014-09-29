@@ -21,17 +21,17 @@ $(".video-container").fitVids();
 ===  MAILCHIMP                 ====
 =================================== */
 
-$('.mailchimp').ajaxChimp({
+$('#register-form').ajaxChimp({
     callback: mailchimpCallback,
-    url: "http://sharingear.us9.list-manage.com/subscribe/post?u=0a99e67817e42b2ad6fe679e8&amp;id=40d25acc40" //Replace this with your own mailchimp post URL. Don't remove the "". Just paste the url inside "".  
+    url: "http://sharingear.us9.list-manage.com/subscribe/post?u=0a99e67817e42b2ad6fe679e8&id=40d25acc40" //Replace this with your own mailchimp post URL. Don't remove the "". Just paste the url inside "".  
 });
 
 function mailchimpCallback(resp) {
-     if (resp.result === 'success') {
+    if (resp.result === 'success') {
         $('.subscription-success').html('<i class="icon_check_alt2"></i><br/>' + resp.msg).fadeIn(1000);
         $('.subscription-error').fadeOut(500);
-        
-    } else if(resp.result === 'error') {
+    }
+    else if(resp.result === 'error') {
         $('.subscription-error').html('<i class="icon_close_alt2"></i><br/>' + resp.msg).fadeIn(1000);
     }  
 }
