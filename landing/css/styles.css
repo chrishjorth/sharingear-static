@@ -370,6 +370,14 @@ header .intro-section .buttons {
     margin-top: 35px;
 }
 
+header #mailReg .subscription-success {
+    color: #ffffff;
+}
+
+header #mailReg .subscription-error {
+    color: #ffffff;
+}
+
 /*---------------------------------------
    SECTION:  FEATURES                 
 -----------------------------------------*/
