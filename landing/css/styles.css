@@ -501,7 +501,7 @@ header #mailReg .subscription-error {
     max-width: 350px;
     margin: auto;
     margin-bottom: 20px;
-    margin-top: 20px; 
+    margin-top: 50px; 
 }
 
 .app-brief .phone-image img {
@@ -510,7 +510,8 @@ header #mailReg .subscription-error {
 
 .app-brief .left-align {
     text-align: left;
-    margin-bottom: 20px;
+    margin-top: 30px;
+    /*margin-bottom: 20px;*/
 }
 
 .app-brief .left-align p {
