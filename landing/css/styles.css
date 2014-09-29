@@ -368,7 +368,8 @@ header .only-logo .navbar .navbar-header {
 
 header .intro-section {
     margin: auto;
-    padding-top: 0%;
+    padding-top: 0;
+    color: #ffffff;
 }
 
 header .intro-section .intro {
@@ -488,7 +489,7 @@ header #mailReg .subscription-error {
 -----------------------------------------*/
 
 .app-brief {
-    padding-top: 110px;
+    padding-top: 70px;
     padding-bottom: 60px;
 }
 
@@ -499,7 +500,8 @@ header #mailReg .subscription-error {
 .app-brief .phone-image {
     max-width: 350px;
     margin: auto;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
+    margin-top: 50px; 
 }
 
 .app-brief .phone-image img {
@@ -508,13 +510,15 @@ header #mailReg .subscription-error {
 
 .app-brief .left-align {
     text-align: left;
-    margin-bottom: 50px;
+    margin-top: 30px;
+    /*margin-bottom: 20px;*/
 }
 
 .app-brief .left-align p {
     display: block;
     float: none;
-    margin-top: 50px;
+    margin-top: 14px;
+    margin-bottom: 20px;
 }
 
 .app-brief .left-align .feature-list {
@@ -572,12 +576,12 @@ object {
     padding-bottom: 110px;
 }
 
-.testimonials .feedback {
+.feedback {
     max-width: 750px;
     margin: auto;
 }
 
-.testimonials .feedback .image {
+.feedback .image {
     font-size: 24px;
     border: 2px solid transparent;
     -webkit-box-shadow: 0px 0px 0px 2px #ffffff;
@@ -591,35 +595,35 @@ object {
     overflow: hidden;
 }
 
-.testimonials .feedback .image img {
+.feedback .image img {
     width: 100%;
     vertical-align: top;
 }
 
-.testimonials .feedback .message {
+.feedback .message {
     font-size: 18px;
     font-style: italic;
     margin-top: 40px;
     margin-bottom: 30px;
 }
 
-.testimonials .feedback .name {
+.feedback .name {
     margin-top: 15px;
     font-weight: 400;
 }
 
-.testimonials .feedback .company-info {
+.feedback .company-info {
     font-size: 30px;
     padding-bottom:100px;
     color: #00aeff; 
 }
 
-.testimonials .owl-theme .owl-controls .owl-page span {
+.owl-theme .owl-controls .owl-page span {
     background: #ffffff;
     border-radius: 50%;
 }
 
-.testimonials .customNavigation a {
+.customNavigation a {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -864,12 +868,6 @@ padding-top: 12px;
 
 }
 
-
-
-
-
-
-
 /*---------------------------------------
    SECTION:  FOOTER                
 -----------------------------------------*/
@@ -928,6 +926,10 @@ footer .contact-box .expanded-contact-form .textarea-box {
 
 footer .contact-box .expanded-contact-form .textarea-box:active {
     color: #000;
+}
+
+footer #mailReg {
+    margin-bottom: 50px;
 }
 
 footer .social-icons {
