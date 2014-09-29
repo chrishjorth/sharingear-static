@@ -5,7 +5,7 @@
 
 define(
 	['viewcontroller', 'galleria', 'app', 'models/gear', 'googlemaps'],
-	function(ViewController, Galleria,App, Gear, GoogleMaps) {
+	function(ViewController, Galleria, App, Gear, GoogleMaps) {
 		var GearProfile = ViewController.inherit({
 			gear: null,
 			map: null,
