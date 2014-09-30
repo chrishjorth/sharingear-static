@@ -33,7 +33,8 @@ function mailchimpCallback(resp) {
     }
     else if(resp.result === 'error') {
         $('.subscription-error').html('<i class="icon_close_alt2"></i><br/>' + resp.msg).fadeIn(1000);
-    }  
+    }
+    ga('send', 'event', 'signup', 'register', 'mailchimp form', 0);
 }
 
 /* =================================
@@ -290,6 +291,7 @@ $('#fb-share-btn').on('click', function(event) {
     }, function(response){
         console.log(response);
     });
+    ga('send', 'event', 'signup', 'share-fb', 'Share on FB button', 0);
 });
 
 
