@@ -970,3 +970,19 @@ footer .copyright {
     padding-top: 10px;
     margin-bottom: 50px;
 }
+
+/*---------------------------------------
+   MOBILE QUICKFIXES                
+-----------------------------------------*/
+
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+    header .only-logo .navbar .navbar-header img {
+        width: 280px;
+    }
+
+    footer .logo img {
+        width: 280px;
+    }
+}

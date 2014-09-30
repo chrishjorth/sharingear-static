@@ -88,7 +88,7 @@
 					<div class="only-logo">
 						<div class="navbar">
 							<div class="navbar-header">
-								<img src="images/logo.png" alt="Sharingear ">
+								<img src="images/logo.png" alt="Sharingear logo" class="responsive-img">
 							</div>
 						</div>
 					</div> 
@@ -458,7 +458,7 @@
 
 
 		<!-- LOGO -->
-		<div><img src="images/logo-black.png" alt="LOGO" class="responsive-img"></div>
+		<div class="logo"><img src="images/logo-black.png" alt="LOGO" class="responsive-img"></div>
 		
 		<!-- SOCIAL ICONS -->
 		<ul class="social-icons">
@@ -505,6 +505,7 @@
   ga('create', 'UA-50661577-1', 'auto');
   ga('require', 'displayfeatures');
   ga('send', 'pageview');
+  setTimeout("ga('send', 'event', 'Category', 'Event');", 30000); //Adjusted bounce rate fix
 </script>
 
 <script>
