@@ -4,8 +4,8 @@
  */
 
 define(
-	['underscore', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps'],
-	function(_, ViewController, GearList, App, GoogleMaps) {
+	['underscore', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker'],
+	function(_, ViewController, GearList, App, GoogleMaps, daterangepicker) {
 
 		var Home = ViewController.inherit({
 			gearList: new GearList.constructor({
@@ -23,7 +23,21 @@ define(
 		return Home;
 
 		function didRender() {
-			this.setupEvents();
+
+            var currentDate = new Date();
+            var month = currentDate.getMonth() + 1;
+            var day = currentDate.getDate();
+            var year = currentDate.getFullYear();
+            var minDateString = (day + "/" + month + "/" + year);
+
+            $('#search-date').daterangepicker({
+                singleDatePicker: false,
+                format: 'DD/MM/YYYY',
+                minDate: minDateString,
+                showDropdowns: true
+            });
+
+            this.setupEvents();
 		}
 
 		function setupEvents() {
