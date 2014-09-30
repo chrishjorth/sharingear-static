@@ -116,17 +116,15 @@ li {
 -----------------------------------------*/
 
 /* FONT FACE LOADER */
-/*@font-face {
+@font-face {
     font-family: 'Lane';
     src: url('../fonts/lanenar_Lane.eot');
     src: url('../fonts/lanenar_Lane.eot?#iefix') format('embedded-opentype'), url('../fonts/lanenar_Lane.woff') format('woff'), url('../fonts/lanenar_Lane.ttf') format('truetype'), url('../fonts/lanenar_Lane.svg#Lane') format('svg');
     font-weight: normal;
     font-style: normal;
-}*/
-@font-face {
-font-family: 'Lato', sans-serif;
-
 }
+
+
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
  
