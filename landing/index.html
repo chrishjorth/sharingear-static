@@ -70,6 +70,8 @@
 <!-- =========================
      HEADER   
 ============================== -->
+		<div id="fb-root"></div>
+
 		<header class="header" data-stellar-background-ratio="0.5" id="home">
 			<!-- COLOR OVER IMAGE -->
 			<div class="color-overlay"> <!-- To make header full screen. Use .full-screen class with color overlay. Example: <div class="color-overlay full-screen">  -->
@@ -202,9 +204,7 @@
 						<img src="images/clients-pic/3.jpg" alt="">
 					</div>
 				
-					<div class="message">
-						Got some gear or need some gear? It's all there on Sharingear. Get your gear out there, and get it workin' for you. 
-					</div>
+					<div class="message">"Got some gear or need some gear? It's all there on Sharingear. Get your gear out there, and get it workin' for you."</div>
 				
 					<div class="white-line"></div>
 				
@@ -223,7 +223,7 @@
 						<img src="images/clients-pic/1.jpg" alt="">
 					</div>
 				
-					<div class="message">It's kind of like a marketplace, friendship and community to share instruments and save costs and make some money. It's a way to make it easier for each other as musicians in bands - a way for everyone to help out.</div>
+					<div class="message">"It's kind of like a marketplace, friendship and community to share instruments and save costs and make some money. It's a way to make it easier for each other as musicians in bands - a way for everyone to help out."</div>
 				
 					<div class="white-line"></div>
 				
@@ -242,7 +242,7 @@
 						<img src="images/clients-pic/2.jpg" alt="">
 					</div>
 				
-					<div class="message">If you are in a band, flying into some place in Europe, sometimes instead of having to get the whole backline, maybe if you just need to fly in and play one show, there are musicians in other towns, possibliy in your town, that have gear just laying around you can rent.</div>
+					<div class="message">"If you are in a band, flying into some place in Europe, sometimes instead of having to get the whole backline, maybe if you just need to fly in and play one show, there are musicians in other towns, possibliy in your town, that have gear just laying around you can rent."</div>
 				
 					<div class="white-line"></div>
 				
@@ -271,21 +271,23 @@
 		<!-- SECTION HEADER -->
 		<div class="section-header wow fadeIn animated" data-wow-offset="120" data-wow-duration="1.5s">
 		
-		<!-- MAIL REGISTRATION -->
-		<h2 class="blue-text">Sign up for early accesss</h2>
-		<div id="mailReg">
-			<form method="post" id="register-form" onsubmit="return false;">
-				<input id="email" name="email" type="email" class="form-control input-box subscribe-height subscribe-width" style="display: inline-block;" placeholder="Your Email"> 
-				<input class="btn btn-default standard-button" id="button-post" name="submit" type="submit" value="Try it out!">
-			</form>
-			<div class="subscription-success"></div>
-			<div class="subscription-error"></div>
-		</div>
-		<h3 class="dark-text">Create awareness for your band, and share with other artists!</h3>
-		
-			<!-- /END MAIL REGISTRATION -->
+			<!-- MAIL REGISTRATION -->
+			<h2 class="blue-text">Sign up for early accesss</h2>
+			<div id="mailReg">
+				<form method="post" id="register-form" onsubmit="return false;">
+					<input id="email" name="email" type="email" class="form-control input-box subscribe-height subscribe-width" style="display: inline-block;" placeholder="Your Email"> 
+					<input class="btn btn-default standard-button" id="button-post" name="submit" type="submit" value="Try it out!">
+				</form>
+				<div class="subscription-success"></div>
+				<div class="subscription-error"></div>
 			</div>
-</div></section>
+			<!-- /END MAIL REGISTRATION -->
+			<h3 class="dark-text">Create awareness for your band, and share with other artists!</h3>
+			<a href="javascript:;" id="fb-share-btn"><img src="images/fb_share.png" class="responsive-img"></a>
+			
+		</div>
+	</div>
+</section>
 
 <!-- =========================
      FEATURES - MUSICIANS WANT TO RENT YOUR GEAR  
@@ -296,8 +298,8 @@
 <section class="features" id="features"> -->
 	<div class="container">
 	<div class="">
-			<!-- SECTION TITLE --><br><br>
-			<p><h2 class="dark-text">Musicians want to rent your gear</h2> </p>
+			<!-- SECTION TITLE -->
+			<h2 class="dark-text">Musicians want to rent your gear</h2>
 			<div class="colored-line"></div>
 			<div class="colored-line"></div>
 		</div>
@@ -495,6 +497,16 @@
 
   ga('create', 'UA-50661577-1', 'auto');
   ga('send', 'pageview');
+</script>
+
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=522375581240221&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 </script>
 
 </body>
