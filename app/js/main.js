@@ -13,7 +13,8 @@ requirejs.config({
 		bootstrap: 'libraries/bootstrap.min',
 		moment: 'libraries/moment.min',
 		facebook: 'https://connect.facebook.net/en_US/all',
-		galleria: 'libraries/galleria-1.4.2.min'
+		galleria: 'libraries/galleria-1.4.2.min',
+		daterangepicker: 'libraries/daterangepicker/daterangepicker'
 	},
 	shim: {
 		underscore: {
@@ -31,6 +32,9 @@ requirejs.config({
 		'galleria': {
 			deps: ['jquery'],
 			exports: 'Galleria'
+		},
+		'daterangepicker': {
+			deps: ['jquery', 'bootstrap', 'moment']
 		}
 	}
 });
