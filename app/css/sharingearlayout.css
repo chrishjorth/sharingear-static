@@ -2463,6 +2463,9 @@ footer a:hover {
 }
 .bgclr {
     color:#00aeff;
+    background: #FCFCFC; 
+    padding-left: 12px;
+   
 }
 .box .price-boxes .price {
     float:left;

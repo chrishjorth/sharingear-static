@@ -124,6 +124,8 @@ li {
     font-style: normal;
 }
 
+
+
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
  
     @font-face {
@@ -236,6 +238,10 @@ padding-bottom: 50px;
 
 .dark-text {
     color: #272727;
+}
+
+.blue-text {
+    color: #00aeff;
 }
 
 .grey-bg {
@@ -869,8 +875,19 @@ padding-top: 12px;
 }
 
 /*---------------------------------------
+   SECTION:  SIGNUP                
+-----------------------------------------*/
+#fb-share-btn {
+    margin-top: 10px;
+}
+
+/*---------------------------------------
    SECTION:  FOOTER                
 -----------------------------------------*/
+
+footer {
+    padding-top: 40px;
+}
 
 footer .contact-box {
     margin-bottom: 78px;
@@ -928,7 +945,7 @@ footer .contact-box .expanded-contact-form .textarea-box:active {
     color: #000;
 }
 
-footer #mailReg {
+#mailReg {
     margin-bottom: 50px;
 }
 
