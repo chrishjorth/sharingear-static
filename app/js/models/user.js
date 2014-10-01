@@ -11,7 +11,8 @@ define(
 			data: {
 				id: null,
 				name: '',
-				surname: ''
+				surname: '',
+                city: ''
 			},
 
 			getLoginStatus: getLoginStatus,

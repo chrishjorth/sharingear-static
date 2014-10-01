@@ -2,13 +2,19 @@
  * JavaScript utilities.
  * @author: Chris Hjorth
  */
-define([
-], function() {
-	return {
-		inherit: inherit,
-		getBaseURL: getBaseURL,
-		ajajFileUpload: ajajFileUpload
-	};
+define(
+    ['googlemaps'],
+    function(GoogleMaps) {
+    var Util ={
+        geocoder: new GoogleMaps.Geocoder(),
+
+        inherit: inherit,
+        getBaseURL: getBaseURL,
+        ajajFileUpload: ajajFileUpload,
+        geoLocationGetCity: geoLocationGetCity
+    };
+
+	return Util;
 
 	/**
 	 * @return A new object that has the same properties as object but with the added properties inheritOptions
@@ -81,4 +87,26 @@ define([
 			}
 		});
 	}
+
+    //Get city name based on latitude and longitude
+    function geoLocationGetCity(lat, lon, callback) {
+        var latitude = lat;
+        var longitude = lon;
+        var geocoder = new GoogleMaps.Geocoder();
+        var locationCity = '';
+
+        //Use Google Geocoder to translate the coordinates to city name
+        var latLng = new GoogleMaps.LatLng(latitude,longitude);
+        geocoder.geocode({'latLng':latLng}, function (results, status) {
+
+            if(status === GoogleMaps.GeocoderStatus.OK) {
+
+                locationCity = results[0].address_components[2].long_name;
+
+                $('#search-location').val(locationCity);
+                $('#listyourgear-location').val(locationCity);
+                callback(locationCity);
+            }
+        });
+    }
 });
