@@ -4,8 +4,8 @@
  */
 
  define(
- 	['viewcontroller', 'app'],
- 	function(ViewController, App) {
+ 	['viewcontroller', 'app','utilities'],
+ 	function(ViewController, App, utilities) {
  		var ListYourGear = ViewController.inherit({
 
  			didRender: didRender,
@@ -18,7 +18,25 @@
 
  		function didRender() {
 
- 			this.setupEvent('click', '#submitGearButton', this, this.handleLogin);
+            //Filling the Location input with current location using HTML5
+            if(App.user.data.city===''){
+
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(function(position){
+                        var lat = position.coords.latitude;
+                        var lon = position.coords.longitude;
+                        utilities.geoLocationGetCity(lat,lon, function (locationCity) {
+                            App.user.data.city = locationCity;
+                        });
+
+                    });
+                }
+
+            }else{
+                var loc = App.user.data.city;
+                $('#listyourgear-location').val(loc);
+            }
+            this.setupEvent('click', '#submitGearButton', this, this.handleLogin);
 
  		}
 

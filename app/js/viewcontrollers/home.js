@@ -4,14 +4,15 @@
  */
 
 define(
-	['underscore', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker'],
-	function(_, ViewController, GearList, App, GoogleMaps, daterangepicker) {
+	['underscore', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker', 'utilities'],
+	function(_, ViewController, GearList, App, GoogleMaps, daterangepicker, utilities) {
 
 		var Home = ViewController.inherit({
 			gearList: new GearList.constructor({
 				rootURL: App.API_URL
 			}),
 			geocoder: new GoogleMaps.Geocoder(),
+
 
 			searchBlockID: 'home-search-block',
 			didRender: didRender,
@@ -24,6 +25,7 @@ define(
 
 		function didRender() {
 
+            //Loading the daterangepicker with available days from today
             var currentDate = new Date();
             var month = currentDate.getMonth() + 1;
             var day = currentDate.getDate();
@@ -37,12 +39,33 @@ define(
                 showDropdowns: true
             });
 
+            //Filling the Location input with current location using HTML5 only if User.city is empty
+            if(App.user.data.city===''){
+
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(function(position){
+                        var lat = position.coords.latitude;
+                        var lon = position.coords.longitude;
+                        utilities.geoLocationGetCity(lat,lon, function (locationCity) {
+                            App.user.data.city = locationCity;
+                        });
+
+                    });
+                }
+
+            }else{
+                var loc = App.user.data.city;
+                $('#search-location').val(loc);
+            }
+
             this.setupEvents();
 		}
 
 		function setupEvents() {
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 		}
+
+
 
 		/**
 		 * Displays search results from the model.
