@@ -294,4 +294,20 @@ $('#fb-share-btn').on('click', function(event) {
     ga('send', 'event', 'signup', 'share-fb', 'Share on FB button', 1);
 });
 
+/* =================================
+===  Social buttons             ====
+=================================== */
+$('#social-icon-fb-btn').on('click', function(event) {
+    ga('send', 'event', 'social', 'fb', 'Go to Facebook page', 1);
+    window.location.href = 'https://www.facebook.com/sharingear';
+});
 
+$('#social-icon-twitter-btn').on('click', function(event) {
+    ga('send', 'event', 'social', 'twitter', 'Go to Twitter page', 1);
+    window.location.href = 'http://www.twitter.com/sharingear';
+});
+
+$('#social-icon-instagram-btn').on('click', function(event) {
+    ga('send', 'event', 'social', 'instagram', 'Go to Instagram page', 1);
+    window.location.href = 'http://instagram.com/sharingear';
+});

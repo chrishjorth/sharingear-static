@@ -10,12 +10,14 @@ requirejs.config({
 		async: 'libraries/async',
 		underscore: 'libraries/underscore-min',
 		jquery: 'libraries/jquery-2.1.1.min',
+		bootstrap: 'libraries/bootstrap.min',
 		moment: 'libraries/moment.min',
 		mocha: '../test/js/libraries/mocha/mocha',
 		chai: '../test/js/libraries/chai',
 		sinon: '../test/js/libraries/sinon-1.10.3',
 		facebook: 'https://connect.facebook.net/en_US/all',
-		galleria: 'libraries/galleria-1.4.2.min'
+		galleria: 'libraries/galleria-1.4.2.min',
+		daterangepicker: 'libraries/daterangepicker/daterangepicker'
 	},
 	shim: {
 		underscore: {
@@ -24,12 +26,18 @@ requirejs.config({
 		jquery: {
 			exports: '$'
 		},
+		bootstrap: {
+			deps: ['jquery']
+		},
 		'facebook' : {
 			exports: 'FB'
 		},
 		'galleria': {
 			deps: ['jquery'],
 			exports: 'Galleria'
+		},
+		'daterangepicker': {
+			deps: ['jquery', 'bootstrap', 'moment']
 		}
 	}
 });
