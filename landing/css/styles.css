@@ -986,3 +986,17 @@ and (max-device-width : 480px) {
         width: 280px;
     }
 }
+
+/*---------------------------------------
+   MANIFESTO                
+-----------------------------------------*/
+.section-action {
+    margin-bottom: 60px;
+}
+
+.btn-default {
+    border: none;
+    color: #ffffff;
+    background-color: #008ed6;
+    margin-right: 14px;
+}

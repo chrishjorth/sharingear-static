@@ -289,7 +289,7 @@ $('#fb-share-btn').on('click', function(event) {
         method: 'share',
         href: 'http://www.sharingear.com',
     }, function(response){
-        console.log(response);
+        //console.log(response);
     });
     ga('send', 'event', 'signup', 'share-fb', 'Share on FB button', 1);
 });
@@ -310,4 +310,30 @@ $('#social-icon-twitter-btn').on('click', function(event) {
 $('#social-icon-instagram-btn').on('click', function(event) {
     ga('send', 'event', 'social', 'instagram', 'Go to Instagram page', 1);
     window.location.href = 'http://instagram.com/sharingear';
+});
+
+/* =================================
+===  Manifesto Choice          ====
+=================================== */
+$('#tour-more-btn').on('click', function(event) {
+    $('#choice-btns').addClass('hidden');
+    $('#social-links').removeClass('hidden');
+    $('#manifesto-fb-share-btn img').css({
+        'width': '300px',
+        'height': '78px'
+    });
+});
+
+$('#disagree-btn').on('click', function(event) {
+    window.location.href = 'http://www.digitalmusicnews.com/permalink/2013/12/13/quicksummarystreaming';
+});
+
+$('#manifesto-fb-share-btn').on('click', function(event) {
+    FB.ui({
+        method: 'share',
+        href: 'http://www.sharingear.com/manifesto',
+    }, function(response){
+        //console.log(response);
+    });
+    ga('send', 'event', 'signup', 'share-manifesto-fb', 'Share manifesto on FB button', 1);
 });
