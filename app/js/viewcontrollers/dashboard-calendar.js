@@ -8,9 +8,10 @@ define(
 	function(ViewController, Moment) {
 		var Calendar = ViewController.inherit({
 			weekMode: true, //if false then it is months mode
-			shownWeek: 0,
+			/*shownWeek: 0,
 			shownMonth: 0,
-			shownYear: 0,
+			shownYear: 0,*/
+			shownMoment: null,
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -34,13 +35,15 @@ define(
 					doy: 4
 				}
 			});
-			this.shownWeek = Moment().week();
+			/*this.shownWeek = Moment().week();
 			this.shownMonth = Moment().month();
-			this.shownYear = Moment().year();
+			this.shownYear = Moment().year();*/
+			this.shownMoment = Moment();
+			this.shownMoment.startOf('week').weekday(0);
 		}
 
 		function didRender() {
-			this.setupWeekCalendar(this.shownWeek);
+			this.setupWeekCalendar();
 
 			this.setupEvent('click', '#dashboard-calendar-weeks-btn', this, this.switchToWeeks);
 			this.setupEvent('click', '#dashboard-calendar-months-btn', this, this.switchToMonths);
@@ -49,28 +52,37 @@ define(
 			this.setupEvent('click', '#dashboard-calendar-today-btn', this, this.handleToday);
 		}
 
-		function setupWeekCalendar(currentWeekNum) {
+		function setupWeekCalendar() {
 			var $weekCalHeader = $('.week-calendar .calendar-header', this.$element),
-				week = Moment({year: this.shownYear}).week(currentWeekNum).startOf('week').weekday(0);
+				moment = this.shownMoment;
+				//week = Moment({year: this.shownYear}).week(currentWeekNum).startOf('week').weekday(0);
 			//Moment months are zero indexed
-			$('.col-md-1:nth-child(0n+2) .date', $weekCalHeader).html((week.weekday(0).date()) + '/' + (week.weekday(0).month() + 1)); //Monday date
-			$('.col-md-1:nth-child(0n+3) .date', $weekCalHeader).html((week.weekday(1).date()) + '/' + (week.weekday(1).month() + 1)); //Tuesday date etc...
-			$('.col-md-1:nth-child(0n+4) .date', $weekCalHeader).html((week.weekday(2).date()) + '/' + (week.weekday(2).month() + 1));
-			$('.col-md-1:nth-child(0n+5) .date', $weekCalHeader).html((week.weekday(3).date()) + '/' + (week.weekday(3).month() + 1));
-			$('.col-md-1:nth-child(0n+6) .date', $weekCalHeader).html((week.weekday(4).date()) + '/' + (week.weekday(4).month() + 1));
-			$('.col-md-1:nth-child(0n+7) .date', $weekCalHeader).html((week.weekday(5).date()) + '/' + (week.weekday(5).month() + 1));
-			$('.col-md-1:nth-child(0n+8) .date', $weekCalHeader).html((week.weekday(6).date()) + '/' + (week.weekday(6).month() + 1));
+			$('.col-md-1:nth-child(0n+2) .date', $weekCalHeader).html((moment.weekday(0).date()) + '/' + (moment.weekday(0).month() + 1)); //Monday date
+			$('.col-md-1:nth-child(0n+3) .date', $weekCalHeader).html((moment.weekday(1).date()) + '/' + (moment.weekday(1).month() + 1)); //Tuesday date etc...
+			$('.col-md-1:nth-child(0n+4) .date', $weekCalHeader).html((moment.weekday(2).date()) + '/' + (moment.weekday(2).month() + 1));
+			$('.col-md-1:nth-child(0n+5) .date', $weekCalHeader).html((moment.weekday(3).date()) + '/' + (moment.weekday(3).month() + 1));
+			$('.col-md-1:nth-child(0n+6) .date', $weekCalHeader).html((moment.weekday(4).date()) + '/' + (moment.weekday(4).month() + 1));
+			$('.col-md-1:nth-child(0n+7) .date', $weekCalHeader).html((moment.weekday(5).date()) + '/' + (moment.weekday(5).month() + 1));
+			$('.col-md-1:nth-child(0n+8) .date', $weekCalHeader).html((moment.weekday(6).date()) + '/' + (moment.weekday(6).month() + 1));
 		}
 
 		/**
 		 * @param currentMonth: zero indexed month number
 		 */
-		function setupMonthCalendar(currentMonth) {
+		function setupMonthCalendar() {
 			var $calendarContainer = $('#calendar-months-container', this.$element),
-				month = Moment({year: this.shownYear}).month(currentMonth),
-				startDay = month.date(1).weekday();
-			
-			$('.day-row:nth-child(0n+2) .col-md-1:nth-child(0n+' + (2 + startDay) + ')', $calendarContainer).html(1);
+				moment = Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()}),
+				startDay = moment.date(1).weekday(),
+				row, col;
+
+			//Set date to first box
+			moment.subtract(startDay, 'days');
+			for(row = 1; row <= 6; row++) { //6 possible week pieces
+				for(col = 1; col <= 7; col++) { //7 days
+					$('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer).html(moment.date());
+					moment.add(1, 'days');
+				}
+			}
 		}
 
 		function switchToWeeks(event) {
@@ -104,20 +116,38 @@ define(
 
 		function handlePrevious(event) {
 			var view = event.data;
-			view.shownWeek--;
-			view.setupWeekCalendar(view.shownWeek);
+			if(view.weekMode === true) {
+				view.shownMoment.subtract(1, 'week');
+				view.setupWeekCalendar();
+			}
+			else {
+				view.shownMoment.subtract(1, 'month');
+				view.setupMonthCalendar();
+			}
+			
 		}
 
 		function handleNext(event) {
 			var view = event.data;
-			view.shownWeek++;
-			view.setupWeekCalendar(view.shownWeek);
+			if(view.weekMode === true) {
+				view.shownMoment.add(1, 'week');
+				view.setupWeekCalendar();
+			}
+			else {
+				view.shownMoment.add(1, 'month');
+				view.setupMonthCalendar();
+			}
 		}
 
 		function handleToday(event) {
 			var view = event.data;
-			view.shownWeek = Moment().week();
-			view.setupWeekCalendar(view.shownWeek);
+			view.shownMoment = Moment();
+			if(view.weekMode === true) {
+				view.setupWeekCalendar();
+			}
+			else {
+				view.setupMonthCalendar();
+			}
 		}
 	}
 );
