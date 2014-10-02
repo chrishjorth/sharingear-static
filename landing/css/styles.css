@@ -985,6 +985,10 @@ and (max-device-width : 480px) {
     footer .logo img {
         width: 280px;
     }
+
+    #cph-guitar-show-logo {
+        width: 280px;
+    }
 }
 
 /*---------------------------------------
