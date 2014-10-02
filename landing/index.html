@@ -86,30 +86,48 @@
 		
 					<!-- ONLY LOGO ON HEADER -->
 					<div class="only-logo">
-						<div class="navbar">
-							<div class="navbar-header">
+						<!--<div class="navbar">
+							<div class="navbar-header">-->
 								<img src="images/logo.png" alt="Sharingear logo" class="responsive-img">
-							</div>
-						</div>
+							<!--</div>
+						</div>-->
 					</div> 
 					<!-- END ONLY LOGO ON HEADER -->
+
+					<div class="row">
+						<div class="col-md-10 col-md-offset-1">
+							<h1 class="intro">Play more, save costs on tour, make money when home.</h1>
+							<iframe class="video" src="//player.vimeo.com/video/100875196" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+							<!--<p>
+								<a href="http://vimeo.com/100875196">SHARINGEAR</a> from <a href="http://vimeo.com/sharingear">Sharingear</a> on <a href="https://vimeo.com">Vimeo</a>.
+							</p>-->
+						</div>
+					</div>
 	
 
 					<div class="row">
 						<div class="col-md-8 col-md-offset-2">
+							<!-- MAIL REGISTRATION -->
+							<h2 class="intro">Sign up for early access... it's free.</h2>
+							<div id="mailReg">
+								<form method="post" class="register-form" onsubmit="return false;">
+									<input id="email" name="email" type="email" class="form-control input-box subscribe-height subscribe-width" style="display: inline-block;" placeholder="Your Email"> 
+									<input class="btn btn-default standard-button" id="button-post" name="submit" type="submit" value="Try it out!">
+								</form>
+								<div class="subscription-success"></div>
+								<div class="subscription-error"></div>
+							</div>
+							<!-- /END MAIL REGISTRATION -->
 				
 							<!-- HEADING AND BUTTONS -->
-							<div class="intro-section">
+							<!--<div class="intro-section">-->
 					
 								<!-- WELCOME MESSAGE -->
-								<h1 class="intro">Musicians are suffering &amp; streaming is killing the music industry - the solution:<br><span class="manifesttype"> share your gear &amp; tour more!</span></h1>
 				
 								<!-- DEFTONES FEEDBACK -->
-								<div class="feedback">
+								<!--<div class="feedback">
 				
-									<!-- IMAGE -->
 									<div class="image">
-										<!-- i class=" icon_quotations"></i -->
 										<img src="images/clients-pic/3.jpg" alt="">
 									</div>
 
@@ -117,12 +135,11 @@
 				
 									<div class="white-line"></div>
 				
-									<!-- INFORMATION -->
 									<div class="name">Stephen Carpenter</div>
 									<div class="company-info">Guitarist, DEFTONES</div>
-								</div>
+								</div>-->
 								<!-- /END DEFTONES FEEDBACK -->
-							</div>
+							<!--</div>-->
         		</div>
         	</div>
         </div>
@@ -266,35 +283,6 @@
 	<!-- /END COLOR OVERLAY -->
 </section>
 <!-- /END TESTIMONIALS SECTION -->
-
-
-
-
-<!-- =========================
-     SIGN UP SECTION
-============================== -->
-<section class="features" id="features">
-	<div class="container">
-		<!-- SECTION HEADER -->
-		<div class="section-header wow fadeIn animated" data-wow-offset="120" data-wow-duration="1.5s">
-		
-			<!-- MAIL REGISTRATION -->
-			<h2 class="blue-text">Sign up for early access... it's free.</h2>
-			<div id="mailReg">
-				<form method="post" id="register-form" onsubmit="return false;">
-					<input id="email" name="email" type="email" class="form-control input-box subscribe-height subscribe-width" style="display: inline-block;" placeholder="Your Email"> 
-					<input class="btn btn-default standard-button" id="button-post" name="submit" type="submit" value="Try it out!">
-				</form>
-				<div class="subscription-success"></div>
-				<div class="subscription-error"></div>
-			</div>
-			<!-- /END MAIL REGISTRATION -->
-			<h3 class="dark-text">Create awareness for your band, and share with other artists!</h3>
-			<a href="javascript:;" id="fb-share-btn"><img src="images/fb_share.png" class="responsive-img"></a>
-			
-		</div>
-	</div>
-</section>
 
 <!-- =========================
      FEATURES - MUSICIANS WANT TO RENT YOUR GEAR  
@@ -448,6 +436,29 @@
 <!-- /END FEATURES SECTION -->
 
 <!-- =========================
+     SIGN UP SECTION
+============================== -->
+<section class="features" id="features">
+	<div class="container">
+		<!-- SECTION HEADER -->
+		<div class="section-header wow fadeIn animated" data-wow-offset="120" data-wow-duration="1.5s">
+		
+			<!-- MAIL REGISTRATION -->
+			<h2 class="blue-text">Sign up for early access... it's free.</h2>
+			<div class="mailReg">
+				<form method="post" class="register-form" onsubmit="return false;">
+					<input id="email" name="email" type="email" class="form-control input-box subscribe-height subscribe-width" style="display: inline-block;" placeholder="Your Email"> 
+					<input class="btn btn-default standard-button" id="button-post" name="submit" type="submit" value="Try it out!">
+				</form>
+				<div class="subscription-success"></div>
+				<div class="subscription-error"></div>
+			</div>
+			<!-- /END MAIL REGISTRATION -->
+		</div>
+	</div>
+</section>
+
+<!-- =========================
      COPENHAGEN GUITAR SHOW PANEL
 ============================== -->
 <section class="features" id="features">
@@ -459,6 +470,18 @@
 			
 			<a href="http://www.copenhagenguitarshow.com/index.php/da/" target="_blank"><img src="images/cphguitarshow.png" alt="Copenhagen Guitar show logo" id="cph-guitar-show-logo"></a>
 			
+		</div>
+	</div>
+</section>
+
+
+<section class="features" id="features">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<h3 class="dark-text">Create awareness for your band, and share with other artists!</h3>
+				<a href="javascript:;" id="fb-share-btn"><img src="images/fb_share.png" class="responsive-img"></a>
+			</div>
 		</div>
 	</div>
 </section>

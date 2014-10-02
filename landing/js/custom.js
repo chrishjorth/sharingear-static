@@ -21,7 +21,7 @@ $(".video-container").fitVids();
 ===  MAILCHIMP                 ====
 =================================== */
 
-$('#register-form').ajaxChimp({
+$('.register-form').ajaxChimp({
     callback: mailchimpCallback,
     url: "http://sharingear.us9.list-manage.com/subscribe/post?u=0a99e67817e42b2ad6fe679e8&id=40d25acc40" //Replace this with your own mailchimp post URL. Don't remove the "". Just paste the url inside "".  
 });
