@@ -4,17 +4,17 @@
  */
 
 define(
-	['underscore', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker', 'utilities'],
-	function(_, ViewController, GearList, App, GoogleMaps, daterangepicker, utilities) {
+	['underscore', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker', ],
+	function(_, Utilities, ViewController, GearList, App, GoogleMaps, daterangepicker) {
 
 		var Home = ViewController.inherit({
 			gearList: new GearList.constructor({
 				rootURL: App.API_URL
 			}),
 			geocoder: new GoogleMaps.Geocoder(),
-
-
 			searchBlockID: 'home-search-block',
+
+			didInitialize: didInitialize,
 			didRender: didRender,
 			setupEvents: setupEvents,
 			handleSearch: handleSearch,
@@ -23,8 +23,11 @@ define(
 
 		return Home;
 
-		function didRender() {
+		function didInitialize() {
 
+		}
+
+		function didRender() {
             //Loading the daterangepicker with available days from today
             var currentDate = new Date();
             var month = currentDate.getMonth() + 1;
@@ -40,22 +43,18 @@ define(
             });
 
             //Filling the Location input with current location using HTML5 only if User.city is empty
-            if(App.user.data.city===''){
-
-                if(navigator.geolocation){
-                    navigator.geolocation.getCurrentPosition(function(position){
-                        var lat = position.coords.latitude;
-                        var lon = position.coords.longitude;
-                        utilities.geoLocationGetCity(lat,lon, function (locationCity) {
-                            App.user.data.city = locationCity;
-                        });
-
+            if(App.user.data.city === '' && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position){
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    Utilities.geoLocationGetCity(lat, lon, function (locationCity) {
+                        App.user.data.city = locationCity;
+                        $('#search-location').val(locationCity);
                     });
-                }
-
-            }else{
-                var loc = App.user.data.city;
-                $('#search-location').val(loc);
+                });
+            }
+            else {
+                $('#search-location').val(App.user.data.city);
             }
 
             this.setupEvents();
