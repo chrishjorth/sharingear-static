@@ -81,6 +81,10 @@ li {
     list-style: none;
 }
 
+.flex-img {
+    width: 100%;
+}
+
 
 /* PRE LOADER */
 .preloader {
@@ -577,6 +581,10 @@ object {
 
 .video {
     background: transparent !important;
+}
+
+#insurance-text {
+    padding-top: 70px;
 }
 
 
