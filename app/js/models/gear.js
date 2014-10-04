@@ -117,6 +117,7 @@ define(
 
 		function save(userID, callback) {
 			var saveData = {
+				subtype: this.data.subtype,
 				brand: this.data.brand,
 				model: this.data.model,
 				description: this.data.description,
@@ -132,6 +133,8 @@ define(
 				latitude: this.data.latitude,
 				longitude: this.data.longitude
 			};
+
+			console.log(saveData);
 			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {

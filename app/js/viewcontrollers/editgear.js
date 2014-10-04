@@ -12,6 +12,7 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populateBrandSelect: populateBrandSelect,
+			populateSubtypeSelect: populateSubtypeSelect,
 			populateImages: populateImages,
 			setupEvents: setupEvents,
 			handleCancel: handleCancel,
@@ -30,7 +31,19 @@ define(
 
 		function didRender() {
 			this.populateBrandSelect();
-			$('#editgear-brand', this.$element).val(this.passedData.brand);
+			
+			if (this.passedData.brand == '') {
+				$("#editgear-brand").prop("selectedIndex", 0); // if no brand is passed, "Choose brand:" by default
+			} else {
+				$('#editgear-brand', this.$element).val(this.passedData.brand);
+			}
+
+			this.populateSubtypeSelect(this.passedData.type);
+			if (this.passedData.subtype == '') {
+				$("#editgear-subtype").prop("selectedIndex", 0); // if no subtype is passed, "Choose type:" by default
+			} else {
+				$('#editgear-subtype', this.$element).val(this.passedData.subtype);
+			}
 			this.populateImages();
 			this.setupEvents();
 		}
@@ -51,6 +64,24 @@ define(
 			}
 			$brandSelect.append(html);
 		}
+
+		function populateSubtypeSelect(gearType) {
+			var gearClassification = App.gearClassification.data.classification,
+				html = '<option> Choose type: </option>',
+				$subtypeSelect, 
+				$brandSelect, 
+				gearSubtypes, i;
+
+			$subtypeSelect = $('#editgear-subtype', this.$element);
+			$subtypeSelect.empty();
+			
+			gearSubtypes = gearClassification[gearType];
+			for(i = 0; i < gearSubtypes.length; i++) {
+				html += '<option value="' + gearSubtypes[i] + '">' + gearSubtypes[i] + '</option>';
+			}
+			$subtypeSelect.append(html);
+		}
+
 
 		function populateImages() {
 			var images = this.gear.data.images.split(','),
@@ -77,24 +108,36 @@ define(
 
 		function handleNext(event) {
 			var view = event.data,
-				updatedGearData;
+			updatedGearData;
 
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
+				subtype: $('#editgear-subtype option:selected', view.$element).val(),
 				model: $('#editgear-model', view.$element).val(),
 				description: $('#editgear-description', view.$element).val()
 			};
 
-			_.extend(view.gear.data, updatedGearData);
+			if ($('#editgear-brand option:selected', view.$element).val() == "Choose brand:") {			// Check for empty values, don't proceed if true
+				alert("Choose a brand, bro");
+			} else if ($('#editgear-subtype option:selected', view.$element).val() == "Choose type:") {
+				alert("Choose a type of instrument, bro");
+			} else {
 
-			view.gear.save(App.user.data.id, function(error, gear) {
-				if(error) {
-					console.log(error);
-					return;
-				}
-			});
+				_.extend(view.gear.data, updatedGearData);
 
-			App.router.openModalView('gearpricing', view.gear);
+				view.gear.save(App.user.data.id, function(error, gear) {
+					if(error) {
+						console.log(error);
+						return;
+					}
+				});
+
+				App.router.openModalView('gearpricing', view.gear);
+
+
+			}
+
+			
 		}
 
 		function handleImageUpload(event) {
