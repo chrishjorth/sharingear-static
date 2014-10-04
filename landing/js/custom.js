@@ -151,7 +151,7 @@ $(document).ready(function () {
         navigation: false, // Show next and prev buttons
         slideSpeed: 800,
         paginationSpeed: 400,
-        autoPlay: 5000,
+        autoPlay: 7000,
         singleItem: true
     });
 

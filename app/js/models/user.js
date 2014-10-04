@@ -28,7 +28,9 @@ define(
 
 		function getLoginStatus(callback) {
 			var user = this;
+			console.log('Get login status');
 			FB.getLoginStatus(function(response) {
+				console.log(response);
 				user.fbStatus = response.status;
 				if(callback && typeof callback === 'function') {
 					callback(response);
@@ -41,6 +43,7 @@ define(
 
 			//We need to make sure Facebook has not changed the status on their side.
 			this.getLoginStatus(function(response) {
+				console.log('GOT STATUS');
 				if(user.fbStatus !== 'connected') {
 					FB.login(function(response) {
 						var error;
