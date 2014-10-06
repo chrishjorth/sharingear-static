@@ -5,62 +5,29 @@
 	<div class="row">
 		<div class="col-md-12 yourprofilefieldsize">
 			<form id="dashboard-profile-form" onsubmit="return false;">
-				<div class="form-group">
-				</br>
-					<label for="name">Name:</label>
-					<input type="text" name="name" id="name" placeholder="{{name}} {{surname}}" class="form-control">
-				</div>
-				<div class="form-group">
-					<label for="hometown">Hometown:</label>
-					<input type="text" name="hometown" id="hometown" class="form-control" placeholder="{{hometown}}">
-				</div>
-				<div class="form-group">
-					<label for="profile-pic">Profile picture:</label>
-					<input type="file" name="profile-pic" id="profile-pic">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+						</br>
+							<label for="name">Name:</label>
+							<input type="text" name="name" id="name" placeholder="{{name}} {{surname}}" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="hometown">Hometown:</label>
+							<input type="text" name="hometown" id="hometown" class="form-control" placeholder="{{hometown}}">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="profile-pic">Profile picture:</label>
+							<img src="images/200x200.jpg">
+							<input type="file" name="profile-pic" id="profile-pic">
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="bio">Bio:</label>
 					<textarea name="bio" id="bio" class="form-control" style="height: 120px !important;">{{bio}}</textarea>
-				</div>
-				<div class="form-group">
-					<label for="genres">What genres do you play?</label>
-					<input type="text" name="genres" id="genres" placeholder="{{genres}}" class="form-control">
-				</div>
-				<div class="form-group">
-					<label for="shows">How many shows have you played?</label>
-					<select class="form-control" name="shows" id="shows">
-						<option value="0">0</option>
-						<option value="1">1 - 4</option>
-						<option value="10">5 - 9</option>
-						<option value="50">10 - 99</option>
-						<option value="100">100 - 499</option>
-						<option value="500">500 - 999</option>
-						<option value="1000">1000+</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="recorded">How many albums have you recorded?</label>
-					<select class="form-control" name="recorded" id="recorded">
-						<option value="0">0</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6+</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="released">How many albums have you released?</label>
-					<select class="form-control" name="released" id="released">
-						<option value="0">0</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6+</option>
-					</select>
 				</div>
 				<div class="pull-right">
 					<button type="button" class="btn btn-default">Cancel</button><input type="submit" class="btn btn-primary" value="Save">

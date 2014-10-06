@@ -1006,6 +1006,10 @@ background-color: rgb(56,143,192);
     text-transform: capitalize;
 }
 
+.profile-left {
+    width: 50%;
+}
+
 /* ------------------ START - DASHBOARD YOUR GEAR --------------- */
 
 .yourgear-item {
