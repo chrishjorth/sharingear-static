@@ -943,9 +943,15 @@ min-height: 1px;
 
 /* ------------------ START - DASHBOARD ------------------ */
 
+#dashboard-head {
+    padding-bottom: 8px;
+    padding-left: 6px;
+}
+
 .dashboardtitle {
     color: #00aeff;
     height: 49px;
+    font-size: 2em;
 }
 /*
 .dashboardbgcolor {
@@ -993,6 +999,13 @@ background-color: rgb(56,143,192);
     border-bottom-style: solid;
     border-bottom-color: #dddddd;
 }
+
+/* ------------------ PROFILE --------------- */
+
+#profilehead {
+    text-transform: capitalize;
+}
+
 /* ------------------ START - DASHBOARD YOUR GEAR --------------- */
 
 .yourgear-item {
