@@ -3,8 +3,8 @@
  * @author: Chris Hjorth
  */
 define(
-	['model', 'facebook'],
-	function(Model, FB) {
+	['model', 'facebook','utilities'],
+	function(Model, FB, Utilities) {
 
 		var User = Model.inherit({
 			fbStatus: '',
@@ -12,16 +12,18 @@ define(
 				id: null,
 				name: '',
 				surname: '',
-                city: ''
+                city: '',
+                image_url:''
 			},
 
 			getLoginStatus: getLoginStatus,
 			login: login,
-			loginToBackend: loginToBackend
+			loginToBackend: loginToBackend,
+            uploadProfilePicture: uploadProfilePicture
 		});
 
 		FB.init({
-			appId: '522375581240221',
+			appId: '522375581240221'
 		});
 
 		return User;
@@ -39,6 +41,7 @@ define(
 		function login(callback) {
 			var user = this;
 
+
 			//We need to make sure Facebook has not changed the status on their side.
 			this.getLoginStatus(function(response) {
 				if(user.fbStatus !== 'connected') {
@@ -47,7 +50,7 @@ define(
 						if(response.status === 'connected') {
 							error = null;
 							user.loginToBackend(response, callback);
-							return;
+                            return;
 						}
 						else if(response.status === 'not_authorized') {
 							error = {error: 'FB App not authorized'};
@@ -55,6 +58,8 @@ define(
 						else {
 							error = {error: 'FB login failed'};
 						}
+
+
 
 						user.fbStatus = response.status;
 
@@ -78,12 +83,13 @@ define(
 				fbid: authData.userID,
 				accesstoken: authData.accessToken
 			};
-
+            console.log('inside login to backend');
 			this.post('/users/login', postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback('Error logging into backend: ' + error);
 					}
+                        console.log(error);
 					return;
 				}
 				if(user.data === null) {
@@ -95,5 +101,45 @@ define(
 				}
 			});
 		}
+
+        function uploadProfilePicture(file, filename, userID, callback){
+            var model = this;
+            this.get('/users/'+userID+'/newfilename/'+filename, function (error, data) {
+                if(error){
+                    if(callback && typeof callback === 'function') {
+                        callback('Error getting filename: ' + error);
+                    }
+                return;
+                }
+                Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+                    var postData;
+                    if(error) {
+                        if(callback && typeof callback === 'function') {
+                            callback('Error uploading file: ' + error);
+                        }
+                        return;
+                    }
+
+                    //Add image url to backend
+                    postData = {
+                        image_url: data.url
+                    };
+
+                    var postItURL = '/users/'+userID;
+                    model.put(postItURL,postData, function (error, images) {
+                        if(error){
+                            if(callback && typeof callback === 'function') {
+                                callback('Error uploading file: ' + error);
+                            }
+                            return;
+                        }
+
+                        model.data.images = images.images;
+                        callback(null,data.url);
+                    });
+
+                });
+            });
+        }
 	}
 );

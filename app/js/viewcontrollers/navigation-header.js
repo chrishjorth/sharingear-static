@@ -24,7 +24,7 @@ define(
 
 				this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
 				this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
-			}
+            }
 			else {
 				html += '<li class="_button-1"><a href="#dashboard">DASHBOARD</a></li>';
 				$buttonsRightContainer.html(html);
@@ -34,10 +34,12 @@ define(
 		function handleLogin(event, callback) {
 			var view = event.data,
 				user = App.user;
+
 			user.login(function(error) {
 				if(!error) {
-					App.router.navigateTo('dashboard');
-				}
+				    App.router.navigateTo('dashboard');
+
+                }
 				view.render();
 				if(callback && typeof callback === 'function') {
 					callback();

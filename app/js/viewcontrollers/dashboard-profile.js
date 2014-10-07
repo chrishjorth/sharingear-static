@@ -7,7 +7,8 @@ define(
 	['underscore', 'viewcontroller', 'app'],
 	function(_, ViewController, App) {
 		var Profile = ViewController.inherit({
-			didInitialize: didInitialize
+			didInitialize: didInitialize,
+            handleImageUpload: handleImageUpload
 		}); 
 		return Profile;
 
@@ -17,12 +18,26 @@ define(
 				name: '',
 				hometown: '',
 				bio: '',
-				genres: ''
+				genres: '',
+                image_url:''
 			};
 
 			_.extend(user, App.user.data);
 			
 			this.templateParameters = user;
 		}
+
+        function handleImageUpload(event) {
+            //TODO finish the handleImageUpload method
+            var view = event.data;
+            $file = $(this);
+            view.user.uploadProfilePicture($file.get(0).files[0], $file.val().split('\\').pop(),App.user.data.id, function (error, url) {
+                if(error) {
+                    alert('Error uploading file.');
+                    console.log(error);
+                }
+            });
+        }
+
 	}
 );
