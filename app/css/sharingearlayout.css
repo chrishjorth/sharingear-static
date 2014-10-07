@@ -505,25 +505,62 @@ footer a:hover {
 }
 
 .image-blocks {
-
-    width: 33%; 
-    margin: 1px; 
-    height: 200px;  
-
-    border-radius: 10px;
+    width: 30%;
+    margin: 12px;
+    height: 190px;
+    border-radius: 15px 15px 0px 0px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-
-    background-size: 300px auto;
-    background-position: 25% 25%;
-    background-repeat: no-repeat;
-    background-size: auto 200px;
+    background: no-repeat 50% 50%;
 }
 
+.image-blocks-horizontal {
+    background-size: auto 230px;
+}
+
+.image-blocks-vertical {
+    background-size: 300px auto;
+}
+
+/*TODO Design of search results*/
 .image-blocks-description {
 
+    background-color: rgba(0,0,0,0.7);
+    position: absolute;
+    top: 0px;
+    left: 10%;
+    width: 80%;
+    text-align: center;
+    font-weight: 500;
+    border-radius: 0px 0px 10px 10px;
+
+}
+.image-blocks-address {
+
     padding: 5px;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0,0,0,1);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-style: italic;
+    border-top: solid 2px rgb(0, 174, 255);
+    color: rgb(0, 174, 255);
+    font-size: 15px;
+}
+
+.image-blocks-price {
+
+    padding: 5px;
+    background-color: rgba(0,0,0,0.2);
+    position: absolute;
+    bottom: 57px;
+    right: 0;
+    width: 24%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px 0px 0px 10px;
 
 }
 

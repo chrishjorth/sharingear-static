@@ -78,15 +78,15 @@ define(
 				}
 
 				//console.log('File upload success');
-				console.log(data);
-				console.log(jqXHR);
+//				console.log(data);
+//				console.log(jqXHR);
 				callback(null, data);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				var error = 'Error uploading file with AJAX POST: ' + textStatus + '. ' + errorThrown;
 				callback(error);
-                console.log(errorThrown);
-                console.log(textStatus);
+//                console.log(errorThrown);
+//                console.log(textStatus);
 			}
 		});
 	}

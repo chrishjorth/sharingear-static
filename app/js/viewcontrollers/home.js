@@ -14,6 +14,7 @@ define(
 			geocoder: new GoogleMaps.Geocoder(),
 			// searchBlockID: 'home-search-block',
 			searchBlockID: 'testRow',
+//            isImageVertical: '',
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -25,7 +26,7 @@ define(
 		return Home;
 
 		function didInitialize() {
-
+//            this.isImageVertical = false;
 		}
 
 		function didRender() {
@@ -111,9 +112,6 @@ define(
 		 */
 		function populateSearchBlock(searchResults, callback) {
 
-
-			console.log(searchResults);
-
 			var $searchBlock = $('#' + this.searchBlockID, this.$element);
 			$searchBlock.empty();
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
@@ -128,27 +126,49 @@ define(
 					model: '',
 					description: '',
 					images: '',
-					image: '',
+                    image: '',
 					price: 0,
 					city: '',
 					address: '',
-					price1: 0,
-					price2: 0,
-					price3: 0,
+					price_a: 0,
+					price_b: 0,
+					price_c: 0,
 					owner_id: null
 				};
 
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i];
-
 					var imagesTest = searchResults[i].images.split(",");
-					searchResult.image = imagesTest[0];
+                    searchResult.image = imagesTest[0];
 
+                    //TODO Temporary default image
+                    if (searchResult.image === '') {
+                        //searchResult.image = 'http://cdn.mos.musicradar.com/images/Guitarist/323/marshall-ma50c-630-80.jpg';
+                        searchResult.image = 'http://www.rondomusic.com/photos/electric/gg1kwt5.jpg';
+                    }
+                    this.price = searchResults[i].price_a;
 					
 					_.extend(defaultSearchResults, searchResult);
-					
-					
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
+
+
+                    //Set background-image with jQuery
+                    $searchBlock.children().eq(i).css("background-image","url(\'"+searchResult.image+"\')");
+
+                    //Check if image is vertical or horizontal
+                    var isVertical;
+                    var img = new Image();
+                    img.src = searchResult.image;
+                    var imgWidth = img.width;
+                    var imgHeight = img.height;
+                    isVertical = imgWidth < imgHeight;
+
+                    if (isVertical) {
+                        $searchBlock.find('div').addClass("image-blocks-vertical");
+                    }else{
+                        $searchBlock.find('div').addClass("image-blocks-horizontal");
+                    }
+
 				}
 				if(callback && typeof callback === 'function') {
 					callback();
