@@ -30,9 +30,7 @@ define(
 
 		function getLoginStatus(callback) {
 			var user = this;
-			console.log('Get login status');
 			FB.getLoginStatus(function(response) {
-				console.log(response);
 				user.fbStatus = response.status;
 				if(callback && typeof callback === 'function') {
 					callback(response);
@@ -43,10 +41,8 @@ define(
 		function login(callback) {
 			var user = this;
 
-
 			//We need to make sure Facebook has not changed the status on their side.
 			this.getLoginStatus(function(response) {
-				console.log('GOT STATUS');
 				if(user.fbStatus !== 'connected') {
 					FB.login(function(response) {
 						var error;
@@ -61,8 +57,6 @@ define(
 						else {
 							error = {error: 'FB login failed'};
 						}
-
-
 
 						user.fbStatus = response.status;
 
@@ -86,13 +80,11 @@ define(
 				fbid: authData.userID,
 				accesstoken: authData.accessToken
 			};
-            console.log('inside login to backend');
 			this.post('/users/login', postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback('Error logging into backend: ' + error);
 					}
-                        console.log(error);
 					return;
 				}
 				if(user.data === null) {

@@ -8,12 +8,19 @@ define(
 	function(ViewController, App) {
 		var Header = ViewController.inherit({
 			didRender: didRender,
+			setupView: setupView,
+			setupEvents: setupEvents,
 			handleLogin: handleLogin
 		});
 
 		return Header;
 
 		function didRender() {
+			this.setupView();
+			this.setupEvents();
+		}
+
+		function setupView() {
 			var $buttonsRightContainer = $('#navigationheader-buttonsright', this.$element),
 				html = '';
 			if(App.user.data.id === null) {
@@ -21,14 +28,16 @@ define(
 				html += '<li class="_button-2"><a href="javascript:;" id="navigation-header-login">LOG IN</a></li>';
 				html += '<li class="active _button-3"><a href="#listyourgear">LIST YOUR GEAR</a></li>';
 				$buttonsRightContainer.html(html);
-
-				this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
-				this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
             }
 			else {
 				html += '<li class="_button-1"><a href="#dashboard">DASHBOARD</a></li>';
 				$buttonsRightContainer.html(html);
 			}
+		}
+
+		function setupEvents() {
+			this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
+			this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
 		}
 
 		function handleLogin(event, callback) {
@@ -38,9 +47,9 @@ define(
 			user.login(function(error) {
 				if(!error) {
 				    App.router.navigateTo('dashboard');
-
+				    view.setupView();
                 }
-				view.render();
+				
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
