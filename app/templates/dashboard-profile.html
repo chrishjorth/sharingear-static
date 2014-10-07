@@ -5,26 +5,6 @@
 	<div class="row">
 		<div class="col-md-12 yourprofilefieldsize">
 			<form id="dashboard-profile-form" onsubmit="return false;">
-<<<<<<< HEAD
-				<div class="form-group">
-					<label for="name">Name:</label>
-					<input type="text" name="name" id="name" placeholder="{{name}} {{surname}}" class="form-control">
-				</div>
-				<div class="form-group">
-					<label for="hometown">Hometown:</label>
-					<input type="text" name="hometown" id="hometown" class="form-control" placeholder="{{hometown}}">
-				</div>
-				<div class="form-group">
-					<label for="profile-pic">Profile picture:</label>
-                    <br><img src="{{image_url}}" width="200px">
-					<input type="file" name="profile-pic" id="profile-pic">
-				</div>
-				<div class="form-group">
-					<label for="bio">Bio:</label>
-					<textarea name="bio" id="bio" class="form-control">{{bio}}</textarea>
-				</div>
-
-=======
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -40,7 +20,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="profile-pic">Profile picture:</label>
-							<img src="images/200x200.jpg">
+							<img src="{{image_url}}">
 							<input type="file" name="profile-pic" id="profile-pic">
 						</div>
 					</div>
@@ -49,7 +29,6 @@
 					<label for="bio">Bio:</label>
 					<textarea name="bio" id="bio" class="form-control" style="height: 120px !important;">{{bio}}</textarea>
 				</div>
->>>>>>> af03f1b21f53fcf2b13764779868f795a07b2e86
 				<div class="pull-right">
 					<button type="button" class="btn btn-default">Cancel</button><input type="submit" class="btn btn-primary" value="Save">
 				</div>
