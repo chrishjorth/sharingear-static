@@ -62,7 +62,7 @@ define(
 			url: url,
 			type: 'POST',
 			data: formData,
-			dataType: 'json',
+//			dataType: 'json',
 			//Options to tell jQuery not to process data or worry about content-type.
 			cache: false,
 			contentType: false,
@@ -76,14 +76,17 @@ define(
 					callback(data.message);
 					return;
 				}
+
 				//console.log('File upload success');
-				//console.log(data);
-				//console.log(jqXHR);
+				console.log(data);
+				console.log(jqXHR);
 				callback(null, data);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				var error = 'Error uploading file with AJAX POST: ' + textStatus + '. ' + errorThrown;
 				callback(error);
+                console.log(errorThrown);
+                console.log(textStatus);
 			}
 		});
 	}
