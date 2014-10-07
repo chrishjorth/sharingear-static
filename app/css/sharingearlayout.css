@@ -503,6 +503,37 @@ footer a:hover {
     height: 82px;
     margin-left: 10px;
 }
+
+.image-blocks {
+
+    width: 33%; 
+    margin: 1px; 
+    height: 200px;  
+
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+
+    background-size: 300px auto;
+    background-position: 25% 25%;
+    background-repeat: no-repeat;
+    background-size: auto 200px;
+}
+
+.image-blocks-description {
+
+    padding: 5px;
+    background-color: rgba(0,0,0,0.6);
+
+}
+
+#testRow {
+
+    padding: auto;
+    width: 900px;
+    margin: 0 auto
+
+}
 /*#ad-title {
 font-size: 0.9em;
 font-weight: bold;

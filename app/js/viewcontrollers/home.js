@@ -12,7 +12,8 @@ define(
 				rootURL: App.API_URL
 			}),
 			geocoder: new GoogleMaps.Geocoder(),
-			searchBlockID: 'home-search-block',
+			// searchBlockID: 'home-search-block',
+			searchBlockID: 'testRow',
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -109,6 +110,10 @@ define(
 		 * @param searchResults: an array of objects.
 		 */
 		function populateSearchBlock(searchResults, callback) {
+
+
+			console.log(searchResults);
+
 			var $searchBlock = $('#' + this.searchBlockID, this.$element);
 			$searchBlock.empty();
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
@@ -122,19 +127,27 @@ define(
 					brand: 0,
 					model: '',
 					description: '',
-					photos: '',
+					images: '',
+					image: '',
 					price: 0,
-					seller_user_id: 0,
 					city: '',
 					address: '',
 					price1: 0,
 					price2: 0,
-					price3: 0
+					price3: 0,
+					owner_id: null
 				};
 
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i];
+
+					var imagesTest = searchResults[i].images.split(",");
+					searchResult.image = imagesTest[0];
+
+					
 					_.extend(defaultSearchResults, searchResult);
+					
+					
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 				}
 				if(callback && typeof callback === 'function') {
