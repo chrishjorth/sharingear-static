@@ -81,6 +81,10 @@ li {
     list-style: none;
 }
 
+.flex-img {
+    width: 100%;
+}
+
 
 /* PRE LOADER */
 .preloader {
@@ -391,6 +395,19 @@ header .intro-section .buttons {
     margin-top: 35px;
 }
 
+header .only-logo {
+    padding: 30px 0 0 0;
+}
+
+header .intro {
+    font-size: 2.2em;
+    color: #ffffff;
+}
+
+header .video {
+    margin-top: 20px;
+}
+
 
 
 /* INTRO */
@@ -564,6 +581,10 @@ object {
 
 .video {
     background: transparent !important;
+}
+
+#insurance-text {
+    padding-top: 70px;
 }
 
 
@@ -945,7 +966,7 @@ footer .contact-box .expanded-contact-form .textarea-box:active {
     color: #000;
 }
 
-#mailReg {
+footer .mailReg {
     margin-bottom: 50px;
 }
 
@@ -985,4 +1006,22 @@ and (max-device-width : 480px) {
     footer .logo img {
         width: 280px;
     }
+
+    #cph-guitar-show-logo {
+        width: 280px;
+    }
+}
+
+/*---------------------------------------
+   MANIFESTO                
+-----------------------------------------*/
+.section-action {
+    margin-bottom: 60px;
+}
+
+.btn-default {
+    border: none;
+    color: #ffffff;
+    background-color: #008ed6;
+    margin-right: 14px;
 }

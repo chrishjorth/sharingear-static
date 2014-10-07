@@ -4,13 +4,14 @@
  */
 
  define(
- 	['viewcontroller', 'app','utilities'],
- 	function(ViewController, App, utilities) {
+ 	['viewcontroller', 'models/gearlist', 'app','utilities'],
+ 	function(ViewController, GearList, App, utilities) {
  		var ListYourGear = ViewController.inherit({
 
  			didRender: didRender,
- 			createGearList: createGearList,
- 			handleLogin: handleLogin
+ 			handleLogin: handleLogin,
+ 			gearList: null,
+ 			getFormInput: getFormInput
 
  		});
 
@@ -40,23 +41,7 @@
 
  		}
 
- 		function createGearList() {
-
- 			var selectedGear = [];
- 			$('input[type=checkbox]').each(function () {
- 				if (this.checked) {
- 					var pair = {type: ''};
- 					pair.type = this.value;
- 					selectedGear.push(pair);
- 				}
- 			});
-
- 			var selectedGearJSON = JSON.stringify(selectedGear);
-
- 			return selectedGearJSON;
- 			//console.log(selectedGearJSON);
-
-		}
+ 		
 
 		function handleLogin(event, callback) {
 			var view = event.data,
@@ -64,19 +49,44 @@
 			user.login(function(error) {
 				if(!error) {
 
+					view.gearList = new GearList.constructor({rootURL: App.API_URL});
 
-					var gearList = view.createGearList();
+					view.gearList.listGear(view.getFormInput(), user.data.id, function(error, data) {
 
+						console.log("before router");
+
+						App.router.navigateTo('dashboard');
+
+					});
+					
 					//here add REST
-
-					App.router.navigateTo('dashboard');
-
 				}
-				view.render();
+				
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
 			});
+		 }
+
+
+		function getFormInput() {
+
+ 			var selectedGear = [];
+ 			$('input[type=checkbox]').each(function () {
+ 				if (this.checked) {
+ 					var gearCity = $("#listyourgear-location").val();
+
+ 					var gearPairs = {type: '', city: ''};
+ 					gearPairs.type = this.value;
+ 					gearPairs.city = gearCity;
+
+ 					selectedGear.push(gearPairs);
+
+ 				}
+ 			});
+
+ 			return selectedGear;
+
 		}
 	}
 );

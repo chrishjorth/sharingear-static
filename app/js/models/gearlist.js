@@ -9,7 +9,8 @@ define(
 			search: search,
 			getUserGear: getUserGear,
 			getUserReservations: getUserReservations,
-			getGearItem: getGearItem
+			getGearItem: getGearItem,
+			listGear: listGear
 		});
 
 		return GearList;
@@ -65,6 +66,34 @@ define(
 				}
 			}
 			return null;
+		}
+
+
+		function listGear(gearArray, userID, callback) {
+
+
+
+			var parsedGearArray = JSON.stringify(gearArray);
+
+			var postData = {
+
+				owner_id: userID,
+
+				gear_list: parsedGearArray
+
+			};
+
+			console.log("before post");
+
+			this.post('/gearlist', postData, function(error, data) {
+				
+				if(callback && typeof callback === 'function') {
+					callback(error);
+				}
+				return;
+
+			});
+
 		}
 	}
 );

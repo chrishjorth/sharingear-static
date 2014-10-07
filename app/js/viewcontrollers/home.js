@@ -4,17 +4,18 @@
  */
 
 define(
-	['underscore', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker', 'utilities'],
-	function(_, ViewController, GearList, App, GoogleMaps, daterangepicker, utilities) {
+	['underscore', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker', ],
+	function(_, Utilities, ViewController, GearList, App, GoogleMaps, daterangepicker) {
 
 		var Home = ViewController.inherit({
 			gearList: new GearList.constructor({
 				rootURL: App.API_URL
 			}),
 			geocoder: new GoogleMaps.Geocoder(),
+			// searchBlockID: 'home-search-block',
+			searchBlockID: 'testRow',
 
-
-			searchBlockID: 'home-search-block',
+			didInitialize: didInitialize,
 			didRender: didRender,
 			setupEvents: setupEvents,
 			handleSearch: handleSearch,
@@ -23,8 +24,11 @@ define(
 
 		return Home;
 
-		function didRender() {
+		function didInitialize() {
 
+		}
+
+		function didRender() {
             //Loading the daterangepicker with available days from today
             var currentDate = new Date();
             var month = currentDate.getMonth() + 1;
@@ -40,22 +44,18 @@ define(
             });
 
             //Filling the Location input with current location using HTML5 only if User.city is empty
-            if(App.user.data.city===''){
-
-                if(navigator.geolocation){
-                    navigator.geolocation.getCurrentPosition(function(position){
-                        var lat = position.coords.latitude;
-                        var lon = position.coords.longitude;
-                        utilities.geoLocationGetCity(lat,lon, function (locationCity) {
-                            App.user.data.city = locationCity;
-                        });
-
+            if(App.user.data.city === '' && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position){
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    Utilities.geoLocationGetCity(lat, lon, function (locationCity) {
+                        App.user.data.city = locationCity;
+                        $('#search-location').val(locationCity);
                     });
-                }
-
-            }else{
-                var loc = App.user.data.city;
-                $('#search-location').val(loc);
+                });
+            }
+            else {
+                $('#search-location').val(App.user.data.city);
             }
 
             this.setupEvents();
@@ -110,6 +110,10 @@ define(
 		 * @param searchResults: an array of objects.
 		 */
 		function populateSearchBlock(searchResults, callback) {
+
+
+			console.log(searchResults);
+
 			var $searchBlock = $('#' + this.searchBlockID, this.$element);
 			$searchBlock.empty();
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
@@ -123,19 +127,27 @@ define(
 					brand: 0,
 					model: '',
 					description: '',
-					photos: '',
+					images: '',
+					image: '',
 					price: 0,
-					seller_user_id: 0,
 					city: '',
 					address: '',
 					price1: 0,
 					price2: 0,
-					price3: 0
+					price3: 0,
+					owner_id: null
 				};
 
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i];
+
+					var imagesTest = searchResults[i].images.split(",");
+					searchResult.image = imagesTest[0];
+
+					
 					_.extend(defaultSearchResults, searchResult);
+					
+					
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 				}
 				if(callback && typeof callback === 'function') {
