@@ -44,7 +44,7 @@ define(
 					//});
 				});
 
-				it('Can populate search results', function(done) {
+				it.skip('Can populate search results', function(done) {
 					var $searchBlock = $('#' + this.home.searchBlockID),
 						searchResults;
 						

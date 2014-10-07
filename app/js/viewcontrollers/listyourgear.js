@@ -38,55 +38,49 @@
                 $('#listyourgear-location').val(loc);
             }
             this.setupEvent('click', '#submitGearButton', this, this.handleLogin);
-
  		}
 
  		
 
-		function handleLogin(event, callback) {
+		function handleLogin(event) {
 			var view = event.data,
 				user = App.user;
 			user.login(function(error) {
 				if(!error) {
-
-					view.gearList = new GearList.constructor({rootURL: App.API_URL});
-
+					view.gearList = new GearList.constructor({
+						rootURL: App.API_URL
+					});
 					view.gearList.listGear(view.getFormInput(), user.data.id, function(error, data) {
-
-						console.log("before router");
-
-						App.router.navigateTo('dashboard');
-
+						if(!error) {
+							App.router.navigateTo('dashboard');
+						}
+						else {
+							console.log('Error listing gear:');
+							console.log(error);
+						}
 					});
 					
-					//here add REST
-				}
-				
-				if(callback && typeof callback === 'function') {
-					callback();
 				}
 			});
 		 }
 
 
 		function getFormInput() {
-
  			var selectedGear = [];
  			$('input[type=checkbox]').each(function () {
+ 				var gearCity, gearPairs;
  				if (this.checked) {
- 					var gearCity = $("#listyourgear-location").val();
-
- 					var gearPairs = {type: '', city: ''};
- 					gearPairs.type = this.value;
- 					gearPairs.city = gearCity;
-
+ 					gearCity = $("#listyourgear-location").val();
+ 					gearPairs = {
+ 						type: this.value, 
+ 						city: gearCity
+ 					};
  					selectedGear.push(gearPairs);
-
  				}
  			});
-
+ 			console.log('Selected gear: ');
+ 			console.log(selectedGear);
  			return selectedGear;
-
 		}
 	}
 );
