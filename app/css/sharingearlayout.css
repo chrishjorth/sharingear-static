@@ -1716,6 +1716,99 @@ body {
     height:0;
     overflow:hidden;
 }
+
+/* Testimonials */
+
+.black-line {
+    margin: auto;
+    z-index: 1;
+    width: 165px;
+    height: 1px;
+    background: #000;
+}
+
+.white-line {
+    margin: auto;
+    z-index: 1;
+    width: 165px;
+    height: 1px;
+    background: #fff;
+}
+
+.testimonials {
+    background: url(../images/bg-2.jpg) no-repeat center fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+    padding: 0;
+}
+
+.testimonials .color-overlay {
+    padding-top: 110px;
+    padding-bottom: 110px;
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.feedback {
+    max-width: 750px;
+    margin: auto;
+}
+
+.feedback .image {
+    font-size: 24px;
+    border: 2px solid transparent;
+    -webkit-box-shadow: 0px 0px 0px 2px #ffffff;
+    box-shadow: 0px 0px 0px 2px #ffffff;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    margin: auto;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.feedback .image img {
+    width: 100%;
+    vertical-align: top;
+}
+
+.feedback .message {
+    font-size: 18px;
+    font-style: italic;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    line-height: 25px;
+}
+
+.feedback .name {
+    margin-top: 15px;
+    font-weight: 400;
+}
+
+.feedback .company-info {
+    font-size: 30px;
+    padding-bottom: 10px;
+    color: #00aeff;
+    line-height: 40px;
+}
+
+.owl-theme .owl-controls .owl-page span {
+    background: #00aeff;
+    border-radius: 50%;
+}
+
+.customNavigation a {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+
+
 /* ----------- størrelsen til video lærredet----
 .page-section {
   max-width: 1170px;
@@ -2142,6 +2235,12 @@ footer a:hover {
     margin-bottom:40px;
     height:0;
     overflow:hidden;
+}
+
+.video-container iframe {
+
+    border-bottom: solid 3px #00aeff;
+
 }
 /* ----------- størrelsen til video lærredet----
 .page-section {
@@ -2663,8 +2762,8 @@ footer a:hover {
 }
 .video-container {
     position:relative;
-    padding-bottom:56.25%;
-    margin-bottom:40px;
+    padding-bottom:400px;
+    margin-bottom:0px;
     height:0;
     overflow:hidden;
 }

@@ -48,6 +48,8 @@ define(
 			this.renderGearPictures();
 			this.renderMap();
 			Galleria.run('.galleria');
+
+
 		}
 
 		function renderGearPictures() {
@@ -64,6 +66,8 @@ define(
 			}
 			$('#gearprofile-galleria', this.$element).append(html);
 		}
+
+        
 
 		function renderMap() {
 			var gear = this.gear.data,
