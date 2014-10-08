@@ -3286,7 +3286,9 @@ margin-top: 0;
 }
 
 .profile_im{
-  width:100%;
+  width:200px;
+  height: 200px;
+  background: no-repeat 50% 50%;
 }
 
 .prof_subview {

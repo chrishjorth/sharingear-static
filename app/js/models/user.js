@@ -13,13 +13,15 @@ define(
 				name: '',
 				surname: '',
                 city: '',
-                image_url:''
+                image_url:'',
+                bio:''
 			},
 
 			getLoginStatus: getLoginStatus,
 			login: login,
 			loginToBackend: loginToBackend,
-            uploadProfilePicture: uploadProfilePicture
+            uploadProfilePicture: uploadProfilePicture,
+            updateUser:updateUser
 		});
 
 		FB.init({
@@ -96,6 +98,18 @@ define(
 				}
 			});
 		}
+
+        function updateUser(userID, saveData, callback){
+
+            this.put('/users/'+userID, saveData, function (error, data) {
+                if(error){
+                    if(callback && typeof callback === 'function') {
+                        callback('Error getting filename: ' + error);
+                    }
+                    return;
+                }
+            });
+        }
 
         function uploadProfilePicture(file, filename, userID, callback){
             var model = this;

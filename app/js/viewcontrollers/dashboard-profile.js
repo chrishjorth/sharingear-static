@@ -10,6 +10,7 @@ define(
 			didInitialize: didInitialize,
             handleImageUpload: handleImageUpload,
             didRender: didRender,
+            handleSave:handleSave,
 
             user: null
 		}); 
@@ -32,7 +33,26 @@ define(
 			_.extend(user, App.user.data);
 			
 			this.templateParameters = user;
-		}
+
+            //Image handling
+            var isVertical;
+            var img = new Image();
+            img.src = this.user.data.image_url;
+            var imgWidth = img.width;
+            var imgHeight = img.height;
+            isVertical = imgWidth < imgHeight;
+
+            //TODO background-image is not loaded
+            var picture_url = 'url("'+this.user.data.image_url+'")';
+            console.log(picture_url);
+            $('#prof-pic-div').css("background-image",picture_url);
+            if (isVertical) {
+                $('#prof-pic-div').css("background-size","auto "+imgWidth);
+            }else{
+                $('#prof-pic-div').css("background-size",imgHeight+ "auto");
+            }
+
+        }
 
         function handleImageUpload(event) {
             //TODO finish the handleImageUpload method
@@ -47,6 +67,16 @@ define(
                 if(error) {
                     alert('Error uploading file.');
                     console.log(error);
+                }
+            });
+        }
+
+        function handleSave(saveData,callback){
+            this.user.updateUser(App.user.data.user_id,saveData, function (error, data) {
+                if(error){
+                    if(callback && typeof callback === 'function') {
+                        callback('Error updating user: ' + error);
+                    }
                 }
             });
         }

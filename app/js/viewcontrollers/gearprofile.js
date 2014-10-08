@@ -13,7 +13,8 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			renderGearPictures: renderGearPictures,
-			renderMap: renderMap
+			renderMap: renderMap,
+            renderOwner: renderOwner
 		});
 
 		return GearProfile;
@@ -48,9 +49,44 @@ define(
 			this.renderGearPictures();
 			this.renderMap();
 			Galleria.run('.galleria');
-
-
+            this.renderOwner();
 		}
+
+        function renderOwner() {
+            var owner = this.gear.data.owner_id;
+
+            if (owner !== null) {
+                console.log("This guy: "+owner);
+                this.gear.getUserInfo(owner, function (error,data) {
+
+                    //Name
+                    var owner_name = '<h4'+'>'+data.name+' '+data.surname+'<img class="pull-right" src="images/icon-fbicon.png"'+'></'+'h4>';
+                    $('#owner_name').html(owner_name);
+
+                    //Image handling
+                    var isVertical;
+                    var img = new Image();
+                    img.src = data.image_url;
+                    var imgWidth = img.width;
+                    var imgHeight = img.height;
+                    isVertical = imgWidth < imgHeight;
+
+                    var owner_picture_url = 'url('+data.image_url+')';
+                    $('#owner_picture').css("background-image",owner_picture_url);
+                    $('#owner_picture').css("margin-top","65px");
+                    if (isVertical) {
+                        $('#owner_picture').css("background-size","auto "+imgWidth);
+                    }else{
+                        $('#owner_picture').css("background-size",imgHeight+ "auto");
+                    }
+
+
+                    //Bio
+                    $('#owner_bio').html('<p'+'>'+data.bio+'</'+'p>');
+                });
+            }
+
+        }
 
 		function renderGearPictures() {
 			var images = this.gear.data.images.split(','),

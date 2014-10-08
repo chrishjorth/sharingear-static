@@ -29,7 +29,8 @@ define(
 			createGear: createGear,
 			uploadImage: uploadImage,
 			save: save,
-			update: update
+			update: update,
+            getUserInfo:getUserInfo
 		});
 
 		return Gear;
@@ -115,6 +116,18 @@ define(
 			});
 		}
 
+        function getUserInfo(userID, callback) {
+            this.get('/users/'+userID, function (error,data) {
+                if(error) {
+                    console.log(error);
+                    callback(error);
+                    return;
+                }
+
+                callback(null,data);
+            });
+        }
+
 		function save(userID, callback) {
 			var saveData = {
 				subtype: this.data.subtype,
@@ -147,6 +160,7 @@ define(
 				}
 			});
 		}
+
 
 		function update(userID, callback) {
 			var model = this;
