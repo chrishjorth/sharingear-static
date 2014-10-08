@@ -17,6 +17,7 @@ requirejs.config({
 		sinon: '../test/js/libraries/sinon-1.10.3',
 		facebook: 'https://connect.facebook.net/en_US/all',
 		galleria: 'libraries/galleria-1.4.2.min',
+		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker'
 	},
 	shim: {
@@ -35,6 +36,10 @@ requirejs.config({
 		'galleria': {
 			deps: ['jquery'],
 			exports: 'Galleria'
+		},
+		'owlcarousel': {
+			deps: ['jquery'],
+			exports: 'OwlCarousel'
 		},
 		'daterangepicker': {
 			deps: ['jquery', 'bootstrap', 'moment']
