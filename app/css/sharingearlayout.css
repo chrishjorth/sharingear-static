@@ -453,6 +453,11 @@ footer a:hover {
     height: 150px;
     float: right;
 }
+/*----------------------------- general ------------------------------ */
+.nosidepadding {
+   padding-left: 0;
+   padding-right: 0; 
+}
 /*----------------------------- typography --------------------------- */
 
 .emphasize {
@@ -3114,6 +3119,7 @@ border-color: #dedede;
     font-size:30px;
     padding:8px 0;
     font-weight:500;
+    width: 100%;
 }
 .subview_book:hover {
     border:0 solid rgba(221, 221, 221, 0.5);

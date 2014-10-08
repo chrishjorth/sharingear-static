@@ -12,8 +12,11 @@ define(
 
 			didInitialize: didInitialize,
 			didRender: didRender,
+			setupView: setupView,
 			renderGearPictures: renderGearPictures,
-			renderMap: renderMap
+			renderMap: renderMap,
+
+			handleBooking: handleBooking
 		});
 
 		return GearProfile;
@@ -36,7 +39,7 @@ define(
 						return;
 					}
 					view.templateParameters = view.gear.data;
-					view.render();
+					view.setupView();
 				});
 			}
 			
@@ -45,9 +48,14 @@ define(
 		}
 
 		function didRender() {
+			this.setupView();
+			Galleria.run('.galleria');
+			this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
+		}
+
+		function setupView() {
 			this.renderGearPictures();
 			this.renderMap();
-			Galleria.run('.galleria');
 		}
 
 		function renderGearPictures() {
@@ -83,6 +91,11 @@ define(
 			}
 
 			$('.adress_click', this.$element).html(gear.address + ' ' + gear.postal_code + ' ' + gear.city + ' ' + gear.region + ' ' + gear.country);
+		}
+
+		function handleBooking(event) {
+			var view = this;
+			console.log('BOOK ALREADY!');
 		}
 	}
 );
