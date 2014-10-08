@@ -12,11 +12,8 @@ define(
 
 			didInitialize: didInitialize,
 			didRender: didRender,
-			setupView: setupView,
 			renderGearPictures: renderGearPictures,
-			renderMap: renderMap,
-
-			handleBooking: handleBooking
+			renderMap: renderMap
 		});
 
 		return GearProfile;
@@ -39,7 +36,7 @@ define(
 						return;
 					}
 					view.templateParameters = view.gear.data;
-					view.setupView();
+					view.render();
 				});
 			}
 			
@@ -48,14 +45,11 @@ define(
 		}
 
 		function didRender() {
-			this.setupView();
-			Galleria.run('.galleria');
-			this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
-		}
-
-		function setupView() {
 			this.renderGearPictures();
 			this.renderMap();
+			Galleria.run('.galleria');
+
+
 		}
 
 		function renderGearPictures() {
@@ -72,6 +66,8 @@ define(
 			}
 			$('#gearprofile-galleria', this.$element).append(html);
 		}
+
+
 
 		function renderMap() {
 			var gear = this.gear.data,
@@ -91,11 +87,6 @@ define(
 			}
 
 			$('.adress_click', this.$element).html(gear.address + ' ' + gear.postal_code + ' ' + gear.city + ' ' + gear.region + ' ' + gear.country);
-		}
-
-		function handleBooking(event) {
-			var view = this;
-			console.log('BOOK ALREADY!');
 		}
 	}
 );
