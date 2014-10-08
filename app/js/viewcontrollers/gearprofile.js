@@ -67,7 +67,7 @@ define(
 			$('#gearprofile-galleria', this.$element).append(html);
 		}
 
-        
+
 
 		function renderMap() {
 			var gear = this.gear.data,
