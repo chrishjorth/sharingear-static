@@ -90,6 +90,7 @@ body {
     margin-bottom: 40px;
     height: 0;
     overflow: hidden;
+    text-align: center;
 }
 /* ----------- størrelsen til video lærredet----
 .page-section {
@@ -377,7 +378,7 @@ footer {
     color: #FFF;
      padding: 40px 0px;
     text-align: center;
-    margin-top: 50px;
+    /*margin-top: 50px;*/
      
  }
 footer a:hover {
@@ -505,13 +506,14 @@ footer a:hover {
 }
 
 .image-blocks {
-    width: 30%;
-    margin: 12px;
-    height: 190px;
-    border-radius: 15px 15px 0px 0px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
+    width: 31%;
+    margin: 8px;
+    height: 215px;
+    border-radius: 12px 12px 0px 0px;
+    -webkit-border-radius: 12px 12px 0px 0px;
+    -moz-border-radius: 12px 12px 0px 0px;
     background: no-repeat 50% 50%;
+    color:#ffffff;
 }
 
 .image-blocks-horizontal {
@@ -538,7 +540,7 @@ footer a:hover {
 .image-blocks-address {
 
     padding: 5px;
-    background-color: rgba(0,0,0,1);
+    background-color: rgba(0,0,0,0.7);
     position: absolute;
     bottom: 0;
     left: 0;
@@ -547,16 +549,19 @@ footer a:hover {
     border-top: solid 2px rgb(0, 174, 255);
     color: rgb(0, 174, 255);
     font-size: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
 }
 
 .image-blocks-price {
 
-    padding: 5px;
+    padding: 2px 10px;
     background-color: rgba(0,0,0,0.2);
     position: absolute;
     bottom: 57px;
     right: 0;
-    width: 24%;
     text-align: center;
     font-size: 20px;
     font-weight: bold;
@@ -570,6 +575,11 @@ footer a:hover {
     width: 900px;
     margin: 0 auto
 
+}
+
+#testRow a:active,#testRow a:hover,#testRow a:link {
+    color:white;
+    text-decoration: none;
 }
 /*#ad-title {
 font-size: 0.9em;
@@ -1702,7 +1712,7 @@ body {
 .video-container {
     position:relative;
     padding-bottom:56.25%;
-    margin-bottom:40px;
+    margin-bottom:0;
     height:0;
     overflow:hidden;
 }

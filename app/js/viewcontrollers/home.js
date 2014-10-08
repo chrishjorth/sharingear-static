@@ -153,7 +153,8 @@ define(
 
 
                     //Set background-image with jQuery
-                    $searchBlock.children().eq(i).css("background-image","url(\'"+searchResult.image+"\')");
+                    $searchBlock.children().eq(i).children(":first").css("background-image","url(\'"+searchResult.image+"\')");
+
 
                     //Check if image is vertical or horizontal
                     var isVertical;
@@ -164,9 +165,9 @@ define(
                     isVertical = imgWidth < imgHeight;
 
                     if (isVertical) {
-                        $searchBlock.find('div').addClass("image-blocks-vertical");
+                        $searchBlock.children().eq(i).children(":first").addClass("image-blocks-vertical");
                     }else{
-                        $searchBlock.find('div').addClass("image-blocks-horizontal");
+                        $searchBlock.children().eq(i).children(":first").addClass("image-blocks-horizontal");
                     }
 
 				}
