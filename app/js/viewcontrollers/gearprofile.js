@@ -15,12 +15,8 @@ define(
 			setupView: setupView,
 			renderGearPictures: renderGearPictures,
 			renderMap: renderMap,
-<<<<<<< HEAD
-            renderOwner: renderOwner
-=======
-
+            renderOwner: renderOwner,
 			handleBooking: handleBooking
->>>>>>> 5f22914cc46d5ecdd5a19e08aee0bdff8e193588
 		});
 
 		return GearProfile;
@@ -54,7 +50,7 @@ define(
 		function didRender() {
 			this.setupView();
 			Galleria.run('.galleria');
-<<<<<<< HEAD
+            this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
             this.renderOwner();
 		}
 
@@ -92,16 +88,14 @@ define(
                 });
             }
 
+
         }
-=======
-			this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
-		}
+
 
 		function setupView() {
 			this.renderGearPictures();
 			this.renderMap();
 		}
->>>>>>> 5f22914cc46d5ecdd5a19e08aee0bdff8e193588
 
 		function renderGearPictures() {
 			var images = this.gear.data.images.split(','),
