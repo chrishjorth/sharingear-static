@@ -39,7 +39,7 @@ define(
 						return;
 					}
 					view.templateParameters = view.gear.data;
-					view.setupView();
+					view.render();
 				});
 			}
 			

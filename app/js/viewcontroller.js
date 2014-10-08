@@ -59,6 +59,10 @@ define([
 
 	function render(callback) {
 		var template = this.template(this.templateParameters);
+
+		//Unbind events to avoid double ups on multiple renders
+		this.unbindEvents();
+
 		this.$element.html(template);
 		if(this.didRender && typeof this.didRender == 'function') {
 			this.didRender();
