@@ -1,12 +1,12 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12"><h2>{{type}}: {{subtype}}</h2></div>
+		<div class="col-md-12"><h2>{{type}}:</h2></div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<form id="editgear-form" onsubmit="return false;">
 				<div class="form-group">
-					<label for="">Type:</label>
+					<label for="">Subtype:</label>
 					<select name="subtype" id="editgear-subtype">
 					</select>
 				</div>
@@ -24,11 +24,11 @@
 					<label for="description">Description</label>
 					<textarea name="editgear-description" id="editgear-description">{{description}}</textarea>
 				</div>
-				<div class="form-group">
+				<!--<div class="form-group">
                     <label for="dashboard-addgear-form-imageupload">Upload image:</label>
                     <input type="file" id="editgear-form-imageupload" name="gearpic">
                     <div class="thumb-list-container"><ul></ul></div>
-                </div>
+                </div>-->
 				<div class="pull-right"><button class="btn btn-default btn-cancel">Cancel</button><button class="btn btn-primary btn-next">Next</button></div>
 			</form>
 		</div>

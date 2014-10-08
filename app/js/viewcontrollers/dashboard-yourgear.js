@@ -4,8 +4,8 @@
  */
 
 define(
-	['underscore', 'viewcontroller', 'app', 'models/gearlist'],
-	function(_, ViewController, App, GearList) {
+	['underscore', 'viewcontroller', 'app', 'models/gearlist', 'models/gear'],
+	function(_, ViewController, App, GearList, Gear) {
 		var YourGear = ViewController.inherit({
 			gearBlockID: 'yourgear-gear-block',
 			gearList: new GearList.constructor({
@@ -72,8 +72,13 @@ define(
 		}
 
 		function handleEditGearItem(event) {
-			var view = event.data;
-			App.router.openModalView('editgear', view.gearList.getGearItem($(this).data('yourgearid')));
+			var view = event.data,
+				gear;
+			gear = new Gear.constructor({
+				rootURL: App.API_URL,
+				data: view.gearList.getGearItem($(this).data('yourgearid'))
+			});
+			App.router.openModalView('editgear', gear);
 		}
 	}
 );

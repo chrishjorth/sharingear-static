@@ -13,38 +13,34 @@ define(
 			didRender: didRender,
 			populateBrandSelect: populateBrandSelect,
 			populateSubtypeSelect: populateSubtypeSelect,
-			populateImages: populateImages,
 			setupEvents: setupEvents,
 			handleCancel: handleCancel,
-			handleNext: handleNext,
-			handleImageUpload: handleImageUpload
+			handleNext: handleNext
 		}); 
 		return EditGear;
 
 		function didInitialize() {
-			this.templateParameters = this.passedData;
-			this.gear = new Gear.constructor({
-				rootURL: App.API_URL,
-				data: this.passedData
-			});
+			this.gear = this.passedData;
+			this.templateParameters = this.gear.data;
 		}
 
 		function didRender() {
 			this.populateBrandSelect();
-			
-			if (this.passedData.brand == '') {
-				$("#editgear-brand").prop("selectedIndex", 0); // if no brand is passed, "Choose brand:" by default
-			} else {
-				$('#editgear-brand', this.$element).val(this.passedData.brand);
-			}
+			this.populateSubtypeSelect();
 
-			this.populateSubtypeSelect(this.passedData.type);
-			if (this.passedData.subtype == '') {
+			if(this.gear.data.subtype === '') {
 				$("#editgear-subtype").prop("selectedIndex", 0); // if no subtype is passed, "Choose type:" by default
-			} else {
-				$('#editgear-subtype', this.$element).val(this.passedData.subtype);
 			}
-			this.populateImages();
+			else {
+				$('#editgear-subtype', this.$element).val(this.gear.data.subtype);
+			}
+			
+			if(this.gear.data.brand === '') {
+				$("#editgear-brand").prop("selectedIndex", 0); // if no brand is passed, "Choose brand:" by default
+			}
+			else {
+				$('#editgear-brand', this.$element).val(this.gear.data.brand);
+			}
 			this.setupEvents();
 		}
 
@@ -65,9 +61,9 @@ define(
 			$brandSelect.append(html);
 		}
 
-		function populateSubtypeSelect(gearType) {
+		function populateSubtypeSelect() {
 			var gearClassification = App.gearClassification.data.classification,
-				html = '<option> Choose type: </option>',
+				html = '<option> Choose subtype: </option>',
 				$subtypeSelect, 
 				$brandSelect, 
 				gearSubtypes, i;
@@ -75,31 +71,17 @@ define(
 			$subtypeSelect = $('#editgear-subtype', this.$element);
 			$subtypeSelect.empty();
 			
-			gearSubtypes = gearClassification[gearType];
+			gearSubtypes = gearClassification[this.gear.data.type];
 			for(i = 0; i < gearSubtypes.length; i++) {
 				html += '<option value="' + gearSubtypes[i] + '">' + gearSubtypes[i] + '</option>';
 			}
 			$subtypeSelect.append(html);
 		}
 
-
-		function populateImages() {
-			var images = this.gear.data.images.split(','),
-				html = '',
-				i;
-			for(i = 0; i < images.length; i++) {
-				//Avoid empty url strings because of trailing ','
-				if(images[i].length > 0) {
-					html += '<li><img src="' + images[i] + '" alt="Gear thumb"></li>';
-				}
-			}
-			$('#editgear-form .thumb-list-container ul', this.$element).append(html);
-		}
-
 		function setupEvents() {
 			this.setupEvent('click', '#editgear-form .btn-cancel', this, this.handleCancel);
 			this.setupEvent('click', '#editgear-form .btn-next', this, this.handleNext);
-			this.setupEvent('change', '#editgear-form-imageupload', this, this.handleImageUpload);
+			//this.setupEvent('change', '#editgear-form-imageupload', this, this.handleImageUpload);
 		}
 
 		function handleCancel(event) {
@@ -117,12 +99,11 @@ define(
 				description: $('#editgear-description', view.$element).val()
 			};
 
-			if ($('#editgear-brand option:selected', view.$element).val() == "Choose brand:") {			// Check for empty values, don't proceed if true
+			/*if ($('#editgear-brand option:selected', view.$element).val() == "Choose brand:") {			// Check for empty values, don't proceed if true
 				alert("Choose a brand, bro");
 			} else if ($('#editgear-subtype option:selected', view.$element).val() == "Choose type:") {
 				alert("Choose a type of instrument, bro");
-			} else {
-
+			} else {*/
 				_.extend(view.gear.data, updatedGearData);
 
 				view.gear.save(App.user.data.id, function(error, gear) {
@@ -132,30 +113,12 @@ define(
 					}
 				});
 
-				App.router.openModalView('gearpricing', view.gear);
+				App.router.openModalView('editgearphotos', view.gear);
 
 
-			}
+			//}
 
 			
-		}
-
-		function handleImageUpload(event) {
-			var view = event.data
-				$file = $(this);
-			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
-				var $thumbList, html;
-				$('#editgear-form-imageupload').val('');
-				if(error) {
-					alert('Error uploading file.');
-					console.log(error);
-					return;
-				}
-				view.gear.data.images += url + ',';
-				$thumbList = $('#editgear-form .thumb-list-container ul', view.$element);
-				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
-				$thumbList.append(html);
-			});
 		}
 	}
 );

@@ -53,7 +53,8 @@ define(
 				'insurance',
 				'privacy',
 				'editgear',
-				'gearpricing'
+				'editgearphotos',
+				'editgearpricing'
 			);
 
 			$(document).ready(function() {

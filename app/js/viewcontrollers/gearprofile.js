@@ -12,8 +12,11 @@ define(
 
 			didInitialize: didInitialize,
 			didRender: didRender,
+			setupView: setupView,
 			renderGearPictures: renderGearPictures,
-			renderMap: renderMap
+			renderMap: renderMap,
+            renderOwner: renderOwner,
+			handleBooking: handleBooking
 		});
 
 		return GearProfile;
@@ -45,9 +48,53 @@ define(
 		}
 
 		function didRender() {
+			this.setupView();
+			Galleria.run('.galleria');
+            this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
+            this.renderOwner();
+		}
+
+        function renderOwner() {
+            var owner = this.gear.data.owner_id;
+
+            if (owner !== null) {
+                console.log("This guy: "+owner);
+                this.gear.getUserInfo(owner, function (error,data) {
+
+                    //Name
+                    var owner_name = '<h4'+'>'+data.name+' '+data.surname+'<img class="pull-right" src="images/icon-fbicon.png"'+'></'+'h4>';
+                    $('#owner_name').html(owner_name);
+
+                    //Image handling
+                    var isVertical;
+                    var img = new Image();
+                    img.src = data.image_url;
+                    var imgWidth = img.width;
+                    var imgHeight = img.height;
+                    isVertical = imgWidth < imgHeight;
+
+                    var owner_picture_url = 'url('+data.image_url+')';
+                    $('#owner_picture').css("background-image",owner_picture_url);
+                    $('#owner_picture').css("margin-top","65px");
+                    if (isVertical) {
+                        $('#owner_picture').css("background-size","auto "+imgWidth);
+                    }else{
+                        $('#owner_picture').css("background-size",imgHeight+ "auto");
+                    }
+
+
+                    //Bio
+                    $('#owner_bio').html('<p'+'>'+data.bio+'</'+'p>');
+                });
+            }
+
+
+        }
+
+
+		function setupView() {
 			this.renderGearPictures();
 			this.renderMap();
-			Galleria.run('.galleria');
 		}
 
 		function renderGearPictures() {
@@ -83,6 +130,11 @@ define(
 			}
 
 			$('.adress_click', this.$element).html(gear.address + ' ' + gear.postal_code + ' ' + gear.city + ' ' + gear.region + ' ' + gear.country);
+		}
+
+		function handleBooking(event) {
+			var view = this;
+			console.log('BOOK ALREADY!');
 		}
 	}
 );

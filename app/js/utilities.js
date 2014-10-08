@@ -12,6 +12,7 @@ define(
         getBaseURL: getBaseURL,
         ajajFileUpload: ajajFileUpload,
         geoLocationGetCity: geoLocationGetCity
+//        getUserInfo: getUserInfo
     };
 
 	return Util;
@@ -40,6 +41,12 @@ define(
 		Inherited.prototype.constructor = Inherited;
 		return Inherited;
 	}
+
+//    function getUserInfo(userID, callback) {
+//        this.get('/users/'+userID, function () {
+//            console.log('hi');
+//        });
+//    }
 
 	function getBaseURL() {
 		if (!window.location.origin) {

@@ -4,22 +4,35 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<form id="gearpricing-form" onsubmit="return false;">
-				<div class="controls">
+			<form id="editgearpricing-form" onsubmit="return false;">
+				<div class="form-group">
 					<label for="">Daily Rental Price</label>
 					<div class="price"><span class="symbol">$</span><input id="price_a" name="price_a" size="7" type="text" value="{{price_a}}"></div>
 					<p class="small">The average daily price is $18</p>
 				</div>
-				<div class="controls">
+				<div class="form-group">
 					<label for="ride_pricing_per_hour_string">Hourly Rental Price</label>
 					<div class="price"><span class="symbol">$</span><input id="price_b" name="price_b" size="7" type="text" value="{{price_b}}"></div>
 					<p class="small">Any rental under 4 hours is charged at this hourly rate</p>
 				</div>
-				<div class="controls">
+				<div class="form-group">
 					<label for="ride_pricing_per_week_string">Weekly Rental Price</label>
 					<div class="price"><span class="symbol">$</span><input id="price_c" name="price_c" size="7" type="text" value="{{price_c}}"></div>
 					<p class="small">An 8 day rental will be charged as 1 week and 1 day</p>
 				</div>
+				<div class="form-group">
+                    <label for="dashboard-addgearprice-address">Address</label>
+                    <input type="text" name="address" id="editgearpricing-address">
+                    <label for="dashboard-addgearprice-postalcode">Postal code</label>
+                    <input type="text" name="postalcode" id="editgearpricing-postalcode">
+                    <label for="dashboard-addgearprice-city">City</label>
+                    <input type="text" name="city" id="editgearpricing-city">
+                    <label for="dashboard-addgearprice-region">Region</label>
+                    <input type="text" name="region" id="editgearpricing-region">
+                    <select name="country" id="editgearpricing-country">
+                        <option value="Denmark">Denmark</option>
+                    </select>
+                </div>
 				<div class="pull-right"><button class="btn btn-default btn-cancel">Back</button><button class="btn btn-primary btn-save">Save</button></div>
 			</form>
 		</div>

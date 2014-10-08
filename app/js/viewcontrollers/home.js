@@ -4,8 +4,8 @@
  */
 
 define(
-	['underscore', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker', ],
-	function(_, Utilities, ViewController, GearList, App, GoogleMaps, daterangepicker) {
+	['underscore', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker','owlcarousel' ],
+	function(_, Utilities, ViewController, GearList, App, GoogleMaps, daterangepicker, owlcarousel) {
 
 		var Home = ViewController.inherit({
 			gearList: new GearList.constructor({
@@ -58,6 +58,28 @@ define(
             else {
                 $('#search-location').val(App.user.data.city);
             }
+
+            //Testimonials init
+            $("#feedbacks").owlCarousel({
+
+                navigation: false, // Show next and prev buttons
+                slideSpeed: 800,
+                paginationSpeed: 400,
+                autoPlay: 7000,
+                singleItem: true
+            });
+
+            var owl = $("#screenshots");
+
+            owl.owlCarousel({
+                items: 4, //10 items above 1000px browser width
+                itemsDesktop: [1000, 4], //5 items between 1000px and 901px
+                itemsDesktopSmall: [900, 2], // betweem 900px and 601px
+                itemsTablet: [600, 1], //2 items between 600 and 0
+                itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
+            });
+
+
 
             this.setupEvents();
 		}
@@ -153,7 +175,8 @@ define(
 
 
                     //Set background-image with jQuery
-                    $searchBlock.children().eq(i).css("background-image","url(\'"+searchResult.image+"\')");
+                    $searchBlock.children().eq(i).children(":first").css("background-image","url(\'"+searchResult.image+"\')");
+
 
                     //Check if image is vertical or horizontal
                     var isVertical;
@@ -164,9 +187,9 @@ define(
                     isVertical = imgWidth < imgHeight;
 
                     if (isVertical) {
-                        $searchBlock.find('div').addClass("image-blocks-vertical");
+                        $searchBlock.children().eq(i).children(":first").addClass("image-blocks-vertical");
                     }else{
-                        $searchBlock.find('div').addClass("image-blocks-horizontal");
+                        $searchBlock.children().eq(i).children(":first").addClass("image-blocks-horizontal");
                     }
 
 				}

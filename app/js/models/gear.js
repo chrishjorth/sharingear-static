@@ -29,7 +29,8 @@ define(
 			createGear: createGear,
 			uploadImage: uploadImage,
 			save: save,
-			update: update
+			update: update,
+            getUserInfo:getUserInfo
 		});
 
 		return Gear;
@@ -115,6 +116,18 @@ define(
 			});
 		}
 
+        function getUserInfo(userID, callback) {
+            this.get('/users/'+userID, function (error,data) {
+                if(error) {
+                    console.log(error);
+                    callback(error);
+                    return;
+                }
+
+                callback(null,data);
+            });
+        }
+
 		function save(userID, callback) {
 			var saveData = {
 				subtype: this.data.subtype,
@@ -126,7 +139,7 @@ define(
 				price_b: this.data.price_b,
 				price_c: this.data.price_c,
 				address: this.data.address,
-				postalcode: this.data.postalcode,
+				postal_code: this.data.postal_code,
 				city: this.data.city,
 				region: this.data.region,
 				country: this.data.country,
@@ -134,7 +147,6 @@ define(
 				longitude: this.data.longitude
 			};
 
-			console.log(saveData);
 			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
@@ -148,6 +160,7 @@ define(
 				}
 			});
 		}
+
 
 		function update(userID, callback) {
 			var model = this;
