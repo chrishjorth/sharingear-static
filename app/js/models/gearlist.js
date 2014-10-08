@@ -70,28 +70,18 @@ define(
 
 
 		function listGear(gearArray, userID, callback) {
-
-
-
-			var parsedGearArray = JSON.stringify(gearArray);
-
-			var postData = {
-
+			var parsedGearArray = JSON.stringify(gearArray),
+				postData;
+			postData = {
 				owner_id: userID,
-
 				gear_list: parsedGearArray
-
 			};
 
-			console.log("before post");
-
 			this.post('/gearlist', postData, function(error, data) {
-				
 				if(callback && typeof callback === 'function') {
 					callback(error);
 				}
 				return;
-
 			});
 
 		}

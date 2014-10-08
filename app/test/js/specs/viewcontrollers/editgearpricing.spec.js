@@ -1,7 +1,7 @@
 define(
-	['jquery', 'chai', 'sinon', 'viewcontrollers/gearpricing', 'app', 'models/gear'],
+	['jquery', 'chai', 'sinon', 'viewcontrollers/editgearpricing', 'app', 'models/gear'],
 	function($, chai, Sinon, GearPricing, App, Gear) {
-		require(['text!../templates/gearpricing.html'], function(GearPricingTemplate) {
+		require(['text!../templates/editgearpricing.html'], function(GearPricingTemplate) {
 			var expect = chai.expect;
 		
 			describe('Gear pricing ViewController', function() {
@@ -49,7 +49,7 @@ define(
 				it('Can handle back', function(done) {
 					var spec = this;
 					this.gearPricing.render(function() {
-						expect($('#gearpricing-form .btn-cancel', spec.$fixtures).length).to.equal(1);
+						expect($('#editgearpricing-form .btn-cancel', spec.$fixtures).length).to.equal(1);
 						spec.gearPricing.handleBack({
 							data: spec.gearPricing
 						});
@@ -61,7 +61,7 @@ define(
 				it('Can handle save', function(done) {
 					var spec = this;
 					this.gearPricing.render(function() {
-						expect($('#gearpricing-form .btn-cancel', spec.$fixtures).length).to.equal(1);
+						expect($('#editgearpricing-form .btn-cancel', spec.$fixtures).length).to.equal(1);
 						spec.gearPricing.handleSave({
 							data: spec.gearPricing
 						});

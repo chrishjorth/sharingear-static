@@ -15,7 +15,7 @@ define(
 				expect(GearList.constructor).to.be.a('function');
 			});
 
-			it('Can search', function(done) {
+			it.skip('Can search', function(done) {
 				this.gearList.search('some location', 'some gear', '20140829-20140901', function() {
 					done();
 				});

@@ -126,7 +126,7 @@ define(
 				price_b: this.data.price_b,
 				price_c: this.data.price_c,
 				address: this.data.address,
-				postalcode: this.data.postalcode,
+				postal_code: this.data.postal_code,
 				city: this.data.city,
 				region: this.data.region,
 				country: this.data.country,
@@ -134,7 +134,6 @@ define(
 				longitude: this.data.longitude
 			};
 
-			console.log(saveData);
 			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
