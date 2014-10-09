@@ -134,7 +134,7 @@ define(
 
 		function handleBooking(event) {
 			var view = this;
-			console.log('BOOK ALREADY!');
+			App.router.openModalView('gearbooking', view.gear);
 		}
 	}
 );
