@@ -33,7 +33,14 @@ define(
 			handleRightPrevious: handleRightPrevious,
 			handleRightNext: handleRightNext,
 			handleRightWeeks: handleRightWeeks,
-			handleRightMonths: handleRightMonths
+			handleRightMonths: handleRightMonths,
+			handleLeftHourSelection: handleLeftHourSelection,
+			handleLeftDaySelection: handleLeftDaySelection,
+			handleRightHourSelection: handleRightHourSelection,
+			handleRightDaySelection: handleRightDaySelection,
+
+			clearLeftSelection: clearLeftSelection,
+			clearRightSelection: clearRightSelection
 		}); 
 		return GearBooking;
 
@@ -55,6 +62,7 @@ define(
 			this.setupRightWeekCalendar();
 
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
+			//Navigation events
 			this.setupEvent('click', '#gearbooking-lefttoday-btn', this, this.handleLeftToday);
 			this.setupEvent('click', '#gearbooking-leftprevious-btn', this, this.handleLeftPrevious);
 			this.setupEvent('click', '#gearbooking-leftnext-btn', this, this.handleLeftNext);
@@ -65,6 +73,11 @@ define(
 			this.setupEvent('click', '#gearbooking-rightnext-btn', this, this.handleRightNext);
 			this.setupEvent('click', '#gearbooking-rightweeks-btn', this, this.handleRightWeeks);
 			this.setupEvent('click', '#gearbooking-rightmonths-btn', this, this.handleRightMonths);
+			//Time selection events
+			this.setupEvent('click', '#gearbooking-leftweeks-container .hour-row .hour', this, this.handleLeftHourSelection);
+			this.setupEvent('click', '#gearbooking-leftmonths-container .day-row .day', this, this.handleLeftDaySelection);
+			this.setupEvent('click', '#gearbooking-rightweeks-container .hour-row .hour', this, this.handleRightHourSelection);
+			this.setupEvent('click', '#gearbooking-rightmonths-container .day-row .day', this, this.handleRightDaySelection);
 		}
 
 		function setupLeftWeekCalendar() {
@@ -242,5 +255,59 @@ define(
 			view.setupRightMonthCalendar();
 			view.rightWeekMode = false;
 		}
+
+		function handleLeftHourSelection(event) {
+			var $this = $(this),
+				view = event.data;
+			view.clearLeftSelection();
+			if($this.hasClass('selected') === false) {
+				$this.addClass('selected');
+			}
+		}
+
+		function handleLeftDaySelection(event) {
+			var $this = $(this),
+				view = event.data;
+			view.clearLeftSelection();
+			if($this.hasClass('selected') === false) {
+				$this.addClass('selected');
+			}
+		}
+
+		function handleRightHourSelection(event) {
+			var $this = $(this),
+				view = event.data;
+			view.clearRightSelection();
+			if($this.hasClass('selected') === false) {
+				$this.addClass('selected');
+			}
+		}
+
+		function handleRightDaySelection(event) {
+			var $this = $(this),
+				view = event.data;
+			view.clearRightSelection();
+			if($this.hasClass('selected') === false) {
+				$this.addClass('selected');
+			}
+		}
+
+		function clearLeftSelection() {
+			$('#gearbooking-leftweeks-container .hour-row .hour').each(function(index, $element) {
+				$(this).removeClass('selected');
+			});
+			$('#gearbooking-leftmonths-container .day-row .day').each(function(index, $element) {
+				$(this).removeClass('selected');
+			});
+		}
+
+		function clearRightSelection() {
+			$('#gearbooking-rightweeks-container .hour-row .hour').each(function(index, $element) {
+				$(this).removeClass('selected');
+			});
+			$('#gearbooking-rightmonths-container .day-row .day').each(function(index, $element) {
+				$(this).removeClass('selected');
+			});
+		}		
 	}
 );

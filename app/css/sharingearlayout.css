@@ -1194,7 +1194,7 @@ background-color: rgb(56,143,192);
   overflow: hidden;
 }
 
-/* ------------------------ DASHBOARD - CALENDAR --------------- */
+/* ------------------------ CALENDAR --------------- */
 .dashboard .subview .calendar .row {
     border: none;
 }
@@ -1246,7 +1246,17 @@ background-color: rgb(56,143,192);
     height: 100px;
 }
 
+.hour {
+    cursor: pointer;
+}
 
+.day {
+    cursor: pointer;
+}
+
+.calendar .selected {
+    background-color: #1eb0fc;
+}
 
 /* ------------------------ FOOTER ----------------------------- */
 
