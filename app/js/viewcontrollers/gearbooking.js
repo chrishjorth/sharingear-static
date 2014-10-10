@@ -59,8 +59,10 @@ define(
 			});
 			this.leftMoment = Moment();
 			this.leftMoment.startOf('week').weekday(0);
+			this.leftMoment.hour(0);
 			this.rightMoment = Moment();
 			this.rightMoment.startOf('week').weekday(0);
+			this.rightMoment.hour(0);
 			this.startMoment = Moment();
 			this.endMoment = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date() + 1});
 			this.startMoment.hour(0);
@@ -94,14 +96,6 @@ define(
 			this.setupEvent('click', '#gearbooking-leftmonths-container .day-row .day', this, this.handleLeftDaySelection);
 			this.setupEvent('click', '#gearbooking-rightweeks-container .hour-row .hour', this, this.handleRightHourSelection);
 			this.setupEvent('click', '#gearbooking-rightmonths-container .day-row .day', this, this.handleRightDaySelection);
-		}
-
-		function setupLeftWeekCalendar() {
-			this.setupWeekCalendar(this.leftMoment, $('.week-calendar:nth-child(0n+1) .calendar-header', this.$element));
-		}
-
-		function setupRightWeekCalendar() {
-			this.setupWeekCalendar(this.rightMoment, $('.week-calendar:nth-child(0n+3) .calendar-header', this.$element));
 		}
 
 		function renderWeekCalendar($weekCalendarContainer) {
@@ -164,6 +158,14 @@ define(
 				dayRows += '</div>';
 			}
 			$monthCalendarContainer.append(header + dayRows);
+		}
+
+		function setupLeftWeekCalendar() {
+			this.setupWeekCalendar(this.leftMoment, $('.week-calendar:nth-child(0n+1) .calendar-header', this.$element));
+		}
+
+		function setupRightWeekCalendar() {
+			this.setupWeekCalendar(this.rightMoment, $('.week-calendar:nth-child(0n+3) .calendar-header', this.$element));
 		}
 
 		function setupWeekCalendar(moment, $weekCalHeader) {
@@ -269,6 +271,8 @@ define(
 			$('#gearbooking-leftweeks-container', view.$element).removeClass('hidden');
 			view.leftWeekMode = true;
 
+			view.setupLeftWeekCalendar();
+
 			//view.clearLeftSelection();
 			//$('#gearbooking-leftweeks-container .row:nth-child(0n+' + (parseInt(view.startMoment.hour()) + 2) + ') .hour:nth-child(0n+' + (parseInt(view.startMoment.weekday()) + 2) + ')').addClass('selected');
 			view.renderSelection();
@@ -344,6 +348,8 @@ define(
 			}
 			$('#gearbooking-rightweeks-container', view.$element).removeClass('hidden');
 			view.rightWeekMode = true;
+
+			view.setupRightWeekCalendar();
 
 			//view.clearRightSelection();
 			//$('#gearbooking-rightweeks-container .row:nth-child(0n+' + (parseInt(view.endMoment.hour()) + 2) + ') .hour:nth-child(0n+' + (parseInt(view.endMoment.weekday()) + 2) + ')').addClass('selected');
@@ -482,7 +488,7 @@ define(
 		}
 
 		function renderSelection() {
-			var $calendarContainer, momentIterator, row, col, startDay, $dayBox;
+			var $calendarContainer, momentIterator, row, col, startDay, $box;
 			//Left side grayed out before startdate -> loop all hours or days
 			if(this.leftWeekMode === false) {
 				//Render left month view
@@ -492,28 +498,28 @@ define(
 				momentIterator.subtract(startDay, 'days');
 				for(row = 1; row <= 6; row++) {
 					for(col = 1; col <= 7; col++) {
-						$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-						$dayBox.removeClass('escluded selected included');
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box.removeClass('escluded selected included');
 						if(momentIterator.isBefore(this.startMoment, 'month')) {
-							$dayBox.addClass('escluded');
+							$box.addClass('escluded');
 						}
 						else if(momentIterator.isAfter(this.endMoment, 'month')) {
-							$dayBox.addClass('escluded');
+							$box.addClass('escluded');
 						}
 						else if(momentIterator.isBefore(this.startMoment, 'day')) {
-							$dayBox.addClass('escluded');
+							$box.addClass('escluded');
 						}
 						else if(momentIterator.isSame(this.startMoment, 'day')) {
-							$dayBox.addClass('selected');
+							$box.addClass('selected');
 						}
 						else if(momentIterator.isBefore(this.endMoment, 'day')){
-							$dayBox.addClass('included');
+							$box.addClass('included');
 						}
 						else if(momentIterator.isSame(this.endMoment, 'day')){
-							$dayBox.addClass('included');
+							$box.addClass('included');
 						}
 						else {
-							$dayBox.addClass('escluded');
+							$box.addClass('escluded');
 						}
 						momentIterator.add(1, 'days');
 					}
@@ -521,6 +527,39 @@ define(
 			}
 			else {
 				//Render left week view
+				$calendarContainer = $('#gearbooking-leftweeks-container');
+				momentIterator = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), day: this.leftMoment.date(), hour: 0});
+				momentIterator.weekday(0);
+				for(row = 1; row <= 24; row++) {
+					momentIterator.hours(row - 1);
+					for(col = 1; col <= 7; col++) {
+						$box = $('.hour-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box.removeClass('escluded selected included');
+						if(momentIterator.isBefore(this.startMoment, 'week')) {
+							$box.addClass('escluded');
+						}
+						else if(momentIterator.isAfter(this.endMoment, 'week')) {
+							$box.addClass('escluded');
+						}
+						else if(momentIterator.isBefore(this.startMoment, 'hour')) {
+							$box.addClass('escluded');
+						}
+						else if(momentIterator.isSame(this.startMoment, 'hour')) {
+							$box.addClass('selected');
+						}
+						else if(momentIterator.isBefore(this.endMoment, 'hour')){
+							$box.addClass('included');
+						}
+						else if(momentIterator.isSame(this.endMoment, 'hour')){
+							$box.addClass('included');
+						}
+						else {
+							$box.addClass('escluded');
+						}
+						momentIterator.add(24, 'hours');
+					}
+					momentIterator.subtract(7, 'days');
+				}
 			}
 
 			if(this.rightWeekMode === false) {
@@ -531,22 +570,22 @@ define(
 				momentIterator.subtract(startDay, 'days');
 				for(row = 1; row <= 6; row++) {
 					for(col = 1; col <= 7; col++) {
-						$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-						$dayBox.removeClass('escluded selected included');
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box.removeClass('escluded selected included');
 						if(momentIterator.isBefore(this.startMoment, 'day')) {
-							$dayBox.addClass('escluded');
+							$box.addClass('escluded');
 						}
 						else if(momentIterator.isSame(this.endMoment, 'day')){
-							$dayBox.addClass('selected');
+							$box.addClass('selected');
 						}
 						else if(momentIterator.isSame(this.startMoment, 'day')) {
-							$dayBox.addClass('included');
+							$box.addClass('included');
 						}
 						else if(momentIterator.isBefore(this.endMoment, 'day')){
-							$dayBox.addClass('included');
+							$box.addClass('included');
 						}
 						else {
-							$dayBox.addClass('escluded');
+							$box.addClass('escluded');
 						}
 						momentIterator.add(1, 'days');
 					}
@@ -554,6 +593,39 @@ define(
 			}
 			else {
 				//Render left month view
+				$calendarContainer = $('#gearbooking-rightweeks-container');
+				momentIterator = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), day: this.rightMoment.date(), hour: 0});
+				momentIterator.weekday(0);
+				for(row = 1; row <= 24; row++) {
+					momentIterator.hours(row - 1);
+					for(col = 1; col <= 7; col++) {
+						$box = $('.hour-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box.removeClass('escluded selected included');
+						if(momentIterator.isBefore(this.startMoment, 'week')) {
+							$box.addClass('escluded');
+						}
+						else if(momentIterator.isAfter(this.endMoment, 'week')) {
+							$box.addClass('escluded');
+						}
+						else if(momentIterator.isBefore(this.startMoment, 'hour')) {
+							$box.addClass('escluded');
+						}
+						else if(momentIterator.isBefore(this.endMoment, 'hour')){
+							$box.addClass('included');
+						}
+						else if(momentIterator.isSame(this.startMoment, 'hour')){
+							$box.addClass('included');
+						}
+						else if(momentIterator.isSame(this.endMoment, 'hour')) {
+							$box.addClass('selected');
+						}
+						else {
+							$box.addClass('escluded');
+						}
+						momentIterator.add(24, 'hours');
+					}
+					momentIterator.subtract(7, 'days');
+				}
 			}
 		}
 	}
