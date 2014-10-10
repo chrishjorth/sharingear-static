@@ -100,14 +100,15 @@ define(
 		}
 
         function updateUser(userID, saveData, callback){
-
-            this.put('/users/'+userID, saveData, function (error, data) {
+        	var user = this;
+            this.put('/users/' + userID, saveData, function (error, data) {
                 if(error){
                     if(callback && typeof callback === 'function') {
                         callback('Error getting filename: ' + error);
                     }
                     return;
                 }
+                _.extend(user.data, data);
             });
         }
 

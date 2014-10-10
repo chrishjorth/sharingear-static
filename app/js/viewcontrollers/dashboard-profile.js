@@ -59,6 +59,7 @@ define(
             });
 
             this.setupEvent('change', '#profile-pic', this, this.handleImageUpload);
+            this.setupEvent('submit', '#dashboard-profile-form', this, this.handleSave);
         }
 
         function handleImageUpload(event) {
@@ -78,12 +79,19 @@ define(
             });
         }
 
-        function handleSave(saveData,callback){
-            this.user.updateUser(App.user.data.user_id,saveData, function (error, data) {
+        function handleSave(event) {
+            var view = event.data,
+                saveData,
+            saveData = {
+                name: $('#dashboard-profile-form #name').val(),
+                surname: $('#dashboard-profile-form #surname').val(),
+                city: $('#dashboard-profile-form #hometown').val(),
+                bio: $('#dashboard-profile-form #bio').val()
+            }
+            console.log('User id: ' + App.user.data.id);
+            view.user.updateUser(App.user.data.id, saveData, function (error, data) {
                 if(error){
-                    if(callback && typeof callback === 'function') {
-                        callback('Error updating user: ' + error);
-                    }
+                    console.log(error);
                 }
             });
         }
