@@ -1258,6 +1258,14 @@ background-color: rgb(56,143,192);
     background-color: #1eb0fc;
 }
 
+.calendar .escluded {
+    background-color: #cccccc;
+}
+
+.calendar .included {
+    background-color: #8bd5fc;
+}
+
 /* ------------------------ FOOTER ----------------------------- */
 
 .footer {

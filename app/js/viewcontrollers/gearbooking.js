@@ -75,6 +75,8 @@ define(
 			this.setupLeftMonthCalendar();
 			this.setupRightMonthCalendar();
 
+			this.renderSelection();
+
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
 			//Navigation events
 			this.setupEvent('click', '#gearbooking-lefttoday-btn', this, this.handleLeftToday);
@@ -140,13 +142,13 @@ define(
 			var header, dayRows, i, day;
 			header = '<div class="row calendar-header">';
 			header += '<div class="col-md-1 col-md-offset-1"></div>';
-			header += '<div class="col-md-1">Monday</div>';
-			header += '<div class="col-md-1">Tuesday</div>';
-			header += '<div class="col-md-1">Wednesday</div>';
-			header += '<div class="col-md-1">Thursday</div>';
-			header += '<div class="col-md-1">Friday</div>';
-			header += '<div class="col-md-1">Saturday</div>';
-			header += '<div class="col-md-1">Sunday</div>';
+			header += '<div class="col-md-1">M</div>';
+			header += '<div class="col-md-1">T</div>';
+			header += '<div class="col-md-1">W</div>';
+			header += '<div class="col-md-1">T</div>';
+			header += '<div class="col-md-1">F</div>';
+			header += '<div class="col-md-1">S</div>';
+			header += '<div class="col-md-1">S</div>';
 			header += '</div>';
 			dayRows = '';
 			for(i = 0; i < 6; i++) {
@@ -448,7 +450,6 @@ define(
 			}
 			view.endMoment.date(date);
 			view.endMoment.month(month);
-
 			view.renderSelection();
 		}
 
@@ -471,8 +472,73 @@ define(
 		}
 
 		function renderSelection() {
+			var $calendarContainer, momentIterator, row, col, startDay, $dayBox;
 			//Left side grayed out before startdate -> loop all hours or days
+			if(this.leftWeekMode === false) {
+				//Render left month view
+				$calendarContainer = $('#gearbooking-leftmonths-container');
+				momentIterator = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date(), hour: this.startMoment.hour()});
+				startDay = momentIterator.date(1).weekday();
+				momentIterator.subtract(startDay, 'days');
+				for(row = 1; row <= 6; row++) {
+					for(col = 1; col <= 7; col++) {
+						$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$dayBox.removeClass('escluded selected included');
+						if(momentIterator.isBefore(this.startMoment, 'day')) {
+							$dayBox.addClass('escluded');
+						}
+						else if(momentIterator.isSame(this.startMoment, 'day')) {
+							$dayBox.addClass('selected');
+						}
+						else if(momentIterator.isBefore(this.endMoment, 'day')){
+							$dayBox.addClass('included');
+						}
+						else if(momentIterator.isSame(this.endMoment, 'day')){
+							$dayBox.addClass('included');
+						}
+						else {
+							$dayBox.addClass('escluded');
+						}
+						momentIterator.add(1, 'days');
+					}
+				}
+			}
+			else {
+				//Render left week view
+			}
 
-		}	
+			if(this.rightWeekMode === false) {
+				//Render right month view
+				$calendarContainer = $('#gearbooking-rightmonths-container');
+				momentIterator = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date(), hour: this.startMoment.hour()});
+				startDay = momentIterator.date(1).weekday();
+				momentIterator.subtract(startDay, 'days');
+				for(row = 1; row <= 6; row++) {
+					for(col = 1; col <= 7; col++) {
+						$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$dayBox.removeClass('escluded selected included');
+						if(momentIterator.isBefore(this.startMoment, 'day')) {
+							$dayBox.addClass('escluded');
+						}
+						else if(momentIterator.isSame(this.endMoment, 'day')){
+							$dayBox.addClass('selected');
+						}
+						else if(momentIterator.isSame(this.startMoment, 'day')) {
+							$dayBox.addClass('included');
+						}
+						else if(momentIterator.isBefore(this.endMoment, 'day')){
+							$dayBox.addClass('included');
+						}
+						else {
+							$dayBox.addClass('escluded');
+						}
+						momentIterator.add(1, 'days');
+					}
+				}
+			}
+			else {
+				//Render left month view
+			}
+		}
 	}
 );
