@@ -29,6 +29,7 @@ define(
 			setupMonthCalendar: setupMonthCalendar,
 
 			handleCancel: handleCancel,
+			handleBook: handleBook,
 			handleLeftToday: handleLeftToday,
 			handleLeftPrevious: handleLeftPrevious,
 			handleLeftNext: handleLeftNext,
@@ -59,14 +60,14 @@ define(
 			});
 			this.leftMoment = Moment();
 			this.leftMoment.startOf('week').weekday(0);
-			this.leftMoment.hour(0);
+			this.leftMoment.hour(12);
 			this.rightMoment = Moment();
 			this.rightMoment.startOf('week').weekday(0);
-			this.rightMoment.hour(0);
+			this.rightMoment.hour(12);
 			this.startMoment = Moment();
 			this.endMoment = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date() + 1});
-			this.startMoment.hour(0);
-			this.endMoment.hour(0);
+			this.startMoment.hour(12);
+			this.endMoment.hour(12);
 		}
 
 		function didRender() {
@@ -80,6 +81,7 @@ define(
 			this.renderSelection();
 
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
+			this.setupEvent('click', '#gearbooking-book-btn', this, this.handleBook);
 			//Navigation events
 			this.setupEvent('click', '#gearbooking-lefttoday-btn', this, this.handleLeftToday);
 			this.setupEvent('click', '#gearbooking-leftprevious-btn', this, this.handleLeftPrevious);
@@ -119,7 +121,7 @@ define(
 				else {
 					hour = i;
 				}
-				hourRows += '<div class="col-md-1 col-md-offset-1">' + hour + 'am</div>';
+				hourRows += '<div class="col-md-1 col-md-offset-1">' + hour + 'h</div>';
 				hourRows += '<div class="col-md-1 hour" data-weekday="0" data-hour="' + hour + '"></div>';
 				hourRows += '<div class="col-md-1 hour" data-weekday="1" data-hour="' + hour + '"></div>';
 				hourRows += '<div class="col-md-1 hour" data-weekday="2" data-hour="' + hour + '"></div>';
@@ -162,10 +164,12 @@ define(
 
 		function setupLeftWeekCalendar() {
 			this.setupWeekCalendar(this.leftMoment, $('.week-calendar:nth-child(0n+1) .calendar-header', this.$element));
+			$('#gearbooking-lefttitle').html('Week ' + this.leftMoment.format('w, YYYY'));
 		}
 
 		function setupRightWeekCalendar() {
 			this.setupWeekCalendar(this.rightMoment, $('.week-calendar:nth-child(0n+3) .calendar-header', this.$element));
+			$('#gearbooking-righttitle').html('Week ' + this.rightMoment.format('w, YYYY'));
 		}
 
 		function setupWeekCalendar(moment, $weekCalHeader) {
@@ -186,6 +190,7 @@ define(
 			//Get week of first day of month, that is first row, then get difference with start week
 			firstDayWeek = Moment({year: this.startMoment.year(), month: this.startMoment.month(), date: 1}).week();
 			$('#gearbooking-leftmonths-container .row:nth-child(0n+' + (this.startMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.startMoment.weekday() + 2) + ')').addClass('selected');
+			$('#gearbooking-lefttitle').html(this.leftMoment.format('MMMM YYYY'));
 		}
 
 		function setupRightMonthCalendar() {
@@ -195,6 +200,7 @@ define(
 			//Get week of first day of month, that is first row, then get difference with start week
 			firstDayWeek = Moment({year: this.endMoment.year(), month: this.endMoment.month(), date: 1}).week();
 			$('#gearbooking-rightmonths-container .row:nth-child(0n+' + (this.endMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.endMoment.weekday() + 2) + ')').addClass('selected');
+			$('#gearbooking-righttitle').html(this.rightMoment.format('MMMM YYYY'));
 		}
 
 		function setupMonthCalendar(moment, $calendarContainer) {
@@ -216,6 +222,11 @@ define(
 		}
 
 		function handleCancel(event) {
+			var view = event.data;
+			App.router.closeModalView();
+		}
+
+		function handleBook(event) {
 			var view = event.data;
 			App.router.closeModalView();
 		}
@@ -272,9 +283,6 @@ define(
 			view.leftWeekMode = true;
 
 			view.setupLeftWeekCalendar();
-
-			//view.clearLeftSelection();
-			//$('#gearbooking-leftweeks-container .row:nth-child(0n+' + (parseInt(view.startMoment.hour()) + 2) + ') .hour:nth-child(0n+' + (parseInt(view.startMoment.weekday()) + 2) + ')').addClass('selected');
 			view.renderSelection();
 		}
 
@@ -291,10 +299,6 @@ define(
 			$('#gearbooking-leftmonths-container', view.$element).removeClass('hidden');
 			view.setupLeftMonthCalendar();
 			view.leftWeekMode = false;
-
-			//view.clearLeftSelection();
-			//firstDayWeek = Moment({year: view.startMoment.year(), month: view.startMoment.month(), date: 1}).week();
-			//$('#gearbooking-leftmonths-container .row:nth-child(0n+' + (view.startMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (view.startMoment.weekday() + 2) + ')').addClass('selected');
 			view.renderSelection();
 		}
 
@@ -348,11 +352,7 @@ define(
 			}
 			$('#gearbooking-rightweeks-container', view.$element).removeClass('hidden');
 			view.rightWeekMode = true;
-
 			view.setupRightWeekCalendar();
-
-			//view.clearRightSelection();
-			//$('#gearbooking-rightweeks-container .row:nth-child(0n+' + (parseInt(view.endMoment.hour()) + 2) + ') .hour:nth-child(0n+' + (parseInt(view.endMoment.weekday()) + 2) + ')').addClass('selected');
 			view.renderSelection();
 		}
 
@@ -369,10 +369,6 @@ define(
 			$('#gearbooking-rightmonths-container', view.$element).removeClass('hidden');
 			view.setupRightMonthCalendar();
 			view.rightWeekMode = false;
-
-			//view.clearRightSelection();
-			//firstDayWeek = Moment({year: view.endMoment.year(), month: view.endMoment.month(), date: 1}).week();
-			//$('#gearbooking-rightmonths-container .row:nth-child(0n+' + (view.endMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (view.endMoment.weekday() + 2) + ')').addClass('selected');
 			view.renderSelection();
 		}
 
