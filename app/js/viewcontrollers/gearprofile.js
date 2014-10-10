@@ -58,7 +58,6 @@ define(
             var owner = this.gear.data.owner_id;
 
             if (owner !== null) {
-                console.log("This guy: "+owner);
                 this.gear.getUserInfo(owner, function (error,data) {
 
                     //Name
@@ -81,7 +80,6 @@ define(
                     }else{
                         $('#owner_picture').css("background-size",imgHeight+ "auto");
                     }
-
 
                     //Bio
                     $('#owner_bio').html('<p'+'>'+data.bio+'</'+'p>');
