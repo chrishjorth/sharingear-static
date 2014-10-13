@@ -81,10 +81,10 @@ define(
 		function setupEvents() {
 			this.setupEvent('click', '#editgear-form .btn-cancel', this, this.handleCancel);
 			this.setupEvent('click', '#editgear-form .btn-next', this, this.handleNext);
-			//this.setupEvent('change', '#editgear-form-imageupload', this, this.handleImageUpload);
 		}
 
 		function handleCancel(event) {
+			var view = event.data;
 			App.router.closeModalView();
 		}
 
@@ -99,26 +99,16 @@ define(
 				description: $('#editgear-description', view.$element).val()
 			};
 
-			/*if ($('#editgear-brand option:selected', view.$element).val() == "Choose brand:") {			// Check for empty values, don't proceed if true
-				alert("Choose a brand, bro");
-			} else if ($('#editgear-subtype option:selected', view.$element).val() == "Choose type:") {
-				alert("Choose a type of instrument, bro");
-			} else {*/
-				_.extend(view.gear.data, updatedGearData);
+			_.extend(view.gear.data, updatedGearData);
 
-				view.gear.save(App.user.data.id, function(error, gear) {
-					if(error) {
-						console.log(error);
-						return;
-					}
-				});
+			view.gear.save(App.user.data.id, function(error, gear) {
+				if(error) {
+					console.log(error);
+					return;
+				}
+			});
 
-				App.router.openModalView('editgearphotos', view.gear);
-
-
-			//}
-
-			
+			App.router.openModalView('editgearphotos', view.gear);
 		}
 	}
 );

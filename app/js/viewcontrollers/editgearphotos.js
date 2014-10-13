@@ -42,7 +42,6 @@ define(
 		}
 
 		function setupEvents() {
-			console.log('SETUP EVENTS');
 			this.setupEvent('click', '#editgear-photos-form .btn-back', this, this.handleBack);
 			this.setupEvent('click', '#editgear-photos-form .btn-next', this, this.handleNext);
 			this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);

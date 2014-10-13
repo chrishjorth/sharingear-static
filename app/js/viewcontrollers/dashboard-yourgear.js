@@ -21,22 +21,25 @@ define(
 		return YourGear;
 
 		function didRender() {
-			var view = this,
-				userID = null;
+			var view = this;
 
-			if(App.user.data && App.user.data.id) {
-				userID = App.user.data.id;
+			if(this.gearList.isEmpty()) {
+				this.gearList.getUserGear(App.user.data.id, function(userGear) {
+					view.populateYourGear();
+					view.setupEvents();
+				});
 			}
-			this.gearList.getUserGear(userID, function(userGear) {
-				view.populateYourGear(userGear);
-				view.setupEvents();
-			});
+			else {
+				this.populateYourGear();
+				this.setupEvents();
+			}
 		}
 
-		function populateYourGear(yourGear, callback) {
+		function populateYourGear(callback) {
 			var view = this;
 			require(['text!../templates/yourgear-item.html'], function(YourGearItemTemplate) {
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
+					yourGear = view.gearList.data,
 					defaultGear, gear;
 
 				for(i = 0; i < yourGear.length; i++) {
@@ -54,9 +57,9 @@ define(
 						owner_id: null
 					};
 					gear = yourGear[i];
-					_.extend(defaultGear, gear);
-					if(gear.images.length > 0) {
-						defaultGear.img_url = gear.images.split(',')[0];
+					_.extend(defaultGear, gear.data);
+					if(defaultGear.images.length > 0) {
+						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
@@ -74,10 +77,7 @@ define(
 		function handleEditGearItem(event) {
 			var view = event.data,
 				gear;
-			gear = new Gear.constructor({
-				rootURL: App.API_URL,
-				data: view.gearList.getGearItem($(this).data('yourgearid'))
-			});
+			gear = view.gearList.getGearItem($(this).data('yourgearid'));
 			App.router.openModalView('editgear', gear);
 		}
 	}
