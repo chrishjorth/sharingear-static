@@ -30,6 +30,7 @@ define(
 			handleRightToday: handleRightToday,
 			handleRightPrevious: handleRightPrevious,
 			handleRightNext: handleRightNext,
+
 			handleLeftDaySelection: handleLeftDaySelection,
 			handleRightDaySelection: handleRightDaySelection,
 
@@ -240,19 +241,18 @@ define(
 			//Check that selection start moment is not previous to end moment
 			date = $this.data('date');
 			month = $this.data('month');
-			if(month > view.endMoment.month()) {
-				return;
-			}
-			if(month === view.endMoment.month() && date > view.endMoment.date()) {
-				return;
-			}
 
 			view.clearLeftSelection();
-			if($this.hasClass('selected') === false) {
-				$this.addClass('selected');
-			}
+
 			view.startMoment.date(date);
 			view.startMoment.month(month);
+
+			if(view.startMoment.isAfter(view.endMoment, 'day') === true) {
+				view.endMoment.date(date);
+				view.endMoment.month(month);
+				view.endMoment.add(1, 'days');
+			}
+
 			view.renderSelection();
 		}
 
@@ -263,19 +263,18 @@ define(
 
 			month = $this.data('month');
 			date = $this.data('date');
-			if(month < view.startMoment.month()) {
-				return;
-			}
-			if(month === view.startMoment.month() && date < view.startMoment.date()) {
-				return;
-			}
 
 			view.clearRightSelection();
-			if($this.hasClass('selected') === false) {
-				$this.addClass('selected');
-			}
+			
 			view.endMoment.date(date);
 			view.endMoment.month(month);
+
+			if(view.endMoment.isBefore(view.startMoment, 'day')) {
+				view.startMoment.date(date);
+				view.startMoment.month(month);
+				view.startMoment.subtract(1, 'days');
+			}
+
 			view.renderSelection();
 		}
 
