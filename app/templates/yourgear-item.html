@@ -4,7 +4,7 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
         <div class="clearfix">
-          <h4><span class="fa moretextyourgear icon"></span>{{brand}} {{subtype}} {{model}}</h4>
+            <h4><span class="fa moretextyourgear icon"></span>{{brand}} {{subtype}} {{model}}</h4>
             <div class="pull-left">
                 <span class="symbolyourgear">€{{price_a}}/day</span>
             </div>
@@ -13,9 +13,10 @@
         <div>
             <div class="clearfix"></div>
             <div style="padding-top:80px;">
-              <a href="#gearprofile/{{id}}" class="pull-left btn btn-primary">View profile</a>
-            <button type="button" class="pull-right btn btn-primary btn-edit" data-yourgearid="{{id}}">Edit</button>
-          </div>
+                <a href="#gearprofile/{{id}}" class="pull-right btn btn-primary">View profile</a>
+                <button type="button" class="pull-right btn btn-primary btn-edit" data-yourgearid="{{id}}">Edit</button>
+                <button type="button" class="pull-right btn btn-primary btn-availability" data-yourgearid="{{id}}">Availability</button>
+            </div>
         </div>
     </div>
 </div>

@@ -16,7 +16,8 @@ define(
 			didRender: didRender,
 			populateYourGear: populateYourGear,
 			setupEvents: setupEvents,
-			handleEditGearItem: handleEditGearItem
+			handleEditGearItem: handleEditGearItem,
+			handleGearItemAvailability: handleGearItemAvailability
 		}); 
 		return YourGear;
 
@@ -72,6 +73,7 @@ define(
 
 		function setupEvents() {
 			this.setupEvent('click', '.yourgear-item .btn-edit', this, this.handleEditGearItem);
+			this.setupEvent('click', '.yourgear-item .btn-availability', this, this.handleGearItemAvailability);
 		}
 
 		function handleEditGearItem(event) {
@@ -79,6 +81,13 @@ define(
 				gear;
 			gear = view.gearList.getGearItem($(this).data('yourgearid'));
 			App.router.openModalView('editgear', gear);
+		}
+
+		function handleGearItemAvailability(event) {
+			var view = event.data,
+				gear;
+			gear = view.gearList.getGearItem($(this).data('yourgearid'));
+			App.router.openModalView('gearavailability', gear);
 		}
 	}
 );
