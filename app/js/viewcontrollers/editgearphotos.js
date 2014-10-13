@@ -88,7 +88,6 @@ define(
 					console.log(error);
 					return;
 				}
-				view.gear.data.images += url + ',';
 				$thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
