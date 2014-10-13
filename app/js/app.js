@@ -54,7 +54,8 @@ define(
 				'privacy',
 				'editgear',
 				'editgearphotos',
-				'editgearpricing'
+				'editgearpricing',
+				'gearbooking'
 			);
 
 			$(document).ready(function() {

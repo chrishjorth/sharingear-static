@@ -26,6 +26,7 @@ define(
 				longitude: null,
 				owner_id: null
 			},
+
 			createGear: createGear,
 			uploadImage: uploadImage,
 			save: save,
@@ -80,6 +81,8 @@ define(
 		function uploadImage(file, filename, userID, callback) {
 			var model = this;
 			//Get filename and secret from backend
+			console.log('Gear upload image.');
+			console.log('filename: ' + filename);
 			this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
@@ -101,6 +104,8 @@ define(
 						gear_id: model.data.id,
 						image_url: data.url
 					};
+					console.log('Post file path to backend.');
+					console.log(postData);
 					model.post('/gear/image', postData, function(error, images) {
 						if(error) {
 							//TODO: In this case the image should be deleted from the server

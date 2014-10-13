@@ -63,32 +63,22 @@ define(
 
 		function handleNext(event) {
 			var view = event.data,
-			updatedGearData;
-
-			/*if ($('#editgear-brand option:selected', view.$element).val() == "Choose brand:") {			// Check for empty values, don't proceed if true
-				alert("Choose a brand, bro");
-			} else if ($('#editgear-subtype option:selected', view.$element).val() == "Choose type:") {
-				alert("Choose a type of instrument, bro");
-			} else {*/
-
-				view.gear.save(App.user.data.id, function(error, gear) {
-					if(error) {
-						console.log(error);
-						return;
-					}
-				});
-
-				App.router.openModalView('editgearpricing', view.gear);
-
-
-			//}
-
+				updatedGearData;
 			
+			view.gear.save(App.user.data.id, function(error, gear) {
+				if(error) {
+					console.log(error);
+					return;
+				}
+			});
+
+			App.router.openModalView('editgearpricing', view.gear);
 		}
 
 		function handleImageUpload(event) {
 			var view = event.data
 				$file = $(this);
+			console.log('Upload image');
 			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
 				var $thumbList, html;
 				$('#editgear-form-imageupload').val('');
@@ -97,8 +87,7 @@ define(
 					console.log(error);
 					return;
 				}
-				view.gear.data.images += url + ',';
-				$thumbList = $('#editgear-form .thumb-list-container ul', view.$element);
+				$thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
 			});

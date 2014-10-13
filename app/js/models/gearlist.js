@@ -3,14 +3,17 @@
  * @author: Chris Hjorth
  */
 define(
-	['model'],
-	function(Model) {
+	['model', 'models/gear'],
+	function(Model, Gear) {
 		var GearList = Model.inherit({
 			search: search,
 			getUserGear: getUserGear,
 			getUserReservations: getUserReservations,
 			getGearItem: getGearItem,
-			listGear: listGear
+			listGear: listGear,
+			isEmpty: isEmpty,
+			updateGearItem: updateGearItem,
+			loadFromArray: loadFromArray
 		});
 
 		return GearList;
@@ -24,7 +27,8 @@ define(
 					callback([]);
 				}
 				else {
-					view.data = searchResults;
+					//view.data = searchResults;
+					view.loadFromArray(searchResults);
 					callback(view.data);
 				}
 			});
@@ -38,7 +42,8 @@ define(
 					callback([]);
 				}
 				else {
-					view.data = userGear;
+					//view.data = userGear;
+					view.loadFromArray(userGear);
 					callback(view.data);
 				}
 			});
@@ -52,7 +57,8 @@ define(
 					callback([]);
 				}
 				else {
-					view.data = userReservations;
+					//view.data = userReservations;
+					view.loadFromArray(userReservations);
 					callback(view.data);
 				}
 			});
@@ -61,7 +67,7 @@ define(
 		function getGearItem(gearID) {
 			var i;
 			for(i = 0; i < this.data.length; i++) {
-				if(this.data[i].id === gearID) {
+				if(this.data[i].data.id === gearID) {
 					return this.data[i];
 				}
 			}
@@ -83,7 +89,30 @@ define(
 				}
 				return;
 			});
+		}
 
+		function isEmpty() {
+			return this.data.length <= 0;
+		}
+
+		function updateGearItem(gearItem) {
+			var i;
+			for(i = 0; i < this.data.length; i++) {
+				if(this.data[i].id === gearItem.data.id) {
+					this.data[i] = gearItem.data;
+					return;
+				}
+			}
+		}
+
+		function loadFromArray(gearArray) {
+			var i;
+			for(i = 0; i < gearArray.length; i++) {
+				this.data.push(new Gear.constructor({
+					rootURL: this.rootURL,
+					data: gearArray[i]
+				}));
+			}
 		}
 	}
 );

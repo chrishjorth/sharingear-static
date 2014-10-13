@@ -58,7 +58,6 @@ define(
             var owner = this.gear.data.owner_id;
 
             if (owner !== null) {
-                console.log("This guy: "+owner);
                 this.gear.getUserInfo(owner, function (error,data) {
 
                     //Name
@@ -81,7 +80,6 @@ define(
                     }else{
                         $('#owner_picture').css("background-size",imgHeight+ "auto");
                     }
-
 
                     //Bio
                     $('#owner_bio').html('<p'+'>'+data.bio+'</'+'p>');
@@ -119,7 +117,7 @@ define(
 				latlong = new GoogleMaps.LatLng(gear.latitude, gear.longitude);
 				mapOptions = {
 					center: latlong,
-					zoom: 8
+					zoom: 9
 				};
 				this.map = new GoogleMaps.Map(document.getElementById('gearprofile-map'), mapOptions);
 				var marker = new GoogleMaps.Marker({
@@ -134,7 +132,7 @@ define(
 
 		function handleBooking(event) {
 			var view = this;
-			console.log('BOOK ALREADY!');
+			App.router.openModalView('gearbooking', view.gear);
 		}
 	}
 );

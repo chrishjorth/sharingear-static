@@ -66,9 +66,6 @@ define(
 			$('.col-md-1:nth-child(0n+8) .date', $weekCalHeader).html((moment.weekday(6).date()) + '/' + (moment.weekday(6).month() + 1));
 		}
 
-		/**
-		 * @param currentMonth: zero indexed month number
-		 */
 		function setupMonthCalendar() {
 			var $calendarContainer = $('#calendar-months-container', this.$element),
 				moment = Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()}),
@@ -110,7 +107,7 @@ define(
 				$weeksContainer.addClass('hidden');
 			}
 			$('#calendar-months-container', view.$element).removeClass('hidden');
-			view.setupMonthCalendar(view.shownMonth);
+			view.setupMonthCalendar();
 			view.weekMode = false;
 		}
 
@@ -124,7 +121,6 @@ define(
 				view.shownMoment.subtract(1, 'month');
 				view.setupMonthCalendar();
 			}
-			
 		}
 
 		function handleNext(event) {
