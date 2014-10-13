@@ -1,42 +1,94 @@
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12"><h2>Book</h2></div>
-	</div>
-	<div class="row">
-		<div class="col-md-3">
-			<button class="btn btn-default" id="gearbooking-lefttoday-btn">Today</button><button class="btn btn-default" id="gearbooking-leftprevious-btn">Previous</button><button class="btn btn-default" id="gearbooking-leftnext-btn">Next</button>
+	<form>
+		<div class="row">
+			<div class="col-md-12"><h2>Book</h2></div>
 		</div>
-		<div class="col-md-3">
-			<button class="btn btn-default" id="gearbooking-leftweeks-btn">Weeks</button><button class="btn btn-default" id="gearbooking-leftmonths-btn">Months</button>
+		<div class="row">
+			<div class="col-md-5">Start</div>
+			<div class="col-md-offset-2 col-md-5">End</div>
 		</div>
-		<div class="col-md-3">
-			<button class="btn btn-default" id="gearbooking-righttoday-btn">Today</button><button class="btn btn-default" id="gearbooking-rightprevious-btn">Previous</button><button class="btn btn-default" id="gearbooking-rightnext-btn">Next</button>
+		<div class="row">
+			<div class="col-md-5" id="gearbooking-lefttitle"></div>
+			<div class="col-md-offset-2 col-md-5" id="gearbooking-righttitle"></div>
 		</div>
-		<div class="col-md-3">
-			<button class="btn btn-default" id="gearbooking-rightweeks-btn">Weeks</button><button class="btn btn-default" id="gearbooking-rightmonths-btn">Months</button>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-6" id="gearbooking-lefttitle"></div>
-		<div class="col-md-6" id="gearbooking-righttitle"></div>
-	</div>
-	<div class="row">
-
-<!-- LEFT SIDE -->
-		<div class="col-md-6 calendar week-calendar hidden" id="gearbooking-leftweeks-container"></div>
-		<div class="col-md-6 calendar month calendar" id="gearbooking-leftmonths-container"></div>
-
-<!-- RIGHT SIDE -->
-		<div class="col-md-6 calendar week-calendar hidden" id="gearbooking-rightweeks-container"></div>
-		<div class="col-md-6 calendar month calendar" id="gearbooking-rightmonths-container"></div>
-	</div>
-
-<!-- FOOTER BUTTONS -->
-	<div class="row">
-		<div class="col-md-12">
-			<div class="pull-right">
-				<button class="btn btn-default" id="gearbooking-cancel-btn">Cancel</button><button class="btn btn-default" id="gearbooking-book-btn">Book!</button>
+		<div class="row">
+			<div class="col-md-5">
+				<button class="btn btn-default" id="gearbooking-lefttoday-btn">Today</button><button class="btn btn-default" id="gearbooking-leftprevious-btn">Previous</button><button class="btn btn-default" id="gearbooking-leftnext-btn">Next</button>
+			</div>
+			<div class="col-md-offset-2 col-md-5">
+				<button class="btn btn-default" id="gearbooking-righttoday-btn">Today</button><button class="btn btn-default" id="gearbooking-rightprevious-btn">Previous</button><button class="btn btn-default" id="gearbooking-rightnext-btn">Next</button>
 			</div>
 		</div>
-	</div>
+		<div class="row">
+			<div class="col-md-5 calendar month calendar" id="gearbooking-leftmonths-container"></div>
+			<div class="col-md-offset-2 col-md-5 calendar month calendar" id="gearbooking-rightmonths-container"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-5">
+				<label for="gearbooking-starttime">Start time:</label>
+				<select id="gearbooking-starttime">
+					<option>01:00</option>
+					<option>02:00</option>
+					<option>03:00</option>
+					<option>04:00</option>
+					<option>05:00</option>
+					<option>06:00</option>
+					<option>07:00</option>
+					<option>08:00</option>
+					<option>09:00</option>
+					<option>10:00</option>
+					<option>11:00</option>
+					<option selected="selected">12:00</option>
+					<option>13:00</option>
+					<option>14:00</option>
+					<option>15:00</option>
+					<option>16:00</option>
+					<option>17:00</option>
+					<option>18:00</option>
+					<option>19:00</option>
+					<option>20:00</option>
+					<option>21:00</option>
+					<option>22:00</option>
+					<option>23:00</option>
+					<option>24:00</option>
+				</select>
+			</div>
+			<div class="col-md-offset-2 col-md-5">
+				<label for="gearbooking-endtime">Start time:</label>
+				<select id="gearbooking-endtime">
+					<option>01:00</option>
+					<option>02:00</option>
+					<option>03:00</option>
+					<option>04:00</option>
+					<option>05:00</option>
+					<option>06:00</option>
+					<option>07:00</option>
+					<option>08:00</option>
+					<option>09:00</option>
+					<option>10:00</option>
+					<option>11:00</option>
+					<option selected="selected">12:00</option>
+					<option>13:00</option>
+					<option>14:00</option>
+					<option>15:00</option>
+					<option>16:00</option>
+					<option>17:00</option>
+					<option>18:00</option>
+					<option>19:00</option>
+					<option>20:00</option>
+					<option>21:00</option>
+					<option>22:00</option>
+					<option>23:00</option>
+					<option>24:00</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="pull-right">
+					<button class="btn btn-default" id="gearbooking-cancel-btn">Cancel</button><button class="btn btn-default" id="gearbooking-book-btn">Book!</button>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>
