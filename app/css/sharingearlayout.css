@@ -856,8 +856,9 @@ padding-left: 50px;
     margin-top: -7px;
     padding-top: 18px;
     padding-bottom: 12px;
-    background-color: rgba(255, 255, 255, 0.45);
-    opacity: 0.4;
+/*    background-color: rgba(255, 255, 255, 0.45);
+    opacity: 0.4;*/
+    background-color:#fff;
     color: #404f5f;
     font-size: 23px;
     line-height: 31px;
@@ -897,7 +898,7 @@ padding-left: 50px;
     padding-left: 31px;
     background-color: #00aeff;
     margin-bottom: 49px;
-    margin-top: -19px;
+    margin-top: 20px;
     margin-left: 7px;
     border-color: #FFFFFF;
 }
@@ -928,8 +929,11 @@ padding-left: 50px;
 
   width: 150px;
   height: 60px;
-  margin-right: -2px;  /*There's a +3 margin somewhere so I'm getting it down to 1px MICHAIL*/
-  margin-bottom: 1px;
+/*  margin-right: -2px; */ /*There's a +3 margin somewhere so I'm getting it down to 1px MICHAIL*/
+  margin-bottom: 3px;
+  margin-right: 3px;
+  margin-top: 3px;
+  margin-bottom:3px;
 }
 
 .custom-checkbox-image  {
@@ -957,6 +961,9 @@ padding-left: 50px;
   width: 100%;
   height: 100%;
 
+  border-radius: 3em;
+  border: solid;
+  border-width: 2px;
 }
 
 .custom-checkbox input[type="checkbox"]:checked + label {
@@ -1020,6 +1027,18 @@ min-height: 1px;
  .listyourgear .row-space-top-5 .col-6 {
 
     padding-left: 10px;
+
+ }
+
+ .listyourgear-action {
+    background: #fff;
+    -webkit-background-size: cover;
+    background-size: cover;
+    color: #000;
+    text-align: center;
+    padding: 0;
+    padding-top: 40px;
+    padding-bottom:40px;
 
  }
 /* ------------------ END - LIST YOUR GEAR --------------- */
