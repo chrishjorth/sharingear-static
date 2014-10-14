@@ -5,13 +5,7 @@
 define(
 	['underscore', 'jquery', 'utilities'], 
 	function(_, $, Utilities) {
-		var defaults, methods, constructor, inherit;
-
-		defaults = {
-			id: null,
-			rootURL: '',
-			data: null
-		};
+		var methods, constructor, inherit;
 
 		methods = {
 			get: get,
@@ -21,6 +15,10 @@ define(
 		};
 
 		constructor = function(options) {
+			var defaults = {
+				rootURL: '',
+				data: null
+			};
 			_.extend(this, defaults, methods, options);
 			
 			if(this.didInitialize && typeof this.didInitialize == 'function') {

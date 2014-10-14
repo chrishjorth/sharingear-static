@@ -9,8 +9,7 @@ define(
 		var YourGear = ViewController.inherit({
 			gearBlockID: 'yourgear-gear-block',
 			gearList: new GearList.constructor({
-				rootURL: App.API_URL,
-				data: []
+				rootURL: App.API_URL
 			}),
 			
 			didRender: didRender,

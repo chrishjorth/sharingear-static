@@ -82,8 +82,16 @@ define([
 	}
 
 	function renderSubviews(data, callback) {
+		var view = this;
 		if(this.subPath !== '') {
-			this.loadSubView(data, callback);
+			this.loadSubView(data, function() {
+				if(view.didRenderSubview && typeof view.didRenderSubview == 'function') {
+					view.didRenderSubview();
+				}
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
+			});
 		}
 	}
 

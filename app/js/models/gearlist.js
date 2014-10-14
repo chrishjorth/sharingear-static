@@ -6,8 +6,8 @@ define(
 	['model', 'models/gear'],
 	function(Model, Gear) {
 		var GearList = Model.inherit({
-			data: [],
-			
+			didInitialize: didInitialize,
+
 			search: search,
 			getUserGear: getUserGear,
 			getUserReservations: getUserReservations,
@@ -20,6 +20,10 @@ define(
 
 		return GearList;
 
+		function didInitialize() {
+			this.data = [];
+		}
+
 		function search(location, gear, daterange, callback) {
 			var view = this;
 
@@ -29,7 +33,6 @@ define(
 					callback([]);
 				}
 				else {
-					//view.data = searchResults;
 					view.loadFromArray(searchResults);
 					callback(view.data);
 				}
@@ -44,7 +47,6 @@ define(
 					callback([]);
 				}
 				else {
-					//view.data = userGear;
 					view.loadFromArray(userGear);
 					callback(view.data);
 				}
@@ -59,7 +61,6 @@ define(
 					callback([]);
 				}
 				else {
-					//view.data = userReservations;
 					view.loadFromArray(userReservations);
 					callback(view.data);
 				}

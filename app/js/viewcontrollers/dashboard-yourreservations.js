@@ -37,21 +37,18 @@ define(
 					defaultReservation, reservation;
 
 				defaultReservation = {
-					id: 0,
-					type: 0,
-					subtype: 0,
-					brand: 0,
+					id: null,
+					type: '',
+					subtype: '',
+					brand: '',
 					model: '',
 					description: '',
-					photos: '',
-					price: 0,
-					seller_user_id: 0,
+					img_url: 'images/logotop.png',
+					price_a: 0,
+					price_b: 0,
+					price_c: 0,
 					city: '',
-					address: '',
-					country: '',
-					price1: 0,
-					price2: 0,
-					price3: 0
+					owner_id: null
 				};
 
 				for(i = 0; i < yourReservations.length; i++) {
