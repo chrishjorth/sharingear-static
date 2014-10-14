@@ -23,6 +23,10 @@ define(
 			handleToday: handleToday,
 			handlePrevious: handlePrevious,
 			handleNext: handleNext,
+
+			handleClearMonth: handleClearMonth,
+			handleAlwaysAvailable: handleAlwaysAvailable,
+
 			handleCancel: handleCancel,
 			handleSave: handleSave,
 
@@ -52,6 +56,10 @@ define(
 			this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
 			this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
 			this.setupEvent('click', '#gearavailability-next-btn', this, this.handleNext);
+
+			this.setupEvent('click', '#gearavailability-clearmonth-btn', this, this.handleClearMonth);
+			this.setupEvent('click', '#gearavailability-always-btn', this, this.handleAlwaysAvailable);
+
 			this.setupEvent('click', '#gearavailability-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#gearavailability-save-btn', this, this.handleSave);
 
@@ -168,6 +176,17 @@ define(
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
+		}
+
+		function handleClearMonth(event) {
+			var view = event.data;
+			view.selections[view.shownMoment.month()] = [];
+			view.clearSelections();
+			view.renderSelections();
+		}
+
+		function handleAlwaysAvailable(event) {
+			var view = event.data;
 		}
 
 		function handleDayStartSelect(event) {
