@@ -61,7 +61,7 @@ define(
                 this.gear.getUserInfo(owner, function (error,data) {
 
                     //Name
-                    var owner_name = '<h4'+'>'+data.name+' '+data.surname+'<img class="pull-right" src="images/icon-fbicon.png"'+'></'+'h4>';
+                    var owner_name = '<h4'+'>'+data.name+' '+data.surname+'</'+'h4>';
                     $('#owner_name').html(owner_name);
 
                     //Image handling
