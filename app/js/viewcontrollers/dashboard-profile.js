@@ -35,6 +35,7 @@ define(
             _.extend(user, App.user.data);
             this.templateParameters = user;
 
+
             //Start loading profile image
             this.profileImg = new Image();
             this.profileImg.onload = function() {
@@ -45,6 +46,13 @@ define(
 
         function didRender() {
             var view = this;
+
+            var userData = this.user.data;
+            $('#dashboard-profile-form #name',this.$element).val(userData.name);
+            $('#dashboard-profile-form #surname',this.$element).val(userData.surname);
+            $('#dashboard-profile-form #city',this.$element).val(userData.city);
+
+            console.log(App.user.data);
 
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#prof-pic-div', view.$element),
