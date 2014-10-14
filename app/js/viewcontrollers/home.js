@@ -133,12 +133,11 @@ define(
 		 * @param searchResults: an array of objects.
 		 */
 		function populateSearchBlock(searchResults, callback) {
-
 			var $searchBlock = $('#' + this.searchBlockID, this.$element);
 			$searchBlock.empty();
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
-					defaultSearchResults, searchResult, i;
+					defaultSearchResults, searchResult, imagesTest, i;
 
 				defaultSearchResults = {
 					id: 0,
@@ -159,8 +158,8 @@ define(
 				};
 
 				for(i = 0; i < searchResults.length; i++) {
-					searchResult = searchResults[i];
-					var imagesTest = searchResults[i].images.split(",");
+					searchResult = searchResults[i].data;
+					imagesTest = searchResult.images.split(",");
                     searchResult.image = imagesTest[0];
 
                     //TODO Temporary default image

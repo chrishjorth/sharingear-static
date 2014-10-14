@@ -6,6 +6,8 @@ define(
 	['model', 'models/gear'],
 	function(Model, Gear) {
 		var GearList = Model.inherit({
+			data: [],
+			
 			search: search,
 			getUserGear: getUserGear,
 			getUserReservations: getUserReservations,
