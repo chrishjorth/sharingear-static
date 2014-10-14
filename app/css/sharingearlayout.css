@@ -2493,8 +2493,68 @@ footer a:hover {
     position:relative;
     font-size:20px;
     color:#636363;
-    padding:10px 7px 7px;
+    padding:0px 7px 3px;
 }
+
+.price::before {
+    content: "$";
+}
+
+.price-button-margin {
+    margin-left: 10px;
+}
+
+.editgear-container-bottom-padding {
+    padding-bottom: 10px;
+}
+
+.same-line {
+
+    width: 93%;
+    display: inline;
+    margin-left: 10px;
+
+}
+
+.form-right {
+    padding-left: 21px;
+}
+
+.form-left {
+    margin-bottom: 20px;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #dddddd;
+    padding-right: 20px;
+}
+
+.editgear-photos-list ul{
+    list-style: none;
+    display: inline-block;
+    width: 100%;
+    margin-left: -34px;
+    margin-top: 10px;
+}
+
+.editgear-photos-list ul>li{
+    margin: 10px;
+    float: left;
+}
+
+.editgear-photos-list ul>li>img{
+    height: 180px;
+}
+
+#editgear-description {
+    height: 155px;
+}
+
+@media (max-width: 991px) {
+    .form-left{
+        border: 0   ;
+    }
+}
+
  /*body {
   background-color: rgb(247, 247, 247);
   font: 300 0.75em/1.38 Lato;
@@ -2990,7 +3050,7 @@ border-color: #dedede;
     position:relative;
     font-size:20px;
     color:#636363;
-    padding:10px 7px 7px;
+    padding:0px 7px 3px;
 }
 /*================================== GEAR PROFILE ======================================*/
 

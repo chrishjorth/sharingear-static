@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid editgear-container-bottom-padding">
 	<div class="row">
 		<div class="col-md-12"><h2>Photos:</h2></div>
 	</div>
@@ -7,10 +7,15 @@
 			<form id="editgear-photos-form" onsubmit="return false;">
 				<div class="form-group">
                     <label for="dashboard-addgear-form-imageupload">Upload image:</label>
-                    <input type="file" id="editgear-photos-form-imageupload" name="gearpic">
-                    <div class="thumb-list-container"><ul></ul></div>
+                    <input type="file" id="editgear-photos-form-imageupload" name="gearpic" class="form-control">
+                    <div class="thumb-list-container editgear-photos-list">
+                        <ul></ul>
+                    </div>
                 </div>
-				<div class="pull-right"><button class="btn btn-default btn-back">Back</button><button class="btn btn-primary btn-next">Next</button></div>
+				<div class="pull-right">
+                    <button class="btn btn-default btn-back price-button-margin">Back</button>
+                    <button class="btn btn-primary price-button-margin btn-next">Next</button>
+                </div>
 			</form>
 		</div>
 	</div>
