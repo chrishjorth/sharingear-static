@@ -1,35 +1,38 @@
-<div class="container-fluid">
+<div class="container-fluid editgear-container-bottom-padding">
 	<div class="row">
 		<div class="col-md-12"><h2>{{type}}:</h2></div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<form id="editgear-form" onsubmit="return false;">
+                <div class="col-md-6 form-left">
 				<div class="form-group">
 					<label for="">Subtype:</label>
-					<select name="subtype" id="editgear-subtype">
+					<select name="subtype" id="editgear-subtype" class="form-control">
 					</select>
 				</div>
 				<div class="form-group">
 					<label for="">Brand:</label>
-					<select name="brand" id="editgear-brand">
+					<select name="brand" id="editgear-brand" class="form-control">
 					</select>
 				</div>
-				
 				<div class="form-group">
-					<label for="model">Model</label>
-					<input type="text" name="editgear-model" id="editgear-model" value="{{model}}">
+					<label for="model">Model:</label>
+					<input type="text" name="editgear-model" id="editgear-model" value="{{model}}" class="form-control">
 				</div>
+                </div>
+                <div class="col-md-6 form-right">
 				<div class="form-group">
-					<label for="description">Description</label>
-					<textarea name="editgear-description" id="editgear-description">{{description}}</textarea>
+					<label for="description">Description:</label>
+					<textarea name="editgear-description" id="editgear-description" class="form-control">{{description}}</textarea>
 				</div>
+                </div>
 				<!--<div class="form-group">
                     <label for="dashboard-addgear-form-imageupload">Upload image:</label>
                     <input type="file" id="editgear-form-imageupload" name="gearpic">
                     <div class="thumb-list-container"><ul></ul></div>
                 </div>-->
-				<div class="pull-right"><button class="btn btn-default btn-cancel">Cancel</button><button class="btn btn-primary btn-next">Next</button></div>
+				<div class="pull-right"><button class="btn btn-default btn-cancel price-button-margin">Cancel</button><button class="btn btn-primary btn-next price-button-margin">Next</button></div>
 			</form>
 		</div>
 	</div>

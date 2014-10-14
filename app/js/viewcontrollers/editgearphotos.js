@@ -16,7 +16,7 @@ define(
 			handleBack: handleBack,
 			handleNext: handleNext,
 			handleImageUpload: handleImageUpload
-		}); 
+		});
 		return EditGear;
 
 		function didInitialize() {
