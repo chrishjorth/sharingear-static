@@ -953,6 +953,22 @@ background-color: rgb(56,143,192);
     background-color: #fff;
     /*border: 1px solid #ddd;*/
 }
+
+.list-group-item-selected{
+    background: #ffd200;
+}
+
+.list-group-item-selected a{
+    color:#000000;
+    font-size: medium;
+    text-transform: uppercase;
+}
+
+.list-group-item-selected a>img{
+    margin-right:15px;
+}
+
+
 #accordion .glyphicon {
     margin-right: 10px;
 }

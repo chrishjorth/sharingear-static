@@ -52,8 +52,6 @@ define(
             $('#dashboard-profile-form #surname',this.$element).val(userData.surname);
             $('#dashboard-profile-form #city',this.$element).val(userData.city);
 
-            console.log(App.user.data);
-
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#prof-pic-div', view.$element),
                     img = view.profileImg;

@@ -13,7 +13,8 @@ define(
 			currentSubViewController: null,
 
 			didInitialize: didInitialize,
-			didRender: didRender
+			didRender: didRender,
+            changeActiveState: changeActiveState
 		});
 
 		return Dashboard;
@@ -35,6 +36,27 @@ define(
 			this.$subViewContainer = $('#' + this.subViewContainerID);
 		}
 
+        /**
+         *
+         * @param state: State is "#dashboard/profile" for example.
+         *
+         */
+
+        function changeActiveState(state){
+            if (state !== '') {
+                var selectedA = $('a[href$="'+state+'"]:first');
+                var selectedLi = selectedA.parent();
+                var ulList = selectedLi.parent();
+                console.log(ulList);
+
+                ulList.children().each(function () {
+                    var currentLi = $(this);
+                    currentLi.removeClass('list-group-item-selected');
+                });
+
+                selectedLi.addClass('list-group-item-selected');
+            }
+        }
 		
 	}
 );
