@@ -1250,6 +1250,10 @@ background-color: rgb(56,143,192);
     border-left-width: 1px;
     border-left-style: solid;
     border-left-color: #cccccc;
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    user-select: none;
 }
 
 .calendar .row .col-md-1:last-child {
