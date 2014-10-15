@@ -4,8 +4,8 @@
  */
 
 define(
-	['viewcontroller', 'galleria', 'app', 'models/gear', 'googlemaps'],
-	function(ViewController, Galleria, App, Gear, GoogleMaps) {
+	['viewcontroller', 'app', 'models/gear', 'googlemaps','owlcarousel'],
+	function(ViewController, App, Gear, GoogleMaps, owlcarousel) {
 		var GearProfile = ViewController.inherit({
 			gear: null,
 			map: null,
@@ -23,7 +23,7 @@ define(
 
 		function didInitialize() {
 			var view = this;
-			Galleria.loadTheme('js/libraries/galleria_themes/classic/galleria.classic.js');
+
 
 			if(this.passedData) {
 				this.gear = this.passedData;
@@ -49,7 +49,32 @@ define(
 
 		function didRender() {
 			this.setupView();
-			Galleria.run('.galleria');
+
+            var owl = $("#gearprofile-owl");
+
+            owl.owlCarousel({
+                slideSpeed: 300,
+                paginationSpeed: 400,
+                singleItem: true
+            });
+
+            $('.owl-controls .owl-page').append('<a class="item-link"/>');
+
+            var pafinatorsLink = $('.owl-controls .item-link');
+            var images = this.gear.data.images.split(',');
+
+            for(var i = 0;i<pafinatorsLink.length;i++){
+                $(pafinatorsLink[i]).css({
+                    'background': 'url(' + images[i] + ') center center no-repeat',
+                    '-webkit-background-size': 'cover',
+                    '-moz-background-size': 'cover',
+                    '-o-background-size': 'cover',
+                    'background-size': 'cover'
+                });
+                $(pafinatorsLink[i]).click(function () {
+                });
+            }
+
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
             this.renderOwner();
 		}
@@ -97,17 +122,17 @@ define(
 
 		function renderGearPictures() {
 			var images = this.gear.data.images.split(','),
-				title = 'Gear picture',
 				description = 'Picture of the gear.',
 				html = '',
 				i;
 			for(i = 0; i < images.length; i++) {
 				//Avoid empty url strings because of trailing ','
 				if(images[i].length > 0) {
-					html += '<img src="' + images[i] + '" alt="Gear thumb" data-title="' + title + '" data-description="' + description + '">';
+
+                    html += '<div class="item owl-item2"><img src="'+images[i]+'" alt="'+description+'"></div>';
 				}
 			}
-			$('#gearprofile-galleria', this.$element).append(html);
+			$('#gearprofile-owl', this.$element).append(html);
 		}
 
 		function renderMap() {

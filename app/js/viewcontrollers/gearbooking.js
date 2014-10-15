@@ -452,7 +452,7 @@ define(
 				view.setupRightMonthCalendar();
 			}
 			view.renderSelection();
-            
+
 		}
 
 		function handleLeftDaySelection(event) {
