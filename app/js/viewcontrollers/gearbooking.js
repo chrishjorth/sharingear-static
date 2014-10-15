@@ -251,7 +251,7 @@ define(
 		function setupLeftMonthCalendar() {
 			var moment, firstDayWeek;
 			moment = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), date: this.leftMoment.date()});
-			this.setupMonthCalendar(moment, $('#gearbooking-leftmonths-container', this.$element));
+			this.setupMonthCalendar(moment, $('#gearbooking-leftmonths-container', this.$element),true);
 			//Get week of first day of month, that is first row, then get difference with start week
 			firstDayWeek = Moment({year: this.startMoment.year(), month: this.startMoment.month(), date: 1}).week();
 			$('#gearbooking-leftmonths-container .row:nth-child(0n+' + (this.startMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.startMoment.weekday() + 2) + ')').addClass('selected');
@@ -262,14 +262,14 @@ define(
 		function setupRightMonthCalendar() {
 			var moment, firstDayWeek;
 			moment = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), date: this.rightMoment.date()});
-			this.setupMonthCalendar(moment, $('#gearbooking-rightmonths-container', this.$element));
+			this.setupMonthCalendar(moment, $('#gearbooking-rightmonths-container', this.$element),false);
 			//Get week of first day of month, that is first row, then get difference with start week
 			firstDayWeek = Moment({year: this.endMoment.year(), month: this.endMoment.month(), date: 1}).week();
 			$('#gearbooking-rightmonths-container .row:nth-child(0n+' + (this.endMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.endMoment.weekday() + 2) + ')').addClass('selected');
 			$('#gearbooking-righttitle').html(this.rightMoment.format('MMMM YYYY'));
 		}
 
-		function setupMonthCalendar(moment, $calendarContainer) {
+		function setupMonthCalendar(moment, $calendarContainer,leftorright) {
 			var startDay = moment.date(1).weekday(),
 				$dayBox, row, col, date;
 
@@ -282,6 +282,20 @@ define(
 					$dayBox.html(date);
 					$dayBox.data('date', date);
 					$dayBox.data('month', moment.month());
+                    if(leftorright){
+                        $dayBox.removeClass('disabled');
+                        if(moment.month() !== this.leftMoment.month()) {
+                            $dayBox.addClass('disabled');
+                        }
+                        if(moment.isBefore(new Moment())){
+                            $dayBox.addClass('disabled');
+                        }
+                    }else{
+                        $dayBox.removeClass('disabled');
+                        if(moment.month() !== this.rightMoment.month()) {
+                            $dayBox.addClass('disabled');
+                        }
+                    }
 					moment.add(1, 'days');
 				}
 			}
@@ -384,6 +398,11 @@ define(
 			date = $this.data('date');
 			month = $this.data('month');
 
+            //Do not allow selecting outside of the month
+            if($this.data('month') !== view.leftMoment.month()) {
+                return;
+            }
+
 			view.clearLeftSelection();
 
 			view.startMoment.date(date);
@@ -406,6 +425,11 @@ define(
 
 			month = $this.data('month');
 			date = $this.data('date');
+
+            //Do not allow selecting outside of the month
+            if($this.data('month') !== view.rightMoment.month()) {
+                return;
+            }
 
 			view.clearRightSelection();
 			
