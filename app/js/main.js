@@ -13,7 +13,6 @@ requirejs.config({
 		bootstrap: 'libraries/bootstrap.min',
 		moment: 'libraries/moment.min',
 		facebook: 'http://connect.facebook.net/en_US/all',
-		galleria: 'libraries/galleria-1.4.2.min',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker'
 	},
@@ -29,10 +28,6 @@ requirejs.config({
 		},
 		'facebook' : {
 			exports: 'FB'
-		},
-		'galleria': {
-			deps: ['jquery'],
-			exports: 'Galleria'
 		},
 		'owlcarousel': {
 			deps: ['jquery'],
