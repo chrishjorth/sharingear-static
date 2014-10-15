@@ -1229,6 +1229,11 @@ background-color: rgb(56,143,192);
   overflow: hidden;
 }
 
+#crumbs {
+    color: #000;
+    background-color: #fff;
+}
+
 /* ------------------------ CALENDAR --------------- */
 .dashboard .subview .calendar .row {
     border: none;
