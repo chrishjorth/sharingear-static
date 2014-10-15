@@ -21,13 +21,17 @@
 		</div>
 		<div class="row">
 			<div class="col-md-5 calendar month calendar" id="gearbooking-leftmonths-container"></div>
-			<div class="col-md-offset-2 col-md-5 calendar month calendar" id="gearbooking-rightmonths-container"></div>
+			<div id="totalprice" class="col-md-2">
+                <span class="total-price">0</span>
+			</div>
+            <div class="col-md-5 calendar month calendar" id="gearbooking-rightmonths-container"></div>
 		</div>
 		<div class="row">
 			<div class="col-md-5">
 				<label for="gearbooking-starttime">Start time:</label>
 				<select id="gearbooking-starttime">
-					<option>01:00</option>
+					<option>00:00</option>
+                    <option>01:00</option>
 					<option>02:00</option>
 					<option>03:00</option>
 					<option>04:00</option>
@@ -50,13 +54,13 @@
 					<option>21:00</option>
 					<option>22:00</option>
 					<option>23:00</option>
-					<option>24:00</option>
 				</select>
 			</div>
 			<div class="col-md-offset-2 col-md-5">
 				<label for="gearbooking-endtime">Start time:</label>
 				<select id="gearbooking-endtime">
-					<option>01:00</option>
+					<option>00:00</option>
+                    <option>01:00</option>
 					<option>02:00</option>
 					<option>03:00</option>
 					<option>04:00</option>
@@ -79,7 +83,6 @@
 					<option>21:00</option>
 					<option>22:00</option>
 					<option>23:00</option>
-					<option>24:00</option>
 				</select>
 			</div>
 		</div>
