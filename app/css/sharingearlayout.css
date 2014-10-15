@@ -1305,6 +1305,10 @@ background-color: rgb(56,143,192);
     background-color: #8bd5fc;
 }
 
+.calendar .disabled {
+    color: #dddddd;
+}
+
 /* ------------------------ FOOTER ----------------------------- */
 
 .footer {

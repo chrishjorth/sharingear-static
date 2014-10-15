@@ -32,7 +32,10 @@ define(
 
 			handleDayStartSelect: handleDayStartSelect,
 			handleDayMoveSelect: handleDayMoveSelect,
-			handleDayEndSelect: handleDayEndSelect
+			handleDayEndSelect: handleDayEndSelect,
+
+			isBeforeOrSameDay: isBeforeOrSameDay,
+			isAfterOrSameDay: isAfterOrSameDay
 		}); 
 		return GearAvailability;
 
@@ -44,6 +47,8 @@ define(
 				}
 			});
 			this.shownMoment = Moment();
+
+			this.gear = this.passedData;
 		}
 
 		function didRender() {
@@ -111,6 +116,10 @@ define(
 					$dayBox.data('date', date);
 					$dayBox.data('month', moment.month());
 					$dayBox.attr('id', 'gearavailability-day-' + moment.month() + '-' + date);
+					$dayBox.removeClass('disabled');
+					if(moment.month() !== this.shownMoment.month()) {
+						$dayBox.addClass('disabled');
+					}
 					moment.add(1, 'days');
 				}
 			}
@@ -149,9 +158,29 @@ define(
 			App.router.closeModalView();
 		}
 
+		/**
+		 * @assertion: selections are not overlapping.
+		 */
 		function handleSave(event) {
-			var view = event.data;
+			var view = event.data,
+				availabilityArray = [],
+				i;
 			App.router.closeModalView();
+
+			for(i = 0; i < view.selections.length; i++) {
+				monthSelections = view.selections[i];
+				for(j = 0; j < monthSelections.length; j++) {
+					selection = monthSelections[j];
+					availabilityArray.push({
+						start: selection.startMoment.format('YYYY-MM-DD HH:mm:ss'),
+						end: selection.endMoment.format('YYYY-MM-DD HH:mm:ss')
+					});
+				}
+			}
+
+			//view.gear.setAvailibility(App.user.data.id, availabilityArray, function(error) {
+
+			//});
 		}
 
 		function handleToday(event) {
@@ -200,6 +229,11 @@ define(
 				return;
 			}
 
+			//Do not allow selecting outside of the month
+			if($this.data('month') !== view.shownMoment.month()) {
+				return;
+			}
+
 			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
 			$('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
 
@@ -243,11 +277,13 @@ define(
 					dayBoxOffset, selection;
 
 				dayBoxOffset = $this.offset();
-				if(selectionX >= dayBoxOffset.left && selectionX <= dayBoxOffset.left + $this.width() && selectionY >= dayBoxOffset.top && selectionY <= dayBoxOffset.top + $this.height()) {
-					selection = view.selections[view.shownMoment.month()];
-					selection = selection[selection.length - 1];
-					selection.endMoment.month($this.data('month'));
-					selection.endMoment.date($this.data('date'));
+				if($this.data('month') === view.shownMoment.month()) {
+					if(selectionX >= dayBoxOffset.left && selectionX <= dayBoxOffset.left + $this.width() && selectionY >= dayBoxOffset.top && selectionY <= dayBoxOffset.top + $this.height()) {
+						selection = view.selections[view.shownMoment.month()];
+						selection = selection[selection.length - 1];
+						selection.endMoment.month($this.data('month'));
+						selection.endMoment.date($this.data('date'));
+					}
 				}
 			});
 
@@ -256,9 +292,59 @@ define(
 		}
 
 		function handleDayEndSelect(event) {
-			var view = event.data;
+			var view = event.data,
+				monthSelections, i, j, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
 			$('body').off('mousemove touchmove', view.handleDayMoveSelect);
 			$('body').off('mouseup touchend', view.handleDayEndSelect);
+
+			//Scan selections for this month and cleanup overlaps
+			monthSelections = view.selections[view.shownMoment.month()];
+			i = 0;
+			while(i < monthSelections.length) {
+				currentSelection = monthSelections[i];
+				j = i + 1;
+				didSplice = false;
+				while(j < monthSelections.length) {
+					startMomentA = currentSelection.startMoment;
+					endMomentA = currentSelection.endMoment;
+					startMomentB = monthSelections[j].startMoment;
+					endMomentB = monthSelections[j].endMoment;
+					if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(startMomentA, endMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
+						currentSelection.startMoment = startMomentB;
+						monthSelections.splice(j, 1);
+						didSplice = true;
+					}
+					else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
+						currentSelection.endMoment = endMomentB;
+						monthSelections.splice(j, 1);
+						didSplice = true;
+					}
+					else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
+						monthSelections.splice(j, 1);
+						didSplice = true;
+					}
+					else if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
+						currentSelection.startMoment = startMomentB;
+						currentSelection.endMoment = endMomentB;
+						monthSelections.splice(j, 1);
+						didSplice = true;
+					}
+					else {
+						j++;
+					}
+				}
+				if(didSplice === false) {
+					i++;
+				}
+			}
+		}
+
+		function isBeforeOrSameDay(momentA, momentB) {
+			return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
+		}
+
+		function isAfterOrSameDay(momentA, momentB) {
+			return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
 		}
 	}
 );
