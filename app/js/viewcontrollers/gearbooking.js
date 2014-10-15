@@ -254,8 +254,14 @@ define(
 			this.setupMonthCalendar(moment, $('#gearbooking-leftmonths-container', this.$element),true);
 			//Get week of first day of month, that is first row, then get difference with start week
 			firstDayWeek = Moment({year: this.startMoment.year(), month: this.startMoment.month(), date: 1}).week();
-			$('#gearbooking-leftmonths-container .row:nth-child(0n+' + (this.startMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.startMoment.weekday() + 2) + ')').addClass('selected');
+
+            //Disable buttons at start
+            $("#gearbooking-rightprevious-btn").prop('disabled',true);
+            $("#gearbooking-righttoday-btn").prop('disabled',true);
+
+            $('#gearbooking-leftmonths-container .row:nth-child(0n+' + (this.startMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.startMoment.weekday() + 2) + ')').addClass('selected');
 			$('#gearbooking-lefttitle').html(this.leftMoment.format('MMMM YYYY'));
+
 
 		}
 
@@ -265,13 +271,21 @@ define(
 			this.setupMonthCalendar(moment, $('#gearbooking-rightmonths-container', this.$element),false);
 			//Get week of first day of month, that is first row, then get difference with start week
 			firstDayWeek = Moment({year: this.endMoment.year(), month: this.endMoment.month(), date: 1}).week();
-			$('#gearbooking-rightmonths-container .row:nth-child(0n+' + (this.endMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.endMoment.weekday() + 2) + ')').addClass('selected');
+
+            //Disable buttons at start
+            $("#gearbooking-leftprevious-btn").prop('disabled',true);
+            $("#gearbooking-lefttoday-btn").prop('disabled',true);
+
+
+            $('#gearbooking-rightmonths-container .row:nth-child(0n+' + (this.endMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.endMoment.weekday() + 2) + ')').addClass('selected');
 			$('#gearbooking-righttitle').html(this.rightMoment.format('MMMM YYYY'));
 		}
 
 		function setupMonthCalendar(moment, $calendarContainer,leftorright) {
 			var startDay = moment.date(1).weekday(),
 				$dayBox, row, col, date;
+
+
 
 			//Set date to first box
 			moment.subtract(startDay, 'days');
@@ -318,6 +332,8 @@ define(
 				view.setupLeftWeekCalendar();
 			}
 			else {
+                $("#gearbooking-leftprevious-btn").prop('disabled',true);
+                $("#gearbooking-lefttoday-btn").prop('disabled',true);
 				view.setupLeftMonthCalendar();
 			}
 			view.renderSelection();
@@ -331,10 +347,26 @@ define(
 				view.setupLeftWeekCalendar();
 			}
 			else {
-				view.leftMoment.subtract(1, 'month');
+
+                if(view.leftMoment.month() === new Moment().month()){
+                    return;
+                }else{
+                    $("#gearbooking-lefttoday-btn").prop('disabled',false);
+                    $("#gearbooking-leftprevious-btn").prop('disabled',false);
+                }
+			    view.leftMoment.subtract(1, 'month');
+
+                if(view.leftMoment.month() === new Moment().month()) {
+                    $("#gearbooking-leftprevious-btn").prop('disabled', true);
+                    $("#gearbooking-lefttoday-btn").prop('disabled', true);
+                }
+
 				view.setupLeftMonthCalendar();
-			}
-			view.renderSelection();
+
+            }
+
+
+            view.renderSelection();
 		}
 
 		function handleLeftNext(event) {
@@ -344,7 +376,17 @@ define(
 				view.setupLeftWeekCalendar();
 			}
 			else {
+
 				view.leftMoment.add(1, 'month');
+
+                if(view.leftMoment.month() === new Moment().month()){
+                    $("#gearbooking-leftprevious-btn").prop('disabled',true);
+                    $("#gearbooking-lefttoday-btn").prop('disabled',true);
+                }else{
+                    $("#gearbooking-lefttoday-btn").prop('disabled',false);
+                    $("#gearbooking-leftprevious-btn").prop('disabled',false);
+                }
+
 				view.setupLeftMonthCalendar();
 			}
 			view.renderSelection();
@@ -357,6 +399,8 @@ define(
 				view.setupRightWeekCalendar();
 			}
 			else {
+                $("#gearbooking-rightprevious-btn").prop('disabled',true);
+                $("#gearbooking-righttoday-btn").prop('disabled',true);
 				view.setupRightMonthCalendar();
 			}
 			view.renderSelection();
@@ -369,7 +413,20 @@ define(
 				view.setupRightWeekCalendar();
 			}
 			else {
-				view.rightMoment.subtract(1, 'month');
+
+                if(view.rightMoment.month() === new Moment().month()){
+                    return;
+                }else{
+                    $("#gearbooking-righttoday-btn").prop('disabled',false);
+                    $("#gearbooking-rightprevious-btn").prop('disabled',false);
+                }
+                view.rightMoment.subtract(1, 'month');
+
+                if(view.rightMoment.month() === new Moment().month()) {
+                    $("#gearbooking-rightprevious-btn").prop('disabled', true);
+                    $("#gearbooking-righttoday-btn").prop('disabled', true);
+                }
+
 				view.setupRightMonthCalendar();
 			}
 			view.renderSelection();
@@ -383,10 +440,19 @@ define(
 			}
 			else {
 				view.rightMoment.add(1, 'month');
+
+                if(view.rightMoment.month() === new Moment().month()){
+                    $("#gearbooking-rightprevious-btn").prop('disabled',true);
+                    $("#gearbooking-righttoday-btn").prop('disabled',true);
+                }else{
+                    $("#gearbooking-righttoday-btn").prop('disabled',false);
+                    $("#gearbooking-rightprevious-btn").prop('disabled',false);
+                }
+
 				view.setupRightMonthCalendar();
 			}
 			view.renderSelection();
-            calculatePrice();
+            
 		}
 
 		function handleLeftDaySelection(event) {
