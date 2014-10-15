@@ -61,7 +61,7 @@ define(
                 this.gear.getUserInfo(owner, function (error,data) {
 
                     //Name
-                    var owner_name = '<h4'+'>'+data.name+' '+data.surname+'</'+'h4>';
+                    var owner_name = '<h4>' + data.name + ' ' + data.surname + "</h4>";
                     $('#owner_name').html(owner_name);
 
                     //Image handling
@@ -131,7 +131,7 @@ define(
 		}
 
 		function handleBooking(event) {
-			var view = this;
+			var view = event.data;
 			App.router.openModalView('gearbooking', view.gear);
 		}
 	}

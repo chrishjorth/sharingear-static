@@ -125,7 +125,6 @@ define(
         function getUserInfo(userID, callback) {
             this.get('/users/'+userID, function (error,data) {
                 if(error) {
-                    console.log(error);
                     callback(error);
                     return;
                 }
