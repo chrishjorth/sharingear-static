@@ -31,7 +31,8 @@ define(
 			uploadImage: uploadImage,
 			save: save,
 			update: update,
-            getUserInfo:getUserInfo
+            getUserInfo:getUserInfo,
+            setAvailability: setAvailability
 		});
 
 		return Gear;
@@ -124,7 +125,6 @@ define(
         function getUserInfo(userID, callback) {
             this.get('/users/'+userID, function (error,data) {
                 if(error) {
-                    console.log(error);
                     callback(error);
                     return;
                 }
@@ -180,6 +180,20 @@ define(
 				model.data = gear;
 				callback(null);
 			});
+		}
+
+		/**
+		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+		 */
+		function setAvailability(userID, availabilityArray, callback) {
+			var saveData;
+			saveData = {
+				availability: JSON.stringify(availabilityArray)
+			};
+			console.log(availabilityArray);
+			/*this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
+
+			});*/
 		}
 	}
 );

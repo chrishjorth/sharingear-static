@@ -960,7 +960,7 @@ background-color: rgb(56,143,192);
 
 .list-group-item-selected a{
     color:#000000;
-    font-size: medium;
+    font-size: 13px;
     text-transform: uppercase;
 }
 
@@ -1308,6 +1308,10 @@ background-color: rgb(56,143,192);
 
 .calendar .included {
     background-color: #8bd5fc;
+}
+
+.calendar .disabled {
+    color: #dddddd;
 }
 
 /* ------------------------ FOOTER ----------------------------- */
@@ -3193,4 +3197,19 @@ margin-top: 0;
 background: white;
 padding: 0;
 margin: 40px 0;
+}
+
+.total-price {
+
+    font-size: 20px;
+    font-weight: 500;
+    color: #4989af;
+
+}
+.total-price::after{
+    content: ' DKK';
+}
+
+.price-info{
+
 }
