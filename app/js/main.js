@@ -12,7 +12,7 @@ requirejs.config({
 		jquery: 'libraries/jquery-2.1.1.min',
 		bootstrap: 'libraries/bootstrap.min',
 		moment: 'libraries/moment.min',
-		facebook: 'https://connect.facebook.net/en_US/all',
+		facebook: 'http://connect.facebook.net/en_US/all',
 		galleria: 'libraries/galleria-1.4.2.min',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker'

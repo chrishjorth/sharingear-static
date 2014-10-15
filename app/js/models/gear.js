@@ -32,6 +32,7 @@ define(
 			save: save,
 			update: update,
             getUserInfo:getUserInfo,
+            getAvailability: getAvailability,
             setAvailability: setAvailability
 		});
 
@@ -182,18 +183,34 @@ define(
 			});
 		}
 
+		function getAvailability(userID, callback) {
+			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, availabilityArray) {
+				if(error) {
+					console.log(error);
+					callback(error);
+					return;
+				}
+				callback(null, availabilityArray);
+			});
+		}
+
 		/**
 		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
 		 */
 		function setAvailability(userID, availabilityArray, callback) {
-			var saveData;
-			saveData = {
+			var postData;
+			postData = {
 				availability: JSON.stringify(availabilityArray)
 			};
-			console.log(availabilityArray);
-			/*this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
-
-			});*/
+			
+			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
+				if(error) {
+					console.log(error);
+					callback(error);
+					return;
+				}
+				callback(null);
+			});
 		}
 	}
 );

@@ -15,7 +15,7 @@ requirejs.config({
 		mocha: '../test/js/libraries/mocha/mocha',
 		chai: '../test/js/libraries/chai',
 		sinon: '../test/js/libraries/sinon-1.10.3',
-		facebook: 'https://connect.facebook.net/en_US/all',
+		facebook: 'http://connect.facebook.net/en_US/all',
 		galleria: 'libraries/galleria-1.4.2.min',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker'
