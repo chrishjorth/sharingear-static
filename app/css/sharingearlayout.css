@@ -960,7 +960,7 @@ background-color: rgb(56,143,192);
 
 .list-group-item-selected a{
     color:#000000;
-    font-size: medium;
+    font-size: 13px;
     text-transform: uppercase;
 }
 
