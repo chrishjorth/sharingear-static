@@ -3217,3 +3217,7 @@ margin: 40px 0;
 .price-info{
 
 }
+
+.owl-item2 img {
+    cursor: pointer;
+}

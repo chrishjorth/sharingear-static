@@ -14,7 +14,8 @@ requirejs.config({
 		moment: 'libraries/moment.min',
 		facebook: 'http://connect.facebook.net/en_US/all',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
-		daterangepicker: 'libraries/daterangepicker/daterangepicker'
+		daterangepicker: 'libraries/daterangepicker/daterangepicker',
+		magnificpopup: 'libraries/magnificpopup/magnificpopup'
 	},
 	shim: {
 		underscore: {
@@ -35,6 +36,10 @@ requirejs.config({
 		},
 		'daterangepicker': {
 			deps: ['jquery', 'bootstrap', 'moment']
+		},
+		'magnificpopup': {
+			deps: ['jquery'],
+			exports: 'MagnificPopup'
 		}
 	}
 });
