@@ -174,7 +174,6 @@ define(
             for (var i = 0; i < images.length; i++) {
             	if (images[i]!="") {
             		items.push({src:images[i]});
-            		console.log("pushed this image: " + images[i]);
             	}
             };
 
