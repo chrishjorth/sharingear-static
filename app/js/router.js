@@ -73,28 +73,49 @@ define(
 		}
 
 		function handleHashChange(event) {
+			Router.navigateTo(window.location.hash.substring(1), null);
+			/* please delete all this comment when verified. Horatiu
+			if (event === "navigateTo") {
+				return;
+			}
+			//console.log("1");
 			if(Router.navigateToViewCalled === false){
 				//Origin of event is URL or direct link
 				Router.hashUpdated = true;
-				Router.navigateTo(window.location.hash.substring(1), null);
+				//console.log("6");
+			
 			}
 			else {
 				//Origin of event is navigateTo
 				Router.navigateToViewCalled = false;
+				//console.log("5");
+			
 			}
+			*/
 		}
 
 		function navigateTo(route, data, callback) {
+			//console.log("2");
+			
 			var router = this;
+			if (window.location.hash !== "#" + route) {
+				window.location.hash = "#" + route;
+			}
+			/* please delete all this comment when verified. Horatiu
 			if(router.hashUpdated === false) {
 				//Hash change event not fired
 				router.navigateToViewCalled = true;
+				//console.log("3");
+			
 				window.location.hash = '#' + route;
 			}
 			else {
 				//Hash change event fired
 				router.hashUpdated = false;
+				//console.log("4");
+			
 			}
+			*/
 
 			this.loadView(this.getRoute(route), route, data, function(error) {
 				if(callback && typeof callback === 'function') {

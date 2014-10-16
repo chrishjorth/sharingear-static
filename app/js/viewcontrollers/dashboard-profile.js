@@ -21,6 +21,11 @@ define(
 		return Profile;
 
         function didInitialize() {
+            if(App.user.data.id === null) {
+                this.ready = false;
+                App.router.navigateTo('home');
+                return;
+            }
             //We need default values so the templating does not fail.
             var view = this,
                 user;

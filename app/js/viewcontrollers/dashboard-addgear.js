@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Add gear dashboard page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Horatiu Roman
  */
 
 define(
@@ -22,6 +22,11 @@ define(
 		return AddGear;
 
 		function didInitialize() {
+			if(App.user.data.id === null) {
+				this.ready = false;
+				App.router.navigateTo('home');
+				return;
+			}
 			this.newGear = new Gear.constructor({
 				rootURL: App.API_URL,
 				data: {
@@ -150,7 +155,7 @@ define(
 		 */
 		function prepopulate() {
 			var newGear;
-			if(this.passedData === null) {
+			if(this.passedData === null || !(this.passedData)) { // added !(this.passedData) because it was undefined. Horatiu
 				return;
 			}
 			newGear = this.passedData.data;
