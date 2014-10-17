@@ -12,7 +12,6 @@ define(
 
 			didInitialize: didInitialize,
 			didRender: didRender,
-			setupView: setupView,
 			renderGearPictures: renderGearPictures,
 			renderMap: renderMap,
             renderOwner: renderOwner,
@@ -48,31 +47,33 @@ define(
 		}
 
 		function didRender() {
-			this.setupView();
+			var $owl, $paginatorsLink, images, i;
+			
+			this.renderGearPictures();
+			this.renderMap();
 
-            var owl = $("#gearprofile-owl");
+            $owl = $('#gearprofile-owl', this.$element);
 
-            owl.owlCarousel({
+            $owl.owlCarousel({
                 slideSpeed: 300,
                 paginationSpeed: 400,
                 singleItem: true
             });
 
-            $('.owl-controls .owl-page').append('<a class="item-link"/>');
+            $('.owl-controls .owl-page').append('<a class="item-link"></a>');
 
-            var pafinatorsLink = $('.owl-controls .item-link');
-            var images = this.gear.data.images.split(',');
+            $paginatorsLink = $('.owl-controls .item-link', this.$element);
+            images = this.gear.data.images.split(',');
 
-            for(var i = 0;i<pafinatorsLink.length;i++){
-                $(pafinatorsLink[i]).css({
+            for(i = 0; i < $paginatorsLink.length; i++){
+                $($paginatorsLink[i]).css({
                     'background': 'url(' + images[i] + ') center center no-repeat',
                     '-webkit-background-size': 'cover',
                     '-moz-background-size': 'cover',
                     '-o-background-size': 'cover',
                     'background-size': 'cover'
                 });
-                $(pafinatorsLink[i]).click(function () {
-                });
+                $($paginatorsLink[i]).click();
             }
 
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
@@ -110,15 +111,7 @@ define(
                     $('#owner_bio').html('<p'+'>'+data.bio+'</'+'p>');
                 });
             }
-
-
         }
-
-
-		function setupView() {
-			this.renderGearPictures();
-			this.renderMap();
-		}
 
 		function renderGearPictures() {
 			var images = this.gear.data.images.split(','),
@@ -156,8 +149,21 @@ define(
 		}
 
 		function handleBooking(event) {
-			var view = event.data;
-			App.router.openModalView('gearbooking', view.gear);
+			var view = event.data,
+				user = App.user;
+			if(user.data.id === null) {
+				user.login(function(error) {
+					if(!error) {
+						App.router.openModalView('gearbooking', view.gear);
+					}
+					else {
+						alert('You need to be logged in, in order to book an instrument.');
+					}
+				});
+			}
+			else {
+				App.router.openModalView('gearbooking', view.gear);
+			}
 		}
 	}
 );

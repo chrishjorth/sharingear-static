@@ -79,16 +79,12 @@ define(
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
 
-
-
             this.setupEvents();
 		}
 
 		function setupEvents() {
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 		}
-
-
 
 		/**
 		 * Displays search results from the model.

@@ -1290,12 +1290,13 @@ background-color: rgb(56,143,192);
     height: 100px;
 }
 
-.hour {
+/*.hour {
     cursor: pointer;
-}
+}*/
 
 .day {
     cursor: pointer;
+    background-color: #eeeeee;
 }
 
 .calendar .selected {
@@ -1313,6 +1314,11 @@ background-color: rgb(56,143,192);
 .calendar .disabled {
     color: #dddddd;
     cursor: default;
+    background-color: #ffffff;
+}
+
+.calendar .unavailable {
+    background-color: #ffffff;
 }
 
 /* ------------------------ FOOTER ----------------------------- */
