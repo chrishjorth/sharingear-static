@@ -1,11 +1,11 @@
 /**
  * Controller for the Sharingear Gear profile page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Horatiu Roman
  */
 
 define(
-	['viewcontroller', 'app', 'models/gear', 'googlemaps','owlcarousel'],
-	function(ViewController, App, Gear, GoogleMaps, owlcarousel) {
+	['viewcontroller', 'app', 'models/gear', 'googlemaps','owlcarousel','magnificpopup'],
+	function(ViewController, App, Gear, GoogleMaps, owlcarousel, magnificPopup) {
 		var GearProfile = ViewController.inherit({
 			gear: null,
 			map: null,
@@ -15,14 +15,14 @@ define(
 			renderGearPictures: renderGearPictures,
 			renderMap: renderMap,
             renderOwner: renderOwner,
-			handleBooking: handleBooking
+			handleBooking: handleBooking,
+			renderPopup: renderPopup
 		});
 
 		return GearProfile;
 
 		function didInitialize() {
 			var view = this;
-
 
 			if(this.passedData) {
 				this.gear = this.passedData;
@@ -60,7 +60,9 @@ define(
                 singleItem: true
             });
 
-            $('.owl-controls .owl-page').append('<a class="item-link"></a>');
+            this.renderPopup();
+	        
+            $('.owl-controls .owl-page').append('<a class="item-link"/>');
 
             $paginatorsLink = $('.owl-controls .item-link', this.$element);
             images = this.gear.data.images.split(',');
@@ -164,6 +166,30 @@ define(
 			else {
 				App.router.openModalView('gearbooking', view.gear);
 			}
+		}
+
+		// gets images used for rendering gear and uses them to render popup gallery.
+		function renderPopup() {
+			var view = this;
+    		// get images that are used for owl carousel
+            var images = view.gear.data.images.split(',');
+            // use same images for magnificpopup
+            // create array of items with src field
+            var items = [];
+            for (var i = 0; i < images.length; i++) {
+            	if (images[i]!="") {
+            		items.push({src:images[i]});
+            	}
+            };
+
+			// click on item image => open lightbox fullscreen gallery thing
+            $('.owl-item2 img').magnificPopup({
+            	type: 'image',
+            	items: items,
+            	gallery: {enabled: true}
+            });
+
+
 		}
 	}
 );

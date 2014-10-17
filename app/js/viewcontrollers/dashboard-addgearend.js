@@ -12,6 +12,11 @@ define(
 		return AddGearEnd;
 
 		function didInitialize() {
+			if(App.user.data.id === null) {
+				this.ready = false;
+				App.router.navigateTo('home');
+				return;
+			}
 			if(this.passedData === null) {
 				this.ready = false; //We abort loading the view
 				App.router.navigateTo('dashboard/addgear');

@@ -19,6 +19,11 @@ define(
 		return AddGearPhotos;
 
 		function didInitialize() {
+			if(App.user.data.id === null) {
+				this.ready = false;
+				App.router.navigateTo('home');
+				return;
+			}
 			this.newGear = new Gear.constructor({
 				rootURL: App.API_URL,
 				data: {

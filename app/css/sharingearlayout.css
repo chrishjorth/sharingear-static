@@ -866,7 +866,7 @@ background-color: rgb(56,143,192);
     border-bottom-color: #dddddd;
 }
 
-/* ------------------ PROFILE --------------- */
+/* ------------------ DASHBOARD PROFILE --------------- */
 
 #profilehead {
     text-transform: capitalize;
@@ -874,6 +874,9 @@ background-color: rgb(56,143,192);
 
 .profile-left {
     width: 50%;
+}
+.profile#saveSuccessDiv {
+    margin: 0px 10px 0px 10px;
 }
 
 /* ------------------ START - DASHBOARD YOUR GEAR --------------- */
@@ -3219,4 +3222,8 @@ margin: 40px 0;
 
 .price-info{
 
+}
+
+.owl-item2 img {
+    cursor: pointer;
 }

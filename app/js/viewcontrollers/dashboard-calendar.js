@@ -29,6 +29,11 @@ define(
 		return Calendar;
 
 		function didInitialize() {
+			if(App.user.data.id === null) {
+				this.ready = false;
+				App.router.navigateTo('home');
+				return;
+			}
 			Moment.locale('en-custom', {
 				week: {
 					dow: 1,
