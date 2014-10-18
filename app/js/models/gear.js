@@ -31,7 +31,7 @@ define(
 			uploadImage: uploadImage,
 			save: save,
 			update: update,
-            getUserInfo:getUserInfo,
+            //getUserInfo:getUserInfo,
             getAvailability: getAvailability,
             setAvailability: setAvailability
 		});
@@ -123,7 +123,7 @@ define(
 			});
 		}
 
-        function getUserInfo(userID, callback) {
+        /*function getUserInfo(userID, callback) {
             this.get('/users/'+userID, function (error,data) {
                 if(error) {
                     callback(error);
@@ -132,7 +132,7 @@ define(
 
                 callback(null,data);
             });
-        }
+        }*/
 
 		function save(userID, callback) {
 			var saveData = {
