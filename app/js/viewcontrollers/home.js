@@ -79,7 +79,7 @@ define(
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
 
-<<<<<<< HEAD
+
 						console.log(GoogleMaps);
 
 						var input = /** @type {HTMLInputElement} */(
@@ -91,8 +91,6 @@ define(
 							console.log("test");
 						});
 
-=======
->>>>>>> ce6b8cb8e45d894b61d7644b4947560d0de84981
             this.setupEvents();
 		}
 
@@ -178,7 +176,7 @@ define(
                         searchResult.image = 'http://www.rondomusic.com/photos/electric/gg1kwt5.jpg';
                     }
                     this.price = searchResults[i].price_a;
-					
+
 					_.extend(defaultSearchResults, searchResult);
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 
