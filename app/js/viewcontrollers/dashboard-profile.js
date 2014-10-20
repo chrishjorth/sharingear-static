@@ -21,26 +21,21 @@ define(
 		return Profile;
 
         function didInitialize() {
+            var view = this,
+                userData;
+
             if(App.user.data.id === null) {
                 this.ready = false;
                 App.router.navigateTo('home');
                 return;
             }
-            //We need default values so the templating does not fail.
-            var view = this,
-                user;
 
-            user = {
-                name: '',
-                hometown: '',
-                bio: '',
-                genres: '',
-                image_url:''
-            };
             this.user = App.user;
-            _.extend(user, App.user.data);
-            this.templateParameters = user;
 
+            userData = this.user.data;
+            this.templateParameters = {
+                bio: userData.bio,
+            };
 
             //Start loading profile image
             this.profileImg = new Image();
@@ -51,12 +46,12 @@ define(
         }
 
         function didRender() {
-            var view = this;
-
-            var userData = this.user.data;
-            $('#dashboard-profile-form #name',this.$element).val(userData.name);
-            $('#dashboard-profile-form #surname',this.$element).val(userData.surname);
-            $('#dashboard-profile-form #city',this.$element).val(userData.city);
+            var view = this,
+                userData = this.user.data;
+            
+            $('#dashboard-profile-form #name', this.$element).val(userData.name);
+            $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
+            $('#dashboard-profile-form #hometown', this.$element).val(userData.city);
 
             // when page loads, save is disabled
             view.enableSaveButton(false);
@@ -107,9 +102,9 @@ define(
                 city: $('#dashboard-profile-form #hometown').val(),
                 bio: $('#dashboard-profile-form #bio').val()
             }
-            console.log('Saved. User id: ' + App.user.data.id);
+            
             // if no error, show message to user, next to save button
-            $('#saveSuccessDiv').html("Your profile has been updated");
+            $('#saveSuccessDiv').html("Your profile has been updated.");
             view.enableSaveButton(false);
 
             view.user.updateUser(App.user.data.id, saveData, function (error, data) {
