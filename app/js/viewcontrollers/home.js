@@ -44,8 +44,7 @@ define(
                 showDropdowns: true
             });
 
-            //Filling the Location input with current location using HTML5 only if User.city is empty
-            if(App.user.data.city === '' && navigator.geolocation) {
+            if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
                     var lat = position.coords.latitude;
                     var lon = position.coords.longitude;
@@ -61,7 +60,6 @@ define(
 
             //Testimonials init
             $("#feedbacks").owlCarousel({
-
                 navigation: false, // Show next and prev buttons
                 slideSpeed: 800,
                 paginationSpeed: 400,
