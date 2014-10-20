@@ -587,6 +587,29 @@ footer a:hover {
     text-decoration: none;
 }
 
+.no-results-block {
+
+
+  display: none;
+  color: rgb(0, 174, 255);
+  text-align: center;
+
+}
+
+.row.sorry-section  {
+
+  height: 100px;
+
+}
+
+.row.request-section {
+
+  height: 150px;
+  margin-bottom: 50px;
+
+}
+
+
 /*------------- LIST YOUR GEAR --------------------*/
 
 .testimonials {

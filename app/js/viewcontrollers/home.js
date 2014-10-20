@@ -111,7 +111,24 @@ define(
 				}
 				else {
 					console.log('Error geocoding: ' + status);
+					noResults();
 				}
+			});
+
+			$('#fb-share-btn').on('click', function(event) {
+
+				instrument = $('#home-search-form #search-gear', view.$element).val();
+				description = 'Hey, I am looking for a ' + instrument + ' near ' + location + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
+
+				FB.ui({
+					method: 'feed',
+					caption: 'Request an instrument on Sharingear!',
+					link: 'sharingear.com',
+					description: description
+				}, function(response) {
+					//console.log(response);
+				});
+				//ga('send', 'event', 'request', 'request-fb', 'Request on FB button', 1);
 			});
 
 			return false;
@@ -121,7 +138,23 @@ define(
 		 * Generate the search results HTML and insert it into the search results block.
 		 * @param searchResults: an array of objects.
 		 */
+
+		function noResults() {
+
+				console.log("yeah but nope");
+
+				$('.no-results-block').css({
+					display: 'block'
+				});
+
+		}
+
 		function populateSearchBlock(searchResults, callback) {
+
+			if (searchResults = {}) {
+				noResults();
+			}
+
 			var $searchBlock = $('#' + this.searchBlockID, this.$element);
 			$searchBlock.empty();
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
