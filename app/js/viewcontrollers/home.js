@@ -82,7 +82,9 @@ define(
 						var input = /** @type {HTMLInputElement} */(
       			document.getElementById('search-location'));
 
-						var autocomplete = new google.maps.places.Autocomplete(input);
+						var options = {types: ['geocode']};
+
+						var autocomplete = new google.maps.places.Autocomplete(input, options);
 
             this.setupEvents();
 		}
