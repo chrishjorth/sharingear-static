@@ -75,6 +75,8 @@ define(
 			contentType: false,
 			processData: false,
 			success: function(data, textStatus, jqXHR) {
+				console.log('AJAX data:');
+				console.log(data);
 				if(data.error) {
 					callback(data.error);
 					return;
