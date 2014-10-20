@@ -46,19 +46,12 @@ if(!move_uploaded_file($_FILES[FILENAME]['tmp_name'], $tmpPath)) {
     exit;
 }
 
-//Get Google authorization for service accounts
-$client = new Google_Client();
-$client->setApplicationName('Sharingear');
-$key = file_get_contents(GOOGLE_API_KEY_LOCATION);
-$cred = new Google_Auth_AssertionCredentials(GOOGLE_API_EMAIL, array('https://www.googleapis.com/auth/devstorage.read_write'), $key);
-//$client->setAssertionCredentials($cred);
-
-ob_start();
+/*ob_start();
 var_dump($cred);
 $result = ob_get_clean();   
 //echo json_encode($result);
 echo $result;
-exit;
+exit;*/
 
 //Check that file size does not exceed 5MB
 $filesize = $_FILES[FILENAME]['size'];
@@ -103,7 +96,7 @@ if(strcmp($secretproof, $hmac) !== 0) {
 }
 
 //Send file to Google Cloud Storage with cURL
-$post_data = array(
+/*$post_data = array(
     'uploadType' => 'media',
     'name' => $filename,
     'file_contents' => '@' . $tmpPath
@@ -119,11 +112,28 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     'Authorization: Bearer ' . GOOGLE_API_KEY
 ));
 $result=curl_exec ($ch);
-curl_close ($ch);
+curl_close ($ch);*/
 
+
+//Get Google authorization for service accounts
+$client = new Google_Client();
+$client->setApplicationName('Sharingear');
+$key = file_get_contents(GOOGLE_API_KEY_LOCATION);
+$cred = new Google_Auth_AssertionCredentials(GOOGLE_API_EMAIL, array('https://www.googleapis.com/auth/devstorage.read_write'), $key);
+$client->setAssertionCredentials($cred);
+
+//Send file to Google Cloud Storage with Google API
+$storage = new Google_Service_Storage($client);
+$obj = new Google_Service_Storage_StorageObject();
+$obj->setName($filename);
+$storage->objects->insert(
+    "sharingear-uploads",
+    $obj,
+    ['name' => $filename, 'data' => file_get_contents($tmpPath), 'uploadType' => 'media']
+);
 
 //Delete file
-@unlink($tmpPath);
+//@unlink($tmpPath);
 
 $url = 'http' . (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'uploads/' . $filename;
 
