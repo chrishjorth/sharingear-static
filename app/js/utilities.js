@@ -69,7 +69,8 @@ define(
 			url: url,
 			type: 'POST',
 			data: formData,
-			dataType: 'json',
+			//dataType: 'json',
+			dataType: 'text',
 			//Options to tell jQuery not to process data or worry about content-type.
 			cache: false,
 			contentType: false,
