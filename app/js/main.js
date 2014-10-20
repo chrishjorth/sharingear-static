@@ -63,7 +63,6 @@ require(
 			interpolate: /\{\{(.+?)\}\}/g,
 			escape: /\{\{-(.+?)\}\}/g
 		};
-
 		App.run();
 	}
 );

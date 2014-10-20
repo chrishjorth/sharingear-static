@@ -46,8 +46,7 @@ define(
                 showDropdowns: true
             });
 
-            //Filling the Location input with current location using HTML5 only if User.city is empty
-            if(App.user.data.city === '' && navigator.geolocation) {
+            if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
                     var lat = position.coords.latitude;
                     var lon = position.coords.longitude;
@@ -63,7 +62,6 @@ define(
 
             //Testimonials init
             $("#feedbacks").owlCarousel({
-
                 navigation: false, // Show next and prev buttons
                 slideSpeed: 800,
                 paginationSpeed: 400,
@@ -81,6 +79,7 @@ define(
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
 
+<<<<<<< HEAD
 						console.log(GoogleMaps);
 
 						var input = /** @type {HTMLInputElement} */(
@@ -92,14 +91,14 @@ define(
 							console.log("test");
 						});
 
+=======
+>>>>>>> ce6b8cb8e45d894b61d7644b4947560d0de84981
             this.setupEvents();
 		}
 
 		function setupEvents() {
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 		}
-
-
 
 		/**
 		 * Displays search results from the model.

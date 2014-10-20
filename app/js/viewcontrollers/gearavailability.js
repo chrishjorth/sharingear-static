@@ -9,7 +9,7 @@ define(
 		var GearAvailability = ViewController.inherit({
 			gear: null,
 			shownMoment: null,
-			selections: {},
+			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -228,7 +228,7 @@ define(
 
 		function handleClearMonth(event) {
 			var view = event.data;
-			view.selections[(view.shownMoment.month() + 1)] = [];
+			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
 			view.clearSelections();
 			view.renderSelections();
 		}
