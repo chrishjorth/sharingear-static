@@ -12,6 +12,8 @@ define(
 				rootURL: App.API_URL
 			}),
 			geocoder: new GoogleMaps.Geocoder(),
+
+			//autocomplete: new GoogleMaps.places.Autocomplete(),
 			// searchBlockID: 'home-search-block',
 			searchBlockID: 'testRow',
 //            isImageVertical: '',
@@ -76,6 +78,18 @@ define(
                 itemsTablet: [600, 1], //2 items between 600 and 0
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
+
+
+						console.log(GoogleMaps);
+
+						var input = /** @type {HTMLInputElement} */(
+      			document.getElementById('search-location'));
+
+						// var autocomplete = new google.maps.places.Autocomplete(input);
+
+						jQuery('#search-location').on('input', function() {
+							console.log("test");
+						});
 
             this.setupEvents();
 		}
@@ -162,7 +176,7 @@ define(
                         searchResult.image = 'http://www.rondomusic.com/photos/electric/gg1kwt5.jpg';
                     }
                     this.price = searchResults[i].price_a;
-					
+
 					_.extend(defaultSearchResults, searchResult);
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 
