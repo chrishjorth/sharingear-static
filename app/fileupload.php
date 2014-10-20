@@ -49,7 +49,13 @@ $client = new Google_Client();
 $client->setApplicationName('Sharingear');
 $key = file_get_contents(GOOGLE_API_KEY_LOCATION);
 $cred = new Google_Auth_AssertionCredentials(GOOGLE_API_EMAIL, array('https://www.googleapis.com/auth/devstorage.read_write'), $key);
-$client->setAssertionCredentials($cred);
+//$client->setAssertionCredentials($cred);
+
+ob_start();
+var_dump($cred);
+$result = ob_get_clean();   
+echo json_encode($result);
+exit;
 
 //Check that file size does not exceed 5MB
 $filesize = $_FILES[FILENAME]['size'];
