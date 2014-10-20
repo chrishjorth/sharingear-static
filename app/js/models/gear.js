@@ -85,6 +85,10 @@ define(
 			//Get filename and secret from backend
 			console.log('Gear upload image.');
 			console.log('filename: ' + filename);
+			console.log('userID: ' + userID);
+			console.log('model');
+			console.log(model);
+			return;
 			this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {

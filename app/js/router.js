@@ -15,8 +15,8 @@ define(
 			mainViewContainer: '.view-container',
 			modalViewLightbox: '.modal-view-lightbox',
 			modalViewContainer: '.modal-view-container',
-			hashUpdated: false,
-			navigateToViewCalled: false,
+			hashUpdated: false, //Semaphore variable
+			navigateToViewCalled: false, //Semaphore variable
 
 			addRoutes: addRoutes,
 			getRoute: getRoute,
@@ -72,50 +72,37 @@ define(
 			return false;
 		}
 
+		/**
+		 * NOTE: This function is triggered when the hash in the URL changes, no matter wether it is by code or by user interaction.
+		 * 		For this reason we need a semaphore to avoid views being loaded twice, since we updated the hash in the case of a navigateTo call.
+		 */
 		function handleHashChange(event) {
-			Router.navigateTo(window.location.hash.substring(1), null);
-			/* please delete all this comment when verified. Horatiu
-			if (event === "navigateTo") {
-				return;
-			}
-			//console.log("1");
+			//Handle semaphore
 			if(Router.navigateToViewCalled === false){
 				//Origin of event is URL or direct link
 				Router.hashUpdated = true;
-				//console.log("6");
-			
+				Router.navigateTo(window.location.hash.substring(1), null);
 			}
 			else {
 				//Origin of event is navigateTo
 				Router.navigateToViewCalled = false;
-				//console.log("5");
-			
 			}
-			*/
 		}
 
 		function navigateTo(route, data, callback) {
-			//console.log("2");
-			
 			var router = this;
-			if (window.location.hash !== "#" + route) {
-				window.location.hash = "#" + route;
-			}
-			/* please delete all this comment when verified. Horatiu
 			if(router.hashUpdated === false) {
 				//Hash change event not fired
-				router.navigateToViewCalled = true;
-				//console.log("3");
-			
-				window.location.hash = '#' + route;
+				//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
+				if(window.location.hash !== '#' + route) {
+					router.navigateToViewCalled = true;
+					window.location.hash = '#' + route; //This triggers handleHashChange, which is why we set the semaphores so that navigateTo is not called again
+				}
 			}
 			else {
 				//Hash change event fired
 				router.hashUpdated = false;
-				//console.log("4");
-			
 			}
-			*/
 
 			this.loadView(this.getRoute(route), route, data, function(error) {
 				if(callback && typeof callback === 'function') {
