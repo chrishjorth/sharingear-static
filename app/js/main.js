@@ -49,7 +49,7 @@ requirejs.config({
 //
 define('googlemaps', ['async!http://maps.googleapis.com/maps/api/js?key=AIzaSyByhkzhQYoAk2bAGRYIuvHOl1jIP99_iyE&libraries=places'], function(){
     // return the googlemaps namespace for brevity
-	console.log(window.google);
+		
     return window.google.maps;
 });
 
