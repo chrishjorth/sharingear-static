@@ -65,11 +65,12 @@ define(
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
 
-			var input = /** @type {HTMLInputElement} */(document.getElementById('search-location'));
+						var input = /** @type {HTMLInputElement} */(
+      			document.getElementById('search-location'));
 
-			var options = {types: ['geocode']};
+						var options = {types: ['geocode']};
 
-			var autocomplete = new GoogleMaps.places.Autocomplete(input, options);
+						var autocomplete = new GoogleMaps.places.Autocomplete(input, options);
 
             this.setupEvents();
 		}
