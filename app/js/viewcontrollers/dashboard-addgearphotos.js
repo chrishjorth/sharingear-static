@@ -24,14 +24,6 @@ define(
 				App.router.navigateTo('home');
 				return;
 			}
-			/*this.newGear = new Gear.constructor({
-				rootURL: App.API_URL,
-				data: {
-					images: ''
-				}
-			});*/
-			console.log('Passed data');
-			console.log(this.passedData);
 			this.newGear = this.passedData;
 			if(!this.newGear.data.images) {
 				this.newGear.data.images = '';

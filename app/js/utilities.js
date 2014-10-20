@@ -42,12 +42,6 @@ define(
 		return Inherited;
 	}
 
-//    function getUserInfo(userID, callback) {
-//        this.get('/users/'+userID, function () {
-//            console.log('hi');
-//        });
-//    }
-
 	function getBaseURL() {
 		if (!window.location.origin) {
 			window.location.origin = window.location.protocol+"//"+window.location.host;
