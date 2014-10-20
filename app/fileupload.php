@@ -46,13 +46,6 @@ if(!move_uploaded_file($_FILES[FILENAME]['tmp_name'], $tmpPath)) {
     exit;
 }
 
-/*ob_start();
-var_dump($cred);
-$result = ob_get_clean();   
-//echo json_encode($result);
-echo $result;
-exit;*/
-
 //Check that file size does not exceed 5MB
 $filesize = $_FILES[FILENAME]['size'];
 if($filesize > SG_MAX_FILE_SIZE) {
@@ -95,26 +88,6 @@ if(strcmp($secretproof, $hmac) !== 0) {
     exit;
 }
 
-//Send file to Google Cloud Storage with cURL
-/*$post_data = array(
-    'uploadType' => 'media',
-    'name' => $filename,
-    'file_contents' => '@' . $tmpPath
-);
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, 'http://www.googleapis.com/upload/storage/v1/b/myBucket/o');
-curl_setopt($ch, CURLOPT_POST, TRUE);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-    'Content-Type: image/' . $ext,
-    'Content-Length: ' . $filesize,
-    'Authorization: Bearer ' . GOOGLE_API_KEY
-));
-$result=curl_exec ($ch);
-curl_close ($ch);*/
-
-
 //Get Google authorization for service accounts
 $client = new Google_Client();
 $client->setApplicationName('Sharingear');
@@ -127,14 +100,14 @@ $storage = new Google_Service_Storage($client);
 $obj = new Google_Service_Storage_StorageObject();
 $obj->setName($filename);
 $storage->objects->insert(
-    "sharingear-uploads",
+    "sharingear-uploads/gearimages",
     $obj,
     ['name' => $filename, 'data' => file_get_contents($tmpPath), 'uploadType' => 'media']
 );
 
 //Delete file
-//@unlink($tmpPath);
+@unlink($tmpPath);
 
-$url = 'http' . (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'uploads/' . $filename;
+$url = 'http' . (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'images/gearimages/' . $filename;
 
 echo '{"url": "' . $url . '"}';
