@@ -46,20 +46,6 @@ define(
                 showDropdowns: true
             });
 
-            if(navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position){
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-                    Utilities.geoLocationGetCity(lat, lon, function (locationCity) {
-                        App.user.data.city = locationCity;
-                        $('#search-location').val(locationCity);
-                    });
-                });
-            }
-            else {
-                $('#search-location').val(App.user.data.city);
-            }
-
             //Testimonials init
             $("#feedbacks").owlCarousel({
                 navigation: false, // Show next and prev buttons
@@ -80,9 +66,10 @@ define(
             });
 
 			var input = /** @type {HTMLInputElement} */(document.getElementById('search-location'));
-			console.log('TEST:');
-			console.log(GoogleMaps.places);
-			var autocomplete = new GoogleMaps.places.Autocomplete(input);
+
+			var options = {types: ['geocode']};
+
+			var autocomplete = new GoogleMaps.places.Autocomplete(input, options);
 
             this.setupEvents();
 		}
