@@ -56,7 +56,8 @@ $cred = new Google_Auth_AssertionCredentials(GOOGLE_API_EMAIL, array('https://ww
 ob_start();
 var_dump($cred);
 $result = ob_get_clean();   
-echo json_encode($result);
+//echo json_encode($result);
+echo $result;
 exit;
 
 //Check that file size does not exceed 5MB
