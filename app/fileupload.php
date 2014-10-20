@@ -3,6 +3,8 @@
  * Accept JPEG and PNG uploads and scale them to be a maximum of 4000px wide.
  * @author: Chris Hjorth
  */
+require_once 'google-api-php-client/autoload.php';
+
 define('FILENAME', 'uploadedfile');
 define('SHARINGEAR_SECRET', '95b95a4a2e59ddc98136ce54b8a0f8d2');
 define('SG_MAX_FILE_SIZE', 4000000); //4MB

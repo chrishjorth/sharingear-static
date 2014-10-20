@@ -79,10 +79,10 @@ define(
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
 
-						var input = /** @type {HTMLInputElement} */(
-      			document.getElementById('search-location'));
-
-						var autocomplete = new google.maps.places.Autocomplete(input);
+			var input = /** @type {HTMLInputElement} */(document.getElementById('search-location'));
+			console.log('TEST:');
+			console.log(GoogleMaps.places);
+			var autocomplete = new GoogleMaps.places.Autocomplete(input);
 
             this.setupEvents();
 		}
