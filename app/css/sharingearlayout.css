@@ -3260,3 +3260,12 @@ margin: 40px 0;
     margin-left: auto;
     margin-right: auto;
 }
+
+.gearprofile-book {
+    background-color: rgb(255, 210, 0);
+}
+
+.gearprofile-book:hover {
+    background-color: rgb(255, 210, 0);
+    color:#555;
+}
