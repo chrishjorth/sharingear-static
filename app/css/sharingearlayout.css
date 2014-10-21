@@ -3250,3 +3250,13 @@ margin: 40px 0;
     background: #fff;
     padding: 10px;
 }
+
+.owner_name {
+    color: #000;
+    border-bottom: solid 2px #00aeff;
+}
+
+.owner_picture {
+    margin-left: auto;
+    margin-right: auto;
+}
