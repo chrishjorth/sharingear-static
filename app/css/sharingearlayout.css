@@ -587,6 +587,29 @@ footer a:hover {
     text-decoration: none;
 }
 
+.no-results-block {
+
+
+  display: none;
+  color: rgb(0, 174, 255);
+  text-align: center;
+
+}
+
+.row.sorry-section  {
+
+  height: 100px;
+
+}
+
+.row.request-section {
+
+  height: 150px;
+  margin-bottom: 50px;
+
+}
+
+
 /*------------- LIST YOUR GEAR --------------------*/
 
 .testimonials {
@@ -866,7 +889,7 @@ background-color: rgb(56,143,192);
     border-bottom-color: #dddddd;
 }
 
-/* ------------------ PROFILE --------------- */
+/* ------------------ DASHBOARD PROFILE --------------- */
 
 #profilehead {
     text-transform: capitalize;
@@ -874,6 +897,9 @@ background-color: rgb(56,143,192);
 
 .profile-left {
     width: 50%;
+}
+.profile#saveSuccessDiv {
+    margin: 0px 10px 0px 10px;
 }
 
 /* ------------------ START - DASHBOARD YOUR GEAR --------------- */
@@ -1290,9 +1316,9 @@ background-color: rgb(56,143,192);
     height: 100px;
 }
 
-.hour {
+/*.hour {
     cursor: pointer;
-}
+}*/
 
 .day {
     cursor: pointer;
@@ -1312,6 +1338,7 @@ background-color: rgb(56,143,192);
 
 .calendar .disabled {
     color: #dddddd;
+    cursor: default;
 }
 
 /* ------------------------ FOOTER ----------------------------- */
@@ -3191,6 +3218,7 @@ margin-top: 0;
   width:200px;
   height: 200px;
   background: no-repeat 50% 50%;
+  margin-top: 65px;
 }
 
 .prof_subview {
@@ -3212,4 +3240,8 @@ margin: 40px 0;
 
 .price-info{
 
+}
+
+.owl-item2 img {
+    cursor: pointer;
 }

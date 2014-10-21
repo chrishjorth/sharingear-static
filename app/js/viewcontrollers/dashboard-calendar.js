@@ -4,8 +4,8 @@
  */
 
 define(
-	['viewcontroller', 'moment'],
-	function(ViewController, Moment) {
+	['viewcontroller', 'moment', 'app'],
+	function(ViewController, Moment, App) {
 		var Calendar = ViewController.inherit({
 			weekMode: true, //if false then it is months mode
 			/*shownWeek: 0,
@@ -29,6 +29,11 @@ define(
 		return Calendar;
 
 		function didInitialize() {
+			if(App.user.data.id === null) {
+				this.ready = false;
+				App.router.navigateTo('home');
+				return;
+			}
 			Moment.locale('en-custom', {
 				week: {
 					dow: 1,
@@ -64,6 +69,9 @@ define(
 			$('.col-md-1:nth-child(0n+6) .date', $weekCalHeader).html((moment.weekday(4).date()) + '/' + (moment.weekday(4).month() + 1));
 			$('.col-md-1:nth-child(0n+7) .date', $weekCalHeader).html((moment.weekday(5).date()) + '/' + (moment.weekday(5).month() + 1));
 			$('.col-md-1:nth-child(0n+8) .date', $weekCalHeader).html((moment.weekday(6).date()) + '/' + (moment.weekday(6).month() + 1));
+
+			$('#dashboard-calendar-months-btn', this.$element).removeClass('disabled');
+			$('#dashboard-calendar-weeks-btn', this.$element).addClass('disabled');
 		}
 
 		function setupMonthCalendar() {
@@ -94,6 +102,10 @@ define(
 			}
 			$('#calendar-weeks-container', view.$element).removeClass('hidden');
 			view.weekMode = true;
+
+			$('#dashboard-calendar-months-btn', view.$element).removeClass('disabled');
+			$('#dashboard-calendar-weeks-btn', view.$element).addClass('disabled');
+
 		}
 
 		function switchToMonths(event) {
@@ -109,6 +121,9 @@ define(
 			$('#calendar-months-container', view.$element).removeClass('hidden');
 			view.setupMonthCalendar();
 			view.weekMode = false;
+
+			$('#dashboard-calendar-weeks-btn', view.$element).removeClass('disabled');
+			$('#dashboard-calendar-months-btn', view.$element).addClass('disabled');
 		}
 
 		function handlePrevious(event) {

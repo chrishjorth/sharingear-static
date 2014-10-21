@@ -16,8 +16,12 @@ define(
             pricePerDay: '',
             pricePerWeek: '',
             totalPrice: '',
+            availabilityArray: [],
 
 			didInitialize: didInitialize,
+
+			initializeMoments: initializeMoments,
+
 			didRender: didRender,
 
             renderPrice: renderPrice,
@@ -26,6 +30,8 @@ define(
 			setupLeftMonthCalendar: setupLeftMonthCalendar,
 			setupRightMonthCalendar: setupRightMonthCalendar,
 			setupMonthCalendar: setupMonthCalendar,
+
+			disableUnavailableDays: disableUnavailableDays,
 
 			handleCancel: handleCancel,
 			handleBook: handleBook,
@@ -48,6 +54,7 @@ define(
 		return GearBooking;
 
 		function didInitialize() {
+			var view = this;
 			Moment.locale('en-custom', {
 				week: {
 					dow: 1,
@@ -57,13 +64,9 @@ define(
 
             this.gear = this.passedData;
 
-
-
-
             this.pricePerHour = this.gear.data.price_a;
             this.pricePerDay = this.gear.data.price_b;
             this.pricePerWeek = this.gear.data.price_c;
-
 
             this.leftMoment = Moment();
 			this.leftMoment.startOf('week').weekday(0);
@@ -71,13 +74,35 @@ define(
 			this.rightMoment = Moment();
 			this.rightMoment.startOf('week').weekday(0);
 			this.rightMoment.hour(12);
-			this.startMoment = Moment();
-			this.endMoment = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date() + 1});
+
+			/*this.startMoment = Moment();
 			this.startMoment.hour(12);
             this.startMoment.minutes(0);
             this.startMoment.seconds(0);
-
+			this.endMoment = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date() + 1});
 			this.endMoment.hour(12);
+			this.endMoment.minutes(0);
+            this.endMoment.seconds(0);*/
+
+            this.availabilityArray = [];
+            this.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
+            	if(error) {
+					return;
+				}
+            	view.availabilityArray = availabilityArray;
+            	view.render();
+            });
+		}
+
+		function initializeMoments(year, month, date) {
+			this.startMoment = Moment();
+			this.startMoment.hour(12);
+            this.startMoment.minutes(0);
+            this.startMoment.seconds(0);
+			this.endMoment = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date() + 1});
+			this.endMoment.hour(12);
+			this.endMoment.minutes(0);
+            this.endMoment.seconds(0);
 		}
 
 		function didRender() {
@@ -85,6 +110,7 @@ define(
 			this.renderMonthCalendar($('#gearbooking-rightmonths-container'));
 			this.setupLeftMonthCalendar();
 			this.setupRightMonthCalendar();
+			this.disableUnavailableDays();
 
 			this.renderSelection();
 
@@ -102,95 +128,83 @@ define(
 			this.setupEvent('click', '#gearbooking-rightmonths-container .day-row .day', this, this.handleRightDaySelection);
 
 		    //Hour selection dropdowns
-            this.setupEvent('change','#gearbooking-starttime',this,this.handleLeftHourDropdown);
-            this.setupEvent('change','#gearbooking-endtime',this,this.handleRightHourDropdown);
+            this.setupEvent('change','#gearbooking-starttime', this, this.handleLeftHourDropdown);
+            this.setupEvent('change','#gearbooking-endtime', this, this.handleRightHourDropdown);
         }
 
         function renderPrice(event) {
+            var view = event.data,
+            	price = 0,
+            	startDate, endDate, numberOfHours, numberOfDays, numberOfWeeks, difference, display;
+            
+            startDate = new Moment(view.startMoment);
+            endDate = new Moment(view.endMoment);
 
-            var priceData = event.data;
-            var price = 0;
-            var startDate = new Moment(priceData.startMoment);
-            var endDate = new Moment(priceData.endMoment);
+            numberOfHours = 0;
+            numberOfDays = 0;
+            numberOfWeeks = 0;
+            difference = 0;
 
-
-            var numberOfHours = 0;
-            var numberOfDays = 0;
-            var numberOfWeeks =0;
-            var difference = 0;
-
-            if (startDate.isDST() && !endDate.isDST()) {
+            if(startDate.isDST() && !endDate.isDST()) {
                 difference = endDate - startDate;
-                //one hour in milliseconds
-                difference -=3600000;
+                difference -= 3600000; //one hour in milliseconds
 
-            }else if (!startDate.isDST() && endDate.isDST()) {
+            }
+            else if(!startDate.isDST() && endDate.isDST()) {
                 difference = endDate - startDate;
-                //one hour in milliseconds
-                difference += 3600000;
-            }else{
+                difference += 3600000; //one hour in milliseconds
+            }
+            else {
                 difference = endDate - startDate;
             }
 
-
-            //exactly one week or more in milliseconds
-            if(difference>=604800000){
-                numberOfWeeks = Math.round(difference/604800000);
-                difference -= 604800000*numberOfWeeks;
+            if(difference >= 604800000) { //exactly one week or more in milliseconds
+                numberOfWeeks = Math.round(difference / 604800000);
+                difference -= 604800000 * numberOfWeeks;
             }
 
-            //exactly one day or more in milliseconds
-            if (difference>=86400000) {
-                numberOfDays = Math.round(difference/86400000);
-                difference -= 86400000*numberOfDays;
+            if(difference >= 86400000) {//exactly one day or more in milliseconds
+                numberOfDays = Math.round(difference / 86400000);
+                difference -= 86400000 * numberOfDays;
             }
 
-            numberOfHours = difference/3600000;
+            numberOfHours = difference / 3600000;
             numberOfHours = Math.round(numberOfHours);
 
-            //Check hours for positive overload
-            if(numberOfHours===24){
-                numberOfDays+=1;
+            if(numberOfHours === 24) { //Check hours for positive overload
+                numberOfDays += 1;
                 numberOfHours -= 24;
             }
 
-            //Check days for overload
-            if (numberOfDays ===7) {
-                numberOfWeeks+=1;
+            if (numberOfDays === 7) { //Check days for overload
+                numberOfWeeks += 1;
                 numberOfDays -= 7;
             }
 
-            //Check hours for negative overload
-            while(numberOfHours<0){
-                if (numberOfHours < 0) {
-                    numberOfDays-=1;
-                    numberOfHours +=24;
+            while(numberOfHours < 0) { //Check hours for negative overload
+                if(numberOfHours < 0) {
+                    numberOfDays -= 1;
+                    numberOfHours += 24;
                 }
             }
 
-            //Check days for negative overload
-            while(numberOfDays<0) {
-                if (numberOfDays < 0) {
+            while(numberOfDays < 0) { //Check days for negative overload
+                if(numberOfDays < 0) {
                     numberOfWeeks -= 1;
                     numberOfDays += 7;
                 }
             }
 
-            price = priceData.pricePerWeek*numberOfWeeks+priceData.pricePerDay*numberOfDays+priceData.pricePerHour*numberOfHours;
-            var display =
-
-                '<p class="price-info">' +
-                    'Hours: '+numberOfHours+'</br>' +
-                    'Days: '+numberOfDays+'</br>' +
-                    'Weeks: '+numberOfWeeks+'</br>' +
-                    'Price per hour:'+priceData.pricePerHour+'</br>' +
-                    'Price per day:'+priceData.pricePerDay+'</br>' +
-                    'Price per week:'+priceData.pricePerWeek+'</br>'+
-                    '<span class="total-price">'+
-                        price+
-                    '</span>' +
-                '</p>';
-            $("#totalprice").html(display);
+            price = view.pricePerWeek * numberOfWeeks + view.pricePerDay * numberOfDays + view.pricePerHour * numberOfHours;
+            display = '<p class="price-info">';
+            display += 'Hours: ' + numberOfHours + '</br>';
+            display += 'Days: ' + numberOfDays + '</br>';
+            display += 'Weeks: ' + numberOfWeeks + '</br>';
+            display += 'Price per hour:' + view.pricePerHour + '</br>';
+            display += 'Price per day:' + view.pricePerDay + '</br>';
+            display += 'Price per week:' + view.pricePerWeek + '</br>';
+            display += '<span class="total-price">' + price + '</span></p>';
+            $('#totalprice', view.$element).html(display);
         }
 
 
@@ -198,7 +212,6 @@ define(
             var view = event.data;
             var selected = $("#gearbooking-starttime").val();
             var hour = selected.split(':')[0].replace( /^\D+/g, '');
-
 
             view.startMoment.hour(hour);
             view.startMoment.minutes(0);
@@ -252,24 +265,25 @@ define(
 			var moment, firstDayWeek;
 			moment = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), date: this.leftMoment.date()});
 			this.setupMonthCalendar(moment, $('#gearbooking-leftmonths-container', this.$element),true);
-			//Get week of first day of month, that is first row, then get difference with start week
-			firstDayWeek = Moment({year: this.startMoment.year(), month: this.startMoment.month(), date: 1}).week();
-			$('#gearbooking-leftmonths-container .row:nth-child(0n+' + (this.startMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.startMoment.weekday() + 2) + ')').addClass('selected');
-			$('#gearbooking-lefttitle').html(this.leftMoment.format('MMMM YYYY'));
 
+            //Disable buttons at start
+            $("#gearbooking-rightprevious-btn").prop('disabled',true);
+            $("#gearbooking-righttoday-btn").prop('disabled',true);
+			$('#gearbooking-lefttitle').html(this.leftMoment.format('MMMM YYYY'));
 		}
 
 		function setupRightMonthCalendar() {
 			var moment, firstDayWeek;
 			moment = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), date: this.rightMoment.date()});
 			this.setupMonthCalendar(moment, $('#gearbooking-rightmonths-container', this.$element),false);
-			//Get week of first day of month, that is first row, then get difference with start week
-			firstDayWeek = Moment({year: this.endMoment.year(), month: this.endMoment.month(), date: 1}).week();
-			$('#gearbooking-rightmonths-container .row:nth-child(0n+' + (this.endMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.endMoment.weekday() + 2) + ')').addClass('selected');
+
+            //Disable buttons at start
+            $("#gearbooking-leftprevious-btn").prop('disabled',true);
+            $("#gearbooking-lefttoday-btn").prop('disabled',true);
 			$('#gearbooking-righttitle').html(this.rightMoment.format('MMMM YYYY'));
 		}
 
-		function setupMonthCalendar(moment, $calendarContainer,leftorright) {
+		function setupMonthCalendar(moment, $calendarContainer, leftOrRight) {
 			var startDay = moment.date(1).weekday(),
 				$dayBox, row, col, date;
 
@@ -282,21 +296,45 @@ define(
 					$dayBox.html(date);
 					$dayBox.data('date', date);
 					$dayBox.data('month', moment.month());
-                    if(leftorright){
-                        $dayBox.removeClass('disabled');
+					$dayBox.data('year', moment.year());
+					$dayBox.removeClass('disabled');
+					$dayBox.addClass('unavailable');
+                    if(leftOrRight) {
                         if(moment.month() !== this.leftMoment.month()) {
                             $dayBox.addClass('disabled');
                         }
-                        if(moment.isBefore(new Moment())){
+                        if(moment.isBefore(Moment())){
                             $dayBox.addClass('disabled');
                         }
-                    }else{
-                        $dayBox.removeClass('disabled');
+                        $dayBox.attr('id', 'gearbooking-leftday-' + moment.year() + '-' + (moment.month() + 1) + '-' + date);
+                    }
+                    else {
                         if(moment.month() !== this.rightMoment.month()) {
                             $dayBox.addClass('disabled');
                         }
+                        if(moment.isBefore(Moment())){
+                            $dayBox.addClass('disabled');
+                        }
+                        $dayBox.attr('id', 'gearbooking-rightday-' + moment.year() + '-' + (moment.month() + 1) + '-' + date);
                     }
 					moment.add(1, 'days');
+				}
+			}
+		}
+
+		function disableUnavailableDays() {
+			var $leftCalendarContainer, $rightCalendarContainer, startMoment, endMoment, i;
+				
+			$leftCalendarContainer = $('#gearbooking-leftmonths-container', this.$element);
+			$rightCalendarContainer = $('#gearbooking-rightmonths-container', this.$element);
+			for(i = 0; i < this.availabilityArray.length; i++) {
+				startMoment = Moment(this.availabilityArray[i].start);
+				endMoment = Moment(this.availabilityArray[i].end);
+				momentIterator = Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
+				while(momentIterator.isBefore(endMoment, 'day') === true || momentIterator.isSame(endMoment, 'day') === true) {
+					$('#gearbooking-leftday-' + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date(), $leftCalendarContainer).removeClass('unavailable');
+					$('#gearbooking-rightday-' + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date(), $rightCalendarContainer).removeClass('unavailable');
+					momentIterator.add(1, 'days');
 				}
 			}
 		}
@@ -314,99 +352,124 @@ define(
 		function handleLeftToday(event) {
 			var view = event.data;
 			view.leftMoment = Moment();
-			if(view.leftWeekMode === true) {
-				view.setupLeftWeekCalendar();
-			}
-			else {
-				view.setupLeftMonthCalendar();
-			}
+            $("#gearbooking-leftprevious-btn").prop('disabled', true);
+            $("#gearbooking-lefttoday-btn").prop('disabled', true);
+			view.setupLeftMonthCalendar();
 			view.renderSelection();
-
+			view.disableUnavailableDays();
 		}
 
 		function handleLeftPrevious(event) {
 			var view = event.data;
-			if(view.leftWeekMode === true) {
-				view.leftMoment.subtract(1, 'week');
-				view.setupLeftWeekCalendar();
-			}
-			else {
-				view.leftMoment.subtract(1, 'month');
-				view.setupLeftMonthCalendar();
-			}
-			view.renderSelection();
+            if(view.leftMoment.month() === Moment().month()) {
+                return;
+            }
+            else {
+                $("#gearbooking-lefttoday-btn").prop('disabled',false);
+                $("#gearbooking-leftprevious-btn").prop('disabled',false);
+            }
+			view.leftMoment.subtract(1, 'month');
+            if(view.leftMoment.month() === new Moment().month()) {
+                $("#gearbooking-leftprevious-btn").prop('disabled', true);
+                $("#gearbooking-lefttoday-btn").prop('disabled', true);
+            }
+			view.setupLeftMonthCalendar();
+            view.renderSelection();
+            view.disableUnavailableDays();
 		}
 
 		function handleLeftNext(event) {
 			var view = event.data;
-			if(view.leftWeekMode === true) {
-				view.leftMoment.add(1, 'week');
-				view.setupLeftWeekCalendar();
-			}
-			else {
-				view.leftMoment.add(1, 'month');
-				view.setupLeftMonthCalendar();
-			}
+			view.leftMoment.add(1, 'month');
+
+            if(view.leftMoment.month() === new Moment().month()) {
+                $("#gearbooking-leftprevious-btn").prop('disabled',true);
+                $("#gearbooking-lefttoday-btn").prop('disabled',true);
+            }
+            else {
+                $("#gearbooking-lefttoday-btn").prop('disabled',false);
+                $("#gearbooking-leftprevious-btn").prop('disabled',false);
+            }
+
+			view.setupLeftMonthCalendar();
 			view.renderSelection();
+			view.disableUnavailableDays();
 		}
 
 		function handleRightToday(event) {
             var view = event.data;
 			view.rightMoment = Moment();
-			if(view.rightWeekMode === true) {
-				view.setupRightWeekCalendar();
-			}
-			else {
-				view.setupRightMonthCalendar();
-			}
+            $("#gearbooking-rightprevious-btn").prop('disabled',true);
+            $("#gearbooking-righttoday-btn").prop('disabled',true);
+			view.setupRightMonthCalendar();
 			view.renderSelection();
+			view.disableUnavailableDays();
 		}
 
 		function handleRightPrevious(event) {
 			var view = event.data;
-			if(view.rightWeekMode === true) {
-				view.rightMoment.subtract(1, 'week');
-				view.setupRightWeekCalendar();
-			}
-			else {
-				view.rightMoment.subtract(1, 'month');
-				view.setupRightMonthCalendar();
-			}
+            if(view.rightMoment.month() === new Moment().month()){
+                return;
+            }
+            else {
+                $("#gearbooking-righttoday-btn").prop('disabled',false);
+                $("#gearbooking-rightprevious-btn").prop('disabled',false);
+            }
+            view.rightMoment.subtract(1, 'month');
+
+            if(view.rightMoment.month() === new Moment().month()) {
+                $("#gearbooking-rightprevious-btn").prop('disabled', true);
+                $("#gearbooking-righttoday-btn").prop('disabled', true);
+            }
+			view.setupRightMonthCalendar();
 			view.renderSelection();
+			view.disableUnavailableDays();
 		}
 
 		function handleRightNext(event) {
 			var view = event.data;
-			if(view.rightWeekMode === true) {
-				view.rightMoment.add(1, 'week');
-				view.setupRightWeekCalendar();
-			}
-			else {
-				view.rightMoment.add(1, 'month');
-				view.setupRightMonthCalendar();
-			}
+			view.rightMoment.add(1, 'month');
+            if(view.rightMoment.month() === new Moment().month()) {
+                $("#gearbooking-rightprevious-btn").prop('disabled',true);
+                $("#gearbooking-righttoday-btn").prop('disabled',true);
+            }
+            else {
+                $("#gearbooking-righttoday-btn").prop('disabled',false);
+                $("#gearbooking-rightprevious-btn").prop('disabled',false);
+            }
+			view.setupRightMonthCalendar();
 			view.renderSelection();
-            calculatePrice();
+			view.disableUnavailableDays();
 		}
 
 		function handleLeftDaySelection(event) {
 			var $this = $(this),
 				view = event.data,
-				date, month;
+				date, month, year, i;
 
 			//Check that selection start moment is not previous to end moment
 			date = $this.data('date');
 			month = $this.data('month');
+			year = $this.data('year');
 
             //Do not allow selecting outside of the month
-            if($this.data('month') !== view.leftMoment.month()) {
+            if(month !== view.leftMoment.month()) {
                 return;
+            }
+
+            if($this.hasClass('unavailable') === true) {
+            	return;
             }
 
 			view.clearLeftSelection();
 
+			if(view.startMoment === null || view.endMoment === null) {
+				view.initializeMoments();
+			}
+
 			view.startMoment.date(date);
 			view.startMoment.month(month);
+			view.startMoment.year(year);
 
 			if(view.startMoment.isAfter(view.endMoment, 'day') === true) {
 				view.endMoment.date(date);
@@ -414,32 +477,70 @@ define(
 				view.endMoment.add(1, 'days');
 			}
 
+			//Check if there is a hole in the selection and if yes move endMoment back
+			//Assert that the availability array is sorted by start dates
+			i = 0;
+			while(i < view.availabilityArray.length) {
+				availableStartMoment = Moment(view.availabilityArray[i].start);
+				availableEndMoment = Moment(view.availabilityArray[i].end);
+				if((view.startMoment.isSame(availableStartMoment, 'day') === true || view.startMoment.isAfter(availableStartMoment, 'day') === true) && (view.startMoment.isBefore(availableEndMoment, 'day') === true || view.startMoment.isSame(availableEndMoment, 'day') === true)) { //We found the availability interval
+					if(view.endMoment.isAfter(availableEndMoment, 'day') === true) {
+						view.endMoment = availableEndMoment;
+					}
+				}
+				i++;
+			}
+
 			view.renderSelection();
-            renderPrice(event);
+            view.renderPrice(event);
 		}
 
 		function handleRightDaySelection(event) {
 			var $this = $(this),
 				view = event.data,
-				month, date;
+				month, date, year, i;
 
 			month = $this.data('month');
 			date = $this.data('date');
+			year = $this.data('year');
 
             //Do not allow selecting outside of the month
             if($this.data('month') !== view.rightMoment.month()) {
                 return;
             }
 
+            if($this.hasClass('unavailable') === true) {
+            	return;
+            }
+
 			view.clearRightSelection();
+
+			if(view.startMoment === null || view.endMoment === null) {
+				view.initializeMoments();
+			}
 			
 			view.endMoment.date(date);
 			view.endMoment.month(month);
+			view.endMoment.year(year);
 
 			if(view.endMoment.isBefore(view.startMoment, 'day')) {
 				view.startMoment.date(date);
 				view.startMoment.month(month);
 				view.startMoment.subtract(1, 'days');
+			}
+
+			//Check if there is a hole in the selection and if yes move startMoment forth
+			//Assert that the availability array is sorted by start dates
+			i = view.availabilityArray.length - 1;
+			while(i >= 0) {
+				availableStartMoment = Moment(view.availabilityArray[i].start);
+				availableEndMoment = Moment(view.availabilityArray[i].end);
+				if((view.endMoment.isBefore(availableEndMoment, 'day') === true || view.endMoment.isSame(availableEndMoment, 'day') === true) && (view.endMoment.isAfter(availableStartMoment, 'day') === true || view.endMoment.isSame(availableStartMoment, 'day') === true)) { //We found the availability interval
+					if(view.startMoment.isBefore(availableStartMoment, 'day') === true) {
+						view.startMoment = availableStartMoment;
+					}
+				}
+				i--;
 			}
 
 			view.renderSelection();
@@ -466,66 +567,70 @@ define(
 
 		function renderSelection() {
 			var $calendarContainer, momentIterator, row, col, startDay, $box;
-			
-			//Render left month view
-			$calendarContainer = $('#gearbooking-leftmonths-container');
-			momentIterator = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), day: this.leftMoment.date(), hour: this.leftMoment.hour()});
-			startDay = momentIterator.date(1).weekday();
-			momentIterator.subtract(startDay, 'days');
-			for(row = 1; row <= 6; row++) {
-				for(col = 1; col <= 7; col++) {
-					$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-					$box.removeClass('escluded selected included');
-					if(momentIterator.isBefore(this.startMoment, 'month')) {
-						$box.addClass('escluded');
+
+			if(this.startMoment !== null) {
+				//Render left month view
+				$calendarContainer = $('#gearbooking-leftmonths-container');
+				momentIterator = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), day: this.leftMoment.date(), hour: this.leftMoment.hour()});
+				startDay = momentIterator.date(1).weekday();
+				momentIterator.subtract(startDay, 'days');
+				for(row = 1; row <= 6; row++) {
+					for(col = 1; col <= 7; col++) {
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box.removeClass('escluded selected included');
+						if(momentIterator.isBefore(this.startMoment, 'month')) {
+							//$box.addClass('escluded');
+						}
+						else if(momentIterator.isAfter(this.endMoment, 'month')) {
+							//$box.addClass('escluded');
+						}
+						else if(momentIterator.isBefore(this.startMoment, 'day')) {
+							//$box.addClass('escluded');
+						}
+						else if(momentIterator.isSame(this.startMoment, 'day')) {
+							$box.addClass('selected');
+						}
+						else if(momentIterator.isBefore(this.endMoment, 'day')){
+							$box.addClass('included');
+						}
+						else if(momentIterator.isSame(this.endMoment, 'day')){
+							$box.addClass('included');
+						}
+						else {
+							$box.addClass('escluded');
+						}
+						momentIterator.add(1, 'days');
 					}
-					else if(momentIterator.isAfter(this.endMoment, 'month')) {
-						$box.addClass('escluded');
-					}
-					else if(momentIterator.isBefore(this.startMoment, 'day')) {
-						$box.addClass('escluded');
-					}
-					else if(momentIterator.isSame(this.startMoment, 'day')) {
-						$box.addClass('selected');
-					}
-					else if(momentIterator.isBefore(this.endMoment, 'day')){
-						$box.addClass('included');
-					}
-					else if(momentIterator.isSame(this.endMoment, 'day')){
-						$box.addClass('included');
-					}
-					else {
-						$box.addClass('escluded');
-					}
-					momentIterator.add(1, 'days');
 				}
 			}
 
-			//Render right month view
-			$calendarContainer = $('#gearbooking-rightmonths-container');
-			momentIterator = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), day: this.rightMoment.date(), hour: this.rightMoment.hour()});
-			startDay = momentIterator.date(1).weekday();
-			momentIterator.subtract(startDay, 'days');
-			for(row = 1; row <= 6; row++) {
-				for(col = 1; col <= 7; col++) {
-					$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-					$box.removeClass('escluded selected included');
-					if(momentIterator.isBefore(this.startMoment, 'day')) {
-						$box.addClass('escluded');
+			if(this.endMoment !== null) {
+				//Render right month view
+				$calendarContainer = $('#gearbooking-rightmonths-container');
+				momentIterator = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), day: this.rightMoment.date(), hour: this.rightMoment.hour()});
+				startDay = momentIterator.date(1).weekday();
+				momentIterator.subtract(startDay, 'days');
+				for(row = 1; row <= 6; row++) {
+					for(col = 1; col <= 7; col++) {
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box.removeClass('escluded selected included');
+						if(momentIterator.isBefore(this.startMoment, 'day')) {
+							$box.addClass('escluded');
+						}
+						else if(momentIterator.isSame(this.endMoment, 'day')){
+							$box.addClass('selected');
+						}
+						else if(momentIterator.isSame(this.startMoment, 'day')) {
+							$box.addClass('included');
+						}
+						else if(momentIterator.isBefore(this.endMoment, 'day')){
+							$box.addClass('included');
+						}
+						else {
+							$box.addClass('escluded');
+						}
+						momentIterator.add(1, 'days');
 					}
-					else if(momentIterator.isSame(this.endMoment, 'day')){
-						$box.addClass('selected');
-					}
-					else if(momentIterator.isSame(this.startMoment, 'day')) {
-						$box.addClass('included');
-					}
-					else if(momentIterator.isBefore(this.endMoment, 'day')){
-						$box.addClass('included');
-					}
-					else {
-						$box.addClass('escluded');
-					}
-					momentIterator.add(1, 'days');
 				}
 			}
 		}

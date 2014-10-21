@@ -31,7 +31,8 @@ define(
 			uploadImage: uploadImage,
 			save: save,
 			update: update,
-            getUserInfo:getUserInfo,
+            //getUserInfo:getUserInfo,
+            getAvailability: getAvailability,
             setAvailability: setAvailability
 		});
 
@@ -82,8 +83,6 @@ define(
 		function uploadImage(file, filename, userID, callback) {
 			var model = this;
 			//Get filename and secret from backend
-			console.log('Gear upload image.');
-			console.log('filename: ' + filename);
 			this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
@@ -105,8 +104,6 @@ define(
 						gear_id: model.data.id,
 						image_url: data.url
 					};
-					console.log('Post file path to backend.');
-					console.log(postData);
 					model.post('/gear/image', postData, function(error, images) {
 						if(error) {
 							//TODO: In this case the image should be deleted from the server
@@ -122,7 +119,7 @@ define(
 			});
 		}
 
-        function getUserInfo(userID, callback) {
+        /*function getUserInfo(userID, callback) {
             this.get('/users/'+userID, function (error,data) {
                 if(error) {
                     callback(error);
@@ -131,7 +128,7 @@ define(
 
                 callback(null,data);
             });
-        }
+        }*/
 
 		function save(userID, callback) {
 			var saveData = {
@@ -182,18 +179,34 @@ define(
 			});
 		}
 
+		function getAvailability(userID, callback) {
+			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, availabilityArray) {
+				if(error) {
+					console.log(error);
+					callback(error);
+					return;
+				}
+				callback(null, availabilityArray);
+			});
+		}
+
 		/**
 		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
 		 */
 		function setAvailability(userID, availabilityArray, callback) {
-			var saveData;
-			saveData = {
+			var postData;
+			postData = {
 				availability: JSON.stringify(availabilityArray)
 			};
-			console.log(availabilityArray);
-			/*this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
-
-			});*/
+			
+			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
+				if(error) {
+					console.log(error);
+					callback(error);
+					return;
+				}
+				callback(null);
+			});
 		}
 	}
 );

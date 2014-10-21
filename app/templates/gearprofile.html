@@ -13,7 +13,7 @@
 			<h3>{{brand}} {{subtype}} {{model}}</h3>
 		</div>
 		<div class="col-md-12 instr_title subview">
-			<div class="row galleria" id="gearprofile-galleria"></div>
+			<div class="row owl-carousel owl-theme" id="gearprofile-owl"></div>
 			<div class="row-fluid ">
 				<h3 class="descr"><strong>Description</strong></h3>
 				<p>
@@ -23,7 +23,7 @@
 		</div>
 		
 	</div>
-	<div class="row-fluid col-md-3 " >
+	<div class="row-fluid col-md-3">
 		<div class="col-md-12 nosidepadding">
 			<button class="subview_book" id="gearprofile-book-btn">Book Now</button>
 		</div>
@@ -38,10 +38,10 @@
 		</div>
 		<div class="col-md-12  instr_title prof_subview">
 
-			<div id="owner_name" class="col-md-12"></div>
+			<div id="owner_name" class="col-md-12"><h4>{{name}}</h4></div>
             <div id="owner_picture" class="profile_im"></div>
 			<div id="owner_bio" class="col-md-12">
-				<p>Bio</p>
+				<p>{{bio}}</p>
 			</div>
  		</div>
 	</div>

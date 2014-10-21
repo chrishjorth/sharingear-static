@@ -15,10 +15,11 @@ requirejs.config({
 		mocha: '../test/js/libraries/mocha/mocha',
 		chai: '../test/js/libraries/chai',
 		sinon: '../test/js/libraries/sinon-1.10.3',
-		facebook: 'https://connect.facebook.net/en_US/all',
-		galleria: 'libraries/galleria-1.4.2.min',
+		facebook: '../test/js/mocks/facebook', //We use a mock to avoid having to connect to the Facebook server
+		googlemaps: '../test/js/mocks/googlemaps', //We use a mock to avoid having to connect to the Google Maps server
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
-		daterangepicker: 'libraries/daterangepicker/daterangepicker'
+		daterangepicker: 'libraries/daterangepicker/daterangepicker',
+		magnificpopup: 'libraries/magnificpopup/magnificpopup'
 	},
 	shim: {
 		underscore: {
@@ -30,12 +31,11 @@ requirejs.config({
 		bootstrap: {
 			deps: ['jquery']
 		},
-		'facebook' : {
+		'facebook': {
 			exports: 'FB'
 		},
-		'galleria': {
-			deps: ['jquery'],
-			exports: 'Galleria'
+		'googlemaps': {
+			exports: 'googlemaps'
 		},
 		'owlcarousel': {
 			deps: ['jquery'],
@@ -43,6 +43,10 @@ requirejs.config({
 		},
 		'daterangepicker': {
 			deps: ['jquery', 'bootstrap', 'moment']
+		},
+		'magnificpopup': {
+			deps: ['jquery'],
+			exports: 'MagnificPopup'
 		}
 	}
 });
@@ -50,10 +54,10 @@ requirejs.config({
 //Based on http://blog.millermedeiros.com/requirejs-2-0-delayed-module-evaluation-and-google-maps/
 // convert Google Maps into an AMD module
 //
-define('googlemaps', ['async!http://maps.googleapis.com/maps/api/js'], function(){
+/*define('googlemaps', ['async!http://maps.googleapis.com/maps/api/js?key=AIzaSyByhkzhQYoAk2bAGRYIuvHOl1jIP99_iyE&libraries=places'], function(){
     // return the googlemaps namespace for brevity
     return window.google.maps;
-});
+});*/
 
 require(
 	['underscore', 'mocha', 'jquery'],

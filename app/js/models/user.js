@@ -1,5 +1,5 @@
 /**
- * Defines a Sharingear user.
+ * Defines a Sharingear user. This can both be a logged in user or the owner of gear.
  * @author: Chris Hjorth
  */
 define(
@@ -13,15 +13,16 @@ define(
 				name: '',
 				surname: '',
                 city: '',
-                image_url:'',
-                bio:''
+                image_url: '',
+                bio: ''
 			},
 
 			getLoginStatus: getLoginStatus,
 			login: login,
 			loginToBackend: loginToBackend,
             uploadProfilePicture: uploadProfilePicture,
-            updateUser:updateUser
+            updateUser:updateUser,
+            getPublicInfo: getPublicInfo
 		});
 
 		FB.init({
@@ -114,12 +115,12 @@ define(
 
         function uploadProfilePicture(file, filename, userID, callback){
             var model = this;
-            this.get('/users/'+userID+'/newfilename/'+filename, function (error, data) {
+            this.get('/users/' + userID + '/newfilename/' + filename, function (error, data) {
                 if(error){
                     if(callback && typeof callback === 'function') {
                         callback('Error getting filename: ' + error);
                     }
-                return;
+                	return;
                 }
                 Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
                     var postData;
@@ -135,21 +136,31 @@ define(
                         image_url: data.url
                     };
 
-                    var postItURL = '/users/'+userID;
-                    model.put(postItURL,postData, function (error, images) {
+                    model.put('/users/' + userID, postData, function (error, images) {
                         if(error){
                             if(callback && typeof callback === 'function') {
                                 callback('Error uploading file: ' + error);
                             }
                             return;
                         }
-
                         model.data.images = images.images;
-                        callback(null,data.url);
+                        callback(null, data.url);
                     });
 
                 });
             });
+        }
+
+        function getPublicInfo(callback) {
+        	var model = this;
+        	this.get('/users/' + this.data.id, function(error, user) {
+        		if(error) {
+        			callback(error);
+        			return;
+        		}
+        		_.extend(model.data, user);
+        		callback(null);
+        	});
         }
 	}
 );

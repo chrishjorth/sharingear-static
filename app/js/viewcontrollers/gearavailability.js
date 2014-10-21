@@ -9,7 +9,7 @@ define(
 		var GearAvailability = ViewController.inherit({
 			gear: null,
 			shownMoment: null,
-			selections: [],
+			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -40,6 +40,7 @@ define(
 		return GearAvailability;
 
 		function didInitialize() {
+			var view = this;
 			Moment.locale('en-custom', {
 				week: {
 					dow: 1,
@@ -49,14 +50,33 @@ define(
 			this.shownMoment = Moment();
 
 			this.gear = this.passedData;
+			this.selections = {};
+
+			this.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
+				var i, startMoment, endMoment;
+				if(error) {
+					return;
+				}
+				for(i = 0; i < availabilityArray.length; i++) {
+					startMoment = Moment(availabilityArray[i].start);
+					endMoment = Moment(availabilityArray[i].end);
+					if(Array.isArray(view.selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
+						view.selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];	
+					}
+					view.selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
+						startMoment: startMoment,
+						endMoment: endMoment
+					});
+				}
+				view.renderSelections();
+			});
 		}
 
 		function didRender() {
-			var moment;
-
 			this.renderMonthCalendar($('#gearavailability-months-container'));
-			
 			this.setupMonthCalendar();
+			this.clearSelections();
+			this.renderSelections();
 
 			this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
 			this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
@@ -134,7 +154,7 @@ define(
 		}
 
 		function renderSelections() {
-			var selections = this.selections[this.shownMoment.month()],
+			var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
 				$calendarContainer = $('#gearavailability-months-container', this.$element),
 				i, startMoment, endMoment, momentIterator;
 			if(Array.isArray(selections) === false) {
@@ -164,11 +184,11 @@ define(
 		function handleSave(event) {
 			var view = event.data,
 				availabilityArray = [],
-				i;
+				month, monthSelections, selection;
 			App.router.closeModalView();
 
-			for(i = 0; i < view.selections.length; i++) {
-				monthSelections = view.selections[i];
+			for(month in view.selections) {
+				monthSelections = view.selections[month];
 				for(j = 0; j < monthSelections.length; j++) {
 					selection = monthSelections[j];
 					availabilityArray.push({
@@ -178,9 +198,8 @@ define(
 				}
 			}
 
-			//view.gear.setAvailibility(App.user.data.id, availabilityArray, function(error) {
-
-			//});
+			view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
+			});
 		}
 
 		function handleToday(event) {
@@ -209,7 +228,7 @@ define(
 
 		function handleClearMonth(event) {
 			var view = event.data;
-			view.selections[view.shownMoment.month()] = [];
+			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
 			view.clearSelections();
 			view.renderSelections();
 		}
@@ -221,7 +240,6 @@ define(
 		function handleDayStartSelect(event) {
 			var view = event.data,
 				$this = $(this),
-				shownMonth = view.shownMoment.month(),
 				selection;
 
 			//Ignore if the day is already selected
@@ -242,12 +260,11 @@ define(
 				endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
 			};
 
-			if(Array.isArray(view.selections[shownMonth]) === false) {
-				view.selections[shownMonth] = [selection];
+			if(Array.isArray(view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)]) === false) {
+				view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];	
 			}
-			else {
-				view.selections[shownMonth].push(selection);
-			}
+			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)].push(selection);
+
 			view.clearSelections();
 			view.renderSelections();
 		}
@@ -279,7 +296,7 @@ define(
 				dayBoxOffset = $this.offset();
 				if($this.data('month') === view.shownMoment.month()) {
 					if(selectionX >= dayBoxOffset.left && selectionX <= dayBoxOffset.left + $this.width() && selectionY >= dayBoxOffset.top && selectionY <= dayBoxOffset.top + $this.height()) {
-						selection = view.selections[view.shownMoment.month()];
+						selection = view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)];
 						selection = selection[selection.length - 1];
 						selection.endMoment.month($this.data('month'));
 						selection.endMoment.date($this.data('date'));
@@ -291,6 +308,7 @@ define(
 			view.renderSelections();
 		}
 
+		//TODO: Optimize to join adjacent selections
 		function handleDayEndSelect(event) {
 			var view = event.data,
 				monthSelections, i, j, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
@@ -298,7 +316,7 @@ define(
 			$('body').off('mouseup touchend', view.handleDayEndSelect);
 
 			//Scan selections for this month and cleanup overlaps
-			monthSelections = view.selections[view.shownMoment.month()];
+			monthSelections = view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)];
 			i = 0;
 			while(i < monthSelections.length) {
 				currentSelection = monthSelections[i];

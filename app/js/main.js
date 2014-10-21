@@ -12,10 +12,10 @@ requirejs.config({
 		jquery: 'libraries/jquery-2.1.1.min',
 		bootstrap: 'libraries/bootstrap.min',
 		moment: 'libraries/moment.min',
-		facebook: 'https://connect.facebook.net/en_US/all',
-		galleria: 'libraries/galleria-1.4.2.min',
+		facebook: 'http://connect.facebook.net/en_US/all',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
-		daterangepicker: 'libraries/daterangepicker/daterangepicker'
+		daterangepicker: 'libraries/daterangepicker/daterangepicker',
+		magnificpopup: 'libraries/magnificpopup/magnificpopup'
 	},
 	shim: {
 		underscore: {
@@ -30,16 +30,16 @@ requirejs.config({
 		'facebook' : {
 			exports: 'FB'
 		},
-		'galleria': {
-			deps: ['jquery'],
-			exports: 'Galleria'
-		},
 		'owlcarousel': {
 			deps: ['jquery'],
 			exports: 'OwlCarousel'
 		},
 		'daterangepicker': {
 			deps: ['jquery', 'bootstrap', 'moment']
+		},
+		'magnificpopup': {
+			deps: ['jquery'],
+			exports: 'MagnificPopup'
 		}
 	}
 });
@@ -47,8 +47,9 @@ requirejs.config({
 //Based on http://blog.millermedeiros.com/requirejs-2-0-delayed-module-evaluation-and-google-maps/
 // convert Google Maps into an AMD module
 //
-define('googlemaps', ['async!http://maps.googleapis.com/maps/api/js'], function(){
+define('googlemaps', ['async!http://maps.googleapis.com/maps/api/js?key=AIzaSyByhkzhQYoAk2bAGRYIuvHOl1jIP99_iyE&libraries=places'], function(){
     // return the googlemaps namespace for brevity
+		
     return window.google.maps;
 });
 
@@ -62,7 +63,6 @@ require(
 			interpolate: /\{\{(.+?)\}\}/g,
 			escape: /\{\{-(.+?)\}\}/g
 		};
-
 		App.run();
 	}
 );

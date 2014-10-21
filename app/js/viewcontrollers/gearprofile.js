@@ -1,21 +1,22 @@
 /**
  * Controller for the Sharingear Gear profile page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Horatiu Roman
  */
 
 define(
-	['viewcontroller', 'galleria', 'app', 'models/gear', 'googlemaps'],
-	function(ViewController, Galleria, App, Gear, GoogleMaps) {
+	['viewcontroller', 'app', 'models/gear', 'models/user', 'googlemaps','owlcarousel','magnificpopup'],
+	function(ViewController, App, Gear, User, GoogleMaps, owlcarousel, magnificPopup) {
 		var GearProfile = ViewController.inherit({
 			gear: null,
+			owner: null,
 			map: null,
 
 			didInitialize: didInitialize,
 			didRender: didRender,
-			setupView: setupView,
 			renderGearPictures: renderGearPictures,
 			renderMap: renderMap,
-            renderOwner: renderOwner,
+            renderOwnerPicture: renderOwnerPicture,
+			renderPopup: renderPopup,
 			handleBooking: handleBooking
 		});
 
@@ -23,7 +24,18 @@ define(
 
 		function didInitialize() {
 			var view = this;
-			Galleria.loadTheme('js/libraries/galleria_themes/classic/galleria.classic.js');
+
+			view.templateParameters = {
+				brand: '',
+				subtype: '',
+				model: '',
+				description: '',
+				price_a: '',
+				price_b: '',
+				price_c: '',
+				name: '',
+				bio: ''
+			};
 
 			if(this.passedData) {
 				this.gear = this.passedData;
@@ -33,81 +45,115 @@ define(
 					rootURL: App.API_URL
 				});
 				this.gear.data.id = this.subPath;
+
+				view.owner = new User.constructor({
+					rootURL: App.API_URL
+				});
+
 				this.gear.update(App.user.data.id, function(error) {
 					if(error) {
 						console.log(error);
 						return;
 					}
-					view.templateParameters = view.gear.data;
-					view.render();
+					view.owner.data.id = view.gear.data.owner_id;
+					view.owner.getPublicInfo(function(error) {
+						var gearData, ownerData;
+						if(error) {
+							console.log(error);
+							return;
+						}
+						gearData = view.gear.data;
+						ownerData = view.owner.data;
+						view.templateParameters = {
+							brand: gearData.brand,
+							subtype: gearData.subtype,
+							model: gearData.model,
+							description: gearData.description,
+							price_a: gearData.price_a,
+							price_b: gearData.price_b,
+							price_c: gearData.price_c,
+							name: ownerData.name + ' ' + ownerData.surname,
+							bio: ownerData.bio
+						}
+						view.render();
+					});
 				});
 			}
 			
-			this.subPath = '';
-			this.templateParameters = this.gear.data;
+			this.subPath = ''; //To avoid rendering a subview based on the gear id
 		}
 
 		function didRender() {
-			this.setupView();
-			Galleria.run('.galleria');
-            this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
-            this.renderOwner();
-		}
+			var $owl, $paginatorsLink, images, i;
+			
+			this.renderGearPictures();
+			this.renderOwnerPicture();
+			this.renderMap();
 
-        function renderOwner() {
-            var owner = this.gear.data.owner_id;
+            $owl = $('#gearprofile-owl', this.$element);
 
-            if (owner !== null) {
-                this.gear.getUserInfo(owner, function (error,data) {
+            $owl.owlCarousel({
+                slideSpeed: 300,
+                paginationSpeed: 400,
+                singleItem: true
+            });
+	        
+            $('.owl-controls .owl-page').append('<a class="item-link"/>');
 
-                    //Name
-                    var owner_name = '<h4>' + data.name + ' ' + data.surname + "</h4>";
-                    $('#owner_name').html(owner_name);
+            $paginatorsLink = $('.owl-controls .item-link', this.$element);
+            images = this.gear.data.images.split(',');
 
-                    //Image handling
-                    var isVertical;
-                    var img = new Image();
-                    img.src = data.image_url;
-                    var imgWidth = img.width;
-                    var imgHeight = img.height;
-                    isVertical = imgWidth < imgHeight;
-
-                    var owner_picture_url = 'url('+data.image_url+')';
-                    $('#owner_picture').css("background-image",owner_picture_url);
-                    $('#owner_picture').css("margin-top","65px");
-                    if (isVertical) {
-                        $('#owner_picture').css("background-size","auto "+imgWidth);
-                    }else{
-                        $('#owner_picture').css("background-size",imgHeight+ "auto");
-                    }
-
-                    //Bio
-                    $('#owner_bio').html('<p'+'>'+data.bio+'</'+'p>');
+            for(i = 0; i < $paginatorsLink.length; i++){
+                $($paginatorsLink[i]).css({
+                    'background': 'url(' + images[i] + ') center center no-repeat',
+                    '-webkit-background-size': 'cover',
+                    '-moz-background-size': 'cover',
+                    '-o-background-size': 'cover',
+                    'background-size': 'cover'
                 });
+                $($paginatorsLink[i]).click();
             }
 
+            this.renderPopup();
 
-        }
-
-
-		function setupView() {
-			this.renderGearPictures();
-			this.renderMap();
+            this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
 		}
+
+        function renderOwnerPicture() {
+        	var img, isVertical, backgroundSize;
+        	if(!this.owner.data.image_url) {
+        		return;
+        	}
+        	img = new Image();
+        	img.onload = function() {
+        		isVertical = img.width < img.height;
+        		if(isVertical === true) {
+        			backgroundSize = 'auto ' + img.width;
+        		}
+        		else {
+        			backgroundSize = img.height + ' auto';
+        		}
+        		$('#owner_picture').css({
+        			'background-image': 'url(' + img.src + ')',
+        			'background-size': backgroundSize
+        		});
+        	};
+        	img.src = this.owner.data.image_url;
+        }
 
 		function renderGearPictures() {
 			var images = this.gear.data.images.split(','),
-				title = 'Gear picture',
 				description = 'Picture of the gear.',
 				html = '',
 				i;
 			for(i = 0; i < images.length; i++) {
 				//Avoid empty url strings because of trailing ','
 				if(images[i].length > 0) {
-					html += '<img src="' + images[i] + '" alt="Gear thumb" data-title="' + title + '" data-description="' + description + '">';
+
+                    html += '<div class="item owl-item2"><img src="'+images[i]+'" alt="'+description+'" ></div>';
 				}
 			}
-			$('#gearprofile-galleria', this.$element).append(html);
+			$('#gearprofile-owl', this.$element).append(html);
 		}
 
 		function renderMap() {
@@ -131,8 +177,93 @@ define(
 		}
 
 		function handleBooking(event) {
-			var view = event.data;
-			App.router.openModalView('gearbooking', view.gear);
+			var view = event.data,
+				user = App.user;
+			if(user.data.id === null) {
+				user.login(function(error) {
+					if(!error) {
+						App.router.openModalView('gearbooking', view.gear);
+					}
+					else {
+						alert('You need to be logged in, in order to book an instrument.');
+					}
+				});
+			}
+			else {
+				App.router.openModalView('gearbooking', view.gear);
+			}
+		}
+
+		// gets images used for rendering gear and uses them to render popup gallery.
+		function renderPopup() {
+			var view = this;
+    		// get images that are used for owl carousel
+            var images = view.gear.data.images.split(',');
+            // use same images for magnificpopup
+            // create array of items with src field
+            var items = [];
+            for (var i = 0; i < images.length; i++) {
+            	if (images[i]!="") {
+            		items.push({src:images[i]});
+            	}
+            };
+
+			// click on item image => open lightbox fullscreen gallery thing
+            $('.owl-item2 img').magnificPopup({
+            	type: 'image',
+            	items: items,
+            	gallery: {enabled: true}
+            });
+
+
+		}
+
+		// gets images used for rendering gear and uses them to render popup gallery.
+		function renderPopup() {
+			var view = this;
+    		// get images that are used for owl carousel
+            var images = view.gear.data.images.split(',');
+            // use same images for magnificpopup
+            // create array of items with src field
+            var items = [];
+            for (var i = 0; i < images.length; i++) {
+            	if (images[i]!="") {
+            		items.push({src:images[i]});
+            	}
+            };
+
+			// click on item image => open lightbox fullscreen gallery thing
+            $('.owl-item2 img').magnificPopup({
+            	type: 'image',
+            	items: items,
+            	gallery: {enabled: true}
+            });
+
+
+		}
+
+		// gets images used for rendering gear and uses them to render popup gallery.
+		function renderPopup() {
+			var view = this;
+    		// get images that are used for owl carousel
+            var images = view.gear.data.images.split(',');
+            // use same images for magnificpopup
+            // create array of items with src field
+            var items = [];
+            for (var i = 0; i < images.length; i++) {
+            	if (images[i]!="") {
+            		items.push({src:images[i]});
+            	}
+            };
+
+			// click on item image => open lightbox fullscreen gallery thing
+            $('.owl-item2 img').magnificPopup({
+            	type: 'image',
+            	items: items,
+            	gallery: {enabled: true}
+            });
+
+
 		}
 	}
 );

@@ -12,6 +12,8 @@ define(
 				rootURL: App.API_URL
 			}),
 			geocoder: new GoogleMaps.Geocoder(),
+
+			//autocomplete: new GoogleMaps.places.Autocomplete(),
 			// searchBlockID: 'home-search-block',
 			searchBlockID: 'testRow',
 //            isImageVertical: '',
@@ -44,24 +46,8 @@ define(
                 showDropdowns: true
             });
 
-            //Filling the Location input with current location using HTML5 only if User.city is empty
-            if(App.user.data.city === '' && navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position){
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
-                    Utilities.geoLocationGetCity(lat, lon, function (locationCity) {
-                        App.user.data.city = locationCity;
-                        $('#search-location').val(locationCity);
-                    });
-                });
-            }
-            else {
-                $('#search-location').val(App.user.data.city);
-            }
-
             //Testimonials init
             $("#feedbacks").owlCarousel({
-
                 navigation: false, // Show next and prev buttons
                 slideSpeed: 800,
                 paginationSpeed: 400,
@@ -79,7 +65,12 @@ define(
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
 
+						var input = /** @type {HTMLInputElement} */(
+      			document.getElementById('search-location'));
 
+						var options = {types: ['geocode']};
+
+						var autocomplete = new GoogleMaps.places.Autocomplete(input, options);
 
             this.setupEvents();
 		}
@@ -87,8 +78,6 @@ define(
 		function setupEvents() {
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 		}
-
-
 
 		/**
 		 * Displays search results from the model.
@@ -122,7 +111,24 @@ define(
 				}
 				else {
 					console.log('Error geocoding: ' + status);
+					noResults();
 				}
+			});
+
+			$('#fb-share-btn').on('click', function(event) {
+
+				instrument = $('#home-search-form #search-gear', view.$element).val();
+				description = 'Hey, I am looking for a ' + instrument + ' near ' + location + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
+
+				FB.ui({
+					method: 'feed',
+					caption: 'Request an instrument on Sharingear!',
+					link: 'sharingear.com',
+					description: description
+				}, function(response) {
+					//console.log(response);
+				});
+				//ga('send', 'event', 'request', 'request-fb', 'Request on FB button', 1);
 			});
 
 			return false;
@@ -132,7 +138,23 @@ define(
 		 * Generate the search results HTML and insert it into the search results block.
 		 * @param searchResults: an array of objects.
 		 */
+
+		function noResults() {
+
+				console.log("yeah but nope");
+
+				$('.no-results-block').css({
+					display: 'block'
+				});
+
+		}
+
 		function populateSearchBlock(searchResults, callback) {
+
+			if (searchResults = {}) {
+				noResults();
+			}
+
 			var $searchBlock = $('#' + this.searchBlockID, this.$element);
 			$searchBlock.empty();
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
@@ -168,7 +190,7 @@ define(
                         searchResult.image = 'http://www.rondomusic.com/photos/electric/gg1kwt5.jpg';
                     }
                     this.price = searchResults[i].price_a;
-					
+
 					_.extend(defaultSearchResults, searchResult);
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 

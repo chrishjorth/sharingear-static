@@ -18,14 +18,6 @@ define(
 				it('Provides the Dashboard Profile ViewController', function() {
 					expect(Profile.constructor).to.be.a('function');
 				});
-
-				it('Has correct template parameters', function() {
-					var parameters = this.profile.templateParameters;
-					expect(parameters).to.have.property('name');
-					expect(parameters).to.have.property('hometown');
-					expect(parameters).to.have.property('bio');
-					expect(parameters).to.have.property('genres');
-				});
 			});
 		});
 	}

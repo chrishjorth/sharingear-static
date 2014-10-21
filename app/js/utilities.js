@@ -42,12 +42,6 @@ define(
 		return Inherited;
 	}
 
-//    function getUserInfo(userID, callback) {
-//        this.get('/users/'+userID, function () {
-//            console.log('hi');
-//        });
-//    }
-
 	function getBaseURL() {
 		if (!window.location.origin) {
 			window.location.origin = window.location.protocol+"//"+window.location.host;
@@ -69,12 +63,15 @@ define(
 			url: url,
 			type: 'POST',
 			data: formData,
-			dataType: 'json',
+			//dataType: 'json',
+			dataType: 'text',
 			//Options to tell jQuery not to process data or worry about content-type.
 			cache: false,
 			contentType: false,
 			processData: false,
 			success: function(data, textStatus, jqXHR) {
+				console.log('AJAX data:');
+				console.log(data);
 				if(data.error) {
 					callback(data.error);
 					return;

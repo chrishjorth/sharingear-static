@@ -19,15 +19,14 @@ define(
 		return AddGearPhotos;
 
 		function didInitialize() {
-			this.newGear = new Gear.constructor({
-				rootURL: App.API_URL,
-				data: {
-					images: ''
-				}
-			});
-
-			if(this.passedData) {
-				_.extend(this.newGear.data, this.passedData.data);
+			if(App.user.data.id === null) {
+				this.ready = false;
+				App.router.navigateTo('home');
+				return;
+			}
+			this.newGear = this.passedData;
+			if(!this.newGear.data.images) {
+				this.newGear.data.images = '';
 			}
 		}
 

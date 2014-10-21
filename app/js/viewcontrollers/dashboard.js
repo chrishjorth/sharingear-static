@@ -26,7 +26,7 @@ define(
 				App.router.navigateTo('home');
 				return;
 			}
-
+			
 			if(this.path === 'dashboard') {
 				this.ready = false; //We abort loading the view
 				App.router.navigateTo('dashboard/profile');
