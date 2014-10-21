@@ -3245,3 +3245,8 @@ margin: 40px 0;
 .owl-item2 img {
     cursor: pointer;
 }
+
+.gearaddress {
+    background: #fff;
+    padding: 10px;
+}
