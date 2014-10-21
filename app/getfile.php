@@ -28,4 +28,4 @@ echo 'file: ' . $filename . '<br>';
 
 $storage = new Google_Service_Storage($client); //https://github.com/google/google-api-php-client/blob/master/src/Google/Service/Storage.php line 551
 $data = $storage->objects->get($bucket, $filename);
-echo $data;
+var_dump($data);
