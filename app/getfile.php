@@ -26,6 +26,6 @@ $client->setAssertionCredentials($cred);
 echo 'bucket: ' . $bucket . '<br>';
 echo 'file: ' . $filename . '<br>';
 
-$storage = new Google_Service_Storage($client); //https://github.com/google/google-api-php-client/blob/master/src/Google/Service/Storage.php line 551
+$storage = new Google_Service_Storage($client); //https://github.com/google/google-api-php-client/blob/master/src/Google/Service/Storage.php line 551 and line 1504
 $object = $storage->objects->get($bucket, $filename);
-echo '<img src="' . $object->selfLink . '">';
+var_dump($object);
