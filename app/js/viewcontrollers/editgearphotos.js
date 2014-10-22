@@ -78,7 +78,6 @@ define(
 		function handleImageUpload(event) {
 			var view = event.data
 				$file = $(this);
-			console.log('Upload image');
 			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
 				var $thumbList, html;
 				$('#editgear-form-imageupload').val('');

@@ -69,8 +69,6 @@ define(
 			contentType: false,
 			processData: false,
 			success: function(data, textStatus, jqXHR) {
-				console.log('AJAX data:');
-				console.log(data);
 				if(data.error) {
 					callback(data.error);
 					return;
@@ -79,17 +77,11 @@ define(
 					callback(data.message);
 					return;
 				}
-
-				//console.log('File upload success');
-//				console.log(data);
-//				console.log(jqXHR);
 				callback(null, data);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				var error = 'Error uploading file with AJAX POST: ' + textStatus + '. ' + errorThrown;
 				callback(error);
-//                console.log(errorThrown);
-//                console.log(textStatus);
 			}
 		});
 	}

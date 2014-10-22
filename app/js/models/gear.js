@@ -104,8 +104,6 @@ define(
 						gear_id: model.data.id,
 						image_url: data.url
 					};
-					console.log('Post data:');
-					console.log(postData);
 					model.post('/gear/image', postData, function(error, images) {
 						if(error) {
 							//TODO: In this case the image should be deleted from the server
