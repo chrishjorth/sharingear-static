@@ -28,7 +28,13 @@ $client->setAssertionCredentials($cred);
 
 $storage = new Google_Service_Storage($client); //https://github.com/google/google-api-php-client/blob/master/src/Google/Service/Storage.php line 551 and line 1504
 $object = $storage->objects->get($bucket, $filename);
+
 $request = new Google_Http_Request($object['mediaLink'], 'GET');
 $signed_request = $client->getAuth()->sign($request);
 $http_request = $client->getIo()->makeRequest($signed_request);
-echo $http_request->getResponseBody();
+$file = $http_request->getResponseBody();
+
+//header("Content-Type: image/" . $ext);
+//header("Content-Length: " . filesize($file));
+
+var_dump($object);
