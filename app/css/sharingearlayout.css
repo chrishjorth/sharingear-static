@@ -489,6 +489,9 @@ footer a:hover {
     border-radius: 4px;
     color: #333333;
 }
+.modal-view-container .btn {
+    margin-bottom:15px;
+}
 /*----------------------------- search results ----------------------- */
 
 .search-result {
