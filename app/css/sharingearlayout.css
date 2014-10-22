@@ -870,6 +870,25 @@ background-color: rgb(56,143,192);
     border-left-width: 1px;
     border-right-width: 1px;
 }
+.yourgear-item .yourgear-status {
+    padding:3px;
+    border-radius:4px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.yourgear-item .yourgear-status.unavailable {
+    color: #999;
+}
+.yourgear-item .yourgear-status.available {
+    color: #02a6f2;
+}
+.yourgear-item .yourgear-status.pending {
+    font-weight: normal;
+}
+.yourgear-item .yourgear-status.rented {
+    color: #6cc644;
+}
+
 /* ------------------ START - DASHBOARD YOUR RESERVATIONS --------------- */
 
 .yourreservations-item {

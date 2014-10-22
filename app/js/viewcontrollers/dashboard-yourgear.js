@@ -37,33 +37,42 @@ define(
 			var view = this;
 			require(['text!../templates/yourgear-item.html'], function(YourGearItemTemplate) {
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
-					defaultGear, gear;
+					defaultGear, gear, i;
 
 				for(i = 0; i < yourGear.length; i++) {
 					defaultGear = {
 						id: null,
-						type: '',
-						subtype: '',
-						brand: '',
-						model: '',
-						description: '',
-						img_url: 'images/logotop.png',
-						price_a: 0,
-						price_b: 0,
-						price_c: 0,
-						owner_id: null
+                        type: '',
+                        subtype: '',
+                        brand: '',
+                        model: '',
+                        description: '',
+                        img_url: 'images/logotop.png',
+                        price_a: 0,
+                        price_b: 0,
+                        price_c: 0,
+                        owner_id: null,
+                        status : 'Unavailable'
 					};
 					gear = yourGear[i];
 					_.extend(defaultGear, gear);
 					if(gear.images.length > 0) {
 						defaultGear.img_url = gear.images.split(',')[0];
 					}
+
+                    // gear status (returns: 'unavailable', 'available', 'pending', 'rented')
+                    if(gear.status){
+
+                        defaultGear.status = gear.status == 'pending' ?
+                                                    '<button class="btn btn-warning yourgear-status ' + gear.status +'">' + gear.status + '</button>'
+                                                    : '<span class="yourgear-status ' + gear.status +'">' + gear.status + '</span>';
+
+                    }
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
-
 			});
 		}
 
