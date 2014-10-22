@@ -56,7 +56,8 @@ define(
 				'editgearphotos',
 				'editgearpricing',
 				'gearbooking',
-				'gearavailability'
+				'gearavailability',
+                'gearpendingconfirm'
 			);
 
 			$(document).ready(function() {

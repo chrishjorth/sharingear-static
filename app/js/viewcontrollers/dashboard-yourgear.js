@@ -16,7 +16,9 @@ define(
 			populateYourGear: populateYourGear,
 			setupEvents: setupEvents,
 			handleEditGearItem: handleEditGearItem,
-			handleGearItemAvailability: handleGearItemAvailability
+			handleGearItemAvailability: handleGearItemAvailability,
+            handleGearItemPendConfirm : handleGearItemPendConfirm
+
 		}); 
 		return YourGear;
 
@@ -65,7 +67,7 @@ define(
                     // gear status (returns: 'unavailable', 'available', 'pending', 'rented')
                     if(gear.data.status){
                         defaultGear.status = gear.data.status == 'pending' ?
-                                                '<button class="btn btn-warning yourgear-status ' + gear.data.status +'">' + gear.data.status + '</button>'
+                                                '<button class="btn btn-warning yourgear-status ' + gear.data.status +'" data-yourgearid="' + gear.data.id + '">' + gear.data.status + '</button>'
                                                 : '<span class="yourgear-status ' + gear.data.status +'">' + gear.data.status + '</span>';
                     }
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
@@ -73,14 +75,23 @@ define(
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
-
 			});
 		}
 
 		function setupEvents() {
 			this.setupEvent('click', '.yourgear-item .btn-edit', this, this.handleEditGearItem);
 			this.setupEvent('click', '.yourgear-item .btn-availability', this, this.handleGearItemAvailability);
+			this.setupEvent('click', '.yourgear-status.pending', this, this.handleGearItemPendConfirm);
 		}
+
+        function handleGearItemPendConfirm(event){
+
+            var view = event.data,
+                gear;
+
+            gear = view.gearList.getGearItem($(this).data('yourgearid'));
+            App.router.openModalView('gearpendingconfirm', gear);
+        }
 
 		function handleEditGearItem(event) {
 			var view = event.data,
