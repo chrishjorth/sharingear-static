@@ -15,10 +15,11 @@ requirejs.config({
 		mocha: '../test/js/libraries/mocha/mocha',
 		chai: '../test/js/libraries/chai',
 		sinon: '../test/js/libraries/sinon-1.10.3',
-		facebook: 'https://connect.facebook.net/en_US/all',
+		facebook: '../test/js/mocks/facebook', //We use a mock to avoid having to connect to the Facebook server
 		galleria: 'libraries/galleria-1.4.2.min',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
-		daterangepicker: 'libraries/daterangepicker/daterangepicker'
+		daterangepicker: 'libraries/daterangepicker/daterangepicker',
+		magnificpopup: 'libraries/magnificpopup/magnificpopup'
 	},
 	shim: {
 		underscore: {
@@ -43,6 +44,10 @@ requirejs.config({
 		},
 		'daterangepicker': {
 			deps: ['jquery', 'bootstrap', 'moment']
+		},
+		'magnificpopup': {
+			deps: ['jquery'],
+			exports: 'MagnificPopup'
 		}
 	}
 });
