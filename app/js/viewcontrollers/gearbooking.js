@@ -8,18 +8,13 @@ define(
 	function(ViewController, App, Gear, Moment) {
 		var GearBooking = ViewController.inherit({
 			gear: null,
-			leftWeekMode: false, //if false then it is months mode
-			rightWeekMode: false, //if false then it is months mode
+			leftWeekMode: true, //if false then it is months mode
+			rightWeekMode: true, //if false then it is months mode
 			leftMoment: null,
 			rightMoment: null,
-			startMoment: null,
-			endMoment: null,
 
 			didInitialize: didInitialize,
 			didRender: didRender,
-
-			renderWeekCalendar: renderWeekCalendar,
-			renderMonthCalendar: renderMonthCalendar,
 
 			setupLeftWeekCalendar: setupLeftWeekCalendar,
 			setupRightWeekCalendar: setupRightWeekCalendar,
@@ -45,8 +40,7 @@ define(
 			handleRightDaySelection: handleRightDaySelection,
 
 			clearLeftSelection: clearLeftSelection,
-			clearRightSelection: clearRightSelection,
-			renderSelection: renderSelection
+			clearRightSelection: clearRightSelection
 		}); 
 		return GearBooking;
 
@@ -61,19 +55,11 @@ define(
 			this.leftMoment.startOf('week').weekday(0);
 			this.rightMoment = Moment();
 			this.rightMoment.startOf('week').weekday(0);
-			this.startMoment = Moment();
-			this.endMoment = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date() + 1});
-			this.startMoment.hour(0);
-			this.endMoment.hour(0);
 		}
 
 		function didRender() {
-			this.renderWeekCalendar($('#gearbooking-leftweeks-container'));
-			this.renderWeekCalendar($('#gearbooking-rightweeks-container'));
-			this.renderMonthCalendar($('#gearbooking-leftmonths-container'));
-			this.renderMonthCalendar($('#gearbooking-rightmonths-container'));
-			this.setupLeftMonthCalendar();
-			this.setupRightMonthCalendar();
+			this.setupLeftWeekCalendar();
+			this.setupRightWeekCalendar();
 
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
 			//Navigation events
@@ -102,68 +88,6 @@ define(
 			this.setupWeekCalendar(this.rightMoment, $('.week-calendar:nth-child(0n+3) .calendar-header', this.$element));
 		}
 
-		function renderWeekCalendar($weekCalendarContainer) {
-			var header, hourRows, i, hour;
-			header = '<div class="row calendar-header">';
-			header += '<div class="col-md-1 col-md-offset-1"></div>';
-			header += '<div class="col-md-1"><div>M</div><div class="date"></div></div>';
-			header += '<div class="col-md-1"><div>T</div><div class="date"></div></div>';
-			header += '<div class="col-md-1"><div>W</div><div class="date"></div></div>';
-			header += '<div class="col-md-1"><div>T</div><div class="date"></div></div>';
-			header += '<div class="col-md-1"><div>F</div><div class="date"></div></div>';
-			header += '<div class="col-md-1"><div>S</div><div class="date"></div></div>';
-			header += '<div class="col-md-1"><div>S</div><div class="date"></div></div>';
-			header += '</div>';
-			hourRows = '';
-			for(i = 0; i < 24; i++) {
-				hourRows += '<div class="row hour-row hour-' + (i + 1) + '">';
-				if(i < 10) {
-					hour = '0' + i;
-				}
-				else {
-					hour = i;
-				}
-				hourRows += '<div class="col-md-1 col-md-offset-1">' + hour + 'am</div>';
-				hourRows += '<div class="col-md-1 hour" data-weekday="0" data-hour="' + hour + '"></div>';
-				hourRows += '<div class="col-md-1 hour" data-weekday="1" data-hour="' + hour + '"></div>';
-				hourRows += '<div class="col-md-1 hour" data-weekday="2" data-hour="' + hour + '"></div>';
-				hourRows += '<div class="col-md-1 hour" data-weekday="3" data-hour="' + hour + '"></div>';
-				hourRows += '<div class="col-md-1 hour" data-weekday="4" data-hour="' + hour + '"></div>';
-				hourRows += '<div class="col-md-1 hour" data-weekday="5" data-hour="' + hour + '"></div>';
-				hourRows += '<div class="col-md-1 hour" data-weekday="6" data-hour="' + hour + '"></div>';
-				hourRows += '</div>';
-			}
-			$weekCalendarContainer.append(header + hourRows);
-		}
-
-		function renderMonthCalendar($monthCalendarContainer) {
-			var header, dayRows, i, day;
-			header = '<div class="row calendar-header">';
-			header += '<div class="col-md-1 col-md-offset-1"></div>';
-			header += '<div class="col-md-1">Monday</div>';
-			header += '<div class="col-md-1">Tuesday</div>';
-			header += '<div class="col-md-1">Wednesday</div>';
-			header += '<div class="col-md-1">Thursday</div>';
-			header += '<div class="col-md-1">Friday</div>';
-			header += '<div class="col-md-1">Saturday</div>';
-			header += '<div class="col-md-1">Sunday</div>';
-			header += '</div>';
-			dayRows = '';
-			for(i = 0; i < 6; i++) {
-				dayRows += '<div class="row day-row">';
-				dayRows += '<div class="col-md-1 col-md-offset-1"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '</div>';
-			}
-			$monthCalendarContainer.append(header + dayRows);
-		}
-
 		function setupWeekCalendar(moment, $weekCalHeader) {
 			//Moment months are zero indexed
 			$('.col-md-1:nth-child(0n+2) .date', $weekCalHeader).html((moment.weekday(0).date()) + '/' + (moment.weekday(0).month() + 1)); //Monday date
@@ -176,36 +100,24 @@ define(
 		}
 
 		function setupLeftMonthCalendar() {
-			var moment, firstDayWeek;
-			moment = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), date: this.leftMoment.date()});
+			var moment = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), date: this.leftMoment.date()});
 			this.setupMonthCalendar(moment, $('#gearbooking-leftmonths-container', this.$element));
-			//Get week of first day of month, that is first row, then get difference with start week
-			firstDayWeek = Moment({year: this.startMoment.year(), month: this.startMoment.month(), date: 1}).week();
-			$('#gearbooking-leftmonths-container .row:nth-child(0n+' + (this.startMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.startMoment.weekday() + 2) + ')').addClass('selected');
 		}
 
 		function setupRightMonthCalendar() {
-			var moment, firstDayWeek;
-			moment = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), date: this.rightMoment.date()});
+			var moment = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), date: this.rightMoment.date()});
 			this.setupMonthCalendar(moment, $('#gearbooking-rightmonths-container', this.$element));
-			//Get week of first day of month, that is first row, then get difference with start week
-			firstDayWeek = Moment({year: this.endMoment.year(), month: this.endMoment.month(), date: 1}).week();
-			$('#gearbooking-rightmonths-container .row:nth-child(0n+' + (this.endMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (this.endMoment.weekday() + 2) + ')').addClass('selected');
 		}
 
 		function setupMonthCalendar(moment, $calendarContainer) {
 			var startDay = moment.date(1).weekday(),
-				$dayBox, row, col, date;
+				row, col;
 
 			//Set date to first box
 			moment.subtract(startDay, 'days');
 			for(row = 1; row <= 6; row++) { //6 possible week pieces
 				for(col = 1; col <= 7; col++) { //7 days
-					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-					date = moment.date();
-					$dayBox.html(date);
-					$dayBox.data('date', date);
-					$dayBox.data('month', moment.month());
+					$('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer).html(moment.date());
 					moment.add(1, 'days');
 				}
 			}
@@ -263,14 +175,11 @@ define(
 			}
 			$('#gearbooking-leftweeks-container', view.$element).removeClass('hidden');
 			view.leftWeekMode = true;
-
-			view.clearLeftSelection();
-			$('#gearbooking-leftweeks-container .row:nth-child(0n+' + (parseInt(view.startMoment.hour()) + 2) + ') .hour:nth-child(0n+' + (parseInt(view.startMoment.weekday()) + 2) + ')').addClass('selected');
 		}
 
 		function handleLeftMonths(event) {
 			var view = event.data,
-				$leftWeeksContainer, firstDayWeek;
+				$leftWeeksContainer;
 			if(view.leftWeekMode === false) {
 				return;
 			}
@@ -281,10 +190,6 @@ define(
 			$('#gearbooking-leftmonths-container', view.$element).removeClass('hidden');
 			view.setupLeftMonthCalendar();
 			view.leftWeekMode = false;
-
-			view.clearLeftSelection();
-			firstDayWeek = Moment({year: view.startMoment.year(), month: view.startMoment.month(), date: 1}).week();
-			$('#gearbooking-leftmonths-container .row:nth-child(0n+' + (view.startMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (view.startMoment.weekday() + 2) + ')').addClass('selected');
 		}
 
 		function handleRightToday(event) {
@@ -334,9 +239,6 @@ define(
 			}
 			$('#gearbooking-rightweeks-container', view.$element).removeClass('hidden');
 			view.rightWeekMode = true;
-
-			view.clearRightSelection();
-			$('#gearbooking-rightweeks-container .row:nth-child(0n+' + (parseInt(view.endMoment.hour()) + 2) + ') .hour:nth-child(0n+' + (parseInt(view.endMoment.weekday()) + 2) + ')').addClass('selected');
 		}
 
 		function handleRightMonths(event) {
@@ -352,104 +254,42 @@ define(
 			$('#gearbooking-rightmonths-container', view.$element).removeClass('hidden');
 			view.setupRightMonthCalendar();
 			view.rightWeekMode = false;
-
-			view.clearRightSelection();
-			firstDayWeek = Moment({year: view.endMoment.year(), month: view.endMoment.month(), date: 1}).week();
-			$('#gearbooking-rightmonths-container .row:nth-child(0n+' + (view.endMoment.week() - firstDayWeek + 2) + ') .day:nth-child(0n+' + (view.endMoment.weekday() + 2) + ')').addClass('selected');
 		}
 
 		function handleLeftHourSelection(event) {
 			var $this = $(this),
-				view = event.data,
-				hour, weekday;
-			//Check that selection start moment is not previous to end moment
-			weekday = $this.data('weekday');
-			hour = $this.data('hour');
-			if(weekday > view.endMoment.weekday()) {
-				return;
-			}
-			if(weekday === view.endMoment.weekday() && hour > view.endMoment.hour()) {
-				return;
-			}
-
+				view = event.data;
 			view.clearLeftSelection();
 			if($this.hasClass('selected') === false) {
 				$this.addClass('selected');
 			}
-			view.startMoment.hour(hour);
-			view.startMoment.weekday(weekday);
-			view.renderSelection();
 		}
 
 		function handleLeftDaySelection(event) {
 			var $this = $(this),
-				view = event.data,
-				date, month;
-
-			//Check that selection start moment is not previous to end moment
-			date = $this.data('date');
-			month = $this.data('month');
-			if(month > view.endMoment.month()) {
-				return;
-			}
-			if(month === view.endMoment.month() && date > view.endMoment.date()) {
-				return;
-			}
-
+				view = event.data;
 			view.clearLeftSelection();
 			if($this.hasClass('selected') === false) {
 				$this.addClass('selected');
 			}
-			view.startMoment.date(date);
-			view.startMoment.month(month);
-			view.renderSelection();
 		}
 
 		function handleRightHourSelection(event) {
 			var $this = $(this),
-				view = event.data,
-				weekday, hour;
-
-			weekday = $this.data('weekday');
-			hour = $this.data('hour');
-			if(weekday < view.startMoment.weekday()) {
-				return;
-			}
-			if(weekday === view.startMoment.weekday() && hour < view.startMoment.hour()) {
-				return;
-			}
-
+				view = event.data;
 			view.clearRightSelection();
 			if($this.hasClass('selected') === false) {
 				$this.addClass('selected');
 			}
-			view.endMoment.hour(hour);
-			view.endMoment.weekday(weekday);
-			view.renderSelection();
 		}
 
 		function handleRightDaySelection(event) {
 			var $this = $(this),
-				view = event.data,
-				month, date;
-
-			month = $this.data('month');
-			date = $this.data('date');
-			if(month < view.startMoment.month()) {
-				return;
-			}
-			if(month === view.startMoment.month() && date < view.startMoment.date()) {
-				return;
-			}
-
+				view = event.data;
 			view.clearRightSelection();
 			if($this.hasClass('selected') === false) {
 				$this.addClass('selected');
 			}
-			view.endMoment.date(date);
-			view.endMoment.month(month);
-
-			view.renderSelection();
 		}
 
 		function clearLeftSelection() {
@@ -468,11 +308,6 @@ define(
 			$('#gearbooking-rightmonths-container .day-row .day').each(function(index, $element) {
 				$(this).removeClass('selected');
 			});
-		}
-
-		function renderSelection() {
-			//Left side grayed out before startdate -> loop all hours or days
-
-		}	
+		}		
 	}
 );
