@@ -23,9 +23,6 @@ $key = file_get_contents(GOOGLE_API_KEY_LOCATION);
 $cred = new Google_Auth_AssertionCredentials(GOOGLE_API_EMAIL, array('https://www.googleapis.com/auth/devstorage.read_write'), $key);
 $client->setAssertionCredentials($cred);
 
-//echo 'bucket: ' . $bucket . '<br>';
-//echo 'file: ' . $filename . '<br>';
-
 $storage = new Google_Service_Storage($client); //https://github.com/google/google-api-php-client/blob/master/src/Google/Service/Storage.php line 551 and line 1504
 $object = $storage->objects->get($bucket, $filename);
 
