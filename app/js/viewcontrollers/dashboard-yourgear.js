@@ -40,7 +40,7 @@ define(
 			require(['text!../templates/yourgear-item.html'], function(YourGearItemTemplate) {
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
 					yourGear = view.gearList.data,
-					defaultGear, gear;
+					defaultGear, gear, i;
 
 				for(i = 0; i < yourGear.length; i++) {
 					defaultGear = {
@@ -54,13 +54,22 @@ define(
 						price_a: 0,
 						price_b: 0,
 						price_c: 0,
-						owner_id: null
+						owner_id: null,
+                        status : 'unavailable'
 					};
 					gear = yourGear[i];
 					_.extend(defaultGear, gear.data);
 					if(defaultGear.images.length > 0) {
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
+                    // gear status (returns: 'unavailable', 'available', 'pending', 'rented')
+                    if(gear.status){
+
+                        defaultGear.status = gear.status == 'pending' ?
+                                                '<button class="btn btn-warning yourgear-status ' + gear.status +'">' + gear.status + '</button>'
+                                                : '<span class="yourgear-status ' + gear.status +'">' + gear.status + '</span>';
+
+                    }
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
 				if(callback && typeof callback === 'function') {
