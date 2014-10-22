@@ -63,12 +63,10 @@ define(
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
                     // gear status (returns: 'unavailable', 'available', 'pending', 'rented')
-                    if(gear.status){
-
-                        defaultGear.status = gear.status == 'pending' ?
-                                                '<button class="btn btn-warning yourgear-status ' + gear.status +'">' + gear.status + '</button>'
-                                                : '<span class="yourgear-status ' + gear.status +'">' + gear.status + '</span>';
-
+                    if(gear.data.status){
+                        defaultGear.status = gear.data.status == 'pending' ?
+                                                '<button class="btn btn-warning yourgear-status ' + gear.data.status +'">' + gear.data.status + '</button>'
+                                                : '<span class="yourgear-status ' + gear.data.status +'">' + gear.data.status + '</span>';
                     }
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
