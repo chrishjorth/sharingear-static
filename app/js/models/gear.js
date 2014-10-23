@@ -24,6 +24,7 @@ define(
 				country: '',
 				latitude: null,
 				longitude: null,
+				gear_status: 'unavailable',
 				owner_id: null
 			},
 

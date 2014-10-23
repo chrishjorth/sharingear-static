@@ -57,7 +57,7 @@ define(
 						price_b: 0,
 						price_c: 0,
 						owner_id: null,
-                        status : 'unavailable'
+                        gear_status : 'unavailable'
 					};
 					gear = yourGear[i];
 					_.extend(defaultGear, gear.data);
@@ -65,10 +65,11 @@ define(
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
                     // gear status (returns: 'unavailable', 'available', 'pending', 'rented')
-                    if(gear.data.status){
-                        defaultGear.status = gear.data.status == 'pending' ?
-                                                '<button class="btn btn-warning yourgear-status ' + gear.data.status +'" data-yourgearid="' + gear.data.id + '">' + gear.data.status + '</button>'
-                                                : '<span class="yourgear-status ' + gear.data.status +'">' + gear.data.status + '</span>';
+                    console.log('status: ' + gear.data.gear_status);
+                    if(gear.data.gear_status) {
+                        defaultGear.gear_status = gear.data.gear_status === 'pending' ?
+                                                '<button class="btn btn-warning yourgear-status ' + gear.data.gear_status +'" data-yourgearid="' + gear.data.id + '">' + gear.data.gear_status + '</button>'
+                                                : '<span class="yourgear-status ' + gear.data.gear_status +'">' + gear.data.gear_status + '</span>';
                     }
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
