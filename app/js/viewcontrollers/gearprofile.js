@@ -17,6 +17,7 @@ define(
 			renderMap: renderMap,
             renderOwnerPicture: renderOwnerPicture,
 			renderPopup: renderPopup,
+			addEditButtonIfOwner: addEditButtonIfOwner,
 			handleBooking: handleBooking
 		});
 
@@ -79,7 +80,7 @@ define(
 					});
 				});
 			}
-			
+
 			this.subPath = ''; //To avoid rendering a subview based on the gear id
 		}
 
@@ -115,6 +116,8 @@ define(
             }
 
             this.renderPopup();
+
+            this.addEditButtonIfOwner();
 
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
 		}
@@ -218,52 +221,20 @@ define(
 
 		}
 
-		// gets images used for rendering gear and uses them to render popup gallery.
-		function renderPopup() {
+		function addEditButtonIfOwner() {
 			var view = this;
-    		// get images that are used for owl carousel
-            var images = view.gear.data.images.split(',');
-            // use same images for magnificpopup
-            // create array of items with src field
-            var items = [];
-            for (var i = 0; i < images.length; i++) {
-            	if (images[i]!="") {
-            		items.push({src:images[i]});
-            	}
-            };
 
-			// click on item image => open lightbox fullscreen gallery thing
-            $('.owl-item2 img').magnificPopup({
-            	type: 'image',
-            	items: items,
-            	gallery: {enabled: true}
-            });
+			console.log("logged in user is " + App.user.data.id + " and gear is owned by " + view.gear.data.owner_id);
 
-
-		}
-
-		// gets images used for rendering gear and uses them to render popup gallery.
-		function renderPopup() {
-			var view = this;
-    		// get images that are used for owl carousel
-            var images = view.gear.data.images.split(',');
-            // use same images for magnificpopup
-            // create array of items with src field
-            var items = [];
-            for (var i = 0; i < images.length; i++) {
-            	if (images[i]!="") {
-            		items.push({src:images[i]});
-            	}
-            };
-
-			// click on item image => open lightbox fullscreen gallery thing
-            $('.owl-item2 img').magnificPopup({
-            	type: 'image',
-            	items: items,
-            	gallery: {enabled: true}
-            });
-
-
+			// if user is logged in AND is owner, add edit button
+			if(App.user.data.id == view.gear.data.owner_id) {
+				$("#editButton").html("<input class='btn btn-info pull-right' type='button' value='Edit'>");
+				$("#editButton").on("click", function() {
+					App.router.openModalView('editgear', view.gear);
+					// on modal view close, refresh view. (render?)
+				});
+			}
+			
 		}
 	}
 );

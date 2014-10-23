@@ -3290,3 +3290,7 @@ margin: 40px 0;
     background-color: rgb(255, 210, 0);
     color:#555;
 }
+
+#editButton {
+    margin: 10px;
+}
