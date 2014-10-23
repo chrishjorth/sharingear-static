@@ -1,11 +1,11 @@
 /**
  * Controller for the Sharingear gear booking page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Horatiu Roman
  */
 
 define(
-	['viewcontroller', 'app', 'models/gear', 'moment'],
-	function(ViewController, App, Gear, Moment) {
+	['viewcontroller', 'app', 'models/gear', 'models/booking', 'moment'],
+	function(ViewController, App, Gear, Booking, Moment) {
 		var GearBooking = ViewController.inherit({
 			gear: null,
 			leftMoment: null,
@@ -17,6 +17,7 @@ define(
             pricePerWeek: '',
             totalPrice: '',
             availabilityArray: [],
+            newBooking: null, // saves data about new booking when it is submitted
 
 			didInitialize: didInitialize,
 
@@ -91,6 +92,10 @@ define(
 				}
             	view.availabilityArray = availabilityArray;
             	view.render();
+            });
+
+            this.newBooking = new Booking.constructor({
+            	rootURL: App.API_URL
             });
 		}
 
@@ -345,7 +350,26 @@ define(
 		}
 
 		function handleBook(event) {
-			var view = event.data;
+			var view = event.data,
+				newData,
+				callback;
+
+			newData = {
+				user_id: App.user.data.id,
+				gear_id: view.gear.data.id,
+				start_time: view.startMoment.format("YYYY-MM-DD HH:mm:ss"),
+				end_time: view.endMoment.format("YYYY-MM-DD HH:mm:ss")
+			};
+
+			callback = function(error) {
+				console.log("booking gave error");
+				console.log(error);
+			}
+
+			_.extend(view.newBooking.data, newData);
+
+			view.newBooking.createBooking(callback);
+
 			App.router.closeModalView();
 		}
 
