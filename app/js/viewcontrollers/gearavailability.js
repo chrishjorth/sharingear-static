@@ -192,8 +192,8 @@ define(
 				for(j = 0; j < monthSelections.length; j++) {
 					selection = monthSelections[j];
 					availabilityArray.push({
-						start: selection.startMoment.format('YYYY-MM-DD HH:mm:ss'),
-						end: selection.endMoment.format('YYYY-MM-DD HH:mm:ss')
+						start: selection.startMoment.format('YYYY-MM-DD') + " 00:00:00",
+						end: selection.endMoment.format('YYYY-MM-DD') + " 23:59:59"
 					});
 				}
 			}

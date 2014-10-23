@@ -362,8 +362,10 @@ define(
 			};
 
 			callback = function(error) {
-				console.log("booking gave error");
-				console.log(error);
+				if (error) { 
+					console.log("booking gave error");
+					console.log(error);
+				}
 			}
 
 			_.extend(view.newBooking.data, newData);
