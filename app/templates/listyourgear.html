@@ -1,102 +1,69 @@
+<div class="listyourgear">
+  <div class="topadd-a" style="background: #fff;">Sharingear lets you rent out your gear<br><span>Click on the type of gear you wish to list&nbsp;</span></div>
 
-<div class="topadd-a">Sharingear lets you rent out your gear
-        <br><span>Click on the type of gear you wish to list&nbsp;</span>
-      </div>
+  <!---Main List Your Gear Field  - Start --> 
 
-
-<!---Main List Your Gear Field  - Start --> 
-
-
-<div class="testimonials jumbo">
-<div class="page-container">
-
-        <div class="row row-space-5 row-space-top-5 row-table">
-            <div class="col-3 text-right col-middle">
-              <div class="h4 text-light">
-               Gear
-              </div>
-            </div>
-            <div class="col-9 fieldset">
-              <div class="btn-group">
-        <button class="btn btn-large">
-            <img src="images/instrumenticon_gtr.png" class="iconbtn">Guitar</button>
-    <button class="btn btn-large type"> 
-        <img src="images/instrumenticon_bass.png" class="iconbtn">Bass</button>
-        <button class="btn btn-large type"> 
-        <img src="images/instrumenticon_amp2.png" class="iconbtn">Amp</button>
-    <button class="btn btn-large"> <img src="images/instrumenticon_cabinet.png" class="iconbtn">Cabinet</button>
-     <button class="btn btn-large"> <img src="images/instrumenticon_combo.png" class="iconbtn">Combo</button>
-    <button class="btn btn-large type"> <img src="images/instrumenticon_drums.png" class="iconbtn">Drums</button>
-    <button class="btn btn-large type"> <img src="images/instrumenticon_key.png" class="iconbtn">Keyboard</button>
-  </div>
-</div>
-      </div>
-          </div>
-                <div class="row row-space-5 row-space-top-5 row-table">
-            <div class="col-3 text-right col-middle">
-              <div class="h4 text-light">
+  <div class="listyourgear-action jumbo">
+    <div class="page-container" style="padding-top: 40px; padding-bottom: 40px;">
+      <div class="row row-space-5 row-table">
+        <div class="col-md-1 col-md-offset-1">
+          <div class="h4 text-light">Gear</div>
+        </div>
+        <div class="col-md-10 fieldset">
+          <form class="gearlist-form" id="gearForm">
+            <div class="custom-checkbox-group">
             
+              <div class="custom-checkbox">
+                <input type="checkbox" id="custom-checkbox-guitar" name="guitar" value="guitar">
+                <label for="custom-checkbox-guitar">
+                <img src="images/instrumenticon_gtr.png" class="custom-checkbox-image">Guitar</label>
+              </div>
+
+              <div class="custom-checkbox">
+                <input type="checkbox" id="custom-checkbox-bass" name="bass" value="bass">
+                <label for="custom-checkbox-bass">
+                <img src="images/instrumenticon_bass.png" class="custom-checkbox-image">Bass</label>
+              </div>
+
+              <div class="custom-checkbox"><input type="checkbox" id="custom-checkbox-amp" name="amp" value="amp"><label for="custom-checkbox-amp"><img src="images/instrumenticon_amp2.png" class="custom-checkbox-image">Amp</label></div>
+
+              <div class="custom-checkbox"><input type="checkbox" id="custom-checkbox-drums" name="drums" value="drums"><label for="custom-checkbox-drums"><img src="images/instrumenticon_drums.png" class="custom-checkbox-image">Drums</label></div>
+
+              <div class="custom-checkbox"><input type="checkbox" id="custom-checkbox-key" name="key" value="keyboard"><label for="custom-checkbox-key"><img src="images/instrumenticon_key.png" class="custom-checkbox-image">Key</label></div>
+
+              <div class="custom-checkbox"><input type="checkbox" id="custom-checkbox-mic" name="mic" value="studio"><label for="custom-checkbox-mic"><img src="images/instrumenticon_microphones.png" class="custom-checkbox-image">Studio</label></div>
+
+              <div class="custom-checkbox"><input type="checkbox" id="custom-checkbox-PA" name="PA" value="pa"><label for="custom-checkbox-PA"><img src="images/instrumenticon_PA.png" class="custom-checkbox-image">PA</label></div>
+
+              <div class="custom-checkbox"><input type="checkbox"  id="custom-checkbox-DJ" name="DJ" value="dj"><label for="custom-checkbox-DJ"><img src="images/instrumenticon_dj.png" class="custom-checkbox-image">DJ</label></div>
+
+              <div class="custom-checkbox"><input type="checkbox"  id="custom-checkbox-brass" name="brass" value="classical"><label for="custom-checkbox-brass"><img src="images/instrumenticon_brass.png" class="custom-checkbox-image">Classical</label></div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row row-space-5 row-space-top-5 row-table">
+        <div class="col-md-1 col-md-offset-1">
+          <div class="h4 text-light">City</div>
+        </div>
+        <div class="col-md-10 fieldset fieldset_city">
+          <div class="row">
+            <div class="col-6">
+              <div class="input-group input-group-lg">
+                <span class="input-group-addon"><img src="images/sharingearicon23x23.png" alt="Sharingear icon"></span>
+                <input type="text" id="listyourgear-location" class="form-control" placeholder="San Francisco, Berlin, Copenhagen, Krakow...">
               </div>
             </div>
-            <div class="col-9 fieldset">
-              <div class="btn-group">
-        <button class="btn btn-large"><img src="images/instrumenticon_microphones.png" class="iconbtn">Studio</button>
-    <button class="btn btn-large type"> <img src="images/instrumenticon_PA.png" class="iconbtn">PA</button>
-    <button class="btn btn-large"> <img src="images/instrumenticon_dj.png" class="iconbtn">DJ</button>
-    <button class="btn btn-large type"> <img src="images/instrumenticon_pedals.png" class="iconbtn">Pedals</button>
-    <button class="btn btn-large type"> <img src="images/instrumenticon_brass.png" class="iconbtn">Brass</button>
-  </div>
-</div>
-</div>
-
-    <div class="row row-space-5 row-space-top-5 row-table">
-        <div class="col-3 text-right col-middle">
-            <div class="h4 text-light">City</div>
-            </div>
-            <div class="col-9 fieldset fieldset_city col-middle">
-              <div class="row">
-  <div class="col-6">
-    <div class="panel location thispanelbg">
-      <div class="panel-body panel-light panel-border location-panel-body">
-        <i class="icon icon icon-map-marker icon-kazan h4 pull-left"></i>
-        <input id="location_input" name="location_input" placeholder="San Fransisco, Rom, Shibuya..." type="text" class="geocomplete" autocomplete="off">
-
+          </div>
+        </div>
       </div>
+      <div class="row row-space-5 row-space-top-5 row-table">
+        <div class="col-lg-11 text-right">
+          <button type="button" class="btn btn-primary submitstyle" id="submitGearButton">Submit</button>
+        </div>
+      </div>
+      
     </div>
   </div>
 </div>
-</div>
-</div>
-<div class="row row-space-5 row-space-top-5 row-table">
-        <div class="col-3 text-right col-middle">
-            <div class="h4 text-light"></div>
-            </div>
-            <div class="col-9 fieldset fieldset_city col-middle">
-              <div class="row">
-  <div class="col-6">
-   <button type="submit" class="btn btn-primary btn-large submit disabled " disabled="disabled">
-    </div>
-  </div>
-</div>
-</div>
-</div>
-
-
-
-
-
-</div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
