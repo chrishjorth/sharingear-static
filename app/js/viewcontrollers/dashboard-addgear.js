@@ -56,8 +56,28 @@ define(
 					html = '',
 					gearType;
 				for(gearType in gearClassification.classification) {
-					html += '<div class="custom-radio"><input type="radio" class="test" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '"><label for="gear-radio-' + gearType + '"><img src="images/addgear/addgear_' + gearType.toLowerCase() + '.png"></label></div>';
+				//	html += '<div class="custom-radio">
+				//				<input type="radio" class="test" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">
+				//				<label for="gear-radio-' + gearType + '"><img src="images/addgear/addgear_' + gearType.toLowerCase() + '.png">
+				//				</label>
+				//			</div>';
+					html += '<div class="custom-radio">';
+					html += '<input type="radio" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">';
+					html += '<label for="custom-radio-' + gearType + '">';
+					html += '<img src="images/instrumenticon_' + gearType.toLowerCase() + '.png" class = "custom-radio-image">';
+					html += gearType;
+					html += '</label>';
+					html += '</div>';
+
 				}
+
+//		        <div class="custom-checkbox">
+ //               <input type="checkbox" id="custom-checkbox-guitar" name="guitar" value="guitar">
+   //             <label for="custom-checkbox-guitar">
+     //           <img src="images/instrumenticon_gtr.png" class="custom-checkbox-image">Guitar</label>
+       //       </div>
+
+
 				$gearbuttonlistContainer.append(html);
 				view.setupEvent('change', '#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]', view, view.handleGearRadio);
 				if(callback && typeof callback === 'function') {
