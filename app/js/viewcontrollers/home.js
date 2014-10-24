@@ -40,10 +40,20 @@ define(
             var minDateString = (day + "/" + month + "/" + year);
 
             $('#search-date').daterangepicker({
-                singleDatePicker: false,
+                singleDatePicker: true,
                 format: 'DD/MM/YYYY',
+                startDate: minDateString,
+                showDropdowns: true,
+                minDate: minDateString
+            });
+
+            $('#search-return').daterangepicker({
+                singleDatePicker: true,
+                format: 'DD/MM/YYYY',
+                startDate: minDateString,
+                showDropdowns: true,
                 minDate: minDateString,
-                showDropdowns: true
+                opens: 'right'
             });
 
             //Testimonials init

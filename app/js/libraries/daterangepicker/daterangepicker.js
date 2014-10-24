@@ -536,8 +536,8 @@
                 var w = $(window);
                 this.container.css({
                     top: this.element.offset().top+ 10 + this.element.outerHeight() - parentOffset.top,
-//                    left: this.element.offset().left - parentOffset.left,
-                    left: Math.abs(((w.width() - this.container.outerWidth()) / 2) + w.scrollLeft()),
+                    left: this.element.offset().left - parentOffset.left,
+//                    left: Math.abs(((w.width() - this.container.outerWidth()) / 2) + w.scrollLeft()),
                     right: 'auto'
                 });
                 if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {

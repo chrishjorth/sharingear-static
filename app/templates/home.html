@@ -6,19 +6,29 @@
         <div class="container-fluid">  
           <h1>Save costs on tour, make money when home.</h1>
           <h2>Find gear, travel light, make a few extra bucks.</h2>
-  
+  <div class="search-container">
           <form class="form-inline" id="home-search-form" role="form" action="" onsubmit="return false;">
             <div class="form-group">
-              <input type="text" class="form-control" id="search-gear" placeholder="Find your gear">
+              <label>Find your gear</label><br>
+              <input type="text" class="form-control" id="search-gear" placeholder="AMP, guitar">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" id="search-location" placeholder="Find a location">
+                <label>Find a location</label><br>
+              <input type="text" class="form-control" id="search-location" placeholder="Copenhagen">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" id="search-date" placeholder="06/06/1966 - 10/06/1966" >
-            </div> 
-            <input type="submit" class="btn btn-default" value="Search">
+                <label>Start date</label><br>
+              <input type="text" class="form-control" id="search-date" placeholder="06/06/1966" >
+            </div>
+            <div class="form-group">
+                <label>Return date</label><br>
+              <input type="text" class="form-control" id="search-return" placeholder="10/06/1966" >
+            </div>
+            <div class="form-group submit-home-btn">
+                <input type="submit" class="btn btn-default home-search-button" value="Search">
+            </div>
           </form>
+  </div>
         </div>
 
       </div>

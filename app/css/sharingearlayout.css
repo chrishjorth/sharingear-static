@@ -1,11 +1,11 @@
 body {
 
-  background-color: rgb(247, 247, 247); /* f7f7f7 */
-  /*font: 300 0.9em/2.2 Lato; */
-  font-weight: 300;
-  line-height: 2.2;
-  color: rgb(255, 255, 255);
- }
+    background-color: rgb(247, 247, 247); /* f7f7f7 */
+    /*font: 300 0.9em/2.2 Lato; */
+    font-weight: 300;
+    line-height: 2.2;
+    color: rgb(255, 255, 255);
+}
 /*-------------Navigation------------------ */
 
 .bluelineheader {
@@ -44,7 +44,7 @@ body {
 }
 
 .nav-pills > li > a {
-  border-radius: 0;
+    border-radius: 0;
 }
 
 .billboard {
@@ -56,11 +56,12 @@ body {
     background-position: center bottom;
 }
 
- .billboard-wrapper {
+.billboard-wrapper {
     max-width: 1170px;
     margin: 0 auto;
     padding: 400px 30px 20px;
     padding-top: 258px;
+
 }
 .pagetitle-center {
     text-align: center;
@@ -376,11 +377,11 @@ body {
 footer {
     background-color: #000;
     color: #FFF;
-     padding: 40px 0px;
+    padding: 40px 0px;
     text-align: center;
     /*margin-top: 50px;*/
 
- }
+}
 footer a:hover {
     color: #00aeff;
     text-decoration: none
@@ -455,8 +456,8 @@ footer a:hover {
 }
 /*----------------------------- general ------------------------------ */
 .nosidepadding {
-   padding-left: 0;
-   padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 /*----------------------------- typography --------------------------- */
 
@@ -593,22 +594,22 @@ footer a:hover {
 .no-results-block {
 
 
-  display: none;
-  color: rgb(0, 174, 255);
-  text-align: center;
+    display: none;
+    color: rgb(0, 174, 255);
+    text-align: center;
 
 }
 
 .row.sorry-section  {
 
-  height: 100px;
+    height: 100px;
 
 }
 
 .row.request-section {
 
-  height: 150px;
-  margin-bottom: 50px;
+    height: 150px;
+    margin-bottom: 50px;
 
 }
 
@@ -646,8 +647,8 @@ footer a:hover {
     margin-top: -7px;
     padding-top: 18px;
     padding-bottom: 12px;
-/*    background-color: rgba(255, 255, 255, 0.45);
-    opacity: 0.4;*/
+    /*    background-color: rgba(255, 255, 255, 0.45);
+        opacity: 0.4;*/
     background-color:#fff;
     color: #404f5f;
     font-size: 23px;
@@ -713,17 +714,17 @@ footer a:hover {
 }
 
 .custom-checkbox {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 
 
-  width: 150px;
-  height: 60px;
-/*  margin-right: -2px; */ /*There's a +3 margin somewhere so I'm getting it down to 1px MICHAIL*/
-  margin-bottom: 3px;
-  margin-right: 3px;
-  margin-top: 3px;
-  margin-bottom:3px;
+    width: 150px;
+    height: 60px;
+    /*  margin-right: -2px; */ /*There's a +3 margin somewhere so I'm getting it down to 1px MICHAIL*/
+    margin-bottom: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom:3px;
 }
 
 .custom-checkbox-image  {
@@ -733,33 +734,33 @@ footer a:hover {
 }
 
 .custom-checkbox input[type="checkbox"] {
-  display: none;
+    display: none;
 }
 
 .custom-checkbox input[type="checkbox"] + label {
 
-  cursor: pointer;
+    cursor: pointer;
 
-  text-align: center;
-  line-height: 350%;
+    text-align: center;
+    line-height: 350%;
 
-  background-color: #FFD200;
-  color: black;
-  font-size: 16px;
-  font-weight: normal;
+    background-color: #FFD200;
+    color: black;
+    font-size: 16px;
+    font-weight: normal;
 
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  border-radius: 3em;
-  border: solid;
-  border-width: 2px;
+    border-radius: 3em;
+    border: solid;
+    border-width: 2px;
 }
 
 .custom-checkbox input[type="checkbox"]:checked + label {
 
-  cursor: pointer;
-  background-color: #e5bd00;
+    cursor: pointer;
+    background-color: #e5bd00;
 
 }
 
@@ -796,10 +797,10 @@ footer a:hover {
 }
 
 .col-3  {
-float: left;
-position: relative;
-min-height: 1px;
- }
+    float: left;
+    position: relative;
+    min-height: 1px;
+}
 
 .text-right {
     text-align: right;
@@ -811,16 +812,16 @@ min-height: 1px;
     padding: 0;
     display: inline;
 
-/*display: inline;*/
- }
+    /*display: inline;*/
+}
 
- .listyourgear .row-space-top-5 .col-6 {
+.listyourgear .row-space-top-5 .col-6 {
 
     padding-left: 10px;
 
- }
+}
 
- .listyourgear-action {
+.listyourgear-action {
     background: #fff;
     -webkit-background-size: cover;
     background-size: cover;
@@ -830,7 +831,7 @@ min-height: 1px;
     padding-top: 40px;
     padding-bottom:40px;
 
- }
+}
 /* ------------------ END - LIST YOUR GEAR --------------- */
 
 /* ------------------ START - DASHBOARD ------------------ */
@@ -856,12 +857,12 @@ background-color: rgb(56,143,192);
 }
 .dashboard .menu {
 
-  margin: 20px 0 20px 0;
-  border-radius: 4px;
-  border-width: 0;
-  border-style: solid;
-  border-color: #dddddd;
- }
+    margin: 20px 0 20px 0;
+    border-radius: 4px;
+    border-width: 0;
+    border-style: solid;
+    border-color: #dddddd;
+}
 .dashboard .menu li {
     height: 70px;
     border-bottom-width: 1px;
@@ -919,21 +920,21 @@ background-color: rgb(56,143,192);
     border-right-width: 1px;
 }
 .yourgear-item .yourgear-status {
-     padding:3px;
-     border-radius:4px;  text-transform: uppercase;
-     font-weight: bold;
+    padding:3px;
+    border-radius:4px;  text-transform: uppercase;
+    font-weight: bold;
 }
 .yourgear-item .yourgear-status.unavailable {
-     color: #999;
- }
+    color: #999;
+}
 .yourgear-item .yourgear-status.available {
-     color: #02a6f2;
- }
+    color: #02a6f2;
+}
 .yourgear-item .yourgear-status.pending {
-     font-weight: normal;
- }
+    font-weight: normal;
+}
 .yourgear-item .yourgear-status.rented {
-     color: #6cc644;
+    color: #6cc644;
 }
 
 /* ------------------ START - DASHBOARD YOUR RESERVATIONS --------------- */
@@ -951,27 +952,27 @@ background-color: rgb(56,143,192);
 }
 /* ------------------ START - DASHBOARD  add gear --------------- */
 
- .list-group-item {
+.list-group-item {
     position: relative;
     display: block;
     padding: 10px 15px;
     margin-bottom: 0px;
     background-color: #fff;
     /*border: 1px solid #ddd;*/
-  }
+}
 
 .custom-radio {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 
 
-  width: 144px;
-  height: 41px;
-/*  margin-right: -2px; */ /*There's a +3 margin somewhere so I'm getting it down to 1px MICHAIL*/
-  margin-bottom: 3px;
-  margin-right: 3px;
-  margin-top: 3px;
-  margin-bottom:3px;
+    width: 144px;
+    height: 41px;
+    /*  margin-right: -2px; */ /*There's a +3 margin somewhere so I'm getting it down to 1px MICHAIL*/
+    margin-bottom: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom:3px;
 }
 
 .custom-radio-image {
@@ -981,34 +982,34 @@ background-color: rgb(56,143,192);
 }
 
 .custom-radio input[type="radio"] {
-  display: none;
+    display: none;
 }
 
 
 .custom-radio input[type="radio"] + label {
 
-  cursor: pointer;
+    cursor: pointer;
 
-  text-align: center;
-  line-height: 250%;
+    text-align: center;
+    line-height: 250%;
 
-  background-color: #FFD200;
-  color: black;
-  font-size: 15px;
-  font-weight: normal;
+    background-color: #FFD200;
+    color: black;
+    font-size: 15px;
+    font-weight: normal;
 
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  border-radius: 3em;
-  border: solid;
-  border-width: 1px;
+    border-radius: 3em;
+    border: solid;
+    border-width: 1px;
 }
 
 .custom-radio input[type="radio"]:checked + label {
 
-  cursor: pointer;
-  background-color: #e5bd00;
+    cursor: pointer;
+    background-color: #e5bd00;
 
 }
 
@@ -1115,7 +1116,7 @@ background-color: rgb(56,143,192);
     cursor: inherit;
     display: block;
 }
- .btnaddgear {
+.btnaddgear {
     color: #000000;
     background-color: #ffd200;
     display: inline-block;
@@ -1159,84 +1160,84 @@ background-color: rgb(56,143,192);
 }
 
 .addgearpanel .boxaddgear {
-  color: #000000;
-  background-color: #ffd200;
-  display: inline-block;
-  padding: 5px 31px;
-  margin-bottom: 0;
-  font-size: 11px;
-  font-weight: normal;
-  line-height: 1.428571;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  background-image: none;
-  border: 6px solid transparent;
-  border-radius: -17px;
+    color: #000000;
+    background-color: #ffd200;
+    display: inline-block;
+    padding: 5px 31px;
+    margin-bottom: 0;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1.428571;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 6px solid transparent;
+    border-radius: -17px;
 }
 
 .addgearpanel .boxaddgeartwo {
-  color: #000000;
-  background-color: #cccccc;
-  display: inline-block;
-  padding: 5px 31px;
-  margin-bottom: 0;
-  font-size: 11px;
-  font-weight: normal;
-  line-height: 1.428571;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  background-image: none;
-  border: 6px solid transparent;
-  border-radius: -17px;
+    color: #000000;
+    background-color: #cccccc;
+    display: inline-block;
+    padding: 5px 31px;
+    margin-bottom: 0;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1.428571;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 6px solid transparent;
+    border-radius: -17px;
 }
 
 .addgearpanel .btnaddgear {
-  color: #000000;
-  background-color: #ffd200;
-  display: inline-block;
-  padding: 5px 31px;
-  margin-bottom: 0;
-  font-size: 11px;
-  font-weight: normal;
-  line-height: 1.428571;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background-image: none;
-  border: 6px solid transparent;
-  border-radius: -17px;
+    color: #000000;
+    background-color: #ffd200;
+    display: inline-block;
+    padding: 5px 31px;
+    margin-bottom: 0;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1.428571;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 6px solid transparent;
+    border-radius: -17px;
 }
 
 .addgearpanel .btnaddgeartwo {
-  color: #000000;
-  background-color: #cccccc;
-  display: inline-block;
-  padding: 5px 31px;
-  margin-bottom: 0;
-  font-size: 11px;
-  font-weight: normal;
-  line-height: 1.428571;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background-image: none;
-  border: 6px solid transparent;
-  border-radius: -17px;
+    color: #000000;
+    background-color: #cccccc;
+    display: inline-block;
+    padding: 5px 31px;
+    margin-bottom: 0;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1.428571;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 6px solid transparent;
+    border-radius: -17px;
 }
 
- .panel-body {
+.panel-body {
     margin-top: -34px;
     margin-left: -5px;
     margin-bottom: -13px;
@@ -1290,10 +1291,10 @@ background-color: rgb(56,143,192);
     width: 54%;
 }*/
 .gear-img-resize {
-  max-height: 200px;
-  max-width: auto;
-  margin: 0 auto;
-  overflow: hidden;
+    max-height: 200px;
+    max-width: auto;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 #crumbs {
@@ -1322,7 +1323,7 @@ background-color: rgb(56,143,192);
     border-left-width: 1px;
     border-left-style: solid;
     border-left-color: #cccccc;
-    -webkit-user-select: none; /* Chrome/Safari */        
+    -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+ */
     user-select: none;
@@ -1602,6 +1603,7 @@ body {
     margin:0 auto;
     padding:400px 20px 0 20px;
     padding-top:460px;
+    padding-bottom: 80px;
 }
 .pagetitle-center {
     text-align:center;
@@ -2067,10 +2069,10 @@ footer a:hover {
     max-width:500px;
     display:inline-block;
 }
- /*body {
-  background-color: rgb(247, 247, 247);
-  font: 300 0.75em/1.38 Lato;
-  color: rgb(255, 255, 255);
+/*body {
+ background-color: rgb(247, 247, 247);
+ font: 300 0.75em/1.38 Lato;
+ color: rgb(255, 255, 255);
 }
 */
 
@@ -2516,21 +2518,21 @@ footer a:hover {
 
 
 .pricerow {
-  margin-top: -90px;
+    margin-top: -90px;
 }
 
 .priceplacement {
-  margin-left: -12%
+    margin-left: -12%
 }
 
 .imagesizesearch {
-  width: 20%;
+    width: 20%;
 }
 
 
 .headlinesearch {
-  /*margin-top: -60px;*/
-  margin-bottom: -65px;
+    /*margin-top: -60px;*/
+    margin-bottom: -65px;
 
 }
 
@@ -2656,12 +2658,16 @@ footer a:hover {
     .form-left{
         border: 0   ;
     }
+
+    .billboard-wrapper {
+        padding-bottom: 280px;
+    }
 }
 
- /*body {
-  background-color: rgb(247, 247, 247);
-  font: 300 0.75em/1.38 Lato;
-  color: rgb(255, 255, 255);
+/*body {
+ background-color: rgb(247, 247, 247);
+ font: 300 0.75em/1.38 Lato;
+ color: rgb(255, 255, 255);
 }
 */
 
@@ -2713,6 +2719,7 @@ footer a:hover {
     margin:0 auto;
     padding:400px 30px 20px;
     padding-top:258px;
+    padding-bottom: 80px;
 }
 .pagetitle-center {
     text-align:center;
@@ -3219,7 +3226,7 @@ border-color: #dedede;
 }
 
 .gmap{
-      padding: 0;
+    padding: 0;
 }
 
 #gearprofile-map {
@@ -3227,51 +3234,51 @@ border-color: #dedede;
 }
 
 .no_border_subview {
-background: white;
-color: #4989af;
-padding: 10px 0;
+    background: white;
+    color: #4989af;
+    padding: 10px 0;
 }
 
 .col-md-4.left {
-border-right: 1px solid rgba(0, 0, 0, 0.14);
+    border-right: 1px solid rgba(0, 0, 0, 0.14);
 }
 
 span.num {
-font-size: 25px;
+    font-size: 25px;
 }
 
 .adress_click {
-color: #4989af;
-padding: 0;
-margin: 0;
-line-height: initial;
-font-weight: 400;
+    color: #4989af;
+    padding: 0;
+    margin: 0;
+    line-height: initial;
+    font-weight: 400;
 }
 
 .adress_click:hover {
-color: #498990;
-padding: 0;
-margin: 0;
-line-height: initial;
-font-weight: 400;
+    color: #498990;
+    padding: 0;
+    margin: 0;
+    line-height: initial;
+    font-weight: 400;
 }
 
 .prof_subview  img.pull-right {
-height: 22px;
-margin-top: 0;
+    height: 22px;
+    margin-top: 0;
 }
 
 .profile_im{
-  width:200px;
-  height: 200px;
-  background: no-repeat 50% 50%;
-  margin-top: 65px;
+    width:200px;
+    height: 200px;
+    background: no-repeat 50% 50%;
+    margin-top: 65px;
 }
 
 .prof_subview {
-background: white;
-padding: 0;
-margin: 40px 0;
+    background: white;
+    padding: 0;
+    margin: 40px 0;
 }
 
 .total-price {
@@ -3320,3 +3327,63 @@ margin: 40px 0;
 #editButton {
     margin: 10px;
 }
+
+.search-container {
+
+    background: rgba(0, 0, 0,0.3);
+    width: 100%;
+    text-align: center;
+    position:  absolute;
+    left: 0;
+    height: auto;
+    padding-top: 15px;
+    padding-bottom: 25px;
+    margin-top: 10px;
+
+}
+
+.search-container #home-search-form .form-group{
+
+    text-align: left;
+
+}
+
+#home-search-form .form-group input[type="text"] {
+
+    height: 41px;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+}
+
+.submit-home-btn{
+
+    padding-top: 34px;
+
+}
+
+.home-search-button{
+
+    display: inline-block;
+    margin-bottom: 0;
+    border-radius: 0px;
+    border: 1px solid;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    line-height: 1.43;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-sele t: none;
+    user-select: none;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 9px  7px;
+    font-size: 16px;
+    border-color: #FFAE00;
+    border-bottom-color: #000000;
+    background-color: #FFAE00;
+    color: #000;
+    margin-top:2px;
+}
+
