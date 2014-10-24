@@ -78,13 +78,20 @@ define(
 			var $calendarContainer = $('#calendar-months-container', this.$element),
 				moment = Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()}),
 				startDay = moment.date(1).weekday(),
+				$dayBox,
 				row, col;
 
 			//Set date to first box
 			moment.subtract(startDay, 'days');
 			for(row = 1; row <= 6; row++) { //6 possible week pieces
 				for(col = 1; col <= 7; col++) { //7 days
-					$('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer).html(moment.date());
+					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+					date = moment.date();
+					$dayBox.html(date);
+					$dayBox.removeClass('disabled');
+					if(moment.month() !== this.shownMoment.month()) {
+						$dayBox.addClass('disabled');
+					};
 					moment.add(1, 'days');
 				}
 			}
