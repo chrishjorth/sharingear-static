@@ -3178,9 +3178,13 @@ border-color: #dedede;
     padding:8px 0;
     font-weight:500;
 }
-.instr_title {
+.instr_title, .descr_title {
     color:#4989af;
 }
+
+/*.descr_title{
+    color:#4989af;
+}*/
 .galleria {
     height:500px;
 }
@@ -3423,5 +3427,26 @@ span.num {
     -webkit-filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff',endColorstr='#dedede');
     filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff',endColorstr='#dedede');
 
+
+}
+
+.nav-tabs {
+
+  padding-top: 10px;
+
+}
+
+.nav-tabs > li > a {
+
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+
+}
+
+.tab-content {
+
+  padding-top: 10px;
+  padding-bottom: 10px;
 
 }

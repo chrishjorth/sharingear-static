@@ -23,12 +23,27 @@
 		</div>
 		<div class="col-md-12 instr_title subview">
 			<div class="row owl-carousel owl-theme" id="gearprofile-owl"></div>
-			<div class="row-fluid ">
-				<h3 class="descr"><strong>Description</strong></h3>
-				<p>
-				 {{description}}
-				</p>
+		</div>
+		<div class="col-md-12  descr_title subview">
+
+			<ul id="gear-tabs" class="nav nav-tabs" role="tablist">
+				<li class="active"><a href="#description" role="tab" data-toggle="tab">Description</a></li>
+				<li class=""><a href="#additional" role="tab" data-toggle="tab">Additional</a></li>
+			</ul>
+
+			<div id="gear-tabs-content" class="tab-content">
+				<div class="tab-pane fade active in" id="description">
+					<p>
+						{{description}}
+					</p>
+				</div>
+				<div class="tab-pane fade" id="additional">
+					<p>
+						{{description}}
+					</p>
+				</div>
 			</div>
+
 		</div>
 		<div class="col-md-12" id="editButton">
 		</div>
