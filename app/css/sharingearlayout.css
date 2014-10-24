@@ -3143,8 +3143,8 @@ border-color: #dedede;
     margin-bottom:20px;
 }
 .banner_wrapper {
-    padding-top:110px;
-    padding-bottom:6px;
+    padding-top:60px;
+    padding-bottom:56px;
 }
 /* Similar as .dashboard .subview */
 
@@ -3356,3 +3356,72 @@ span.num {
     margin-top:2px;
 }
 
+.dash-profile-bio{
+
+    margin: 15px;
+
+}
+
+.gear-profile-social{
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 7px;
+    margin-right: 15px;
+
+}
+
+.gear-profile-title h3{
+    max-width: 85%;
+}
+
+.fb-button{
+
+    background: #4c69ba;
+    background: -webkit-gradient(linear, center top, center bottom, from(#4c69ba), to(#3b55a0));
+    background: -webkit-linear-gradient(#4c69ba, #3b55a0);
+    border: none;
+    -webkit-border-radius: 2px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+    text-shadow: 0 -1px 0 #354c8c;
+    white-space: nowrap;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-bottom: 6px;
+}
+
+.tw-button{
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    padding-left: 4px;
+    padding-right: 4px;
+    position: relative;
+    line-height: 17px;
+    float: left;
+    height: 18px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    white-space: nowrap;
+    vertical-align: top;
+    background-color: white;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#ffffff),to(#dedede));
+    background-image: -webkit-linear-gradient(top,#ffffff,#dedede);
+    background-image: linear-gradient(top,#ffffff,#dedede);
+    border: #CCC solid 1px;
+    border-radius: 3px;
+    outline: none;
+    -webkit-filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff',endColorstr='#dedede');
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff',endColorstr='#dedede');
+
+
+}

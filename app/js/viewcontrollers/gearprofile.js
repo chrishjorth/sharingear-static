@@ -18,7 +18,7 @@ define(
             renderOwnerPicture: renderOwnerPicture,
 			renderPopup: renderPopup,
 			addEditButtonIfOwner: addEditButtonIfOwner,
-			handleBooking: handleBooking
+			handleBooking: handleBooking,
 		});
 
 		return GearProfile;
@@ -85,6 +85,7 @@ define(
 		}
 
 		function didRender() {
+            var view= this;
 			var $owl, $paginatorsLink, images, i;
 			
 			this.renderGearPictures();
@@ -119,8 +120,40 @@ define(
 
             this.addEditButtonIfOwner();
 
+            $('#fb-share-gear').on('click', function(event) {
+
+                var url = window.location.href;
+                instrument = view.gear.data.brand;
+                description = "Check out this "+instrument+" on Sharingear!"+url;
+
+                FB.ui({
+                    method: 'feed',
+                    caption: 'www.sharingear.com',
+                    link: url,
+                    description: description
+                }, function(response) {
+                    //console.log(response);
+                });
+
+            });
+
+            $('#tw-share-gear').on('click', function(event) {
+
+                var twtTitle = "Check out this "+view.gear.data.brand+" on www.sharingear.com";
+                var twtUrl = location.href;
+                var maxLength = 140 - (twtUrl.length + 1);
+                if (twtTitle.length > maxLength) {
+                    twtTitle = twtTitle.substr(0, (maxLength - 3)) + '...';
+                }
+                var twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(twtTitle + ' ' + twtUrl);
+                window.open(twtLink);
+
+            });
+
+
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
 		}
+
 
         function renderOwnerPicture() {
         	var img, isVertical, backgroundSize;
