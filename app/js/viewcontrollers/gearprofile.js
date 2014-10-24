@@ -56,7 +56,7 @@ define(
 						console.log(error);
 						return;
 					}
-					view.owner.data.id = view.gear.data.owner_id;
+					//view.owner.data.id = view.gear.data.owner_id;
 					view.owner.getPublicInfo(function(error) {
 						var gearData, ownerData;
 						if(error) {
