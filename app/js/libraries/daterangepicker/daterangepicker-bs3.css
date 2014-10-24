@@ -138,9 +138,10 @@
   left: 20px;
   padding: 4px;
   margin-top: 1px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+
 }
 
 .daterangepicker.opensleft:before {
@@ -204,9 +205,9 @@
   height: 20px;
   font-size: 13px;
   line-height: 15px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -249,9 +250,10 @@
 }
 
 .daterangepicker td.active, .daterangepicker td.active:hover {
-  background-color: #357ebd;
+  background-color: #FFAE00;
   border-color: #3071a9;
-  color: #fff;
+  color: #000;
+  font-weight: bold;
 }
 
 .daterangepicker td.week, .daterangepicker th.week {
