@@ -199,17 +199,18 @@ define(
 				latlong = new GoogleMaps.LatLng(gear.latitude, gear.longitude);
 				mapOptions = {
 					center: latlong,
-					zoom: 9
+					zoom: 14,
+					maxZoom: 14
 				};
 				this.map = new GoogleMaps.Map(document.getElementById('gearprofile-map'), mapOptions);
 				var marker = new GoogleMaps.Marker({
 					position: latlong,
 					map: this.map,
-					title: 'BOOM!'
+					icon: 'shagicon_003.png' // TODO: put icon on server
 				});
 			}
 
-			$('.adress_click', this.$element).html(gear.address + ' ' + gear.postal_code + ' ' + gear.city + ' ' + gear.region + ' ' + gear.country);
+			$('.adress_click', this.$element).html(/*gear.address + ' ' + */gear.postal_code + ' ' + gear.city + ' ' + gear.region + ', ' + gear.country);
 		}
 
 		function handleBooking(event) {
