@@ -64,7 +64,7 @@ define(
 		function handleNext(event) {
 			var view = event.data,
 				updatedGearData;
-			
+
 			view.gear.save(App.user.data.id, function(error, gear) {
 				if(error) {
 					console.log(error);
@@ -86,6 +86,9 @@ define(
 					console.log(error);
 					return;
 				}
+
+				console.log("Edit picture URL: " + url);
+
 				$thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);

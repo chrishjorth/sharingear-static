@@ -8,14 +8,14 @@ define(
 	function(_, ViewController, App, Gear) {
 		var AddGearPhotos = ViewController.inherit({
 			newGear: null,
-			
+
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populatePhotos: populatePhotos,
 			handleImageUpload: handleImageUpload,
 			handleNext: handleNext,
 			handleBreadcrumbBack: handleBreadcrumbBack
-		}); 
+		});
 		return AddGearPhotos;
 
 		function didInitialize() {
@@ -60,6 +60,9 @@ define(
 					console.log(error);
 					return;
 				}
+
+				console.log("Add picture URL: " + url);
+
 				$thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
