@@ -16,7 +16,7 @@ define(
 			setupEvents: setupEvents,
 			handleCancel: handleCancel,
 			handleNext: handleNext
-		}); 
+		});
 		return EditGear;
 
 		function didInitialize() {
@@ -34,7 +34,7 @@ define(
 			else {
 				$('#editgear-subtype', this.$element).val(this.gear.data.subtype);
 			}
-			
+
 			if(this.gear.data.brand === '') {
 				$("#editgear-brand").prop("selectedIndex", 0); // if no brand is passed, "Choose brand:" by default
 			}
@@ -64,13 +64,13 @@ define(
 		function populateSubtypeSelect() {
 			var gearClassification = App.gearClassification.data.classification,
 				html = '<option> Choose subtype: </option>',
-				$subtypeSelect, 
-				$brandSelect, 
+				$subtypeSelect,
+				$brandSelect,
 				gearSubtypes, i;
 
 			$subtypeSelect = $('#editgear-subtype', this.$element);
 			$subtypeSelect.empty();
-			
+
 			gearSubtypes = gearClassification[this.gear.data.type];
 			for(i = 0; i < gearSubtypes.length; i++) {
 				html += '<option value="' + gearSubtypes[i] + '">' + gearSubtypes[i] + '</option>';
@@ -79,8 +79,8 @@ define(
 		}
 
 		function setupEvents() {
-			this.setupEvent('click', '#editgear-form .btn-cancel', this, this.handleCancel);
-			this.setupEvent('click', '#editgear-form .btn-next', this, this.handleNext);
+			this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel', this, this.handleCancel);
+			this.setupEvent('click', '#editgear-form .btn-save, #editgear-photos-form .btn-save, #editgearpricing-form .btn-save', this, this.handleNext);
 		}
 
 		function handleCancel(event) {
@@ -90,13 +90,31 @@ define(
 
 		function handleNext(event) {
 			var view = event.data,
-			updatedGearData;
+			updatedGearData,
+			isLocationSame = false,
+			currentAddress = view.gear.data.address,
+			currentPostalCode = view.gear.data.postalcode,
+			currentCity = view.gear.data.city,
+			currentRegion = view.gear.data.region,
+			currentCountry = view.gear.data.country,
+			updatedGearData,
+			addressOneliner,
+			updateCall;
 
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
 				subtype: $('#editgear-subtype option:selected', view.$element).val(),
 				model: $('#editgear-model', view.$element).val(),
-				description: $('#editgear-description', view.$element).val()
+				description: $('#editgear-description', view.$element).val(),
+
+				price_a: $('#editgearpricing-form #price_a', this.$element).val(),
+				price_b: $('#editgearpricing-form #price_b', this.$element).val(),
+				price_c: $('#editgearpricing-form #price_c', this.$element).val(),
+				address: $('#editgearpricing-form #editgearpricing-address', this.$element).val(),
+				postal_code: $('#editgearpricing-form #editgearpricing-postalcode', this.$element).val(),
+				city: $('#editgearpricing-form #editgearpricing-city', this.$element).val(),
+				region: $('#editgearpricing-form #editgearpricing-region', this.$element).val(),
+				country: $('#editgearpricing-form #editgearpricing-country option:selected').val()
 			};
 
 			_.extend(view.gear.data, updatedGearData);
@@ -108,7 +126,7 @@ define(
 				}
 			});
 
-			App.router.openModalView('editgearphotos', view.gear);
+			//App.router.openModalView('editgearphotos', view.gear);
 		}
 	}
 );
