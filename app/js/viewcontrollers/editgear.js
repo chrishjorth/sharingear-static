@@ -13,6 +13,8 @@ define(
 			didRender: didRender,
 			populateBrandSelect: populateBrandSelect,
 			populateSubtypeSelect: populateSubtypeSelect,
+            populateLocation: populateLocation,
+            populateCountry: populateCountry,
 			setupEvents: setupEvents,
 			handleCancel: handleCancel,
 			handleNext: handleNext
@@ -28,6 +30,9 @@ define(
 			this.populateBrandSelect();
 			this.populateSubtypeSelect();
 
+            this.populateCountry();
+            this.populateLocation();
+
 			if(this.gear.data.subtype === '') {
 				$("#editgear-subtype").prop("selectedIndex", 0); // if no subtype is passed, "Choose type:" by default
 			}
@@ -41,8 +46,76 @@ define(
 			else {
 				$('#editgear-brand', this.$element).val(this.gear.data.brand);
 			}
+
+            if(this.gear.data.country === '') {
+                $("#editgearpricingloc-form #editgearpricing-country").prop("selectedIndex", 0); // if no country is passed, "Choose country:" by default
+            }
+            else {
+                $("#editgearpricingloc-form #editgearpricing-country", this.$element).val(this.gear.data.country);
+            }
+
 			this.setupEvents();
 		}
+
+        function populateLocation() {
+
+            var city = this.gear.data.city,
+            address = this.gear.data.address,
+            postalcode = this.gear.data.postal_code,
+            region=this.gear.data.region;
+
+            $("#editgearpricingloc-form #editgearpricing-city").val(city);
+            $("#editgearpricingloc-form #editgearpricing-address").val(address);
+            $("#editgearpricingloc-form #editgearpricing-postalcode").val(postalcode);
+            $("#editgearpricingloc-form #editgearpricing-region").val(region);
+        }
+
+        function populateCountry() {
+            var currentCountry = this.gear.data.country,
+                html = '<option> Choose country: </option>',
+                $countrySelect,i;
+            var countryList = [
+                'Andorra',
+                'Australia',
+                'Austria',
+                'Belgium',
+                'Canada',
+                'Cyprus',
+                'Denmark',
+                'Estonia',
+                'Finland',
+                'France',
+                'Germany',
+                'Greece',
+                'Ireland',
+                'Italy',
+                'Latvia',
+                'Lithuania',
+                'Luxembourg',
+                'Malta',
+                'Monaco',
+                'Netherlands',
+                'Norway',
+                'Poland',
+                'Portugal',
+                'San Marino',
+                'Slovakia',
+                'Slovenia',
+                'Spain',
+                'Sweden',
+                'Switzerland',
+                'United Kingdom',
+                'United States'
+            ];
+
+            $countrySelect = $('#editgearpricing-country', this.$element);
+            $countrySelect.empty();
+
+            for(i = 0; i < countryList.length; i++) {
+                html += '<option value="' + countryList[i] + '">' + countryList[i] + '</option>';
+            }
+            $countrySelect.append(html);
+        }
 
 		function populateBrandSelect() {
 			var brands = App.gearClassification.data.brands,
@@ -79,8 +152,8 @@ define(
 		}
 
 		function setupEvents() {
-			this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel', this, this.handleCancel);
-			this.setupEvent('click', '#editgear-form .btn-save, #editgear-photos-form .btn-save, #editgearpricing-form .btn-save', this, this.handleNext);
+			this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel, #editgearpricingloc-form .btn-cancel', this, this.handleCancel);
+			this.setupEvent('click', '#editgear-form .btn-save, #editgear-photos-form .btn-save, #editgearpricing-form .btn-save, #editgearpricingloc-form .btn-save', this, this.handleNext);
 		}
 
 		function handleCancel(event) {
@@ -110,12 +183,13 @@ define(
 				price_a: $('#editgearpricing-form #price_a', this.$element).val(),
 				price_b: $('#editgearpricing-form #price_b', this.$element).val(),
 				price_c: $('#editgearpricing-form #price_c', this.$element).val(),
-				address: $('#editgearpricing-form #editgearpricing-address', this.$element).val(),
-				postal_code: $('#editgearpricing-form #editgearpricing-postalcode', this.$element).val(),
-				city: $('#editgearpricing-form #editgearpricing-city', this.$element).val(),
-				region: $('#editgearpricing-form #editgearpricing-region', this.$element).val(),
-				country: $('#editgearpricing-form #editgearpricing-country option:selected').val()
-			};
+				address: $('#editgearpricingloc-form #editgearpricing-address', this.$element).val(),
+				postal_code: $('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val(),
+				city: $('#editgearpricingloc-form #editgearpricing-city', this.$element).val(),
+				region: $('#editgearpricingloc-form #editgearpricing-region', this.$element).val(),
+				country: $('#editgearpricingloc-form #editgearpricing-country option:selected').val()
+
+            };
 
 			_.extend(view.gear.data, updatedGearData);
 
@@ -125,7 +199,7 @@ define(
 					return;
 				}
 			});
-
+            App.router.closeModalView();
 			//App.router.openModalView('editgearphotos', view.gear);
 		}
 	}
