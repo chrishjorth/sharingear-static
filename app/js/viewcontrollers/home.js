@@ -112,6 +112,7 @@ define(
 		 */
 		function handleSearch(event, callback) {
 			var view = event.data,
+				$locationContainer,
 				location;
 
 			//Remove promo block and billboard
@@ -122,7 +123,11 @@ define(
 				display: 'none'
 			});
 
-			location = $('#home-search-form #search-location', view.$element).val();
+			$locationContainer = $('#home-search-form #search-location', view.$element);
+			location = $locationContainer.val();
+			if(location === '') {
+				location = $locationContainer.attr('placeholder');
+			}
 			view.geocoder.geocode({address: location}, function(results, status) {
 				var locationData;
 				if(status === GoogleMaps.GeocoderStatus.OK) {
@@ -153,31 +158,25 @@ define(
 				}, function(response) {
 					//console.log(response);
 				});
-				//ga('send', 'event', 'request', 'request-fb', 'Request on FB button', 1);
 			});
 
 			return false;
+		}
+
+		function noResults() {
+			$('.no-results-block').css({
+				display: 'block'
+			});
 		}
 
 		/**
 		 * Generate the search results HTML and insert it into the search results block.
 		 * @param searchResults: an array of objects.
 		 */
-
-		function noResults() {
-
-				console.log("yeah but nope");
-
-				$('.no-results-block').css({
-					display: 'block'
-				});
-
-		}
-
 		function populateSearchBlock(searchResults, callback) {
-
-			if (searchResults = {}) {
+			if (searchResults.length <= 0) {
 				noResults();
+				return;
 			}
 
 			var $searchBlock = $('#' + this.searchBlockID, this.$element);
