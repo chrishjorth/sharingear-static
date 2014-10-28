@@ -11,7 +11,8 @@ define(
         inherit: inherit,
         getBaseURL: getBaseURL,
         ajajFileUpload: ajajFileUpload,
-        geoLocationGetCity: geoLocationGetCity
+        geoLocationGetCity: geoLocationGetCity,
+        getCityFromCoordinates: getCityFromCoordinates
 //        getUserInfo: getUserInfo
     };
 
@@ -107,4 +108,24 @@ define(
             }
         });
     }
+
+        function getCityFromCoordinates(lat, lon, callback) {
+            var latitude = lat;
+            var longitude = lon;
+            var geocoder = new GoogleMaps.Geocoder();
+            var locationCity = '';
+
+            //Use Google Geocoder to translate the coordinates to city name
+            var latLng = new GoogleMaps.LatLng(latitude,longitude);
+            geocoder.geocode({'latLng':latLng}, function (results, status) {
+
+                if(status === GoogleMaps.GeocoderStatus.OK) {
+
+                    locationCity = results[0].address_components[2].long_name;
+
+                    callback(locationCity);
+                }
+            });
+        }
+
 });

@@ -47,6 +47,21 @@ define(
                 minDate: minDateString
             });
 
+            //Filling the Location input with current location using HTML5 only if User.city is empty
+            if(App.user.data.city === '' && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position){
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
+                        App.user.data.city = locationCity;
+                        $('#search-location').attr("placeholder", locationCity);
+                    });
+                });
+            }
+            else {
+                $('#search-location').attr("placeholder", App.user.data.city);
+            }
+
             $('#search-return').daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
