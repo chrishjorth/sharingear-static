@@ -1,6 +1,6 @@
-<div class="container-fluid editgear-container-bottom-padding">
+<div class="container-fluid editgear-container-bottom-padding edit-gear-tabs">
 	<div class="row">
-		<ul id="edit-tabs" class="nav nav-tabs" role="tablist">
+		<ul id="edit-tabs" class="nav nav-pills" role="tablist">
 			<li class="active"><a href="#instrument" role="tab" data-toggle="tab">Instrument</a></li>
 			<li class=""><a href="#photos" role="tab" data-toggle="tab">Photos</a></li>
 			<li class=""><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>
@@ -9,6 +9,7 @@
 
 		<div id="edit-tabs-content" class="tab-content">
 			<div class="tab-pane fade active in" id="instrument">
+            <div class="container-fluid editgear-container-bottom-padding">
 				<div class="row">
 					<div class="col-md-12"><h2>{{type}}:</h2></div>
 				</div>
@@ -42,10 +43,13 @@
 							<input type="file" id="editgear-form-imageupload" name="gearpic">
 							<div class="thumb-list-container"><ul></ul></div>
 						</div>-->
-						<div class="pull-right"><button class="btn btn-default btn-cancel price-button-margin">Cancel</button><button class="btn btn-primary btn-save price-button-margin">Save</button></div>
+						<div class="edit-gear-buttons-margin-fix pull-right">
+                            <button class="btn editgear-cancel-button btn-default btn-cancel price-button-margin">Cancel</button>
+                            <button class="btn editgear-save-button btn-primary btn-save price-button-margin">Save</button></div>
 					</form>
 				</div>
 			</div>
+            </div>
 		</div>
 
 
@@ -65,8 +69,8 @@
 								</div>
 							</div>
 							<div class="pull-right">
-								<button class="btn btn-default btn-cancel price-button-margin">Cancel</button>
-								<button class="btn btn-primary price-button-margin btn-save">Save</button>
+								<button class="btn editgear-cancel-button btn-default btn-cancel price-button-margin">Cancel</button>
+								<button class="btn editgear-save-button btn-primary price-button-margin btn-save">Save</button>
 							</div>
 						</form>
 					</div>
@@ -82,7 +86,8 @@
 				<div class="row">
 					<div class="col-md-12">
 						<form id="editgearpricing-form" onsubmit="return false;">
-								<div class="form-group">
+
+                                <div class="form-group">
 									<label for="">Daily Rental Price</label>
 									<div class="price"><input id="price_a" class="same-line form-control" name="price_a" size="7" type="text" value="{{price_a}}"></div>
 									<p class="small">The average daily price is $18</p>
@@ -97,7 +102,9 @@
 									<div class="price"><input id="price_c" class="same-line form-control" name="price_c" size="7" type="text" value="{{price_c}}"></div>
 									<p class="small">An 8 day rental will be charged as 1 week and 1 day</p>
 								</div>
-							<div class="pull-right"><button class="btn btn-default btn-cancel button-margin">Cancel</button><button class="btn btn-primary btn-save price-button-margin">Save</button></div>
+							<div class="edit-gear-buttons-margin-fix2 pull-right">
+                                <button class="btn editgear-cancel-button btn-default btn-cancel button-margin">Cancel</button>
+                                <button class="btn editgear-save-button btn-primary btn-save price-button-margin">Save</button></div>
 						</form>
 					</div>
 				</div>
@@ -127,7 +134,9 @@
 									<select name="country" id="editgearpricing-country" class="form-control">
 									</select>
 								</div>
-							<div class="pull-right"><button class="btn btn-default btn-cancel button-margin">Cancel</button><button class="btn btn-primary btn-save price-button-margin">Save</button></div>
+							<div class="pull-right">
+                                <button class="btn editgear-cancel-button btn-default btn-cancel button-margin">Cancel</button>
+                                <button class="btn editgear-save-button btn-primary btn-save price-button-margin">Save</button></div>
 						</form>
 					</div>
 				</div>
