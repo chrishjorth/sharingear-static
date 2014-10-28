@@ -36,7 +36,8 @@ define(
 		function run(callback) {
 			var app = this,
 				router = this.router,
-				hash = '';
+				loginDeferred = $.Deferred(),
+				documentReadyDeferred = $.Deferred();
 
 			router.addRoutes(
 				'home',
@@ -60,48 +61,52 @@ define(
                 'gearpendingconfirm'
 			);
 
+			// if logged in on facebook, login user on the backend and go to required page.
+			App.user.getLoginStatus(function(response) {
+				// if login was unsuccessful
+				if (response.status !== "connected") {
+					loginDeferred.resolve();
+				}
+				else {
+					App.user.loginToBackend(response, function() {
+						loginDeferred.resolve();
+					});
+				}
+			});
+
 			$(document).ready(function() {
-				var route = null;
+				documentReadyDeferred.resolve();
+			});
+
+			App.gearClassification = new GearClassification.constructor({
+				rootURL: App.API_URL
+			});
+
+			console.log('Sharingear initialized.');
+
+			$.when(loginDeferred, documentReadyDeferred).then(function() {
+				var route = null,
+					hash = '';
 
 				//Load header and footer
 				app.loadHeader();
 
 				app.loadFooter();
 
-				var loadInitialPage = function() {
-					//Load page based on hash
-					hash = window.location.hash;
-					if(hash.length > 0) {
-						route = hash.substring(1);
-					}
-					else {
-						route = 'home';
-					}
-					router.navigateTo(route);
-					if(callback && typeof callback === 'function') {
-						callback();
-					}
-				};
+				//Load page based on hash
+				hash = window.location.hash;
+				if(hash.length > 0) {
+					route = hash.substring(1);
+				}
+				else {
+					route = 'home';
+				}
+				router.navigateTo(route);
 
-				// if logged in on facebook, login user on the backend and go to required page.
-				App.user.getLoginStatus(function(response) {
-					// if login was unsuccessful
-					if (response.status !== "connected") {
-						loadInitialPage();
-					} else {
-						App.user.loginToBackend(response, function() {
-							loadInitialPage();
-						});
-					}
-				});
-
-				App.gearClassification = new GearClassification.constructor({
-					rootURL: App.API_URL
-				});
-
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
 			});
-
-			console.log('Sharingear initialized.');
 		}
 
 		/**
