@@ -200,7 +200,8 @@ define(
 				}
 			});
             App.router.closeModalView();
-			//App.router.openModalView('editgearphotos', view.gear);
+
+//			App.router.openModalView('editgearphotos', view.gear);
 		}
 	}
 );

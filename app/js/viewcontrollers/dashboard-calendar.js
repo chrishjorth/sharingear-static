@@ -18,6 +18,7 @@ define(
 
 			setupWeekCalendar: setupWeekCalendar,
 			setupMonthCalendar: setupMonthCalendar,
+            populateAvailable: populateAvailable,
 
 			switchToWeeks: switchToWeeks,
 			switchToMonths: switchToMonths,
@@ -48,14 +49,64 @@ define(
 		}
 
 		function didRender() {
-			this.setupWeekCalendar();
+            this.setupWeekCalendar();
+            this.populateAvailable();
 
 			this.setupEvent('click', '#dashboard-calendar-weeks-btn', this, this.switchToWeeks);
 			this.setupEvent('click', '#dashboard-calendar-months-btn', this, this.switchToMonths);
 			this.setupEvent('click', '#dashboard-calendar-previous-btn', this, this.handlePrevious);
 			this.setupEvent('click', '#dashboard-calendar-next-btn', this, this.handleNext);
 			this.setupEvent('click', '#dashboard-calendar-today-btn', this, this.handleToday);
-		}
+
+            $("#dashboard-calendar-months-btn").click();
+
+        }
+        //TODO
+        function populateAvailable() {
+            var momentIterator = Moment(this.shownMoment);
+
+            //monthly implementation
+            var dayBox;
+            var $calendarContainer = $('#calendar-months-container', this.$element);
+            for(row = 1; row <= 6; row++) { //6 possible week pieces
+                for (col = 1; col <= 7; col++) { //7 days
+
+                    dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+
+
+
+                    //Color a date
+                    var compare = Moment("2014-11-23 00:00");
+
+                    if(momentIterator.isSame(compare)){
+                        dayBox.css('background','lightblue');
+                    }
+
+                }
+                momentIterator.add(1,'week');
+            }
+
+
+                    //weekly implementation
+            /*var $weekCal = $('.week-calendar', this.$element);
+            var d;
+            for(d=0;d<7;d++){
+                var t;
+                for(t=0;t<24;t++){
+                    var currentHour = moment.weekday(d).hour(t);
+                    var compare = Moment("2014-10-27 00:00");
+
+                    if (currentHour.isSame(compare)) {
+                        var currentCellBox = $('.hour-row:nth-child(0n+'+(t+2)+') .col-md-1:nth-child(0n+'+(d+2)+')', $weekCal);
+                        currentCellBox.css('background','red');
+
+                    }
+                }
+            }*/
+
+
+
+        }
 
 		function setupWeekCalendar() {
 			var $weekCalHeader = $('.week-calendar .calendar-header', this.$element),
@@ -72,7 +123,8 @@ define(
 
 			$('#dashboard-calendar-months-btn', this.$element).removeClass('disabled');
 			$('#dashboard-calendar-weeks-btn', this.$element).addClass('disabled');
-		}
+
+        }
 
 		function setupMonthCalendar() {
 			var $calendarContainer = $('#calendar-months-container', this.$element),

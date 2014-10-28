@@ -18,13 +18,13 @@ define(
             renderOwnerPicture: renderOwnerPicture,
 			renderPopup: renderPopup,
 			addEditButtonIfOwner: addEditButtonIfOwner,
-			handleBooking: handleBooking,
+			handleBooking: handleBooking
 		});
 
 		return GearProfile;
 
 		function didInitialize() {
-			var view = this;
+            var view = this;
 
 			view.templateParameters = {
 				brand: '',
@@ -37,6 +37,7 @@ define(
 				name: '',
 				bio: ''
 			};
+
 
 			if(this.passedData) {
 				this.gear = this.passedData;
@@ -80,7 +81,6 @@ define(
 					});
 				});
 			}
-
 			this.subPath = ''; //To avoid rendering a subview based on the gear id
 		}
 
@@ -258,7 +258,7 @@ define(
 		function addEditButtonIfOwner() {
 			var view = this;
 
-			console.log("logged in user is " + App.user.data.id + " and gear is owned by " + view.gear.data.owner_id);
+//			console.log("logged in user is " + App.user.data.id + " and gear is owned by " + view.gear.data.owner_id);
 
 			// if user is logged in AND is owner, add edit button
 			if(App.user.data.id == view.gear.data.owner_id) {

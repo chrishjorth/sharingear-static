@@ -79,7 +79,8 @@ define(
 		function handleHashChange(event) {
 			//Handle semaphore
 			if(Router.navigateToViewCalled === false){
-				//Origin of event is URL or direct link
+				//Origin of event is URL or
+				// direct link
 				Router.hashUpdated = true;
 				Router.navigateTo(window.location.hash.substring(1), null);
 			}
@@ -90,7 +91,8 @@ define(
 		}
 
 		function navigateTo(route, data, callback) {
-			var router = this;
+
+            var router = this;
 			if(router.hashUpdated === false) {
 				//Hash change event not fired
 				//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
