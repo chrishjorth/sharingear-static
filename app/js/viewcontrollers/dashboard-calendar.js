@@ -78,7 +78,7 @@ define(
             var gearArray = this.gearList.data;
             var dayBox;
             var $calendarContainer = $('#calendar-months-container', this.$element);
-
+            var selections = {};
             //Iterate over all user's gear
             var g;
             for (g = 0; g < gearArray.length; g++) {
@@ -88,11 +88,20 @@ define(
                     var a;
                     for (a = 0; a < AvailabilityArray.length; a++) {
 
-                        var momentIterator = Moment(this.shownMoment);
-                        var rentedMomentFrom = Moment(AvailabilityArray[a].start);
-                        var rentedMomentTo = Moment(AvailabilityArray[a].end);
-
                         //TODO Display availability
+                        var startMoment = Moment(AvailabilityArray[a].start);
+                        var endMoment = Moment(AvailabilityArray[a].end);
+
+                        var momentIterator = Moment(this.shownMoment);
+                        if(Array.isArray(selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
+                            selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
+                        }
+                        selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
+                            startMoment: startMoment,
+                            endMoment: endMoment
+                        });
+
+
 
                         //Populate the calendar
                         for (row = 1; row <= 6; row++) { //6 possible week pieces
@@ -101,15 +110,13 @@ define(
                                 dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
 
 
-                                if (rentedMomentFrom.isSame(momentIterator.weekday(col - 1))) {
-
-                                    //Color the 'busy' days
+                                if (row === 1 && col === 3) {
                                     dayBox.css('background', 'lightblue');
-
+                                    console.log(selections);
                                 }
 
+                            momentIterator.add(1, 'days');
                             }
-                            momentIterator.add(1, 'week');
                         }
 
 
