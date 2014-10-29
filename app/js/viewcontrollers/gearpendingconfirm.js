@@ -4,18 +4,20 @@
  */
 
 define(
-    ['viewcontroller', 'moment', 'app', 'models/gear'],
-	function(ViewController, Moment, App, Gear) {
+    ['viewcontroller', 'moment', 'app', 'models/gear', 'models/user'],
+	function(ViewController, Moment, App, Gear, User) {
 		var GearPendingConfirm = ViewController.inherit({
 			gear: null,
             booking : {
-                id : 1,
+                id : null,
                 gear_id : 1,
-                user_id : 11,
+                renter_id : 2,
                 start_time : '2014-10-01 07:30:15',
                 end_time : '2014-10-10 07:30:15',
-                price : 111
+                price : 111,
+                booking_status : 'pending'
             },
+            renter : null,
 			shownMoment: null,
 			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
 
@@ -56,6 +58,29 @@ define(
 
 			this.gear = this.passedData;
 			this.selections = {};
+
+            view.renter = new User.constructor({
+
+                rootURL: App.API_URL,
+                data : {
+                    id : this.booking.renter_id
+                }
+            });
+
+            view.renter.getPublicInfo(function(error){
+
+                var renterData = view.renter.data;
+
+                view.templateParameters = {
+
+                    name: renterData.name,
+                    surname: renterData.surname,
+                    imgUrl : renterData.image_url,
+                    bio : renterData.bio
+                };
+
+                view.render();
+            });
 
 			this.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
 
