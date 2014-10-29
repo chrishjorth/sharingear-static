@@ -184,7 +184,7 @@ define(
 		function handleSave(event) {
 			var view = event.data,
 				availabilityArray = [],
-				month, monthSelections, selection;
+				month, monthSelections, selection, j;
 			App.router.closeModalView();
 
 			for(month in view.selections) {
@@ -192,8 +192,8 @@ define(
 				for(j = 0; j < monthSelections.length; j++) {
 					selection = monthSelections[j];
 					availabilityArray.push({
-						start: selection.startMoment.format('YYYY-MM-DD') + " 00:00:00",
-						end: selection.endMoment.format('YYYY-MM-DD') + " 23:59:59"
+						start_time: selection.startMoment.format('YYYY-MM-DD') + " 00:00:00",
+						end_time: selection.endMoment.format('YYYY-MM-DD') + " 23:59:59"
 					});
 				}
 			}
