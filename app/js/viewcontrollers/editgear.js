@@ -158,7 +158,11 @@ define(
 
 		function handleCancel(event) {
 			var view = event.data;
-			App.router.closeModalView();
+
+            var currentVerticalPosition = $(window).scrollTop();
+            App.router.closeModalView();
+            $("body, html").animate({scrollTop: currentVerticalPosition},50);
+
 		}
 
 		function handleNext(event) {
@@ -200,7 +204,6 @@ define(
 				}
 			});
             App.router.closeModalView();
-
 //			App.router.openModalView('editgearphotos', view.gear);
 		}
 	}
