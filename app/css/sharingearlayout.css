@@ -2635,15 +2635,6 @@ footer a:hover {
     height: 155px;
 }
 
-@media (max-width: 991px) {
-    .form-left{
-        border: 0   ;
-    }
-
-    .billboard-wrapper {
-        padding-bottom: 280px;
-    }
-}
 
 /*body {
  background-color: rgb(247, 247, 247);
@@ -3539,11 +3530,7 @@ span.num {
 
 }
 
-.edit-gear-buttons-margin-fix2{
 
-    margin-right: 37px;
-
-}
 
 #search-date{
 
@@ -3554,4 +3541,26 @@ span.num {
 
     padding-left: 10px;
 
+}
+
+.buttons-bottom-right{
+
+    position: absolute;
+    bottom: 0px;
+    right: 37px;
+
+}
+
+@media (max-width: 991px) {
+    .form-left{
+        border: 0   ;
+    }
+
+    .billboard-wrapper {
+        padding-bottom: 280px;
+    }
+    .buttons-bottom-right {
+        position: inherit;
+        padding-left: 37px;
+    }
 }
