@@ -56,8 +56,6 @@ define(
 					html = '',
 					gearType;
 
-                //TODO add Cabinet classification
-                //console.log(gearClassification);
 				for(gearType in gearClassification.classification) {
 				//	html += '<div class="custom-radio">
 				//				<input type="radio" class="test" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">

@@ -199,7 +199,7 @@ define(
 			}
 
 			view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
-			});
+            });
 		}
 
 		function handleToday(event) {
