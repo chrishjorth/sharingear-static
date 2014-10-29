@@ -153,6 +153,7 @@ define(
 
         function getPublicInfo(callback) {
         	var model = this;
+
         	this.get('/users/' + this.data.id, function(error, user) {
         		if(error) {
         			callback(error);

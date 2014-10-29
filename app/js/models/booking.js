@@ -1,6 +1,6 @@
 /**
  * Defines a booking item.
- * @author: Horatiu Roman
+ * @author: Horatiu Roman, Gediminas Bivainis
  */
 define(
 	['utilities', 'model'],
@@ -13,8 +13,8 @@ define(
 				end_time: ""
 			},
 
-			createBooking: createBooking
-
+			createBooking: createBooking,
+            getBookingInfo: getBookingInfo
 		});
 
 		return Booking;
@@ -43,5 +43,22 @@ define(
 				}
 			});
 		}
+
+        function getBookingInfo(bookingId, callback) {
+
+            // GET: /users/:user_id/gear/:gear_id/bookings/:booking_id (also accepts 'latest')
+            var model = this;
+            var url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
+
+            this.get(url, function(error, booking) {
+
+                if(error) {
+                    callback(error);
+                    return;
+                }
+                _.extend(model.data, booking);
+                callback(null);
+            });
+        }
 	}
 );

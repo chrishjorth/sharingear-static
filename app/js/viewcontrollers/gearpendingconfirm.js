@@ -4,19 +4,11 @@
  */
 
 define(
-    ['viewcontroller', 'moment', 'app', 'models/gear', 'models/user'],
-	function(ViewController, Moment, App, Gear, User) {
+    ['viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
+	function(ViewController, Moment, App, Gear, User, Booking) {
 		var GearPendingConfirm = ViewController.inherit({
 			gear: null,
-            booking : {
-                id : null,
-                gear_id : 1,
-                renter_id : 2,
-                start_time : '2014-10-01 07:30:15',
-                end_time : '2014-10-10 07:30:15',
-                price : 111,
-                booking_status : 'pending'
-            },
+            booking : null,
             renter : null,
 			shownMoment: null,
 			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
@@ -58,12 +50,34 @@ define(
 
 			this.gear = this.passedData;
 			this.selections = {};
+            this.templateParameters = {
+                image_url : '',
+                name : '',
+                surname : '',
+                bio : ''
+            };
+
+            view.booking = new Booking.constructor({
+                rootURL: App.API_URL,
+                data : {
+                    user_id : App.user.data.id,
+                    gear_id : this.gear.data.id
+                }
+            });
+
+            view.booking.getBookingInfo('latest', function(error){
+
+                console.log(view.booking.data);
+                if(error){
+                    return error;
+                }
+            });
 
             view.renter = new User.constructor({
 
                 rootURL: App.API_URL,
                 data : {
-                    id : this.booking.renter_id
+                    id : view.booking.data.user_id
                 }
             });
 
@@ -75,7 +89,7 @@ define(
 
                     name: renterData.name,
                     surname: renterData.surname,
-                    imgUrl : renterData.image_url,
+                    image_url : renterData.image_url,
                     bio : renterData.bio
                 };
 
