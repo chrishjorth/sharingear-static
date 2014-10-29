@@ -184,7 +184,7 @@ define(
 		function handleSave(event) {
 			var view = event.data,
 				availabilityArray = [],
-				month, monthSelections, selection, j;
+				month, monthSelections, selection;
 			App.router.closeModalView();
 
 			for(month in view.selections) {

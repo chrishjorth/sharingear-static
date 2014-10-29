@@ -4,14 +4,14 @@
  */
 
 define(
-	['viewcontroller', 'moment', 'app', 'models/gear'],
+    ['viewcontroller', 'moment', 'app', 'models/gear'],
 	function(ViewController, Moment, App, Gear) {
 		var GearPendingConfirm = ViewController.inherit({
 			gear: null,
             booking : {
                 id : 1,
                 gear_id : 1,
-                renter_id : 11,
+                user_id : 11,
                 start_time : '2014-10-01 07:30:15',
                 end_time : '2014-10-10 07:30:15',
                 price : 111
@@ -37,12 +37,13 @@ define(
 			handleConfirm: handleConfirm,
 
 			isBeforeOrSameDay: isBeforeOrSameDay,
-			isAfterOrSameDay: isAfterOrSameDay
+			isAfterOrSameDay: isAfterOrSameDay,
+
+            updateOrderPrice : updateOrderPrice
 		}); 
 		return GearPendingConfirm;
 
 		function didInitialize() {
-
 			var view = this;
 			Moment.locale('en-custom', {
 				week: {
@@ -50,13 +51,17 @@ define(
 					doy: 4
 				}
 			});
+
 			this.shownMoment = Moment();
 
 			this.gear = this.passedData;
 			this.selections = {};
 
 			this.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
-				var i, startMoment, endMoment;
+
+				var i, startMoment, endMoment,
+                    orderDateList = '',
+                    dayDiff = 0;
 				if(error) {
 					return;
 				}
@@ -70,12 +75,21 @@ define(
 						startMoment: startMoment,
 						endMoment: endMoment
 					});
+                    orderDateList += '<li>' + startMoment.format('YYYY-MM-DD') + ' - ' + endMoment.format('YYYY-MM-DD') + '</li>';
+                    dayDiff += endMoment.diff(startMoment, 'days') + 1;
 				}
+                // append start and end date intervals to pending order confirmation modal
+                $('[data-orderdates]').html(orderDateList);
+                $('[data-datediff]').text(dayDiff);
+
 				view.renderSelections();
 			});
 		}
 
 		function didRender() {
+
+            this.updateOrderPrice();
+
 			this.renderMonthCalendar($('#gearavailability-months-container'));
 			this.setupMonthCalendar();
 			this.clearSelections();
@@ -95,6 +109,9 @@ define(
 			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
 		}
 
+        function updateOrderPrice(){
+            $('[data-totalorderprice]').text(this.booking.price);
+        }
 		function renderMonthCalendar($monthCalendarContainer) {
 			var header, dayRows, i, day;
 			header = '<div class="row calendar-header">';
@@ -161,11 +178,15 @@ define(
 			var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
 				$calendarContainer = $('#gearavailability-months-container', this.$element),
 				i, startMoment, endMoment, momentIterator;
+				//orderDateList = '', dayDiff = 0;
+
+
 
 			if(Array.isArray(selections) === false) {
 				return;
 			}
 			for(i = 0; i < selections.length; i++) {
+
 				startMoment = selections[i].startMoment;
 				$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
 				endMoment = selections[i].endMoment;
@@ -175,12 +196,6 @@ define(
 					momentIterator.add(1, 'days');
 				}
 				$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
-
-                // append start and end date to pending confirmation modal
-                $('[data-startdate]').text(Moment(startMoment._i).format('YYYY-MM-DD'));
-                $('[data-enddate]').text(Moment(endMoment._i).format('YYYY-MM-DD'));
-                $('[data-datediff]').text(Moment(endMoment._i).diff(startMoment._i, 'days') + 1 + ' days');
-
 			}
 		}
 

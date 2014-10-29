@@ -65,7 +65,7 @@ define(
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
                     // gear status (returns: 'unavailable', 'available', 'pending', 'rented')
-                    console.log('status: ' + gear.data.gear_status);
+
                     if(gear.data.gear_status) {
                         defaultGear.gear_status = gear.data.gear_status === 'pending' ?
                                                 '<button class="btn btn-warning yourgear-status ' + gear.data.gear_status +'" data-yourgearid="' + gear.data.id + '">' + gear.data.gear_status + '</button>'
