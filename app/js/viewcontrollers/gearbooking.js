@@ -354,23 +354,29 @@ define(
 				newData,
 				callback;
 
-			newData = {
-				user_id: App.user.data.id,
-				gear_id: view.gear.data.id,
-				start_time: view.startMoment.format("YYYY-MM-DD HH:mm:ss"),
-				end_time: view.endMoment.format("YYYY-MM-DD HH:mm:ss")
-			};
+            // check if time was selected
+            if(view.startMoment && view.endMoment) {
+                newData = {
+                    user_id: App.user.data.id,
+                    gear_id: view.gear.data.id,
+                    start_time: view.startMoment.format("YYYY-MM-DD HH:mm:ss"),
+                    end_time: view.endMoment.format("YYYY-MM-DD HH:mm:ss")
+                };
+            } else {
+                console.log('No dates selected');
+                return;
+            }
 
-			callback = function(error) {
-				if (error) { 
-					console.log("booking gave error");
-					console.log(error);
-				}
-			}
 
 			_.extend(view.newBooking.data, newData);
+            console.log(view.newBooking.data);
 
-			view.newBooking.createBooking(callback);
+			view.newBooking.createBooking(function(error) {
+                if (error) {
+                    console.log("booking gave error");
+                    console.log(error);
+                }
+            });
 
 			App.router.closeModalView();
 		}

@@ -14,15 +14,22 @@ define(
 			},
 
 			createBooking: createBooking,
-            getBookingInfo: getBookingInfo
+            getBookingInfo: getBookingInfo,
+            updateBooking : updateBooking
 		});
 
 		return Booking;
 
+        // POST: /users/:user_id/gear/:gear_id/bookings
 		function createBooking(callback) {
 			var model = this,
 				newBooking = this.data,
+                url,
 				postData;
+
+            url = '/users/' + newBooking.user_id +
+                  '/gear/' + newBooking.gear_id +
+                  '/bookings';
 
 			postData = {
 				gear_id: newBooking.gear_id,
@@ -30,7 +37,7 @@ define(
 				end_time: newBooking.end_time
 			};
 
-			this.post('/users/' + newBooking.user_id + '/bookings', postData, function(error, data) {
+			this.post(url, postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback(error);
@@ -44,11 +51,11 @@ define(
 			});
 		}
 
+        // GET: /users/:user_id/gear/:gear_id/bookings/:booking_id (also accepts 'latest')
         function getBookingInfo(bookingId, callback) {
 
-            // GET: /users/:user_id/gear/:gear_id/bookings/:booking_id (also accepts 'latest')
-            var model = this;
-            var url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
+            var model = this,
+                url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
 
             this.get(url, function(error, booking) {
 
@@ -58,6 +65,29 @@ define(
                 }
                 _.extend(model.data, booking);
                 callback(null);
+            });
+        }
+
+        // PUT: /users/:user_id/gear/:gear_id/bookings/:booking_id
+        function updateBooking(bookingId, callback) {
+
+            var model = this,
+                url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId,
+                putData = {
+                    booking_status: this.data.booking_status
+                };
+
+            this.put(url, putData, function(error, booking) {
+                if(error) {
+                    console.log(error);
+                    callback(error);
+                    return;
+                }
+
+                _.extend(model.data, booking);
+                if(callback && typeof callback === 'function') {
+                    callback(null);
+                }
             });
         }
 	}
