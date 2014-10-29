@@ -4,14 +4,17 @@
  */
 
 define(
-	['viewcontroller', 'moment', 'app'],
-	function(ViewController, Moment, App) {
+	['viewcontroller', 'moment', 'app', 'models/gearlist'],
+	function(ViewController, Moment, App, GearList) {
 		var Calendar = ViewController.inherit({
 			weekMode: true, //if false then it is months mode
 			/*shownWeek: 0,
 			shownMonth: 0,
 			shownYear: 0,*/
 			shownMoment: null,
+            gearList: new GearList.constructor({
+                rootURL: App.API_URL
+            }),
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -30,6 +33,7 @@ define(
 		return Calendar;
 
 		function didInitialize() {
+            var view = this;
 			if(App.user.data.id === null) {
 				this.ready = false;
 				App.router.navigateTo('home');
@@ -41,6 +45,12 @@ define(
 					doy: 4
 				}
 			});
+            if(this.gearList.isEmpty()) {
+                this.gearList.getUserGear(App.user.data.id, function(userGear) {
+                    gearList = userGear;
+                    view.populateAvailable();
+                });
+            }
 			/*this.shownWeek = Moment().week();
 			this.shownMonth = Moment().month();
 			this.shownYear = Moment().year();*/
@@ -50,7 +60,6 @@ define(
 
 		function didRender() {
             this.setupWeekCalendar();
-            this.populateAvailable();
 
 			this.setupEvent('click', '#dashboard-calendar-weeks-btn', this, this.switchToWeeks);
 			this.setupEvent('click', '#dashboard-calendar-months-btn', this, this.switchToMonths);
@@ -58,52 +67,61 @@ define(
 			this.setupEvent('click', '#dashboard-calendar-next-btn', this, this.handleNext);
 			this.setupEvent('click', '#dashboard-calendar-today-btn', this, this.handleToday);
 
+
             $("#dashboard-calendar-months-btn").click();
 
         }
-        //TODO
-        function populateAvailable() {
-            var momentIterator = Moment(this.shownMoment);
 
-            //monthly implementation
+
+        function populateAvailable() {
+
+            var gearArray = this.gearList.data;
             var dayBox;
             var $calendarContainer = $('#calendar-months-container', this.$element);
-            for(row = 1; row <= 6; row++) { //6 possible week pieces
-                for (col = 1; col <= 7; col++) { //7 days
 
-                    dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+            //Iterate over all user's gear
+            var g;
+            for (g = 0; g < gearArray.length; g++) {
+                gearArray[g].getAvailability(App.user.data.id, function (error, AvailabilityArray) {
+
+                    //Iterate over gear's available periods
+                    var a;
+                    for (a = 0; a < AvailabilityArray.length; a++) {
+
+                        var momentIterator = Moment(this.shownMoment);
+                        var rentedMomentFrom = Moment(AvailabilityArray[a].start);
+                        var rentedMomentTo = Moment(AvailabilityArray[a].end);
+
+                        //TODO Display availability
+
+                        //Populate the calendar
+                        for (row = 1; row <= 6; row++) { //6 possible week pieces
+                            for (col = 1; col <= 7; col++) { //7 days
+
+                                dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+
+
+                                if (rentedMomentFrom.isSame(momentIterator.weekday(col - 1))) {
+
+                                    //Color the 'busy' days
+                                    dayBox.css('background', 'lightblue');
+
+                                }
+
+                            }
+                            momentIterator.add(1, 'week');
+                        }
 
 
 
-                    //Color a date
-                    var compare = Moment("2014-11-23 00:00");
-
-                    if(momentIterator.isSame(compare)){
-                        dayBox.css('background','lightblue');
                     }
 
-                }
-                momentIterator.add(1,'week');
+
+
+
+
+                });
             }
-
-
-                    //weekly implementation
-            /*var $weekCal = $('.week-calendar', this.$element);
-            var d;
-            for(d=0;d<7;d++){
-                var t;
-                for(t=0;t<24;t++){
-                    var currentHour = moment.weekday(d).hour(t);
-                    var compare = Moment("2014-10-27 00:00");
-
-                    if (currentHour.isSame(compare)) {
-                        var currentCellBox = $('.hour-row:nth-child(0n+'+(t+2)+') .col-md-1:nth-child(0n+'+(d+2)+')', $weekCal);
-                        currentCellBox.css('background','red');
-
-                    }
-                }
-            }*/
-
 
 
         }
