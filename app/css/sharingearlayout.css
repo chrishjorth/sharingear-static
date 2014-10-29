@@ -1023,13 +1023,11 @@ background-color: rgb(56,143,192);
 }
 
 .list-group-item-selected{
-    background: #ffd200;
+    background: rgb(0, 174, 255);
 }
 
 .list-group-item-selected a{
-    color:#000000;
-    font-size: 13px;
-    text-transform: uppercase;
+    color:#FFF;
 }
 
 .list-group-item-selected a>img{
