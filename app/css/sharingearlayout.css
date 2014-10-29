@@ -859,9 +859,10 @@ background-color: rgb(56,143,192);
 
     margin: 20px 0 20px 0;
     border-radius: 4px;
-    border-width: 0;
+    border-width: 1px;
     border-style: solid;
     border-color: #dddddd;
+
 }
 .dashboard .menu li {
     height: 70px;
@@ -1023,11 +1024,11 @@ background-color: rgb(56,143,192);
 }
 
 .list-group-item-selected{
-    background: rgb(0, 174, 255);
+    background: #ffd200;
 }
 
 .list-group-item-selected a{
-    color:#FFF;
+    color:#000000;
 }
 
 .list-group-item-selected a>img{
