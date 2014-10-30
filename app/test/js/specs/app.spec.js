@@ -7,6 +7,7 @@ define(
 			before(function(done) {
 				sinon.spy(App, 'loadHeader');
 				sinon.spy(App, 'loadFooter');
+
 				App.run(function() {
 					done();
 				});
@@ -22,7 +23,7 @@ define(
 			});
 
 			it('Connects to development API', function() {
-				expect(App.API_URL).to.equal('http://api.sharingear.com');
+				expect(App.API_URL).to.equal('https://api.sharingear.com');
 			});
 
 			it('Can initialize Sharingear', function() {

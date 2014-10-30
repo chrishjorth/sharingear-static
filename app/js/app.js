@@ -82,8 +82,6 @@ define(
 				rootURL: App.API_URL
 			});
 
-			console.log('Sharingear initialized.');
-
 			$.when(loginDeferred, documentReadyDeferred).then(function() {
 				var route = null,
 					hash = '';
@@ -103,7 +101,7 @@ define(
 				}
 				router.navigateTo(route);
 
-				if(callback && typeof callback === 'function') {
+				if(callback && typeof callback == 'function') {
 					callback();
 				}
 			});
