@@ -11,7 +11,7 @@ define(
 			header: null,
 			footer: null,
 			//API_URL: 'http://0.0.0.0:1338',
-			API_URL: 'http://api.sharingear.com',
+			API_URL: 'https://api.sharingear.com',
 			user: null,
 			gearClassification: null,
 			
@@ -82,8 +82,6 @@ define(
 				rootURL: App.API_URL
 			});
 
-			console.log('Sharingear initialized.');
-
 			$.when(loginDeferred, documentReadyDeferred).then(function() {
 				var route = null,
 					hash = '';
@@ -103,7 +101,7 @@ define(
 				}
 				router.navigateTo(route);
 
-				if(callback && typeof callback === 'function') {
+				if(callback && typeof callback == 'function') {
 					callback();
 				}
 			});
