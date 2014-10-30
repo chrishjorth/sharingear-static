@@ -286,8 +286,6 @@ define(
 			/// gList.brands == ["Ampeg", "Avid", "Bose", "Behringer", ...]
 			/// gList.classification == {amp: ["Guitar amp", "Bass combo", ...], bass: [], dj: [], ...}
 
-			//console.log(gList);
-
 			// find the gear items that contain input string
 			var brandsSuggestions = _.chain(gList.brands)
 				.filter(function(b) {
@@ -311,7 +309,7 @@ define(
 				.value();
 			
 			// change order of suggestions here.
-			var suggestions = brandsSuggestions.concat(classificationSuggestions);
+			var suggestions = classificationSuggestions.concat(brandsSuggestions);
 
 			// stop if nothing found
 			if (!suggestions) {
@@ -322,7 +320,6 @@ define(
 			for (var i = 0; i < N; i++) {
 				if (suggestions.length > i) {
 					var html = '<div class="gear-suggestion">';
-					
 					// parse string and check if any substring is equal to any part of inputValue separated by " "
 					// if so, write it in bold, else write characters 
 					var j = 0;
@@ -339,14 +336,10 @@ define(
 							j++;
 						}
 					}
-
 					html += '</div>';
-
 					$("#gear-suggestions-box").append(html);
-						
 				}
 			};
-
 		}
 
 		function setGearSuggestion() {

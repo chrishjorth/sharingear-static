@@ -215,10 +215,19 @@ define(
 
         function handleLeftHourDropdown(event) {
             var view = event.data;
-            var selected = $("#gearbooking-starttime").val();
-            var hour = selected.split(':')[0].replace( /^\D+/g, '');
+            var startHourSelected = $("#gearbooking-starttime").val();
+            var startHour = startHourSelected.split(':')[0].replace( /^\D+/g, '');
+			var endHourSelected = $("#gearbooking-endtime").val();
+            var endHour = endHourSelected.split(':')[0].replace( /^\D+/g, '');
 
-            view.startMoment.hour(hour);
+            //if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
+	        //    if (startHour > endHour) {
+	        //    	endHour = startHour;
+	        //    	$("#gearbooking-endtime").val(endHour + ":00");
+	        //    }
+			//}
+
+            view.startMoment.hour(startHour);
             view.startMoment.minutes(0);
             view.startMoment.seconds(0);
 
@@ -227,10 +236,19 @@ define(
 
         function handleRightHourDropdown(event) {
             var view = event.data;
-            var selected = $("#gearbooking-endtime").val();
-            var hour = selected.split(':')[0].replace( /^\D+/g, '');
-
-            view.endMoment.hour(hour);
+            var endHourSelected = $("#gearbooking-endtime").val();
+            var endHour = endHourSelected.split(':')[0].replace( /^\D+/g, '');
+            var startHourSelected = $("#gearbooking-starttime").val();
+            var startHour = startHourSelected.split(':')[0].replace( /^\D+/g, '');
+			
+            //if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
+		    //    if (startHour > endHour) {
+	        //    	startHour = endHour;
+	        //    	$("#gearbooking-starttime").val(startHour + ":00");
+	        //    }
+        	//}
+        	
+            view.endMoment.hour(endHour);
             view.endMoment.minutes(0);
             view.endMoment.seconds(0);
 
