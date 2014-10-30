@@ -22,7 +22,9 @@ define(
 			didRender: didRender,
 			setupEvents: setupEvents,
 			handleSearch: handleSearch,
-			populateSearchBlock: populateSearchBlock
+			populateSearchBlock: populateSearchBlock,
+			showGearSuggestions: showGearSuggestions,
+			setGearSuggestion: setGearSuggestion
 		});
 
 		return Home;
@@ -97,11 +99,17 @@ define(
 
 						var autocomplete = new GoogleMaps.places.Autocomplete(input, options);
 
+			$('body').append('<div id="gear-suggestions-box" style="display: none;"></div>');
+
             this.setupEvents();
 		}
 
 		function setupEvents() {
+			var view = this;
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
+			$('#search-gear').on('input', view.showGearSuggestions);
+			$('#gear-suggestions-box').on('click', '.gear-suggestion', view.setGearSuggestion);
+
 		}
 
 		/**
@@ -243,5 +251,108 @@ define(
 				}
 			});
 		}
+
+		function showGearSuggestions() {
+			var inputValue = $('#search-gear').val().toLowerCase();
+			while(inputValue[inputValue.length-1] == " ") {
+				inputValue = inputValue.substring(0, inputValue.length-1);
+			}
+			while(inputValue[0] == " ") {
+				inputValue = inputValue.substring(1);
+			}
+
+			$('#gear-suggestions-box').html("");
+			if (inputValue.length == 0) {
+				$('#gear-suggestions-box').css("display","none");
+				return;
+				
+			} else {
+				var searchField = $("#search-gear");
+				$('#gear-suggestions-box').css({
+					"display":"",
+					"position":"absolute",
+					"width": searchField.outerWidth(),
+					"left": searchField.offset().left,
+					"top": searchField.offset().top + searchField.outerHeight()
+				});
+			}
+			// How many elements to show in the list.
+			var N = 5;
+
+			// get list of possible gear items
+			var gList = App.gearClassification.data;
+			/// info about gearClassification
+			/// gList == {brands: [...], classification: {}}
+			/// gList.brands == ["Ampeg", "Avid", "Bose", "Behringer", ...]
+			/// gList.classification == {amp: ["Guitar amp", "Bass combo", ...], bass: [], dj: [], ...}
+
+			//console.log(gList);
+
+			// find the gear items that contain input string
+			var brandsSuggestions = _.chain(gList.brands)
+				.filter(function(b) {
+					var j = b.toLowerCase().indexOf(inputValue);
+					return j > -1 && (j==0 || b[j-1] == " ");
+				})
+				.first(N)
+				.value();
+
+			// if we got more elements, add them from classificationsuggestions
+			//if (brandsSuggestions.length < N)
+			var classificationSuggestions = _.chain(gList.classification)
+				.map(function(c) {
+					return _.filter(c, function(cItem) {
+						var j = cItem.toLowerCase().indexOf(inputValue);
+						return j > -1 && (j==0 || cItem[j-1] == " ");
+					});
+				})
+				.flatten()
+				.first(N)
+				.value();
+			
+			// change order of suggestions here.
+			var suggestions = brandsSuggestions.concat(classificationSuggestions);
+
+			// stop if nothing found
+			if (!suggestions) {
+				return;
+			};
+
+			// show them in a scrollable list of N objects
+			for (var i = 0; i < N; i++) {
+				if (suggestions.length > i) {
+					var html = '<div class="gear-suggestion">';
+					
+					// parse string and check if any substring is equal to any part of inputValue separated by " "
+					// if so, write it in bold, else write characters 
+					var j = 0;
+					while (j < suggestions[i].length) {
+						// if inputValue is here at suggestions[i][j]
+						if (suggestions[i].toLowerCase().indexOf(inputValue) == j
+							&& (j<1 || suggestions[i][j-1] == " ")) {
+							html += '<span class="gear-suggestion-bold">';
+							html += suggestions[i].substring(j, j+inputValue.length);
+							html += '</span>';
+							j += inputValue.length;
+						} else {
+							html += suggestions[i][j];
+							j++;
+						}
+					}
+
+					html += '</div>';
+
+					$("#gear-suggestions-box").append(html);
+						
+				}
+			};
+
+		}
+
+		function setGearSuggestion() {
+			$("#search-gear").val($(event.target).text());
+			$("#gear-suggestions-box").css("display", "none");
+		}
+
 	}
 );
