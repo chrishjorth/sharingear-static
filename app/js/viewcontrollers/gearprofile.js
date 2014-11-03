@@ -39,6 +39,10 @@ define(
 				bio: ''
 			};
 
+			view.owner = new User.constructor({
+				rootURL: App.API_URL
+			});
+
 			if(this.passedData) {
 				this.gear = this.passedData;
 			}
@@ -48,16 +52,12 @@ define(
 				});
 				this.gear.data.id = this.subPath;
 
-				view.owner = new User.constructor({
-					rootURL: App.API_URL
-				});
-
 				this.gear.update(App.user.data.id, function(error) {
 					if(error) {
 						console.log(error);
 						return;
 					}
-					//view.owner.data.id = view.gear.data.owner_id;
+					view.owner.data.id = view.gear.data.owner_id;
 					view.owner.getPublicInfo(function(error) {
 						var gearData, ownerData;
 						if(error) {
@@ -121,7 +121,6 @@ define(
             this.addEditButtonIfOwner();
 
             $('#fb-share-gear').on('click', function(event) {
-
                 var url = window.location.href;
                 instrument = view.gear.data.brand;
                 description = "Check out this "+instrument+" on Sharingear!"+url;
@@ -134,11 +133,9 @@ define(
                 }, function(response) {
                     //console.log(response);
                 });
-
             });
 
             $('#tw-share-gear').on('click', function(event) {
-
                 var twtTitle = "Check out this "+view.gear.data.brand+" on www.sharingear.com";
                 var twtUrl = location.href;
                 var maxLength = 140 - (twtUrl.length + 1);
@@ -147,7 +144,6 @@ define(
                 }
                 var twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(twtTitle + ' ' + twtUrl);
                 window.open(twtLink);
-
             });
 
 
@@ -256,16 +252,14 @@ define(
 		}
 
 		function addEditButtonIfOwner() {
-			var view = this;
-
-//			console.log("logged in user is " + App.user.data.id + " and gear is owned by " + view.gear.data.owner_id);
-
+			var view = this,
+				$editButton;
 			// if user is logged in AND is owner, add edit button
 			if(App.user.data.id == view.gear.data.owner_id) {
-				$("#editButton").html("<input class='btn btn-info pull-right' type='button' value='Edit'>");
-				$("#editButton").on("click", function() {
+				$editButton = $("#editButton", view.$element);
+				$editButton.html("<input class='btn btn-info pull-right' type='button' value='Edit'>");
+				$editButton.on("click", function() {
 					App.router.openModalView('editgear', view.gear);
-					// on modal view close, refresh view. (render?)
 				});
 			}
 			

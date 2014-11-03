@@ -8,15 +8,9 @@ define(
 
 		var User = Model.inherit({
 			fbStatus: '',
-			data: {
-				id: null,
-				name: '',
-				surname: '',
-                city: '',
-                image_url: '',
-                bio: ''
-			},
+			data: null,
 
+			didInitialize: didInitialize,
 			getLoginStatus: getLoginStatus,
 			login: login,
 			loginToBackend: loginToBackend,
@@ -30,6 +24,17 @@ define(
 		});
 
 		return User;
+
+		function didInitialize() {
+			this.data = {
+				id: null,
+				name: '',
+				surname: '',
+                city: '',
+                image_url: '',
+                bio: ''
+			};
+		}
 
 		function getLoginStatus(callback) {
 			var user = this;
