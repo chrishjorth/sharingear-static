@@ -113,16 +113,19 @@ define(
 			});
 		}
 
+		/**
+		 * Note that a path for a subviews could also simply be a content reference, fx gear/1
+		 */
 		function loadView(view, path, data, callback) {
 			var router = this;
 			//If the view is already loaded just update the path and call render subviews
-			if(this.currentViewController !== null && this.currentViewController.name === view) {
+			if(this.currentViewController !== null && this.currentViewController.name === view && this.currentViewController.hasSubviews === true) {
+				this.currentViewController.path = path;
+				this.currentViewController.setSubPath();
 				//We run the callback before proceeding to rendering the subviews
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
-				this.currentViewController.path = path;
-				this.currentViewController.setSubPath();
 				this.currentViewController.renderSubviews(data);
 				return;
 			}

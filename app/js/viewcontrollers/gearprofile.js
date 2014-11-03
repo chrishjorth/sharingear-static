@@ -7,6 +7,7 @@ define(
 	['viewcontroller', 'app', 'models/gear', 'models/user', 'googlemaps','owlcarousel','magnificpopup'],
 	function(ViewController, App, Gear, User, GoogleMaps, owlcarousel, magnificPopup) {
 		var GearProfile = ViewController.inherit({
+			hasSubviews: false,
 			gear: null,
 			owner: null,
 			map: null,
@@ -37,7 +38,6 @@ define(
 				name: '',
 				bio: ''
 			};
-
 
 			if(this.passedData) {
 				this.gear = this.passedData;

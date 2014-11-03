@@ -14,6 +14,7 @@ define([
 		templateParameters: {},
 		labels: {},
 		path: '', //URL path in the following form mainView/subView fx dashboard/profile
+		hasSubviews: true,
 		$subViewContainer: $(''),
 		subPath: '',
 		passedData: null, //stores extra data passed to the view
@@ -83,7 +84,7 @@ define([
 
 	function renderSubviews(data, callback) {
 		var view = this;
-		if(this.subPath !== '') {
+		if(this.subPath !== '' && this.hasSubviews === true) {
 			this.loadSubView(data, function() {
 				if(view.didRenderSubview && typeof view.didRenderSubview == 'function') {
 					view.didRenderSubview();
