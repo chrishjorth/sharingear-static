@@ -50,8 +50,11 @@ define(
 				this.gear = new Gear.constructor({
 					rootURL: App.API_URL
 				});
-				this.gear.data.id = this.subPath;
-
+				if(this.gear.data.id === null) {
+					this.gear.data.id = this.subPath;
+				}
+				this.subPath = ''; //To avoid rendering a subview based on the gear id
+				
 				this.gear.update(App.user.data.id, function(error) {
 					if(error) {
 						console.log(error);
@@ -81,12 +84,11 @@ define(
 					});
 				});
 			}
-			this.subPath = ''; //To avoid rendering a subview based on the gear id
 		}
 
 		function didRender() {
-            var view= this;
-			var $owl, $paginatorsLink, images, i;
+            var view = this,
+            	$owl, $paginatorsLink, images, i;
 			
 			this.renderGearPictures();
 			this.renderOwnerPicture();

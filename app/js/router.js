@@ -195,6 +195,7 @@ define(
 			}
 
 			//Render the underlying view again so that data gets updated
+			this.currentViewController.initialize();
 			this.currentViewController.render(function() {
 				router.currentViewController.renderSubviews();
 			});

@@ -200,11 +200,9 @@ define(
 			view.gear.save(App.user.data.id, function(error, gear) {
 				if(error) {
 					console.log(error);
-					return;
 				}
+				App.router.closeModalView();
 			});
-            App.router.closeModalView();
-//			App.router.openModalView('editgearphotos', view.gear);
 		}
 	}
 );

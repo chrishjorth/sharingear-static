@@ -22,6 +22,7 @@ define([
 	};
 
 	methods = {
+		initialize: initialize,
 		render: render,
 		setSubPath: setSubPath,
 		renderSubviews: renderSubviews,
@@ -39,10 +40,8 @@ define([
 		this.userEvents = [];
 		
 		this.setSubPath();
-		
-		if(this.didInitialize && typeof this.didInitialize == 'function') {
-			this.didInitialize();
-		}
+
+		this.initialize();
 	};
 
 	inherit = function(inheritOptions) {
@@ -57,6 +56,15 @@ define([
 		constructor: constructor,
 		inherit: inherit
 	};
+
+	/**
+	 * Allows reinitializing a views data.
+	 */
+	function initialize() {
+		if(this.didInitialize && typeof this.didInitialize == 'function') {
+			this.didInitialize();
+		}
+	}
 
 	function render(callback) {
 		var template = this.template(this.templateParameters);
