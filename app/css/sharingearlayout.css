@@ -1358,6 +1358,7 @@ background-color: rgb(56,143,192);
 }
 
 .calendar .selected {
+    cursor: pointer;
     background-color: #1eb0fc;
 }
 
@@ -3597,4 +3598,30 @@ span.num {
         position: inherit;
         padding-left: 37px;
     }
+}
+
+#availablilty-message-container{
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: white;
+    width: 400px;
+    height: 200px;
+    padding: 20px;
+    overflow-x: scroll;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+
+}
+
+#availablilty-message-close{
+
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 0;
 }
