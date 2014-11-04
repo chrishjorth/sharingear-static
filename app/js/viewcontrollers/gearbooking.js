@@ -396,7 +396,8 @@ define(
                 }
             });
 
-			App.router.closeModalView();
+			//App.router.closeModalView();
+			App.router.openModalView('payment');
 		}
 
 		function handleLeftToday(event) {

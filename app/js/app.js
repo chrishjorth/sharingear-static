@@ -58,7 +58,9 @@ define(
 				'editgearpricing',
 				'gearbooking',
 				'gearavailability',
-                'gearpendingconfirm'
+                'gearpendingconfirm',
+                'payment',
+                'submerchantregistration'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.

@@ -15,7 +15,8 @@ requirejs.config({
 		facebook: 'http://connect.facebook.net/en_US/all',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker',
-		magnificpopup: 'libraries/magnificpopup/magnificpopup'
+		magnificpopup: 'libraries/magnificpopup/magnificpopup',
+		braintree: 'https://assets.braintreegateway.com/v2/braintree'
 	},
 	shim: {
 		underscore: {
