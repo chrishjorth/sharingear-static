@@ -48,8 +48,6 @@ define(
 					view.gear.data.id = view.subPath;
 				}
 				view.subPath = ''; //To avoid rendering a subview based on the gear id
-
-				console.log('initializing for gear id: ' + view.gear.data.id);
 				
 				view.gear.update(App.user.data.id, function(error) {
 					if(error) {

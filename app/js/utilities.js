@@ -21,21 +21,20 @@ define(
 	/**
 	 * @return A new object that has the same properties as object but with the added properties inheritOptions
 	 */
-	function inherit(object, inheritOptions) {
+	function inherit(object, defaultOptions) {
 		var Inherited;
 
-		if(typeof inheritOptions !== 'object') {
-			inheritOptions = {};
+		if(typeof defaultOptions !== 'object') {
+			defaultOptions = {};
 		}
 
+		//This becomes the actual contstructor
 		Inherited = function(options) {
 			if(typeof options !== 'object') {
 				options = {};
 			}
-
-			_.extend(inheritOptions, options);
-			
-			object.call(this, inheritOptions);
+			_.extend(options, defaultOptions); //Fill in missing defaults
+			object.call(this, options);
 		};
 		
 		//Inherited.prototype = new object();
