@@ -177,9 +177,8 @@ define(
 		}
 
 		function noResults() {
-			$('.no-results-block').css({
-				display: 'block'
-			});
+            $('#home-search-block').find('#testRow').empty();
+            $('#home-search-block').find('.no-results-block').show();
 		}
 
 		/**
@@ -187,13 +186,19 @@ define(
 		 * @param searchResults: an array of objects.
 		 */
 		function populateSearchBlock(searchResults, callback) {
-			if (searchResults.length <= 0) {
+
+            var $searchBlock = $('#' + this.searchBlockID, this.$element);
+
+			$searchBlock.empty();
+
+            if (searchResults.length <= 0) {
 				noResults();
 				return;
 			}
 
-			var $searchBlock = $('#' + this.searchBlockID, this.$element);
-			$searchBlock.empty();
+            $('#home-search-block').find('.no-results-block').hide();
+
+
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
 					defaultSearchResults, searchResult, imagesTest, i;
