@@ -110,6 +110,9 @@ define(
 
 		function loadFromArray(gearArray) {
 			var i;
+
+            this.data = [];
+
 			for(i = 0; i < gearArray.length; i++) {
 				this.data.push(new Gear.constructor({
 					rootURL: this.rootURL,
