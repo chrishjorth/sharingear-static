@@ -41,18 +41,18 @@ define(
 			});
 
 			if(view.passedData) {
+				//No need to fetch gear from backend
 				view.gear = this.passedData;
 			}
 			else {
-				view.gear = new Gear.constructor({
-					rootURL: App.API_URL
-				});
-
-				if(view.gear.data.id === null) {
-
+				if(view.gear === null) {
+					//In this case the view is loaded the first time, and not returning from a modal fx
+					view.gear = new Gear.constructor({
+						rootURL: App.API_URL
+					});
 					view.gear.data.id = view.subPath;
+					view.subPath = ''; //To avoid rendering a subview based on the gear id
 				}
-				view.subPath = ''; //To avoid rendering a subview based on the gear id
 				
 				view.gear.update(App.user.data.id, function(error) {
 					if(error) {
