@@ -389,13 +389,6 @@ define(
 
 			_.extend(view.newBooking.data, bookingData);
 
-			/*view.newBooking.createBooking(function(error) {
-                if (error) {
-                    console.log("booking gave error");
-                    console.log(error);
-                }
-            });*/
-
 			//App.router.closeModalView();
 			App.router.openModalView('payment', view.newBooking);
 		}
