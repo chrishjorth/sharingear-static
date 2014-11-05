@@ -131,6 +131,9 @@ define(
 				display: 'none'
 			});
 
+            // remove gear suggestion dropdown when submitting
+            $('#gear-suggestions-box').hide();
+
 			$locationContainer = $('#home-search-form #search-location', view.$element);
 			location = $locationContainer.val();
 			if(location === '') {
@@ -142,8 +145,6 @@ define(
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
 
 					view.gearList.search(locationData, $('#home-search-form #search-gear', this.$element).val(), '20140828-20140901', function(searchResults) {
-
-                        console.log(searchResults);
 
                         view.populateSearchBlock(searchResults);
 						if(callback && typeof callback === 'function') {
