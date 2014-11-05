@@ -93,18 +93,24 @@
 						<form id="editgearpricing-form" onsubmit="return false;">
                             <div class="col-md-6 form-left">
                                 <div class="form-group">
+                                    <label for="ride_pricing_per_hour_string">Hourly Rental Price</label>
+                                    <div class="price">
+                                        <input id="price_b" class="same-line form-control" name="price_b" size="7" type="text" value="{{price_b}}">
+                                    </div>
+                                    <p class="small">Any rental under 4 hours is charged at this hourly rate</p>
+                                </div>
+                                <div class="form-group">
 									<label for="">Daily Rental Price</label>
-									<div class="price"><input id="price_a" class="same-line form-control" name="price_a" size="7" type="text" value="{{price_a}}"></div>
+									<div class="price">
+                                        <input id="price_a" class="same-line form-control" name="price_a" size="7" type="text" value="{{price_a}}">
+                                    </div>
 									<p class="small">The average daily price is $18</p>
 								</div>
 								<div class="form-group">
-									<label for="ride_pricing_per_hour_string">Hourly Rental Price</label>
-									<div class="price"><input id="price_b" class="same-line form-control" name="price_b" size="7" type="text" value="{{price_b}}"></div>
-									<p class="small">Any rental under 4 hours is charged at this hourly rate</p>
-								</div>
-								<div class="form-group">
 									<label for="ride_pricing_per_week_string">Weekly Rental Price</label>
-									<div class="price"><input id="price_c" class="same-line form-control" name="price_c" size="7" type="text" value="{{price_c}}"></div>
+									<div class="price">
+                                        <input id="price_c" class="same-line form-control" name="price_c" size="7" type="text" value="{{price_c}}">
+                                    </div>
 									<p class="small">An 8 day rental will be charged as 1 week and 1 day</p>
 								</div>
                             </div>

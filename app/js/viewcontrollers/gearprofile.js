@@ -15,6 +15,9 @@ define(
 			renderGearPictures,
 			renderMap,
 			handleBooking,
+            handleEditProfile,
+            handleFacebookShare,
+            handleTwitterShare,
 			renderPopup,
 			addEditButtonIfOwner;
 
@@ -38,16 +41,18 @@ define(
 			});
 
 			if(view.passedData) {
+				//No need to fetch gear from backend
 				view.gear = this.passedData;
 			}
 			else {
-				view.gear = new Gear.constructor({
-					rootURL: App.API_URL
-				});
-				if(view.gear.data.id === null) {
+				if(view.gear === null) {
+					//In this case the view is loaded the first time, and not returning from a modal fx
+					view.gear = new Gear.constructor({
+						rootURL: App.API_URL
+					});
 					view.gear.data.id = view.subPath;
+					view.subPath = ''; //To avoid rendering a subview based on the gear id
 				}
-				view.subPath = ''; //To avoid rendering a subview based on the gear id
 				
 				view.gear.update(App.user.data.id, function(error) {
 					if(error) {
@@ -116,33 +121,10 @@ define(
 
             this.addEditButtonIfOwner();
 
-            $('#fb-share-gear').on('click', function() {
-                var url, instrument, description;
-                url = window.location.href;
-                instrument = view.gear.data.brand;
-                description = 'Check out this ' + instrument + ' on Sharingear!' + url;
-
-                FB.ui({
-                    method: 'feed',
-                    caption: 'www.sharingear.com',
-                    link: url,
-                    description: description
-                });
-            });
-
-            $('#tw-share-gear').on('click', function() {
-                var twtTitle = 'Check out this ' + view.gear.data.brand + ' on www.sharingear.com';
-                var twtUrl = location.href;
-                var maxLength = 140 - (twtUrl.length + 1);
-                if (twtTitle.length > maxLength) {
-                    twtTitle = twtTitle.substr(0, (maxLength - 3)) + '...';
-                }
-                var twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(twtTitle + ' ' + twtUrl);
-                window.open(twtLink);
-            });
-
-
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
+            this.setupEvent('click', '#editProfileBtn', this, this.handleEditProfile);
+            this.setupEvent('click', '#fb-share-gear', this, this.handleFacebookShare);
+            this.setupEvent('click', '#tw-share-gear', this, this.handleTwitterShare);
 		};
 
 
@@ -222,6 +204,42 @@ define(
 			}
 		};
 
+        handleEditProfile = function (event) {
+
+            var view = event.data;
+
+            App.router.openModalView('editgear', view.gear);
+        };
+
+        handleFacebookShare = function (event) {
+
+            var view = event.data;
+            var url, instrument, description;
+
+            url = window.location.href;
+            instrument = view.gear.data.brand;
+            description = 'Check out this ' + instrument + ' on Sharingear!' + url;
+
+            FB.ui({
+                method: 'feed',
+                caption: 'www.sharingear.com',
+                link: url,
+                description: description
+            });
+        };
+
+        handleTwitterShare = function(event){
+            var view = event.data,
+                twtTitle = 'Check out this ' + view.gear.data.brand + ' on www.sharingear.com',
+                twtUrl = location.href,
+                maxLength = 140 - (twtUrl.length + 1),
+                twtLink;
+
+            twtTitle = twtTitle.length > maxLength ? twtTitle.substr(0, (maxLength - 3)) + '...' : twtTitle;
+            twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(twtTitle + ' ' + twtUrl);
+
+            window.open(twtLink);
+        };
 		// gets images used for rendering gear and uses them to render popup gallery.
 		renderPopup = function() {
 			var view = this;
@@ -246,15 +264,17 @@ define(
 
 		addEditButtonIfOwner = function() {
 			var view = this,
-				$editButton;
+                editButtonContainer,
+                editButton;
+
 			// if user is logged in AND is owner, add edit button
 			if(App.user.data.id == view.gear.data.owner_id) {
-				$editButton = $('#editButton', view.$element);
-				$editButton.html('<input class="btn btn-info pull-right" type="button" value="Edit">');
-				$editButton.on('click', function() {
-					App.router.openModalView('editgear', view.gear);
-				});
-			}	
+
+                editButtonContainer = $('#editButtonContainer', view.$element);
+                editButton = '<button id="editProfileBtn" class="btn btn-info pull-right">Edit</button>';
+
+                editButtonContainer.append(editButton);
+			}
 		};
 
 		return ViewController.inherit({
@@ -270,7 +290,10 @@ define(
             renderOwnerPicture: renderOwnerPicture,
 			renderPopup: renderPopup,
 			addEditButtonIfOwner: addEditButtonIfOwner,
-			handleBooking: handleBooking
+			handleBooking: handleBooking,
+            handleEditProfile: handleEditProfile,
+            handleFacebookShare: handleFacebookShare,
+            handleTwitterShare: handleTwitterShare
 		});
 	}
 );

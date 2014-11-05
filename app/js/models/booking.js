@@ -1,27 +1,25 @@
 /**
  * Defines a booking item.
- * @author: Horatiu Roman, Gediminas Bivainis
+ * @author: Horatiu Roman, Gediminas Bivainis, Chris Hjorth
  */
+'use strict';
+
 define(
-	['utilities', 'model'],
-	function(Utilities, Model) {
-		var Booking = Model.inherit({
-			data: {
-				user_id: null,
-				gear_id: null,
-				start_time: "",
-				end_time: ""
-			},
+	['underscore', 'utilities', 'model'],
+	function(_, Utilities, Model) {
+		var didInitialize,
+            createBooking,
+            getBookingInfo,
+            updateBooking;
 
-			createBooking: createBooking,
-            getBookingInfo: getBookingInfo,
-            updateBooking : updateBooking
-		});
-
-		return Booking;
+        didInitialize = function() {
+            if(this.data === null) {
+                this.data = {};
+            }
+        };
 
         // POST: /users/:user_id/gear/:gear_id/bookings
-		function createBooking(callback) {
+		createBooking = function(callback) {
 			var model = this,
 				newBooking = this.data,
                 url,
@@ -49,16 +47,17 @@ define(
 					callback(null);
 				}
 			});
-		}
+		};
 
         // GET: /users/:user_id/gear/:gear_id/bookings/:booking_id (also accepts 'latest')
-        function getBookingInfo(bookingId, callback) {
-
+        /**
+         * @param userID: The id of the logged in user, required for authorization
+         */
+        getBookingInfo = function(userID, bookingId, callback) {
             var model = this,
-                url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
+                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
 
             this.get(url, function(error, booking) {
-
                 if(error) {
                     callback(error);
                     return;
@@ -66,11 +65,10 @@ define(
                 _.extend(model.data, booking);
                 callback(null);
             });
-        }
+        };
 
         // PUT: /users/:user_id/gear/:gear_id/bookings/:booking_id
-        function updateBooking(bookingId, callback) {
-
+        updateBooking = function(bookingId, callback) {
             var model = this,
                 url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId,
                 putData = {
@@ -89,6 +87,13 @@ define(
                     callback(null);
                 }
             });
-        }
+        };
+
+        return Model.inherit({
+            didInitialize: didInitialize,
+            createBooking: createBooking,
+            getBookingInfo: getBookingInfo,
+            updateBooking : updateBooking
+        });
 	}
 );

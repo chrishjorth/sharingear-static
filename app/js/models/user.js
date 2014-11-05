@@ -8,7 +8,6 @@ define(
 
 		var User = Model.inherit({
 			fbStatus: '',
-			data: null,
 
 			didInitialize: didInitialize,
 			getLoginStatus: getLoginStatus,
@@ -27,15 +26,17 @@ define(
 		return User;
 
 		function didInitialize() {
-			this.data = {
-				id: null,
-				name: '',
-				surname: '',
-                city: '',
-                image_url: '',
-                bio: '',
-                submerchant: false
-			};
+			if(this.data === null) {
+				this.data = {
+					id: null,
+					name: '',
+					surname: '',
+                	city: '',
+                	image_url: '',
+                	bio: '',
+                	submerchant: false
+				};
+			}
 		}
 
 		function getLoginStatus(callback) {

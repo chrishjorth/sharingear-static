@@ -131,6 +131,9 @@ define(
 				display: 'none'
 			});
 
+            // remove gear suggestion dropdown when submitting
+            $('#gear-suggestions-box').hide();
+
 			$locationContainer = $('#home-search-form #search-location', view.$element);
 			location = $locationContainer.val();
 			if(location === '') {
@@ -140,8 +143,10 @@ define(
 				var locationData;
 				if(status === GoogleMaps.GeocoderStatus.OK) {
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
+
 					view.gearList.search(locationData, $('#home-search-form #search-gear', this.$element).val(), '20140828-20140901', function(searchResults) {
-						view.populateSearchBlock(searchResults);
+
+                        view.populateSearchBlock(searchResults);
 						if(callback && typeof callback === 'function') {
 							callback();
 						}
@@ -172,9 +177,8 @@ define(
 		}
 
 		function noResults() {
-			$('.no-results-block').css({
-				display: 'block'
-			});
+            $('#home-search-block').find('#testRow').empty();
+            $('#home-search-block').find('.no-results-block').show();
 		}
 
 		/**
@@ -182,13 +186,19 @@ define(
 		 * @param searchResults: an array of objects.
 		 */
 		function populateSearchBlock(searchResults, callback) {
-			if (searchResults.length <= 0) {
+
+            var $searchBlock = $('#' + this.searchBlockID, this.$element);
+
+			$searchBlock.empty();
+
+            if (searchResults.length <= 0) {
 				noResults();
 				return;
 			}
 
-			var $searchBlock = $('#' + this.searchBlockID, this.$element);
-			$searchBlock.empty();
+            $('#home-search-block').find('.no-results-block').hide();
+
+
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
 					defaultSearchResults, searchResult, imagesTest, i;

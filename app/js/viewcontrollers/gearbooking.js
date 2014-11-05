@@ -36,6 +36,7 @@ define(
 
 			handleCancel: handleCancel,
 			handleBook: handleBook,
+
 			handleLeftToday: handleLeftToday,
 			handleLeftPrevious: handleLeftPrevious,
 			handleLeftNext: handleLeftNext,
@@ -137,13 +138,12 @@ define(
             this.setupEvent('change','#gearbooking-endtime', this, this.handleRightHourDropdown);
         }
 
-        function renderPrice(event) {
-            var view = event.data,
-            	price = 0,
+        function renderPrice() {
+            var price = 0,
             	startDate, endDate, numberOfHours, numberOfDays, numberOfWeeks, difference, display;
             
-            startDate = new Moment(view.startMoment);
-            endDate = new Moment(view.endMoment);
+            startDate = new Moment(this.startMoment);
+            endDate = new Moment(this.endMoment);
 
             numberOfHours = 0;
             numberOfDays = 0;
@@ -200,17 +200,17 @@ define(
                 }
             }
 
-            price = view.pricePerWeek * numberOfWeeks + view.pricePerDay * numberOfDays + view.pricePerHour * numberOfHours;
+            price = this.pricePerWeek * numberOfWeeks + this.pricePerDay * numberOfDays + this.pricePerHour * numberOfHours;
             display = '<p class="price-info">';
             display += 'Hours: ' + numberOfHours + '</br>';
             display += 'Days: ' + numberOfDays + '</br>';
             display += 'Weeks: ' + numberOfWeeks + '</br>';
-            display += 'Price per hour:' + view.pricePerHour + '</br>';
-            display += 'Price per day:' + view.pricePerDay + '</br>';
-            display += 'Price per week:' + view.pricePerWeek + '</br>';
+            display += 'Price per hour:' + this.pricePerHour + '</br>';
+            display += 'Price per day:' + this.pricePerDay + '</br>';
+            display += 'Price per week:' + this.pricePerWeek + '</br>';
             display += '<span class="total-price">' + price + '</span></p>';
-            $('#totalprice', view.$element).html(display);
-            view.newBooking.data.price = price;
+            $('#totalprice', this.$element).html(display);
+            this.newBooking.data.price = price;
         }
 
 
@@ -232,7 +232,7 @@ define(
             view.startMoment.minutes(0);
             view.startMoment.seconds(0);
 
-            renderPrice(event);
+            view.renderPrice();
         }
 
         function handleRightHourDropdown(event) {
@@ -388,15 +388,6 @@ define(
             }
 
 			_.extend(view.newBooking.data, bookingData);
-			console.log('Booking data');
-			console.log(view.newBooking);
-
-			/*view.newBooking.createBooking(function(error) {
-                if (error) {
-                    console.log("booking gave error");
-                    console.log(error);
-                }
-            });*/
 
 			//App.router.closeModalView();
 			App.router.openModalView('payment', view.newBooking);
