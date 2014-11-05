@@ -50,7 +50,10 @@ define(
                         type: '',
                         subtype: '',
                         brand: '',
+                        start_time:'',
+                        end_time:'',
                         model: '',
+                        images:'',
                         img_url: 'images/logotop.png',
                         price: 0,
                         city: '',
@@ -62,7 +65,6 @@ define(
                     if(defaultReservation.images.length > 0) {
                         defaultReservation.img_url = defaultReservation.images.split(',')[0];
                     }
-
 					$('#' + view.reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
 				}
 				if(callback && typeof callback === 'function') {
