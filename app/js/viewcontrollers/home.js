@@ -144,6 +144,8 @@ define(
 				if(status === GoogleMaps.GeocoderStatus.OK) {
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
 
+					App.router.setQueryString('BOOM!');
+
 					view.gearList.search(locationData, $('#home-search-form #search-gear', this.$element).val(), '20140828-20140901', function(searchResults) {
 
                         view.populateSearchBlock(searchResults);
