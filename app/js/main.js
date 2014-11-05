@@ -16,7 +16,8 @@ requirejs.config({
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker',
 		magnificpopup: 'libraries/magnificpopup/magnificpopup',
-		braintree: 'https://assets.braintreegateway.com/v2/braintree'
+		//braintree: 'https://assets.braintreegateway.com/v2/braintree',
+		mangopay: 'libraries/mangopay-kit'
 	},
 	shim: {
 		underscore: {

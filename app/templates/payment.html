@@ -1,6 +1,21 @@
 <div class="container-fluid">
-	<form id="checkout" method="post" action="" onclick="return false;">
-		<div id="dropin"></div>
+	<form id="payment-form" action="" onsubmit="return false;">
+		<input type="radio" name="cardtype" value="visa" checked>
+		VISA	
+		<input type="radio" name="cardtype" value="mastercard">
+		MasterCard
+		<div class="form-group">
+			<label for="payment-cardnumber">Card number:</label>
+			<input type="text" name="cardnumber" id="payment-cardnumber">
+		</div>
+		<div class="form-group">
+			<label for="payment-expirationdate">Expiration date:</label>
+			<input type="text" name="expirationdate" id="payment-expirationdate">
+		</div>
+		<div class="form-group">
+			<label for="payment-csc">Security code:</label>
+			<input type="text" name="csc" id="payment-csc">
+		</div>
 		<button class="btn btn-default">Cancel</button>
 		<input type="submit" class="btn btn-default" value="Pay {{price}} {{currency}}">
 	</form>
