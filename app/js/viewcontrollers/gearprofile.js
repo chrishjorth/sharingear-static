@@ -179,7 +179,7 @@ define(
 				marker = new GoogleMaps.Marker({
 					position: latlong,
 					map: this.map,
-					icon: 'shagicon_003.png' // TODO: put icon on server
+					icon: 'images/shagicon_003.png' // TODO: put icon on server
 				});
 			}
 
