@@ -65,7 +65,7 @@ define(
 					html += '<div class="custom-radio">';
 					html += '<input type="radio" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">';
 					html += '<label for="gear-radio-' + gearType + '">';
-					html += '<img src="images/instrumenticon_' + gearType.toLowerCase() + '.png" class = "custom-radio-image">';
+					html += '<img src="images/addgear/' + gearType.toLowerCase() + '-48x48.png" width="48" height"48" class="custom-radio-image">';
 					html += gearType;
 					html += '</label>';
 					html += '</div>';
