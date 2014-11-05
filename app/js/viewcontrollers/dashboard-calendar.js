@@ -54,6 +54,8 @@ define(
                     view.populateAvailable();
                 });
             }
+
+
 			this.shownMoment = Moment();
 		}
 

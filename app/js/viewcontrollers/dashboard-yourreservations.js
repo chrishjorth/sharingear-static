@@ -24,36 +24,45 @@ define(
 			if(App.user.data) {
 				userID = App.user.data.id;
 			}
-
-			this.gearList.getUserReservations(userID, function(yourReservations) {
-				view.populateYourReservations(yourReservations);
-			});
+            if(this.gearList.isEmpty()) {
+                this.gearList.getUserReservations(userID, function (data) {
+                    if(data.length!==0){
+                        view.populateYourReservations();
+                    }else{
+                        $("#yourreservations-gear-block").append("You don't have any reservations!")
+                    }
+                });
+            }else{
+                view.populateYourReservations();
+            }
 		}
 
-		function populateYourReservations(yourReservations, callback) {
+		function populateYourReservations(callback) {
 			var view = this;
 			require(['text!../templates/yourreservations-item.html'], function(YourReservationsItemTemplate) {
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
-					defaultReservation, reservation;
+					yourReserv = view.gearList.data,
+                    defaultReservation, reservation;
 
-				defaultReservation = {
-					id: null,
-					type: '',
-					subtype: '',
-					brand: '',
-					model: '',
-					description: '',
-					img_url: 'images/logotop.png',
-					price_a: 0,
-					price_b: 0,
-					price_c: 0,
-					city: '',
-					owner_id: null
-				};
+				for(i = 0; i < yourReserv.length; i++) {
+                    defaultReservation = {
+                        id: null,
+                        type: '',
+                        subtype: '',
+                        brand: '',
+                        model: '',
+                        img_url: 'images/logotop.png',
+                        price: 0,
+                        city: '',
+                        gear_status: 'status'
+                    };
 
-				for(i = 0; i < yourReservations.length; i++) {
-					reservation = yourReservations[i];
-					_.extend(defaultReservation, reservation);
+					reservation = yourReserv[i];
+					_.extend(defaultReservation, reservation.data);
+                    if(defaultReservation.images.length > 0) {
+                        defaultReservation.img_url = defaultReservation.images.split(',')[0];
+                    }
+
 					$('#' + view.reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
 				}
 				if(callback && typeof callback === 'function') {

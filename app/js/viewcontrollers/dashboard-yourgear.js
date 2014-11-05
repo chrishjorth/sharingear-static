@@ -27,8 +27,12 @@ define(
 
 			if(this.gearList.isEmpty()) {
 				this.gearList.getUserGear(App.user.data.id, function(userGear) {
-					view.populateYourGear();
-					view.setupEvents();
+                    if(userGear.length!==0) {
+                        view.populateYourGear();
+                        view.setupEvents();
+                    }else{
+                        $("#yourgear-gear-block").append("You haven't listed any gear yet!")
+                    }
 				});
 			}
 			else {
@@ -59,6 +63,7 @@ define(
 						owner_id: null,
                         gear_status : 'unavailable'
 					};
+
 					gear = yourGear[i];
 					_.extend(defaultGear, gear.data);
 					if(defaultGear.images.length > 0) {
@@ -71,6 +76,7 @@ define(
                                                 '<button class="btn btn-warning yourgear-status ' + gear.data.gear_status +'" data-yourgearid="' + gear.data.id + '">' + gear.data.gear_status + '</button>'
                                                 : '<span class="yourgear-status ' + gear.data.gear_status +'">' + gear.data.gear_status + '</span>';
                     }
+
 					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
 				if(callback && typeof callback === 'function') {
