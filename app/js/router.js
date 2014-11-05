@@ -78,7 +78,8 @@ define(
 		};
 
 		navigateTo = function(route, data, callback) {
-            var router = this;
+            var router = this,
+            	queryIndex;
 			if(router.hashUpdated === false) {
 				//Hash change event not fired
 				//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
@@ -90,6 +91,12 @@ define(
 			else {
 				//Hash change event fired
 				router.hashUpdated = false;
+			}
+
+			//Strip querystring from route
+			queryIndex = route.indexOf('?');
+			if(queryIndex >= 0) {
+				route = route.substring(0, queryIndex);
 			}
 
 			this.loadView(this.getRoute(route), route, data, function(error) {

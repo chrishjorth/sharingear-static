@@ -140,13 +140,13 @@ define(
 				location = $locationContainer.attr('placeholder');
 			}
 			view.geocoder.geocode({address: location}, function(results, status) {
-				var locationData;
+				var locationData, searchString;
 				if(status === GoogleMaps.GeocoderStatus.OK) {
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
+					searchString = $('#home-search-form #search-gear', this.$element).val();
+					App.router.setQueryString('location=' + locationData + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901');
 
-					App.router.setQueryString('BOOM!');
-
-					view.gearList.search(locationData, $('#home-search-form #search-gear', this.$element).val(), '20140828-20140901', function(searchResults) {
+					view.gearList.search(locationData, searchString, '20140828-20140901', function(searchResults) {
 
                         view.populateSearchBlock(searchResults);
 						if(callback && typeof callback === 'function') {
