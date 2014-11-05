@@ -10,7 +10,7 @@ define(
 			router: Router,
 			header: null,
 			footer: null,
-//			API_URL: 'http://localhost:1338',
+			//API_URL: 'http://localhost:1338',
 			API_URL: 'https://api.sharingear.com',
 			user: null,
 			gearClassification: null,

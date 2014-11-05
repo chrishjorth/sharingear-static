@@ -4,10 +4,11 @@
  */
 
 define(
-	['viewcontroller', 'app', 'models/gear'],
-	function(ViewController, App, Gear) {
+	['viewcontroller', 'app', 'models/gear', 'googlemaps'],
+	function(ViewController, App, Gear, GoogleMaps) {
 		var EditGear = ViewController.inherit({
 			gear: null,
+			geocoder: new GoogleMaps.Geocoder(),
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -183,7 +184,6 @@ define(
 				subtype: $('#editgear-subtype option:selected', view.$element).val(),
 				model: $('#editgear-model', view.$element).val(),
 				description: $('#editgear-description', view.$element).val(),
-
 				price_a: $('#editgearpricing-form #price_a', this.$element).val(),
 				price_b: $('#editgearpricing-form #price_b', this.$element).val(),
 				price_c: $('#editgearpricing-form #price_c', this.$element).val(),
@@ -192,17 +192,44 @@ define(
 				city: $('#editgearpricingloc-form #editgearpricing-city', this.$element).val(),
 				region: $('#editgearpricingloc-form #editgearpricing-region', this.$element).val(),
 				country: $('#editgearpricingloc-form #editgearpricing-country option:selected').val()
-
             };
 
 			_.extend(view.gear.data, updatedGearData);
 
-			view.gear.save(App.user.data.id, function(error, gear) {
-				if(error) {
-					console.log(error);
-				}
-				App.router.closeModalView();
-			});
+			updateCall = function() {
+				view.gear.save(App.user.data.id, function(error, gear) {
+                    if(error) {
+						console.log(error);
+						return;
+					}
+					App.router.closeModalView();
+				});
+			};
+
+			isLocationSame = (currentAddress === updatedGearData.address &&
+				currentPostalCode === updatedGearData.postal_code &&
+				currentCity === updatedGearData.city &&
+				currentRegion === updatedGearData.region &&
+				currentCountry === updatedGearData.country);
+
+			if(isLocationSame === false) {
+				addressOneliner = updatedGearData.address + ', ' + updatedGearData.postalcode + ' ' + updatedGearData.city + ', ' + updatedGearData.region + ', ' + updatedGearData.country;
+				view.geocoder.geocode({'address': addressOneliner}, function(results, status) {
+					if(status === GoogleMaps.GeocoderStatus.OK) {
+						view.gear.data.longitude = results[0].geometry.location.lng();
+						view.gear.data.latitude = results[0].geometry.location.lat();
+						console.log('lat: ' + view.gear.data.latitude);
+						console.log('long: ' + view.gear.data.longitude);
+						updateCall();
+					}
+					else {
+						console.log('Error geocoding: ' + status);
+					}
+				});
+			}
+			else {
+				updateCall();
+			}
 		}
 	}
 );

@@ -86,7 +86,6 @@ define(
 
 			updateCall = function() {
 				view.gear.save(App.user.data.id, function(error, gear) {
-
                     if(error) {
 						console.log(error);
 						return;
