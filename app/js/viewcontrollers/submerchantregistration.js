@@ -65,13 +65,14 @@ define(
 
 		function handleAccept(event) {
 			var view = event.data;
-			App.user.update(function(error) {
-				if(error) {
-					console.log(error);
-					return;
-				}
+//			App.user.update(function(error) {
+//				if(error) {
+//					console.log(error);
+//					return;
+//				}
+//				App.router.openModalView('gearavailability', view.passedData);
+//			});
 				App.router.openModalView('gearavailability', view.passedData);
-			});
 		}
 	}
 );

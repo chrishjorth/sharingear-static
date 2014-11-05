@@ -216,7 +216,6 @@ define(
             });
 
             //Optimize adjacent periods
-            var finalAvailabilityArray = [];
 
             var iterator,previousPeriod,currentPeriod;
             for(iterator=0;iterator<availabilityArray.length;iterator++){
@@ -278,8 +277,17 @@ define(
 				$this = $(this),
 				selection;
 
-			//Ignore if the day is already selected
+			//If the day is already selected
 			if($this.hasClass('selected') === true) {
+                $this.removeClass('selected');
+                selection = {
+                    startMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')}),
+                    endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
+                };
+
+                //TODO The selection object should be subtracted from view.selections
+                //...
+
 				return;
 			}
 
