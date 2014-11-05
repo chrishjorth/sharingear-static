@@ -15,6 +15,7 @@ define(
 			renderGearPictures,
 			renderMap,
 			handleBooking,
+            handleEditProfile,
 			renderPopup,
 			addEditButtonIfOwner;
 
@@ -44,7 +45,9 @@ define(
 				view.gear = new Gear.constructor({
 					rootURL: App.API_URL
 				});
+
 				if(view.gear.data.id === null) {
+
 					view.gear.data.id = view.subPath;
 				}
 				view.subPath = ''; //To avoid rendering a subview based on the gear id
@@ -143,6 +146,7 @@ define(
 
 
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
+            this.setupEvent('click', '#editProfileBtn', this, this.handleEditProfile);
 		};
 
 
@@ -222,6 +226,13 @@ define(
 			}
 		};
 
+        handleEditProfile = function (event) {
+
+            var view = event.data;
+
+            App.router.openModalView('editgear', view.gear);
+        };
+
 		// gets images used for rendering gear and uses them to render popup gallery.
 		renderPopup = function() {
 			var view = this;
@@ -246,15 +257,17 @@ define(
 
 		addEditButtonIfOwner = function() {
 			var view = this,
-				$editButton;
+                editButtonContainer,
+                editButton;
+
 			// if user is logged in AND is owner, add edit button
 			if(App.user.data.id == view.gear.data.owner_id) {
-				$editButton = $('#editButton', view.$element);
-				$editButton.html('<input class="btn btn-info pull-right" type="button" value="Edit">');
-				$editButton.on('click', function() {
-					App.router.openModalView('editgear', view.gear);
-				});
-			}	
+
+                editButtonContainer = $('#editButtonContainer', view.$element);
+                editButton = '<button id="editProfileBtn" class="btn btn-info pull-right">Edit</button>';
+
+                editButtonContainer.append(editButton);
+			}
 		};
 
 		return ViewController.inherit({
@@ -270,7 +283,8 @@ define(
             renderOwnerPicture: renderOwnerPicture,
 			renderPopup: renderPopup,
 			addEditButtonIfOwner: addEditButtonIfOwner,
-			handleBooking: handleBooking
+			handleBooking: handleBooking,
+            handleEditProfile: handleEditProfile
 		});
 	}
 );
