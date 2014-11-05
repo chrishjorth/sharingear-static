@@ -6,13 +6,6 @@ define(
 	['utilities', 'model'],
 	function(Utilities, Model) {
 		var Booking = Model.inherit({
-			data: {
-				user_id: null,
-				gear_id: null,
-				start_time: "",
-				end_time: ""
-			},
-
 			createBooking: createBooking,
             getBookingInfo: getBookingInfo,
             updateBooking : updateBooking
@@ -52,13 +45,14 @@ define(
 		}
 
         // GET: /users/:user_id/gear/:gear_id/bookings/:booking_id (also accepts 'latest')
-        function getBookingInfo(bookingId, callback) {
-
+        /**
+         * @param userID: The id of the logged in user, required for authorization
+         */
+        function getBookingInfo(userID, bookingId, callback) {
             var model = this,
-                url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
+                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
 
             this.get(url, function(error, booking) {
-
                 if(error) {
                     callback(error);
                     return;
