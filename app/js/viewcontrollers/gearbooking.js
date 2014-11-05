@@ -210,6 +210,7 @@ define(
             display += 'Price per week:' + view.pricePerWeek + '</br>';
             display += '<span class="total-price">' + price + '</span></p>';
             $('#totalprice', view.$element).html(display);
+            view.newBooking.data.price = price;
         }
 
 
@@ -369,35 +370,36 @@ define(
 
 		function handleBook(event) {
 			var view = event.data,
-				newData,
+				bookingData,
 				callback;
 
             // check if time was selected
             if(view.startMoment && view.endMoment) {
-                newData = {
+                bookingData = {
                     user_id: App.user.data.id,
                     gear_id: view.gear.data.id,
                     start_time: view.startMoment.format("YYYY-MM-DD HH:mm:ss"),
                     end_time: view.endMoment.format("YYYY-MM-DD HH:mm:ss")
                 };
-            } else {
+            }
+            else {
                 console.log('No dates selected');
                 return;
             }
 
+			_.extend(view.newBooking.data, bookingData);
+			console.log('Booking data');
+			console.log(view.newBooking);
 
-			_.extend(view.newBooking.data, newData);
-            console.log(view.newBooking.data);
-
-			view.newBooking.createBooking(function(error) {
+			/*view.newBooking.createBooking(function(error) {
                 if (error) {
                     console.log("booking gave error");
                     console.log(error);
                 }
-            });
+            });*/
 
 			//App.router.closeModalView();
-			App.router.openModalView('payment');
+			App.router.openModalView('payment', view.newBooking);
 		}
 
 		function handleLeftToday(event) {
