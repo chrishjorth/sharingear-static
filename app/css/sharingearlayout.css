@@ -3638,3 +3638,14 @@ span.num {
 
 
 }
+
+.thumb-list-container ul{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    max-width: 100%;
+}
+
+.thumb-list-container ul li img{
+    max-width: 100%;
+}
