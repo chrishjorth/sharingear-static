@@ -97,6 +97,8 @@ define(
             this.newBooking = new Booking.constructor({
             	rootURL: App.API_URL
             });
+            console.log('AT INIT');
+            console.log(this.newBooking);
 		}
 
 		function initializeMoments(year, month, date) {
@@ -137,13 +139,12 @@ define(
             this.setupEvent('change','#gearbooking-endtime', this, this.handleRightHourDropdown);
         }
 
-        function renderPrice(event) {
-            var view = event.data,
-            	price = 0,
+        function renderPrice() {
+            var price = 0,
             	startDate, endDate, numberOfHours, numberOfDays, numberOfWeeks, difference, display;
             
-            startDate = new Moment(view.startMoment);
-            endDate = new Moment(view.endMoment);
+            startDate = new Moment(this.startMoment);
+            endDate = new Moment(this.endMoment);
 
             numberOfHours = 0;
             numberOfDays = 0;
@@ -200,17 +201,18 @@ define(
                 }
             }
 
-            price = view.pricePerWeek * numberOfWeeks + view.pricePerDay * numberOfDays + view.pricePerHour * numberOfHours;
+            price = this.pricePerWeek * numberOfWeeks + this.pricePerDay * numberOfDays + this.pricePerHour * numberOfHours;
             display = '<p class="price-info">';
             display += 'Hours: ' + numberOfHours + '</br>';
             display += 'Days: ' + numberOfDays + '</br>';
             display += 'Weeks: ' + numberOfWeeks + '</br>';
-            display += 'Price per hour:' + view.pricePerHour + '</br>';
-            display += 'Price per day:' + view.pricePerDay + '</br>';
-            display += 'Price per week:' + view.pricePerWeek + '</br>';
+            display += 'Price per hour:' + this.pricePerHour + '</br>';
+            display += 'Price per day:' + this.pricePerDay + '</br>';
+            display += 'Price per week:' + this.pricePerWeek + '</br>';
             display += '<span class="total-price">' + price + '</span></p>';
-            $('#totalprice', view.$element).html(display);
-            view.newBooking.data.price = price;
+            $('#totalprice', this.$element).html(display);
+            console.log(this.newBooking);
+            this.newBooking.data.price = price;
         }
 
 
@@ -232,7 +234,7 @@ define(
             view.startMoment.minutes(0);
             view.startMoment.seconds(0);
 
-            renderPrice(event);
+            view.renderPrice();
         }
 
         function handleRightHourDropdown(event) {

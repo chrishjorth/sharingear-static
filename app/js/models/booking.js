@@ -1,20 +1,25 @@
 /**
  * Defines a booking item.
- * @author: Horatiu Roman, Gediminas Bivainis
+ * @author: Horatiu Roman, Gediminas Bivainis, Chris Hjorth
  */
-define(
-	['utilities', 'model'],
-	function(Utilities, Model) {
-		var Booking = Model.inherit({
-			createBooking: createBooking,
-            getBookingInfo: getBookingInfo,
-            updateBooking : updateBooking
-		});
+'use strict';
 
-		return Booking;
+define(
+	['underscore', 'utilities', 'model'],
+	function(_, Utilities, Model) {
+		var didInitialize,
+            createBooking,
+            getBookingInfo,
+            updateBooking;
+
+        didInitialize = function() {
+            if(this.data === null) {
+                this.data = {};
+            }
+        };
 
         // POST: /users/:user_id/gear/:gear_id/bookings
-		function createBooking(callback) {
+		createBooking = function(callback) {
 			var model = this,
 				newBooking = this.data,
                 url,
@@ -42,13 +47,13 @@ define(
 					callback(null);
 				}
 			});
-		}
+		};
 
         // GET: /users/:user_id/gear/:gear_id/bookings/:booking_id (also accepts 'latest')
         /**
          * @param userID: The id of the logged in user, required for authorization
          */
-        function getBookingInfo(userID, bookingId, callback) {
+        getBookingInfo = function(userID, bookingId, callback) {
             var model = this,
                 url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
 
@@ -60,11 +65,10 @@ define(
                 _.extend(model.data, booking);
                 callback(null);
             });
-        }
+        };
 
         // PUT: /users/:user_id/gear/:gear_id/bookings/:booking_id
-        function updateBooking(bookingId, callback) {
-
+        updateBooking = function(bookingId, callback) {
             var model = this,
                 url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId,
                 putData = {
@@ -83,6 +87,13 @@ define(
                     callback(null);
                 }
             });
-        }
+        };
+
+        return Model.inherit({
+            didInitialize: didInitialize,
+            createBooking: createBooking,
+            getBookingInfo: getBookingInfo,
+            updateBooking : updateBooking
+        });
 	}
 );
