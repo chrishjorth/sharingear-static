@@ -36,6 +36,7 @@ define(
 
 			handleCancel: handleCancel,
 			handleBook: handleBook,
+
 			handleLeftToday: handleLeftToday,
 			handleLeftPrevious: handleLeftPrevious,
 			handleLeftNext: handleLeftNext,
@@ -97,8 +98,6 @@ define(
             this.newBooking = new Booking.constructor({
             	rootURL: App.API_URL
             });
-            console.log('AT INIT');
-            console.log(this.newBooking);
 		}
 
 		function initializeMoments(year, month, date) {
@@ -211,7 +210,6 @@ define(
             display += 'Price per week:' + this.pricePerWeek + '</br>';
             display += '<span class="total-price">' + price + '</span></p>';
             $('#totalprice', this.$element).html(display);
-            console.log(this.newBooking);
             this.newBooking.data.price = price;
         }
 
@@ -390,8 +388,6 @@ define(
             }
 
 			_.extend(view.newBooking.data, bookingData);
-			console.log('Booking data');
-			console.log(view.newBooking);
 
 			/*view.newBooking.createBooking(function(error) {
                 if (error) {

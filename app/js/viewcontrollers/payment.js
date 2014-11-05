@@ -6,14 +6,14 @@
 'use strict';
 
 define(
-	['viewcontroller'],
-	function(ViewController) {
+	['viewcontroller', 'app'],
+	function(ViewController, App) {
 		var didInitialize,
-			didRender;
+			didRender,
+			handleCancel;
 
 		didInitialize = function () {
 			this.newBooking = this.passedData;
-			console.log(this.newBooking);
 			this.templateParameters = {
 				price: this.newBooking.data.price,
 				currency: '€'
@@ -21,14 +21,20 @@ define(
 		};
 
 		didRender = function () {
-			
+			//the pay event must also create booking!!!
+			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
+		};
+
+		handleCancel = function() {
+			App.router.closeModalView();
 		};
 
 		return ViewController.inherit({
 			newBooking: null,
 
 			didInitialize: didInitialize,
-			didRender: didRender
+			didRender: didRender,
+			handleCancel: handleCancel
 		});
 	}
 );
