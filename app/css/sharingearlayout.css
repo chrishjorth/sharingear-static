@@ -1266,6 +1266,7 @@ background-color: rgb(56,143,192);
 .symbolyourgear {
     font-size: 23px;
     color: #00aeff;
+    line-height: 1.3em;
     /*position: absolute;*/
     /*padding: 10px 7px 7px;*/
 }
