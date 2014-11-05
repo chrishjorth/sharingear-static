@@ -12,8 +12,8 @@ define(
         getBaseURL: getBaseURL,
         ajajFileUpload: ajajFileUpload,
         geoLocationGetCity: geoLocationGetCity,
-        getCityFromCoordinates: getCityFromCoordinates
-//        getUserInfo: getUserInfo
+        getCityFromCoordinates: getCityFromCoordinates,
+        getQueryStringParameterValue: getQueryStringParameterValue
     };
 
 	return Util;
@@ -108,23 +108,37 @@ define(
         });
     }
 
-        function getCityFromCoordinates(lat, lon, callback) {
-            var latitude = lat;
-            var longitude = lon;
-            var geocoder = new GoogleMaps.Geocoder();
-            var locationCity = '';
+	function getCityFromCoordinates(lat, lon, callback) {
+		var latitude = lat;
+		var longitude = lon;
+		var geocoder = new GoogleMaps.Geocoder();
+		var locationCity = '';
+	
+		//Use Google Geocoder to translate the coordinates to city name
+        var latLng = new GoogleMaps.LatLng(latitude,longitude);
+        geocoder.geocode({'latLng':latLng}, function (results, status) {
+        	if(status === GoogleMaps.GeocoderStatus.OK) {
+        		locationCity = results[0].address_components[2].long_name;
+        		callback(locationCity);
+        	}
+        });
+    }
 
-            //Use Google Geocoder to translate the coordinates to city name
-            var latLng = new GoogleMaps.LatLng(latitude,longitude);
-            geocoder.geocode({'latLng':latLng}, function (results, status) {
+    /**
+	 * Receives a query string and returns the value for the specified parameter.
+	 * Inspired by http://stackoverflow.com/a/1099670
+	 */
+	function getQueryStringParameterValue(queryString, parameter) {
+		queryString = queryString.split("+").join(" ");
 
-                if(status === GoogleMaps.GeocoderStatus.OK) {
-
-                    locationCity = results[0].address_components[2].long_name;
-
-                    callback(locationCity);
-                }
-            });
+		var parameters = {};
+		var tokens;
+        var regEx = /[?&]?([^=]+)=([^&]*)/g;
+        while( (tokens = regEx.exec(queryString)) !== null ) {
+			parameters[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
         }
+
+        return parameters[parameter];
+	}
 
 });
