@@ -12,7 +12,7 @@ requirejs.config({
 		jquery: 'libraries/jquery-2.1.1.min',
 		bootstrap: 'libraries/bootstrap.min',
 		moment: 'libraries/moment.min',
-		facebook: '//connect.facebook.net/en_US/all',
+		facebook: 'https://connect.facebook.net/en_US/all',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker',
 		magnificpopup: 'libraries/magnificpopup/magnificpopup',
@@ -49,7 +49,7 @@ requirejs.config({
 //Based on http://blog.millermedeiros.com/requirejs-2-0-delayed-module-evaluation-and-google-maps/
 // convert Google Maps into an AMD module
 //
-define('googlemaps', ['async!//maps.googleapis.com/maps/api/js?key=AIzaSyByhkzhQYoAk2bAGRYIuvHOl1jIP99_iyE&libraries=places'], function(){
+define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyByhkzhQYoAk2bAGRYIuvHOl1jIP99_iyE&libraries=places'], function(){
     // return the googlemaps namespace for brevity
 		
     return window.google.maps;
