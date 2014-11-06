@@ -221,12 +221,13 @@ define(
 			var endHourSelected = $("#gearbooking-endtime").val();
             var endHour = endHourSelected.split(':')[0].replace( /^\D+/g, '');
 
-            //if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
-	        //    if (startHour > endHour) {
-	        //    	endHour = startHour;
-	        //    	$("#gearbooking-endtime").val(endHour + ":00");
-	        //    }
-			//}
+            if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
+				if (startHour > endHour) {
+					endHour = startHour;
+					$("#gearbooking-endtime").val(endHour + ":00");
+					renderPrice(event);
+				}
+			}
 
             view.startMoment.hour(startHour);
             view.startMoment.minutes(0);
@@ -242,12 +243,13 @@ define(
             var startHourSelected = $("#gearbooking-starttime").val();
             var startHour = startHourSelected.split(':')[0].replace( /^\D+/g, '');
 			
-            //if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
-		    //    if (startHour > endHour) {
-	        //    	startHour = endHour;
-	        //    	$("#gearbooking-starttime").val(startHour + ":00");
-	        //    }
-        	//}
+            if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
+				if (startHour > endHour) {
+					startHour = endHour;
+					$("#gearbooking-starttime").val(startHour + ":00");
+					renderPrice(event);
+				}
+        	}
         	
             view.endMoment.hour(endHour);
             view.endMoment.minutes(0);
