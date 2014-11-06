@@ -3330,6 +3330,37 @@ span.num {
     font-weight: 700;
 }
 
+.gear-suggestion-icon {
+    display: inline-block;
+    background-image: url("../images/sharingearonoff64x32.png");
+    background-position: 0px 0px;
+    width: 16px;
+    height: 16px;
+    margin-top: 5px;
+    margin-right: 7px;
+    margin-left: 2px;
+
+    background-size: 32px;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    vertical-align: top;
+
+}
+
+.gear-suggestion-selected {
+    background-color: #ebf2fe;
+}
+
+.gear-suggestion-selected .gear-suggestion-icon {
+    background-position: -16px 0px;
+    background-repeat: no-repeat;
+    
+    
+}
+
 .search-container #home-search-form .form-group{
 
     text-align: left;

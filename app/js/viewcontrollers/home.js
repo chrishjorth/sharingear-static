@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear home/landing page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Horatiu Roman
  */
 
 define(
@@ -23,14 +23,28 @@ define(
 			setupEvents: setupEvents,
 			handleSearch: handleSearch,
 			populateSearchBlock: populateSearchBlock,
+
 			showGearSuggestions: showGearSuggestions,
-			setGearSuggestion: setGearSuggestion
+			drawGearSuggestions: drawGearSuggestions,
+			setGearSuggestion: setGearSuggestion,
+			gearSuggestionsArray: null,
+			numberOfGearSuggestions: 5,
+			gearSelectionIndex: 0, // 0 = nothing selected. 1..5 selected option #1..#5
+			gearInputString: "",
+			gearInputArrowKeypress: gearInputArrowKeypress,
+			searchGearLoseFocus: searchGearLoseFocus,
+			searchGearGainFocus: searchGearGainFocus
+
 		});
 
 		return Home;
 
 		function didInitialize() {
 //            this.isImageVertical = false;
+			this.gearSelectionIndex = 0;
+			this.gearInputString = "";
+			this.numberOfGearSuggestions = 5;
+			this.gearSuggestionsArray = null; // array of strings
 		}
 
 		function didRender() {
@@ -107,8 +121,11 @@ define(
 		function setupEvents() {
 			var view = this;
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
-			$('#search-gear').on('input', view.showGearSuggestions);
-			$('#gear-suggestions-box').on('click', '.gear-suggestion', view.setGearSuggestion);
+			this.setupEvent('input', '#search-gear', this, view.showGearSuggestions);
+			this.setupEvent('click', '.gear-suggestion', this, view.setGearSuggestion);
+			this.setupEvent('keydown', '#search-gear', this, view.gearInputArrowKeypress);
+			this.setupEvent('focusout', '#search-gear', this, view.searchGearLoseFocus);
+			this.setupEvent('focusin', '#search-gear', this, view.searchGearGainFocus);
 
 		}
 
@@ -264,8 +281,19 @@ define(
 			});
 		}
 
-		function showGearSuggestions() {
+		function showGearSuggestions(event) {
+			var view = event.data;
+			if (view.gearSelectionIndex == 0) {
+				view.gearInputString = $('#search-gear').val(); // save the input string when nothing is selected
+			}
+			// reset selection if new input was added since we saved the gearinputstring
+			if (view.gearInputString != $('#search-gear').val()) { 
+				view.gearSelectionIndex = 0; 
+				view.gearInputString = $('#search-gear').val();
+			}
+
 			var inputValue = $('#search-gear').val().toLowerCase();
+
 			while(inputValue[inputValue.length-1] == " ") {
 				inputValue = inputValue.substring(0, inputValue.length-1);
 			}
@@ -273,23 +301,8 @@ define(
 				inputValue = inputValue.substring(1);
 			}
 
-			$('#gear-suggestions-box').html("");
-			if (inputValue.length == 0) {
-				$('#gear-suggestions-box').css("display","none");
-				return;
-				
-			} else {
-				var searchField = $("#search-gear");
-				$('#gear-suggestions-box').css({
-					"display":"",
-					"position":"absolute",
-					"width": searchField.outerWidth(),
-					"left": searchField.offset().left,
-					"top": searchField.offset().top + searchField.outerHeight()
-				});
-			}
 			// How many elements to show in the list.
-			var N = 5;
+			var N = view.numberOfGearSuggestions;
 
 			// get list of possible gear items
 			var gList = App.gearClassification.data;
@@ -319,30 +332,69 @@ define(
 				.flatten()
 				.first(N)
 				.value();
-			
-			// change order of suggestions here.
-			var suggestions = classificationSuggestions.concat(brandsSuggestions);
+
+			var suggestions;
+			if (classificationSuggestions != undefined) {
+				// change order of suggestions here.
+				suggestions = classificationSuggestions.concat(brandsSuggestions);
+			} else {
+				suggestions = brandsSuggestions;
+			}
+
+			view.gearSuggestionsArray = suggestions;
 
 			// stop if nothing found
 			if (!suggestions) {
+				// clear box
+				$('#gear-suggestions-box').css({
+					"display":"none"
+				});
 				return;
-			};
+			}
 
-			// show them in a scrollable list of N objects
+			view.drawGearSuggestions();
+			
+		}
+
+		function drawGearSuggestions() {
+			var view = this;
+			$('#gear-suggestions-box').html("");
+			// hides or styles box
+			if (view.gearInputString.length == 0) {
+				$('#gear-suggestions-box').css("display","none");
+				return;
+				
+			} else {
+				var searchField = $("#search-gear");
+				$('#gear-suggestions-box').css({
+					"display":"",
+					"position":"absolute",
+					"width": searchField.outerWidth(),
+					"left": searchField.offset().left,
+					"top": searchField.offset().top + searchField.outerHeight()
+				});
+			}
+
+			// How many elements to show in the list.
+			var N = view.numberOfGearSuggestions;
+
+			var suggestions = view.gearSuggestionsArray;
+
 			for (var i = 0; i < N; i++) {
 				if (suggestions.length > i) {
 					var html = '<div class="gear-suggestion">';
-					// parse string and check if any substring is equal to any part of inputValue separated by " "
+					html += '<span class="gear-suggestion-icon"></span>'
+					// parse string and check if any substring is equal to any part of view.gearInputString separated by " "
 					// if so, write it in bold, else write characters 
 					var j = 0;
 					while (j < suggestions[i].length) {
-						// if inputValue is here at suggestions[i][j]
-						if (suggestions[i].toLowerCase().indexOf(inputValue) == j
+						// if view.gearInputString is here at suggestions[i][j]
+						if (suggestions[i].toLowerCase().indexOf(view.gearInputString) == j
 							&& (j<1 || suggestions[i][j-1] == " ")) {
 							html += '<span class="gear-suggestion-bold">';
-							html += suggestions[i].substring(j, j+inputValue.length);
+							html += suggestions[i].substring(j, j+view.gearInputString.length);
 							html += '</span>';
-							j += inputValue.length;
+							j += view.gearInputString.length;
 						} else {
 							html += suggestions[i][j];
 							j++;
@@ -352,11 +404,66 @@ define(
 					$("#gear-suggestions-box").append(html);
 				}
 			};
+			
 		}
 
-		function setGearSuggestion() {
+		function setGearSuggestion(event) {
 			$("#search-gear").val($(event.target).text());
-			$("#gear-suggestions-box").css("display", "none");
+			$("#gear-suggestions-box").hide();
+		}
+
+		function gearInputArrowKeypress(event) {
+			var view = event.data;
+			if (event.which == 38 || event.which == 40) {
+				var possibleSelections = $("#gear-suggestions-box > div");
+				
+				// arrow keys codes: right, up, left, down  =  39 38 37 40
+				if (event.which == 38) { // up
+					view.gearSelectionIndex--;
+				} else if (event.which == 40) {
+					view.gearSelectionIndex++;
+				}
+				if (view.gearSelectionIndex > possibleSelections.length) { // clamp
+					view.gearSelectionIndex = 0;
+				} else if (view.gearSelectionIndex < 0) {
+					view.gearSelectionIndex = possibleSelections.length;
+				}
+				// set classes for selected.
+				for (var i = 0; i < possibleSelections.length; i++) {
+					$(possibleSelections[i]).removeClass("gear-suggestion-selected");
+					if (i+1 == view.gearSelectionIndex) // gearSelectionIndex is 0 when not selected.
+						$(possibleSelections[i]).addClass("gear-suggestion-selected");
+				};
+
+				var searchGear = $("#search-gear");
+				if (view.gearSelectionIndex != 0) {
+					// set input text to the value of the selection
+					searchGear.val($(".gear-suggestion-selected").text());
+				} else {
+					// set input text back to old input value
+					searchGear.val(view.gearInputString);
+				}
+
+				var searchGearLength = searchGear.val().length * 2;
+
+				searchGear.focus();
+				//searchGear[0].setSelectionRange(searchGearLength, searchGearLength);
+				searchGear.val(searchGear.val());
+
+				// prevents input field to set caret to start position.
+				return false;
+			}
+		}
+
+		function searchGearLoseFocus(event) {
+			// clears suggestion box when losing focus
+			$('#gear-suggestions-box').hide();
+
+		}
+
+		function searchGearGainFocus(event) {
+			$('#gear-suggestions-box').show();
+
 		}
 
 	}
