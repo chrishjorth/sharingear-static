@@ -1,124 +1,364 @@
 /**
  * Controller for the Sharingear gear booking page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Horatiu Roman
  */
 
 define(
-	['viewcontroller', 'app', 'models/gear', 'moment'],
-	function(ViewController, App, Gear, Moment) {
+	['viewcontroller', 'app', 'models/gear', 'models/booking', 'moment'],
+	function(ViewController, App, Gear, Booking, Moment) {
 		var GearBooking = ViewController.inherit({
 			gear: null,
-			leftWeekMode: true, //if false then it is months mode
-			rightWeekMode: true, //if false then it is months mode
 			leftMoment: null,
 			rightMoment: null,
+			startMoment: null,
+			endMoment: null,
+            pricePerHour: '',
+            pricePerDay: '',
+            pricePerWeek: '',
+            totalPrice: '',
+            availabilityArray: [],
+            newBooking: null, // saves data about new booking when it is submitted
 
 			didInitialize: didInitialize,
+
+			initializeMoments: initializeMoments,
+
 			didRender: didRender,
 
-			setupLeftWeekCalendar: setupLeftWeekCalendar,
-			setupRightWeekCalendar: setupRightWeekCalendar,
-			setupWeekCalendar: setupWeekCalendar,
+            renderPrice: renderPrice,
+
+            renderMonthCalendar: renderMonthCalendar,
 			setupLeftMonthCalendar: setupLeftMonthCalendar,
 			setupRightMonthCalendar: setupRightMonthCalendar,
 			setupMonthCalendar: setupMonthCalendar,
 
+			disableUnavailableDays: disableUnavailableDays,
+
 			handleCancel: handleCancel,
+			handleBook: handleBook,
+
 			handleLeftToday: handleLeftToday,
 			handleLeftPrevious: handleLeftPrevious,
 			handleLeftNext: handleLeftNext,
-			handleLeftWeeks: handleLeftWeeks,
-			handleLeftMonths: handleLeftMonths,
 			handleRightToday: handleRightToday,
 			handleRightPrevious: handleRightPrevious,
 			handleRightNext: handleRightNext,
-			handleRightWeeks: handleRightWeeks,
-			handleRightMonths: handleRightMonths,
-			handleLeftHourSelection: handleLeftHourSelection,
+
 			handleLeftDaySelection: handleLeftDaySelection,
-			handleRightHourSelection: handleRightHourSelection,
 			handleRightDaySelection: handleRightDaySelection,
 
 			clearLeftSelection: clearLeftSelection,
-			clearRightSelection: clearRightSelection
-		}); 
+			clearRightSelection: clearRightSelection,
+			renderSelection: renderSelection,
+            handleLeftHourDropdown: handleLeftHourDropdown,
+            handleRightHourDropdown: handleRightHourDropdown
+		});
 		return GearBooking;
 
 		function didInitialize() {
+			var view = this;
 			Moment.locale('en-custom', {
 				week: {
 					dow: 1,
 					doy: 4
 				}
 			});
-			this.leftMoment = Moment();
+
+            this.gear = this.passedData;
+
+            this.pricePerHour = this.gear.data.price_a;
+            this.pricePerDay = this.gear.data.price_b;
+            this.pricePerWeek = this.gear.data.price_c;
+
+            this.leftMoment = Moment();
 			this.leftMoment.startOf('week').weekday(0);
+			this.leftMoment.hour(12);
 			this.rightMoment = Moment();
 			this.rightMoment.startOf('week').weekday(0);
+			this.rightMoment.hour(12);
+
+			/*this.startMoment = Moment();
+			this.startMoment.hour(12);
+            this.startMoment.minutes(0);
+            this.startMoment.seconds(0);
+			this.endMoment = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date() + 1});
+			this.endMoment.hour(12);
+			this.endMoment.minutes(0);
+            this.endMoment.seconds(0);*/
+
+            this.availabilityArray = [];
+            this.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
+            	if(error) {
+					return;
+				}
+            	view.availabilityArray = availabilityArray;
+            	view.render();
+            });
+
+            this.newBooking = new Booking.constructor({
+            	rootURL: App.API_URL
+            });
+		}
+
+		function initializeMoments(year, month, date) {
+			this.startMoment = Moment();
+			this.startMoment.hour(12);
+            this.startMoment.minutes(0);
+            this.startMoment.seconds(0);
+			this.endMoment = Moment({year: this.startMoment.year(), month: this.startMoment.month(), day: this.startMoment.date() + 1});
+			this.endMoment.hour(12);
+			this.endMoment.minutes(0);
+            this.endMoment.seconds(0);
 		}
 
 		function didRender() {
-			this.setupLeftWeekCalendar();
-			this.setupRightWeekCalendar();
+			this.renderMonthCalendar($('#gearbooking-leftmonths-container'));
+			this.renderMonthCalendar($('#gearbooking-rightmonths-container'));
+			this.setupLeftMonthCalendar();
+			this.setupRightMonthCalendar();
+			this.disableUnavailableDays();
+
+			this.renderSelection();
 
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
+			this.setupEvent('click', '#gearbooking-book-btn', this, this.handleBook);
 			//Navigation events
 			this.setupEvent('click', '#gearbooking-lefttoday-btn', this, this.handleLeftToday);
 			this.setupEvent('click', '#gearbooking-leftprevious-btn', this, this.handleLeftPrevious);
 			this.setupEvent('click', '#gearbooking-leftnext-btn', this, this.handleLeftNext);
-			this.setupEvent('click', '#gearbooking-leftweeks-btn', this, this.handleLeftWeeks);
-			this.setupEvent('click', '#gearbooking-leftmonths-btn', this, this.handleLeftMonths);
 			this.setupEvent('click', '#gearbooking-righttoday-btn', this, this.handleRightToday);
 			this.setupEvent('click', '#gearbooking-rightprevious-btn', this, this.handleRightPrevious);
 			this.setupEvent('click', '#gearbooking-rightnext-btn', this, this.handleRightNext);
-			this.setupEvent('click', '#gearbooking-rightweeks-btn', this, this.handleRightWeeks);
-			this.setupEvent('click', '#gearbooking-rightmonths-btn', this, this.handleRightMonths);
 			//Time selection events
-			this.setupEvent('click', '#gearbooking-leftweeks-container .hour-row .hour', this, this.handleLeftHourSelection);
 			this.setupEvent('click', '#gearbooking-leftmonths-container .day-row .day', this, this.handleLeftDaySelection);
-			this.setupEvent('click', '#gearbooking-rightweeks-container .hour-row .hour', this, this.handleRightHourSelection);
 			this.setupEvent('click', '#gearbooking-rightmonths-container .day-row .day', this, this.handleRightDaySelection);
-		}
 
-		function setupLeftWeekCalendar() {
-			this.setupWeekCalendar(this.leftMoment, $('.week-calendar:nth-child(0n+1) .calendar-header', this.$element));
-		}
+		    //Hour selection dropdowns
+            this.setupEvent('change','#gearbooking-starttime', this, this.handleLeftHourDropdown);
+            this.setupEvent('change','#gearbooking-endtime', this, this.handleRightHourDropdown);
+        }
 
-		function setupRightWeekCalendar() {
-			this.setupWeekCalendar(this.rightMoment, $('.week-calendar:nth-child(0n+3) .calendar-header', this.$element));
-		}
+        function renderPrice() {
+            var price = 0,
+            	startDate, endDate, numberOfHours, numberOfDays, numberOfWeeks, difference, display;
+            
+            startDate = new Moment(this.startMoment);
+            endDate = new Moment(this.endMoment);
 
-		function setupWeekCalendar(moment, $weekCalHeader) {
-			//Moment months are zero indexed
-			$('.col-md-1:nth-child(0n+2) .date', $weekCalHeader).html((moment.weekday(0).date()) + '/' + (moment.weekday(0).month() + 1)); //Monday date
-			$('.col-md-1:nth-child(0n+3) .date', $weekCalHeader).html((moment.weekday(1).date()) + '/' + (moment.weekday(1).month() + 1)); //Tuesday date etc...
-			$('.col-md-1:nth-child(0n+4) .date', $weekCalHeader).html((moment.weekday(2).date()) + '/' + (moment.weekday(2).month() + 1));
-			$('.col-md-1:nth-child(0n+5) .date', $weekCalHeader).html((moment.weekday(3).date()) + '/' + (moment.weekday(3).month() + 1));
-			$('.col-md-1:nth-child(0n+6) .date', $weekCalHeader).html((moment.weekday(4).date()) + '/' + (moment.weekday(4).month() + 1));
-			$('.col-md-1:nth-child(0n+7) .date', $weekCalHeader).html((moment.weekday(5).date()) + '/' + (moment.weekday(5).month() + 1));
-			$('.col-md-1:nth-child(0n+8) .date', $weekCalHeader).html((moment.weekday(6).date()) + '/' + (moment.weekday(6).month() + 1));
+            numberOfHours = 0;
+            numberOfDays = 0;
+            numberOfWeeks = 0;
+            difference = 0;
+
+            if(startDate.isDST() && !endDate.isDST()) {
+                difference = endDate - startDate;
+                difference -= 3600000; //one hour in milliseconds
+
+            }
+            else if(!startDate.isDST() && endDate.isDST()) {
+                difference = endDate - startDate;
+                difference += 3600000; //one hour in milliseconds
+            }
+            else {
+                difference = endDate - startDate;
+            }
+
+            if(difference >= 604800000) { //exactly one week or more in milliseconds
+                numberOfWeeks = Math.round(difference / 604800000);
+                difference -= 604800000 * numberOfWeeks;
+            }
+
+            if(difference >= 86400000) {//exactly one day or more in milliseconds
+                numberOfDays = Math.round(difference / 86400000);
+                difference -= 86400000 * numberOfDays;
+            }
+
+            numberOfHours = difference / 3600000;
+            numberOfHours = Math.round(numberOfHours);
+
+            if(numberOfHours === 24) { //Check hours for positive overload
+                numberOfDays += 1;
+                numberOfHours -= 24;
+            }
+
+            if (numberOfDays === 7) { //Check days for overload
+                numberOfWeeks += 1;
+                numberOfDays -= 7;
+            }
+
+            while(numberOfHours < 0) { //Check hours for negative overload
+                if(numberOfHours < 0) {
+                    numberOfDays -= 1;
+                    numberOfHours += 24;
+                }
+            }
+
+            while(numberOfDays < 0) { //Check days for negative overload
+                if(numberOfDays < 0) {
+                    numberOfWeeks -= 1;
+                    numberOfDays += 7;
+                }
+            }
+
+            price = this.pricePerWeek * numberOfWeeks + this.pricePerDay * numberOfDays + this.pricePerHour * numberOfHours;
+            display = '<p class="price-info">';
+            display += 'Hours: ' + numberOfHours + '</br>';
+            display += 'Days: ' + numberOfDays + '</br>';
+            display += 'Weeks: ' + numberOfWeeks + '</br>';
+            display += 'Price per hour:' + this.pricePerHour + '</br>';
+            display += 'Price per day:' + this.pricePerDay + '</br>';
+            display += 'Price per week:' + this.pricePerWeek + '</br>';
+            display += '<span class="total-price">' + price + '</span></p>';
+            $('#totalprice', this.$element).html(display);
+            this.newBooking.data.price = price;
+        }
+
+
+        function handleLeftHourDropdown(event) {
+            var view = event.data;
+            var startHourSelected = $("#gearbooking-starttime").val();
+            var startHour = startHourSelected.split(':')[0].replace( /^\D+/g, '');
+			var endHourSelected = $("#gearbooking-endtime").val();
+            var endHour = endHourSelected.split(':')[0].replace( /^\D+/g, '');
+
+            //if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
+	        //    if (startHour > endHour) {
+	        //    	endHour = startHour;
+	        //    	$("#gearbooking-endtime").val(endHour + ":00");
+	        //    }
+			//}
+
+            view.startMoment.hour(startHour);
+            view.startMoment.minutes(0);
+            view.startMoment.seconds(0);
+
+            view.renderPrice();
+        }
+
+        function handleRightHourDropdown(event) {
+            var view = event.data;
+            var endHourSelected = $("#gearbooking-endtime").val();
+            var endHour = endHourSelected.split(':')[0].replace( /^\D+/g, '');
+            var startHourSelected = $("#gearbooking-starttime").val();
+            var startHour = startHourSelected.split(':')[0].replace( /^\D+/g, '');
+			
+            //if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
+		    //    if (startHour > endHour) {
+	        //    	startHour = endHour;
+	        //    	$("#gearbooking-starttime").val(startHour + ":00");
+	        //    }
+        	//}
+        	
+            view.endMoment.hour(endHour);
+            view.endMoment.minutes(0);
+            view.endMoment.seconds(0);
+
+            renderPrice(event);
+
+        }
+
+		function renderMonthCalendar($monthCalendarContainer) {
+			var header, dayRows, i, day;
+			header = '<div class="row calendar-header">';
+			header += '<div class="col-md-1 col-md-offset-1"></div>';
+			header += '<div class="col-md-1">M</div>';
+			header += '<div class="col-md-1">T</div>';
+			header += '<div class="col-md-1">W</div>';
+			header += '<div class="col-md-1">T</div>';
+			header += '<div class="col-md-1">F</div>';
+			header += '<div class="col-md-1">S</div>';
+			header += '<div class="col-md-1">S</div>';
+			header += '</div>';
+			dayRows = '';
+			for(i = 0; i < 6; i++) {
+				dayRows += '<div class="row day-row">';
+				dayRows += '<div class="col-md-1 col-md-offset-1"></div>';
+				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '</div>';
+			}
+			$monthCalendarContainer.append(header + dayRows);
 		}
 
 		function setupLeftMonthCalendar() {
-			var moment = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), date: this.leftMoment.date()});
-			this.setupMonthCalendar(moment, $('#gearbooking-leftmonths-container', this.$element));
+			var moment, firstDayWeek;
+			moment = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), date: this.leftMoment.date()});
+			this.setupMonthCalendar(moment, $('#gearbooking-leftmonths-container', this.$element),true);
+
+            //Disable buttons at start
+            $("#gearbooking-rightprevious-btn").prop('disabled',true);
+            $("#gearbooking-righttoday-btn").prop('disabled',true);
+			$('#gearbooking-lefttitle').html(this.leftMoment.format('MMMM YYYY'));
 		}
 
 		function setupRightMonthCalendar() {
-			var moment = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), date: this.rightMoment.date()});
-			this.setupMonthCalendar(moment, $('#gearbooking-rightmonths-container', this.$element));
+			var moment, firstDayWeek;
+			moment = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), date: this.rightMoment.date()});
+			this.setupMonthCalendar(moment, $('#gearbooking-rightmonths-container', this.$element),false);
+
+            //Disable buttons at start
+            $("#gearbooking-leftprevious-btn").prop('disabled',true);
+            $("#gearbooking-lefttoday-btn").prop('disabled',true);
+			$('#gearbooking-righttitle').html(this.rightMoment.format('MMMM YYYY'));
 		}
 
-		function setupMonthCalendar(moment, $calendarContainer) {
+		function setupMonthCalendar(moment, $calendarContainer, leftOrRight) {
 			var startDay = moment.date(1).weekday(),
-				row, col;
+				$dayBox, row, col, date;
 
 			//Set date to first box
 			moment.subtract(startDay, 'days');
 			for(row = 1; row <= 6; row++) { //6 possible week pieces
 				for(col = 1; col <= 7; col++) { //7 days
-					$('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer).html(moment.date());
+					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+					date = moment.date();
+					$dayBox.html(date);
+					$dayBox.data('date', date);
+					$dayBox.data('month', moment.month());
+					$dayBox.data('year', moment.year());
+					$dayBox.removeClass('disabled');
+					$dayBox.addClass('unavailable');
+                    if(leftOrRight) {
+                        if(moment.month() !== this.leftMoment.month()) {
+                            $dayBox.addClass('disabled');
+                        }
+                        if(moment.isBefore(Moment())){
+                            $dayBox.addClass('disabled');
+                        }
+                        $dayBox.attr('id', 'gearbooking-leftday-' + moment.year() + '-' + (moment.month() + 1) + '-' + date);
+                    }
+                    else {
+                        if(moment.month() !== this.rightMoment.month()) {
+                            $dayBox.addClass('disabled');
+                        }
+                        if(moment.isBefore(Moment())){
+                            $dayBox.addClass('disabled');
+                        }
+                        $dayBox.attr('id', 'gearbooking-rightday-' + moment.year() + '-' + (moment.month() + 1) + '-' + date);
+                    }
 					moment.add(1, 'days');
+				}
+			}
+		}
+
+		function disableUnavailableDays() {
+			var $leftCalendarContainer, $rightCalendarContainer, startMoment, endMoment, i;
+				
+			$leftCalendarContainer = $('#gearbooking-leftmonths-container', this.$element);
+			$rightCalendarContainer = $('#gearbooking-rightmonths-container', this.$element);
+			for(i = 0; i < this.availabilityArray.length; i++) {
+				startMoment = Moment(this.availabilityArray[i].start);
+				endMoment = Moment(this.availabilityArray[i].end);
+				momentIterator = Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
+				while(momentIterator.isBefore(endMoment, 'day') === true || momentIterator.isSame(endMoment, 'day') === true) {
+					$('#gearbooking-leftday-' + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date(), $leftCalendarContainer).removeClass('unavailable');
+					$('#gearbooking-rightday-' + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date(), $rightCalendarContainer).removeClass('unavailable');
+					momentIterator.add(1, 'days');
 				}
 			}
 		}
@@ -128,168 +368,227 @@ define(
 			App.router.closeModalView();
 		}
 
+		function handleBook(event) {
+			var view = event.data,
+				bookingData,
+				callback;
+
+            // check if time was selected
+            if(view.startMoment && view.endMoment) {
+                bookingData = {
+                    user_id: App.user.data.id,
+                    gear_id: view.gear.data.id,
+                    start_time: view.startMoment.format("YYYY-MM-DD HH:mm:ss"),
+                    end_time: view.endMoment.format("YYYY-MM-DD HH:mm:ss")
+                };
+            }
+            else {
+                console.log('No dates selected');
+                return;
+            }
+
+			_.extend(view.newBooking.data, bookingData);
+
+			//App.router.closeModalView();
+			App.router.openModalView('payment', view.newBooking);
+		}
+
 		function handleLeftToday(event) {
 			var view = event.data;
 			view.leftMoment = Moment();
-			if(view.leftWeekMode === true) {
-				view.setupLeftWeekCalendar();
-			}
-			else {
-				view.setupLeftMonthCalendar();
-			}
+            $("#gearbooking-leftprevious-btn").prop('disabled', true);
+            $("#gearbooking-lefttoday-btn").prop('disabled', true);
+			view.setupLeftMonthCalendar();
+			view.renderSelection();
+			view.disableUnavailableDays();
 		}
 
 		function handleLeftPrevious(event) {
 			var view = event.data;
-			if(view.leftWeekMode === true) {
-				view.leftMoment.subtract(1, 'week');
-				view.setupLeftWeekCalendar();
-			}
-			else {
-				view.leftMoment.subtract(1, 'month');
-				view.setupLeftMonthCalendar();
-			}
+            if(view.leftMoment.month() === Moment().month()) {
+                return;
+            }
+            else {
+                $("#gearbooking-lefttoday-btn").prop('disabled',false);
+                $("#gearbooking-leftprevious-btn").prop('disabled',false);
+            }
+			view.leftMoment.subtract(1, 'month');
+            if(view.leftMoment.month() === new Moment().month()) {
+                $("#gearbooking-leftprevious-btn").prop('disabled', true);
+                $("#gearbooking-lefttoday-btn").prop('disabled', true);
+            }
+			view.setupLeftMonthCalendar();
+            view.renderSelection();
+            view.disableUnavailableDays();
 		}
 
 		function handleLeftNext(event) {
 			var view = event.data;
-			if(view.leftWeekMode === true) {
-				view.leftMoment.add(1, 'week');
-				view.setupLeftWeekCalendar();
-			}
-			else {
-				view.leftMoment.add(1, 'month');
-				view.setupLeftMonthCalendar();
-			}
-		}
+			view.leftMoment.add(1, 'month');
 
-		function handleLeftWeeks(event) {
-			var view = event.data,
-				$leftMonthsContainer;
-			if(view.leftWeekMode === true) {
-				return;
-			}
-			$leftMonthsContainer = $('#gearbooking-leftmonths-container', view.$element);
-			if($leftMonthsContainer.hasClass('hidden') === false) {
-				$leftMonthsContainer.addClass('hidden');
-			}
-			$('#gearbooking-leftweeks-container', view.$element).removeClass('hidden');
-			view.leftWeekMode = true;
-		}
+            if(view.leftMoment.month() === new Moment().month()) {
+                $("#gearbooking-leftprevious-btn").prop('disabled',true);
+                $("#gearbooking-lefttoday-btn").prop('disabled',true);
+            }
+            else {
+                $("#gearbooking-lefttoday-btn").prop('disabled',false);
+                $("#gearbooking-leftprevious-btn").prop('disabled',false);
+            }
 
-		function handleLeftMonths(event) {
-			var view = event.data,
-				$leftWeeksContainer;
-			if(view.leftWeekMode === false) {
-				return;
-			}
-			$leftWeeksContainer = $('#gearbooking-leftweeks-container', view.$element);
-			if($leftWeeksContainer.hasClass('hidden') === false) {
-				$leftWeeksContainer.addClass('hidden');
-			}
-			$('#gearbooking-leftmonths-container', view.$element).removeClass('hidden');
 			view.setupLeftMonthCalendar();
-			view.leftWeekMode = false;
+			view.renderSelection();
+			view.disableUnavailableDays();
 		}
 
 		function handleRightToday(event) {
-			var view = event.data;
+            var view = event.data;
 			view.rightMoment = Moment();
-			if(view.rightWeekMode === true) {
-				view.setupRightWeekCalendar();
-			}
-			else {
-				view.setupRightMonthCalendar();
-			}
+            $("#gearbooking-rightprevious-btn").prop('disabled',true);
+            $("#gearbooking-righttoday-btn").prop('disabled',true);
+			view.setupRightMonthCalendar();
+			view.renderSelection();
+			view.disableUnavailableDays();
 		}
 
 		function handleRightPrevious(event) {
 			var view = event.data;
-			if(view.rightWeekMode === true) {
-				view.rightMoment.subtract(1, 'week');
-				view.setupRightWeekCalendar();
-			}
-			else {
-				view.rightMoment.subtract(1, 'month');
-				view.setupRightMonthCalendar();
-			}
+            if(view.rightMoment.month() === new Moment().month()){
+                return;
+            }
+            else {
+                $("#gearbooking-righttoday-btn").prop('disabled',false);
+                $("#gearbooking-rightprevious-btn").prop('disabled',false);
+            }
+            view.rightMoment.subtract(1, 'month');
+
+            if(view.rightMoment.month() === new Moment().month()) {
+                $("#gearbooking-rightprevious-btn").prop('disabled', true);
+                $("#gearbooking-righttoday-btn").prop('disabled', true);
+            }
+			view.setupRightMonthCalendar();
+			view.renderSelection();
+			view.disableUnavailableDays();
 		}
 
 		function handleRightNext(event) {
 			var view = event.data;
-			if(view.rightWeekMode === true) {
-				view.rightMoment.add(1, 'week');
-				view.setupRightWeekCalendar();
-			}
-			else {
-				view.rightMoment.add(1, 'month');
-				view.setupRightMonthCalendar();
-			}
-		}
-
-		function handleRightWeeks(event) {
-			var view = event.data,
-				$rightMonthsContainer;
-			if(view.rightWeekMode === true) {
-				return;
-			}
-			$rightMonthsContainer = $('#gearbooking-rightmonths-container', view.$element);
-			if($rightMonthsContainer.hasClass('hidden') === false) {
-				$rightMonthsContainer.addClass('hidden');
-			}
-			$('#gearbooking-rightweeks-container', view.$element).removeClass('hidden');
-			view.rightWeekMode = true;
-		}
-
-		function handleRightMonths(event) {
-			var view = event.data,
-				$rightWeeksContainer;
-			if(view.rightWeekMode === false) {
-				return;
-			}
-			$rightWeeksContainer = $('#gearbooking-rightweeks-container', view.$element);
-			if($rightWeeksContainer.hasClass('hidden') === false) {
-				$rightWeeksContainer.addClass('hidden');
-			}
-			$('#gearbooking-rightmonths-container', view.$element).removeClass('hidden');
+			view.rightMoment.add(1, 'month');
+            if(view.rightMoment.month() === new Moment().month()) {
+                $("#gearbooking-rightprevious-btn").prop('disabled',true);
+                $("#gearbooking-righttoday-btn").prop('disabled',true);
+            }
+            else {
+                $("#gearbooking-righttoday-btn").prop('disabled',false);
+                $("#gearbooking-rightprevious-btn").prop('disabled',false);
+            }
 			view.setupRightMonthCalendar();
-			view.rightWeekMode = false;
-		}
-
-		function handleLeftHourSelection(event) {
-			var $this = $(this),
-				view = event.data;
-			view.clearLeftSelection();
-			if($this.hasClass('selected') === false) {
-				$this.addClass('selected');
-			}
+			view.renderSelection();
+			view.disableUnavailableDays();
 		}
 
 		function handleLeftDaySelection(event) {
 			var $this = $(this),
-				view = event.data;
-			view.clearLeftSelection();
-			if($this.hasClass('selected') === false) {
-				$this.addClass('selected');
-			}
-		}
+				view = event.data,
+				date, month, year, i;
 
-		function handleRightHourSelection(event) {
-			var $this = $(this),
-				view = event.data;
-			view.clearRightSelection();
-			if($this.hasClass('selected') === false) {
-				$this.addClass('selected');
+			//Check that selection start moment is not previous to end moment
+			date = $this.data('date');
+			month = $this.data('month');
+			year = $this.data('year');
+
+            //Do not allow selecting outside of the month
+            if(month !== view.leftMoment.month()) {
+                return;
+            }
+
+            if($this.hasClass('unavailable') === true) {
+            	return;
+            }
+
+			view.clearLeftSelection();
+
+			if(view.startMoment === null || view.endMoment === null) {
+				view.initializeMoments();
 			}
+
+			view.startMoment.date(date);
+			view.startMoment.month(month);
+			view.startMoment.year(year);
+
+			if(view.startMoment.isAfter(view.endMoment, 'day') === true) {
+				view.endMoment.date(date);
+				view.endMoment.month(month);
+				view.endMoment.add(1, 'days');
+			}
+
+			//Check if there is a hole in the selection and if yes move endMoment back
+			//Assert that the availability array is sorted by start dates
+			i = 0;
+			while(i < view.availabilityArray.length) {
+				availableStartMoment = Moment(view.availabilityArray[i].start);
+				availableEndMoment = Moment(view.availabilityArray[i].end);
+				if((view.startMoment.isSame(availableStartMoment, 'day') === true || view.startMoment.isAfter(availableStartMoment, 'day') === true) && (view.startMoment.isBefore(availableEndMoment, 'day') === true || view.startMoment.isSame(availableEndMoment, 'day') === true)) { //We found the availability interval
+					if(view.endMoment.isAfter(availableEndMoment, 'day') === true) {
+						view.endMoment = availableEndMoment;
+					}
+				}
+				i++;
+			}
+
+			view.renderSelection();
+            view.renderPrice(event);
 		}
 
 		function handleRightDaySelection(event) {
 			var $this = $(this),
-				view = event.data;
+				view = event.data,
+				month, date, year, i;
+
+			month = $this.data('month');
+			date = $this.data('date');
+			year = $this.data('year');
+
+            //Do not allow selecting outside of the month
+            if($this.data('month') !== view.rightMoment.month()) {
+                return;
+            }
+
+            if($this.hasClass('unavailable') === true) {
+            	return;
+            }
+
 			view.clearRightSelection();
-			if($this.hasClass('selected') === false) {
-				$this.addClass('selected');
+
+			if(view.startMoment === null || view.endMoment === null) {
+				view.initializeMoments();
 			}
+			
+			view.endMoment.date(date);
+			view.endMoment.month(month);
+			view.endMoment.year(year);
+
+			if(view.endMoment.isBefore(view.startMoment, 'day')) {
+				view.startMoment.date(date);
+				view.startMoment.month(month);
+				view.startMoment.subtract(1, 'days');
+			}
+
+			//Check if there is a hole in the selection and if yes move startMoment forth
+			//Assert that the availability array is sorted by start dates
+			i = view.availabilityArray.length - 1;
+			while(i >= 0) {
+				availableStartMoment = Moment(view.availabilityArray[i].start);
+				availableEndMoment = Moment(view.availabilityArray[i].end);
+				if((view.endMoment.isBefore(availableEndMoment, 'day') === true || view.endMoment.isSame(availableEndMoment, 'day') === true) && (view.endMoment.isAfter(availableStartMoment, 'day') === true || view.endMoment.isSame(availableStartMoment, 'day') === true)) { //We found the availability interval
+					if(view.startMoment.isBefore(availableStartMoment, 'day') === true) {
+						view.startMoment = availableStartMoment;
+					}
+				}
+				i--;
+			}
+
+			view.renderSelection();
+            renderPrice(event);
 		}
 
 		function clearLeftSelection() {
@@ -308,6 +607,76 @@ define(
 			$('#gearbooking-rightmonths-container .day-row .day').each(function(index, $element) {
 				$(this).removeClass('selected');
 			});
-		}		
+		}
+
+		function renderSelection() {
+			var $calendarContainer, momentIterator, row, col, startDay, $box;
+
+			if(this.startMoment !== null) {
+				//Render left month view
+				$calendarContainer = $('#gearbooking-leftmonths-container');
+				momentIterator = Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), day: this.leftMoment.date(), hour: this.leftMoment.hour()});
+				startDay = momentIterator.date(1).weekday();
+				momentIterator.subtract(startDay, 'days');
+				for(row = 1; row <= 6; row++) {
+					for(col = 1; col <= 7; col++) {
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box.removeClass('escluded selected included');
+						if(momentIterator.isBefore(this.startMoment, 'month')) {
+							//$box.addClass('escluded');
+						}
+						else if(momentIterator.isAfter(this.endMoment, 'month')) {
+							//$box.addClass('escluded');
+						}
+						else if(momentIterator.isBefore(this.startMoment, 'day')) {
+							//$box.addClass('escluded');
+						}
+						else if(momentIterator.isSame(this.startMoment, 'day')) {
+							$box.addClass('selected');
+						}
+						else if(momentIterator.isBefore(this.endMoment, 'day')){
+							$box.addClass('included');
+						}
+						else if(momentIterator.isSame(this.endMoment, 'day')){
+							$box.addClass('included');
+						}
+						else {
+							$box.addClass('escluded');
+						}
+						momentIterator.add(1, 'days');
+					}
+				}
+			}
+
+			if(this.endMoment !== null) {
+				//Render right month view
+				$calendarContainer = $('#gearbooking-rightmonths-container');
+				momentIterator = Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), day: this.rightMoment.date(), hour: this.rightMoment.hour()});
+				startDay = momentIterator.date(1).weekday();
+				momentIterator.subtract(startDay, 'days');
+				for(row = 1; row <= 6; row++) {
+					for(col = 1; col <= 7; col++) {
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box.removeClass('escluded selected included');
+						if(momentIterator.isBefore(this.startMoment, 'day')) {
+							$box.addClass('escluded');
+						}
+						else if(momentIterator.isSame(this.endMoment, 'day')){
+							$box.addClass('selected');
+						}
+						else if(momentIterator.isSame(this.startMoment, 'day')) {
+							$box.addClass('included');
+						}
+						else if(momentIterator.isBefore(this.endMoment, 'day')){
+							$box.addClass('included');
+						}
+						else {
+							$box.addClass('escluded');
+						}
+						momentIterator.add(1, 'days');
+					}
+				}
+			}
+		}
 	}
 );

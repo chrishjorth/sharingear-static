@@ -1,57 +1,79 @@
 /**
  * Controller for the Sharingear Profile dashboard page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Horatiu Roman
  */
 
 define(
 	['underscore', 'viewcontroller', 'app'],
 	function(_, ViewController, App) {
 		var Profile = ViewController.inherit({
+            user: null,
+            profileImg: null,
+            profileImgLoaded: $.Deferred(),
+            renderResolve: $.Deferred(),
+
 			didInitialize: didInitialize,
             handleImageUpload: handleImageUpload,
             didRender: didRender,
             handleSave:handleSave,
-
-            user: null
+            enableSaveButton:enableSaveButton,
 		}); 
 		return Profile;
 
-        function didRender() {
-            this.setupEvent('change','#profile-pic',this,this.handleImageUpload);
-        }
-		function didInitialize() {
-			//We need default values so the templating does not fail.
-			var user = {
-				name: '',
-				hometown: '',
-				bio: '',
-				genres: '',
-                image_url:''
-			};
-            this.user = App.user;
+        function didInitialize() {
+            var view = this,
+                userData;
 
-			_.extend(user, App.user.data);
-			
-			this.templateParameters = user;
-
-            //Image handling
-            var isVertical;
-            var img = new Image();
-            img.src = this.user.data.image_url;
-            var imgWidth = img.width;
-            var imgHeight = img.height;
-            isVertical = imgWidth < imgHeight;
-
-            //TODO background-image is not loaded
-            var picture_url = 'url("'+this.user.data.image_url+'")';
-            console.log(picture_url);
-            $('#prof-pic-div').css("background-image",picture_url);
-            if (isVertical) {
-                $('#prof-pic-div').css("background-size","auto "+imgWidth);
-            }else{
-                $('#prof-pic-div').css("background-size",imgHeight+ "auto");
+            if(App.user.data.id === null) {
+                this.ready = false;
+                App.router.navigateTo('home');
+                return;
             }
 
+            this.user = App.user;
+
+            userData = this.user.data;
+            this.templateParameters = {
+                bio: userData.bio,
+            };
+
+            //Start loading profile image
+            this.profileImg = new Image();
+            this.profileImg.onload = function() {
+                view.profileImgLoaded.resolve();
+            };
+            this.profileImg.src = this.user.data.image_url;
+        }
+
+        function didRender() {
+            var view = this,
+                userData = this.user.data;
+            
+            $('#dashboard-profile-form #name', this.$element).val(userData.name);
+            $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
+            $('#dashboard-profile-form #hometown', this.$element).val(userData.city);
+
+            // when page loads, save is disabled
+            view.enableSaveButton(false);
+            // enable save when something changes in one of the input fields
+            $('input, textarea').on('input', function() {
+                view.enableSaveButton(true);
+            });
+
+            $.when(this.profileImgLoaded).then(function() {
+                var $profilePic = $('#prof-pic-div', view.$element),
+                    img = view.profileImg;
+                $profilePic.css('background-image', 'url("' + img.src + '")');
+                if(img.width < img.height) {
+                    $profilePic.css('background-size', 'auto ' + img.width);
+                }
+                else{
+                    $profilePic.css('background-size', img.height + ' auto');
+                }
+            });
+
+            this.setupEvent('change', '#profile-pic', this, this.handleImageUpload);
+            this.setupEvent('submit', '#dashboard-profile-form', this, this.handleSave);
         }
 
         function handleImageUpload(event) {
@@ -71,15 +93,38 @@ define(
             });
         }
 
-        function handleSave(saveData,callback){
-            this.user.updateUser(App.user.data.user_id,saveData, function (error, data) {
+        function handleSave(event) {
+            var view = event.data,
+                saveData,
+            saveData = {
+                name: $('#dashboard-profile-form #name').val(),
+                surname: $('#dashboard-profile-form #surname').val(),
+                city: $('#dashboard-profile-form #hometown').val(),
+                bio: $('#dashboard-profile-form #bio').val()
+            }
+            
+            // if no error, show message to user, next to save button
+            $('#saveSuccessDiv').html("Your profile has been updated.");
+            view.enableSaveButton(false);
+
+            view.user.updateUser(App.user.data.id, saveData, function (error, data) {
                 if(error){
-                    if(callback && typeof callback === 'function') {
-                        callback('Error updating user: ' + error);
-                    }
+                    console.log(error);
                 }
             });
         }
 
+        // if active==true, enables save button, else disables
+        function enableSaveButton(active) {
+            if (!active) {
+                // disable button
+                $('#saveButton').attr({disabled: "disabled"});
+            } else {
+                // enable button
+                $('#saveButton').removeAttr("disabled");
+                // clear success message
+                $('#saveSuccessDiv').html("");
+            }
+        }
 	}
 );

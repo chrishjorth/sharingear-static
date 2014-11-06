@@ -5,22 +5,22 @@
 define(
 	['underscore', 'jquery', 'utilities'], 
 	function(_, $, Utilities) {
-		var defaults, methods, constructor, inherit;
-
-		defaults = {
-			id: null,
-			rootURL: '',
-			data: null
-		};
-
-		methods = {
-			get: get,
-			post: post,
-			put: put,
-			del: del
-		};
+		var constructor, inherit;
 
 		constructor = function(options) {
+			var defaults, methods;
+
+			defaults = {
+				rootURL: '',
+				data: null
+			};
+
+			methods = {
+				get: get,
+				post: post,
+				put: put,
+				del: del
+			};
 			_.extend(this, defaults, methods, options);
 			
 			if(this.didInitialize && typeof this.didInitialize == 'function') {

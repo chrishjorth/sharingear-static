@@ -6,34 +6,43 @@ define(
 	['utilities', 'model'],
 	function(Utilities, Model) {
 		var Gear = Model.inherit({
-			data: {
-				id: null,
-				type: '',
-				subtype: '',
-				brand: '',
-				model: '',
-				description: '',
-				images: '',
-				price_a: '',
-				price_b: '',
-				price_c: '',
-				address: '',
-				postalcode: '',
-				city: '',
-				region: '',
-				country: '',
-				latitude: null,
-				longitude: null,
-				owner_id: null
-			},
+			didInitialize: didInitialize,
 			createGear: createGear,
 			uploadImage: uploadImage,
 			save: save,
 			update: update,
-            getUserInfo:getUserInfo
+            //getUserInfo:getUserInfo,
+            getAvailability: getAvailability,
+            setAvailability: setAvailability
 		});
 
 		return Gear;
+
+		function didInitialize() {
+			if(this.data === null) {
+				this.data = {
+					id: null,
+					type: '',
+					subtype: '',
+					brand: '',
+					model: '',
+					description: '',
+					images: '',
+					price_a: '',
+					price_b: '',
+					price_c: '',
+					address: '',
+					postalcode: '',
+					city: '',
+					region: '',
+					country: '',
+					latitude: null,
+					longitude: null,
+					gear_status: 'unavailable',
+					owner_id: null
+				};
+			}
+		}
 
 		function createGear(user, callback) {
 			var model = this,
@@ -116,17 +125,16 @@ define(
 			});
 		}
 
-        function getUserInfo(userID, callback) {
+        /*function getUserInfo(userID, callback) {
             this.get('/users/'+userID, function (error,data) {
                 if(error) {
-                    console.log(error);
                     callback(error);
                     return;
                 }
 
                 callback(null,data);
             });
-        }
+        }*/
 
 		function save(userID, callback) {
 			var saveData = {
@@ -170,9 +178,37 @@ define(
 					callback(error);
 					return;
 				}
-				gear.latitude = gear.latitude * 180 / Math.PI;
-				gear.longitude = gear.longitude * 180 / Math.PI;
 				model.data = gear;
+				callback(null);
+			});
+		}
+
+		function getAvailability(userID, callback) {
+			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, availabilityArray) {
+				if(error) {
+					console.log(error);
+					callback(error);
+					return;
+				}
+				callback(null, availabilityArray);
+			});
+		}
+
+		/**
+		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+		 */
+		function setAvailability(userID, availabilityArray, callback) {
+			var postData;
+			postData = {
+				availability: JSON.stringify(availabilityArray)
+			};
+			
+			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
+				if(error) {
+					console.log(error);
+					callback(error);
+					return;
+				}
 				callback(null);
 			});
 		}

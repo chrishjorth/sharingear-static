@@ -3,17 +3,26 @@
  * @author: Chris Hjorth
  */
 define(
-	['model'],
-	function(Model) {
+	['model', 'models/gear'],
+	function(Model, Gear) {
 		var GearList = Model.inherit({
+			didInitialize: didInitialize,
+
 			search: search,
 			getUserGear: getUserGear,
 			getUserReservations: getUserReservations,
 			getGearItem: getGearItem,
-			listGear: listGear
+			listGear: listGear,
+			isEmpty: isEmpty,
+			updateGearItem: updateGearItem,
+			loadFromArray: loadFromArray
 		});
 
 		return GearList;
+
+		function didInitialize() {
+			this.data = [];
+		}
 
 		function search(location, gear, daterange, callback) {
 			var view = this;
@@ -24,7 +33,7 @@ define(
 					callback([]);
 				}
 				else {
-					view.data = searchResults;
+					view.loadFromArray(searchResults);
 					callback(view.data);
 				}
 			});
@@ -38,7 +47,7 @@ define(
 					callback([]);
 				}
 				else {
-					view.data = userGear;
+					view.loadFromArray(userGear);
 					callback(view.data);
 				}
 			});
@@ -46,22 +55,22 @@ define(
 
 		function getUserReservations(userID, callback) {
 			var view = this;
-			this.get('/users/' + userID + '/reservations', function(error, userReservations) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.data = userReservations;
-					callback(view.data);
-				}
-			});
+                this.get('/users/' + userID + '/reservations', function (error, userReservations) {
+                    if (error) {
+                        callback([]);
+                    }
+                    else {
+                        view.loadFromArray(userReservations);
+                        callback(view.data);
+                    }
+                });
+
 		}
 
 		function getGearItem(gearID) {
 			var i;
 			for(i = 0; i < this.data.length; i++) {
-				if(this.data[i].id === gearID) {
+				if(this.data[i].data.id === gearID) {
 					return this.data[i];
 				}
 			}
@@ -83,7 +92,33 @@ define(
 				}
 				return;
 			});
+		}
 
+		function isEmpty() {
+			return this.data.length <= 0;
+		}
+
+		function updateGearItem(gearItem) {
+			var i;
+			for(i = 0; i < this.data.length; i++) {
+				if(this.data[i].id === gearItem.data.id) {
+					this.data[i] = gearItem.data;
+					return;
+				}
+			}
+		}
+
+		function loadFromArray(gearArray) {
+			var i;
+
+            this.data = [];
+
+			for(i = 0; i < gearArray.length; i++) {
+				this.data.push(new Gear.constructor({
+					rootURL: this.rootURL,
+					data: gearArray[i]
+				}));
+			}
 		}
 	}
 );

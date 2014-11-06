@@ -52,7 +52,7 @@
 					});
 					view.gearList.listGear(view.getFormInput(), user.data.id, function(error, data) {
 						if(!error) {
-							App.router.navigateTo('dashboard');
+							App.router.navigateTo('dashboard/yourgear');
 						}
 						else {
 							console.log('Error listing gear:');
@@ -78,8 +78,6 @@
  					selectedGear.push(gearPairs);
  				}
  			});
- 			console.log('Selected gear: ');
- 			console.log(selectedGear);
  			return selectedGear;
 		}
 	}

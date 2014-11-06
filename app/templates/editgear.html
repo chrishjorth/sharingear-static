@@ -1,36 +1,168 @@
-<div class="container-fluid">
+<div class="container-fluid editgear-container-bottom-padding edit-gear-tabs">
 	<div class="row">
-		<div class="col-md-12"><h2>{{type}}:</h2></div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<form id="editgear-form" onsubmit="return false;">
-				<div class="form-group">
-					<label for="">Subtype:</label>
-					<select name="subtype" id="editgear-subtype">
-					</select>
+		<ul id="edit-tabs" class="nav nav-pills" role="tablist">
+			<li class="active"><a href="#instrument" role="tab" data-toggle="tab">Instrument</a></li>
+			<li class=""><a href="#photos" role="tab" data-toggle="tab">Photos</a></li>
+			<li class=""><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>
+			<li class=""><a href="#location" role="tab" data-toggle="tab">Location</a></li>
+		</ul>
+
+		<div id="edit-tabs-content" class="tab-content">
+			<div class="tab-pane fade active in" id="instrument">
+            <div class="container-fluid editgear-container-bottom-padding">
+				<div class="row">
+					<div class="col-md-12"><h2>{{type}}:</h2></div>
 				</div>
-				<div class="form-group">
-					<label for="">Brand:</label>
-					<select name="brand" id="editgear-brand">
-					</select>
+				<div class="row">
+					<div class="col-md-12">
+						<form id="editgear-form" onsubmit="return false;">
+							<div class="col-md-6 form-left">
+								<div class="form-group">
+									<label for="">Subtype:</label>
+									<select name="subtype" id="editgear-subtype" class="form-control">
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="">Brand:</label>
+									<select name="brand" id="editgear-brand" class="form-control">
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="model">Model:</label>
+									<input type="text" name="editgear-model" id="editgear-model" value="{{model}}" class="form-control">
+								</div>
+							</div>
+							<div class="col-md-6 form-right">
+								<div class="form-group">
+									<label for="description">Description:</label>
+									<textarea name="editgear-description" id="editgear-description" class="form-control">{{description}}</textarea>
+								</div>
+							</div>
+							<!--<div class="form-group">
+							<label for="dashboard-addgear-form-imageupload">Upload image:</label>
+							<input type="file" id="editgear-form-imageupload" name="gearpic">
+							<div class="thumb-list-container"><ul></ul></div>
+						</div>-->
+						<div class="edit-gear-buttons-margin-fix pull-right">
+                            <button class="btn editgear-cancel-button btn-default btn-cancel price-button-margin">Cancel</button>
+                            <button class="btn editgear-save-button btn-primary btn-save price-button-margin">Save</button></div>
+					</form>
 				</div>
-				
-				<div class="form-group">
-					<label for="model">Model</label>
-					<input type="text" name="editgear-model" id="editgear-model" value="{{model}}">
+			</div>
+            </div>
+		</div>
+
+
+		<div class="tab-pane fade" id="photos">
+			<div class="container-fluid editgear-container-bottom-padding">
+				<div class="row">
+					<div class="col-md-12"><h2>Photos:</h2></div>
 				</div>
-				<div class="form-group">
-					<label for="description">Description</label>
-					<textarea name="editgear-description" id="editgear-description">{{description}}</textarea>
+				<div class="row">
+					<div class="col-md-12">
+						<form id="editgear-photos-form" onsubmit="return false;">
+                            <div class="col-md-6 form-left">
+                                <div class="form-group">
+                                    <label for="dashboard-addgear-form-imageupload">Upload image:</label>
+                                    <input type="file" id="editgear-photos-form-imageupload" name="gearpic" class="form-control">
+                                    <div class="thumb-list-container editgear-photos-list">
+                                        <ul></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-right">
+                                <p>Please use the upload image button to attach an image file to the instrument.</p>
+                            </div>
+							<div class="pull-right buttons-bottom-right">
+								<button class="btn editgear-cancel-button btn-default btn-cancel price-button-margin">Cancel</button>
+								<button class="btn editgear-save-button btn-primary price-button-margin btn-save">Save</button>
+							</div>
+						</form>
+					</div>
 				</div>
-				<!--<div class="form-group">
-                    <label for="dashboard-addgear-form-imageupload">Upload image:</label>
-                    <input type="file" id="editgear-form-imageupload" name="gearpic">
-                    <div class="thumb-list-container"><ul></ul></div>
-                </div>-->
-				<div class="pull-right"><button class="btn btn-default btn-cancel">Cancel</button><button class="btn btn-primary btn-next">Next</button></div>
-			</form>
+			</div>
+		</div>
+
+		<div class="tab-pane fade" id="pricing">
+			<div class="container-fluid editgear-container-bottom-padding">
+				<div class="row">
+					<div class="col-md-12"><h2>Price your gear</h2></div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<form id="editgearpricing-form" onsubmit="return false;">
+                            <div class="col-md-6 form-left">
+                                <div class="form-group">
+                                    <label for="ride_pricing_per_hour_string">Hourly Rental Price</label>
+                                    <div class="price">
+                                        <input id="price_b" class="same-line form-control" name="price_b" size="7" type="text" value="{{price_b}}">
+                                    </div>
+                                    <p class="small">Any rental under 4 hours is charged at this hourly rate</p>
+                                </div>
+                                <div class="form-group">
+									<label for="">Daily Rental Price</label>
+									<div class="price">
+                                        <input id="price_a" class="same-line form-control" name="price_a" size="7" type="text" value="{{price_a}}">
+                                    </div>
+									<p class="small">The average daily price is $18</p>
+								</div>
+								<div class="form-group">
+									<label for="ride_pricing_per_week_string">Weekly Rental Price</label>
+									<div class="price">
+                                        <input id="price_c" class="same-line form-control" name="price_c" size="7" type="text" value="{{price_c}}">
+                                    </div>
+									<p class="small">An 8 day rental will be charged as 1 week and 1 day</p>
+								</div>
+                            </div>
+                            <div class="col-md-6 form-right">
+                                <p>We suggest prices from what backline rental companies offer, in order to offer the best deal for your renters.</p>
+                            </div>
+							<div class="edit-gear-buttons-margin-fix2 pull-right  buttons-bottom-right">
+                                <button class="btn editgear-cancel-button btn-default btn-cancel button-margin">Cancel</button>
+                                <button class="btn editgear-save-button btn-primary btn-save price-button-margin">Save</button></div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="tab-pane fade" id="location">
+			<div class="container-fluid editgear-container-bottom-padding">
+				<div class="row">
+					<div class="col-md-12"><h2>Location</h2></div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<form id="editgearpricingloc-form" onsubmit="return false;">
+                            <div class="col-md-6 form-left">
+									<div class="form-group">
+									<label for="dashboard-addgearprice-address">Address</label>
+									<input type="text" name="address" id="editgearpricing-address" class="form-control">
+									<label for="dashboard-addgearprice-postalcode">Postal code</label>
+									<input type="text" name="postalcode" id="editgearpricing-postalcode" class="form-control">
+									<label for="dashboard-addgearprice-city">City</label>
+									<input type="text" name="city" id="editgearpricing-city" class="form-control">
+									<label for="dashboard-addgearprice-region">Region</label>
+									<input type="text" name="region" id="editgearpricing-region" class="form-control">
+									<label for="dashboard-addgearprice-country">Country</label>
+									<select name="country" id="editgearpricing-country" class="form-control">
+									</select>
+								</div>
+                            </div>
+                            <div class="col-md-6 form-left">
+                                <p>We suggest that you enter the exact location of the instrument.</p>
+                            </div>
+							<div class="pull-right buttons-bottom-right">
+                                <button class="btn editgear-cancel-button btn-default btn-cancel button-margin">Cancel</button>
+                                <button class="btn editgear-save-button btn-primary btn-save price-button-margin">Save</button></div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+
+</div>
 </div>

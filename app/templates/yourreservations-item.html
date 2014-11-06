@@ -1,16 +1,27 @@
 <div class="row yourreservations-item">
-    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-        <img src="images/marshallcabthumb.jpg" alt="{{model}}">
+    <div class="col-xs-12 col-md-3" style="height: 200px;">
+        <img src="{{img_url}}" alt="{{model}}" style="max-height: 100%; max-width: 100%;">
+    <div class="fromto">
+        <p><b>From: </b> {{start_time}}</p>
+        <p><b>To: </b> {{end_time}}</p>
     </div>
+    </div>
+
     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
         <div class="clearfix">
+            <h2 style="margin-top: 0;">{{type}}</h2>
+            <h4><span class="fa moretextyourgear icon"></span>{{brand}} {{subtype}} {{model}}</h4>
             <div class="pull-left">
-                <span class="symbolyourgear">{{price}}</span>
+                <span class="symbolyourgear">{{price}} DKK</span>
             </div>
-            <div class="pull-right textyourgear">{{address}} | {{city}} | {{country}}</div>
+            <div class="pull-right symbolyourgear">{{city}}</div>
         </div>
         <div>
-            <h4><span class="fa moretextyourgear icon"></span> Marshall Cabinet</h4>
+            <div class="clearfix"></div>
+            <div style="padding-top:80px;">
+                <a href="#gearprofile/{{id}}" class="pull-right btn btn-primary price-button-margin">View profile</a>
+            </div>
         </div>
+
     </div>
 </div>

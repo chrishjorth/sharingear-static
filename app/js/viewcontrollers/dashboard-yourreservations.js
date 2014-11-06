@@ -24,39 +24,47 @@ define(
 			if(App.user.data) {
 				userID = App.user.data.id;
 			}
-
-			this.gearList.getUserReservations(userID, function(yourReservations) {
-				view.populateYourReservations(yourReservations);
-			});
+            if(this.gearList.isEmpty()) {
+                this.gearList.getUserReservations(userID, function (data) {
+                    if(data.length!==0){
+                        view.populateYourReservations();
+                    }else{
+                        $("#yourreservations-gear-block").append("You don't have any reservations!")
+                    }
+                });
+            }else{
+                view.populateYourReservations();
+            }
 		}
 
-		function populateYourReservations(yourReservations, callback) {
+		function populateYourReservations(callback) {
 			var view = this;
 			require(['text!../templates/yourreservations-item.html'], function(YourReservationsItemTemplate) {
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
-					defaultReservation, reservation;
+					yourReserv = view.gearList.data,
+                    defaultReservation, reservation;
 
-				defaultReservation = {
-					id: 0,
-					type: 0,
-					subtype: 0,
-					brand: 0,
-					model: '',
-					description: '',
-					photos: '',
-					price: 0,
-					seller_user_id: 0,
-					city: '',
-					address: '',
-					country: '',
-					price1: 0,
-					price2: 0,
-					price3: 0
-				};
+				for(i = 0; i < yourReserv.length; i++) {
+                    defaultReservation = {
+                        id: null,
+                        type: '',
+                        subtype: '',
+                        brand: '',
+                        start_time:'',
+                        end_time:'',
+                        model: '',
+                        images:'',
+                        img_url: 'images/logotop.png',
+                        price: 0,
+                        city: '',
+                        gear_status: 'status'
+                    };
 
-				for(i = 0; i < yourReservations.length; i++) {
-					reservation = yourReservations[i];
-					_.extend(defaultReservation, reservation);
+					reservation = yourReserv[i];
+					_.extend(defaultReservation, reservation.data);
+                    if(defaultReservation.images.length > 0) {
+                        defaultReservation.img_url = defaultReservation.images.split(',')[0];
+                    }
 					$('#' + view.reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
 				}
 				if(callback && typeof callback === 'function') {

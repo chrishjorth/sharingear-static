@@ -12,6 +12,8 @@ define(
 				rootURL: App.API_URL
 			}),
 			geocoder: new GoogleMaps.Geocoder(),
+
+			//autocomplete: new GoogleMaps.places.Autocomplete(),
 			// searchBlockID: 'home-search-block',
 			searchBlockID: 'testRow',
 //            isImageVertical: '',
@@ -20,7 +22,9 @@ define(
 			didRender: didRender,
 			setupEvents: setupEvents,
 			handleSearch: handleSearch,
-			populateSearchBlock: populateSearchBlock
+			populateSearchBlock: populateSearchBlock,
+			showGearSuggestions: showGearSuggestions,
+			setGearSuggestion: setGearSuggestion
 		});
 
 		return Home;
@@ -38,10 +42,11 @@ define(
             var minDateString = (day + "/" + month + "/" + year);
 
             $('#search-date').daterangepicker({
-                singleDatePicker: false,
+                singleDatePicker: true,
                 format: 'DD/MM/YYYY',
-                minDate: minDateString,
-                showDropdowns: true
+                startDate: minDateString,
+                showDropdowns: true,
+                minDate: minDateString
             });
 
             //Filling the Location input with current location using HTML5 only if User.city is empty
@@ -49,19 +54,27 @@ define(
                 navigator.geolocation.getCurrentPosition(function(position){
                     var lat = position.coords.latitude;
                     var lon = position.coords.longitude;
-                    Utilities.geoLocationGetCity(lat, lon, function (locationCity) {
+                    Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
                         App.user.data.city = locationCity;
-                        $('#search-location').val(locationCity);
+                        $('#search-location').attr("placeholder", locationCity);
                     });
                 });
             }
             else {
-                $('#search-location').val(App.user.data.city);
+                $('#search-location').attr("placeholder", App.user.data.city);
             }
+
+            $('#search-return').daterangepicker({
+                singleDatePicker: true,
+                format: 'DD/MM/YYYY',
+                startDate: minDateString,
+                showDropdowns: true,
+                minDate: minDateString,
+                opens: 'right'
+            });
 
             //Testimonials init
             $("#feedbacks").owlCarousel({
-
                 navigation: false, // Show next and prev buttons
                 slideSpeed: 800,
                 paginationSpeed: 400,
@@ -79,16 +92,25 @@ define(
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
 
+						var input = /** @type {HTMLInputElement} */(
+      			document.getElementById('search-location'));
 
+						var options = {types: ['geocode']};
+
+						var autocomplete = new GoogleMaps.places.Autocomplete(input, options);
+
+			$('body').append('<div id="gear-suggestions-box" style="display: none;"></div>');
 
             this.setupEvents();
 		}
 
 		function setupEvents() {
+			var view = this;
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
+			$('#search-gear').on('input', view.showGearSuggestions);
+			$('#gear-suggestions-box').on('click', '.gear-suggestion', view.setGearSuggestion);
+
 		}
-
-
 
 		/**
 		 * Displays search results from the model.
@@ -98,6 +120,7 @@ define(
 		 */
 		function handleSearch(event, callback) {
 			var view = event.data,
+				$locationContainer,
 				location;
 
 			//Remove promo block and billboard
@@ -108,13 +131,24 @@ define(
 				display: 'none'
 			});
 
-			location = $('#home-search-form #search-location', view.$element).val();
+            // remove gear suggestion dropdown when submitting
+            $('#gear-suggestions-box').hide();
+
+			$locationContainer = $('#home-search-form #search-location', view.$element);
+			location = $locationContainer.val();
+			if(location === '') {
+				location = $locationContainer.attr('placeholder');
+			}
 			view.geocoder.geocode({address: location}, function(results, status) {
-				var locationData;
+				var locationData, searchString;
 				if(status === GoogleMaps.GeocoderStatus.OK) {
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
-					view.gearList.search(locationData, $('#home-search-form #search-gear', this.$element).val(), '20140828-20140901', function(searchResults) {
-						view.populateSearchBlock(searchResults);
+					searchString = $('#home-search-form #search-gear', this.$element).val();
+					App.router.setQueryString('location=' + locationData + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901');
+
+					view.gearList.search(locationData, searchString, '20140828-20140901', function(searchResults) {
+
+                        view.populateSearchBlock(searchResults);
 						if(callback && typeof callback === 'function') {
 							callback();
 						}
@@ -122,10 +156,31 @@ define(
 				}
 				else {
 					console.log('Error geocoding: ' + status);
+					noResults();
 				}
 			});
 
+			$('#fb-share-btn').on('click', function(event) {
+
+				instrument = $('#home-search-form #search-gear', view.$element).val();
+				description = 'Hey, I am looking for a ' + instrument + ' near ' + location + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
+
+				FB.ui({
+					method: 'feed',
+					caption: 'Request an instrument on Sharingear!',
+					link: 'sharingear.com',
+					description: description
+				}, function(response) {
+					//console.log(response);
+				});
+			});
+
 			return false;
+		}
+
+		function noResults() {
+            $('#home-search-block').find('#testRow').empty();
+            $('#home-search-block').find('.no-results-block').show();
 		}
 
 		/**
@@ -134,11 +189,21 @@ define(
 		 */
 		function populateSearchBlock(searchResults, callback) {
 
-			var $searchBlock = $('#' + this.searchBlockID, this.$element);
+            var $searchBlock = $('#' + this.searchBlockID, this.$element);
+
 			$searchBlock.empty();
+
+            if (searchResults.length <= 0) {
+				noResults();
+				return;
+			}
+
+            $('#home-search-block').find('.no-results-block').hide();
+
+
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
-					defaultSearchResults, searchResult, i;
+					defaultSearchResults, searchResult, imagesTest, i;
 
 				defaultSearchResults = {
 					id: 0,
@@ -159,8 +224,8 @@ define(
 				};
 
 				for(i = 0; i < searchResults.length; i++) {
-					searchResult = searchResults[i];
-					var imagesTest = searchResults[i].images.split(",");
+					searchResult = searchResults[i].data;
+					imagesTest = searchResult.images.split(",");
                     searchResult.image = imagesTest[0];
 
                     //TODO Temporary default image
@@ -169,7 +234,7 @@ define(
                         searchResult.image = 'http://www.rondomusic.com/photos/electric/gg1kwt5.jpg';
                     }
                     this.price = searchResults[i].price_a;
-					
+
 					_.extend(defaultSearchResults, searchResult);
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 
@@ -198,5 +263,101 @@ define(
 				}
 			});
 		}
+
+		function showGearSuggestions() {
+			var inputValue = $('#search-gear').val().toLowerCase();
+			while(inputValue[inputValue.length-1] == " ") {
+				inputValue = inputValue.substring(0, inputValue.length-1);
+			}
+			while(inputValue[0] == " ") {
+				inputValue = inputValue.substring(1);
+			}
+
+			$('#gear-suggestions-box').html("");
+			if (inputValue.length == 0) {
+				$('#gear-suggestions-box').css("display","none");
+				return;
+				
+			} else {
+				var searchField = $("#search-gear");
+				$('#gear-suggestions-box').css({
+					"display":"",
+					"position":"absolute",
+					"width": searchField.outerWidth(),
+					"left": searchField.offset().left,
+					"top": searchField.offset().top + searchField.outerHeight()
+				});
+			}
+			// How many elements to show in the list.
+			var N = 5;
+
+			// get list of possible gear items
+			var gList = App.gearClassification.data;
+			/// info about gearClassification
+			/// gList == {brands: [...], classification: {}}
+			/// gList.brands == ["Ampeg", "Avid", "Bose", "Behringer", ...]
+			/// gList.classification == {amp: ["Guitar amp", "Bass combo", ...], bass: [], dj: [], ...}
+
+			// find the gear items that contain input string
+			var brandsSuggestions = _.chain(gList.brands)
+				.filter(function(b) {
+					var j = b.toLowerCase().indexOf(inputValue);
+					return j > -1 && (j==0 || b[j-1] == " ");
+				})
+				.first(N)
+				.value();
+
+			// if we got more elements, add them from classificationsuggestions
+			//if (brandsSuggestions.length < N)
+			var classificationSuggestions = _.chain(gList.classification)
+				.map(function(c) {
+					return _.filter(c, function(cItem) {
+						var j = cItem.toLowerCase().indexOf(inputValue);
+						return j > -1 && (j==0 || cItem[j-1] == " ");
+					});
+				})
+				.flatten()
+				.first(N)
+				.value();
+			
+			// change order of suggestions here.
+			var suggestions = classificationSuggestions.concat(brandsSuggestions);
+
+			// stop if nothing found
+			if (!suggestions) {
+				return;
+			};
+
+			// show them in a scrollable list of N objects
+			for (var i = 0; i < N; i++) {
+				if (suggestions.length > i) {
+					var html = '<div class="gear-suggestion">';
+					// parse string and check if any substring is equal to any part of inputValue separated by " "
+					// if so, write it in bold, else write characters 
+					var j = 0;
+					while (j < suggestions[i].length) {
+						// if inputValue is here at suggestions[i][j]
+						if (suggestions[i].toLowerCase().indexOf(inputValue) == j
+							&& (j<1 || suggestions[i][j-1] == " ")) {
+							html += '<span class="gear-suggestion-bold">';
+							html += suggestions[i].substring(j, j+inputValue.length);
+							html += '</span>';
+							j += inputValue.length;
+						} else {
+							html += suggestions[i][j];
+							j++;
+						}
+					}
+					html += '</div>';
+					$("#gear-suggestions-box").append(html);
+				}
+			};
+		}
+
+		function setGearSuggestion() {
+			$("#search-gear").val($(event.target).text());
+			$("#gear-suggestions-box").css("display", "none");
+		}
+
 	}
 );

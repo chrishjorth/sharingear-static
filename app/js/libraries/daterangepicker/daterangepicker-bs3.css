@@ -138,16 +138,18 @@
   left: 20px;
   padding: 4px;
   margin-top: 1px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+
 }
 
 .daterangepicker.opensleft:before {
   position: absolute;
   top: -7px;
   right: 399px;
-  display: inline-block;
+  /*display: inline-block;*/
+  display: none;
   border-right: 7px solid transparent;
   border-bottom: 7px solid #ccc;
   border-left: 7px solid transparent;
@@ -159,7 +161,8 @@
   position: absolute;
   top: -6px;
   right: 400px;
-  display: inline-block;
+  /*display: inline-block;*/
+  display: none;
   border-right: 6px solid transparent;
   border-bottom: 6px solid #fff;
   border-left: 6px solid transparent;
@@ -170,7 +173,8 @@
   position: absolute;
   top: -7px;
   left: 399px;
-  display: inline-block;
+  /*display: inline-block;*/
+  display: none;
   border-right: 7px solid transparent;
   border-bottom: 7px solid #ccc;
   border-left: 7px solid transparent;
@@ -182,7 +186,8 @@
   position: absolute;
   top: -6px;
   left: 400px;
-  display: inline-block;
+  /*display: inline-block;*/
+  display: none;
   border-right: 6px solid transparent;
   border-bottom: 6px solid #fff;
   border-left: 6px solid transparent;
@@ -198,9 +203,11 @@
   text-align: center;
   width: 20px;
   height: 20px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  font-size: 13px;
+  line-height: 15px;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -243,9 +250,10 @@
 }
 
 .daterangepicker td.active, .daterangepicker td.active:hover {
-  background-color: #357ebd;
+  background-color: #FFAE00;
   border-color: #3071a9;
-  color: #fff;
+  color: #000;
+  font-weight: bold;
 }
 
 .daterangepicker td.week, .daterangepicker th.week {

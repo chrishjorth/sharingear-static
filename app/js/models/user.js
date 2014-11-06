@@ -1,5 +1,5 @@
 /**
- * Defines a Sharingear user.
+ * Defines a Sharingear user. This can both be a logged in user or the owner of gear.
  * @author: Chris Hjorth
  */
 define(
@@ -8,20 +8,15 @@ define(
 
 		var User = Model.inherit({
 			fbStatus: '',
-			data: {
-				id: null,
-				name: '',
-				surname: '',
-                city: '',
-                image_url:'',
-                bio:''
-			},
 
+			didInitialize: didInitialize,
 			getLoginStatus: getLoginStatus,
 			login: login,
 			loginToBackend: loginToBackend,
             uploadProfilePicture: uploadProfilePicture,
-            updateUser:updateUser
+            update:update,
+            getPublicInfo: getPublicInfo,
+            isSubMerchant: isSubMerchant
 		});
 
 		FB.init({
@@ -29,6 +24,20 @@ define(
 		});
 
 		return User;
+
+		function didInitialize() {
+			if(this.data === null) {
+				this.data = {
+					id: null,
+					name: '',
+					surname: '',
+                	city: '',
+                	image_url: '',
+                	bio: '',
+                	submerchant: false
+				};
+			}
+		}
 
 		function getLoginStatus(callback) {
 			var user = this;
@@ -99,26 +108,29 @@ define(
 			});
 		}
 
-        function updateUser(userID, saveData, callback){
-
-            this.put('/users/'+userID, saveData, function (error, data) {
-                if(error){
-                    if(callback && typeof callback === 'function') {
-                        callback('Error getting filename: ' + error);
-                    }
-                    return;
+        function update(callback){
+        	var user = this;
+            user.put('/users/' + user.data.id, user.data, function (error, data) {
+                if(!error){
+                	_.extend(user.data, data);
+                }
+                else {
+                	error = 'Error updating user: ' + error;
+                }
+                if(callback && typeof callback === 'function') {
+                	callback(error);
                 }
             });
         }
 
         function uploadProfilePicture(file, filename, userID, callback){
             var model = this;
-            this.get('/users/'+userID+'/newfilename/'+filename, function (error, data) {
+            this.get('/users/' + userID + '/newfilename/' + filename, function (error, data) {
                 if(error){
                     if(callback && typeof callback === 'function') {
                         callback('Error getting filename: ' + error);
                     }
-                return;
+                	return;
                 }
                 Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
                     var postData;
@@ -134,21 +146,36 @@ define(
                         image_url: data.url
                     };
 
-                    var postItURL = '/users/'+userID;
-                    model.put(postItURL,postData, function (error, images) {
+                    model.put('/users/' + userID, postData, function (error, images) {
                         if(error){
                             if(callback && typeof callback === 'function') {
                                 callback('Error uploading file: ' + error);
                             }
                             return;
                         }
-
                         model.data.images = images.images;
-                        callback(null,data.url);
+                        callback(null, data.url);
                     });
 
                 });
             });
+        }
+
+        function getPublicInfo(callback) {
+        	var model = this;
+
+        	this.get('/users/' + this.data.id, function(error, user) {
+        		if(error) {
+        			callback(error);
+        			return;
+        		}
+        		_.extend(model.data, user);
+        		callback(null);
+        	});
+        }
+
+        function isSubMerchant() {
+        	return this.data.submerchant;
         }
 	}
 );

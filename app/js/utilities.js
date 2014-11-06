@@ -11,8 +11,9 @@ define(
         inherit: inherit,
         getBaseURL: getBaseURL,
         ajajFileUpload: ajajFileUpload,
-        geoLocationGetCity: geoLocationGetCity
-//        getUserInfo: getUserInfo
+        geoLocationGetCity: geoLocationGetCity,
+        getCityFromCoordinates: getCityFromCoordinates,
+        getQueryStringParameterValue: getQueryStringParameterValue
     };
 
 	return Util;
@@ -20,33 +21,26 @@ define(
 	/**
 	 * @return A new object that has the same properties as object but with the added properties inheritOptions
 	 */
-	function inherit(object, inheritOptions) {
+	function inherit(object, defaultOptions) {
 		var Inherited;
 
-		if(typeof inheritOptions !== 'object') {
-			inheritOptions = {};
+		if(typeof defaultOptions !== 'object') {
+			defaultOptions = {};
 		}
 
+		//This becomes the actual contstructor
 		Inherited = function(options) {
 			if(typeof options !== 'object') {
 				options = {};
 			}
-
-			_.extend(inheritOptions, options);
-			
-			object.call(this, inheritOptions);
+			_.extend(options, defaultOptions); //Fill in missing defaults
+			object.call(this, options);
 		};
 		
 		//Inherited.prototype = new object();
 		Inherited.prototype.constructor = Inherited;
 		return Inherited;
 	}
-
-//    function getUserInfo(userID, callback) {
-//        this.get('/users/'+userID, function () {
-//            console.log('hi');
-//        });
-//    }
 
 	function getBaseURL() {
 		if (!window.location.origin) {
@@ -83,17 +77,11 @@ define(
 					callback(data.message);
 					return;
 				}
-
-				//console.log('File upload success');
-//				console.log(data);
-//				console.log(jqXHR);
 				callback(null, data);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				var error = 'Error uploading file with AJAX POST: ' + textStatus + '. ' + errorThrown;
 				callback(error);
-//                console.log(errorThrown);
-//                console.log(textStatus);
 			}
 		});
 	}
@@ -119,4 +107,38 @@ define(
             }
         });
     }
+
+	function getCityFromCoordinates(lat, lon, callback) {
+		var latitude = lat;
+		var longitude = lon;
+		var geocoder = new GoogleMaps.Geocoder();
+		var locationCity = '';
+	
+		//Use Google Geocoder to translate the coordinates to city name
+        var latLng = new GoogleMaps.LatLng(latitude,longitude);
+        geocoder.geocode({'latLng':latLng}, function (results, status) {
+        	if(status === GoogleMaps.GeocoderStatus.OK) {
+        		locationCity = results[0].address_components[2].long_name;
+        		callback(locationCity);
+        	}
+        });
+    }
+
+    /**
+	 * Receives a query string and returns the value for the specified parameter.
+	 * Inspired by http://stackoverflow.com/a/1099670
+	 */
+	function getQueryStringParameterValue(queryString, parameter) {
+		queryString = queryString.split("+").join(" ");
+
+		var parameters = {};
+		var tokens;
+        var regEx = /[?&]?([^=]+)=([^&]*)/g;
+        while( (tokens = regEx.exec(queryString)) !== null ) {
+			parameters[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+
+        return parameters[parameter];
+	}
+
 });

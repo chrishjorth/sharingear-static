@@ -86,12 +86,12 @@ define(
 
 			updateCall = function() {
 				view.gear.save(App.user.data.id, function(error, gear) {
-					if(error) {
+                    if(error) {
 						console.log(error);
 						return;
 					}
 				});
-			}
+			};
 
 			isLocationSame = (currentAddress === updatedGearData.address &&
 				currentPostalCode === updatedGearData.postal_code &&

@@ -16,6 +16,7 @@
 .owl-carousel{
 	display: none;
 	position: relative;
+    margin: 0 !important;
 	width: 100%;
 	-ms-touch-action: pan-y;
 }
@@ -39,7 +40,25 @@
 	
 .owl-carousel .owl-item{
 	float: left;
+
 }
+
+.owl-item2{
+
+    height:285px;
+    width:100%;
+    text-align: center;
+}
+
+.owl-item2 img{
+    height: 285px;
+}
+
+
+#gearprofile-owl .owl-controls .owl-page span{
+    display: none !important;
+}
+
 .owl-controls .owl-page,
 .owl-controls .owl-buttons div{
 	cursor: pointer;
@@ -68,4 +87,26 @@
   -moz-transform: translate3d(0,0,0);
   -ms-transform: translate3d(0,0,0);
 }
+
+#owl-demo .item img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.owl-theme .owl-controls {
+    position: relative;
+}
+
+.owl-theme .owl-controls .item-link {
+    position: relative;
+    display: block;
+    width: 100px;
+    height: 50px;
+    margin: 0 2px;
+    outline: none;
+}
+
+
+
 

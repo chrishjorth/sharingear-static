@@ -16,7 +16,7 @@ define(
 			handleBack: handleBack,
 			handleNext: handleNext,
 			handleImageUpload: handleImageUpload
-		}); 
+		});
 		return EditGear;
 
 		function didInitialize() {
@@ -63,27 +63,16 @@ define(
 
 		function handleNext(event) {
 			var view = event.data,
-			updatedGearData;
+				updatedGearData;
 
-			/*if ($('#editgear-brand option:selected', view.$element).val() == "Choose brand:") {			// Check for empty values, don't proceed if true
-				alert("Choose a brand, bro");
-			} else if ($('#editgear-subtype option:selected', view.$element).val() == "Choose type:") {
-				alert("Choose a type of instrument, bro");
-			} else {*/
+			view.gear.save(App.user.data.id, function(error, gear) {
+				if(error) {
+					console.log(error);
+					return;
+				}
+			});
 
-				view.gear.save(App.user.data.id, function(error, gear) {
-					if(error) {
-						console.log(error);
-						return;
-					}
-				});
-
-				App.router.openModalView('editgearpricing', view.gear);
-
-
-			//}
-
-			
+			App.router.openModalView('editgearpricing', view.gear);
 		}
 
 		function handleImageUpload(event) {
@@ -97,8 +86,10 @@ define(
 					console.log(error);
 					return;
 				}
-				view.gear.data.images += url + ',';
-				$thumbList = $('#editgear-form .thumb-list-container ul', view.$element);
+
+				console.log("Edit picture URL: " + url);
+
+				$thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
 			});

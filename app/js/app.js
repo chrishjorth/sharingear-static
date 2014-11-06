@@ -10,8 +10,8 @@ define(
 			router: Router,
 			header: null,
 			footer: null,
-			//API_URL: 'http://0.0.0.0:1337',
-			API_URL: 'http://api.sharingear.com',
+			//API_URL: 'http://localhost:1338',
+			API_URL: 'https://api.sharingear.com',
 			user: null,
 			gearClassification: null,
 			
@@ -36,7 +36,8 @@ define(
 		function run(callback) {
 			var app = this,
 				router = this.router,
-				hash = '';
+				loginDeferred = $.Deferred(),
+				documentReadyDeferred = $.Deferred();
 
 			router.addRoutes(
 				'home',
@@ -55,24 +56,44 @@ define(
 				'editgear',
 				'editgearphotos',
 				'editgearpricing',
-				'gearbooking'
+				'gearbooking',
+				'gearavailability',
+                'gearpendingconfirm',
+                'payment',
+                'submerchantregistration'
 			);
 
+			// if logged in on facebook, login user on the backend and go to required page.
+			App.user.getLoginStatus(function(response) {
+				// if login was unsuccessful
+				if (response.status !== "connected") {
+					loginDeferred.resolve();
+				}
+				else {
+					App.user.loginToBackend(response, function() {
+						loginDeferred.resolve();
+					});
+				}
+			});
+
 			$(document).ready(function() {
-				var route = null;
+				documentReadyDeferred.resolve();
+			});
+
+			App.gearClassification = new GearClassification.constructor({
+				rootURL: App.API_URL
+			});
+
+			$.when(loginDeferred, documentReadyDeferred).then(function() {
+				var route = null,
+					hash = '';
 
 				//Load header and footer
 				app.loadHeader();
 
 				app.loadFooter();
 
-				App.user.getLoginStatus();
-
-				App.gearClassification = new GearClassification.constructor({
-					rootURL: App.API_URL
-				});
-
-				//Load initial page
+				//Load page based on hash
 				hash = window.location.hash;
 				if(hash.length > 0) {
 					route = hash.substring(1);
@@ -80,14 +101,12 @@ define(
 				else {
 					route = 'home';
 				}
-				
 				router.navigateTo(route);
-				if(callback && typeof callback === 'function') {
+
+				if(callback && typeof callback == 'function') {
 					callback();
 				}
 			});
-
-			console.log('Sharingear initialized.');
 		}
 
 		/**

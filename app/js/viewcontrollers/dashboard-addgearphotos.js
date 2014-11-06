@@ -8,26 +8,25 @@ define(
 	function(_, ViewController, App, Gear) {
 		var AddGearPhotos = ViewController.inherit({
 			newGear: null,
-			
+
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populatePhotos: populatePhotos,
 			handleImageUpload: handleImageUpload,
 			handleNext: handleNext,
 			handleBreadcrumbBack: handleBreadcrumbBack
-		}); 
+		});
 		return AddGearPhotos;
 
 		function didInitialize() {
-			this.newGear = new Gear.constructor({
-				rootURL: App.API_URL,
-				data: {
-					images: ''
-				}
-			});
-
-			if(this.passedData) {
-				_.extend(this.newGear.data, this.passedData.data);
+			if(App.user.data.id === null) {
+				this.ready = false;
+				App.router.navigateTo('home');
+				return;
+			}
+			this.newGear = this.passedData;
+			if(!this.newGear.data.images) {
+				this.newGear.data.images = '';
 			}
 		}
 
@@ -61,6 +60,9 @@ define(
 					console.log(error);
 					return;
 				}
+
+				console.log("Add picture URL: " + url);
+
 				$thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);

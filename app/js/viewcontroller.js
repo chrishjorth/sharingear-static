@@ -14,6 +14,7 @@ define([
 		templateParameters: {},
 		labels: {},
 		path: '', //URL path in the following form mainView/subView fx dashboard/profile
+		hasSubviews: true,
 		$subViewContainer: $(''),
 		subPath: '',
 		passedData: null, //stores extra data passed to the view
@@ -21,6 +22,7 @@ define([
 	};
 
 	methods = {
+		initialize: initialize,
 		render: render,
 		setSubPath: setSubPath,
 		renderSubviews: renderSubviews,
@@ -38,10 +40,8 @@ define([
 		this.userEvents = [];
 		
 		this.setSubPath();
-		
-		if(this.didInitialize && typeof this.didInitialize == 'function') {
-			this.didInitialize();
-		}
+
+		this.initialize();
 	};
 
 	inherit = function(inheritOptions) {
@@ -56,6 +56,15 @@ define([
 		constructor: constructor,
 		inherit: inherit
 	};
+
+	/**
+	 * Allows reinitializing a views data.
+	 */
+	function initialize() {
+		if(this.didInitialize && typeof this.didInitialize == 'function') {
+			this.didInitialize();
+		}
+	}
 
 	function render(callback) {
 		var template = this.template(this.templateParameters);
@@ -82,8 +91,16 @@ define([
 	}
 
 	function renderSubviews(data, callback) {
-		if(this.subPath !== '') {
-			this.loadSubView(data, callback);
+		var view = this;
+		if(this.subPath !== '' && this.hasSubviews === true) {
+			this.loadSubView(data, function() {
+				if(view.didRenderSubview && typeof view.didRenderSubview == 'function') {
+					view.didRenderSubview();
+				}
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
+			});
 		}
 	}
 
