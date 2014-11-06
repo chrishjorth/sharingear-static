@@ -178,8 +178,6 @@ define(
 					callback(error);
 					return;
 				}
-				gear.latitude = gear.latitude * 180 / Math.PI;
-				gear.longitude = gear.longitude * 180 / Math.PI;
 				model.data = gear;
 				callback(null);
 			});
