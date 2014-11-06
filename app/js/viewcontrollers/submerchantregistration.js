@@ -53,26 +53,28 @@ define(
 		function handleSubmit(event) {
 			var view = event.data,
 				user = App.user.data;
+			user.birthdate = $('#submerchantregistration-birthdate', this.$element).val();
 			user.address = $('#submerchantregistration-address', this.$element).val();
 			user.postal_code = $('#submerchantregistration-postalcode', this.$element).val();
 			user.city = $('#submerchantregistration-city', this.$element).val();
 			user.region = $('#submerchantregistration-region', this.$element).val();
 			user.country = $('#submerchantregistration-country', this.$element).val();
 			user.phone = $('#submerchantregistration-phone', this.$element).val();
+			user.iban = $('#submerchantregistration-iban', this.$element).val();
+			user.swift = $('#submerchantregistration-swift', this.$element).val();
 			$('#submerchantregistration-formcontainer', this.$element).addClass('hidden');
 			$('#submerchantregistration-termscontainer', this.$element).removeClass('hidden');
 		}
 
 		function handleAccept(event) {
 			var view = event.data;
-//			App.user.update(function(error) {
-//				if(error) {
-//					console.log(error);
-//					return;
-//				}
-//				App.router.openModalView('gearavailability', view.passedData);
-//			});
+			App.user.update(function(error) {
+				if(error) {
+					console.log(error);
+					return;
+				}
 				App.router.openModalView('gearavailability', view.passedData);
+			});
 		}
 	}
 );
