@@ -5,19 +5,21 @@
 define(
 	['underscore', 'jquery', 'utilities'], 
 	function(_, $, Utilities) {
-		var methods, constructor, inherit;
-
-		methods = {
-			get: get,
-			post: post,
-			put: put,
-			del: del
-		};
+		var constructor, inherit;
 
 		constructor = function(options) {
-			var defaults = {
+			var defaults, methods;
+
+			defaults = {
 				rootURL: '',
 				data: null
+			};
+
+			methods = {
+				get: get,
+				post: post,
+				put: put,
+				del: del
 			};
 			_.extend(this, defaults, methods, options);
 			

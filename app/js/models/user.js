@@ -8,15 +8,15 @@ define(
 
 		var User = Model.inherit({
 			fbStatus: '',
-			data: null,
 
 			didInitialize: didInitialize,
 			getLoginStatus: getLoginStatus,
 			login: login,
 			loginToBackend: loginToBackend,
             uploadProfilePicture: uploadProfilePicture,
-            updateUser:updateUser,
-            getPublicInfo: getPublicInfo
+            update:update,
+            getPublicInfo: getPublicInfo,
+            isSubMerchant: isSubMerchant
 		});
 
 		FB.init({
@@ -26,14 +26,17 @@ define(
 		return User;
 
 		function didInitialize() {
-			this.data = {
-				id: null,
-				name: '',
-				surname: '',
-                city: '',
-                image_url: '',
-                bio: ''
-			};
+			if(this.data === null) {
+				this.data = {
+					id: null,
+					name: '',
+					surname: '',
+                	city: '',
+                	image_url: '',
+                	bio: '',
+                	submerchant: false
+				};
+			}
 		}
 
 		function getLoginStatus(callback) {
@@ -105,16 +108,18 @@ define(
 			});
 		}
 
-        function updateUser(userID, saveData, callback){
+        function update(callback){
         	var user = this;
-            this.put('/users/' + userID, saveData, function (error, data) {
-                if(error){
-                    if(callback && typeof callback === 'function') {
-                        callback('Error getting filename: ' + error);
-                    }
-                    return;
+            user.put('/users/' + user.data.id, user.data, function (error, data) {
+                if(!error){
+                	_.extend(user.data, data);
                 }
-                _.extend(user.data, data);
+                else {
+                	error = 'Error updating user: ' + error;
+                }
+                if(callback && typeof callback === 'function') {
+                	callback(error);
+                }
             });
         }
 
@@ -167,6 +172,10 @@ define(
         		_.extend(model.data, user);
         		callback(null);
         	});
+        }
+
+        function isSubMerchant() {
+        	return this.data.submerchant;
         }
 	}
 );

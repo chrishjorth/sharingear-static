@@ -3,28 +3,25 @@
  * @author: Chris Hjorth, Horatiu Roman
  */
 
+'use strict';
+
 define(
-	['viewcontroller', 'app', 'models/gear', 'models/user', 'googlemaps','owlcarousel','magnificpopup'],
-	function(ViewController, App, Gear, User, GoogleMaps, owlcarousel, magnificPopup) {
-		var GearProfile = ViewController.inherit({
-			hasSubviews: false,
-			gear: null,
-			owner: null,
-			map: null,
+	['jquery', 'viewcontroller', 'app', 'models/gear', 'models/user', 'googlemaps','owlcarousel','magnificpopup', 'facebook'],
+	function($, ViewController, App, Gear, User, GoogleMaps, owlcarousel, magnificPopup, FB) {
 
-			didInitialize: didInitialize,
-			didRender: didRender,
-			renderGearPictures: renderGearPictures,
-			renderMap: renderMap,
-            renderOwnerPicture: renderOwnerPicture,
-			renderPopup: renderPopup,
-			addEditButtonIfOwner: addEditButtonIfOwner,
-			handleBooking: handleBooking
-		});
+		var didInitialize,
+			didRender,
+			renderOwnerPicture,
+			renderGearPictures,
+			renderMap,
+			handleBooking,
+            handleEditProfile,
+            handleFacebookShare,
+            handleTwitterShare,
+			renderPopup,
+			addEditButtonIfOwner;
 
-		return GearProfile;
-
-		function didInitialize() {
+		didInitialize = function() {
             var view = this;
 
 			view.templateParameters = {
@@ -43,19 +40,21 @@ define(
 				rootURL: App.API_URL
 			});
 
-			if(this.passedData) {
-				this.gear = this.passedData;
+			if(view.passedData) {
+				//No need to fetch gear from backend
+				view.gear = this.passedData;
 			}
 			else {
-				this.gear = new Gear.constructor({
-					rootURL: App.API_URL
-				});
-				if(this.gear.data.id === null) {
-					this.gear.data.id = this.subPath;
+				if(view.gear === null) {
+					//In this case the view is loaded the first time, and not returning from a modal fx
+					view.gear = new Gear.constructor({
+						rootURL: App.API_URL
+					});
+					view.gear.data.id = view.subPath;
+					view.subPath = ''; //To avoid rendering a subview based on the gear id
 				}
-				this.subPath = ''; //To avoid rendering a subview based on the gear id
 				
-				this.gear.update(App.user.data.id, function(error) {
+				view.gear.update(App.user.data.id, function(error) {
 					if(error) {
 						console.log(error);
 						return;
@@ -79,14 +78,14 @@ define(
 							price_c: gearData.price_c,
 							name: ownerData.name + ' ' + ownerData.surname,
 							bio: ownerData.bio
-						}
+						};
 						view.render();
 					});
 				});
 			}
-		}
+		};
 
-		function didRender() {
+		didRender = function() {
             var view = this,
             	$owl, $paginatorsLink, images, i;
 			
@@ -102,7 +101,7 @@ define(
                 singleItem: true
             });
 	        
-            $('.owl-controls .owl-page').append('<a class="item-link"/>');
+            $('.owl-controls .owl-page').append('<a class=\"item-link\"/>');
 
             $paginatorsLink = $('.owl-controls .item-link', this.$element);
             images = this.gear.data.images.split(',');
@@ -122,38 +121,14 @@ define(
 
             this.addEditButtonIfOwner();
 
-            $('#fb-share-gear').on('click', function(event) {
-                var url = window.location.href;
-                instrument = view.gear.data.brand;
-                description = "Check out this "+instrument+" on Sharingear!"+url;
-
-                FB.ui({
-                    method: 'feed',
-                    caption: 'www.sharingear.com',
-                    link: url,
-                    description: description
-                }, function(response) {
-                    //console.log(response);
-                });
-            });
-
-            $('#tw-share-gear').on('click', function(event) {
-                var twtTitle = "Check out this "+view.gear.data.brand+" on www.sharingear.com";
-                var twtUrl = location.href;
-                var maxLength = 140 - (twtUrl.length + 1);
-                if (twtTitle.length > maxLength) {
-                    twtTitle = twtTitle.substr(0, (maxLength - 3)) + '...';
-                }
-                var twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(twtTitle + ' ' + twtUrl);
-                window.open(twtLink);
-            });
-
-
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
-		}
+            this.setupEvent('click', '#editProfileBtn', this, this.handleEditProfile);
+            this.setupEvent('click', '#fb-share-gear', this, this.handleFacebookShare);
+            this.setupEvent('click', '#tw-share-gear', this, this.handleTwitterShare);
+		};
 
 
-        function renderOwnerPicture() {
+        renderOwnerPicture = function() {
         	var img, isVertical, backgroundSize;
         	if(!this.owner.data.image_url) {
         		return;
@@ -173,9 +148,9 @@ define(
         		});
         	};
         	img.src = this.owner.data.image_url;
-        }
+        };
 
-		function renderGearPictures() {
+		renderGearPictures = function() {
 			var images = this.gear.data.images.split(','),
 				description = 'Picture of the gear.',
 				html = '',
@@ -188,9 +163,9 @@ define(
 				}
 			}
 			$('#gearprofile-owl', this.$element).append(html);
-		}
+		};
 
-		function renderMap() {
+		renderMap = function() {
 			var gear = this.gear.data,
 				mapOptions, latlong, marker;
 			if(gear.latitude !== null && gear.longitude !== null) {
@@ -201,17 +176,17 @@ define(
 					maxZoom: 14
 				};
 				this.map = new GoogleMaps.Map(document.getElementById('gearprofile-map'), mapOptions);
-				var marker = new GoogleMaps.Marker({
+				marker = new GoogleMaps.Marker({
 					position: latlong,
 					map: this.map,
-					icon: 'shagicon_003.png' // TODO: put icon on server
+					icon: 'images/shagicon_003.png' // TODO: put icon on server
 				});
 			}
 
 			$('.adress_click', this.$element).html(/*gear.address + ' ' + */gear.postal_code + ' ' + gear.city + ' ' + gear.region + ', ' + gear.country);
-		}
+		};
 
-		function handleBooking(event) {
+		handleBooking = function(event) {
 			var view = event.data,
 				user = App.user;
 			if(user.data.id === null) {
@@ -227,10 +202,46 @@ define(
 			else {
 				App.router.openModalView('gearbooking', view.gear);
 			}
-		}
+		};
 
+        handleEditProfile = function (event) {
+
+            var view = event.data;
+
+            App.router.openModalView('editgear', view.gear);
+        };
+
+        handleFacebookShare = function (event) {
+
+            var view = event.data;
+            var url, instrument, description;
+
+            url = window.location.href;
+            instrument = view.gear.data.brand;
+            description = 'Check out this ' + instrument + ' on Sharingear!' + url;
+
+            FB.ui({
+                method: 'feed',
+                caption: 'www.sharingear.com',
+                link: url,
+                description: description
+            });
+        };
+
+        handleTwitterShare = function(event){
+            var view = event.data,
+                twtTitle = 'Check out this ' + view.gear.data.brand + ' on www.sharingear.com',
+                twtUrl = location.href,
+                maxLength = 140 - (twtUrl.length + 1),
+                twtLink;
+
+            twtTitle = twtTitle.length > maxLength ? twtTitle.substr(0, (maxLength - 3)) + '...' : twtTitle;
+            twtLink = 'http://twitter.com/home?status=' + encodeURIComponent(twtTitle + ' ' + twtUrl);
+
+            window.open(twtLink);
+        };
 		// gets images used for rendering gear and uses them to render popup gallery.
-		function renderPopup() {
+		renderPopup = function() {
 			var view = this;
     		// get images that are used for owl carousel
             var images = view.gear.data.images.split(',');
@@ -238,10 +249,10 @@ define(
             // create array of items with src field
             var items = [];
             for (var i = 0; i < images.length; i++) {
-            	if (images[i]!="") {
+            	if (images[i] !== '') {
             		items.push({src:images[i]});
             	}
-            };
+            }
 
 			// click on item image => open lightbox fullscreen gallery thing
             $('.owl-item2 img').magnificPopup({
@@ -249,23 +260,41 @@ define(
             	items: items,
             	gallery: {enabled: true}
             });
+		};
 
-
-		}
-
-		function addEditButtonIfOwner() {
+		addEditButtonIfOwner = function() {
 			var view = this,
-				$editButton;
+                editButtonContainer,
+                editButton;
+
 			// if user is logged in AND is owner, add edit button
 			if(App.user.data.id == view.gear.data.owner_id) {
-				$editButton = $("#editButton", view.$element);
-				$editButton.html("<input class='btn btn-info pull-right' type='button' value='Edit'>");
-				$editButton.on("click", function() {
-					App.router.openModalView('editgear', view.gear);
-				});
+
+                editButtonContainer = $('#editButtonContainer', view.$element);
+                editButton = '<button id="editProfileBtn" class="btn btn-info pull-right">Edit</button>';
+
+                editButtonContainer.append(editButton);
 			}
-			
-		}
+		};
+
+		return ViewController.inherit({
+			hasSubviews: false,
+			gear: null,
+			owner: null,
+			map: null,
+
+			didInitialize: didInitialize,
+			didRender: didRender,
+			renderGearPictures: renderGearPictures,
+			renderMap: renderMap,
+            renderOwnerPicture: renderOwnerPicture,
+			renderPopup: renderPopup,
+			addEditButtonIfOwner: addEditButtonIfOwner,
+			handleBooking: handleBooking,
+            handleEditProfile: handleEditProfile,
+            handleFacebookShare: handleFacebookShare,
+            handleTwitterShare: handleTwitterShare
+		});
 	}
 );
 

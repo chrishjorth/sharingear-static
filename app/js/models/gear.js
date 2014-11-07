@@ -6,28 +6,7 @@ define(
 	['utilities', 'model'],
 	function(Utilities, Model) {
 		var Gear = Model.inherit({
-			data: {
-				id: null,
-				type: '',
-				subtype: '',
-				brand: '',
-				model: '',
-				description: '',
-				images: '',
-				price_a: '',
-				price_b: '',
-				price_c: '',
-				address: '',
-				postalcode: '',
-				city: '',
-				region: '',
-				country: '',
-				latitude: null,
-				longitude: null,
-				gear_status: 'unavailable',
-				owner_id: null
-			},
-
+			didInitialize: didInitialize,
 			createGear: createGear,
 			uploadImage: uploadImage,
 			save: save,
@@ -38,6 +17,32 @@ define(
 		});
 
 		return Gear;
+
+		function didInitialize() {
+			if(this.data === null) {
+				this.data = {
+					id: null,
+					type: '',
+					subtype: '',
+					brand: '',
+					model: '',
+					description: '',
+					images: '',
+					price_a: '',
+					price_b: '',
+					price_c: '',
+					address: '',
+					postalcode: '',
+					city: '',
+					region: '',
+					country: '',
+					latitude: null,
+					longitude: null,
+					gear_status: 'unavailable',
+					owner_id: null
+				};
+			}
+		}
 
 		function createGear(user, callback) {
 			var model = this,
@@ -173,8 +178,6 @@ define(
 					callback(error);
 					return;
 				}
-				gear.latitude = gear.latitude * 180 / Math.PI;
-				gear.longitude = gear.longitude * 180 / Math.PI;
 				model.data = gear;
 				callback(null);
 			});

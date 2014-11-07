@@ -10,7 +10,7 @@ define(
 			router: Router,
 			header: null,
 			footer: null,
-			//API_URL: 'http://0.0.0.0:1338',
+			//API_URL: 'http://localhost:1338',
 			API_URL: 'https://api.sharingear.com',
 			user: null,
 			gearClassification: null,
@@ -58,7 +58,9 @@ define(
 				'editgearpricing',
 				'gearbooking',
 				'gearavailability',
-                'gearpendingconfirm'
+                'gearpendingconfirm',
+                'payment',
+                'submerchantregistration'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.

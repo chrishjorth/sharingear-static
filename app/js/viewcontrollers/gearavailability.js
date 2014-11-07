@@ -187,6 +187,7 @@ define(
 			var view = event.data,
 				availabilityArray = [],
 				month, monthSelections, selection;
+
 			App.router.closeModalView();
 
 			console.log(view.selections);
@@ -202,7 +203,42 @@ define(
 				}
 			}
 
-			view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
+            //Merge two periods
+            var mergePeriods = function(p1,p2){
+
+                var result = {
+                    start_time: p1.start_time,
+                    end_time: p2.end_time
+                };
+                return result;
+            };
+
+            //Sort array by start time
+            availabilityArray.sort(function (m1, m2) {
+                var moment1 = Moment(m1.start_time);
+                var moment2 = Moment(m2.start_time);
+                return isAfterOrSameDay(moment1,moment2);
+            });
+
+            //Optimize adjacent periods
+
+            var iterator,previousPeriod,currentPeriod;
+            for(iterator=0;iterator<availabilityArray.length;iterator++){
+
+                if (iterator!==0) {
+                    previousPeriod = Moment(availabilityArray[iterator-1].end_time);
+                    currentPeriod = Moment(availabilityArray[iterator].start_time);
+                    if (currentPeriod.diff(previousPeriod, "days") < 1) {
+                        availabilityArray[iterator-1] = mergePeriods(availabilityArray[iterator-1],availabilityArray[iterator]);
+                        availabilityArray.splice(iterator,1);
+                        iterator--;
+                    }
+                }
+
+
+            }
+
+            view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
             });
 		}
 
@@ -264,8 +300,17 @@ define(
 				$this = $(this),
 				selection;
 
-			//Ignore if the day is already selected
+			//If the day is already selected
 			if($this.hasClass('selected') === true) {
+                $this.removeClass('selected');
+                selection = {
+                    startMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')}),
+                    endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
+                };
+
+                //TODO The selection object should be subtracted from view.selections
+                //...
+
 				return;
 			}
 
@@ -273,7 +318,6 @@ define(
 			if($this.data('month') !== view.shownMoment.month()) {
 				return;
 			}
-
 			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
 			$('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
 
@@ -296,7 +340,6 @@ define(
 			var $this = $(this),
 				view = event.data,
 				$calendarContainer, selectionX, selectionY;
-
 			if(event.type === 'mousemove') {
 				selectionX = event.pageX;
 				selectionY = event.pageY;

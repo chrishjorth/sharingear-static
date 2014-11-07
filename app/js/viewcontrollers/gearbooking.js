@@ -36,6 +36,7 @@ define(
 
 			handleCancel: handleCancel,
 			handleBook: handleBook,
+
 			handleLeftToday: handleLeftToday,
 			handleLeftPrevious: handleLeftPrevious,
 			handleLeftNext: handleLeftNext,
@@ -137,13 +138,12 @@ define(
             this.setupEvent('change','#gearbooking-endtime', this, this.handleRightHourDropdown);
         }
 
-        function renderPrice(event) {
-            var view = event.data,
-            	price = 0,
+        function renderPrice() {
+            var price = 0,
             	startDate, endDate, numberOfHours, numberOfDays, numberOfWeeks, difference, display;
             
-            startDate = new Moment(view.startMoment);
-            endDate = new Moment(view.endMoment);
+            startDate = new Moment(this.startMoment);
+            endDate = new Moment(this.endMoment);
 
             numberOfHours = 0;
             numberOfDays = 0;
@@ -200,16 +200,17 @@ define(
                 }
             }
 
-            price = view.pricePerWeek * numberOfWeeks + view.pricePerDay * numberOfDays + view.pricePerHour * numberOfHours;
+            price = this.pricePerWeek * numberOfWeeks + this.pricePerDay * numberOfDays + this.pricePerHour * numberOfHours;
             display = '<p class="price-info">';
             display += 'Hours: ' + numberOfHours + '</br>';
             display += 'Days: ' + numberOfDays + '</br>';
             display += 'Weeks: ' + numberOfWeeks + '</br>';
-            display += 'Price per hour:' + view.pricePerHour + '</br>';
-            display += 'Price per day:' + view.pricePerDay + '</br>';
-            display += 'Price per week:' + view.pricePerWeek + '</br>';
+            display += 'Price per hour:' + this.pricePerHour + '</br>';
+            display += 'Price per day:' + this.pricePerDay + '</br>';
+            display += 'Price per week:' + this.pricePerWeek + '</br>';
             display += '<span class="total-price">' + price + '</span></p>';
-            $('#totalprice', view.$element).html(display);
+            $('#totalprice', this.$element).html(display);
+            this.newBooking.data.price = price;
         }
 
 
@@ -220,18 +221,19 @@ define(
 			var endHourSelected = $("#gearbooking-endtime").val();
             var endHour = endHourSelected.split(':')[0].replace( /^\D+/g, '');
 
-            //if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
-	        //    if (startHour > endHour) {
-	        //    	endHour = startHour;
-	        //    	$("#gearbooking-endtime").val(endHour + ":00");
-	        //    }
-			//}
+            if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
+				if (startHour > endHour) {
+					endHour = startHour;
+					$("#gearbooking-endtime").val(endHour + ":00");
+					renderPrice(event);
+				}
+			}
 
             view.startMoment.hour(startHour);
             view.startMoment.minutes(0);
             view.startMoment.seconds(0);
 
-            renderPrice(event);
+            view.renderPrice();
         }
 
         function handleRightHourDropdown(event) {
@@ -241,12 +243,13 @@ define(
             var startHourSelected = $("#gearbooking-starttime").val();
             var startHour = startHourSelected.split(':')[0].replace( /^\D+/g, '');
 			
-            //if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
-		    //    if (startHour > endHour) {
-	        //    	startHour = endHour;
-	        //    	$("#gearbooking-starttime").val(startHour + ":00");
-	        //    }
-        	//}
+            if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
+				if (startHour > endHour) {
+					startHour = endHour;
+					$("#gearbooking-starttime").val(startHour + ":00");
+					renderPrice(event);
+				}
+        	}
         	
             view.endMoment.hour(endHour);
             view.endMoment.minutes(0);
@@ -369,34 +372,27 @@ define(
 
 		function handleBook(event) {
 			var view = event.data,
-				newData,
+				bookingData,
 				callback;
 
             // check if time was selected
             if(view.startMoment && view.endMoment) {
-                newData = {
+                bookingData = {
                     user_id: App.user.data.id,
                     gear_id: view.gear.data.id,
                     start_time: view.startMoment.format("YYYY-MM-DD HH:mm:ss"),
                     end_time: view.endMoment.format("YYYY-MM-DD HH:mm:ss")
                 };
-            } else {
+            }
+            else {
                 console.log('No dates selected');
                 return;
             }
 
+			_.extend(view.newBooking.data, bookingData);
 
-			_.extend(view.newBooking.data, newData);
-            console.log(view.newBooking.data);
-
-			view.newBooking.createBooking(function(error) {
-                if (error) {
-                    console.log("booking gave error");
-                    console.log(error);
-                }
-            });
-
-			App.router.closeModalView();
+			//App.router.closeModalView();
+			App.router.openModalView('payment', view.newBooking);
 		}
 
 		function handleLeftToday(event) {

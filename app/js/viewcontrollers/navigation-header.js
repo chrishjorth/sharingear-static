@@ -10,7 +10,8 @@ define(
 			didRender: didRender,
 			setupView: setupView,
 			setupEvents: setupEvents,
-			handleLogin: handleLogin
+			handleLogin: handleLogin,
+			handleListYourGear: handleListYourGear
 		});
 
 		return Header;
@@ -26,7 +27,7 @@ define(
 			if(App.user.data.id === null) {
 				html += '<li class="_button-1"><a href="javascript:;" id="navigation-header-signup">SIGN UP</a></li>';
 				html += '<li class="_button-2"><a href="javascript:;" id="navigation-header-login">LOG IN</a></li>';
-				html += '<li class="active _button-3"><a href="#listyourgear">LIST YOUR GEAR</a></li>';
+				html += '<li class="active _button-3"><a href="javascript:;" id="navigation-header-listyourgear">LIST YOUR GEAR</a></li>';
 				$buttonsRightContainer.html(html);
             }
 			else {
@@ -38,6 +39,7 @@ define(
 		function setupEvents() {
 			this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
 			this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+			this.setupEvent('click', '#navigation-header-listyourgear', this, this.handleListYourGear);
 		}
 
 		function handleLogin(event, callback) {
@@ -52,6 +54,15 @@ define(
 				
 				if(callback && typeof callback === 'function') {
 					callback();
+				}
+			});
+		}
+
+		function handleListYourGear() {
+			App.user.login(function(error) {
+				if(!error) {
+					App.router.navigateTo('dashboard/addgear');
+				    view.setupView();
 				}
 			});
 		}
