@@ -17,7 +17,6 @@ define(
 			populateImages: populateImages,
             populateLocation: populateLocation,
             populateCountry: populateCountry,
-			setupEvents: setupEvents,
 			handleCancel: handleCancel,
 			handleNext: handleNext
 		});
