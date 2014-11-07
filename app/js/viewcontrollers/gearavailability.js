@@ -185,7 +185,8 @@ define(
 			var view = event.data,
 				availabilityArray = [],
 				month, monthSelections, selection;
-//			App.router.closeModalView();
+
+			App.router.closeModalView();
 
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
