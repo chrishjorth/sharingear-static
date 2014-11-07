@@ -14,6 +14,7 @@ define(
 			didRender: didRender,
 			populateBrandSelect: populateBrandSelect,
 			populateSubtypeSelect: populateSubtypeSelect,
+			populateImages: populateImages,
             populateLocation: populateLocation,
             populateCountry: populateCountry,
 			setupEvents: setupEvents,
@@ -30,6 +31,8 @@ define(
 		function didRender() {
 			this.populateBrandSelect();
 			this.populateSubtypeSelect();
+
+			this.populateImages();
 
             this.populateCountry();
             this.populateLocation();
@@ -55,11 +58,12 @@ define(
                 $("#editgearpricingloc-form #editgearpricing-country", this.$element).val(this.gear.data.country);
             }
 
-			this.setupEvents();
+			this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel, #editgearpricingloc-form .btn-cancel', this, this.handleCancel);
+			this.setupEvent('click', '#editgear-form .btn-save, #editgear-photos-form .btn-save, #editgearpricing-form .btn-save, #editgearpricingloc-form .btn-save', this, this.handleNext);
+			this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
 		}
 
         function populateLocation() {
-
             var city = this.gear.data.city,
             address = this.gear.data.address,
             postalcode = this.gear.data.postal_code,
@@ -152,9 +156,17 @@ define(
 			$subtypeSelect.append(html);
 		}
 
-		function setupEvents() {
-			this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel, #editgearpricingloc-form .btn-cancel', this, this.handleCancel);
-			this.setupEvent('click', '#editgear-form .btn-save, #editgear-photos-form .btn-save, #editgearpricing-form .btn-save, #editgearpricingloc-form .btn-save', this, this.handleNext);
+		function populateImages() {
+			var images = this.gear.data.images.split(','),
+				html = '',
+				i;
+			for(i = 0; i < images.length; i++) {
+				//Avoid empty url strings because of trailing ','
+				if(images[i].length > 0) {
+					html += '<li><img src="' + images[i] + '" alt="Gear thumb"></li>';
+				}
+			}
+			$('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
 		}
 
 		function handleCancel(event) {
@@ -164,6 +176,26 @@ define(
             App.router.closeModalView();
             $("body, html").animate({scrollTop: currentVerticalPosition},50);
 
+		}
+
+		function handleImageUpload(event) {
+			var view = event.data
+				$file = $(this);
+			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
+				var $thumbList, html;
+				$('#editgear-form-imageupload').val('');
+				if(error) {
+					alert('Error uploading file.');
+					console.log(error);
+					return;
+				}
+
+				console.log("Edit picture URL: " + url);
+
+				$thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
+				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
+				$thumbList.append(html);
+			});
 		}
 
 		function handleNext(event) {

@@ -20,6 +20,7 @@ define(
 		return EditGear;
 
 		function didInitialize() {
+			console.log('PHOTOS!');
 			this.gear = this.passedData;
 		}
 
