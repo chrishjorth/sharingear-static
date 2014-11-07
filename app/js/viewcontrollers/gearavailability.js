@@ -26,6 +26,7 @@ define(
 
 			handleClearMonth: handleClearMonth,
 			handleAlwaysAvailable: handleAlwaysAvailable,
+			handleNeverAvailable: handleNeverAvailable,
 
 			handleCancel: handleCancel,
 			handleSave: handleSave,
@@ -36,7 +37,7 @@ define(
 
 			isBeforeOrSameDay: isBeforeOrSameDay,
 			isAfterOrSameDay: isAfterOrSameDay
-		}); 
+		});
 		return GearAvailability;
 
 		function didInitialize() {
@@ -61,7 +62,7 @@ define(
 					startMoment = Moment(availabilityArray[i].start);
 					endMoment = Moment(availabilityArray[i].end);
 					if(Array.isArray(view.selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
-						view.selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];	
+						view.selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
 					}
 					view.selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
 						startMoment: startMoment,
@@ -84,6 +85,7 @@ define(
 
 			this.setupEvent('click', '#gearavailability-clearmonth-btn', this, this.handleClearMonth);
 			this.setupEvent('click', '#gearavailability-always-btn', this, this.handleAlwaysAvailable);
+			this.setupEvent('click', '#gearavailability-never-btn', this, this.handleNeverAvailable);
 
 			this.setupEvent('click', '#gearavailability-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#gearavailability-save-btn', this, this.handleSave);
@@ -187,6 +189,8 @@ define(
 				month, monthSelections, selection;
 			App.router.closeModalView();
 
+			console.log(view.selections);
+
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
 				for(j = 0; j < monthSelections.length; j++) {
@@ -235,6 +239,24 @@ define(
 
 		function handleAlwaysAvailable(event) {
 			var view = event.data;
+
+
+
+			view.setupMonthCalendar();
+			view.clearSelections();
+			view.renderSelections();
+
+		}
+
+		function handleNeverAvailable(event) {
+			var view = event.data;
+
+			view.selections = {};
+			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
+
+			view.setupMonthCalendar();
+			view.clearSelections();
+			view.renderSelections();
 		}
 
 		function handleDayStartSelect(event) {
@@ -261,7 +283,7 @@ define(
 			};
 
 			if(Array.isArray(view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)]) === false) {
-				view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];	
+				view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
 			}
 			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)].push(selection);
 
