@@ -18,6 +18,7 @@ define(
             populateLocation: populateLocation,
             populateCountry: populateCountry,
 			handleCancel: handleCancel,
+			handleImageUpload: handleImageUpload,
 			handleNext: handleNext
 		});
 		return EditGear;
