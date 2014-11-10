@@ -197,12 +197,13 @@ define(
 		/**
 		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
 		 */
-		function setAvailability(userID, availabilityArray, callback) {
+		function setAvailability(userID, availabilityArray, alwaysFlag, callback) {
 			var postData;
 			postData = {
-				availability: JSON.stringify(availabilityArray)
+				availability: JSON.stringify(availabilityArray),
+				alwaysFlag: alwaysFlag
 			};
-			
+
 			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
 				if(error) {
 					console.log(error);

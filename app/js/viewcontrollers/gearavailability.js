@@ -10,6 +10,7 @@ define(
 			gear: null,
 			shownMoment: null,
 			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
+			alwaysFlag: 0,
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -162,6 +163,7 @@ define(
 			if(Array.isArray(selections) === false) {
 				return;
 			}
+
 			for(i = 0; i < selections.length; i++) {
 				startMoment = selections[i].startMoment;
 				$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
@@ -189,8 +191,6 @@ define(
 				month, monthSelections, selection;
 
 			App.router.closeModalView();
-
-			console.log(view.selections);
 
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
@@ -238,8 +238,10 @@ define(
 
             }
 
-            view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
-            });
+
+						//change to something working in the f-end
+
+            view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {});
 		}
 
 		function handleToday(event) {
@@ -274,13 +276,16 @@ define(
 		}
 
 		function handleAlwaysAvailable(event) {
+
 			var view = event.data;
+			console.log(view.selections);
 
+			alwaysFlag = 1;
 
-
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
+			// $('#gearavailability-months-container .day-row .day').each(function(index, $element) {
+			// 	// $(this).removeClass('selected');
+			// 	$(this).addClass('selected');
+			// });
 
 		}
 
