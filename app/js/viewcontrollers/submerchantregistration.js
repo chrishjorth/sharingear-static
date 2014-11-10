@@ -4,8 +4,8 @@
  */
 
 define(
-	['viewcontroller', 'app'],
-	function(ViewController, App) {
+	['viewcontroller', 'app', 'moment'],
+	function(ViewController, App, Moment) {
 		var Payment = ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -53,7 +53,7 @@ define(
 		function handleSubmit(event) {
 			var view = event.data,
 				user = App.user.data;
-			user.birthdate = $('#submerchantregistration-birthdate', this.$element).val();
+			user.birthdate = (new Moment($('#submerchantregistration-birthdate', this.$element).val(), 'DD-MM-YYYY')).format('YYYY-MM-DD');
 			user.address = $('#submerchantregistration-address', this.$element).val();
 			user.postal_code = $('#submerchantregistration-postalcode', this.$element).val();
 			user.city = $('#submerchantregistration-city', this.$element).val();
@@ -73,7 +73,13 @@ define(
 					console.log(error);
 					return;
 				}
-				App.router.openModalView('gearavailability', view.passedData);
+				App.user.updateBankDetails(function(error) {
+					if(error) {
+						console.log(error);
+						return;
+					}
+					App.router.openModalView('gearavailability', view.passedData);
+				});
 			});
 		}
 	}

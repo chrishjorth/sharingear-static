@@ -2,30 +2,26 @@
  * Defines a Sharingear user. This can both be a logged in user or the owner of gear.
  * @author: Chris Hjorth
  */
+'use strict';
+
 define(
-	['model', 'facebook','utilities'],
-	function(Model, FB, Utilities) {
-
-		var User = Model.inherit({
-			fbStatus: '',
-
-			didInitialize: didInitialize,
-			getLoginStatus: getLoginStatus,
-			login: login,
-			loginToBackend: loginToBackend,
-            uploadProfilePicture: uploadProfilePicture,
-            update:update,
-            getPublicInfo: getPublicInfo,
-            isSubMerchant: isSubMerchant
-		});
+	['underscore', 'model', 'facebook','utilities'],
+	function(_, Model, FB, Utilities) {
+		var didInitialize,
+			getLoginStatus,
+			login,
+			loginToBackend,
+			update,
+			uploadProfilePicture,
+			getPublicInfo,
+			isSubMerchant,
+			updateBankDetails;
 
 		FB.init({
 			appId: '522375581240221'
 		});
 
-		return User;
-
-		function didInitialize() {
+		didInitialize = function() {
 			if(this.data === null) {
 				this.data = {
 					id: null,
@@ -37,9 +33,9 @@ define(
                 	submerchant: false
 				};
 			}
-		}
+		};
 
-		function getLoginStatus(callback) {
+		getLoginStatus = function(callback) {
 			var user = this;
 			FB.getLoginStatus(function(response) {
 				user.fbStatus = response.status;
@@ -47,9 +43,9 @@ define(
 					callback(response);
 				}
 			});
-		}
+		};
 
-		function login(callback) {
+		login = function(callback) {
 			var user = this;
 
 			//We need to make sure Facebook has not changed the status on their side.
@@ -80,9 +76,9 @@ define(
 					user.loginToBackend(response, callback);
 				}
 			});
-		}
+		};
 
-		function loginToBackend(FBResponse, callback) {
+		loginToBackend = function(FBResponse, callback) {
 			var user = this,
 				authData = FBResponse.authResponse,
 				postData;
@@ -106,9 +102,9 @@ define(
 					callback(null, data);
 				}
 			});
-		}
+		};
 
-        function update(callback){
+        update = function(callback){
         	var user = this;
             user.put('/users/' + user.data.id, user.data, function (error, data) {
                 if(!error){
@@ -121,9 +117,9 @@ define(
                 	callback(error);
                 }
             });
-        }
+        };
 
-        function uploadProfilePicture(file, filename, userID, callback){
+        uploadProfilePicture = function(file, filename, userID, callback){
             var model = this;
             this.get('/users/' + userID + '/newfilename/' + filename, function (error, data) {
                 if(error){
@@ -159,9 +155,9 @@ define(
 
                 });
             });
-        }
+        };
 
-        function getPublicInfo(callback) {
+        getPublicInfo = function(callback) {
         	var model = this;
 
         	this.get('/users/' + this.data.id, function(error, user) {
@@ -172,10 +168,34 @@ define(
         		_.extend(model.data, user);
         		callback(null);
         	});
-        }
+        };
 
-        function isSubMerchant() {
+        isSubMerchant = function() {
         	return this.data.submerchant;
-        }
+        };
+
+        updateBankDetails = function(callback) {
+        	var user = this;
+            user.put('/users/' + user.data.id + '/bankdetails', user.data, function (error) {
+                if(error){
+                	callback('Error updating bank details: ' + error);
+                }
+                callback(null);
+            });
+        };
+
+        return Model.inherit({
+			fbStatus: '',
+
+			didInitialize: didInitialize,
+			getLoginStatus: getLoginStatus,
+			login: login,
+			loginToBackend: loginToBackend,
+            uploadProfilePicture: uploadProfilePicture,
+            update:update,
+            getPublicInfo: getPublicInfo,
+            isSubMerchant: isSubMerchant,
+            updateBankDetails: updateBankDetails
+		});
 	}
 );
