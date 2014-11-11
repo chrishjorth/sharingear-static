@@ -3,25 +3,22 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 define(
-	['viewcontroller', 'app', 'moment'],
-	function(ViewController, App, Moment) {
-		var Payment = ViewController.inherit({
-			didInitialize: didInitialize,
-			didRender: didRender,
+	['jquery', 'viewcontroller', 'app', 'moment'],
+	function($, ViewController, App, Moment) {
+		var didRender,
+			populateCountries,
+			handleCancel,
+			handleSubmit,
+			handleAccept;
 
-			handleCancel: handleCancel,
-			handleSubmit: handleSubmit,
-			handleAccept: handleAccept
-		});
-		return Payment;
-
-		function didInitialize() {
-			
-		}
-
-		function didRender() {
+		didRender = function() {
 			var user = App.user.data;
+			if(user.birthdate && user.birthdate !== '') {
+				$('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
+			}
 			if(user.address && user.address !== '') {
 				$('#submerchantregistration-address', this.$element).parent().addClass('hidden');
 			}
@@ -37,6 +34,15 @@ define(
 			if(user.country && user.country !== '') {
 				$('#submerchantregistration-country', this.$element).parent().addClass('hidden');
 			}
+			else {
+				populateCountries($('#submerchantregistration-country', this.$element));
+			}
+			if(user.nationality && user.nationality !== '') {
+				$('#submerchantregistration-nationality', this.$element).parent().addClass('hidden');
+			}
+			else {
+				populateCountries($('#submerchantregistration-nationality', this.$element));
+			}
 			if(user.phone && user.phone !== '') {
 				$('#submerchantregistration-phone', this.$element).parent().addClass('hidden');
 			}
@@ -44,43 +50,83 @@ define(
 			this.setupEvent('click', '.btn-cancel', this, this.handleCancel);
 			this.setupEvent('submit', '#submerchantregistration-form', this, this.handleSubmit);
 			this.setupEvent('click', '#submerchantregistration-accept', this, this.handleAccept);
-		}
+		};
 
-		function handleCancel(event) {
+		populateCountries = function($select) {
+			var countriesArray = App.localization.getCountries(),
+				html = $('option', $select).first()[0].outerHTML,
+				i;
+			for(i = 0; i < countriesArray.length; i++) {
+				html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
+			}
+			$select.html(html);
+		};
+
+		handleCancel = function() {
 			App.router.closeModalView();
-		}
+		};
 
-		function handleSubmit(event) {
+		handleSubmit = function(event) {
 			var view = event.data,
-				user = App.user.data;
-			user.birthdate = (new Moment($('#submerchantregistration-birthdate', this.$element).val(), 'DD-MM-YYYY')).format('YYYY-MM-DD');
-			user.address = $('#submerchantregistration-address', this.$element).val();
-			user.postal_code = $('#submerchantregistration-postalcode', this.$element).val();
-			user.city = $('#submerchantregistration-city', this.$element).val();
-			user.region = $('#submerchantregistration-region', this.$element).val();
-			user.country = $('#submerchantregistration-country', this.$element).val();
-			user.phone = $('#submerchantregistration-phone', this.$element).val();
-			user.iban = $('#submerchantregistration-iban', this.$element).val();
-			user.swift = $('#submerchantregistration-swift', this.$element).val();
-			$('#submerchantregistration-formcontainer', this.$element).addClass('hidden');
-			$('#submerchantregistration-termscontainer', this.$element).removeClass('hidden');
-		}
+				user = App.user.data,
+				$select, content;
+			user.birthdate = (new Moment($('#submerchantregistration-birthdate', view.$element).val(), 'DD-MM-YYYY')).format('YYYY-MM-DD');
+			user.address = $('#submerchantregistration-address', view.$element).val();
+			user.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
+			user.city = $('#submerchantregistration-city', view.$element).val();
+			user.region = $('#submerchantregistration-region', view.$element).val();
+			
+			$select = $('#submerchantregistration-country', view.$element);
+			content = $select.val();
+			if(content !== $('option', $select).first().html()) {
+				user.country = content;
+			}
+			
+			$select = $('#submerchantregistration-nationality', view.$element);
+			content = $select.val();
+			if(content !== $('option', $select).first().html()) {
+				user.nationality = content;
+			}
+			
+			user.phone = $('#submerchantregistration-phone', view.$element).val();
+			user.iban = $('#submerchantregistration-iban', view.$element).val();
+			user.swift = $('#submerchantregistration-swift', view.$element).val();
 
-		function handleAccept(event) {
+			$('#submerchantregistration-formcontainer', view.$element).addClass('hidden');
+			$('#submerchantregistration-termscontainer', view.$element).removeClass('hidden');
+
+		};
+
+		handleAccept = function(event) {
 			var view = event.data;
 			App.user.update(function(error) {
 				if(error) {
 					console.log(error);
+					alert('Error saving data.');
 					return;
 				}
 				App.user.updateBankDetails(function(error) {
 					if(error) {
 						console.log(error);
+						alert('Error saving data.');
 						return;
 					}
 					App.router.openModalView('gearavailability', view.passedData);
+					App.user.fetch(function(error) {
+						if(error) {
+							console.log('Error fetching user: ' + error);
+						}
+					});
 				});
 			});
-		}
+		};
+
+		return ViewController.inherit({
+			didRender: didRender,
+
+			handleCancel: handleCancel,
+			handleSubmit: handleSubmit,
+			handleAccept: handleAccept
+		});
 	}
 );

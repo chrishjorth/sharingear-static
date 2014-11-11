@@ -11,6 +11,7 @@ define(
 			getLoginStatus,
 			login,
 			loginToBackend,
+			fetch,
 			update,
 			uploadProfilePicture,
 			getPublicInfo,
@@ -104,6 +105,18 @@ define(
 			});
 		};
 
+		fetch = function(callback) {
+			var user = this;
+			user.get('/users/' + user.data.id, function(error, data) {
+				if(error) {
+					callback(error);
+					return;
+				}
+				_.extend(user.data, data);
+				callback(null);
+			});
+		};
+
         update = function(callback){
         	var user = this;
             user.put('/users/' + user.data.id, user.data, function (error, data) {
@@ -113,9 +126,7 @@ define(
                 else {
                 	error = 'Error updating user: ' + error;
                 }
-                if(callback && typeof callback === 'function') {
-                	callback(error);
-                }
+                callback(error);
             });
         };
 
@@ -192,6 +203,7 @@ define(
 			login: login,
 			loginToBackend: loginToBackend,
             uploadProfilePicture: uploadProfilePicture,
+            fetch: fetch,
             update:update,
             getPublicInfo: getPublicInfo,
             isSubMerchant: isSubMerchant,

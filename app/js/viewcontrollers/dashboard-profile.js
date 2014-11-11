@@ -95,22 +95,23 @@ define(
 
         function handleSave(event) {
             var view = event.data,
-                saveData,
+                saveData;
             saveData = {
                 name: $('#dashboard-profile-form #name').val(),
                 surname: $('#dashboard-profile-form #surname').val(),
                 city: $('#dashboard-profile-form #hometown').val(),
                 bio: $('#dashboard-profile-form #bio').val()
-            }
-            
-            // if no error, show message to user, next to save button
-            $('#saveSuccessDiv').html("Your profile has been updated.");
-            view.enableSaveButton(false);
+            };
 
-            view.user.updateUser(App.user.data.id, saveData, function (error, data) {
+            _.extend(view.user.data, saveData);
+
+            view.user.update(function (error) {
                 if(error){
                     console.log(error);
+                    return;
                 }
+                $('#saveSuccessDiv').html("Your profile has been updated.");
+                view.enableSaveButton(false);
             });
         }
 
