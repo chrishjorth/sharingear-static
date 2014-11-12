@@ -51,6 +51,22 @@ define(
 			$('#dashboard-addgearprice-form #price_b', this.$element).val(newGear.price_b);
 			$('#dashboard-addgearprice-form #price_c', this.$element).val(newGear.price_c);
 
+            var $select = $('#dashboard-addgearprice-country', this.$element);
+            var countriesArray = App.localization.getCountries(),
+                html = '',
+                i;
+
+            for(i = 0; i < countriesArray.length; i++) {
+                if (countriesArray[i].alpha2==='DK') {
+                    html += '<option selected="selected" value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
+                }else{
+                    html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
+                }
+            }
+
+            $select.append(html);
+
+
 			this.setupEvent('submit', '#dashboard-addgearprice-form', this, this.handleSave);
 			this.setupEvent('click', '.addgearpanel .btnaddgeartwo', this, this.handleBreadcrumbBack);
 		}

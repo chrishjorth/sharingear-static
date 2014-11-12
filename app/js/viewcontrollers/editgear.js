@@ -76,50 +76,22 @@ define(
         }
 
         function populateCountry() {
-            var currentCountry = this.gear.data.country,
-                html = '<option> Choose country: </option>',
+            var currentCountry = this.gear.data.country;
+            var html = '<option selected="selected">'+currentCountry+'</option>',
                 $countrySelect,i;
-            var countryList = [
-                'Andorra',
-                'Australia',
-                'Austria',
-                'Belgium',
-                'Canada',
-                'Cyprus',
-                'Denmark',
-                'Estonia',
-                'Finland',
-                'France',
-                'Germany',
-                'Greece',
-                'Ireland',
-                'Italy',
-                'Latvia',
-                'Lithuania',
-                'Luxembourg',
-                'Malta',
-                'Monaco',
-                'Netherlands',
-                'Norway',
-                'Poland',
-                'Portugal',
-                'San Marino',
-                'Slovakia',
-                'Slovenia',
-                'Spain',
-                'Sweden',
-                'Switzerland',
-                'United Kingdom',
-                'United States'
-            ];
+
+            var countryList = App.localization.getCountries();
 
             $countrySelect = $('#editgearpricing-country', this.$element);
             $countrySelect.empty();
 
             for(i = 0; i < countryList.length; i++) {
-                html += '<option value="' + countryList[i] + '">' + countryList[i] + '</option>';
+                if (currentCountry!==countryList[i].name) {
+                    html += '<option value="' + countryList[i].alpha2 + '">' + countryList[i].name + '</option>';
+                }
             }
-            $countrySelect.append(html);
+            $countrySelect.html(html);
+
         }
 
 		function populateBrandSelect() {
