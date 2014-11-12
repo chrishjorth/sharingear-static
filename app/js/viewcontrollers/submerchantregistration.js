@@ -70,7 +70,7 @@ define(
 			var view = event.data,
 				user = App.user.data,
 				$select, content;
-			user.birthdate = (new Moment($('#submerchantregistration-birthdate', view.$element).val(), 'DD-MM-YYYY')).format('YYYY-MM-DD');
+			user.birthdate = (new Moment($('#submerchantregistration-birthdate', view.$element).val(), 'DD/MM/YYYY')).format('YYYY-MM-DD');
 			user.address = $('#submerchantregistration-address', view.$element).val();
 			user.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
 			user.city = $('#submerchantregistration-city', view.$element).val();

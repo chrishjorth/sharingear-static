@@ -182,7 +182,7 @@ define(
         };
 
         isSubMerchant = function() {
-        	return this.data.submerchant;
+        	return this.data.hasBank;
         };
 
         updateBankDetails = function(callback) {
