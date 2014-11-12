@@ -16,7 +16,7 @@ define(
             handleImageUpload: handleImageUpload,
             didRender: didRender,
             handleSave:handleSave,
-            enableSaveButton:enableSaveButton,
+            enableSaveButton:enableSaveButton
 		}); 
 		return Profile;
 
@@ -96,6 +96,10 @@ define(
         function handleSave(event) {
             var view = event.data,
                 saveData;
+
+            // add spinner to btn
+            $('#saveButton').html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+
             saveData = {
                 name: $('#dashboard-profile-form #name').val(),
                 surname: $('#dashboard-profile-form #surname').val(),
@@ -106,6 +110,9 @@ define(
             _.extend(view.user.data, saveData);
 
             view.user.update(function (error) {
+                // clear spinner on the button
+                $('#saveButton').text('Save');
+
                 if(error){
                     console.log(error);
                     return;
@@ -117,6 +124,7 @@ define(
 
         // if active==true, enables save button, else disables
         function enableSaveButton(active) {
+
             if (!active) {
                 // disable button
                 $('#saveButton').attr({disabled: "disabled"});

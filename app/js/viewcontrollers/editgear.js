@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Edit gear page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Gediminas Bivainis
  */
 
 define(
@@ -201,7 +201,10 @@ define(
 			currentCountry = view.gear.data.country,
 			updatedGearData,
 			addressOneliner,
-			updateCall;
+			updateCall,
+            currentBtn = $(this);
+
+            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
@@ -224,6 +227,7 @@ define(
 
 			updateCall = function() {
 				view.gear.save(App.user.data.id, function(error, gear) {
+                    currentBtn.text('Save');
                     if(error) {
 						console.log(error);
 						return;

@@ -111,6 +111,7 @@ define(
 			var view = event.data,
 				gear;
 			gear = view.gearList.getGearItem($(this).data('yourgearid'));
+
 			if(App.user.isSubMerchant() === true) {
 				App.router.openModalView('gearavailability', gear);
 			}
