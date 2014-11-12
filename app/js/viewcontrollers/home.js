@@ -113,20 +113,20 @@ define(
 
 						var autocomplete = new GoogleMaps.places.Autocomplete(input, options);
 
-			$('body').append('<div id="gear-suggestions-box" style="display: none;"></div>');
+			this.$element.append('<div id="gear-suggestions-box" style="display: none;"></div>');
 
             this.setupEvents();
 		}
 
 		function setupEvents() {
 			var view = this;
+
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 			this.setupEvent('input', '#search-gear', this, view.showGearSuggestions);
-			this.setupEvent('click', '.gear-suggestion', this, view.setGearSuggestion);
 			this.setupEvent('keydown', '#search-gear', this, view.gearInputArrowKeypress);
 			this.setupEvent('focusout', '#search-gear', this, view.searchGearLoseFocus);
 			this.setupEvent('focusin', '#search-gear', this, view.searchGearGainFocus);
-
+            this.setupEvent('mousedown touchstart', '.gear-suggestion', this, view.setGearSuggestion);
 		}
 
 		/**
@@ -283,6 +283,7 @@ define(
 
 		function showGearSuggestions(event) {
 			var view = event.data;
+            console.log('showGearSuggestions');
 			if (view.gearSelectionIndex == 0) {
 				view.gearInputString = $('#search-gear').val(); // save the input string when nothing is selected
 			}
@@ -403,11 +404,11 @@ define(
 					html += '</div>';
 					$("#gear-suggestions-box").append(html);
 				}
-			};
-			
+			}
 		}
 
 		function setGearSuggestion(event) {
+            console.log('click');
 			$("#search-gear").val($(event.target).text());
 			$("#gear-suggestions-box").hide();
 		}
@@ -456,15 +457,14 @@ define(
 		}
 
 		function searchGearLoseFocus(event) {
+            console.log('out');
+
 			// clears suggestion box when losing focus
 			$('#gear-suggestions-box').hide();
-
 		}
 
 		function searchGearGainFocus(event) {
 			$('#gear-suggestions-box').show();
-
 		}
-
 	}
 );
