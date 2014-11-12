@@ -70,7 +70,7 @@ define(
 			var view = event.data,
 				user = App.user.data,
 				$select, content;
-			user.birthdate = (new Moment($('#submerchantregistration-birthdate', view.$element).val(), 'DD-MM-YYYY')).format('YYYY-MM-DD');
+			user.birthdate = (new Moment($('#submerchantregistration-birthdate', view.$element).val(), 'DD/MM/YYYY')).format('YYYY-MM-DD');
 			user.address = $('#submerchantregistration-address', view.$element).val();
 			user.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
 			user.city = $('#submerchantregistration-city', view.$element).val();
@@ -141,8 +141,13 @@ define(
 
 
 		handleAccept = function(event) {
-			var view = event.data;
+			var view = event.data,
+                currentBtn = $(this);
+console.log(this);
+            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
+            console.log(currentBtn);
 			App.user.update(function(error) {
+                currentBtn.text('Accept');
 				if(error) {
 					console.log(error);
 					alert('Error saving data.');

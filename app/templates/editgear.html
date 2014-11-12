@@ -34,7 +34,7 @@
 							</div>
 							<div class="col-md-6 form-right">
 								<div class="form-group">
-									<label for="description">Description:</label>
+									<label>Description:</label>
 									<textarea name="editgear-description" id="editgear-description" class="form-control">{{description}}</textarea>
 								</div>
 							</div>
@@ -114,7 +114,28 @@
 									<p class="small">An 8 day rental will be charged as 1 week and 1 day</p>
 								</div>
                             </div>
+
+
                             <div class="col-md-6 form-right">
+                                <div id="addDeliveryPriceContainer">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="gear-delivery-available-checkbox"> Gear available for delivery
+                                        </label>
+                                    </div>
+                                    <fieldset disabled>
+                                        <div class="form-group">
+                                            <label>Delivery price</label>
+                                            <div class="price">
+                                                <input id="delivery_price" class="same-line form-control" name="delivery_price" size="7" type="text" value="{{delivery_price}}" placeholder="Delivery price">
+                                            </div>
+                                            <p class="small">Delivery is fixed at this price.</p>
+                                            <label>Delivery distance</label>
+                                            <input id="delivery_distance" class="same-line form-control" name="delivery_price" size="7" type="text" value="{{delivery_distance}}" placeholder="Delivery distance in km">
+                                            <p class="small">Maximum delivery distance from your location.</p>
+                                        </div>
+                                    </fieldset>
+                                </div>
                                 <p>We suggest prices from what backline rental companies offer, in order to offer the best deal for your renters.</p>
                             </div>
 							<div class="edit-gear-buttons-margin-fix2 pull-right  buttons-bottom-right">

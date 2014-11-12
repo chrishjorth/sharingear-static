@@ -1,5 +1,42 @@
 <div class="container-fluid">
 	<form id="payment-form" action="" onsubmit="return false;">
+		
+			<div class="form-group">
+				<label for="payment-birthdate">Date of birth (DD/MM/YYYY):</label>
+				<input type="text" name="address" id="payment-birthdate">
+			</div>
+			<div class="form-group">
+				<label for="payment-address">Address:</label>
+				<input type="text" name="address" id="payment-address">
+			</div>
+			<div class="form-group">
+				<label for="payment-postalcode">Postal code:</label>
+				<input type="text" name="postal_code" id="payment-postalcode">
+			</div>
+			<div class="form-group">
+				<label for="payment-city">City:</label>
+				<input type="text" name="city" id="payment-city">
+			</div>
+			<div class="form-group">
+				<label for="payment-region">Region:</label>
+				<input type="text" name="region" id="payment-region">
+			</div>
+			<div class="form-group">
+				<select name="country" id="payment-country">
+					<option value="">Select your country</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<select name="nationality" id="payment-nationality">
+					<option value="">Select your nationality</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="payment-phone">Phone:</label>
+				<input type="text" name="phone" id="payment-phone">
+			</div>
+		
+
 		<input type="radio" name="cardtype" value="visa" checked>
 		VISA	
 		<input type="radio" name="cardtype" value="mastercard">

@@ -14,6 +14,7 @@ define(
 			didRender: didRender,
 			handleSave: handleSave,
 			handleBreadcrumbBack: handleBreadcrumbBack,
+            handleDeliveryCheckbox:handleDeliveryCheckbox,
 			save: save
 		}); 
 		return AddGearPrice;
@@ -30,6 +31,8 @@ define(
 					price_a: 0,
 					price_b: 0,
 					price_c: 0,
+                    delivery_price: null,
+                    delivery_distance: null,
 					address: '',
 					postalcode: null,
 					city: '',
@@ -66,15 +69,29 @@ define(
 
             $select.append(html);
 
-
+            this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('submit', '#dashboard-addgearprice-form', this, this.handleSave);
 			this.setupEvent('click', '.addgearpanel .btnaddgeartwo', this, this.handleBreadcrumbBack);
 		}
 
+        function handleDeliveryCheckbox(event){
+
+            this.checked ?
+                $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled')
+                : $(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
+        }
+
 		function handleSave(event) {
 			var view = event.data;
+
+            // add spinner to save btn while loading
+            $('#dashboard-addgearprice-form #submit').html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+
 			view.save(function(error) {
-				if(!error) {
+
+                // clear spinner on btn after response
+                $('#dashboard-addgearprice-form #submit').text('Save');
+                if(!error) {
 					App.router.navigateTo('dashboard/addgearend', view.newGear);
 				}
 			});
@@ -104,7 +121,11 @@ define(
 				price_a: $('#dashboard-addgearprice-form #price_a', this.$element).val(),
 				price_b: $('#dashboard-addgearprice-form #price_b', this.$element).val(),
 				price_c: $('#dashboard-addgearprice-form #price_c', this.$element).val(),
-				address: $('#dashboard-addgearprice-form #dashboard-addgearprice-address', this.$element).val(),
+
+				delivery_price: $('#dashboard-addgearprice-form input[name="delivery_price"]', this.$element).val(),
+				delivery_distance: $('#dashboard-addgearprice-form input[name="delivery_distance"]', this.$element).val(),
+
+                address: $('#dashboard-addgearprice-form #dashboard-addgearprice-address', this.$element).val(),
 				postalcode: $('#dashboard-addgearprice-form #dashboard-addgearprice-postalcode', this.$element).val(),
 				city: $('#dashboard-addgearprice-form #dashboard-addgearprice-city', this.$element).val(),
 				region: $('#dashboard-addgearprice-form #dashboard-addgearprice-region', this.$element).val(),

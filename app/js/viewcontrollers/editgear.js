@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Edit gear page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Gediminas Bivainis
  */
 
 define(
@@ -17,8 +17,10 @@ define(
 			populateImages: populateImages,
             populateLocation: populateLocation,
             populateCountry: populateCountry,
+            populateDelivery:populateDelivery,
 			handleCancel: handleCancel,
 			handleImageUpload: handleImageUpload,
+            handleDeliveryCheckbox:handleDeliveryCheckbox,
 			handleNext: handleNext
 		});
 		return EditGear;
@@ -36,6 +38,7 @@ define(
 
             this.populateCountry();
             this.populateLocation();
+            this.populateDelivery();
 
 			if(this.gear.data.subtype === '') {
 				$("#editgear-subtype").prop("selectedIndex", 0); // if no subtype is passed, "Choose type:" by default
@@ -61,7 +64,16 @@ define(
 			this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel, #editgearpricingloc-form .btn-cancel', this, this.handleCancel);
 			this.setupEvent('click', '#editgear-form .btn-save, #editgear-photos-form .btn-save, #editgearpricing-form .btn-save, #editgearpricingloc-form .btn-save', this, this.handleNext);
 			this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
+            this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 		}
+
+        function populateDelivery(){
+            var price = this.gear.data.delivery_price ? this.gear.data.delivery_price : '',
+                distance = this.gear.data.delivery_distance ? this.gear.data.delivery_distance : '';
+
+            $("#editgearpricingloc-form #delivery_price").val(price);
+            $("#editgearpricingloc-form #delivery_distance").val(distance);
+        }
 
         function populateLocation() {
             var city = this.gear.data.city,
@@ -140,6 +152,14 @@ define(
 			$('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
 		}
 
+        function handleDeliveryCheckbox(event){
+
+            this.checked ?
+                $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled')
+                : $(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
+        }
+
+
 		function handleCancel(event) {
 			var view = event.data;
 
@@ -180,7 +200,10 @@ define(
 			currentCountry = view.gear.data.country,
 			updatedGearData,
 			addressOneliner,
-			updateCall;
+			updateCall,
+            currentBtn = $(this);
+
+            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
@@ -190,6 +213,8 @@ define(
 				price_a: $('#editgearpricing-form #price_a', this.$element).val(),
 				price_b: $('#editgearpricing-form #price_b', this.$element).val(),
 				price_c: $('#editgearpricing-form #price_c', this.$element).val(),
+                delivery_price: '',
+                delivery_distance: '',
 				address: $('#editgearpricingloc-form #editgearpricing-address', this.$element).val(),
 				postal_code: $('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val(),
 				city: $('#editgearpricingloc-form #editgearpricing-city', this.$element).val(),
@@ -243,6 +268,7 @@ define(
 
 			updateCall = function() {
 				view.gear.save(App.user.data.id, function(error, gear) {
+                    currentBtn.text('Save');
                     if(error) {
 						console.log(error);
 						return;
