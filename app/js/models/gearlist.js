@@ -109,15 +109,16 @@ define(
 		}
 
 		function loadFromArray(gearArray) {
-			var i;
+			var i, gearItem;
 
             this.data = [];
 
 			for(i = 0; i < gearArray.length; i++) {
-				this.data.push(new Gear.constructor({
-					rootURL: this.rootURL,
-					data: gearArray[i]
-				}));
+                gearItem = new Gear.constructor({
+                    rootURL: this.rootURL
+                });
+                _.extend(gearItem.data, gearArray[i]);
+				this.data.push(gearItem);
 			}
 		}
 	}

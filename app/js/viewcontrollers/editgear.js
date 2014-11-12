@@ -17,6 +17,7 @@ define(
 			populateImages: populateImages,
             populateLocation: populateLocation,
             populateCountry: populateCountry,
+            populateDelivery:populateDelivery,
 			handleCancel: handleCancel,
 			handleImageUpload: handleImageUpload,
             handleDeliveryCheckbox:handleDeliveryCheckbox,
@@ -37,7 +38,7 @@ define(
 
             this.populateCountry();
             this.populateLocation();
-            //this.populateDelivery();
+            this.populateDelivery();
 
 			if(this.gear.data.subtype === '') {
 				$("#editgear-subtype").prop("selectedIndex", 0); // if no subtype is passed, "Choose type:" by default
@@ -67,10 +68,11 @@ define(
 		}
 
         function populateDelivery(){
-            var price = this.gear.data.delivery_price,
-                distance = this.gear.data.delivery_distance;
+            var price = this.gear.data.delivery_price ? this.gear.data.delivery_price : '',
+                distance = this.gear.data.delivery_distance ? this.gear.data.delivery_distance : '';
 
-            $("#editgearpricingloc-form #editgearpricing-city").val(city);
+            $("#editgearpricingloc-form #delivery_price").val(price);
+            $("#editgearpricingloc-form #delivery_distance").val(distance);
         }
 
         function populateLocation() {
@@ -237,6 +239,8 @@ define(
 				price_a: $('#editgearpricing-form #price_a', this.$element).val(),
 				price_b: $('#editgearpricing-form #price_b', this.$element).val(),
 				price_c: $('#editgearpricing-form #price_c', this.$element).val(),
+                delivery_price: '',
+                delivery_distance: '',
 				address: $('#editgearpricingloc-form #editgearpricing-address', this.$element).val(),
 				postal_code: $('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val(),
 				city: $('#editgearpricingloc-form #editgearpricing-city', this.$element).val(),
