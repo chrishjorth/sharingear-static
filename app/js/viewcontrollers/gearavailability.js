@@ -188,9 +188,7 @@ define(
 				availabilityArray = [],
 				month, monthSelections, selection;
 
-			App.router.closeModalView();
-
-			console.log(view.selections);
+            $('#gearavailability-save-btn').html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
@@ -239,6 +237,10 @@ define(
             }
 
             view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
+
+                $('#gearavailability-save-btn').text('Save');
+
+                App.router.closeModalView();
             });
 		}
 
