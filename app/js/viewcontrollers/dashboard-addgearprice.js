@@ -83,8 +83,15 @@ define(
 
 		function handleSave(event) {
 			var view = event.data;
+
+            // add spinner to save btn while loading
+            $('#dashboard-addgearprice-form #submit').html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+
 			view.save(function(error) {
-				if(!error) {
+
+                // clear spinner on btn after response
+                $('#dashboard-addgearprice-form #submit').text('Save');
+                if(!error) {
 					App.router.navigateTo('dashboard/addgearend', view.newGear);
 				}
 			});

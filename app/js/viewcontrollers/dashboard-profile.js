@@ -97,6 +97,7 @@ define(
             var view = event.data,
                 saveData;
 
+            // add spinner to btn
             $('#saveButton').html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
             saveData = {
@@ -109,7 +110,9 @@ define(
             _.extend(view.user.data, saveData);
 
             view.user.update(function (error) {
+                // clear spinner on the button
                 $('#saveButton').text('Save');
+
                 if(error){
                     console.log(error);
                     return;
