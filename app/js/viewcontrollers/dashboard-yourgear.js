@@ -112,14 +112,12 @@ define(
 				gear;
 			gear = view.gearList.getGearItem($(this).data('yourgearid'));
 
-            App.router.openModalView('gearavailability', gear);
-
-			/*if(App.user.isSubMerchant() === true) {
+			if(App.user.isSubMerchant() === true) {
 				App.router.openModalView('gearavailability', gear);
 			}
 			else {
 				App.router.openModalView('submerchantregistration', gear);
-			}*/
+			}
 		}
 	}
 );

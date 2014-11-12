@@ -98,8 +98,13 @@ define(
 		};
 
 		handleAccept = function(event) {
-			var view = event.data;
+			var view = event.data,
+                currentBtn = $(this);
+console.log(this);
+            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
+            console.log(currentBtn);
 			App.user.update(function(error) {
+                currentBtn.text('Accept');
 				if(error) {
 					console.log(error);
 					alert('Error saving data.');

@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Edit gear page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Gediminas Bivainis
  */
 
 define(

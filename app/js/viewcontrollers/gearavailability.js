@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Gear availability page view.
- * @author: Chris Hjorth
+ * @author: Chris Hjorth, Gediminas Bivainis
  */
 
 define(
