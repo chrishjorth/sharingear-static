@@ -14,6 +14,7 @@ define(
 			didRender: didRender,
 			handleSave: handleSave,
 			handleBreadcrumbBack: handleBreadcrumbBack,
+            handleDeliveryCheckbox:handleDeliveryCheckbox,
 			save: save
 		}); 
 		return AddGearPrice;
@@ -51,9 +52,21 @@ define(
 			$('#dashboard-addgearprice-form #price_b', this.$element).val(newGear.price_b);
 			$('#dashboard-addgearprice-form #price_c', this.$element).val(newGear.price_c);
 
+            this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('submit', '#dashboard-addgearprice-form', this, this.handleSave);
 			this.setupEvent('click', '.addgearpanel .btnaddgeartwo', this, this.handleBreadcrumbBack);
 		}
+
+        function handleDeliveryCheckbox(event){
+            var view = event.data;
+
+            this.checked ?
+                $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled')
+                : $(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
+            console.log();
+            console.log(this.checked);
+
+        }
 
 		function handleSave(event) {
 			var view = event.data;
