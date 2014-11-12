@@ -8,11 +8,15 @@
 define(
 	['jquery', 'viewcontroller', 'app', 'moment', 'googlemaps'],
 	function($, ViewController, App, Moment, GoogleMaps) {
-		var didRender,
+		var geocoder,
+
+			didRender,
 			populateCountries,
 			handleCancel,
 			handleSubmit,
 			handleAccept;
+
+		geocoder = new GoogleMaps.Geocoder();
 
 		didRender = function() {
 			var user = App.user.data;
@@ -69,85 +73,87 @@ define(
 		handleSubmit = function(event) {
 			var view = event.data,
 				user = App.user.data,
-				$select, content;
-			user.birthdate = (new Moment($('#submerchantregistration-birthdate', view.$element).val(), 'DD/MM/YYYY')).format('YYYY-MM-DD');
-			user.address = $('#submerchantregistration-address', view.$element).val();
-			user.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
-			user.city = $('#submerchantregistration-city', view.$element).val();
-			user.region = $('#submerchantregistration-region', view.$element).val();
+				addressOneliner, $select, content;
+			if(user.birthdate === null) {
+				user.birthdate = (new Moment($('#submerchantregistration-birthdate', view.$element).val(), 'DD/MM/YYYY')).format('YYYY-MM-DD');	
+			}
+			if(user.address === null) {
+				user.address = $('#submerchantregistration-address', view.$element).val();
+			}
+			if(user.postal_code === null) {
+				user.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
+			}
+			if(user.city === null) {
+				user.city = $('#submerchantregistration-city', view.$element).val();
+			}
+			if(user.region === null) {
+				user.region = $('#submerchantregistration-region', view.$element).val();
+			}
+			if(user.country === null) {
+				$select = $('#submerchantregistration-country', view.$element);
+				content = $select.val();
+				if(content !== $('option', $select).first().html()) {
+					user.country = content;
+				}
+				else {
+                	alert('Please select a country.');
+                	return;
+            	}
+			}
+			if(user.nationality === null) {
+				$select = $('#submerchantregistration-nationality', view.$element);
+				content = $select.val();
+				if(content !== $('option', $select).first().html()) {
+					user.nationality = content;
+				}
+				else {
+                	alert('Please select a nationality.');
+                	return;
+            	}
+			}
+			if(user.phone === null) {
+				user.phone = $('#submerchantregistration-phone', view.$element).val();
+			}
+			
+			user.iban = $('#submerchantregistration-iban', view.$element).val();	
+			user.swift = $('#submerchantregistration-swift', view.$element).val();
 
+			//Validate
+			if (user.birthdate === '') {
+                alert('The birthday field is required.');
+                return;
+            }
+            if (user.phone === '') {
+                alert('The phone field is required.');
+                return;
+            }
+            if (user.iban === '') {
+                alert('The iban field is required.');
+                return;
+            }
+            if (user.swift === '') {
+                alert('The swift code field is required.');
+                return;
+            }
 
-            var addressOneliner = user.address + ', ' + user.postalcode + ' ' + user.city + ', ' + user.region + ', ' + user.country;
-            view.geocoder.geocode({'address': addressOneliner}, function(results, status) {
+            addressOneliner = user.address + ', ' + user.postal_code + ' ' + user.city + ', ' + user.region + ', ' + user.country;
+            geocoder.geocode({'address': addressOneliner}, function(results, status) {
                 if(status === GoogleMaps.GeocoderStatus.OK) {
-                    view.gear.data.longitude = results[0].geometry.location.lng();
-                    view.gear.data.latitude = results[0].geometry.location.lat();
+                    $('#submerchantregistration-formcontainer', view.$element).addClass('hidden');
+					$('#submerchantregistration-termscontainer', view.$element).removeClass('hidden');
                 }
                 else {
                     alert('The address is not valid!');
                 }
             });
-
-
-            if (!$('#submerchantregistration-birthdate', view.$element).parent().hasClass('hidden')&&$('#submerchantregistration-birthdate', view.$element).val() === '') {
-                alert("The birthday field is required.");
-                return;
-            }
-
-			$select = $('#submerchantregistration-country', view.$element);
-			content = $select.val();
-			if(content !== $('option', $select).first().html()) {
-				user.country = content;
-			}else{
-                alert("Please select a country.");
-                return;
-            }
-			
-			$select = $('#submerchantregistration-nationality', view.$element);
-			content = $select.val();
-			if(content !== $('option', $select).first().html()) {
-				user.nationality = content;
-			}else{
-                alert("Please select a nationality.");
-                return;
-            }
-			
-			user.phone = $('#submerchantregistration-phone', view.$element).val();
-			user.iban = $('#submerchantregistration-iban', view.$element).val();
-			user.swift = $('#submerchantregistration-swift', view.$element).val();
-
-            if (!$('#submerchantregistration-phone', view.$element).parent().hasClass('hidden')&&user.phone === '') {
-                alert('The phone field is required.');
-                return;
-            }
-
-            if (!$('#submerchantregistration-iban', view.$element).parent().hasClass('hidden')&&user.iban === '') {
-                alert('The iban field is required.');
-                return;
-            }
-
-            if (!$('#submerchantregistration-swift', view.$element).parent().hasClass('hidden')&&user.swift === '') {
-                alert('The swift code field is required.');
-                return;
-            }
-
-
-
-			$('#submerchantregistration-formcontainer', view.$element).addClass('hidden');
-			$('#submerchantregistration-termscontainer', view.$element).removeClass('hidden');
-
 		};
-
-
 
 		handleAccept = function(event) {
 			var view = event.data,
                 currentBtn = $(this);
-console.log(this);
+
             currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
-            console.log(currentBtn);
 			App.user.update(function(error) {
-                currentBtn.text('Accept');
 				if(error) {
 					console.log(error);
 					alert('Error saving data.');

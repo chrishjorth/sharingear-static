@@ -51,6 +51,7 @@ define(
             
             $('#dashboard-profile-form #name', this.$element).val(userData.name);
             $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
+            $('#dashboard-profile-form #email', this.$element).val(userData.email);
             $('#dashboard-profile-form #hometown', this.$element).val(userData.city);
 
             // when page loads, save is disabled
