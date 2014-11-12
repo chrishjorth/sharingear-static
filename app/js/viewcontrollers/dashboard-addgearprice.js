@@ -142,6 +142,8 @@ define(
 					}
 					else {
 						console.log('Error geocoding: ' + status);
+                        alert('Address error');
+
 					}
 				});
 			}

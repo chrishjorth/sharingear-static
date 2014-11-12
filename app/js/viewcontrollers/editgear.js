@@ -4,8 +4,8 @@
  */
 
 define(
-	['viewcontroller', 'app', 'models/gear', 'googlemaps'],
-	function(ViewController, App, Gear, GoogleMaps) {
+	['viewcontroller', 'app', 'models/gear', 'googlemaps','utilities'],
+	function(ViewController, App, Gear, GoogleMaps, Utilities) {
 		var EditGear = ViewController.inherit({
 			gear: null,
 			geocoder: new GoogleMaps.Geocoder(),
@@ -77,7 +77,7 @@ define(
 
         function populateCountry() {
             var currentCountry = this.gear.data.country;
-            var html = '<option selected="selected">'+currentCountry+'</option>',
+            var html = '',
                 $countrySelect,i;
 
             var countryList = App.localization.getCountries();
@@ -86,12 +86,11 @@ define(
             $countrySelect.empty();
 
             for(i = 0; i < countryList.length; i++) {
-                if (currentCountry!==countryList[i].name) {
                     html += '<option value="' + countryList[i].alpha2 + '">' + countryList[i].name + '</option>';
-                }
             }
             $countrySelect.html(html);
 
+            $countrySelect.val(currentCountry);
         }
 
 		function populateBrandSelect() {
@@ -198,7 +197,49 @@ define(
 				country: $('#editgearpricingloc-form #editgearpricing-country option:selected').val()
             };
 
-			_.extend(view.gear.data, updatedGearData);
+            if ($('#editgear-subtype', view.$element).selectedIndex===0) {
+                alert("The subtype field is required.");
+                return;
+            }
+            if ($('#editgear-brand', view.$element).selectedIndex===0) {
+                alert("The brand field is required.");
+                return;
+            }
+            if ($('#editgear-model', view.$element).val()==='') {
+                alert("The model field is required.");
+                return;
+            }
+            if ($('#editgearpricing-form #price_a', this.$element).val()==='') {
+                alert("The rental price field is required.");
+                return;
+            }
+            if ($('#editgearpricing-form #price_b', this.$element).val()==='') {
+                alert("The rental price field is required.");
+                return;
+            }
+            if ($('#editgearpricing-form #price_c', this.$element).val()==='') {
+                alert("The rental price field is required.");
+                return;
+            }
+            if ($('#editgearpricingloc-form #editgearpricing-address', this.$element).val()==='') {
+                alert("The address field is required.");
+                return;
+            }
+            if ($('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val()==='') {
+                alert("The postalcode field is required.");
+                return;
+            }
+            if ($('#editgearpricingloc-form #editgearpricing-city', this.$element).val()==='') {
+                alert("The city field is required.");
+                return;
+            }
+            if ($('#editgearpricingloc-form #editgearpricing-country').selectedIndex===0||
+                $('#editgearpricingloc-form #editgearpricing-country').selectedIndex===null) {
+                alert("The country field is required.");
+                return;
+            }
+
+            _.extend(view.gear.data, updatedGearData);
 
 			updateCall = function() {
 				view.gear.save(App.user.data.id, function(error, gear) {
@@ -222,12 +263,10 @@ define(
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.gear.data.longitude = results[0].geometry.location.lng();
 						view.gear.data.latitude = results[0].geometry.location.lat();
-						console.log('lat: ' + view.gear.data.latitude);
-						console.log('long: ' + view.gear.data.longitude);
 						updateCall();
 					}
 					else {
-						console.log('Error geocoding: ' + status);
+                        alert('The address is not valid!');
 					}
 				});
 			}

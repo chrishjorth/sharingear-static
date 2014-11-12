@@ -94,6 +94,7 @@ define(
         }
 
         function handleSave(event) {
+
             var view = event.data,
                 saveData;
             saveData = {
@@ -102,6 +103,21 @@ define(
                 city: $('#dashboard-profile-form #hometown').val(),
                 bio: $('#dashboard-profile-form #bio').val()
             };
+
+            if ($('#dashboard-profile-form #name').val()==='') {
+                alert("The name field is required.");
+                return;
+            }
+
+            if ($('#dashboard-profile-form #surname').val()==='') {
+                alert("The surname field is required.");
+                return;
+            }
+
+            if ($('#dashboard-profile-form #email').val()==='') {
+                alert("The email field is required.");
+                return;
+            }
 
             _.extend(view.user.data, saveData);
 

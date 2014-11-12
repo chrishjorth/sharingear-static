@@ -18,17 +18,17 @@
 						<form id="editgear-form" onsubmit="return false;">
 							<div class="col-md-6 form-left">
 								<div class="form-group">
-									<label for="">Subtype:</label>
+									<label for="">Subtype:*</label>
 									<select name="subtype" id="editgear-subtype" class="form-control">
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="">Brand:</label>
+									<label for="">Brand:*</label>
 									<select name="brand" id="editgear-brand" class="form-control">
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="model">Model:</label>
+									<label for="model">Model:*</label>
 									<input type="text" name="editgear-model" id="editgear-model" value="{{model}}" class="form-control">
 								</div>
 							</div>
@@ -93,21 +93,21 @@
 						<form id="editgearpricing-form" onsubmit="return false;">
                             <div class="col-md-6 form-left">
                                 <div class="form-group">
-                                    <label for="ride_pricing_per_hour_string">Hourly Rental Price</label>
+                                    <label for="ride_pricing_per_hour_string">Hourly Rental Price*</label>
                                     <div class="price">
                                         <input id="price_b" class="same-line form-control" name="price_b" size="7" type="text" value="{{price_b}}">
                                     </div>
                                     <p class="small">Any rental under 4 hours is charged at this hourly rate</p>
                                 </div>
                                 <div class="form-group">
-									<label for="">Daily Rental Price</label>
+									<label for="">Daily Rental Price*</label>
 									<div class="price">
                                         <input id="price_a" class="same-line form-control" name="price_a" size="7" type="text" value="{{price_a}}">
                                     </div>
 									<p class="small">The average daily price is $18</p>
 								</div>
 								<div class="form-group">
-									<label for="ride_pricing_per_week_string">Weekly Rental Price</label>
+									<label for="ride_pricing_per_week_string">Weekly Rental Price*</label>
 									<div class="price">
                                         <input id="price_c" class="same-line form-control" name="price_c" size="7" type="text" value="{{price_c}}">
                                     </div>
@@ -138,15 +138,15 @@
 						<form id="editgearpricingloc-form" onsubmit="return false;">
                             <div class="col-md-6 form-left">
 									<div class="form-group">
-									<label for="dashboard-addgearprice-address">Address</label>
+									<label for="dashboard-addgearprice-address">Address*</label>
 									<input type="text" name="address" id="editgearpricing-address" class="form-control">
-									<label for="dashboard-addgearprice-postalcode">Postal code</label>
+									<label for="dashboard-addgearprice-postalcode">Postal code*</label>
 									<input type="text" name="postalcode" id="editgearpricing-postalcode" class="form-control">
-									<label for="dashboard-addgearprice-city">City</label>
+									<label for="dashboard-addgearprice-city">City*</label>
 									<input type="text" name="city" id="editgearpricing-city" class="form-control">
 									<label for="dashboard-addgearprice-region">Region</label>
 									<input type="text" name="region" id="editgearpricing-region" class="form-control">
-									<label for="dashboard-addgearprice-country">Country</label>
+									<label for="dashboard-addgearprice-country">Country*</label>
 									<select name="country" id="editgearpricing-country" class="form-control">
 									</select>
 								</div>
