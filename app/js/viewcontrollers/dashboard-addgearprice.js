@@ -31,6 +31,8 @@ define(
 					price_a: 0,
 					price_b: 0,
 					price_c: 0,
+                    delivery_price: null,
+                    delivery_distance: null,
 					address: '',
 					postalcode: null,
 					city: '',
@@ -58,14 +60,10 @@ define(
 		}
 
         function handleDeliveryCheckbox(event){
-            var view = event.data;
 
             this.checked ?
                 $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled')
                 : $(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
-            console.log();
-            console.log(this.checked);
-
         }
 
 		function handleSave(event) {
@@ -101,7 +99,11 @@ define(
 				price_a: $('#dashboard-addgearprice-form #price_a', this.$element).val(),
 				price_b: $('#dashboard-addgearprice-form #price_b', this.$element).val(),
 				price_c: $('#dashboard-addgearprice-form #price_c', this.$element).val(),
-				address: $('#dashboard-addgearprice-form #dashboard-addgearprice-address', this.$element).val(),
+
+				delivery_price: $('#dashboard-addgearprice-form input[name="delivery_price"]', this.$element).val(),
+				delivery_distance: $('#dashboard-addgearprice-form input[name="delivery_distance"]', this.$element).val(),
+
+                address: $('#dashboard-addgearprice-form #dashboard-addgearprice-address', this.$element).val(),
 				postalcode: $('#dashboard-addgearprice-form #dashboard-addgearprice-postalcode', this.$element).val(),
 				city: $('#dashboard-addgearprice-form #dashboard-addgearprice-city', this.$element).val(),
 				region: $('#dashboard-addgearprice-form #dashboard-addgearprice-region', this.$element).val(),
