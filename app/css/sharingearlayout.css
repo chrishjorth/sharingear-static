@@ -3543,6 +3543,9 @@ span.num {
 
   padding-top: 10px;
   padding-bottom: 10px;
+  max-height: 37em;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
 }
 .active{
