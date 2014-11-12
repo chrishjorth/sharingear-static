@@ -19,6 +19,7 @@ define(
             populateCountry: populateCountry,
 			handleCancel: handleCancel,
 			handleImageUpload: handleImageUpload,
+            handleDeliveryCheckbox:handleDeliveryCheckbox,
 			handleNext: handleNext
 		});
 		return EditGear;
@@ -36,6 +37,7 @@ define(
 
             this.populateCountry();
             this.populateLocation();
+            //this.populateDelivery();
 
 			if(this.gear.data.subtype === '') {
 				$("#editgear-subtype").prop("selectedIndex", 0); // if no subtype is passed, "Choose type:" by default
@@ -61,7 +63,15 @@ define(
 			this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel, #editgearpricingloc-form .btn-cancel', this, this.handleCancel);
 			this.setupEvent('click', '#editgear-form .btn-save, #editgear-photos-form .btn-save, #editgearpricing-form .btn-save, #editgearpricingloc-form .btn-save', this, this.handleNext);
 			this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
+            this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 		}
+
+        function populateDelivery(){
+            var price = this.gear.data.delivery_price,
+                distance = this.gear.data.delivery_distance;
+
+            $("#editgearpricingloc-form #editgearpricing-city").val(city);
+        }
 
         function populateLocation() {
             var city = this.gear.data.city,
@@ -168,6 +178,14 @@ define(
 			}
 			$('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
 		}
+
+        function handleDeliveryCheckbox(event){
+
+            this.checked ?
+                $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled')
+                : $(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
+        }
+
 
 		function handleCancel(event) {
 			var view = event.data;
