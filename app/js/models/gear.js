@@ -11,7 +11,6 @@ define(
 			uploadImage: uploadImage,
 			save: save,
 			update: update,
-            //getUserInfo:getUserInfo,
             getAvailability: getAvailability,
             setAvailability: setAvailability
 		});
@@ -129,17 +128,6 @@ define(
 			});
 		}
 
-        /*function getUserInfo(userID, callback) {
-            this.get('/users/'+userID, function (error,data) {
-                if(error) {
-                    callback(error);
-                    return;
-                }
-
-                callback(null,data);
-            });
-        }*/
-
 		function save(userID, callback) {
 			var saveData = {
 				subtype: this.data.subtype,
@@ -184,7 +172,8 @@ define(
 					callback(error);
 					return;
 				}
-				model.data = gear;
+				//model.data = gear;
+				_.extend(model.data, gear);
 				callback(null);
 			});
 		}
