@@ -120,13 +120,12 @@ define(
         update = function(callback){
         	var user = this;
             user.put('/users/' + user.data.id, user.data, function (error, data) {
-                if(!error){
-                	_.extend(user.data, data);
-                }
-                else {
-                	error = 'Error updating user: ' + error;
-                }
-                callback(error);
+            	if(error) {
+            		callback('Error updating user: ' + error);
+            		return;
+            	}
+            	_.extend(user.data, data);
+            	callback(null);
             });
         };
 

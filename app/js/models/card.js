@@ -17,17 +17,15 @@ define(
 		};
 
 		registerCard = function(userID, cardData, callback) {
-			console.log('Get card object');
 			this.get('/users/' + userID + '/cardobject', function(error, data) {
 				if(error) {
 					console.log('Error getting card object: ' + error);
 					return;
 				}
-				console.log(data);
 				mangoPay.cardRegistration.init({
 					cardRegistrationURL: data.cardRegistrationURL,
 					preregistrationData: data.preregistrationData,
-					accessKey: data.AccessKey,
+					accessKey: data.accessKey,
 					Id: data.id
 				});
 				mangoPay.cardRegistration.registerCard(cardData, function(result) {

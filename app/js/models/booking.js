@@ -19,7 +19,7 @@ define(
         };
 
         // POST: /users/:user_id/gear/:gear_id/bookings
-		createBooking = function(callback) {
+		createBooking = function(cardId, callback) {
 			var model = this,
 				newBooking = this.data,
                 url,
@@ -30,7 +30,9 @@ define(
 			postData = {
 				gear_id: newBooking.gear_id,
 				start_time: newBooking.start_time,
-				end_time: newBooking.end_time
+				end_time: newBooking.end_time,
+                cardId: cardId,
+                returnURL: Utilities.getBaseURL() + '#gearprofile/1/booked'
 			};
 
 			this.post(url, postData, function(error, data) {

@@ -6,28 +6,31 @@
 'use strict';
 
 define(
-	['viewcontroller', 'app', 'models/card'],
-	function(ViewController, App, Card) {
+	['jquery', 'viewcontroller', 'app', 'models/card'],
+	function($, ViewController, App, Card) {
 		var newBooking,
 
 			didInitialize,
 			didRender,
 			renderMissingDataInputs,
+			populateCountries,
 
 			handleCancel,
-			handlePay;
+			handlePay,
+
+			processPayment;
 
 		didInitialize = function () {
 			newBooking = this.passedData;
 			this.templateParameters = {
 				price: newBooking.data.price,
-				currency: '€'
+				currency: 'DKK'
 			};
 		};
 
 		didRender = function () {
 			//the pay event must also create booking!!!
-			if(App.user.hasWallet === false) {
+			if(App.user.data.hasWallet === false) {
 				this.renderMissingDataInputs();
 			}
 			else {
@@ -39,7 +42,6 @@ define(
 
 		renderMissingDataInputs = function() {
 			var user = App.user.data;
-			console.log(user);
 			if(user.birthdate && user.birthdate !== '') {
 				$('#payment-birthdate', this.$element).parent().addClass('hidden');
 			}
@@ -72,12 +74,43 @@ define(
 			}
 		};
 
+		populateCountries = function($select) {
+			var countriesArray = App.localization.getCountries(),
+				html = $('option', $select).first()[0].outerHTML,
+				i;
+			for(i = 0; i < countriesArray.length; i++) {
+				html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
+			}
+			$select.html(html);
+		};
+
 		handleCancel = function() {
 			App.router.closeModalView();
 		};
 
 		handlePay = function(event) {
-			var view = event.data,
+			var view = event.data;
+
+			if(App.user.data.hasWallet === false) {
+				App.user.update(function(error) {
+					if(error) {
+						console.log('Error updating user: ' + error);
+						return;
+					}
+					if(App.user.data.hasWallet === false) {
+						console.log('Error creating wallet for user.');
+						return;
+					}
+					view.processPayment();
+				});
+			}
+			else {
+				view.processPayment();
+			}
+		};
+
+		processPayment = function() {
+			var view = this,
 				card, expirationDate, cardData;
 
 			expirationDate = $('#payment-expirationdate', view.$element).val();
@@ -94,23 +127,21 @@ define(
 				cardExpirationDate: expirationDate,
 				cardCvx: $('#payment-csc', view.$element).val()
 			};
-			console.log('Card data:');
-			console.log(cardData);
 			card.registerCard(App.user.data.id, cardData, function(error, cardId) {
 				if(error) {
 					console.log(error);
 					return;
 				}
-				console.log('CARD REGISTERED!');
+				//Pre-authorize the card for the withdrawal
+				newBooking.createBooking(cardId, function(error) {
+                	if (error) {
+                    	console.log('booking gave error');
+                    	console.log(error);
+                    	return;
+                	}
+                	App.router.closeModalView();
+            	});
 			});
-
-			/*view.newBooking.createBooking(function(error) {
-                if (error) {
-                    console.log('booking gave error');
-                    console.log(error);
-                }
-                App.router.closeModalView();
-            });*/
 		};
 
 		return ViewController.inherit({
@@ -119,7 +150,9 @@ define(
 			renderMissingDataInputs: renderMissingDataInputs,
 
 			handleCancel: handleCancel,
-			handlePay: handlePay
+			handlePay: handlePay,
+
+			processPayment: processPayment
 		});
 	}
 );
