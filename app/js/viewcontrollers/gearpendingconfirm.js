@@ -8,20 +8,21 @@
 define(
     ['jquery', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
 	function($, ViewController, Moment, App, Gear, User, Booking) {
-		var didInitialize,
+		var gear = null,
+            booking = null,
+            renter = null,
+
+			didInitialize,
 			didRender,
 			renderMonthCalendar,
 			setupMonthCalendar,
-			clearSelections,
-			renderSelections,
+			renderBooking,
 			handleCancel,
 			handleDeny,
 			handleConfirm;
 
 		didInitialize = function() {
-			var view = this,
-				bookingDeferred = $.Deferred(),
-				availabilityDeferred = $.Deferred();
+			var view = this;
 
 			Moment.locale('en-custom', {
 				week: {
@@ -30,10 +31,8 @@ define(
 				}
 			});
 
-			this.shownMoment = new Moment();
-
-			this.gear = this.passedData;
-			this.selections = {};
+			gear = this.passedData;
+			
             this.templateParameters = {
                 image_url : '',
                 name : '',
@@ -41,30 +40,28 @@ define(
                 bio : ''
             };
 
-            view.booking = new Booking.constructor({
+            booking = new Booking.constructor({
                 rootURL: App.API_URL,
                 data : {
                     user_id : App.user.data.id,
-                    gear_id : this.gear.data.id
+                    gear_id : gear.data.id
                 }
             });
 
-            view.booking.getBookingInfo(App.user.data.id, 'latest', function(error){
+            booking.getBookingInfo(App.user.data.id, 'latest', function(error){
                 if(error){
                     console.log('Error retrieving latest booking: ' + error);
                     return;
                 }
-                view.renter = new User.constructor({
+                renter = new User.constructor({
                 	rootURL: App.API_URL,
                 	data: {
-                    	id: view.booking.data.user_id
+                    	id: booking.data.user_id
                 	}
            		});
 
-           		console.log('Renter id: ' + view.renter.data.id);
-
-           		view.renter.getPublicInfo(function(error) {
-                	var renterData = view.renter.data;
+           		renter.getPublicInfo(function(error) {
+                	var renterData = renter.data;
                 	if(error) {
                 		console.log('Error retrieving renter info: ' + error);
                 		return;
@@ -76,51 +73,26 @@ define(
                     	bio : renterData.bio
                 	};
 
-                	bookingDeferred.resolve();
+                	view.render();
             	});
             });
-
-            view.availabilityArray = [];
-			view.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
-				if(error) {
-					console.log('Error retrieving availability: ' + error);
-					return;
-				}
-				view.availabilityArray = availabilityArray;
-				availabilityDeferred.resolve();
-			});
-
-			$.when(bookingDeferred, availabilityDeferred).then(function() {
-				view.render();
-			});
 		};
 
 		didRender = function() {
-			var availabilityArray = this.availabilityArray,
-				orderDateList = '',
+			var orderDateList = '',
                 dayDiff = 0,
-                i, startMoment, endMoment;
+                startMoment, endMoment;
 
-            $('[data-totalorderprice]').text(this.booking.data.price);
+            $('[data-totalorderprice]').text(booking.data.price);
 
-            for(i = 0; i < availabilityArray.length; i++) {
-				startMoment = new Moment(availabilityArray[i].start);
-				endMoment = new Moment(availabilityArray[i].end);
-				if(Array.isArray(this.selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
-					this.selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];	
-				}
-				this.selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
-					startMoment: startMoment,
-					endMoment: endMoment
-				});
-                orderDateList += '<li>' + startMoment.format('YYYY-MM-DD') + ' - ' + endMoment.format('YYYY-MM-DD') + '</li>';
-                dayDiff += endMoment.diff(startMoment, 'days') + 1;
-			}
+            startMoment = new Moment(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
+			endMoment = new Moment(booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+            orderDateList += '<li>' + startMoment.format('YYYY-MM-DD') + ' - ' + endMoment.format('YYYY-MM-DD') + '</li>';
+            dayDiff += endMoment.diff(startMoment, 'days') + 1;
 
 			this.renderMonthCalendar($('#gearavailability-months-container'));
 			this.setupMonthCalendar();
-			this.clearSelections();
-			this.renderSelections();
+			this.renderBooking();
 
 			// append start and end date intervals to pending order confirmation modal
             $('[data-orderdates]').html(orderDateList);
@@ -160,9 +132,10 @@ define(
 		};
 
 		setupMonthCalendar = function() {
-			var moment, startDay, $calendarContainer, $dayBox, row, col, date;
+			var shownMoment = new Moment(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss'),
+				moment, startDay, $calendarContainer, $dayBox, row, col, date;
 
-			moment = new Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
+			moment = new Moment({year: shownMoment.year(), month: shownMoment.month(), date: shownMoment.date()});
 			startDay = moment.date(1).weekday();
 			$calendarContainer = $('#gearavailability-months-container', this.$element);
 
@@ -177,45 +150,30 @@ define(
 					$dayBox.data('month', moment.month());
 					$dayBox.attr('id', 'gearavailability-day-' + moment.month() + '-' + date);
 					$dayBox.removeClass('disabled');
-					if(moment.month() !== this.shownMoment.month()) {
+					if(moment.month() !== shownMoment.month()) {
 						$dayBox.addClass('disabled');
 					}
 					moment.add(1, 'days');
 				}
 			}
 
-			$('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
+			$('#gearavailability-monthtitle').html(shownMoment.format('MMMM YYYY'));
 		};
 
-		clearSelections = function() {
-			$('#gearavailability-months-container .day-row .day').each(function() {
-				$(this).removeClass('selected');
-			});
-		};
+		renderBooking = function() {
+			var $calendarContainer = $('#gearavailability-months-container', this.$element),
+				bookingData = booking.data,
+				startMoment, endMoment, momentIterator;
 
-		renderSelections = function() {
-			var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
-				$calendarContainer = $('#gearavailability-months-container', this.$element),
-				i, startMoment, endMoment, momentIterator;
-				//orderDateList = '', dayDiff = 0;
-
-
-
-			if(Array.isArray(selections) === false) {
-				return;
-			}
-			for(i = 0; i < selections.length; i++) {
-
-				startMoment = selections[i].startMoment;
-				$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
-				endMoment = selections[i].endMoment;
-				momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
-				while(momentIterator.isBefore(endMoment, 'day') === true) {
-					$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
-					momentIterator.add(1, 'days');
-				}
+			startMoment = new Moment(bookingData.start_time, 'YYYY-MM-DD HH:mm:ss');
+			$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
+			endMoment = new Moment(bookingData.end_time, 'YYYY-MM-DD HH:mm:ss');
+			momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
+			while(momentIterator.isBefore(endMoment, 'day') === true) {
 				$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
+				momentIterator.add(1, 'days');
 			}
+			$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
 		};
 
 		handleCancel = function() {
@@ -231,43 +189,17 @@ define(
 		 */
 		handleConfirm = function() {
             console.log('confirming');
-            /*
-			var view = event.data,
-				availabilityArray = [],
-				month, monthSelections, selection;
-			App.router.closeModalView();
-
-			for(month in view.selections) {
-				monthSelections = view.selections[month];
-				for(j = 0; j < monthSelections.length; j++) {
-					selection = monthSelections[j];
-					availabilityArray.push({
-						start: selection.startMoment.format('YYYY-MM-DD HH:mm:ss'),
-						end: selection.endMoment.format('YYYY-MM-DD HH:mm:ss')
-					});
-				}
-			}
-
-			view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
-			});*/
+            
 		};
 
 		return ViewController.inherit({
-			gear: null,
-			availabilityArray: null,
-            booking : null,
-            renter : null,
-			shownMoment: null,
-			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
-
 			didInitialize: didInitialize,
 			didRender: didRender,
 
 			renderMonthCalendar: renderMonthCalendar,
 			setupMonthCalendar: setupMonthCalendar,
 
-			clearSelections: clearSelections,
-			renderSelections: renderSelections,
+			renderBooking: renderBooking,
 
 			handleCancel: handleCancel,
             handleDeny : handleDeny,

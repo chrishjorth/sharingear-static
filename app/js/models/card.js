@@ -29,8 +29,6 @@ define(
 					Id: data.id
 				});
 				mangoPay.cardRegistration.registerCard(cardData, function(result) {
-					console.log('card id: ' + result.CardId);
-					console.log(result);
 					callback(null, result.CardId);
 				}, function(result) {
 					var error = 'Error registering card: ' + result.ResultMessage;
