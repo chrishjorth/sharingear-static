@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Gear availability page view.
- * @author: Chris Hjorth, Gediminas Bivainis
+ * @author: Chris Hjorth, Gediminas Bivainis, Horatiu Roman
  */
 
 define(
@@ -310,8 +310,40 @@ define(
                     endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
                 };
 
-                //TODO The selection object should be subtracted from view.selections
-                //...
+                // The selection object should be subtracted from view.selections
+                var index = view.shownMoment.year() + '-' + (view.shownMoment.month()+1);
+
+                for (var i = 0; i < view.selections[index].length; i++) {
+                	var sel = view.selections[index][i];
+                	
+                	// if same as clicked
+                	if (sel.startMoment.isSame(selection.startMoment, 'day') && sel.endMoment.isSame(selection.endMoment, 'day')) {
+                		view.selections[index].splice(i, 1);
+                		i--;
+
+                	} else if (view.isBeforeOrSameDay(sel.startMoment, selection.startMoment)
+                		&& view.isAfterOrSameDay(sel.endMoment, selection.endMoment)) { // if clicked inside a range of dates
+                		// selection surrounds current clicked => create two new selections that end around this day
+                		
+                		var pastSelection = {
+                			startMoment: Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: sel.startMoment.date()}),
+                			endMoment: Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: selection.startMoment.date()-1})
+                		};
+                		var futureSelection = {
+                			startMoment: Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: selection.startMoment.date()+1}),
+                			endMoment: Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: sel.endMoment.date()})
+                		};
+                		
+		                view.selections[index].splice(i, 1);
+		                if (view.isBeforeOrSameDay(pastSelection.startMoment, pastSelection.endMoment)) {
+		                	view.selections[index].push(pastSelection);
+		                }
+		                if (view.isBeforeOrSameDay(futureSelection.startMoment, futureSelection.endMoment)) {
+		                	view.selections[index].push(futureSelection);
+		                }
+		                i--;
+                	}
+                };
 
 				return;
 			}
