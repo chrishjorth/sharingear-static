@@ -42,6 +42,9 @@ requirejs.config({
 		'magnificpopup': {
 			deps: ['jquery'],
 			exports: 'MagnificPopup'
+		},
+		'mangopay': {
+			exports: 'MangoPay'
 		}
 	}
 });

@@ -25,9 +25,7 @@ define(
                 url,
 				postData;
 
-            url = '/users/' + newBooking.user_id +
-                  '/gear/' + newBooking.gear_id +
-                  '/bookings';
+            url = '/users/' + newBooking.user_id +'/gear/' + newBooking.gear_id + '/bookings';
 
 			postData = {
 				gear_id: newBooking.gear_id,

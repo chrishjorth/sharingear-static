@@ -6,9 +6,11 @@
 'use strict';
 
 define(
-	['viewcontroller', 'app'],
-	function(ViewController, App) {
-		var didInitialize,
+	['viewcontroller', 'app', 'models/card'],
+	function(ViewController, App, Card) {
+		var newBooking,
+
+			didInitialize,
 			didRender,
 			renderMissingDataInputs,
 
@@ -16,9 +18,9 @@ define(
 			handlePay;
 
 		didInitialize = function () {
-			this.newBooking = this.passedData;
+			newBooking = this.passedData;
 			this.templateParameters = {
-				price: this.newBooking.data.price,
+				price: newBooking.data.price,
 				currency: '€'
 			};
 		};
@@ -28,12 +30,16 @@ define(
 			if(App.user.hasWallet === false) {
 				this.renderMissingDataInputs();
 			}
+			else {
+				$('.missing-userdata', this.$element).addClass('hidden');
+			}
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
 			this.setupEvent('submit', '#payment-form', this, this.handlePay);
 		};
 
 		renderMissingDataInputs = function() {
 			var user = App.user.data;
+			console.log(user);
 			if(user.birthdate && user.birthdate !== '') {
 				$('#payment-birthdate', this.$element).parent().addClass('hidden');
 			}
@@ -71,19 +77,43 @@ define(
 		};
 
 		handlePay = function(event) {
-			var view = event.data;
-			view.newBooking.createBooking(function(error) {
+			var view = event.data,
+				card, expirationDate, cardData;
+
+			expirationDate = $('#payment-expirationdate', view.$element).val();
+			expirationDate = expirationDate.substring(0, 2) + expirationDate.substring(3); //Strip separation character, regardless of its type
+
+			//Get card registration object
+			card = new Card.constructor({
+				rootURL: App.API_URL
+			});
+			cardData = {
+				//cardType: $('#payment-form input[name="cardtype"]', view.$element).val(),
+				cardType: 'CB_VISA_MASTERCARD',
+				cardNumber: $('#payment-cardnumber', view.$element).val(),
+				cardExpirationDate: expirationDate,
+				cardCvx: $('#payment-csc', view.$element).val()
+			};
+			console.log('Card data:');
+			console.log(cardData);
+			card.registerCard(App.user.data.id, cardData, function(error, cardId) {
+				if(error) {
+					console.log(error);
+					return;
+				}
+				console.log('CARD REGISTERED!');
+			});
+
+			/*view.newBooking.createBooking(function(error) {
                 if (error) {
                     console.log('booking gave error');
                     console.log(error);
                 }
                 App.router.closeModalView();
-            });
+            });*/
 		};
 
 		return ViewController.inherit({
-			newBooking: null,
-
 			didInitialize: didInitialize,
 			didRender: didRender,
 			renderMissingDataInputs: renderMissingDataInputs,
