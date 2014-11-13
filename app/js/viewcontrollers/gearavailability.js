@@ -215,7 +215,7 @@ define(
             availabilityArray.sort(function (m1, m2) {
                 var moment1 = Moment(m1.start_time);
                 var moment2 = Moment(m2.start_time);
-                return isAfterOrSameDay(moment1,moment2);
+                return moment1.date() - moment2.date();
             });
 
             //Optimize adjacent periods
@@ -232,8 +232,6 @@ define(
                         iterator--;
                     }
                 }
-
-
             }
 
             view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
