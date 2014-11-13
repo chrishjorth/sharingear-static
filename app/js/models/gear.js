@@ -163,7 +163,6 @@ define(
 			});
 		}
 
-
 		function update(userID, callback) {
 			var model = this;
 			this.get('/gear/' + this.data.id, function(error, gear) {
@@ -172,7 +171,6 @@ define(
 					callback(error);
 					return;
 				}
-				//model.data = gear;
 				_.extend(model.data, gear);
 				callback(null);
 			});
