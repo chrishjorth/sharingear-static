@@ -845,9 +845,11 @@ footer a:hover {
 }
 
 .dashboardtitle {
-    color: #00aeff;
-    height: 49px;
+    color: #939393;
+    height: 49px !important;
     font-size: 2em;
+    text-align: center;
+    line-height: 25px;
 }
 /*
 .dashboardbgcolor {
@@ -3229,7 +3231,7 @@ span.num {
     width:200px;
     height: 200px;
     background: no-repeat 50% 50%;
-    margin-top: 65px;
+
 }
 
 .prof_subview {
@@ -3670,3 +3672,49 @@ span.num {
 .thumb-list-container ul li img{
     max-width: 100%;
 }
+
+#small-profile-pic{
+    width: 35px;
+    font-size: small;
+    height: 35px;
+    padding: 0px;
+    margin: -3px 10px 0px -3px;
+    float: left;
+    display: inline;
+    border-radius: 60px;
+}
+
+.avatar-text{
+
+    font-size: 14px;
+
+}
+
+.avatar-arrow{
+    margin-left: 10px;
+}
+
+.file_menu {
+    display:none;
+    width:100px;
+    border: 1px solid #1c1c1c;
+}
+
+.file_menu li {
+    background-color: #302f2f;
+    margin-top: -10px;
+}
+
+.file_menu li a {
+    color:#FFFFFF;
+    text-decoration:none;
+    padding:5px;
+    display:block;
+}
+
+.file_menu li a:hover {
+    padding:5px;
+    font-weight:bold;
+    color: #F00880;
+}
+
