@@ -489,6 +489,9 @@ footer a:hover {
     border-color: #dddddd;
     /*border-radius: 4px;*/
     color: #333333;
+    max-height: 37em;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .modal-view-container .btn {
     margin-bottom:15px;
@@ -3543,9 +3546,6 @@ span.num {
 
   padding-top: 10px;
   padding-bottom: 10px;
-  max-height: 37em;
-  overflow-y: scroll;
-  overflow-x: hidden;
 
 }
 .active{

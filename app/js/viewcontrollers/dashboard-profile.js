@@ -105,6 +105,7 @@ define(
             saveData = {
                 name: $('#dashboard-profile-form #name').val(),
                 surname: $('#dashboard-profile-form #surname').val(),
+                email: $('#dashboard-profile-form #email').val(),
                 city: $('#dashboard-profile-form #hometown').val(),
                 bio: $('#dashboard-profile-form #bio').val()
             };
