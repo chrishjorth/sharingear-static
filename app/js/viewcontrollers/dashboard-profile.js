@@ -60,6 +60,10 @@ define(
             $('input, textarea').on('input', function() {
                 view.enableSaveButton(true);
             });
+            //Enable on image change
+            $("#prof-pic").on('change',function(){
+                view.enableSaveButton(true);
+            });
 
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#prof-pic-div', view.$element),
