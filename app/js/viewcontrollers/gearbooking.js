@@ -225,7 +225,8 @@ define(
 				if (startHour > endHour) {
 					endHour = startHour;
 					$("#gearbooking-endtime").val(endHour + ":00");
-					view.renderPrice(event);
+                    view.handleRightHourDropdown(event);
+                    view.renderPrice(event);
 				}
 			}
 
@@ -247,6 +248,7 @@ define(
 				if (startHour > endHour) {
 					startHour = endHour;
 					$("#gearbooking-starttime").val(startHour + ":00");
+                    view.handleLeftHourDropdown(event);
 					view.renderPrice(event);
 				}
         	}
