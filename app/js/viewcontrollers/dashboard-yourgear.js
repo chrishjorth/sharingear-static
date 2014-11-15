@@ -71,16 +71,21 @@ define(
 					};
 
 					gear = yourGear[i];
+					console.log(gear.data);
 					_.extend(defaultGear, gear.data);
 					if(defaultGear.images.length > 0) {
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
                     // gear status (returns: 'unavailable', 'available', 'pending', 'rented')
 
-                    if(gear.data.gear_status) {
-                        defaultGear.gear_status = gear.data.gear_status === 'pending' ?
-                                                '<button class="btn btn-warning yourgear-status ' + gear.data.gear_status +'" data-yourgearid="' + gear.data.id + '">' + gear.data.gear_status + '</button>'
-                                                : '<span class="yourgear-status ' + gear.data.gear_status +'">' + gear.data.gear_status + '</span>';
+                    if(gear.data.booking_status === 'pending') {
+                        defaultGear.gear_status = '<button class="btn btn-warning yourgear-status pending" data-yourgearid="' + gear.data.id + '">' + 'PENDING' + '</button>';
+                    }
+                    else if(gear.data.gear_status === 'rented-out' || gear.data.gear_status === 'renter-returned' || gear.data.gear_status === 'owner-returned') {
+                    	defaultGear.gear_status = '<span class="yourgear-status ' + gear.data.gear_status +'" data-yourgearid="' + gear.data.id + '">' + 'RENTED OUT' + '</span>';
+                    }
+                    else {
+                    	defaultGear.gear_status = '';
                     }
 
 					$('#' + gearBlockID).append(yourGearItemTemplate(defaultGear));
