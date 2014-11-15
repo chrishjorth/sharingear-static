@@ -29,9 +29,10 @@ define(
 
             if(gearList.isEmpty()) {
                 gearList.getUserReservations(userID, function (data) {
-                    if(data.length!==0){
+                    if(data.length !== 0){
                         view.populateYourReservations();
-                    }else{
+                    }
+                    else {
                         $('#yourreservations-gear-block').append('You don\'t have any reservations!');
                     }
                 });
@@ -68,6 +69,8 @@ define(
                     if(defaultReservation.images.length > 0) {
                         defaultReservation.img_url = defaultReservation.images.split(',')[0];
                     }
+                    defaultReservation.gear_status = '<span class="yourgear-status ' + defaultReservation.gear_status +'">' + defaultReservation.gear_status + '</span>';
+
 					$('#' + reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
 				}
 				if(callback && typeof callback === 'function') {

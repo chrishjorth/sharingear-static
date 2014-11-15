@@ -55,16 +55,16 @@ define(
 
 		function getUserReservations(userID, callback) {
 			var view = this;
-                this.get('/users/' + userID + '/reservations', function (error, userReservations) {
-                    if (error) {
-                        callback([]);
-                    }
-                    else {
-                        view.loadFromArray(userReservations);
-                        callback(view.data);
-                    }
-                });
-
+            
+            view.get('/users/' + userID + '/reservations', function (error, userReservations) {
+            	if (error) {
+            		callback([]);
+            	}
+            	else {
+            		view.loadFromArray(userReservations);
+            		callback(view.data);
+            	}
+            });
 		}
 
 		function getGearItem(gearID) {
