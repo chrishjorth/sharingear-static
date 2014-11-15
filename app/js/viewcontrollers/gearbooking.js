@@ -225,7 +225,8 @@ define(
 				if (startHour > endHour) {
 					endHour = startHour;
 					$("#gearbooking-endtime").val(endHour + ":00");
-					renderPrice(event);
+                    view.handleRightHourDropdown(event);
+                    view.renderPrice(event);
 				}
 			}
 
@@ -247,7 +248,8 @@ define(
 				if (startHour > endHour) {
 					startHour = endHour;
 					$("#gearbooking-starttime").val(startHour + ":00");
-					renderPrice(event);
+                    view.handleLeftHourDropdown(event);
+					view.renderPrice(event);
 				}
         	}
         	
@@ -255,7 +257,7 @@ define(
             view.endMoment.minutes(0);
             view.endMoment.seconds(0);
 
-            renderPrice(event);
+            view.renderPrice(event);
 
         }
 
@@ -537,7 +539,15 @@ define(
 				i++;
 			}
 
-			view.renderSelection();
+//            Check if the right day = the left day and set to default
+            if(view.endMoment.isSame(view.startMoment,'day')){
+                $("#gearbooking-starttime").val("12:00");
+                $("#gearbooking-endtime").val("13:00");
+            }
+
+            view.handleLeftHourDropdown(event);
+            view.handleRightHourDropdown(event);
+            view.renderSelection();
             view.renderPrice(event);
 		}
 
@@ -589,8 +599,16 @@ define(
 				i--;
 			}
 
+            //Check if the right day = the left day and set to default
+            if(view.endMoment.isSame(view.startMoment,'day')){
+                $("#gearbooking-starttime").val("12:00");
+                $("#gearbooking-endtime").val("13:00");
+            }
+
+            view.handleLeftHourDropdown(event);
+            view.handleRightHourDropdown(event);
 			view.renderSelection();
-            renderPrice(event);
+            view.renderPrice(event);
 		}
 
 		function clearLeftSelection() {

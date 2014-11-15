@@ -119,6 +119,9 @@ define(
 				dayRows += '</div>';
 			}
 			$monthCalendarContainer.append(header + dayRows);
+
+            $("#gearavailability-today-btn").prop('disabled',true);
+            $("#gearavailability-previous-btn").prop('disabled',true);
 		}
 
 		function setupMonthCalendar(moment) {
@@ -142,9 +145,13 @@ define(
 					if(moment.month() !== this.shownMoment.month()) {
 						$dayBox.addClass('disabled');
 					}
+                    if(moment.isBefore(new Moment())){
+						$dayBox.addClass('disabled');
+                    }
 					moment.add(1, 'days');
 				}
 			}
+
 
 			$('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
 		}
@@ -245,14 +252,29 @@ define(
 		function handleToday(event) {
 			var view = event.data;
 			view.shownMoment = Moment();
-			view.setupMonthCalendar();
+            $("#gearavailability-today-btn").prop('disabled', true);
+            $("#gearavailability-previous-btn").prop('disabled', true);
+            view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
 		}
 
 		function handlePrevious(event) {
 			var view = event.data;
+
+            if(view.shownMoment.month() === Moment().month()) {
+                return;
+            }
+            else {
+                $("#gearavailability-today-btn").prop('disabled',false);
+                $("#gearavailability-previous-btn").prop('disabled',false);
+            }
 			view.shownMoment.subtract(1, 'month');
+            if(view.shownMoment.month() === new Moment().month()) {
+                $("#gearavailability-today-btn").prop('disabled', true);
+                $("#gearavailability-previous-btn").prop('disabled', true);
+            }
+
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
@@ -261,6 +283,16 @@ define(
 		function handleNext(event) {
 			var view = event.data;
 			view.shownMoment.add(1, 'month');
+
+            if(view.shownMoment.month() === new Moment().month()) {
+                $("#gearavailability-today-btn").prop('disabled',true);
+                $("#gearavailability-previous-btn").prop('disabled',true);
+            }
+            else {
+                $("#gearavailability-today-btn").prop('disabled',false);
+                $("#gearavailability-previous-btn").prop('disabled',false);
+            }
+
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();

@@ -53,7 +53,11 @@ define(
 		function handleImageUpload(event) {
 			var view = event.data
 				$file = $(this);
-			view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
+
+            $("#addimage_modal_next").hide();
+            $("#addimage_image_loading").show();
+
+            view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
 				var $thumbList, html;
 				if(error) {
 					alert('Error uploading file.');
@@ -66,7 +70,11 @@ define(
 				$thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
-			});
+
+                $("#addimage_modal_next").show();
+                $("#addimage_image_loading").hide();
+
+            });
 		}
 
 		function handleNext(event) {

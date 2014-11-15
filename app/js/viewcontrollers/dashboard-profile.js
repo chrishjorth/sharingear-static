@@ -60,16 +60,20 @@ define(
             $('input, textarea').on('input', function() {
                 view.enableSaveButton(true);
             });
+            //Enable on image change
+            $("#prof-pic").on('change',function(){
+                view.enableSaveButton(true);
+            });
 
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#prof-pic-div', view.$element),
                     img = view.profileImg;
                 $profilePic.css('background-image', 'url("' + img.src + '")');
                 if(img.width < img.height) {
-                    $profilePic.css('background-size', 'auto ' + img.width);
+                    $profilePic.css('background-size', '200px auto');
                 }
                 else{
-                    $profilePic.css('background-size', img.height + ' auto');
+                    $profilePic.css('background-size', 'auto 200px');
                 }
             });
 
@@ -78,18 +82,23 @@ define(
         }
 
         function handleImageUpload(event) {
-            //TODO finish the handleImageUpload method
             var view = event.data;
             $file = $(this);
-            console.log($file);
-            console.log(App.user.data.id);
-            console.log(App.user.data.image_url);
 
-            view.user.uploadProfilePicture($file.get(0).files[0], $file.val().split('\\').pop(),App.user.data.id, function (error) {
-                console.log('Callback works!');
+            $('#profile_image_loading').show();
+            $('#saveButton').hide();
+
+            view.user.uploadProfilePicture($file.get(0).files[0], $file.val().split('\\').pop(),App.user.data.id, function (error,url) {
+
+                $('#profile_image_loading').hide();
+                $('#saveButton').show();
+
                 if(error) {
                     alert('Error uploading file.');
                     console.log(error);
+                }else{
+                    var $profilePic = $('#prof-pic-div', view.$element);
+                    $profilePic.css('background-image', 'url("' + url + '")');
                 }
             });
         }
@@ -105,6 +114,7 @@ define(
             saveData = {
                 name: $('#dashboard-profile-form #name').val(),
                 surname: $('#dashboard-profile-form #surname').val(),
+                email: $('#dashboard-profile-form #email').val(),
                 city: $('#dashboard-profile-form #hometown').val(),
                 bio: $('#dashboard-profile-form #bio').val()
             };
