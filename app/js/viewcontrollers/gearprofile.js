@@ -6,10 +6,12 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'models/gear', 'models/user', 'googlemaps','owlcarousel','magnificpopup', 'facebook'],
-	function($, ViewController, App, Gear, User, GoogleMaps, owlcarousel, magnificPopup, FB) {
+	['jquery', 'viewcontroller', 'app', 'utilities', 'models/gear', 'models/user', 'googlemaps','owlcarousel','magnificpopup', 'facebook'],
+	function($, ViewController, App, Utilities, Gear, User, GoogleMaps, owlcarousel, magnificPopup, FB) {
 
-		var didInitialize,
+		var paymentSuccessModalOpen = false,
+
+			didInitialize,
 			didRender,
 			renderOwnerPicture,
 			renderGearPictures,
@@ -86,8 +88,7 @@ define(
 		};
 
 		didRender = function() {
-            var view = this,
-            	$owl, $paginatorsLink, images, i;
+            var $owl, $paginatorsLink, images, i, preAuthorizationID, bookingID;
 			
 			this.renderGearPictures();
 			this.renderOwnerPicture();
@@ -125,6 +126,20 @@ define(
             this.setupEvent('click', '#editProfileBtn', this, this.handleEditProfile);
             this.setupEvent('click', '#fb-share-gear', this, this.handleFacebookShare);
             this.setupEvent('click', '#tw-share-gear', this, this.handleTwitterShare);
+
+            //Check for querystring sent by a booking payment process
+			preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
+			bookingID = Utilities.getQueryStringParameterValue(window.location.search, 'booking_id');
+			console.log('preAuthorizationId: ' + preAuthorizationID);
+			console.log('bookingID: ' + bookingID);
+			if(paymentSuccessModalOpen === false && preAuthorizationID && bookingID) {
+				App.router.openModalView('paymentsuccessful', {
+					preAuthorizationID: preAuthorizationID,
+					bookingID: bookingID,
+					gear_id: this.gear.data.id
+				});
+				paymentSuccessModalOpen = true;
+			}
 		};
 
 

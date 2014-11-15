@@ -10,7 +10,7 @@ define(
 		var didInitialize,
             createBooking,
             getBookingInfo,
-            updateBooking;
+            update;
 
         didInitialize = function() {
             if(this.data === null) {
@@ -32,8 +32,11 @@ define(
 				start_time: newBooking.start_time,
 				end_time: newBooking.end_time,
                 cardId: cardId,
-                returnURL: Utilities.getBaseURL() + '#gearprofile/1/booked'
+                returnURL: window.location.href
 			};
+
+            console.log('create booking postData:');
+            console.log(postData);
 
 			this.post(url, postData, function(error, data) {
 				if(error) {
@@ -43,9 +46,7 @@ define(
 					return;
 				}
 				_.extend(model.data, data);
-				if(callback && typeof callback === 'function') {
-					callback(null);
-				}
+				callback(null);
 			});
 		};
 
@@ -62,20 +63,19 @@ define(
                     callback(error);
                     return;
                 }
+                console.log('booking info');
+                console.log(booking);
                 _.extend(model.data, booking);
                 callback(null);
             });
         };
 
         // PUT: /users/:user_id/gear/:gear_id/bookings/:booking_id
-        updateBooking = function(bookingId, callback) {
+        update = function(userID, callback) {
             var model = this,
-                url = '/users/' + this.data.user_id + '/gear/' + this.data.gear_id + '/bookings/' + bookingId,
-                putData = {
-                    booking_status: this.data.booking_status
-                };
+                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
 
-            this.put(url, putData, function(error, booking) {
+            this.put(url, model.data, function(error, booking) {
                 if(error) {
                     console.log(error);
                     callback(error);
@@ -83,9 +83,7 @@ define(
                 }
 
                 _.extend(model.data, booking);
-                if(callback && typeof callback === 'function') {
-                    callback(null);
-                }
+                callback(null);
             });
         };
 
@@ -93,7 +91,7 @@ define(
             didInitialize: didInitialize,
             createBooking: createBooking,
             getBookingInfo: getBookingInfo,
-            updateBooking : updateBooking
+            update: update
         });
 	}
 );

@@ -61,6 +61,7 @@ define(
 				'gearavailability',
                 'gearpendingconfirm',
                 'payment',
+                'paymentsuccessful',
                 'submerchantregistration'
 			);
 

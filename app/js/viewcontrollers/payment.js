@@ -139,7 +139,10 @@ define(
                     	console.log(error);
                     	return;
                 	}
-                	App.router.closeModalView();
+                	//App.router.closeModalView();
+                	console.log('booking created:');
+                	console.log(newBooking.data);
+                	window.location.href = newBooking.data.verificationURL;
             	});
 			});
 		};

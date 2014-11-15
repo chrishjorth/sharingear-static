@@ -181,15 +181,34 @@ define(
 		};
 
         handleDeny = function(){
-            console.log('deny');
+            booking.data.booking_status = 'denied';
+            booking.update(App.user.data.id, function(error) {
+            	if(error) {
+            		console.log(error);
+            		alert('Error updating booking.');
+            		return;
+            	}
+            	else {
+            		App.router.closeModalView();
+            	}
+            });
         };
 
 		/**
 		 * @assertion: selections are not overlapping.
 		 */
 		handleConfirm = function() {
-            console.log('confirming');
-            
+            booking.data.booking_status = 'accepted';
+            booking.update(App.user.data.id, function(error) {
+            	if(error) {
+            		console.log(error);
+            		alert('Error updating booking.');
+            		return;
+            	}
+            	else {
+            		App.router.closeModalView();
+            	}
+            });
 		};
 
 		return ViewController.inherit({

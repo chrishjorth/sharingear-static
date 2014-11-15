@@ -199,6 +199,13 @@ define(
 		};
 
 		setQueryString = function(queryString) {
+			var hash = window.location.hash,
+				newLocation;
+			if(!queryString || queryString === '') {
+				newLocation = window.location.pathname + hash;
+				history.replaceState({}, '', newLocation);
+				return;
+			}
 			this.navigateToViewCalled = true;
 			window.location.hash += '?' + queryString;
 		};
