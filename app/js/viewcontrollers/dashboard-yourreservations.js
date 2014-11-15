@@ -3,46 +3,49 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 define(
-	['viewcontroller', 'app', 'models/gearlist'],
-	function(ViewController, App, GearList) {
-		var YourReservations = ViewController.inherit({
-			reservationBlockID: 'yourreservations-gear-block',
-			gearList: new GearList.constructor({
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gearlist'],
+	function(_, $, ViewController, App, GearList) {
+		var reservationBlockID,
+			gearList,
+
+			didInitialize,
+			didRender,
+			populateYourReservations;
+
+		reservationBlockID = 'yourreservations-gear-block';
+
+		didInitialize = function() {
+			gearList = new GearList.constructor({
 				rootURL: App.API_URL
-			}),
+			});
+		};
 
-			didRender: didRender,
-			populateYourReservations: populateYourReservations
-		}); 
-		return YourReservations;
-
-		function didRender() {
+		didRender = function() {
 			var view = this,
-				userID = null;
-
-			if(App.user.data) {
 				userID = App.user.data.id;
-			}
-            if(this.gearList.isEmpty()) {
-                this.gearList.getUserReservations(userID, function (data) {
+
+            if(gearList.isEmpty()) {
+                gearList.getUserReservations(userID, function (data) {
                     if(data.length!==0){
                         view.populateYourReservations();
                     }else{
-                        $("#yourreservations-gear-block").append("You don't have any reservations!")
+                        $('#yourreservations-gear-block').append('You don\'t have any reservations!');
                     }
                 });
             }else{
                 view.populateYourReservations();
             }
-		}
+		};
 
-		function populateYourReservations(callback) {
+		populateYourReservations = function(callback) {
 			var view = this;
 			require(['text!../templates/yourreservations-item.html'], function(YourReservationsItemTemplate) {
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
-					yourReserv = view.gearList.data,
-                    defaultReservation, reservation;
+					yourReserv = gearList.data,
+                    defaultReservation, reservation, i;
 
 				for(i = 0; i < yourReserv.length; i++) {
                     defaultReservation = {
@@ -65,13 +68,18 @@ define(
                     if(defaultReservation.images.length > 0) {
                         defaultReservation.img_url = defaultReservation.images.split(',')[0];
                     }
-					$('#' + view.reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
+					$('#' + reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
 				}
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
-
 			});
-		}
+		};
+
+		return ViewController.inherit({
+			didInitialize: didInitialize,
+			didRender: didRender,
+			populateYourReservations: populateYourReservations
+		});
 	}
 );

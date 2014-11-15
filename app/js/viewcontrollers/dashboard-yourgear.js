@@ -3,35 +3,41 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 define(
-	['underscore', 'viewcontroller', 'app', 'models/gearlist', 'models/gear'],
-	function(_, ViewController, App, GearList, Gear) {
-		var YourGear = ViewController.inherit({
-			gearBlockID: 'yourgear-gear-block',
-			gearList: new GearList.constructor({
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gearlist'],
+	function(_, $, ViewController, App, GearList) {
+		var gearBlockID,
+			gearList,
+
+			didInitialize,
+			didRender,
+			populateYourGear,
+			setupEvents,
+			handleGearItemPendConfirm,
+			handleEditGearItem,
+			handleGearItemAvailability;
+
+		gearBlockID = 'yourgear-gear-block';
+
+		didInitialize = function() {
+			gearList = new GearList.constructor({
 				rootURL: App.API_URL
-			}),
-			
-			didRender: didRender,
-			populateYourGear: populateYourGear,
-			setupEvents: setupEvents,
-			handleEditGearItem: handleEditGearItem,
-			handleGearItemAvailability: handleGearItemAvailability,
-            handleGearItemPendConfirm : handleGearItemPendConfirm
+			});
+		};
 
-		}); 
-		return YourGear;
-
-		function didRender() {
+		didRender = function() {
 			var view = this;
 
-			if(this.gearList.isEmpty()) {
-				this.gearList.getUserGear(App.user.data.id, function(userGear) {
+			if(gearList.isEmpty()) {
+				gearList.getUserGear(App.user.data.id, function(userGear) {
                     if(userGear.length!==0) {
                         view.populateYourGear();
                         view.setupEvents();
-                    }else{
-                        $("#yourgear-gear-block").append("You haven't listed any gear yet!")
+                    }
+                    else {
+                        $('#yourgear-gear-block').append('You haven\'t listed any gear yet!');
                     }
 				});
 			}
@@ -39,13 +45,13 @@ define(
 				this.populateYourGear();
 				this.setupEvents();
 			}
-		}
+		};
 
-		function populateYourGear(callback) {
+		populateYourGear = function(callback) {
 			var view = this;
 			require(['text!../templates/yourgear-item.html'], function(YourGearItemTemplate) {
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
-					yourGear = view.gearList.data,
+					yourGear = gearList.data,
 					defaultGear, gear, i;
 
 				for(i = 0; i < yourGear.length; i++) {
@@ -77,37 +83,37 @@ define(
                                                 : '<span class="yourgear-status ' + gear.data.gear_status +'">' + gear.data.gear_status + '</span>';
                     }
 
-					$('#' + view.gearBlockID).append(yourGearItemTemplate(defaultGear));
+					$('#' + gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
 			});
-		}
+		};
 
-		function setupEvents() {
+		setupEvents = function() {
 			this.setupEvent('click', '.yourgear-item .btn-edit', this, this.handleEditGearItem);
 			this.setupEvent('click', '.yourgear-item .btn-availability', this, this.handleGearItemAvailability);
 			this.setupEvent('click', '.yourgear-status.pending', this, this.handleGearItemPendConfirm);
-		}
+		};
 
-        function handleGearItemPendConfirm(event){
+        handleGearItemPendConfirm = function(event){
 
             var view = event.data,
                 gear;
 
             gear = view.gearList.getGearItem($(this).data('yourgearid'));
             App.router.openModalView('gearpendingconfirm', gear);
-        }
+        };
 
-		function handleEditGearItem(event) {
+		handleEditGearItem = function(event) {
 			var view = event.data,
 				gear;
 			gear = view.gearList.getGearItem($(this).data('yourgearid'));
 			App.router.openModalView('editgear', gear);
-		}
+		};
 
-		function handleGearItemAvailability(event) {
+		handleGearItemAvailability = function(event) {
 			var view = event.data,
 				gear;
 			gear = view.gearList.getGearItem($(this).data('yourgearid'));
@@ -118,6 +124,17 @@ define(
 			else {
 				App.router.openModalView('submerchantregistration', gear);
 			}
-		}
+		};
+
+		return ViewController.inherit({
+			didInitialize: didInitialize,
+			didRender: didRender,
+			populateYourGear: populateYourGear,
+			setupEvents: setupEvents,
+			handleEditGearItem: handleEditGearItem,
+			handleGearItemAvailability: handleGearItemAvailability,
+            handleGearItemPendConfirm : handleGearItemPendConfirm
+
+		}); 
 	}
 );
