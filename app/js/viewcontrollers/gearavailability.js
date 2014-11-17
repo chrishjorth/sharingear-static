@@ -10,7 +10,7 @@ define(
 			gear: null,
 			shownMoment: null,
 			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
-			alwaysFlag: 0,
+			alwaysFlag: -1,
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -54,8 +54,23 @@ define(
 			this.gear = this.passedData;
 			this.selections = {};
 
-			this.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
+			this.gear.getAvailability(App.user.data.id, function(error, result) {
 				var i, startMoment, endMoment;
+				var availabilityArray = result.availabilityArray;
+				view.alwaysFlag = result.alwaysFlag; // here the flag is set from the DB !!!!
+
+				if(view.alwaysFlag === 0) {
+					$("#gearavailability-never-btn").addClass("disabled");
+					$("#gearavailability-always-btn").removeClass("disabled");
+
+				} else {
+
+					$("#gearavailability-always-btn").addClass("disabled");
+					$("#gearavailability-never-btn").removeClass("disabled");
+
+
+				}
+
 				if(error) {
 					return;
 				}
@@ -187,6 +202,7 @@ define(
 		 */
 		function handleSave(event) {
 			var view = event.data,
+				alwaysFlag = view.alwaysFlag,
 				availabilityArray = [],
 				month, monthSelections, selection;
 
@@ -278,9 +294,8 @@ define(
 		function handleAlwaysAvailable(event) {
 
 			var view = event.data;
-			console.log(view.selections);
 
-			alwaysFlag = 1;
+			view.alwaysFlag = 1;
 
 			// $('#gearavailability-months-container .day-row .day').each(function(index, $element) {
 			// 	// $(this).removeClass('selected');
@@ -291,6 +306,8 @@ define(
 
 		function handleNeverAvailable(event) {
 			var view = event.data;
+
+			view.alwaysFlag = 0;
 
 			view.selections = {};
 			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];

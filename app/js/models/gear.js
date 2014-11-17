@@ -184,13 +184,13 @@ define(
 		}
 
 		function getAvailability(userID, callback) {
-			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, availabilityArray) {
+			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
 				if(error) {
 					console.log(error);
 					callback(error);
 					return;
 				}
-				callback(null, availabilityArray);
+				callback(null, result);
 			});
 		}
 
@@ -203,7 +203,7 @@ define(
 				availability: JSON.stringify(availabilityArray),
 				alwaysFlag: alwaysFlag
 			};
-
+			console.log("setAvailability.alwaysFlag: " + alwaysFlag);
 			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
 				if(error) {
 					console.log(error);
