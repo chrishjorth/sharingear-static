@@ -15,7 +15,7 @@ define(
 			user: null,
 			gearClassification: null,
 			localization: null,
-			
+
 			run: run,
 			loadHeader: loadHeader,
 			loadFooter: loadFooter
@@ -59,10 +59,10 @@ define(
 				'editgearpricing',
 				'gearbooking',
 				'gearavailability',
-                'booking',
-                'payment',
-                'paymentsuccessful',
-                'submerchantregistration'
+        'bookingconfirm',
+      	'payment',
+        'paymentsuccessful',
+        'submerchantregistration'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.

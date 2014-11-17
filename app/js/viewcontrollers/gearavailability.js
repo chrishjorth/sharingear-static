@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Gear availability page view.
- * @author: Chris Hjorth, Gediminas Bivainis, Horatiu Roman
+ * @author: Chris Hjorth
  */
 
 define(
@@ -10,6 +10,7 @@ define(
 			gear: null,
 			shownMoment: null,
 			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
+			alwaysFlag: -1,
 
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -53,8 +54,23 @@ define(
 			this.gear = this.passedData;
 			this.selections = {};
 
-			this.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
+			this.gear.getAvailability(App.user.data.id, function(error, result) {
 				var i, startMoment, endMoment;
+				var availabilityArray = result.availabilityArray;
+				view.alwaysFlag = result.alwaysFlag; // here the flag is set from the DB !!!!
+
+				if(view.alwaysFlag === 0) {
+					$("#gearavailability-never-btn").addClass("disabled");
+					$("#gearavailability-always-btn").removeClass("disabled");
+
+				} else {
+
+					$("#gearavailability-always-btn").addClass("disabled");
+					$("#gearavailability-never-btn").removeClass("disabled");
+
+
+				}
+
 				if(error) {
 					return;
 				}
@@ -119,9 +135,6 @@ define(
 				dayRows += '</div>';
 			}
 			$monthCalendarContainer.append(header + dayRows);
-
-            $("#gearavailability-today-btn").prop('disabled',true);
-            $("#gearavailability-previous-btn").prop('disabled',true);
 		}
 
 		function setupMonthCalendar(moment) {
@@ -145,13 +158,9 @@ define(
 					if(moment.month() !== this.shownMoment.month()) {
 						$dayBox.addClass('disabled');
 					}
-                    if(moment.isBefore(new Moment())){
-						$dayBox.addClass('disabled');
-                    }
 					moment.add(1, 'days');
 				}
 			}
-
 
 			$('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
 		}
@@ -169,6 +178,7 @@ define(
 			if(Array.isArray(selections) === false) {
 				return;
 			}
+
 			for(i = 0; i < selections.length; i++) {
 				startMoment = selections[i].startMoment;
 				$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
@@ -192,10 +202,11 @@ define(
 		 */
 		function handleSave(event) {
 			var view = event.data,
+				alwaysFlag = view.alwaysFlag,
 				availabilityArray = [],
 				month, monthSelections, selection;
 
-            $('#gearavailability-save-btn').html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+			App.router.closeModalView();
 
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
@@ -222,7 +233,7 @@ define(
             availabilityArray.sort(function (m1, m2) {
                 var moment1 = Moment(m1.start_time);
                 var moment2 = Moment(m2.start_time);
-                return moment1.date() - moment2.date();
+                return isAfterOrSameDay(moment1,moment2);
             });
 
             //Optimize adjacent periods
@@ -239,42 +250,27 @@ define(
                         iterator--;
                     }
                 }
+
+
             }
 
-            view.gear.setAvailability(App.user.data.id, availabilityArray, function(error) {
 
-                $('#gearavailability-save-btn').text('Save');
+						//change to something working in the f-end
 
-                App.router.closeModalView();
-            });
+            view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {});
 		}
 
 		function handleToday(event) {
 			var view = event.data;
 			view.shownMoment = Moment();
-            $("#gearavailability-today-btn").prop('disabled', true);
-            $("#gearavailability-previous-btn").prop('disabled', true);
-            view.setupMonthCalendar();
+			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
 		}
 
 		function handlePrevious(event) {
 			var view = event.data;
-
-            if(view.shownMoment.month() === Moment().month()) {
-                return;
-            }
-            else {
-                $("#gearavailability-today-btn").prop('disabled',false);
-                $("#gearavailability-previous-btn").prop('disabled',false);
-            }
 			view.shownMoment.subtract(1, 'month');
-            if(view.shownMoment.month() === new Moment().month()) {
-                $("#gearavailability-today-btn").prop('disabled', true);
-                $("#gearavailability-previous-btn").prop('disabled', true);
-            }
-
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
@@ -283,16 +279,6 @@ define(
 		function handleNext(event) {
 			var view = event.data;
 			view.shownMoment.add(1, 'month');
-
-            if(view.shownMoment.month() === new Moment().month()) {
-                $("#gearavailability-today-btn").prop('disabled',true);
-                $("#gearavailability-previous-btn").prop('disabled',true);
-            }
-            else {
-                $("#gearavailability-today-btn").prop('disabled',false);
-                $("#gearavailability-previous-btn").prop('disabled',false);
-            }
-
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
@@ -306,18 +292,22 @@ define(
 		}
 
 		function handleAlwaysAvailable(event) {
+
 			var view = event.data;
 
+			view.alwaysFlag = 1;
 
-
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
+			// $('#gearavailability-months-container .day-row .day').each(function(index, $element) {
+			// 	// $(this).removeClass('selected');
+			// 	$(this).addClass('selected');
+			// });
 
 		}
 
 		function handleNeverAvailable(event) {
 			var view = event.data;
+
+			view.alwaysFlag = 0;
 
 			view.selections = {};
 			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
@@ -340,40 +330,8 @@ define(
                     endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
                 };
 
-                // The selection object should be subtracted from view.selections
-                var index = view.shownMoment.year() + '-' + (view.shownMoment.month()+1);
-
-                for (var i = 0; i < view.selections[index].length; i++) {
-                	var sel = view.selections[index][i];
-                	
-                	// if same as clicked
-                	if (sel.startMoment.isSame(selection.startMoment, 'day') && sel.endMoment.isSame(selection.endMoment, 'day')) {
-                		view.selections[index].splice(i, 1);
-                		i--;
-
-                	} else if (view.isBeforeOrSameDay(sel.startMoment, selection.startMoment)
-                		&& view.isAfterOrSameDay(sel.endMoment, selection.endMoment)) { // if clicked inside a range of dates
-                		// selection surrounds current clicked => create two new selections that end around this day
-                		
-                		var pastSelection = {
-                			startMoment: Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: sel.startMoment.date()}),
-                			endMoment: Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: selection.startMoment.date()-1})
-                		};
-                		var futureSelection = {
-                			startMoment: Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: selection.startMoment.date()+1}),
-                			endMoment: Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: sel.endMoment.date()})
-                		};
-                		
-		                view.selections[index].splice(i, 1);
-		                if (view.isBeforeOrSameDay(pastSelection.startMoment, pastSelection.endMoment)) {
-		                	view.selections[index].push(pastSelection);
-		                }
-		                if (view.isBeforeOrSameDay(futureSelection.startMoment, futureSelection.endMoment)) {
-		                	view.selections[index].push(futureSelection);
-		                }
-		                i--;
-                	}
-                };
+                //TODO The selection object should be subtracted from view.selections
+                //...
 
 				return;
 			}
