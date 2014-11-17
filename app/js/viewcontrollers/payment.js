@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'models/card'],
-	function($, ViewController, App, Card) {
+	['jquery', 'viewcontroller', 'app', 'models/card', 'moment'],
+	function($, ViewController, App, Card, Moment) {
 		var newBooking,
 
 			didInitialize,
@@ -89,9 +89,47 @@ define(
 		};
 
 		handlePay = function(event) {
-			var view = event.data;
+			var view = event.data,
+				userData = App.user.data,
+				needToUpdateUser = false;
 
+			if(userData.birthdate === null || userData.birthdate === '') {
+				userData.birthdate = (new Moment($('#payment-birthdate', view.$element).val(), 'DD/MM/YYYY')).format('YYYY-MM-DD');
+				needToUpdateUser = true;
+			}
+			if(userData.address === null || userData === '') {
+				userData.address = $('#payment-address', this.$element).val();
+				needToUpdateUser = true;
+			}
+			if(userData.postal_code === null || userData.postal_code === '') {
+				userData.postal_code = $('#payment-postalcode', this.$element).val();
+				needToUpdateUser = true;
+			}
+			if(userData.city === null || userData.city === '') {
+				userData.city = $('#payment-city', this.$element).val();
+				needToUpdateUser = true;
+			}
+			if(userData.region === null || userData.region === '') {
+				userData.region = $('#payment-region', this.$element).val();
+				needToUpdateUser = true;
+			}
+			if(userData.country === null || userData.country === '') {
+				userData.country = $('#payment-country', this.$element).val();
+				needToUpdateUser = true;
+			}
+			if(userData.nationality === null || userData.nationality === '') {
+				userData.nationality = $('#payment-nationality', this.$element).val();
+				needToUpdateUser = true;
+			}
+			if(userData.phone === null || userData === '') {
+				userData.phone = $('#payment-phone', this.$element).val();
+				needToUpdateUser = true;
+			}
 			if(App.user.data.hasWallet === false) {
+				needToUpdateUser = true;
+			}
+
+			if(needToUpdateUser === true) {
 				App.user.update(function(error) {
 					if(error) {
 						console.log('Error updating user: ' + error);
@@ -130,6 +168,7 @@ define(
 			card.registerCard(App.user.data.id, cardData, function(error, cardId) {
 				if(error) {
 					console.log(error);
+					alert('Error processing card information.');
 					return;
 				}
 				//Pre-authorize the card for the withdrawal
@@ -139,9 +178,6 @@ define(
                     	console.log(error);
                     	return;
                 	}
-                	//App.router.closeModalView();
-                	console.log('booking created:');
-                	console.log(newBooking.data);
                 	window.location.href = newBooking.data.verificationURL;
             	});
 			});

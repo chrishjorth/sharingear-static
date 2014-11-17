@@ -104,16 +104,16 @@ define(
                 startMoment, endMoment;
 
             if(gear.data.booking_status === 'denied') {
-            	$('#owneraccept-confirm', this.$element).removeClass('hidden');
+            	$('#renterview-confirm', this.$element).removeClass('hidden');
             }
             if(gear.data.booking_status === 'accepted' && gear.data.gear_status === 'rented-out') {
             	$('#endbooking-confirm', this.$element).removeClass('hidden');
             	this.setupEvent('click', '#booking-end-btn', this, this.handleEnd);
             }
             else {
-            	$('#renterview-confirm', this.$element).removeClass('hidden');
-				this.setupEvent('click', '#bookingconfirm-deny-btn', this, this.handleDeny);
-				this.setupEvent('click', '#bookingconfirm-confirm-btn', this, this.handleConfirm);
+            	$('#owneraccept-confirm', this.$element).removeClass('hidden');
+				this.setupEvent('click', '#booking-deny-btn', this, this.handleDeny);
+				this.setupEvent('click', '#booking-confirm-btn', this, this.handleConfirm);
             }
             this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
 
