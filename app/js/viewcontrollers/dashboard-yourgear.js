@@ -103,25 +103,23 @@ define(
 		};
 
         handleGearItemPendConfirm = function(event){
-
             var view = event.data,
                 gear;
-
-            gear = view.gearList.getGearItem($(this).data('yourgearid'));
-            App.router.openModalView('gearpendingconfirm', gear);
+            gear = gearList.getGearItem($(this).data('yourgearid'));
+            App.router.openModalView('bookingconfirm', gear);
         };
 
 		handleEditGearItem = function(event) {
 			var view = event.data,
 				gear;
-			gear = view.gearList.getGearItem($(this).data('yourgearid'));
+			gear = gearList.getGearItem($(this).data('yourgearid'));
 			App.router.openModalView('editgear', gear);
 		};
 
 		handleGearItemAvailability = function(event) {
 			var view = event.data,
 				gear;
-			gear = view.gearList.getGearItem($(this).data('yourgearid'));
+			gear = gearList.getGearItem($(this).data('yourgearid'));
 
 			if(App.user.isSubMerchant() === true) {
 				App.router.openModalView('gearavailability', gear);

@@ -13,32 +13,33 @@ define(
 
 			didInitialize,
 			didRender,
-			populateYourReservations;
+
+			populateYourReservations,
+
+			handleDenied;
 
 		reservationBlockID = 'yourreservations-gear-block';
 
 		didInitialize = function() {
+			var view = this;
 			gearList = new GearList.constructor({
 				rootURL: App.API_URL
+			});
+			gearList.getUserReservations(App.user.data.id, function (data) {
+				if(data.length !== 0){
+					view.populateYourReservations();
+				}
+				else {
+					$('#yourreservations-gear-block').append('You don\'t have any reservations!');
+				}
+				view.render();
 			});
 		};
 
 		didRender = function() {
-			var view = this,
-				userID = App.user.data.id;
-
-            if(gearList.isEmpty()) {
-                gearList.getUserReservations(userID, function (data) {
-                    if(data.length !== 0){
-                        view.populateYourReservations();
-                    }
-                    else {
-                        $('#yourreservations-gear-block').append('You don\'t have any reservations!');
-                    }
-                });
-            }else{
-                view.populateYourReservations();
-            }
+			var view = this;
+			view.setupEvent('click', '.yourgear-status', view, view.handleDenied);
+            
 		};
 
 		populateYourReservations = function(callback) {
@@ -69,7 +70,16 @@ define(
                     if(defaultReservation.images.length > 0) {
                         defaultReservation.img_url = defaultReservation.images.split(',')[0];
                     }
-                    defaultReservation.gear_status = '<span class="yourgear-status ' + defaultReservation.gear_status +'">' + defaultReservation.gear_status + '</span>';
+
+                    if(defaultReservation.booking_status === 'denied') {
+                    	defaultReservation.gear_status = '<button class="btn btn-warning yourgear-status pending" data-gearid="' + reservation.data.id + '">DENIED</button>';
+                    }
+                    else if(defaultReservation.gear_status === 'rented-out') {
+                    	defaultReservation.gear_status = '<span class="yourgear-status accepted">IN RENTAL</span>';
+                    }
+                    else if(defaultReservation.booking_status === 'accepted') {
+                    	defaultReservation.gear_status = '<span class="yourgear-status accepted">ACCEPTED</span>';
+                    }
 
 					$('#' + reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
 				}
@@ -79,10 +89,17 @@ define(
 			});
 		};
 
+		handleDenied = function(event) {
+			var gear;
+			gear = gearList.getGearItem($(this).data('gearid'));
+			App.router.openModalView('bookingconfirm', gear);
+		};
+
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
-			populateYourReservations: populateYourReservations
+			populateYourReservations: populateYourReservations,
+			handleDenied: handleDenied
 		});
 	}
 );

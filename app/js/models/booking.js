@@ -63,8 +63,6 @@ define(
                     callback(error);
                     return;
                 }
-                console.log('booking info');
-                console.log(booking);
                 _.extend(model.data, booking);
                 callback(null);
             });

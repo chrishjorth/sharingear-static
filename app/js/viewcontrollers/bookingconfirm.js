@@ -1,13 +1,15 @@
 /**
  * Controller for the Sharingear Gear booking confirm page view.
+ * We use the booking status to determine wether it is the owner viewing his gear bookings og a renter viewing his reservations.
+ * The owner does not get a modal for the denied booking status, since it is not his concern at that point anymore.
  * @author: Chris Hjorth, Gediminas Bivainis
  */
 
 'use strict';
 
 define(
-    ['jquery', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
-	function($, ViewController, Moment, App, Gear, User, Booking) {
+    ['underscore', 'jquery', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
+	function(_, $, ViewController, Moment, App, Gear, User, Booking) {
 		var gear = null,
             booking = null,
             renter = null,
@@ -22,7 +24,8 @@ define(
 			handleConfirm;
 
 		didInitialize = function() {
-			var view = this;
+			var view = this,
+				handleFetchBooking;
 
 			Moment.locale('en-custom', {
 				week: {
@@ -31,9 +34,10 @@ define(
 				}
 			});
 
-			gear = this.passedData;
+			gear = view.passedData;
 			
-            this.templateParameters = {
+            view.templateParameters = {
+            	title: (gear.data.booking_status === 'denied' ? 'Booking denied' : 'Confirm order'),
                 image_url : '',
                 name : '',
                 surname : '',
@@ -41,24 +45,19 @@ define(
             };
 
             booking = new Booking.constructor({
-                rootURL: App.API_URL,
-                data : {
-                    user_id : App.user.data.id,
-                    gear_id : gear.data.id
-                }
+                rootURL: App.API_URL
             });
+            booking.data.gear_id = gear.data.id;
 
-            booking.getBookingInfo(App.user.data.id, 'latest', function(error){
+            handleFetchBooking = function(error) {
                 if(error){
                     console.log('Error retrieving latest booking: ' + error);
                     return;
                 }
                 renter = new User.constructor({
-                	rootURL: App.API_URL,
-                	data: {
-                    	id: booking.data.user_id
-                	}
+                	rootURL: App.API_URL
            		});
+           		renter.data.id = (gear.data.booking_status === 'denied' ? gear.data.owner_id : App.user.data.id); //Depends on who is viewing the booking
 
            		renter.getPublicInfo(function(error) {
                 	var renterData = renter.data;
@@ -66,22 +65,38 @@ define(
                 		console.log('Error retrieving renter info: ' + error);
                 		return;
                 	}
-                	view.templateParameters = {
+                	_.extend(view.templateParameters, {
                     	name: renterData.name,
                     	surname: renterData.surname,
                     	image_url : renterData.image_url,
                     	bio : renterData.bio
-                	};
-
+                	});
                 	view.render();
             	});
-            });
+            };
+
+            if(gear.data.booking_status === 'denied') {
+            	booking.getBookingInfo(App.user.data.id, gear.data.booking_id, handleFetchBooking);
+            }
+            else {
+            	booking.getBookingInfo(App.user.data.id, 'latest', handleFetchBooking);
+            }
 		};
 
 		didRender = function() {
 			var orderDateList = '',
                 dayDiff = 0,
                 startMoment, endMoment;
+
+            if(gear.data.booking_status === 'denied') {
+            	$('#owneraccept-confirm', this.$element).addClass('hidden');
+            }
+            else {
+            	$('#renterview-confirm', this.$element).addClass('hidden');
+				this.setupEvent('click', '#bookingconfirm-deny-btn', this, this.handleDeny);
+				this.setupEvent('click', '#bookingconfirm-confirm-btn', this, this.handleConfirm);
+            }
+            this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
 
             $('[data-totalorderprice]').text(booking.data.price);
 
@@ -97,10 +112,6 @@ define(
 			// append start and end date intervals to pending order confirmation modal
             $('[data-orderdates]').html(orderDateList);
             $('[data-datediff]').text(dayDiff);
-
-			this.setupEvent('click', '[data-cancel]', this, this.handleCancel);
-			this.setupEvent('click', '[data-deny]', this, this.handleDeny);
-			this.setupEvent('click', '[data-confirm]', this, this.handleConfirm);
 		};
 
 		renderMonthCalendar = function($monthCalendarContainer) {
@@ -178,6 +189,15 @@ define(
 
 		handleCancel = function() {
 			App.router.closeModalView();
+
+			if(gear.data.booking_status === 'denied') {
+				booking.data.booking_status = 'ended-denied';
+				booking.update(App.user.data.id, function(error) {
+					if(error) {
+						console.log('Error updating booking status: ' + error);
+					}
+				});
+			}
 		};
 
         handleDeny = function(){

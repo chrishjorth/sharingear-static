@@ -59,7 +59,7 @@ define(
 				'editgearpricing',
 				'gearbooking',
 				'gearavailability',
-                'gearpendingconfirm',
+                'bookingconfirm',
                 'payment',
                 'paymentsuccessful',
                 'submerchantregistration'
