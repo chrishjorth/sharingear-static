@@ -1,7 +1,6 @@
 /**
  * Controller for the Sharingear Gear booking confirm page view.
- * We use the booking status to determine wether it is the owner viewing his gear bookings og a renter viewing his reservations.
- * The owner does not get a modal for the denied booking status, since it is not his concern at that point anymore.
+ * We use the booking status and gear status to determine the state of this view
  * @author: Chris Hjorth, Gediminas Bivainis
  */
 
@@ -12,7 +11,8 @@ define(
 	function(_, $, ViewController, Moment, App, Gear, User, Booking) {
 		var gear = null,
             booking = null,
-            renter = null,
+            isViewerOwner = true,
+            gearUser = null, //Can be the owner or the renter, depending on the viewer
 
 			didInitialize,
 			didRender,
@@ -21,10 +21,12 @@ define(
 			renderBooking,
 			handleCancel,
 			handleDeny,
-			handleConfirm;
+			handleConfirm,
+			handleEnd;
 
 		didInitialize = function() {
 			var view = this,
+				title = '',
 				handleFetchBooking;
 
 			Moment.locale('en-custom', {
@@ -35,9 +37,20 @@ define(
 			});
 
 			gear = view.passedData;
+			isViewerOwner = (App.user.data.id === gear.data.owner_id);
+
+			if(gear.data.booking_status === 'denied') {
+				title = 'Booking denied';
+			}
+			else if(gear.data.booking_status === 'pending') {
+				title = 'Confirm order';
+			}
+			else {
+				title = 'End booking';
+			}
 			
             view.templateParameters = {
-            	title: (gear.data.booking_status === 'denied' ? 'Booking denied' : 'Confirm order'),
+            	title: title,
                 image_url : '',
                 name : '',
                 surname : '',
@@ -47,6 +60,8 @@ define(
             booking = new Booking.constructor({
                 rootURL: App.API_URL
             });
+            console.log('GEAR:');
+            console.log(gear);
             booking.data.gear_id = gear.data.id;
 
             handleFetchBooking = function(error) {
@@ -54,32 +69,32 @@ define(
                     console.log('Error retrieving latest booking: ' + error);
                     return;
                 }
-                renter = new User.constructor({
+                gearUser = new User.constructor({
                 	rootURL: App.API_URL
            		});
-           		renter.data.id = (gear.data.booking_status === 'denied' ? gear.data.owner_id : App.user.data.id); //Depends on who is viewing the booking
+           		gearUser.data.id = (isViewerOwner === true ? gear.data.owner_id : App.user.data.id); //Depends on who is viewing the booking
 
-           		renter.getPublicInfo(function(error) {
-                	var renterData = renter.data;
+           		gearUser.getPublicInfo(function(error) {
+                	var gearUserData = gearUser.data;
                 	if(error) {
-                		console.log('Error retrieving renter info: ' + error);
+                		console.log('Error retrieving user info: ' + error);
                 		return;
                 	}
                 	_.extend(view.templateParameters, {
-                    	name: renterData.name,
-                    	surname: renterData.surname,
-                    	image_url : renterData.image_url,
-                    	bio : renterData.bio
+                    	name: gearUserData.name,
+                    	surname: gearUserData.surname,
+                    	image_url : gearUserData.image_url,
+                    	bio : gearUserData.bio
                 	});
                 	view.render();
             	});
             };
 
-            if(gear.data.booking_status === 'denied') {
-            	booking.getBookingInfo(App.user.data.id, gear.data.booking_id, handleFetchBooking);
+            if(isViewerOwner === true) {
+            	booking.getBookingInfo(App.user.data.id, 'latest', handleFetchBooking);
             }
             else {
-            	booking.getBookingInfo(App.user.data.id, 'latest', handleFetchBooking);
+            	booking.getBookingInfo(App.user.data.id, gear.data.booking_id, handleFetchBooking);
             }
 		};
 
@@ -89,10 +104,14 @@ define(
                 startMoment, endMoment;
 
             if(gear.data.booking_status === 'denied') {
-            	$('#owneraccept-confirm', this.$element).addClass('hidden');
+            	$('#owneraccept-confirm', this.$element).removeClass('hidden');
+            }
+            if(gear.data.booking_status === 'accepted' && gear.data.gear_status === 'rented-out') {
+            	$('#endbooking-confirm', this.$element).removeClass('hidden');
+            	this.setupEvent('click', '#booking-end-btn', this, this.handleEnd);
             }
             else {
-            	$('#renterview-confirm', this.$element).addClass('hidden');
+            	$('#renterview-confirm', this.$element).removeClass('hidden');
 				this.setupEvent('click', '#bookingconfirm-deny-btn', this, this.handleDeny);
 				this.setupEvent('click', '#bookingconfirm-confirm-btn', this, this.handleConfirm);
             }
@@ -190,7 +209,7 @@ define(
 		handleCancel = function() {
 			App.router.closeModalView();
 
-			if(gear.data.booking_status === 'denied') {
+			if(isViewerOwner === false && gear.data.booking_status === 'denied') {
 				booking.data.booking_status = 'ended-denied';
 				booking.update(App.user.data.id, function(error) {
 					if(error) {
@@ -231,6 +250,20 @@ define(
             });
 		};
 
+		handleEnd = function(event) {
+			booking.data.booking_status = (isViewerOwner === true ? 'owner-returned' : 'renter-returned');
+			booking.update(App.user.data.id, function(error) {
+            	if(error) {
+            		console.log(error);
+            		alert('Error updating booking.');
+            		return;
+            	}
+            	else {
+            		App.router.closeModalView();
+            	}
+            });
+		};
+
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -243,6 +276,7 @@ define(
 			handleCancel: handleCancel,
             handleDeny : handleDeny,
 			handleConfirm: handleConfirm,
+			handleEnd: handleEnd
 		});
 	}
 );

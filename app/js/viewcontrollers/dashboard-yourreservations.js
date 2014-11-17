@@ -16,7 +16,8 @@ define(
 
 			populateYourReservations,
 
-			handleDenied;
+			handleDenied,
+			handleRental;
 
 		reservationBlockID = 'yourreservations-gear-block';
 
@@ -38,12 +39,11 @@ define(
 
 		didRender = function() {
 			var view = this;
-			view.setupEvent('click', '.yourgear-status', view, view.handleDenied);
-            
+			view.setupEvent('click', '.yourgear-status.denied', view, view.handleDenied);
+            view.setupEvent('click', '.yourgear-status.in-rental', view, view.handleRental);
 		};
 
 		populateYourReservations = function(callback) {
-			var view = this;
 			require(['text!../templates/yourreservations-item.html'], function(YourReservationsItemTemplate) {
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 					yourReserv = gearList.data,
@@ -71,11 +71,14 @@ define(
                         defaultReservation.img_url = defaultReservation.images.split(',')[0];
                     }
 
-                    if(defaultReservation.booking_status === 'denied') {
-                    	defaultReservation.gear_status = '<button class="btn btn-warning yourgear-status pending" data-gearid="' + reservation.data.id + '">DENIED</button>';
+                    if(defaultReservation.booking_status === 'pending') {
+                    	defaultReservation.gear_status = '<span class="yourgear-status pending">PENDING</span>';
+                    }
+                    else if(defaultReservation.booking_status === 'denied') {
+                    	defaultReservation.gear_status = '<button class="btn btn-warning yourgear-status denied" data-gearid="' + reservation.data.id + '">DENIED</button>';
                     }
                     else if(defaultReservation.gear_status === 'rented-out') {
-                    	defaultReservation.gear_status = '<span class="yourgear-status accepted">IN RENTAL</span>';
+                    	defaultReservation.gear_status = '<button class="btn btn-default yourgear-status in-rental" data-gearid="' + reservation.data.id + '">IN RENTAL</button>';
                     }
                     else if(defaultReservation.booking_status === 'accepted') {
                     	defaultReservation.gear_status = '<span class="yourgear-status accepted">ACCEPTED</span>';
@@ -89,17 +92,24 @@ define(
 			});
 		};
 
-		handleDenied = function(event) {
+		handleDenied = function() {
 			var gear;
 			gear = gearList.getGearItem($(this).data('gearid'));
-			App.router.openModalView('bookingconfirm', gear);
+			App.router.openModalView('booking', gear);
+		};
+
+		handleRental = function() {
+			var gear;
+			gear = gearList.getGearItem($(this).data('gearid'));
+			App.router.openModalView('booking', gear);
 		};
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populateYourReservations: populateYourReservations,
-			handleDenied: handleDenied
+			handleDenied: handleDenied,
+			handleRental: handleRental
 		});
 	}
 );
