@@ -4,18 +4,17 @@
  */
 
 define(
-	['jquery', 'router', 'models/user', 'models/gearclassification', 'models/localization'],
-	function($, Router, User, GearClassification, Localization) {
+	['jquery', 'router', 'models/user', 'models/gearclassification'],
+	function($, Router, User, GearClassification) {
 		var App = {
 			router: Router,
 			header: null,
 			footer: null,
-			//API_URL: 'http://localhost:1338',
-			API_URL: 'https://api.sharingear.com',
+			API_URL: 'http://localhost:1338',
+			// API_URL: 'https://api.sharingear.com',
 			user: null,
 			gearClassification: null,
-			localization: null,
-			
+
 			run: run,
 			loadHeader: loadHeader,
 			loadFooter: loadFooter
@@ -59,9 +58,8 @@ define(
 				'editgearpricing',
 				'gearbooking',
 				'gearavailability',
-                'bookingconfirm',
+                'gearpendingconfirm',
                 'payment',
-                'paymentsuccessful',
                 'submerchantregistration'
 			);
 
@@ -85,8 +83,6 @@ define(
 			App.gearClassification = new GearClassification.constructor({
 				rootURL: App.API_URL
 			});
-
-			App.localization = new Localization.constructor();
 
 			$.when(loginDeferred, documentReadyDeferred).then(function() {
 				var route = null,

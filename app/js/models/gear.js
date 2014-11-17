@@ -177,25 +177,26 @@ define(
 		}
 
 		function getAvailability(userID, callback) {
-			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, availabilityArray) {
+			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
 				if(error) {
 					console.log(error);
 					callback(error);
 					return;
 				}
-				callback(null, availabilityArray);
+				callback(null, result);
 			});
 		}
 
 		/**
 		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
 		 */
-		function setAvailability(userID, availabilityArray, callback) {
+		function setAvailability(userID, availabilityArray, alwaysFlag, callback) {
 			var postData;
 			postData = {
-				availability: JSON.stringify(availabilityArray)
+				availability: JSON.stringify(availabilityArray),
+				alwaysFlag: alwaysFlag
 			};
-			
+			console.log("setAvailability.alwaysFlag: " + alwaysFlag);
 			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
 				if(error) {
 					console.log(error);
