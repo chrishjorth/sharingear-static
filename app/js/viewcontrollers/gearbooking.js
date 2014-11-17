@@ -87,10 +87,11 @@ define(
             this.endMoment.seconds(0);*/
 
             this.availabilityArray = [];
-            this.gear.getAvailability(App.user.data.id, function(error, availabilityArray) {
+            this.gear.getAvailability(App.user.data.id, function(error, result) {
             	if(error) {
-					return;
-				}
+								return;
+							}
+							var availabilityArray = result.availabilityArray;
             	view.availabilityArray = availabilityArray;
             	view.render();
             });
@@ -141,7 +142,7 @@ define(
         function renderPrice() {
             var price = 0,
             	startDate, endDate, numberOfHours, numberOfDays, numberOfWeeks, difference, display;
-            
+
             startDate = new Moment(this.startMoment);
             endDate = new Moment(this.endMoment);
 
@@ -243,7 +244,7 @@ define(
             var endHour = endHourSelected.split(':')[0].replace( /^\D+/g, '');
             var startHourSelected = $("#gearbooking-starttime").val();
             var startHour = startHourSelected.split(':')[0].replace( /^\D+/g, '');
-			
+
             if (view.startMoment.format("YYYY-MM-DD") === view.endMoment.format("YYYY-MM-DD")) {
 				if (startHour > endHour) {
 					startHour = endHour;
@@ -252,7 +253,7 @@ define(
 					view.renderPrice(event);
 				}
         	}
-        	
+
             view.endMoment.hour(endHour);
             view.endMoment.minutes(0);
             view.endMoment.seconds(0);
@@ -352,7 +353,7 @@ define(
 
 		function disableUnavailableDays() {
 			var $leftCalendarContainer, $rightCalendarContainer, startMoment, endMoment, i;
-				
+
 			$leftCalendarContainer = $('#gearbooking-leftmonths-container', this.$element);
 			$rightCalendarContainer = $('#gearbooking-rightmonths-container', this.$element);
 			for(i = 0; i < this.availabilityArray.length; i++) {
@@ -574,7 +575,7 @@ define(
 			if(view.startMoment === null || view.endMoment === null) {
 				view.initializeMoments();
 			}
-			
+
 			view.endMoment.date(date);
 			view.endMoment.month(month);
 			view.endMoment.year(year);
