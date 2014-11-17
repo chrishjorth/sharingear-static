@@ -96,7 +96,7 @@ define(
             var view = event.data,
                 gear;
             gear = gearList.getGearItem($(this).data('yourgearid'));
-            App.router.openModalView('bookingconfirm', gear);
+            App.router.openModalView('booking', gear);
         };
 
 		handleEditGearItem = function(event) {
