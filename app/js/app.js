@@ -4,8 +4,8 @@
  */
 
 define(
-	['jquery', 'router', 'models/user', 'models/gearclassification'],
-	function($, Router, User, GearClassification) {
+	['jquery', 'router', 'models/user', 'models/gearclassification', 'models/localization'],
+	function($, Router, User, GearClassification, Localization) {
 		var App = {
 			router: Router,
 			header: null,
@@ -14,6 +14,7 @@ define(
 			// API_URL: 'https://api.sharingear.com',
 			user: null,
 			gearClassification: null,
+			localization: null,
 
 			run: run,
 			loadHeader: loadHeader,
@@ -58,9 +59,10 @@ define(
 				'editgearpricing',
 				'gearbooking',
 				'gearavailability',
-                'gearpendingconfirm',
-                'payment',
-                'submerchantregistration'
+        'bookingconfirm',
+      	'payment',
+        'paymentsuccessful',
+        'submerchantregistration'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.
@@ -83,6 +85,8 @@ define(
 			App.gearClassification = new GearClassification.constructor({
 				rootURL: App.API_URL
 			});
+
+			App.localization = new Localization.constructor();
 
 			$.when(loginDeferred, documentReadyDeferred).then(function() {
 				var route = null,
