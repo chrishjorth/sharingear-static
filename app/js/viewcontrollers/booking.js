@@ -70,7 +70,7 @@ define(
                 gearUser = new User.constructor({
                 	rootURL: App.API_URL
            		});
-           		gearUser.data.id = (isViewerOwner === true ? booking.data.renter_id : App.user.data.id); //Depends on who is viewing the booking
+           		gearUser.data.id = (isViewerOwner === true ? booking.data.renter_id : gear.data.owner_id); //Depends on who is viewing the booking
 
            		gearUser.getPublicInfo(function(error) {
                 	var gearUserData = gearUser.data;
@@ -104,7 +104,7 @@ define(
             if(gear.data.booking_status === 'denied') {
             	$('#renterview-confirm', this.$element).removeClass('hidden');
             }
-            if(gear.data.booking_status === 'accepted' && gear.data.gear_status === 'rented-out') {
+            if((gear.data.booking_status === 'accepted' || gear.data.booking_status === 'renter-returned' || gear.data.booking_status === 'owner-returned') && gear.data.gear_status === 'rented-out') {
             	$('#endbooking-confirm', this.$element).removeClass('hidden');
             	this.setupEvent('click', '#booking-end-btn', this, this.handleEnd);
             }
