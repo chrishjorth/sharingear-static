@@ -3,10 +3,11 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 define(
 	['viewcontroller'],
 	function(ViewController) {
-		var AboutUs = ViewController.inherit({}); 
-		return AboutUs;
+		return ViewController.inherit({});
 	}
 );

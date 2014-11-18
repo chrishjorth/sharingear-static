@@ -32,7 +32,7 @@ define(
 				expect(Router.getRoute('')).to.equal('error');
 			});
 
-			it('Can navigate to route', function(done) {
+			it.skip('Can navigate to route', function(done) {
 				Router.navigateTo('home', null, function() {
 					expect(Router.currentViewController.name).to.equal('home');
 					Router.navigateTo('error', null, function() {
@@ -46,7 +46,7 @@ define(
 				});
 			});
 
-			it('Can navigate to path', function(done) {
+			it.skip('Can navigate to path', function(done) {
 				Router.addRoutes('dashboard');
 				Router.navigateTo('dashboard/profile', null, function() {
 					expect(Router.currentViewController.name).to.equal('dashboard');

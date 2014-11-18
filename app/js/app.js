@@ -3,29 +3,20 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 define(
 	['jquery', 'router', 'models/user', 'models/gearclassification', 'models/localization'],
 	function($, Router, User, GearClassification, Localization) {
-		var App = {
-			router: Router,
-			header: null,
-			footer: null,
-			//API_URL: 'http://localhost:1338',
-			API_URL: 'https://api.sharingear.com',
-			user: null,
-			gearClassification: null,
-			localization: null,
+		var API_URL,
+			App,
 
-			run: run,
-			loadHeader: loadHeader,
-			loadFooter: loadFooter
-		};
+			run,
+			loadHeader,
+			loadFooter;
 
-		App.user = new User.constructor({
-			rootURL: App.API_URL
-		});
-
-		return App;
+		//API_URL = 'http://localhost:1338';
+		API_URL = 'https://api.sharingear.com';
 
 		/**
 		 * Initializes the app, that is:
@@ -34,9 +25,8 @@ define(
 		 * - Call load router
 		 * @param callback: A function that will be called once the app is initialized.
 		 */
-		function run(callback) {
-			var app = this,
-				router = this.router,
+		run = function(callback) {
+			var router = this.router,
 				loginDeferred = $.Deferred(),
 				documentReadyDeferred = $.Deferred();
 
@@ -62,13 +52,18 @@ define(
                 'booking',
                 'payment',
                 'paymentsuccessful',
-                'submerchantregistration'
+                'submerchantregistration',
+                'closedbeta'
 			);
+
+			App.user = new User.constructor({
+				rootURL: API_URL
+			});
 
 			// if logged in on facebook, login user on the backend and go to required page.
 			App.user.getLoginStatus(function(response) {
 				// if login was unsuccessful
-				if (response.status !== "connected") {
+				if (response.status !== 'connected') {
 					loginDeferred.resolve();
 				}
 				else {
@@ -93,9 +88,9 @@ define(
 					hash = '';
 
 				//Load header and footer
-				app.loadHeader();
+				App.loadHeader();
 
-				app.loadFooter();
+				App.loadFooter();
 
 				//Load page based on hash
 				hash = window.location.hash;
@@ -105,18 +100,20 @@ define(
 				else {
 					route = 'home';
 				}
-				router.navigateTo(route);
+				router.navigateTo(route, null, function() {
+					router.openModalView('closedbeta');
+				});
 
-				if(callback && typeof callback == 'function') {
+				if(callback && typeof callback === 'function') {
 					callback();
 				}
 			});
-		}
+		};
 
 		/**
 		 * Loads the header portion of the site. The header contains Sharingear's main navigation and is the same across the app.
 		 */
-		function loadHeader(callback) {
+		loadHeader = function(callback) {
 			var header = this.header;
 			require(['viewcontrollers/navigation-header', 'text!../templates/navigation-header.html'], function(HeaderController, HeaderTemplate) {
 				header = new HeaderController.constructor({name: 'header', $element: $('.navigation-header'), labels: {}, template: HeaderTemplate});
@@ -125,12 +122,12 @@ define(
 					callback();
 				}
 			});
-		}
+		};
 
 		/**
 		 * Load the footer portion of the site.
 		 */
-		function loadFooter(callback) {
+		loadFooter = function(callback) {
 			var footer = this.footer;
 			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
 				footer = new FooterController.constructor({name: 'footer', $element: $('.footer'), labels: {}, template: FooterTemplate});
@@ -139,6 +136,21 @@ define(
 					callback();
 				}
 			});
-		}
+		};
+
+		App = {
+			router: Router,
+			header: null,
+			footer: null,
+			API_URL: API_URL,
+			user: null,
+			gearClassification: null,
+			localization: null,
+
+			run: run,
+			loadHeader: loadHeader,
+			loadFooter: loadFooter
+		};
+		return App;
 	}
 );
