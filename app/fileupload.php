@@ -13,14 +13,16 @@ define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/Sharingear-a6039294889
 define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
 
 $bucket = 'gearimages';
+$accepted_host = 'dev.sharingear.com';
 if(IS_PRODUCTION) {
     $bucket = 'sg-prod-images';
+    $accepted_host = 'prod-static.sharingear.com';
 }
 
 header('Content-Type: application/json');
 
 //Abort if we are not on the server, ie. localhost
-if(strcmp($_SERVER['HTTP_HOST'], 'dev.sharingear.com') !== 0) {
+if(strcmp($_SERVER['HTTP_HOST'], $accepted_host) !== 0) {
 	echo json_encode([
         'status' => 'error',
         'message' => 'Not on server.',
