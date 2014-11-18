@@ -337,3 +337,10 @@ $('#manifesto-fb-share-btn').on('click', function(event) {
     });
     ga('send', 'event', 'signup', 'share-manifesto-fb', 'Share manifesto on FB button', 1);
 });
+
+/* =================================
+===  Login to closed beta       ====
+=================================== */
+$('#beta-login-btn').on('click', function(event) {
+    window.location = "https://dev.sharingear.com";
+});

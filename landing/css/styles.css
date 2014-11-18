@@ -1025,3 +1025,13 @@ and (max-device-width : 480px) {
     background-color: #008ed6;
     margin-right: 14px;
 }
+
+/*---------------------------------------
+   LOGIN TO BETA BUTTON                
+-----------------------------------------*/
+#beta-login-btn {
+    position: absolute;
+    z-index: 1000;
+    top: 10px;
+    right: 10px;
+}
