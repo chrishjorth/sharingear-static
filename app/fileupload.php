@@ -5,11 +5,17 @@
  */
 require_once 'autoload.php';
 
+define('IS_PRODUCTION', false);
 define('FILENAME', 'uploadedfile');
 define('SHARINGEAR_SECRET', '95b95a4a2e59ddc98136ce54b8a0f8d2');
 define('SG_MAX_FILE_SIZE', 4000000); //4MB
 define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/Sharingear-a60392948890.p12');
 define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
+
+$bucket = 'gearimages';
+if(IS_PRODUCTION) {
+    $bucket = 'sg-prod-images';
+}
 
 header('Content-Type: application/json');
 
@@ -98,7 +104,7 @@ $storage = new Google_Service_Storage($client);
 $obj = new Google_Service_Storage_StorageObject();
 $obj->setName($filename);
 $storage->objects->insert(
-    "gearimages",
+    $bucket,
     $obj,
     ['name' => $filename, 'data' => file_get_contents($tmpPath), 'uploadType' => 'media']
 );
@@ -106,6 +112,6 @@ $storage->objects->insert(
 //Delete file
 @unlink($tmpPath);
 
-$url = 'http' . (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'uploads/gearimages/' . $filename;
+$url = 'http' . (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . 'uploads/' . $bucket . '/' . $filename;
 
 echo '{"url": "' . $url . '"}';
