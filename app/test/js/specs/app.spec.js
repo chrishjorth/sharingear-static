@@ -22,8 +22,13 @@ define(
 				expect(App).to.be.an('object');
 			});
 
-			it('Connects to development API', function() {
-				expect(App.API_URL).to.equal('https://api.sharingear.com');
+			it('Connects to API', function() {
+				if(App.IS_PRODUCTION === true) {
+					expect(App.API_URL).to.equal('https://prod-api.sharingear.com');
+				}
+				else {
+					expect(App.API_URL).to.equal('https://api.sharingear.com');
+				}
 			});
 
 			it('Can initialize Sharingear', function() {

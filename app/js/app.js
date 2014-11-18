@@ -146,6 +146,7 @@ define(
 		};
 
 		App = {
+			IS_PRODUCTION: IS_PRODUCTION,
 			router: Router,
 			header: null,
 			footer: null,
