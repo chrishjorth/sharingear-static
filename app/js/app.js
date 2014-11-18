@@ -8,15 +8,22 @@
 define(
 	['jquery', 'router', 'models/user', 'models/gearclassification', 'models/localization'],
 	function($, Router, User, GearClassification, Localization) {
-		var API_URL,
+		var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
+			API_URL,
 			App,
 
 			run,
 			loadHeader,
 			loadFooter;
 
-		//API_URL = 'http://localhost:1338';
-		API_URL = 'https://api.sharingear.com';
+		if(IS_PRODUCTION === true) {
+			API_URL = 'https://prod-api.sharingear.com';
+		}
+		else {
+			API_URL = 'https://api.sharingear.com';
+		}
+
+		//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
 
 		/**
 		 * Initializes the app, that is:
