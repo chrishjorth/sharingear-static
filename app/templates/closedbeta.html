@@ -1,15 +1,35 @@
 <div class="container-fluid closedbeta-view">
-	<div class="row">
-		<div class="col-md-12">
-			<p>
-				Welcome to the Sharingear closed beta.
-				Sharingear is in it's first stages of life and we really appreciate your interest in helping us creating the best experience for musicians. If you experience any issues or have some feedback or feature requests shoot an email to our CTO <a href="" id="closedbeta-ctomail"></a>.
-			</p>
+	<div id="closedbeta-intro">
+		<div class="row">
+			<div class="col-md-12">
+				<p>
+					Welcome to the Sharingear closed beta.
+					Sharingear is in it's first stages of life and we really appreciate your interest in helping us creating the best experience for musicians. If you experience any issues or have some feedback or feature requests shoot an email to our CTO <a href="" class="ctomail"></a>.
+				</p>
+				<p>
+					To access Sharingear we currently only support Facebook login. Upon login Facebook id will be matched against our list of users allowed for the closed beta. If you have access to the closed beta you will have received an email as well.
+					If you haven't been granted access yet please be patient, and we will get to you soon.
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<button class="btn btn-default" id="closedbeta-login-btn">Login</button>
+			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<button class="btn btn-default" id="closedbeta-continue-btn">Continue</button>
+	<div id="closedbeta-noaccess" class="hidden">
+		<div class="row">
+			<div class="col-md-12">
+				<p>
+					Sorry, but we haven't arrived to you on the waiting list yet. You will receive an email as soon as we do. If you believe there is an error please contact our CTO <a href="" class="ctomail"></a>.
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<a href="http://www.sharingear.com">Return to sharingear.com</a>
+			</div>
 		</div>
 	</div>
 </div>
