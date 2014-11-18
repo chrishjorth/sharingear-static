@@ -60,8 +60,6 @@ define(
             booking = new Booking.constructor({
                 rootURL: App.API_URL
             });
-            console.log('GEAR:');
-            console.log(gear);
             booking.data.gear_id = gear.data.id;
 
             handleFetchBooking = function(error) {
@@ -72,7 +70,7 @@ define(
                 gearUser = new User.constructor({
                 	rootURL: App.API_URL
            		});
-           		gearUser.data.id = (isViewerOwner === true ? gear.data.owner_id : App.user.data.id); //Depends on who is viewing the booking
+           		gearUser.data.id = (isViewerOwner === true ? booking.data.renter_id : App.user.data.id); //Depends on who is viewing the booking
 
            		gearUser.getPublicInfo(function(error) {
                 	var gearUserData = gearUser.data;

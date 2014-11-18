@@ -123,7 +123,7 @@ define(
             this.addEditButtonIfOwner();
 
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
-            this.setupEvent('click', '#editProfileBtn', this, this.handleEditProfile);
+            this.setupEvent('click', '#gearprofile-edit-btn', this, this.handleEditProfile);
             this.setupEvent('click', '#fb-share-gear', this, this.handleFacebookShare);
             this.setupEvent('click', '#tw-share-gear', this, this.handleTwitterShare);
 
@@ -173,7 +173,6 @@ define(
 			for(i = 0; i < images.length; i++) {
 				//Avoid empty url strings because of trailing ','
 				if(images[i].length > 0) {
-
                     html += '<div class="item owl-item2"><img src="'+images[i]+'" alt="'+description+'" ></div>';
 				}
 			}
@@ -220,14 +219,11 @@ define(
 		};
 
         handleEditProfile = function (event) {
-
             var view = event.data;
-
             App.router.openModalView('editgear', view.gear);
         };
 
         handleFacebookShare = function (event) {
-
             var view = event.data;
             var url, instrument, description;
 
@@ -278,17 +274,13 @@ define(
 		};
 
 		addEditButtonIfOwner = function() {
-			var view = this,
-                editButtonContainer,
-                editButton;
-
+			var view = this;
 			// if user is logged in AND is owner, add edit button
 			if(App.user.data.id == view.gear.data.owner_id) {
-
-                editButtonContainer = $('#editButtonContainer', view.$element);
-                editButton = '<button id="editProfileBtn" class="btn btn-info pull-right">Edit</button>';
-
-                editButtonContainer.append(editButton);
+				$('#gearprofile-edit-btn', view.$element).removeClass('hidden');
+			}
+			else {
+				$('#gearprofile-book-btn', view.$element).removeClass('hidden');
 			}
 		};
 
