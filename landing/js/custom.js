@@ -342,5 +342,5 @@ $('#manifesto-fb-share-btn').on('click', function(event) {
 ===  Login to closed beta       ====
 =================================== */
 $('#beta-login-btn').on('click', function(event) {
-    window.location = "https://dev.sharingear.com";
+    window.location = "https://prod-static.sharingear.com";
 });
