@@ -3273,6 +3273,7 @@ span.num {
 .owner_name {
     color: #000;
     border-bottom: solid 2px #00aeff;
+    padding: 6px;
 }
 
 .owner_picture {
