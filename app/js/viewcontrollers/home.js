@@ -6,15 +6,17 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'facebook', 'daterangepicker', 'owlcarousel'],
-	function(_, $, Utilities, ViewController, GearList, App, GoogleMaps, FB) { //daterangepicker and owlcarousel do not support AMD
+	['underscore', 'jquery', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'facebook', 'moment', 'daterangepicker', 'owlcarousel'],
+	function(_, $, Utilities, ViewController, GearList, App, GoogleMaps, FB, Moment) { //daterangepicker and owlcarousel do not support AMD
 		var searchBlockID = 'home-search-row',
+			numberOfGearSuggestions = 5,
 			geocoder,
 
 			didInitialize,
 			didRender,
 
 			setupEvents,
+
 			handleSearch,
 			populateSearchBlock,
 
@@ -35,58 +37,57 @@ define(
 //          this.isImageVertical = false;
 			this.gearSelectionIndex = 0;
 			this.gearInputString = '';
-			this.numberOfGearSuggestions = 5;
 			this.gearSuggestionsArray = null; // array of strings
             this.didSearchBefore = false;
 		};
 
 		didRender = function() {
             //Loading the daterangepicker with available days from today
-            var currentDate = new Date();
-            var month = currentDate.getMonth() + 1;
-            var day = currentDate.getDate();
-            var year = currentDate.getFullYear();
-            var minDateString = (day + '/' + month + '/' + year);
-
-            $('#search-date').daterangepicker({
-                singleDatePicker: true,
-                format: 'DD/MM/YYYY',
-                startDate: minDateString,
-                showDropdowns: true,
-                minDate: minDateString
-            });
-
-            var previousSearchLocation = Utilities.getQueryStringParameterValue(window.location.search, 'location');
-            var previousSearchGear = Utilities.getQueryStringParameterValue(window.location.search, 'gear');
-            var previousSearchDate = Utilities.getQueryStringParameterValue(window.location.search, 'daterange');
-            this.didSearchBefore = Utilities.getQueryStringParameterValue(window.location.search, 'didsearchbefore');
+            var view = this,
+            	startDate = new Moment();
 
             //Filling the Location input with current location using HTML5 only if User.city is empty
             if(App.user.data.city === '' && navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
-                    var lat = position.coords.latitude;
-                    var lon = position.coords.longitude;
+                    var lat, lon; 
+                    lat = position.coords.latitude;
+                    lon = position.coords.longitude;
                     Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
                         App.user.data.city = locationCity;
-                        $('#search-location').attr('placeholder', locationCity);
+                        $('#search-location', view.$element).attr('placeholder', locationCity);
                     });
                 });
             }
             else {
-                $('#search-location').attr('placeholder', App.user.data.city);
+                $('#search-location', view.$element).attr('placeholder', App.user.data.city);
             }
 
-            $('#search-return').daterangepicker({
+            $('#search-date', view.$element).daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
-                startDate: minDateString,
+                startDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
-                minDate: minDateString,
+                minDate: startDate.format('DD/MM/YYYY')
+            });
+
+            startDate.add(1, 'days');
+
+            $('#search-return', view.$element).daterangepicker({
+                singleDatePicker: true,
+                format: 'DD/MM/YYYY',
+                startDate: startDate.format('DD/MM/YYYY'),
+                showDropdowns: true,
+                minDate: startDate.format('DD/MM/YYYY'),
                 opens: 'right'
             });
 
+            /*var previousSearchLocation = Utilities.getQueryStringParameterValue(window.location.search, 'location');
+            var previousSearchGear = Utilities.getQueryStringParameterValue(window.location.search, 'gear');
+            var previousSearchDate = Utilities.getQueryStringParameterValue(window.location.search, 'daterange');
+            this.didSearchBefore = Utilities.getQueryStringParameterValue(window.location.search, 'didsearchbefore');*/
+
             //Testimonials init
-            $('#feedbacks').owlCarousel({
+            $('#feedbacks', view.$element).owlCarousel({
                 navigation: false, // Show next and prev buttons
                 slideSpeed: 800,
                 paginationSpeed: 400,
@@ -94,29 +95,12 @@ define(
                 singleItem: true
             });
 
-            var owl = $('#screenshots');
+			new GoogleMaps.places.Autocomplete($('#search-location', view.$element)[0], {types: ['geocode']});
 
-            owl.owlCarousel({
-                items: 4, //10 items above 1000px browser width
-                itemsDesktop: [1000, 4], //5 items between 1000px and 901px
-                itemsDesktopSmall: [900, 2], // betweem 900px and 601px
-                itemsTablet: [600, 1], //2 items between 600 and 0
-                itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
-            });
-
-			var input = /** @type {HTMLInputElement} */(
-      		document.getElementById('search-location'));
-
-			var options = {types: ['geocode']};
-
-			new GoogleMaps.places.Autocomplete(input, options);
-
-			this.$element.append('<div id="gear-suggestions-box" style="display: none;"></div>');
-
-            this.setupEvents();
+			//this.$element.append('<div id="gear-suggestions-box" style="display: none;"></div>');
 
             //Fill and run search if a previous search was registered
-            if (this.didSearchBefore) {
+            /*if (this.didSearchBefore) {
                 if (previousSearchLocation !== '' || previousSearchDate !== '' || previousSearchGear !== '') {
                     console.log('previous search was with gear: '+previousSearchGear);
                     $('#search-gear').val(previousSearchGear);
@@ -126,19 +110,14 @@ define(
                     //Trigger the submit action
                     $('#home-submit-button-id').click();
                 }
-            }
-        };
-
-		setupEvents = function() {
-			var view = this;
-
-			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
+            }*/
+            this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 			this.setupEvent('input', '#search-gear', this, view.showGearSuggestions);
 			this.setupEvent('keydown', '#search-gear', this, view.gearInputArrowKeypress);
 			this.setupEvent('focusout', '#search-gear', this, view.searchGearLoseFocus);
 			this.setupEvent('focusin', '#search-gear', this, view.searchGearGainFocus);
             this.setupEvent('mousedown touchstart', '.gear-suggestion', this, view.setGearSuggestion);
-		};
+        };
 
 		/**
 		 * Displays search results from the model.
@@ -156,15 +135,15 @@ define(
             }
 
 			//Remove promo block and billboard
-			$('#home-promo-block').css({
+			$('#home-promo-block', view.$element).css({
 				display: 'none'
 			});
-			$('.billboard-how-it-works').css({
+			$('.billboard-how-it-works', view.$element).css({
 				display: 'none'
 			});
 
             // remove gear suggestion dropdown when submitting
-            $('#gear-suggestions-box').hide();
+            $('#gear-suggestions-box', view.$element).hide();
 
 			$locationContainer = $('#home-search-form #search-location', view.$element);
 			location = $locationContainer.val();
@@ -181,10 +160,9 @@ define(
 				if(status === GoogleMaps.GeocoderStatus.OK) {
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
 					searchString = $('#home-search-form #search-gear', view.$element).val();
-                    App.router.setQueryString('location=' + locationData + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901'+'&didsearchbefore=true');
+                    //App.router.setQueryString('location=' + locationData + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901'+'&didsearchbefore=true');
 
 					view.gearList.search(locationData, searchString, '20140828-20140901', function(searchResults) {
-
                         view.populateSearchBlock(searchResults);
 						if(callback && typeof callback === 'function') {
 							callback();
@@ -198,7 +176,7 @@ define(
 				}
 			});
 
-			$('#fb-share-btn').on('click', function() {
+			view.setupEvent('click', '#fb-share-btn', view, function() {
 				var instrument, description;
 
 				instrument = $('#home-search-form #search-gear', view.$element).val();
@@ -226,12 +204,12 @@ define(
 			$searchBlock.empty();
 
             if (searchResults.length <= 0) {
-				$('#home-search-block').find('#testRow').empty();
-            	$('#home-search-block').find('.no-results-block').show();
+				$('#home-search-block #testRow', view.$element).empty();
+            	$('#home-search-block .no-results-block', view.$element).show();
 				return;
 			}
 
-            $('#home-search-block').find('.no-results-block').hide();
+            $('#home-search-block .no-results-block', view.$element).hide();
 
 
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
@@ -261,10 +239,8 @@ define(
 					imagesTest = searchResult.images.split(',');
                     searchResult.image = imagesTest[0];
 
-                    //TODO Temporary default image
                     if (searchResult.image === '') {
-                        //searchResult.image = 'http://cdn.mos.musicradar.com/images/Guitarist/323/marshall-ma50c-630-80.jpg';
-                        searchResult.image = 'http://www.rondomusic.com/photos/electric/gg1kwt5.jpg';
+                        searchResult.image = 'images/placeholder_grey.png';
                     }
                     view.price = searchResults[i].price_a;
 
@@ -299,185 +275,186 @@ define(
 		};
 
 		showGearSuggestions = function(event) {
-			var view = event.data;
+			var view = event.data,
+				$searchGear = $('#search-gear', view.$element),
+				searchString, gList, brandsSuggestions, classificationSuggestions;
+
+			searchString = $searchGear.val();
 			if (view.gearSelectionIndex === 0) {
-				view.gearInputString = $('#search-gear').val(); // save the input string when nothing is selected
+				view.gearInputString = searchString; // save the input string when nothing is selected
 			}
 			// reset selection if new input was added since we saved the gearinputstring
-			if (view.gearInputString != $('#search-gear').val()) { 
+			if (view.gearInputString !== searchString) { 
 				view.gearSelectionIndex = 0; 
-				view.gearInputString = $('#search-gear').val();
+				view.gearInputString = searchString;
 			}
 
-			var inputValue = $('#search-gear').val().toLowerCase();
+			searchString = searchString.toLowerCase().trim();
 
-			while(inputValue[inputValue.length-1] == ' ') {
-				inputValue = inputValue.substring(0, inputValue.length - 1);
-			} 
-			while(inputValue[0] == ' ') {
-				inputValue = inputValue.substring(1);
-			}
-
-			// How many elements to show in the list.
-			var N = view.numberOfGearSuggestions;
 
 			// get list of possible gear items
-			var gList = App.gearClassification.data;
-			/// info about gearClassification
-			/// gList == {brands: [...], classification: {}}
-			/// gList.brands == ["Ampeg", "Avid", "Bose", "Behringer", ...]
-			/// gList.classification == {amp: ["Guitar amp", "Bass combo", ...], bass: [], dj: [], ...}
+			// info about gearClassification
+			// gList == {brands: [...], classification: {}}
+			// gList.brands == ["Ampeg", "Avid", "Bose", "Behringer", ...]
+			// gList.classification == {amp: ["Guitar amp", "Bass combo", ...], bass: [], dj: [], ...}
+			gList = App.gearClassification.data;
 
 			// find the gear items that contain input string
-			var brandsSuggestions = _.chain(gList.brands)
+			brandsSuggestions = _.chain(gList.brands)
 				.filter(function(b) {
-					var j = b.toLowerCase().indexOf(inputValue);
+					var j = b.toLowerCase().indexOf(searchString);
 					return (j > -1 && (j === 0 || b[j - 1] == ' '));
 				})
-				.first(N)
+				.first(numberOfGearSuggestions)
 				.value();
 
 			// if we got more elements, add them from classificationsuggestions
 			//if (brandsSuggestions.length < N)
-			var classificationSuggestions = _.chain(gList.classification)
+			classificationSuggestions = _.chain(gList.classification)
 				.map(function(c) {
 					return _.filter(c, function(cItem) {
-						var j = cItem.toLowerCase().indexOf(inputValue);
+						var j = cItem.toLowerCase().indexOf(searchString);
 						return j > -1 && (j === 0 || cItem[j - 1] == ' ');
 					});
 				})
 				.flatten()
-				.first(N)
+				.first(numberOfGearSuggestions)
 				.value();
 
-			var suggestions;
 			if (classificationSuggestions !== undefined) {
 				// change order of suggestions here.
-				suggestions = classificationSuggestions.concat(brandsSuggestions);
-			} else {
-				suggestions = brandsSuggestions;
+				view.gearSuggestionsArray = classificationSuggestions.concat(brandsSuggestions);
+			}
+			else {
+				view.gearSuggestionsArray = brandsSuggestions;
 			}
 
-			view.gearSuggestionsArray = suggestions;
-
 			// stop if nothing found
-			if (!suggestions) {
+			/*if (!view.gearSuggestionsArray) {
 				// clear box
 				$('#gear-suggestions-box').css({
 					'display': 'none'
 				});
 				return;
-			}
-
+			}*/
 			view.drawGearSuggestions();
-			
 		};
 
 		drawGearSuggestions = function() {
-			var view = this;
-			$('#gear-suggestions-box').html('');
+			var view = this,
+				$gearSuggestionBox = $('#gear-suggestions-box', view.$element),
+				$searchField, suggestions, i, html, j;
+
+			$gearSuggestionBox.html('');
 			// hides or styles box
-			if (view.gearInputString.length === 0) {
-				$('#gear-suggestions-box').css('display', 'none');
+			if(view.gearInputString.length === 0) {
+				$gearSuggestionBox.css('display', 'none');
 				return;
-				
-			} else {
-				var searchField = $('#search-gear');
-				$('#gear-suggestions-box').css({
-					'display': '',
-					'position': 'absolute',
-					'width': searchField.outerWidth(),
-					'left': searchField.offset().left,
-					'top': searchField.offset().top + searchField.outerHeight()
-				});
 			}
 
-			// How many elements to show in the list.
-			var N = view.numberOfGearSuggestions;
+			$searchField = $('#search-gear', view.$element);
+			$gearSuggestionBox.css({
+				'display': '',
+				'position': 'absolute',
+				'width': $searchField.outerWidth(),
+				'left': $searchField.offset().left,
+				'top': $searchField.offset().top + $searchField.outerHeight()
+			});
 
-			var suggestions = view.gearSuggestionsArray;
+			suggestions = view.gearSuggestionsArray;
 
-			for (var i = 0; i < N; i++) {
-				if (suggestions.length > i) {
-					var html = '<div class="gear-suggestion">';
+			for (i = 0; i < numberOfGearSuggestions; i++) {
+				if(suggestions.length > i) {
+					html = '<div class="gear-suggestion">';
 					html += '<span class="gear-suggestion-icon"></span>';
 					// parse string and check if any substring is equal to any part of view.gearInputString separated by " "
 					// if so, write it in bold, else write characters 
-					var j = 0;
+					j = 0;
 					while (j < suggestions[i].length) {
 						// if view.gearInputString is here at suggestions[i][j]
 						if (suggestions[i].toLowerCase().indexOf(view.gearInputString) == j	&& (j < 1 || suggestions[i][j - 1] == ' ')) {
 							html += '<span class="gear-suggestion-bold">';
-							html += suggestions[i].substring(j, j+view.gearInputString.length);
+							html += suggestions[i].substring(j, j + view.gearInputString.length);
 							html += '</span>';
 							j += view.gearInputString.length;
-						} else {
+						}
+						else {
 							html += suggestions[i][j];
 							j++;
 						}
 					}
 					html += '</div>';
-					$('#gear-suggestions-box').append(html);
+					$gearSuggestionBox.append(html);
 				}
 			}
 		};
 
 		setGearSuggestion = function(event) {
-			$('#search-gear').val($(event.target).text());
-			$('#gear-suggestions-box').hide();
+			var view = event.data;
+			$('#search-gear', view.$element).val($(event.target).text());
+			$('#gear-suggestions-box', view.$element).hide();
 		};
 
 		gearInputArrowKeypress = function(event) {
-			var view = event.data;
-			if (event.which == 38 || event.which == 40) {
-				var possibleSelections = $('#gear-suggestions-box > div');
-				
-				// arrow keys codes: right, up, left, down  =  39 38 37 40
-				if (event.which == 38) { // up
-					view.gearSelectionIndex--;
-				} else if (event.which == 40) {
-					view.gearSelectionIndex++;
-				}
-				if (view.gearSelectionIndex > possibleSelections.length) { // clamp
-					view.gearSelectionIndex = 0;
-				} else if (view.gearSelectionIndex < 0) {
-					view.gearSelectionIndex = possibleSelections.length;
-				}
-				// set classes for selected.
-				for (var i = 0; i < possibleSelections.length; i++) {
-					$(possibleSelections[i]).removeClass('gear-suggestion-selected');
-					if (i + 1 == view.gearSelectionIndex) // gearSelectionIndex is 0 when not selected.
-						$(possibleSelections[i]).addClass('gear-suggestion-selected');
-				}
+			var view = event.data,
+				$searchGear,
+				possibleSelections, i;
 
-				var searchGear = $('#search-gear');
-				if (view.gearSelectionIndex !== 0) {
-					// set input text to the value of the selection
-					searchGear.val($('.gear-suggestion-selected').text());
-				}
-				else {
-					// set input text back to old input value
-					searchGear.val(view.gearInputString);
-				}
-
-				//var searchGearLength = searchGear.val().length * 2;
-
-				searchGear.focus();
-				//searchGear[0].setSelectionRange(searchGearLength, searchGearLength);
-				searchGear.val(searchGear.val());
-
-				// prevents input field to set caret to start position.
-				return false;
+			$searchGear = $('#search-gear', view.$element);
+			
+			if(event.which !== 38 && event.which !== 40) {
+				return;
 			}
+
+			possibleSelections = $('#gear-suggestions-box > div');
+				
+			// arrow keys codes: right, up, left, down  =  39 38 37 40
+			if(event.which == 38) { // up
+				view.gearSelectionIndex--;
+			}
+			else if(event.which == 40) {
+				view.gearSelectionIndex++;
+			}
+				
+			if(view.gearSelectionIndex > possibleSelections.length) { // clamp
+				view.gearSelectionIndex = 0;
+			}
+			else if(view.gearSelectionIndex < 0) {
+				view.gearSelectionIndex = possibleSelections.length;
+			}
+			// set classes for selected.
+			for (i = 0; i < possibleSelections.length; i++) {
+				$(possibleSelections[i]).removeClass('gear-suggestion-selected');
+				if (i + 1 == view.gearSelectionIndex) { // gearSelectionIndex is 0 when not selected.
+					$(possibleSelections[i]).addClass('gear-suggestion-selected');
+				}
+			}
+
+			if (view.gearSelectionIndex !== 0) {
+				// set input text to the value of the selection
+				$searchGear.val($('.gear-suggestion-selected').text());
+			}
+			else {
+				// set input text back to old input value
+				$searchGear.val(view.gearInputString);
+			}
+
+			$searchGear.focus();
+			$searchGear.val($searchGear.val());
+
+			// prevents input field to set caret to start position.
+			return false;
 		};
 
-		searchGearLoseFocus = function() {
+		searchGearLoseFocus = function(event) {
+			var view = event.data;
 			// clears suggestion box when losing focus
-			$('#gear-suggestions-box').hide();
+			$('#gear-suggestions-box', view.$element).hide();
 		};
 
-		searchGearGainFocus = function() {
-			$('#gear-suggestions-box').show();
+		searchGearGainFocus = function(event) {
+			var view = event.data;
+			$('#gear-suggestions-box', view.$element).show();
 		};
 
 		return ViewController.inherit({
