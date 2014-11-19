@@ -197,7 +197,6 @@ define(
 				availability: JSON.stringify(availabilityArray),
 				alwaysFlag: alwaysFlag
 			};
-			console.log("setAvailability.alwaysFlag: " + alwaysFlag);
 			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
 				if(error) {
 					console.log(error);
