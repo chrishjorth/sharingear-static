@@ -44,9 +44,10 @@ define(
         function changeActiveState(){
         	var state = this.path;
             if (state !== '') {
-                var selectedA = $('a[href$="'+state+'"]:first');
+                var selectedA = $('a[href$="'+state+'"]');
                 var selectedLi = selectedA.parent();
                 var ulList = selectedLi.parent();
+
 
                 ulList.children().each(function () {
                     var currentLi = $(this);

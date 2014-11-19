@@ -1021,9 +1021,6 @@ background-color: rgb(56,143,192);
     background: #ffd200;
 }
 
-.list-group-item-selected a:hover{
-    background: #ffd200 !important;
-}
 
 .list-group-item-selected a{
     color:#000000;
@@ -1033,6 +1030,9 @@ background-color: rgb(56,143,192);
     margin-right:15px;
 }
 
+.list-group-item-selected a:hover{
+    background: #ffd200 !important;
+}
 
 #accordion .glyphicon {
     margin-right: 10px;
@@ -3741,10 +3741,6 @@ span.num {
     width:30px;
     height: 30px;
 
-}
-
-#dashboard:hover{
-    background-color: #ffd200;
 }
 
 .dropdown-icon {
