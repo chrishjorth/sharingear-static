@@ -205,11 +205,11 @@ define(
 				newLocation;
 			if(!queryString || queryString === '') {
 				newLocation = window.location.pathname + hash;
-				history.replaceState({}, '', newLocation);
-				return;
 			}
-			this.navigateToViewCalled = true;
-			window.location.hash += '?' + queryString;
+			else {
+				newLocation = window.location.pathname + '?' + queryString + hash;
+			}
+			history.replaceState({}, '', newLocation);
 		};
 
 		window.onhashchange = handleHashChange;

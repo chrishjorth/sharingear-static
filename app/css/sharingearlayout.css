@@ -583,7 +583,7 @@ footer a:hover {
 
 }
 
-#testRow {
+#home-search-row {
 
     padding: auto;
     width: 900px;
@@ -591,7 +591,9 @@ footer a:hover {
 
 }
 
-#testRow a:active,#testRow a:hover,#testRow a:link {
+#home-search-row a:active,
+#home-search-row a:hover,
+#home-search-row a:link {
     color:white;
     text-decoration: none;
 }
@@ -1968,7 +1970,10 @@ body {
     border-right:1px solid rgb(0, 174, 255);
     border-left:1px solid rgb(0, 174, 255);
     height:50px;
+    min-width: 150px;
+    text-align: center;
 }
+
 ._button-2 {
     border-right:1px solid rgb(0, 174, 255);
     height:50px;
@@ -3718,6 +3723,7 @@ span.num {
     position: relative;
     color: #00aeff;
     list-style: none;
+    text-align: left;
 }
 
 .file_menu li {
@@ -3784,4 +3790,15 @@ span.num {
 .dropdown-reservation-icon{
     background: url("../images/icon_yourgear.png");
     background-size: 30px
+}
+
+.disabled-btn{
+    background-color: #696969;
+    cursor: default;
+}
+
+.disabled-btn:hover{
+    background-color: #696969;
+    color:white;
+    cursor: default;
 }
