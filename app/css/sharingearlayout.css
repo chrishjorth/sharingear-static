@@ -478,24 +478,24 @@ footer a:hover {
 }
 .modal-view-container {
     z-index: 101;
-    width: 80%;
-    min-height: 50%;
-    position: relative;
-    left: 10%;
-    top: 14%;
+    position: absolute;
     background-color: #ffffff;
     border-style: solid;
     border-width: 1px;
     border-color: #dddddd;
-    /*border-radius: 4px;*/
     color: #333333;
-    max-height: 37em;
     overflow-y: scroll;
     overflow-x: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 10%;
 }
 .modal-view-container .btn {
     margin-bottom:15px;
 }
+
 /*----------------------------- closed beta -------------------------- */
 
 /*----------------------------- search results ----------------------- */
