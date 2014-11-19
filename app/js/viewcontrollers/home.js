@@ -3,59 +3,50 @@
  * @author: Chris Hjorth, Horatiu Roman
  */
 
+'use strict';
+
 define(
-	['underscore', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'daterangepicker','owlcarousel' ],
-	function(_, Utilities, ViewController, GearList, App, GoogleMaps, daterangepicker, owlcarousel) {
+	['underscore', 'jquery', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'facebook', 'daterangepicker', 'owlcarousel'],
+	function(_, $, Utilities, ViewController, GearList, App, GoogleMaps, FB) { //daterangepicker and owlcarousel do not support AMD
+		var searchBlockID = 'home-search-row',
+			geocoder,
 
-		var Home = ViewController.inherit({
-			gearList: new GearList.constructor({
+			didInitialize,
+			didRender,
+
+			setupEvents,
+			handleSearch,
+			populateSearchBlock,
+
+			showGearSuggestions,
+			drawGearSuggestions,
+			setGearSuggestion,
+			gearInputArrowKeypress,
+			searchGearLoseFocus,
+			searchGearGainFocus;
+
+		//Static variables
+		geocoder = new GoogleMaps.Geocoder();
+
+		didInitialize = function() {
+			this.gearList = new GearList.constructor({
 				rootURL: App.API_URL
-			}),
-			geocoder: new GoogleMaps.Geocoder(),
-
-			//autocomplete: new GoogleMaps.places.Autocomplete(),
-			// searchBlockID: 'home-search-block',
-			searchBlockID: 'testRow',
-            didSearchBefore: false,
-//            isImageVertical: '',
-
-			didInitialize: didInitialize,
-			didRender: didRender,
-			setupEvents: setupEvents,
-			handleSearch: handleSearch,
-			populateSearchBlock: populateSearchBlock,
-
-			showGearSuggestions: showGearSuggestions,
-			drawGearSuggestions: drawGearSuggestions,
-			setGearSuggestion: setGearSuggestion,
-			gearSuggestionsArray: null,
-			numberOfGearSuggestions: 5,
-			gearSelectionIndex: 0, // 0 = nothing selected. 1..5 selected option #1..#5
-			gearInputString: "",
-			gearInputArrowKeypress: gearInputArrowKeypress,
-			searchGearLoseFocus: searchGearLoseFocus,
-			searchGearGainFocus: searchGearGainFocus
-
-		});
-
-		return Home;
-
-		function didInitialize() {
-//            this.isImageVertical = false;
+			});
+//          this.isImageVertical = false;
 			this.gearSelectionIndex = 0;
-			this.gearInputString = "";
+			this.gearInputString = '';
 			this.numberOfGearSuggestions = 5;
 			this.gearSuggestionsArray = null; // array of strings
             this.didSearchBefore = false;
-		}
+		};
 
-		function didRender() {
+		didRender = function() {
             //Loading the daterangepicker with available days from today
             var currentDate = new Date();
             var month = currentDate.getMonth() + 1;
             var day = currentDate.getDate();
             var year = currentDate.getFullYear();
-            var minDateString = (day + "/" + month + "/" + year);
+            var minDateString = (day + '/' + month + '/' + year);
 
             $('#search-date').daterangepicker({
                 singleDatePicker: true,
@@ -65,10 +56,10 @@ define(
                 minDate: minDateString
             });
 
-            var previousSearchLocation = Utilities.getQueryStringParameterValue(window.location.search,"location");
-            var previousSearchGear = Utilities.getQueryStringParameterValue(window.location.search,"gear");
-            var previousSearchDate = Utilities.getQueryStringParameterValue(window.location.search,"daterange");
-            this.didSearchBefore = Utilities.getQueryStringParameterValue(window.location.search,"didsearchbefore");
+            var previousSearchLocation = Utilities.getQueryStringParameterValue(window.location.search, 'location');
+            var previousSearchGear = Utilities.getQueryStringParameterValue(window.location.search, 'gear');
+            var previousSearchDate = Utilities.getQueryStringParameterValue(window.location.search, 'daterange');
+            this.didSearchBefore = Utilities.getQueryStringParameterValue(window.location.search, 'didsearchbefore');
 
             //Filling the Location input with current location using HTML5 only if User.city is empty
             if(App.user.data.city === '' && navigator.geolocation) {
@@ -77,12 +68,12 @@ define(
                     var lon = position.coords.longitude;
                     Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
                         App.user.data.city = locationCity;
-                        $('#search-location').attr("placeholder", locationCity);
+                        $('#search-location').attr('placeholder', locationCity);
                     });
                 });
             }
             else {
-                $('#search-location').attr("placeholder", App.user.data.city);
+                $('#search-location').attr('placeholder', App.user.data.city);
             }
 
             $('#search-return').daterangepicker({
@@ -95,7 +86,7 @@ define(
             });
 
             //Testimonials init
-            $("#feedbacks").owlCarousel({
+            $('#feedbacks').owlCarousel({
                 navigation: false, // Show next and prev buttons
                 slideSpeed: 800,
                 paginationSpeed: 400,
@@ -103,7 +94,7 @@ define(
                 singleItem: true
             });
 
-            var owl = $("#screenshots");
+            var owl = $('#screenshots');
 
             owl.owlCarousel({
                 items: 4, //10 items above 1000px browser width
@@ -113,12 +104,12 @@ define(
                 itemsMobile: false // itemsMobile disabled - inherit from itemsTablet option
             });
 
-						var input = /** @type {HTMLInputElement} */(
-      			document.getElementById('search-location'));
+			var input = /** @type {HTMLInputElement} */(
+      		document.getElementById('search-location'));
 
-						var options = {types: ['geocode']};
+			var options = {types: ['geocode']};
 
-						var autocomplete = new GoogleMaps.places.Autocomplete(input, options);
+			new GoogleMaps.places.Autocomplete(input, options);
 
 			this.$element.append('<div id="gear-suggestions-box" style="display: none;"></div>');
 
@@ -128,7 +119,7 @@ define(
             if (this.didSearchBefore) {
                 if (previousSearchLocation !== '' || previousSearchDate !== '' || previousSearchGear !== '') {
                     console.log('previous search was with gear: '+previousSearchGear);
-                    $("#search-gear").val(previousSearchGear);
+                    $('#search-gear').val(previousSearchGear);
 //                    $("#search-location").val(previousSearchLocation);
                     //Should also set the date
 
@@ -136,9 +127,9 @@ define(
                     $('#home-submit-button-id').click();
                 }
             }
-        }
+        };
 
-		function setupEvents() {
+		setupEvents = function() {
 			var view = this;
 
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
@@ -147,7 +138,7 @@ define(
 			this.setupEvent('focusout', '#search-gear', this, view.searchGearLoseFocus);
 			this.setupEvent('focusin', '#search-gear', this, view.searchGearGainFocus);
             this.setupEvent('mousedown touchstart', '.gear-suggestion', this, view.setGearSuggestion);
-		}
+		};
 
 		/**
 		 * Displays search results from the model.
@@ -155,7 +146,7 @@ define(
 		 * @param callback: callback function
 		 * @return Always false to avoid triggering HTML form
 		 */
-		function handleSearch(event, callback) {
+		handleSearch = function(event, callback) {
 			var view = event.data,
 				$locationContainer,
 				location;
@@ -185,11 +176,11 @@ define(
 //            searchString = $('#home-search-form #search-gear', this.$element).val();
 //            App.router.setQueryString('location=' + encodeURIComponent(location) + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901'+'&didsearchbefore=true');
 
-            view.geocoder.geocode({address: location}, function(results, status) {
+            geocoder.geocode({address: location}, function(results, status) {
 				var locationData, searchString;
 				if(status === GoogleMaps.GeocoderStatus.OK) {
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
-					searchString = $('#home-search-form #search-gear', this.$element).val();
+					searchString = $('#home-search-form #search-gear', view.$element).val();
                     App.router.setQueryString('location=' + locationData + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901'+'&didsearchbefore=true');
 
 					view.gearList.search(locationData, searchString, '20140828-20140901', function(searchResults) {
@@ -203,11 +194,12 @@ define(
 				else {
 					console.log('Error geocoding: ' + status);
 					alert('Couldn\'t find location');
-                    noResults();
+                    view.populateSearchBlock([]);
 				}
 			});
 
-			$('#fb-share-btn').on('click', function(event) {
+			$('#fb-share-btn').on('click', function() {
+				var instrument, description;
 
 				instrument = $('#home-search-form #search-gear', view.$element).val();
 				description = 'Hey, I am looking for a ' + instrument + ' near ' + location + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
@@ -217,31 +209,25 @@ define(
 					caption: 'Request an instrument on Sharingear!',
 					link: 'sharingear.com',
 					description: description
-				}, function(response) {
-					//console.log(response);
-				});
+				}, function() {});
 			});
 
 			return false;
-		}
-
-		function noResults() {
-            $('#home-search-block').find('#testRow').empty();
-            $('#home-search-block').find('.no-results-block').show();
-		}
+		};
 
 		/**
 		 * Generate the search results HTML and insert it into the search results block.
 		 * @param searchResults: an array of objects.
 		 */
-		function populateSearchBlock(searchResults, callback) {
-
-            var $searchBlock = $('#' + this.searchBlockID, this.$element);
+		populateSearchBlock = function(searchResults, callback) {
+            var view = this,
+            	$searchBlock = $('#' + searchBlockID, this.$element);
 
 			$searchBlock.empty();
 
             if (searchResults.length <= 0) {
-				noResults();
+				$('#home-search-block').find('#testRow').empty();
+            	$('#home-search-block').find('.no-results-block').show();
 				return;
 			}
 
@@ -272,7 +258,7 @@ define(
 
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i].data;
-					imagesTest = searchResult.images.split(",");
+					imagesTest = searchResult.images.split(',');
                     searchResult.image = imagesTest[0];
 
                     //TODO Temporary default image
@@ -280,14 +266,14 @@ define(
                         //searchResult.image = 'http://cdn.mos.musicradar.com/images/Guitarist/323/marshall-ma50c-630-80.jpg';
                         searchResult.image = 'http://www.rondomusic.com/photos/electric/gg1kwt5.jpg';
                     }
-                    this.price = searchResults[i].price_a;
+                    view.price = searchResults[i].price_a;
 
 					_.extend(defaultSearchResults, searchResult);
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 
 
                     //Set background-image with jQuery
-                    $searchBlock.children().eq(i).children(":first").css("background-image","url(\'"+searchResult.image+"\')");
+                    $searchBlock.children().eq(i).children(':first').css('background-image', 'url("' + searchResult.image + '")');
 
 
                     //Check if image is vertical or horizontal
@@ -298,10 +284,11 @@ define(
                     var imgHeight = img.height;
                     isVertical = imgWidth < imgHeight;
 
-                    if (isVertical) {
-                        $searchBlock.children().eq(i).children(":first").addClass("image-blocks-vertical");
-                    }else{
-                        $searchBlock.children().eq(i).children(":first").addClass("image-blocks-horizontal");
+                    if(isVertical) {
+                        $searchBlock.children().eq(i).children(':first').addClass('image-blocks-vertical');
+                    }
+                    else {
+                        $searchBlock.children().eq(i).children(':first').addClass('image-blocks-horizontal');
                     }
 
 				}
@@ -309,12 +296,11 @@ define(
 					callback();
 				}
 			});
-		}
+		};
 
-		function showGearSuggestions(event) {
+		showGearSuggestions = function(event) {
 			var view = event.data;
-            console.log('showGearSuggestions');
-			if (view.gearSelectionIndex == 0) {
+			if (view.gearSelectionIndex === 0) {
 				view.gearInputString = $('#search-gear').val(); // save the input string when nothing is selected
 			}
 			// reset selection if new input was added since we saved the gearinputstring
@@ -325,10 +311,10 @@ define(
 
 			var inputValue = $('#search-gear').val().toLowerCase();
 
-			while(inputValue[inputValue.length-1] == " ") {
-				inputValue = inputValue.substring(0, inputValue.length-1);
-			}
-			while(inputValue[0] == " ") {
+			while(inputValue[inputValue.length-1] == ' ') {
+				inputValue = inputValue.substring(0, inputValue.length - 1);
+			} 
+			while(inputValue[0] == ' ') {
 				inputValue = inputValue.substring(1);
 			}
 
@@ -346,7 +332,7 @@ define(
 			var brandsSuggestions = _.chain(gList.brands)
 				.filter(function(b) {
 					var j = b.toLowerCase().indexOf(inputValue);
-					return j > -1 && (j==0 || b[j-1] == " ");
+					return (j > -1 && (j === 0 || b[j - 1] == ' '));
 				})
 				.first(N)
 				.value();
@@ -357,7 +343,7 @@ define(
 				.map(function(c) {
 					return _.filter(c, function(cItem) {
 						var j = cItem.toLowerCase().indexOf(inputValue);
-						return j > -1 && (j==0 || cItem[j-1] == " ");
+						return j > -1 && (j === 0 || cItem[j - 1] == ' ');
 					});
 				})
 				.flatten()
@@ -365,7 +351,7 @@ define(
 				.value();
 
 			var suggestions;
-			if (classificationSuggestions != undefined) {
+			if (classificationSuggestions !== undefined) {
 				// change order of suggestions here.
 				suggestions = classificationSuggestions.concat(brandsSuggestions);
 			} else {
@@ -378,31 +364,31 @@ define(
 			if (!suggestions) {
 				// clear box
 				$('#gear-suggestions-box').css({
-					"display":"none"
+					'display': 'none'
 				});
 				return;
 			}
 
 			view.drawGearSuggestions();
 			
-		}
+		};
 
-		function drawGearSuggestions() {
+		drawGearSuggestions = function() {
 			var view = this;
-			$('#gear-suggestions-box').html("");
+			$('#gear-suggestions-box').html('');
 			// hides or styles box
-			if (view.gearInputString.length == 0) {
-				$('#gear-suggestions-box').css("display","none");
+			if (view.gearInputString.length === 0) {
+				$('#gear-suggestions-box').css('display', 'none');
 				return;
 				
 			} else {
-				var searchField = $("#search-gear");
+				var searchField = $('#search-gear');
 				$('#gear-suggestions-box').css({
-					"display":"",
-					"position":"absolute",
-					"width": searchField.outerWidth(),
-					"left": searchField.offset().left,
-					"top": searchField.offset().top + searchField.outerHeight()
+					'display': '',
+					'position': 'absolute',
+					'width': searchField.outerWidth(),
+					'left': searchField.offset().left,
+					'top': searchField.offset().top + searchField.outerHeight()
 				});
 			}
 
@@ -414,14 +400,13 @@ define(
 			for (var i = 0; i < N; i++) {
 				if (suggestions.length > i) {
 					var html = '<div class="gear-suggestion">';
-					html += '<span class="gear-suggestion-icon"></span>'
+					html += '<span class="gear-suggestion-icon"></span>';
 					// parse string and check if any substring is equal to any part of view.gearInputString separated by " "
 					// if so, write it in bold, else write characters 
 					var j = 0;
 					while (j < suggestions[i].length) {
 						// if view.gearInputString is here at suggestions[i][j]
-						if (suggestions[i].toLowerCase().indexOf(view.gearInputString) == j
-							&& (j<1 || suggestions[i][j-1] == " ")) {
+						if (suggestions[i].toLowerCase().indexOf(view.gearInputString) == j	&& (j < 1 || suggestions[i][j - 1] == ' ')) {
 							html += '<span class="gear-suggestion-bold">';
 							html += suggestions[i].substring(j, j+view.gearInputString.length);
 							html += '</span>';
@@ -432,21 +417,20 @@ define(
 						}
 					}
 					html += '</div>';
-					$("#gear-suggestions-box").append(html);
+					$('#gear-suggestions-box').append(html);
 				}
 			}
-		}
+		};
 
-		function setGearSuggestion(event) {
-            console.log('click');
-			$("#search-gear").val($(event.target).text());
-			$("#gear-suggestions-box").hide();
-		}
+		setGearSuggestion = function(event) {
+			$('#search-gear').val($(event.target).text());
+			$('#gear-suggestions-box').hide();
+		};
 
-		function gearInputArrowKeypress(event) {
+		gearInputArrowKeypress = function(event) {
 			var view = event.data;
 			if (event.which == 38 || event.which == 40) {
-				var possibleSelections = $("#gear-suggestions-box > div");
+				var possibleSelections = $('#gear-suggestions-box > div');
 				
 				// arrow keys codes: right, up, left, down  =  39 38 37 40
 				if (event.which == 38) { // up
@@ -461,21 +445,22 @@ define(
 				}
 				// set classes for selected.
 				for (var i = 0; i < possibleSelections.length; i++) {
-					$(possibleSelections[i]).removeClass("gear-suggestion-selected");
-					if (i+1 == view.gearSelectionIndex) // gearSelectionIndex is 0 when not selected.
-						$(possibleSelections[i]).addClass("gear-suggestion-selected");
-				};
+					$(possibleSelections[i]).removeClass('gear-suggestion-selected');
+					if (i + 1 == view.gearSelectionIndex) // gearSelectionIndex is 0 when not selected.
+						$(possibleSelections[i]).addClass('gear-suggestion-selected');
+				}
 
-				var searchGear = $("#search-gear");
-				if (view.gearSelectionIndex != 0) {
+				var searchGear = $('#search-gear');
+				if (view.gearSelectionIndex !== 0) {
 					// set input text to the value of the selection
-					searchGear.val($(".gear-suggestion-selected").text());
-				} else {
+					searchGear.val($('.gear-suggestion-selected').text());
+				}
+				else {
 					// set input text back to old input value
 					searchGear.val(view.gearInputString);
 				}
 
-				var searchGearLength = searchGear.val().length * 2;
+				//var searchGearLength = searchGear.val().length * 2;
 
 				searchGear.focus();
 				//searchGear[0].setSelectionRange(searchGearLength, searchGearLength);
@@ -484,17 +469,31 @@ define(
 				// prevents input field to set caret to start position.
 				return false;
 			}
-		}
+		};
 
-		function searchGearLoseFocus(event) {
-            console.log('out');
-
+		searchGearLoseFocus = function() {
 			// clears suggestion box when losing focus
 			$('#gear-suggestions-box').hide();
-		}
+		};
 
-		function searchGearGainFocus(event) {
+		searchGearGainFocus = function() {
 			$('#gear-suggestions-box').show();
-		}
+		};
+
+		return ViewController.inherit({
+			didInitialize: didInitialize,
+			didRender: didRender,
+			setupEvents: setupEvents,
+			handleSearch: handleSearch,
+			populateSearchBlock: populateSearchBlock,
+
+			showGearSuggestions: showGearSuggestions,
+			drawGearSuggestions: drawGearSuggestions,
+			setGearSuggestion: setGearSuggestion,
+			gearInputArrowKeypress: gearInputArrowKeypress,
+			searchGearLoseFocus: searchGearLoseFocus,
+			searchGearGainFocus: searchGearGainFocus
+
+		});
 	}
 );
