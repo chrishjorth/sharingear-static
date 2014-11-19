@@ -55,7 +55,7 @@ define(
 				subtype: newGear.subtype,
 				brand: newGear.brand,
 				model: newGear.model,
-				decription: newGear.description,
+				description: newGear.description,
 				images: newGear.images,
 				price_a: newGear.price_a,
 				price_b: newGear.price_b,
@@ -71,6 +71,7 @@ define(
 				longitude: newGear.longitude,
 				owner_id: user.data.id
 			};
+			
 			this.post('/gear', postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
@@ -196,7 +197,6 @@ define(
 				availability: JSON.stringify(availabilityArray),
 				alwaysFlag: alwaysFlag
 			};
-			console.log("setAvailability.alwaysFlag: " + alwaysFlag);
 			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
 				if(error) {
 					console.log(error);

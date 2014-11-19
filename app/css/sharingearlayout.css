@@ -1021,6 +1021,7 @@ background-color: rgb(56,143,192);
     background: #ffd200;
 }
 
+
 .list-group-item-selected a{
     color:#000000;
 }
@@ -1029,6 +1030,9 @@ background-color: rgb(56,143,192);
     margin-right:15px;
 }
 
+.list-group-item-selected a:hover{
+    background: #ffd200 !important;
+}
 
 #accordion .glyphicon {
     margin-right: 10px;
@@ -3696,27 +3700,87 @@ span.num {
     margin-left: 10px;
 }
 
+#avatar-arrow-id{
+    transition-duration: 1s;
+    -webkit-transition-duration: 1s; /* Safari */
+    -moz-transition-duration: 1s;
+    -o-transition-duration: 1s;
+}
+
 .file_menu {
     display:none;
-    width:100px;
-    border: 1px solid #1c1c1c;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    z-index: 1;
+    position: relative;
+    color: #00aeff;
+    list-style: none;
 }
 
 .file_menu li {
-    background-color: #302f2f;
-    margin-top: -10px;
+    background-color: #fff;
+
 }
 
 .file_menu li a {
-    color:#FFFFFF;
     text-decoration:none;
-    padding:5px;
     display:block;
+    padding: 5px;
 }
 
 .file_menu li a:hover {
-    padding:5px;
     font-weight:bold;
-    color: #F00880;
+    background-color: #ffd200;
+    color: #000;
 }
 
+.file_menu li img {
+
+    width:30px;
+    height: 30px;
+
+}
+
+.dropdown-icon {
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    background-size: 30px;
+    background-position: center;
+    border-radius: 60px;
+    vertical-align: bottom;
+    margin-right: 10px;
+}
+
+.dropdown-profile-icon{
+    background: url("../images/icon_profile.png");
+    background-size: 30px
+}
+
+.dropdown-addgear-icon{
+    background: url("../images/icon_add.png");
+    background-size: 30px
+}
+
+.dropdown-yourgear-icon{
+    background: url("../images/icon_gear.png");
+    background-size: 30px
+}
+
+.dropdown-calendar-icon{
+    background: url("../images/icon_calendar.png");
+    background-size: 30px
+}
+
+.dropdown-settings-icon{
+    background: url("../images/icon_settings.png");
+    background-size: 30px
+}
+
+.dropdown-reservation-icon{
+    background: url("../images/icon_yourgear.png");
+    background-size: 30px
+}

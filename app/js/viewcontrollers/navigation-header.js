@@ -22,15 +22,13 @@ define(
 			this.setupEvents();
             this.renderProfilePicture();
 
-            $(".hoverli").hover(
+
+            $(".dropdownli").click(
                 function () {
-                    $('ul.file_menu').slideDown('medium');
-                },
-                function () {
-                    $('ul.file_menu').slideUp('medium');
+                    $('ul.file_menu').slideToggle('medium');
+                    $('#avatar-arrow-id').toggleClass('fa-rotate-180');
                 }
             );
-
 		}
 
 		function setupView() {
@@ -44,8 +42,14 @@ define(
 				$buttonsRightContainer.html(html);
             }
 			else {
-//                hovermenu = '<ul class="file_menu"><li><a href="#file">File</a></li><li><a href="#edit">Edit</a></li><li><a href="#view">View</a></li></ul>';
-                html += '<li class="_button-1 hoverli"><a href="#dashboard"><div id="small-profile-pic"></div><span class="avatar-text">'+App.user.data.name+'</span><i class="fa fa-chevron-down avatar-arrow"></i></a>'+hovermenu+'</li>';
+                hovermenu = '<ul class="file_menu">' +
+                    '<li><a href="#dashboard/profile"><span class="dropdown-profile-icon dropdown-icon"></span>Profile</a></li>' +
+                    '<li><a href="#dashboard/addgear"><span class="dropdown-addgear-icon dropdown-icon"></span>Add gear</a></li>' +
+                    '<li><a href="#dashboard/yourgear"><span class="dropdown-yourgear-icon dropdown-icon"></span>Your gear</a></li>' +
+                    '<li><a href="#dashboard/yourreservations"><span class="dropdown-reservation-icon dropdown-icon"></span>Reservations</a></li>' +
+                    '<li><a href="#dashboard/calendar"><span class="dropdown-calendar-icon dropdown-icon"></span>Calendar</a></li>' +
+                    '<li><a href="#dashboard/settings"><span class="dropdown-settings-icon dropdown-icon"></span>Settings</a></li></ul>';
+                html += '<li class="_button-1 dropdownli list-group-item-selected"><a href="javascript:"><div id="small-profile-pic"></div><span class="avatar-text">'+App.user.data.name+'</span><i id="avatar-arrow-id" class="fa fa-chevron-down avatar-arrow"></i></a>'+hovermenu+'</li>';
                 $buttonsRightContainer.html(html);
 			}
 		}

@@ -130,8 +130,6 @@ define(
             //Check for querystring sent by a booking payment process
 			preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
 			bookingID = Utilities.getQueryStringParameterValue(window.location.search, 'booking_id');
-			console.log('preAuthorizationId: ' + preAuthorizationID);
-			console.log('bookingID: ' + bookingID);
 			if(paymentSuccessModalOpen === false && preAuthorizationID && bookingID) {
 				App.router.openModalView('paymentsuccessful', {
 					preAuthorizationID: preAuthorizationID,
