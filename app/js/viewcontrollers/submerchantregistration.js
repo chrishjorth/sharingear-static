@@ -73,7 +73,7 @@ define(
 		handleSubmit = function(event) {
 			var view = event.data,
 				user = App.user.data,
-				addressOneliner, $select, content;
+				addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx;
 			if(user.birthdate === null) {
 				user.birthdate = (new Moment($('#submerchantregistration-birthdate', view.$element).val(), 'DD/MM/YYYY')).format('YYYY-MM-DD');	
 			}
@@ -114,9 +114,6 @@ define(
 			if(user.phone === null) {
 				user.phone = $('#submerchantregistration-phone', view.$element).val();
 			}
-			
-			user.iban = $('#submerchantregistration-iban', view.$element).val();	
-			user.swift = $('#submerchantregistration-swift', view.$element).val();
 
 			//Validate
 			if (user.birthdate === '') {
@@ -127,14 +124,24 @@ define(
                 alert('The phone field is required.');
                 return;
             }
-            if (user.iban === '') {
-                alert('The iban field is required.');
-                return;
-            }
-            if (user.swift === '') {
-                alert('The swift code field is required.');
-                return;
-            }
+            
+            iban = $('#submerchantregistration-iban', view.$element).val();
+			ibanRegEx = /^[a-zA-Z]{2}\d{2}\s*(\w{4}\s*){2,7}\w{1,4}\s*$/;
+			iban = iban.match(ibanRegEx);
+			if(iban === null) {
+				alert('Please insert a correct IBAN.');
+				return;
+			}
+			user.iban = iban[0];
+
+            swift = $('#submerchantregistration-swift', view.$element).val();
+			swiftRegEx = /^[a-zA-Z]{6}\w{2}(\w{3})?$/;
+			swift = swift.match(swiftRegEx);
+			if(swift === null) {
+				alert('Please insert a correct SWIFT');
+				return;
+			}
+			user.swift = swift[0];
 
             addressOneliner = user.address + ', ' + user.postal_code + ' ' + user.city + ', ' + user.region + ', ' + user.country;
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
@@ -156,13 +163,15 @@ define(
 			App.user.update(function(error) {
 				if(error) {
 					console.log(error);
-					alert('Error saving data.');
+					alert('Error saving user data.');
+					App.router.closeModalView();
 					return;
 				}
 				App.user.updateBankDetails(function(error) {
 					if(error) {
 						console.log(error);
-						alert('Error saving data.');
+						alert('Error registering bank data.');
+						App.router.closeModalView();
 						return;
 					}
 					App.router.openModalView('gearavailability', view.passedData);
