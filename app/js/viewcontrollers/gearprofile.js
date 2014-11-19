@@ -120,6 +120,7 @@ define(
 
             this.renderPopup();
 
+
             this.addEditButtonIfOwner();
 
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
@@ -138,6 +139,16 @@ define(
 				});
 				paymentSuccessModalOpen = true;
 			}
+
+            this.gear.getAvailability(this.gear.data.owner_id, function(error,result){
+                if(result.availabilityArray.length===0){
+                    $('#gearprofile-book-btn').prop('disabled', true);
+                    $('#gearprofile-book-btn').html('Not available');
+                    $('#gearprofile-book-btn').addClass('disabled-btn');
+
+                }
+            });
+
 		};
 
 
