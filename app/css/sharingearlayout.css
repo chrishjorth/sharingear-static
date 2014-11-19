@@ -3791,3 +3791,14 @@ span.num {
     background: url("../images/icon_yourgear.png");
     background-size: 30px
 }
+
+.disabled-btn{
+    background-color: #696969;
+    cursor: default;
+}
+
+.disabled-btn:hover{
+    background-color: #696969;
+    color:white;
+    cursor: default;
+}
