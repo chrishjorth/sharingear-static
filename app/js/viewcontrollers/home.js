@@ -25,7 +25,9 @@ define(
 			setGearSuggestion,
 			gearInputArrowKeypress,
 			searchGearLoseFocus,
-			searchGearGainFocus;
+			searchGearGainFocus,
+
+			performSearch;
 
 		//Static variables
 		geocoder = new GoogleMaps.Geocoder();
@@ -81,11 +83,6 @@ define(
                 opens: 'right'
             });
 
-            /*var previousSearchLocation = Utilities.getQueryStringParameterValue(window.location.search, 'location');
-            var previousSearchGear = Utilities.getQueryStringParameterValue(window.location.search, 'gear');
-            var previousSearchDate = Utilities.getQueryStringParameterValue(window.location.search, 'daterange');
-            this.didSearchBefore = Utilities.getQueryStringParameterValue(window.location.search, 'didsearchbefore');*/
-
             //Testimonials init
             $('#feedbacks', view.$element).owlCarousel({
                 navigation: false, // Show next and prev buttons
@@ -97,20 +94,14 @@ define(
 
 			new GoogleMaps.places.Autocomplete($('#search-location', view.$element)[0], {types: ['geocode']});
 
-			//this.$element.append('<div id="gear-suggestions-box" style="display: none;"></div>');
+			var queryString = window.location.href.split('?')[1];
+			if(queryString) {
+				var previousSearchLocation = Utilities.getQueryStringParameterValue(queryString, 'location');
+            	var previousSearchGear = Utilities.getQueryStringParameterValue(queryString, 'gear');
+            	var previousSearchDate = Utilities.getQueryStringParameterValue(queryString, 'daterange');
+            	view.performSearch(previousSearchGear, previousSearchLocation, previousSearchDate);
+			}
 
-            //Fill and run search if a previous search was registered
-            /*if (this.didSearchBefore) {
-                if (previousSearchLocation !== '' || previousSearchDate !== '' || previousSearchGear !== '') {
-                    console.log('previous search was with gear: '+previousSearchGear);
-                    $('#search-gear').val(previousSearchGear);
-//                    $("#search-location").val(previousSearchLocation);
-                    //Should also set the date
-
-                    //Trigger the submit action
-                    $('#home-submit-button-id').click();
-                }
-            }*/
             this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 			this.setupEvent('input', '#search-gear', this, view.showGearSuggestions);
 			this.setupEvent('keydown', '#search-gear', this, view.gearInputArrowKeypress);
@@ -128,19 +119,7 @@ define(
 		handleSearch = function(event, callback) {
 			var view = event.data,
 				$locationContainer,
-				location;
-
-            if (view.didSearchBefore===false) {
-                view.didSearchBefore=true;
-            }
-
-			//Remove promo block and billboard
-			$('#home-promo-block', view.$element).css({
-				display: 'none'
-			});
-			$('.billboard-how-it-works', view.$element).css({
-				display: 'none'
-			});
+				location, searchString, dateRange;
 
             // remove gear suggestion dropdown when submitting
             $('#gear-suggestions-box', view.$element).hide();
@@ -152,43 +131,11 @@ define(
 			}
 
             //URI playground
-//            searchString = $('#home-search-form #search-gear', this.$element).val();
-//            App.router.setQueryString('location=' + encodeURIComponent(location) + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901'+'&didsearchbefore=true');
+            dateRange = '20140828-20140901';
+            searchString = $('#home-search-form #search-gear', this.$element).val();
+            App.router.setQueryString('location=' + encodeURIComponent(location) + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + dateRange);
 
-            geocoder.geocode({address: location}, function(results, status) {
-				var locationData, searchString;
-				if(status === GoogleMaps.GeocoderStatus.OK) {
-					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
-					searchString = $('#home-search-form #search-gear', view.$element).val();
-                    //App.router.setQueryString('location=' + locationData + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901'+'&didsearchbefore=true');
-
-					view.gearList.search(locationData, searchString, '20140828-20140901', function(searchResults) {
-                        view.populateSearchBlock(searchResults);
-						if(callback && typeof callback === 'function') {
-							callback();
-						}
-					});
-				}
-				else {
-					console.log('Error geocoding: ' + status);
-					alert('Couldn\'t find location');
-                    view.populateSearchBlock([]);
-				}
-			});
-
-			view.setupEvent('click', '#fb-share-btn', view, function() {
-				var instrument, description;
-
-				instrument = $('#home-search-form #search-gear', view.$element).val();
-				description = 'Hey, I am looking for a ' + instrument + ' near ' + location + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
-
-				FB.ui({
-					method: 'feed',
-					caption: 'Request an instrument on Sharingear!',
-					link: 'sharingear.com',
-					description: description
-				}, function() {});
-			});
+        	view.performSearch(searchString, location, dateRange);
 
 			return false;
 		};
@@ -201,6 +148,14 @@ define(
             var view = this,
             	$searchBlock = $('#' + searchBlockID, this.$element);
 
+            //Remove promo block and billboard
+			$('#home-promo-block', view.$element).css({
+				display: 'none'
+			});
+			$('.billboard-how-it-works', view.$element).css({
+				display: 'none'
+			});
+
 			$searchBlock.empty();
 
             if (searchResults.length <= 0) {
@@ -210,7 +165,6 @@ define(
 			}
 
             $('#home-search-block .no-results-block', view.$element).hide();
-
 
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
@@ -250,7 +204,6 @@ define(
 
                     //Set background-image with jQuery
                     $searchBlock.children().eq(i).children(':first').css('background-image', 'url("' + searchResult.image + '")');
-
 
                     //Check if image is vertical or horizontal
                     var isVertical;
@@ -329,14 +282,6 @@ define(
 				view.gearSuggestionsArray = brandsSuggestions;
 			}
 
-			// stop if nothing found
-			/*if (!view.gearSuggestionsArray) {
-				// clear box
-				$('#gear-suggestions-box').css({
-					'display': 'none'
-				});
-				return;
-			}*/
 			view.drawGearSuggestions();
 		};
 
@@ -457,6 +402,38 @@ define(
 			$('#gear-suggestions-box', view.$element).show();
 		};
 
+		performSearch = function(gear, location, daterange) {
+			var view = this;
+			geocoder.geocode({address: location}, function(results, status) {
+				var locationData;
+				if(status === GoogleMaps.GeocoderStatus.OK) {
+					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
+					view.gearList.search(locationData, gear, daterange, function(searchResults) {
+                        view.populateSearchBlock(searchResults);
+					});
+				}
+				else {
+					console.log('Error geocoding: ' + status);
+					alert('Couldn\'t find location');
+                    view.populateSearchBlock([]);
+				}
+			});
+
+			view.setupEvent('click', '#fb-share-btn', view, function() {
+				var instrument, description;
+
+				instrument = $('#home-search-form #search-gear', view.$element).val();
+				description = 'Hey, I am looking for a ' + instrument + ' near ' + location + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
+
+				FB.ui({
+					method: 'feed',
+					caption: 'Request an instrument on Sharingear!',
+					link: 'sharingear.com',
+					description: description
+				}, function() {});
+			});
+		};
+
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -469,8 +446,9 @@ define(
 			setGearSuggestion: setGearSuggestion,
 			gearInputArrowKeypress: gearInputArrowKeypress,
 			searchGearLoseFocus: searchGearLoseFocus,
-			searchGearGainFocus: searchGearGainFocus
+			searchGearGainFocus: searchGearGainFocus,
 
+			performSearch: performSearch
 		});
 	}
 );

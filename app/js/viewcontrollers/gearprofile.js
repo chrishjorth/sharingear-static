@@ -140,15 +140,21 @@ define(
 				paymentSuccessModalOpen = true;
 			}
 
-            this.gear.getAvailability(this.gear.data.owner_id, function(error,result){
-                if(result.availabilityArray.length===0){
-                    $('#gearprofile-book-btn').prop('disabled', true);
+            this.gear.getAvailability(App.user.data.id, function(error, result) {
+            	var mustDisable = false;
+            	if(error) {
+            		console.log('Error getting gear availability: ' + error);
+            		mustDisable = true;
+            	}
+                else if(result.availabilityArray.length === 0){
+                    mustDisable = true;
+                }
+                if(mustDisable === true) {
+                	$('#gearprofile-book-btn').prop('disabled', true);
                     $('#gearprofile-book-btn').html('Not available');
                     $('#gearprofile-book-btn').addClass('disabled-btn');
-
                 }
             });
-
 		};
 
 
