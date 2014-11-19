@@ -162,6 +162,7 @@ define(
 
 				if($modalViewLightbox.hasClass('hidden') === true) {
 					$modalViewLightbox.removeClass('hidden');
+					$('body').addClass('modal-open');
 				}
 
 				router.currentModalViewController = new ViewController.constructor({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path, passedData: data});
@@ -185,6 +186,7 @@ define(
 			}
 			if($modalViewLightbox.hasClass('hidden') === false) {
 				$modalViewLightbox.addClass('hidden');
+				$('body').removeClass('modal-open');
 			}
 
 			//Render the underlying view again so that data gets updated
