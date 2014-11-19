@@ -60,7 +60,7 @@ define(
 						brand: '',
 						model: '',
 						description: '',
-						img_url: 'images/logotop.png',
+						img_url: 'images/placeholder_grey.png',
 						price_a: 0,
 						price_b: 0,
 						price_c: 0,
