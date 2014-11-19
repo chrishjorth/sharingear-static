@@ -1968,7 +1968,10 @@ body {
     border-right:1px solid rgb(0, 174, 255);
     border-left:1px solid rgb(0, 174, 255);
     height:50px;
+    min-width: 150px;
+    text-align: center;
 }
+
 ._button-2 {
     border-right:1px solid rgb(0, 174, 255);
     height:50px;
@@ -3717,6 +3720,7 @@ span.num {
     position: relative;
     color: #00aeff;
     list-style: none;
+    text-align: left;
 }
 
 .file_menu li {

@@ -16,6 +16,7 @@ define(
 			//autocomplete: new GoogleMaps.places.Autocomplete(),
 			// searchBlockID: 'home-search-block',
 			searchBlockID: 'testRow',
+            didSearchBefore: false,
 //            isImageVertical: '',
 
 			didInitialize: didInitialize,
@@ -45,6 +46,7 @@ define(
 			this.gearInputString = "";
 			this.numberOfGearSuggestions = 5;
 			this.gearSuggestionsArray = null; // array of strings
+            this.didSearchBefore = false;
 		}
 
 		function didRender() {
@@ -62,6 +64,11 @@ define(
                 showDropdowns: true,
                 minDate: minDateString
             });
+
+            var previousSearchLocation = Utilities.getQueryStringParameterValue(window.location.search,"location");
+            var previousSearchGear = Utilities.getQueryStringParameterValue(window.location.search,"gear");
+            var previousSearchDate = Utilities.getQueryStringParameterValue(window.location.search,"daterange");
+            this.didSearchBefore = Utilities.getQueryStringParameterValue(window.location.search,"didsearchbefore");
 
             //Filling the Location input with current location using HTML5 only if User.city is empty
             if(App.user.data.city === '' && navigator.geolocation) {
@@ -116,7 +123,20 @@ define(
 			this.$element.append('<div id="gear-suggestions-box" style="display: none;"></div>');
 
             this.setupEvents();
-		}
+
+            //Fill and run search if a previous search was registered
+            if (this.didSearchBefore) {
+                if (previousSearchLocation !== '' || previousSearchDate !== '' || previousSearchGear !== '') {
+                    console.log('previous search was with gear: '+previousSearchGear);
+                    $("#search-gear").val(previousSearchGear);
+//                    $("#search-location").val(previousSearchLocation);
+                    //Should also set the date
+
+                    //Trigger the submit action
+                    $('#home-submit-button-id').click();
+                }
+            }
+        }
 
 		function setupEvents() {
 			var view = this;
@@ -140,6 +160,10 @@ define(
 				$locationContainer,
 				location;
 
+            if (view.didSearchBefore===false) {
+                view.didSearchBefore=true;
+            }
+
 			//Remove promo block and billboard
 			$('#home-promo-block').css({
 				display: 'none'
@@ -156,12 +180,17 @@ define(
 			if(location === '') {
 				location = $locationContainer.attr('placeholder');
 			}
-			view.geocoder.geocode({address: location}, function(results, status) {
+
+            //URI playground
+//            searchString = $('#home-search-form #search-gear', this.$element).val();
+//            App.router.setQueryString('location=' + encodeURIComponent(location) + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901'+'&didsearchbefore=true');
+
+            view.geocoder.geocode({address: location}, function(results, status) {
 				var locationData, searchString;
 				if(status === GoogleMaps.GeocoderStatus.OK) {
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
 					searchString = $('#home-search-form #search-gear', this.$element).val();
-					App.router.setQueryString('location=' + locationData + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901');
+                    App.router.setQueryString('location=' + locationData + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + '20140828-20140901'+'&didsearchbefore=true');
 
 					view.gearList.search(locationData, searchString, '20140828-20140901', function(searchResults) {
 
@@ -173,7 +202,8 @@ define(
 				}
 				else {
 					console.log('Error geocoding: ' + status);
-					noResults();
+					alert('Couldn\'t find location');
+                    noResults();
 				}
 			});
 
