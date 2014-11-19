@@ -116,7 +116,7 @@ define(
 		 * @param callback: callback function
 		 * @return Always false to avoid triggering HTML form
 		 */
-		handleSearch = function(event, callback) {
+		handleSearch = function(event) {
 			var view = event.data,
 				$locationContainer,
 				location, searchString, dateRange;
@@ -168,7 +168,7 @@ define(
 
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
-					defaultSearchResults, searchResult, imagesTest, i;
+					defaultSearchResults, searchResult, imagesTest, i, img, handleImageLoad;
 
 				defaultSearchResults = {
 					id: 0,
@@ -188,6 +188,16 @@ define(
 					owner_id: null
 				};
 
+				handleImageLoad = function() {
+                    var $this = $(this);
+                    if(this.width < this.height) {
+                        $this.addClass('image-blocks-vertical');
+                    }
+                   	else {
+                        $this.addClass('image-blocks-horizontal');
+                    }
+                };
+
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i].data;
 					imagesTest = searchResult.images.split(',');
@@ -201,24 +211,13 @@ define(
 					_.extend(defaultSearchResults, searchResult);
 					$searchBlock.append(searchResultTemplate(defaultSearchResults));
 
-
                     //Set background-image with jQuery
                     $searchBlock.children().eq(i).children(':first').css('background-image', 'url("' + searchResult.image + '")');
 
                     //Check if image is vertical or horizontal
-                    var isVertical;
-                    var img = new Image();
+                    img = new Image();
+                    img.onload = handleImageLoad;
                     img.src = searchResult.image;
-                    var imgWidth = img.width;
-                    var imgHeight = img.height;
-                    isVertical = imgWidth < imgHeight;
-
-                    if(isVertical) {
-                        $searchBlock.children().eq(i).children(':first').addClass('image-blocks-vertical');
-                    }
-                    else {
-                        $searchBlock.children().eq(i).children(':first').addClass('image-blocks-horizontal');
-                    }
 
 				}
 				if(callback && typeof callback === 'function') {
