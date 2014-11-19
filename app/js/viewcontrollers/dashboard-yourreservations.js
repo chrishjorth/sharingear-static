@@ -59,7 +59,7 @@ define(
                         end_time:'',
                         model: '',
                         images:'',
-                        img_url: 'images/logotop.png',
+                        img_url: 'images/placeholder_grey.png',
                         price: 0,
                         city: '',
                         gear_status: 'status'
