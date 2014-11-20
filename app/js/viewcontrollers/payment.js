@@ -26,6 +26,7 @@ define(
 				price: newBooking.data.price,
 				currency: 'DKK'
 			};
+			this.isPaying = false;
 		};
 
 		didRender = function () {
@@ -93,6 +94,13 @@ define(
 				userData = App.user.data,
 				needToUpdateUser = false;
 
+			//Avoid user clicking multiple times and starting multiple payments
+			if(this.isPaying === true) {
+				return;
+			}
+
+			this.isPaying = true;
+
 			if(userData.birthdate === null || userData.birthdate === '') {
 				userData.birthdate = (new Moment($('#payment-birthdate', view.$element).val(), 'DD/MM/YYYY')).format('YYYY-MM-DD');
 				needToUpdateUser = true;
@@ -128,6 +136,8 @@ define(
 			if(App.user.data.hasWallet === false) {
 				needToUpdateUser = true;
 			}
+
+			$('#payment-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
 			if(needToUpdateUser === true) {
 				App.user.update(function(error) {
