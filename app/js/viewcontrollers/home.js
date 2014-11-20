@@ -36,7 +36,6 @@ define(
 			this.gearList = new GearList.constructor({
 				rootURL: App.API_URL
 			});
-//          this.isImageVertical = false;
 			this.gearSelectionIndex = 0;
 			this.gearInputString = '';
 			this.gearSuggestionsArray = null; // array of strings
@@ -46,7 +45,8 @@ define(
 		didRender = function() {
             //Loading the daterangepicker with available days from today
             var view = this,
-            	startDate = new Moment();
+            	startDate = new Moment(),
+            	$searchPickup, $searchReturn, previousSearchLocation, previousSearchGear, previousSearchDate;
 
             //Filling the Location input with current location using HTML5 only if User.city is empty
             if(App.user.data.city === '' && navigator.geolocation) {
@@ -64,24 +64,37 @@ define(
                 $('#search-location', view.$element).attr('placeholder', App.user.data.city);
             }
 
-            $('#search-date', view.$element).daterangepicker({
+            $searchPickup = $('#search-pickup', view.$element);
+            $searchReturn = $('#search-return', view.$element);
+
+            startDate.add(1, 'days');
+            $searchPickup.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
                 startDate: startDate.format('DD/MM/YYYY'),
+                endDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
                 minDate: startDate.format('DD/MM/YYYY')
+            }, function(start) {
+            	start.add(1, 'days');
+            	$searchReturn.data('daterangepicker').setStartDate(start);
+            	$searchReturn.data('daterangepicker').setEndDate(start);
             });
 
             startDate.add(1, 'days');
 
-            $('#search-return', view.$element).daterangepicker({
+            $searchReturn.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
                 startDate: startDate.format('DD/MM/YYYY'),
+                endDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
                 minDate: startDate.format('DD/MM/YYYY'),
                 opens: 'right'
             });
+
+            $searchPickup.data('daterangepicker').updateInputText();
+            $searchReturn.data('daterangepicker').updateInputText();
 
             //Testimonials init
             $('#feedbacks', view.$element).owlCarousel({
@@ -96,9 +109,11 @@ define(
 
 			var queryString = window.location.href.split('?')[1];
 			if(queryString) {
-				var previousSearchLocation = Utilities.getQueryStringParameterValue(queryString, 'location');
-            	var previousSearchGear = Utilities.getQueryStringParameterValue(queryString, 'gear');
-            	var previousSearchDate = Utilities.getQueryStringParameterValue(queryString, 'daterange');
+            	previousSearchGear = Utilities.getQueryStringParameterValue(queryString, 'gear');
+            	previousSearchLocation = Utilities.getQueryStringParameterValue(queryString, 'location');
+            	previousSearchDate = Utilities.getQueryStringParameterValue(queryString, 'daterange');
+            	$('#search-gear', this.$element).val(previousSearchGear);
+            	$('search-location', this.$element).val(previousSearchLocation);
             	view.performSearch(previousSearchGear, previousSearchLocation, previousSearchDate);
 			}
 
@@ -119,7 +134,7 @@ define(
 		handleSearch = function(event) {
 			var view = event.data,
 				$locationContainer,
-				location, searchString, dateRange;
+				location, searchString, dateRange, pickupDate, returnDate;
 
             // remove gear suggestion dropdown when submitting
             $('#gear-suggestions-box', view.$element).hide();
@@ -131,7 +146,10 @@ define(
 			}
 
             //URI playground
-            dateRange = '20140828-20140901';
+            //dateRange = '20140828-20140901';
+            pickupDate = new Moment($('#search-pickup', view.$element).val(), 'DD/MM/YYYY');
+            returnDate = new Moment($('#search-return', view.$element).val(), 'DD/MM/YYYY');
+            dateRange = pickupDate.format('YYYYMMDD') + '-' + returnDate.format('YYYYMMDD');
             searchString = $('#home-search-form #search-gear', this.$element).val();
             App.router.setQueryString('location=' + encodeURIComponent(location) + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + dateRange);
 
@@ -401,13 +419,16 @@ define(
 			$('#gear-suggestions-box', view.$element).show();
 		};
 
-		performSearch = function(gear, location, daterange) {
+		performSearch = function(gear, location, dateRange) {
 			var view = this;
+			
+			App.user.setSearchInterval(dateRange);
+
 			geocoder.geocode({address: location}, function(results, status) {
 				var locationData;
 				if(status === GoogleMaps.GeocoderStatus.OK) {
 					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
-					view.gearList.search(locationData, gear, daterange, function(searchResults) {
+					view.gearList.search(locationData, gear, dateRange, function(searchResults) {
                         view.populateSearchBlock(searchResults);
 					});
 				}
