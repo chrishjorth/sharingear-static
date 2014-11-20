@@ -22,7 +22,7 @@ define(
 					expect(Home.constructor).to.be.a('function');
 				});
 
-				it('Sets up events', function() {
+				it.skip('Sets up events', function() {
 					expect(this.home.userEvents[0].eventType).to.equal('submit');
 					expect(this.home.userEvents[0].element).to.equal('#home-search-form');
 				});

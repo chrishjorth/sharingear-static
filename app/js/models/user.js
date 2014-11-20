@@ -16,7 +16,10 @@ define(
 			uploadProfilePicture,
 			getPublicInfo,
 			isSubMerchant,
-			updateBankDetails;
+			updateBankDetails,
+			setSearchInterval,
+			getIntervalStart,
+			getIntervalEnd;
 
 		FB.init({
 			appId: '522375581240221'
@@ -194,6 +197,26 @@ define(
             });
         };
 
+        setSearchInterval = function(dateRange) {
+        	this.data.searchInterval = dateRange;
+        };
+
+        getIntervalStart = function() {
+        	var date = null;
+        	if(this.data.searchInterval) {
+        		date = this.data.searchInterval.split('-')[0];
+        	}
+        	return date;
+        };
+
+        getIntervalEnd = function() {
+        	var date = null;
+        	if(this.data.searchInterval) {
+        		date = this.data.searchInterval.split('-')[1];
+        	}
+        	return date;
+        };
+
         return Model.inherit({
 			fbStatus: '',
 
@@ -206,7 +229,10 @@ define(
             update:update,
             getPublicInfo: getPublicInfo,
             isSubMerchant: isSubMerchant,
-            updateBankDetails: updateBankDetails
+            updateBankDetails: updateBankDetails,
+            setSearchInterval: setSearchInterval,
+            getIntervalStart: getIntervalStart,
+            getIntervalEnd: getIntervalEnd
 		});
 	}
 );
