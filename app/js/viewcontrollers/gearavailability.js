@@ -20,6 +20,7 @@ define(
 
 			clearSelections: clearSelections,
 			renderSelections: renderSelections,
+			selectionIterator: selectionIterator,
 
 			handleToday: handleToday,
 			handlePrevious: handlePrevious,
@@ -59,17 +60,18 @@ define(
 				var availabilityArray = result.availabilityArray;
 				view.alwaysFlag = result.alwaysFlag; // here the flag is set from the DB !!!!
 
-				if(view.alwaysFlag === 0) {
-					$("#gearavailability-never-btn").addClass("disabled");
-					$("#gearavailability-always-btn").removeClass("disabled");
+				$("#gearavailability-always-btn").removeClass("disabled");
+				$("#gearavailability-never-btn").removeClass("disabled");
 
-				} else {
-
-					$("#gearavailability-always-btn").addClass("disabled");
-					$("#gearavailability-never-btn").removeClass("disabled");
-
-
-				}
+				// if(view.alwaysFlag === 0) {
+				// 	$("#gearavailability-never-btn").addClass("disabled");
+				// 	$("#gearavailability-always-btn").removeClass("disabled");
+				//
+				// } else {
+				//
+				// 	$("#gearavailability-always-btn").addClass("disabled");
+				// 	$("#gearavailability-never-btn").removeClass("disabled");
+				// }
 
 				if(error) {
 					return;
@@ -192,6 +194,55 @@ define(
 			}
 		}
 
+
+		function selectionIterator(event) {
+
+			var view = event.data,
+				moment, currentMoment;
+
+			moment = Moment(view.shownMoment);
+			moment.date(1);
+			currentMoment = Moment(moment);
+			currentMoment.date(1);
+
+			var inInterval = false;
+			var start, end;
+
+			$('#gearavailability-months-container .day-row .day').each(function(index, $element) {
+
+				if ($(this).hasClass("disabled")) {
+					// console.log("do nothing");
+				}
+				else if ($(this).hasClass("selected")) {
+
+
+					if (!inInterval) { 							//if not in an active interval initiate one
+						inInterval = !inInterval;
+						start = Moment(currentMoment);
+					}
+
+					currentMoment.add(1, 'days');
+
+				}
+				else {
+
+					if (inInterval) {
+						inInterval = !inInterval;
+						end = Moment(currentMoment);
+						end.subtract(1, 'days');
+						selection = {
+							startMoment: start,
+							endMoment: end
+						};
+						console.log(selection);
+						view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)].push(selection);
+					}
+					currentMoment.add(1, 'days');
+				}
+			});
+		};
+
+
 		function handleCancel(event) {
 			var view = event.data;
 			App.router.closeModalView();
@@ -206,10 +257,11 @@ define(
 				availabilityArray = [],
 				month, monthSelections, selection;
 
-			App.router.closeModalView();
+			selectionIterator(event);
 
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
+
 				for(j = 0; j < monthSelections.length; j++) {
 					selection = monthSelections[j];
 					availabilityArray.push({
@@ -219,45 +271,12 @@ define(
 				}
 			}
 
-            //Merge two periods
-            var mergePeriods = function(p1,p2){
+			App.router.closeModalView();
 
-                var result = {
-                    start_time: p1.start_time,
-                    end_time: p2.end_time
-                };
-                return result;
-            };
+			console.log(availabilityArray);
 
-            //Sort array by start time
-            availabilityArray.sort(function (m1, m2) {
-                var moment1 = Moment(m1.start_time);
-                var moment2 = Moment(m2.start_time);
-                return isAfterOrSameDay(moment1,moment2);
-            });
+      view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {});
 
-            //Optimize adjacent periods
-
-            var iterator,previousPeriod,currentPeriod;
-            for(iterator=0;iterator<availabilityArray.length;iterator++){
-
-                if (iterator!==0) {
-                    previousPeriod = Moment(availabilityArray[iterator-1].end_time);
-                    currentPeriod = Moment(availabilityArray[iterator].start_time);
-                    if (currentPeriod.diff(previousPeriod, "days") < 1) {
-                        availabilityArray[iterator-1] = mergePeriods(availabilityArray[iterator-1],availabilityArray[iterator]);
-                        availabilityArray.splice(iterator,1);
-                        iterator--;
-                    }
-                }
-
-
-            }
-
-
-						//change to something working in the f-end
-
-            view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {});
 		}
 
 		function handleToday(event) {
@@ -325,13 +344,10 @@ define(
 			//If the day is already selected
 			if($this.hasClass('selected') === true) {
                 $this.removeClass('selected');
-                selection = {
-                    startMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')}),
-                    endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
-                };
-
-                //TODO The selection object should be subtracted from view.selections
-                //...
+                // selection = {
+                //     startMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')}),
+                //     endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
+                // };
 
 				return;
 			}
