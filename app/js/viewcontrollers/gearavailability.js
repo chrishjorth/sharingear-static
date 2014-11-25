@@ -14,7 +14,8 @@ define(
 			setupMonthCalendar,
 			clearSelections,
 			renderSelections,
-			selectionIterator,
+			addCellsToSelections,
+
 			handleCancel,
 			handleSave,
 			handleToday,
@@ -23,9 +24,11 @@ define(
 			handleClearMonth,
 			handleAlwaysAvailable,
 			handleNeverAvailable,
+
 			handleDayStartSelect,
 			handleDayMoveSelect,
 			handleDayEndSelect,
+
 			isBeforeOrSameDay,
 			isAfterOrSameDay;
 
@@ -51,16 +54,6 @@ define(
 
 				$('#gearavailability-always-btn').removeClass('disabled');
 				$('#gearavailability-never-btn').removeClass('disabled');
-
-				// if(view.alwaysFlag === 0) {
-				// 	$("#gearavailability-never-btn").addClass("disabled");
-				// 	$("#gearavailability-always-btn").removeClass("disabled");
-				//
-				// } else {
-				//
-				// 	$("#gearavailability-always-btn").addClass("disabled");
-				// 	$("#gearavailability-never-btn").removeClass("disabled");
-				// }
 
 				if(error) {
 					return;
@@ -184,8 +177,8 @@ define(
 		};
 
 
-		selectionIterator = function(event) {
-			var view = event.data,
+		addCellsToSelections = function() {
+			var view = this,
 				moment, currentMoment, inInterval, selection, start, end;
 
 			moment = new Moment(view.shownMoment);
@@ -195,25 +188,24 @@ define(
 
 			inInterval = false;
 
-			$('#gearavailability-months-container .day-row .day').each(function() {
+			//Remove current selection
+			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
 
-				if ($(this).hasClass('disabled')) {
+			$('#gearavailability-months-container .day-row .day').each(function() {
+				//TODO: This is an ugly if construction, invert it
+				if($(this).hasClass('disabled') && inInterval === false) {
 					// console.log('do nothing');
 				}
-				else if ($(this).hasClass('selected')) {
-
-
-					if (!inInterval) { 							//if not in an active interval initiate one
+				else if($(this).hasClass('selected')) {
+					//if not in an active interval initiate one
+					if (inInterval === false) {
 						inInterval = !inInterval;
 						start = new Moment(currentMoment);
 					}
-
 					currentMoment.add(1, 'days');
-
 				}
 				else {
-
-					if (inInterval) {
+					if(inInterval === true) {
 						inInterval = !inInterval;
 						end = new Moment(currentMoment);
 						end.subtract(1, 'days');
@@ -221,7 +213,6 @@ define(
 							startMoment: start,
 							endMoment: end
 						};
-						console.log(selection);
 						view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)].push(selection);
 					}
 					currentMoment.add(1, 'days');
@@ -243,7 +234,7 @@ define(
 				availabilityArray = [],
 				month, monthSelections, selection, j;
 
-			selectionIterator(event);
+			view.addCellsToSelections();
 
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
@@ -258,8 +249,6 @@ define(
 			}
 
 			App.router.closeModalView();
-
-			console.log(availabilityArray);
 
       		view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function() {});
 		};
@@ -297,13 +286,7 @@ define(
 
 		handleAlwaysAvailable = function(event) {
 			var view = event.data;
-
 			view.alwaysFlag = 1;
-
-			// $('#gearavailability-months-container .day-row .day').each(function(index, $element) {
-			// 	// $(this).removeClass('selected');
-			// 	$(this).addClass('selected');
-			// });
 		};
 
 		handleNeverAvailable = function(event) {
@@ -327,11 +310,7 @@ define(
 			//If the day is already selected
 			if($this.hasClass('selected') === true) {
                 $this.removeClass('selected');
-                // selection = {
-                //     startMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')}),
-                //     endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
-                // };
-
+                view.addCellsToSelections();
 				return;
 			}
 
@@ -459,7 +438,7 @@ define(
 
 			clearSelections: clearSelections,
 			renderSelections: renderSelections,
-			selectionIterator: selectionIterator,
+			addCellsToSelections: addCellsToSelections,
 
 			handleToday: handleToday,
 			handlePrevious: handlePrevious,
