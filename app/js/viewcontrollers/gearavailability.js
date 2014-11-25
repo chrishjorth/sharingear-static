@@ -3,80 +3,64 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 define(
-	['viewcontroller', 'moment', 'app', 'models/gear'],
-	function(ViewController, Moment, App, Gear) {
-		var GearAvailability = ViewController.inherit({
-			gear: null,
-			shownMoment: null,
-			selections: {}, //key value pairs where keys are months and values are arrays of start and end dates
-			alwaysFlag: -1,
+	['jquery', 'viewcontroller', 'moment', 'app'],
+	function($, ViewController, Moment, App) {
+		var didInitialize,
+			didRender,
+			renderMonthCalendar,
+			setupMonthCalendar,
+			clearSelections,
+			renderSelections,
+			addCellsToSelections,
 
-			didInitialize: didInitialize,
-			didRender: didRender,
+			handleCancel,
+			handleSave,
+			handleToday,
+			handlePrevious,
+			handleNext,
+			handleClearMonth,
+			handleAlwaysAvailable,
+			handleNeverAvailable,
 
-			renderMonthCalendar: renderMonthCalendar,
-			setupMonthCalendar: setupMonthCalendar,
+			handleDayStartSelect,
+			handleDayMoveSelect,
+			handleDayEndSelect,
 
-			clearSelections: clearSelections,
-			renderSelections: renderSelections,
+			isBeforeOrSameDay,
+			isAfterOrSameDay;
 
-			handleToday: handleToday,
-			handlePrevious: handlePrevious,
-			handleNext: handleNext,
-
-			handleClearMonth: handleClearMonth,
-			handleAlwaysAvailable: handleAlwaysAvailable,
-			handleNeverAvailable: handleNeverAvailable,
-
-			handleCancel: handleCancel,
-			handleSave: handleSave,
-
-			handleDayStartSelect: handleDayStartSelect,
-			handleDayMoveSelect: handleDayMoveSelect,
-			handleDayEndSelect: handleDayEndSelect,
-
-			isBeforeOrSameDay: isBeforeOrSameDay,
-			isAfterOrSameDay: isAfterOrSameDay
-		});
-		return GearAvailability;
-
-		function didInitialize() {
+		didInitialize = function() {
 			var view = this;
+
 			Moment.locale('en-custom', {
 				week: {
 					dow: 1,
 					doy: 4
 				}
 			});
-			this.shownMoment = Moment();
+			this.shownMoment = new Moment();
 
 			this.gear = this.passedData;
-			this.selections = {};
+			this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
+			this.alwaysFlag = -1;
 
 			this.gear.getAvailability(App.user.data.id, function(error, result) {
 				var i, startMoment, endMoment;
 				var availabilityArray = result.availabilityArray;
 				view.alwaysFlag = result.alwaysFlag; // here the flag is set from the DB !!!!
 
-				if(view.alwaysFlag === 0) {
-					$("#gearavailability-never-btn").addClass("disabled");
-					$("#gearavailability-always-btn").removeClass("disabled");
-
-				} else {
-
-					$("#gearavailability-always-btn").addClass("disabled");
-					$("#gearavailability-never-btn").removeClass("disabled");
-
-
-				}
+				$('#gearavailability-always-btn').removeClass('disabled');
+				$('#gearavailability-never-btn').removeClass('disabled');
 
 				if(error) {
 					return;
 				}
 				for(i = 0; i < availabilityArray.length; i++) {
-					startMoment = Moment(availabilityArray[i].start);
-					endMoment = Moment(availabilityArray[i].end);
+					startMoment = new Moment(availabilityArray[i].start);
+					endMoment = new Moment(availabilityArray[i].end);
 					if(Array.isArray(view.selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
 						view.selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
 					}
@@ -87,9 +71,9 @@ define(
 				}
 				view.renderSelections();
 			});
-		}
+		};
 
-		function didRender() {
+		didRender = function() {
 			this.renderMonthCalendar($('#gearavailability-months-container'));
 			this.setupMonthCalendar();
 			this.clearSelections();
@@ -107,10 +91,10 @@ define(
 			this.setupEvent('click', '#gearavailability-save-btn', this, this.handleSave);
 
 			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
-		}
+		};
 
-		function renderMonthCalendar($monthCalendarContainer) {
-			var header, dayRows, i, day;
+		renderMonthCalendar = function($monthCalendarContainer) {
+			var header, dayRows, i;
 			header = '<div class="row calendar-header">';
 			header += '<div class="col-md-1 col-md-offset-1"></div>';
 			header += '<div class="col-md-1">M</div>';
@@ -135,12 +119,12 @@ define(
 				dayRows += '</div>';
 			}
 			$monthCalendarContainer.append(header + dayRows);
-		}
+		};
 
-		function setupMonthCalendar(moment) {
+		setupMonthCalendar = function() {
 			var moment, startDay, $calendarContainer, $dayBox, row, col, date;
 
-			moment = Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
+			moment = new Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
 			startDay = moment.date(1).weekday();
 			$calendarContainer = $('#gearavailability-months-container', this.$element);
 
@@ -163,15 +147,15 @@ define(
 			}
 
 			$('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
-		}
+		};
 
-		function clearSelections() {
-			$('#gearavailability-months-container .day-row .day').each(function(index, $element) {
+		clearSelections = function() {
+			$('#gearavailability-months-container .day-row .day').each(function() {
 				$(this).removeClass('selected');
 			});
-		}
+		};
 
-		function renderSelections() {
+		renderSelections = function() {
 			var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
 				$calendarContainer = $('#gearavailability-months-container', this.$element),
 				i, startMoment, endMoment, momentIterator;
@@ -183,128 +167,129 @@ define(
 				startMoment = selections[i].startMoment;
 				$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
 				endMoment = selections[i].endMoment;
-				momentIterator = Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
+				momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
 				while(momentIterator.isBefore(endMoment, 'day') === true) {
 					$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
 					momentIterator.add(1, 'days');
 				}
 				$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
 			}
-		}
+		};
 
-		function handleCancel(event) {
-			var view = event.data;
+
+		addCellsToSelections = function() {
+			var view = this,
+				moment, currentMoment, inInterval, selection, start, end;
+
+			moment = new Moment(view.shownMoment);
+			moment.date(1);
+			currentMoment = new Moment(moment);
+			currentMoment.date(1);
+
+			inInterval = false;
+
+			//Remove current selection
+			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
+
+			$('#gearavailability-months-container .day-row .day').each(function() {
+				//TODO: This is an ugly if construction, invert it
+				if($(this).hasClass('disabled') && inInterval === false) {
+					// console.log('do nothing');
+				}
+				else if($(this).hasClass('selected')) {
+					//if not in an active interval initiate one
+					if (inInterval === false) {
+						inInterval = !inInterval;
+						start = new Moment(currentMoment);
+					}
+					currentMoment.add(1, 'days');
+				}
+				else {
+					if(inInterval === true) {
+						inInterval = !inInterval;
+						end = new Moment(currentMoment);
+						end.subtract(1, 'days');
+						selection = {
+							startMoment: start,
+							endMoment: end
+						};
+						view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)].push(selection);
+					}
+					currentMoment.add(1, 'days');
+				}
+			});
+		};
+
+
+		handleCancel = function() {
 			App.router.closeModalView();
-		}
+		};
 
 		/**
 		 * @assertion: selections are not overlapping.
 		 */
-		function handleSave(event) {
+		handleSave = function(event) {
 			var view = event.data,
 				alwaysFlag = view.alwaysFlag,
 				availabilityArray = [],
-				month, monthSelections, selection;
+				month, monthSelections, selection, j;
 
-			App.router.closeModalView();
+			view.addCellsToSelections();
 
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
+
 				for(j = 0; j < monthSelections.length; j++) {
 					selection = monthSelections[j];
 					availabilityArray.push({
-						start_time: selection.startMoment.format('YYYY-MM-DD') + " 00:00:00",
-						end_time: selection.endMoment.format('YYYY-MM-DD') + " 23:59:59"
+						start_time: selection.startMoment.format('YYYY-MM-DD') + ' 00:00:00',
+						end_time: selection.endMoment.format('YYYY-MM-DD') + ' 23:59:59'
 					});
 				}
 			}
 
-            //Merge two periods
-            var mergePeriods = function(p1,p2){
+			App.router.closeModalView();
 
-                var result = {
-                    start_time: p1.start_time,
-                    end_time: p2.end_time
-                };
-                return result;
-            };
+      		view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function() {});
+		};
 
-            //Sort array by start time
-            availabilityArray.sort(function (m1, m2) {
-                var moment1 = Moment(m1.start_time);
-                var moment2 = Moment(m2.start_time);
-                return isAfterOrSameDay(moment1,moment2);
-            });
-
-            //Optimize adjacent periods
-
-            var iterator,previousPeriod,currentPeriod;
-            for(iterator=0;iterator<availabilityArray.length;iterator++){
-
-                if (iterator!==0) {
-                    previousPeriod = Moment(availabilityArray[iterator-1].end_time);
-                    currentPeriod = Moment(availabilityArray[iterator].start_time);
-                    if (currentPeriod.diff(previousPeriod, "days") < 1) {
-                        availabilityArray[iterator-1] = mergePeriods(availabilityArray[iterator-1],availabilityArray[iterator]);
-                        availabilityArray.splice(iterator,1);
-                        iterator--;
-                    }
-                }
-
-
-            }
-
-
-						//change to something working in the f-end
-
-            view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {});
-		}
-
-		function handleToday(event) {
+		handleToday = function(event) {
 			var view = event.data;
-			view.shownMoment = Moment();
+			view.shownMoment = new Moment();
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
-		}
+		};
 
-		function handlePrevious(event) {
+		handlePrevious = function(event) {
 			var view = event.data;
 			view.shownMoment.subtract(1, 'month');
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
-		}
+		};
 
-		function handleNext(event) {
+		handleNext = function(event) {
 			var view = event.data;
 			view.shownMoment.add(1, 'month');
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
-		}
+		};
 
-		function handleClearMonth(event) {
+		handleClearMonth = function(event) {
 			var view = event.data;
 			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
 			view.clearSelections();
 			view.renderSelections();
-		}
+		};
 
-		function handleAlwaysAvailable(event) {
-
+		handleAlwaysAvailable = function(event) {
 			var view = event.data;
-
 			view.alwaysFlag = 1;
+		};
 
-			// $('#gearavailability-months-container .day-row .day').each(function(index, $element) {
-			// 	// $(this).removeClass('selected');
-			// 	$(this).addClass('selected');
-			// });
-
-		}
-
-		function handleNeverAvailable(event) {
+		handleNeverAvailable = function(event) {
 			var view = event.data;
 
 			view.alwaysFlag = 0;
@@ -315,9 +300,9 @@ define(
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
-		}
+		};
 
-		function handleDayStartSelect(event) {
+		handleDayStartSelect = function(event) {
 			var view = event.data,
 				$this = $(this),
 				selection;
@@ -325,14 +310,7 @@ define(
 			//If the day is already selected
 			if($this.hasClass('selected') === true) {
                 $this.removeClass('selected');
-                selection = {
-                    startMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')}),
-                    endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
-                };
-
-                //TODO The selection object should be subtracted from view.selections
-                //...
-
+                view.addCellsToSelections();
 				return;
 			}
 
@@ -344,8 +322,8 @@ define(
 			$('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
 
 			selection = {
-				startMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')}),
-				endMoment: Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
+				startMoment: new Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')}),
+				endMoment: new Moment({year: view.shownMoment.year(), month: $this.data('month'), day: $this.data('date')})
 			};
 
 			if(Array.isArray(view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)]) === false) {
@@ -355,12 +333,11 @@ define(
 
 			view.clearSelections();
 			view.renderSelections();
-		}
+		};
 
-		function handleDayMoveSelect(event) {
+		handleDayMoveSelect = function(event) {
 			//Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
-			var $this = $(this),
-				view = event.data,
+			var view = event.data,
 				$calendarContainer, selectionX, selectionY;
 			if(event.type === 'mousemove') {
 				selectionX = event.pageX;
@@ -375,8 +352,8 @@ define(
 				return;
 			}
 
-			$calendarContainer = $('#gearavailability-months-container', view.$element)
-			$('.day-row .day', $calendarContainer).each(function(index, $element) {
+			$calendarContainer = $('#gearavailability-months-container', view.$element);
+			$('.day-row .day', $calendarContainer).each(function() {
 				var $this = $(this),
 					dayBoxOffset, selection;
 
@@ -393,12 +370,12 @@ define(
 
 			view.clearSelections();
 			view.renderSelections();
-		}
+		};
 
 		//TODO: Optimize to join adjacent selections
-		function handleDayEndSelect(event) {
+		handleDayEndSelect = function(event) {
 			var view = event.data,
-				monthSelections, i, j, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
+				monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
 			$('body').off('mousemove touchmove', view.handleDayMoveSelect);
 			$('body').off('mouseup touchend', view.handleDayEndSelect);
 
@@ -442,14 +419,44 @@ define(
 					i++;
 				}
 			}
-		}
+		};
 
-		function isBeforeOrSameDay(momentA, momentB) {
+		isBeforeOrSameDay = function(momentA, momentB) {
 			return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
-		}
+		};
 
-		function isAfterOrSameDay(momentA, momentB) {
+		isAfterOrSameDay = function(momentA, momentB) {
 			return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
-		}
+		};
+
+		return ViewController.inherit({
+			didInitialize: didInitialize,
+			didRender: didRender,
+
+			renderMonthCalendar: renderMonthCalendar,
+			setupMonthCalendar: setupMonthCalendar,
+
+			clearSelections: clearSelections,
+			renderSelections: renderSelections,
+			addCellsToSelections: addCellsToSelections,
+
+			handleToday: handleToday,
+			handlePrevious: handlePrevious,
+			handleNext: handleNext,
+
+			handleClearMonth: handleClearMonth,
+			handleAlwaysAvailable: handleAlwaysAvailable,
+			handleNeverAvailable: handleNeverAvailable,
+
+			handleCancel: handleCancel,
+			handleSave: handleSave,
+
+			handleDayStartSelect: handleDayStartSelect,
+			handleDayMoveSelect: handleDayMoveSelect,
+			handleDayEndSelect: handleDayEndSelect,
+
+			isBeforeOrSameDay: isBeforeOrSameDay,
+			isAfterOrSameDay: isAfterOrSameDay
+		});
 	}
 );
