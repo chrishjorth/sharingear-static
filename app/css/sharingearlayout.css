@@ -496,6 +496,26 @@ footer a:hover {
     margin-bottom:15px;
 }
 
+.closed-beta-modal {
+    z-index: 101;
+    position: absolute;
+    background-color: #ffffff;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #dddddd;
+    color: #333333;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 464px;
+    height: 390px;
+    padding: 6px;
+}
+
 /*----------------------------- closed beta -------------------------- */
 
 /*----------------------------- search results ----------------------- */

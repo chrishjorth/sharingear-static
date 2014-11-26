@@ -89,13 +89,12 @@ define(
 
             this.availabilityArray = [];
             this.gear.getAvailability(App.user.data.id, function(error, result) {
-            	var availabilityArray;
             	if(error) {
             		console.log(error);
 					return;
 				}
-				availabilityArray = result.availabilityArray;
-            	view.availabilityArray = availabilityArray;
+            	view.availabilityArray = result.availabilityArray;
+            	view.alwaysFlag = result.alwaysFlag;
             	view.render();
             });
 
@@ -371,6 +370,16 @@ define(
 		disableUnavailableDays = function() {
 			var $leftCalendarContainer, $rightCalendarContainer, startMoment, endMoment, momentIterator, i;
 
+			if(this.alwaysFlag === 0) {
+				return;
+			}
+
+			if(this.alwaysFlag === 1) {
+				$('.day', $leftCalendarContainer).removeClass('unavailable');
+				$('.day', $rightCalendarContainer).removeClass('unavailable');
+				return;
+			}
+
 			$leftCalendarContainer = $('#gearbooking-leftmonths-container', this.$element);
 			$rightCalendarContainer = $('#gearbooking-rightmonths-container', this.$element);
 			for(i = 0; i < this.availabilityArray.length; i++) {
@@ -574,11 +583,10 @@ define(
             	return;
             }
 
-			view.clearLeftSelection();
-
-			if(view.startMoment === null || view.endMoment === null) {
-				view.initializeMoments();
-			}
+            //Do not allow selecting same day, minimal rental period is one day
+            if(view.endMoment.year() === year && view.endMoment.month() === month && view.endMoment.date() === date) {
+            	return;
+            }
 
 			view.startMoment.date(date);
 			view.startMoment.month(month);
@@ -638,11 +646,10 @@ define(
             	return;
             }
 
-			view.clearRightSelection();
-
-			if(view.startMoment === null || view.endMoment === null) {
-				view.initializeMoments();
-			}
+            //Do not allow selecting same day, minimal rental period is one day
+            if(view.startMoment.year() === year && view.startMoment.month() === month && view.startMoment.date() === date) {
+            	return;
+            }
 
 			view.endMoment.date(date);
 			view.endMoment.month(month);
