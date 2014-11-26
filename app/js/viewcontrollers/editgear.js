@@ -13,23 +13,19 @@ define(
             didInitialize,
             didRender,
 
-            populateDelivery,
-
-            renderAvailability,
-            initAvailability,
-
-            populateLocation,
-            populateCountry,
-
             populateBrandSelect,
             populateSubtypeSelect,
 
             populateImages,
-            
-            handleDeliveryCheckbox,
-            handleCancel,
             handleImageUpload,
-            handleNext,
+
+            populateLocation,
+            populateCountry,
+            populateDelivery,
+            handleDeliveryCheckbox,
+
+            initAvailability,
+            renderAvailability,
             renderMonthCalendar,
             setupMonthCalendar,
             clearSelections,
@@ -44,6 +40,10 @@ define(
             handleDayStartSelect,
             handleDayMoveSelect,
             handleDayEndSelect,
+
+            handleCancel,
+            handleSave,
+
             isBeforeOrSameDay,
             isAfterOrSameDay;
 
@@ -87,8 +87,8 @@ define(
                 $('#editgearpricingloc-form #editgearpricing-country', this.$element).val(this.gear.data.country);
             }
 
-            this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel, #editgearpricingloc-form .btn-cancel, #editgearavailability-form .btn-cancel', this, this.handleCancel);
-			this.setupEvent('click', '#editgear-form .btn-save, #editgear-photos-form .btn-save, #editgearpricing-form .btn-save, #editgearpricingloc-form .btn-save, #editgearavailability-form .btn-save', this, this.handleNext);
+            this.setupEvent('click', '.btn-cancel', this, this.handleCancel);
+			this.setupEvent('click', '.btn-save', this, this.handleSave);
             this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
             this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 
@@ -267,7 +267,7 @@ define(
 			});
 		};
 
-		handleNext = function(event) {
+		handleSave = function(event) {
 			var view = event.data,
 			isLocationSame = false,
 			currentAddress = view.gear.data.address,
@@ -717,26 +717,24 @@ define(
             didInitialize: didInitialize,
             didRender: didRender,
 
-            initAvailability:initAvailability,
-
             populateBrandSelect: populateBrandSelect,
             populateSubtypeSelect: populateSubtypeSelect,
+
             populateImages: populateImages,
+            handleImageUpload: handleImageUpload,
+
             populateLocation: populateLocation,
             populateCountry: populateCountry,
             populateDelivery:populateDelivery,
-            handleCancel: handleCancel,
-            handleImageUpload: handleImageUpload,
             handleDeliveryCheckbox:handleDeliveryCheckbox,
-            handleNext: handleNext,
 
+            initAvailability:initAvailability,
+            renderAvailability:renderAvailability,
             renderMonthCalendar:renderMonthCalendar,
             setupMonthCalendar:setupMonthCalendar,
             clearSelections:clearSelections,
             renderSelections:renderSelections,
             addCellsToSelections:addCellsToSelections,
-            renderAvailability:renderAvailability,
-
             handleToday:handleToday,
             handlePrevious:handlePrevious,
             handleNextButton: handleNextButton,
@@ -747,6 +745,9 @@ define(
             handleDayStartSelect:handleDayStartSelect,
             handleDayMoveSelect:handleDayMoveSelect,
             handleDayEndSelect:handleDayEndSelect,
+
+            handleCancel: handleCancel,
+            handleSave: handleSave,
 
             isBeforeOrSameDay:isBeforeOrSameDay,
             isAfterOrSameDay:isAfterOrSameDay
