@@ -159,6 +159,17 @@ define(
 			var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
 				$calendarContainer = $('#gearavailability-months-container', this.$element),
 				i, startMoment, endMoment, momentIterator;
+
+			if(this.alwaysFlag === 1) {
+				$('.day', $calendarContainer).each(function() {
+					var $this = $(this);
+					if($this.hasClass('disabled') === false) {
+						$this.addClass('selected');
+					}
+				});
+				return;
+			}
+
 			if(Array.isArray(selections) === false) {
 				return;
 			}
@@ -287,6 +298,10 @@ define(
 		handleAlwaysAvailable = function(event) {
 			var view = event.data;
 			view.alwaysFlag = 1;
+			view.selections = {};
+
+			view.clearSelections();
+			view.renderSelections();
 		};
 
 		handleNeverAvailable = function(event) {
