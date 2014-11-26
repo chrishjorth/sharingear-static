@@ -57,9 +57,9 @@ define(
             intervalStart = App.user.getIntervalStart();
             if(intervalStart === null) {
             	this.leftMoment = new Moment();
-            	this.leftMoment.add('days', 1);
+            	this.leftMoment.add(1, 'days');
             	this.startMoment = new Moment();
-            	this.startMoment.add('days', 1);
+            	this.startMoment.add(1, 'days');
             }
             else {
             	this.leftMoment = new Moment(intervalStart, 'YYYYMMDD');
@@ -75,7 +75,7 @@ define(
             if(intervalEnd === null) {
             	this.rightMoment = new Moment(this.leftMoment);
             	this.endMoment = new Moment(this.startMoment);
-            	this.endMoment.add('days', 1);
+            	this.endMoment.add(1, 'days');
             }
             else {
             	this.rightMoment = new Moment(intervalEnd, 'YYYYMMDD');
