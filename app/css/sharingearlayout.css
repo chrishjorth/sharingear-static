@@ -3300,6 +3300,7 @@ span.num {
 	padding: 10px;
 	padding-bottom: 0px;
 	margin-left: -30px;
+	min-width: 155px;
 }
 
 .owl-item2 img {
@@ -3678,6 +3679,13 @@ span.num {
         position: inherit;
         padding-left: 37px;
     }
+	.price-container{
+		margin-left: 0;
+	}
+
+	.calendar .row .col-md-1{
+		width: auto;
+	}
 }
 
 #availablilty-message-container{
@@ -3894,4 +3902,16 @@ span.num {
     color: #000;
     margin-top: 1px;
     margin-left: 4px !important;
+}
+
+#gearbooking-starttime{
+
+	border-radius: 0px;
+
+}
+
+#gearbooking-endtime{
+
+	border-radius: 0px;
+
 }
