@@ -153,8 +153,17 @@ define(
 		loadModalView = function(view, path, data, callback) {
 			var router = this;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
-				var $modalViewLightbox = $(router.modalViewLightbox),
-					$modalViewContainer = $(router.modalViewContainer);
+                var $modalViewLightbox = $(router.modalViewLightbox),
+                    $modalViewContainer;
+
+                if (view !== "closedbeta") {
+                    $modalViewContainer = $(router.modalViewContainer);
+                } else {
+                    console.log('test');
+//                    $modalViewContainer = $('.closed-beta-modal');
+                    $modalViewContainer = $(router.modalViewContainer);
+                    $modalViewContainer.addClass('closed-beta-modal');
+                }
 
 				if(router.currentModalViewController !== null) {
 					router.currentModalViewController.close();
