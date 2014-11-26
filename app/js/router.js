@@ -156,13 +156,12 @@ define(
                 var $modalViewLightbox = $(router.modalViewLightbox),
                     $modalViewContainer;
 
-                if (view !== "closedbeta") {
-                    $modalViewContainer = $(router.modalViewContainer);
-                } else {
-                    console.log('test');
-//                    $modalViewContainer = $('.closed-beta-modal');
+                if (view === "closedbeta") {
                     $modalViewContainer = $(router.modalViewContainer);
                     $modalViewContainer.addClass('closed-beta-modal');
+                } else {
+                    $modalViewContainer = $(router.modalViewContainer);
+                    $modalViewContainer.removeClass('closed-beta-modal');
                 }
 
 				if(router.currentModalViewController !== null) {
