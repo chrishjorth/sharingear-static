@@ -66,8 +66,6 @@ define(
 
             $searchPickup = $('#search-pickup', view.$element);
             $searchReturn = $('#search-return', view.$element);
-
-            startDate.add(1, 'days');
             $searchPickup.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
@@ -82,7 +80,6 @@ define(
             });
 
             startDate.add(1, 'days');
-
             $searchReturn.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
