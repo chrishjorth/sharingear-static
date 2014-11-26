@@ -157,33 +157,26 @@ define(
         };
 
         populateLocation = function() {
-            var city = this.gear.data.city,
-            address = this.gear.data.address,
-            postalcode = this.gear.data.postal_code,
-            region=this.gear.data.region;
-
-            $('#editgearpricingloc-form #editgearpricing-city').val(city);
-            $('#editgearpricingloc-form #editgearpricing-address').val(address);
-            $('#editgearpricingloc-form #editgearpricing-postalcode').val(postalcode);
-            $('#editgearpricingloc-form #editgearpricing-region').val(region);
+            $('#editgearpricingloc-form #editgearpricing-city').val(this.gear.data.city);
+            $('#editgearpricingloc-form #editgearpricing-address').val(this.gear.data.address);
+            $('#editgearpricingloc-form #editgearpricing-postalcode').val(this.gear.data.postal_code);
+            $('#editgearpricingloc-form #editgearpricing-region').val(this.gear.data.region);
         };
 
         populateCountry = function() {
-            var currentCountry = this.gear.data.country;
-            var html = '',
+            var countryList = App.localization.getCountries(),
+                currentCountry = this.gear.data.country,
+                html = '',
                 $countrySelect,i;
-
-            var countryList = App.localization.getCountries();
 
             $countrySelect = $('#editgearpricing-country', this.$element);
             $countrySelect.empty();
 
             for(i = 0; i < countryList.length; i++) {
-                    html += '<option value="' + countryList[i].alpha2 + '">' + countryList[i].name + '</option>';
+                html += '<option value="' + countryList[i].alpha2 + '">' + countryList[i].name + '</option>';
             }
             $countrySelect.html(html);
-
-            $countrySelect.val(currentCountry);
+            $countrySelect.val(currentCountry.toLowerCase());
         };
 
 		populateBrandSelect = function() {
