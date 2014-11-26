@@ -83,7 +83,6 @@ define(
                     else {
                     	defaultGear.gear_status = '';
                     }
-
 					$('#' + gearBlockID).append(yourGearItemTemplate(defaultGear));
 				}
 				if(callback && typeof callback === 'function') {

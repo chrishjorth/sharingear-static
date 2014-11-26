@@ -3267,8 +3267,8 @@ span.num {
 }
 
 .profile_im{
-    width:200px;
-    height: 200px;
+    width:205px;
+    height: 205px;
     background: no-repeat 50% 50%;
 
 }
@@ -3320,6 +3320,13 @@ span.num {
 .owner_picture {
     margin-left: auto;
     margin-right: auto;
+}
+
+#owner_bio{
+
+	padding: 10px;
+	padding-left: 15px;
+
 }
 
 .gearprofile-book {
@@ -3887,8 +3894,4 @@ span.num {
     color: #000;
     margin-top: 1px;
     margin-left: 4px !important;
-}
-
-.booking-buttons a:hover, a:visited{
-    background-color: #ececec;
 }
