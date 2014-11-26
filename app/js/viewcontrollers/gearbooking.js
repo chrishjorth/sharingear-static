@@ -585,6 +585,11 @@ define(
             	return;
             }
 
+            //Do not allow selecting same day, minimal rental period is one day
+            if(view.endMoment.year() === year && view.endMoment.month() === month && view.endMoment.date() === date) {
+            	return;
+            }
+
 			view.clearLeftSelection();
 
 			if(view.startMoment === null || view.endMoment === null) {
@@ -646,6 +651,11 @@ define(
             }
 
             if($this.hasClass('disabled') === true) {
+            	return;
+            }
+
+            //Do not allow selecting same day, minimal rental period is one day
+            if(view.startMoment.year() === year && view.startMoment.month() === month && view.startMoment.date() === date) {
             	return;
             }
 
