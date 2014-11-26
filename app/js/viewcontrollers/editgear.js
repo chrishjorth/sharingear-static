@@ -8,16 +8,24 @@
 define(
 	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'googlemaps','utilities', 'moment'],
 	function(_, $, ViewController, App, Gear, GoogleMaps, Utilities, Moment) {
-		var didInitialize,
+		var geocoder,
+
+            didInitialize,
             didRender,
+
             populateDelivery,
+
             renderAvailability,
             initAvailability,
+
             populateLocation,
             populateCountry,
+
             populateBrandSelect,
             populateSubtypeSelect,
+
             populateImages,
+            
             handleDeliveryCheckbox,
             handleCancel,
             handleImageUpload,
@@ -38,6 +46,8 @@ define(
             handleDayEndSelect,
             isBeforeOrSameDay,
             isAfterOrSameDay;
+
+        geocoder = new GoogleMaps.Geocoder();
 
 		didInitialize = function() {
 			this.gear = this.passedData;
@@ -370,7 +380,7 @@ define(
 
 			if(isLocationSame === false) {
 				addressOneliner = updatedGearData.address + ', ' + updatedGearData.postalcode + ' ' + updatedGearData.city + ', ' + updatedGearData.region + ', ' + updatedGearData.country;
-				view.geocoder.geocode({'address': addressOneliner}, function(results, status) {
+				geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.gear.data.longitude = results[0].geometry.location.lng();
 						view.gear.data.latitude = results[0].geometry.location.lat();
@@ -704,9 +714,6 @@ define(
         };
 
         return ViewController.inherit({
-            gear: null,
-            geocoder: new GoogleMaps.Geocoder(),
-
             didInitialize: didInitialize,
             didRender: didRender,
 
