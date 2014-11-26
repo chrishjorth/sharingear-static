@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'moment', 'app'],
-	function($, ViewController, Moment, App) {
+	['underscore','jquery', 'viewcontroller', 'moment', 'app', 'models/gear'],
+	function(_, $, ViewController, Moment, App, Gear) {
 		var didInitialize,
 			didRender,
 			renderMonthCalendar,
@@ -15,7 +15,7 @@ define(
 			clearSelections,
 			renderSelections,
 			addCellsToSelections,
-
+            handleBreadcrumbBack,
 			handleCancel,
 			handleSave,
 			handleToday,
@@ -33,7 +33,35 @@ define(
 			isAfterOrSameDay;
 
 		didInitialize = function() {
-			var view = this;
+
+            if(App.user.data.id === null) {
+                this.ready = false;
+                App.router.navigateTo('home');
+                return;
+            }
+            this.newGear = new Gear.constructor({
+                rootURL: App.API_URL,
+                data: {
+                    price_a: 0,
+                    price_b: 0,
+                    price_c: 0,
+                    delivery_price: null,
+                    delivery_distance: null,
+                    address: '',
+                    postalcode: null,
+                    city: '',
+                    region: '',
+                    country: '',
+                    latitude: null,
+                    longitude: null
+                }
+            });
+
+            if(this.passedData) {
+                _.extend(this.newGear.data, this.passedData.data);
+            }
+
+            var view = this;
 
 			Moment.locale('en-custom', {
 				week: {
@@ -89,7 +117,7 @@ define(
 
 			this.setupEvent('click', '#gearavailability-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#gearavailability-save-btn', this, this.handleSave);
-
+            this.setupEvent('click', '.addgearpanel .btnaddgeartwo', this, this.handleBreadcrumbBack);
 			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
 		};
 
@@ -231,6 +259,16 @@ define(
 			});
 		};
 
+        handleBreadcrumbBack = function(event){
+
+            var view = event.data;
+            view.save(function(error) {
+                if(!error) {
+                    App.router.navigateTo('dashboard/addgearprice', view.newGear);
+                }
+            });
+
+        };
 
 		handleCancel = function() {
 			App.router.closeModalView();
@@ -259,10 +297,11 @@ define(
 				}
 			}
 
-			App.router.closeModalView();
+//			App.router.closeModalView();
 
       		view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function() {});
-		};
+            App.router.navigateTo('dashboard/addgearend', view.newGear);
+        };
 
 		handleToday = function(event) {
 			var view = event.data;
@@ -387,7 +426,6 @@ define(
 			view.renderSelections();
 		};
 
-		//TODO: Optimize to join adjacent selections
 		handleDayEndSelect = function(event) {
 			var view = event.data,
 				monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
@@ -455,6 +493,7 @@ define(
 			renderSelections: renderSelections,
 			addCellsToSelections: addCellsToSelections,
 
+            handleBreadcrumbBack:handleBreadcrumbBack,
 			handleToday: handleToday,
 			handlePrevious: handlePrevious,
 			handleNext: handleNext,
