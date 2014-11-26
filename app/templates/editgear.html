@@ -5,6 +5,7 @@
 			<li class=""><a href="#photos" role="tab" data-toggle="tab">Photos</a></li>
 			<li class=""><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>
 			<li class=""><a href="#location" role="tab" data-toggle="tab">Location</a></li>
+            <li class=""><a href="#availability" role="tab" data-toggle="tab">Availability</a></li>
 		</ul>
 
 		<div id="edit-tabs-content" class="tab-content">
@@ -183,6 +184,39 @@
 				</div>
 			</div>
 		</div>
+
+        <div class="tab-pane fade" id="availability">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12"><h2>Availability</h2></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="gearavailability-monthtitle"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-default" id="gearavailability-today-btn">Today</button>
+                        <button class="btn btn-default" id="gearavailability-previous-btn">Previous</button>
+                        <button class="btn btn-default" id="gearavailability-next-btn">Next</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-default" id="gearavailability-clearmonth-btn">Clear month</button><button class="btn btn-default" id="gearavailability-always-btn">Always available</button><button class="btn btn-default" id="gearavailability-never-btn">Never available</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 calendar month calendar" id="gearavailability-months-container"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="editgearavailability-form" onsubmit="return false;">
+                            <button class="btn editgear-cancel-button btn-default btn-cancel button-margin">Cancel</button>
+                            <button class="btn editgear-save-button btn-primary btn-save price-button-margin">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 	</div>
 
 </div>
