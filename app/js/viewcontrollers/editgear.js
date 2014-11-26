@@ -3,59 +3,49 @@
  * @author: Chris Hjorth, Gediminas Bivainis
  */
 
+'use strict';
+
 define(
-	['viewcontroller', 'app', 'models/gear', 'googlemaps','utilities', 'moment'],
-	function(ViewController, App, Gear, GoogleMaps, Utilities, Moment) {
-		var EditGear = ViewController.inherit({
-			gear: null,
-			geocoder: new GoogleMaps.Geocoder(),
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'googlemaps','utilities', 'moment'],
+	function(_, $, ViewController, App, Gear, GoogleMaps, Utilities, Moment) {
+		var didInitialize,
+            didRender,
+            populateDelivery,
+            renderAvailability,
+            initAvailability,
+            populateLocation,
+            populateCountry,
+            populateBrandSelect,
+            populateSubtypeSelect,
+            populateImages,
+            handleDeliveryCheckbox,
+            handleCancel,
+            handleImageUpload,
+            handleNext,
+            renderMonthCalendar,
+            setupMonthCalendar,
+            clearSelections,
+            renderSelections,
+            addCellsToSelections,
+            handleToday,
+            handlePrevious,
+            handleNextButton,
+            handleClearMonth,
+            handleAlwaysAvailable,
+            handleNeverAvailable,
+            handleDayStartSelect,
+            handleDayMoveSelect,
+            handleDayEndSelect,
+            isBeforeOrSameDay,
+            isAfterOrSameDay;
 
-			didInitialize: didInitialize,
-			didRender: didRender,
-            initAvailability:initAvailability,
-			populateBrandSelect: populateBrandSelect,
-			populateSubtypeSelect: populateSubtypeSelect,
-			populateImages: populateImages,
-            populateLocation: populateLocation,
-            populateCountry: populateCountry,
-            populateDelivery:populateDelivery,
-			handleCancel: handleCancel,
-			handleImageUpload: handleImageUpload,
-            handleDeliveryCheckbox:handleDeliveryCheckbox,
-			handleNext: handleNext,
-
-            renderMonthCalendar:renderMonthCalendar,
-            setupMonthCalendar:setupMonthCalendar,
-            clearSelections:clearSelections,
-            renderSelections:renderSelections,
-            addCellsToSelections:addCellsToSelections,
-            renderAvailability:renderAvailability,
-
-            handleToday:handleToday,
-            handlePrevious:handlePrevious,
-			handleNextButton: handleNextButton,
-            handleClearMonth:handleClearMonth,
-            handleAlwaysAvailable:handleAlwaysAvailable,
-            handleNeverAvailable:handleNeverAvailable,
-
-            handleDayStartSelect:handleDayStartSelect,
-            handleDayMoveSelect:handleDayMoveSelect,
-            handleDayEndSelect:handleDayEndSelect,
-
-            isBeforeOrSameDay:isBeforeOrSameDay,
-            isAfterOrSameDay:isAfterOrSameDay
-
-
-    });
-		return EditGear;
-
-		function didInitialize() {
+		didInitialize = function() {
 			this.gear = this.passedData;
 			this.templateParameters = this.gear.data;
             this.initAvailability();
-		}
+		};
 
-		function didRender() {
+		didRender = function() {
 			this.populateBrandSelect();
 			this.populateSubtypeSelect();
 
@@ -67,24 +57,24 @@ define(
             this.renderAvailability();
 
 			if(this.gear.data.subtype === '') {
-				$("#editgear-subtype").prop("selectedIndex", 0); // if no subtype is passed, "Choose type:" by default
+				$('#editgear-subtype').prop('selectedIndex', 0); // if no subtype is passed, 'Choose type:' by default
 			}
 			else {
 				$('#editgear-subtype', this.$element).val(this.gear.data.subtype);
 			}
 
 			if(this.gear.data.brand === '') {
-				$("#editgear-brand").prop("selectedIndex", 0); // if no brand is passed, "Choose brand:" by default
+				$('#editgear-brand').prop('selectedIndex', 0); // if no brand is passed, 'Choose brand:' by default
 			}
 			else {
 				$('#editgear-brand', this.$element).val(this.gear.data.brand);
 			}
 
             if(this.gear.data.country === '') {
-                $("#editgearpricingloc-form #editgearpricing-country").prop("selectedIndex", 0); // if no country is passed, "Choose country:" by default
+                $('#editgearpricingloc-form #editgearpricing-country').prop('selectedIndex', 0); // if no country is passed, 'Choose country:' by default
             }
             else {
-                $("#editgearpricingloc-form #editgearpricing-country", this.$element).val(this.gear.data.country);
+                $('#editgearpricingloc-form #editgearpricing-country', this.$element).val(this.gear.data.country);
             }
 
             this.setupEvent('click', '#editgear-form .btn-cancel, #editgear-photos-form .btn-cancel, #editgearpricing-form .btn-cancel, #editgearpricingloc-form .btn-cancel, #editgearavailability-form .btn-cancel', this, this.handleCancel);
@@ -99,26 +89,24 @@ define(
             this.setupEvent('click', '#gearavailability-always-btn', this, this.handleAlwaysAvailable);
             this.setupEvent('click', '#gearavailability-never-btn', this, this.handleNeverAvailable);
             this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
+        };
 
-
-        }
-
-        function populateDelivery(){
+        populateDelivery = function(){
             var price = this.gear.data.delivery_price ? this.gear.data.delivery_price : '',
                 distance = this.gear.data.delivery_distance ? this.gear.data.delivery_distance : '';
 
-            $("#editgearpricingloc-form #delivery_price").val(price);
-            $("#editgearpricingloc-form #delivery_distance").val(distance);
-        }
+            $('#editgearpricingloc-form #delivery_price').val(price);
+            $('#editgearpricingloc-form #delivery_distance').val(distance);
+        };
 
-        function renderAvailability() {
+        renderAvailability = function() {
             this.renderMonthCalendar($('#gearavailability-months-container'));
             this.setupMonthCalendar();
             this.clearSelections();
             this.renderSelections();
-        }
+        };
 
-        function initAvailability() {
+        initAvailability = function() {
             var view = this;
 
             Moment.locale('en-custom', {
@@ -156,21 +144,21 @@ define(
                 }
                 view.renderSelections();
             });
-        }
+        };
 
-        function populateLocation() {
+        populateLocation = function() {
             var city = this.gear.data.city,
             address = this.gear.data.address,
             postalcode = this.gear.data.postal_code,
             region=this.gear.data.region;
 
-            $("#editgearpricingloc-form #editgearpricing-city").val(city);
-            $("#editgearpricingloc-form #editgearpricing-address").val(address);
-            $("#editgearpricingloc-form #editgearpricing-postalcode").val(postalcode);
-            $("#editgearpricingloc-form #editgearpricing-region").val(region);
-        }
+            $('#editgearpricingloc-form #editgearpricing-city').val(city);
+            $('#editgearpricingloc-form #editgearpricing-address').val(address);
+            $('#editgearpricingloc-form #editgearpricing-postalcode').val(postalcode);
+            $('#editgearpricingloc-form #editgearpricing-region').val(region);
+        };
 
-        function populateCountry() {
+        populateCountry = function() {
             var currentCountry = this.gear.data.country;
             var html = '',
                 $countrySelect,i;
@@ -186,9 +174,9 @@ define(
             $countrySelect.html(html);
 
             $countrySelect.val(currentCountry);
-        }
+        };
 
-		function populateBrandSelect() {
+		populateBrandSelect = function() {
 			var brands = App.gearClassification.data.brands,
 				html = '<option> Choose brand: </option>',
 				$brandSelect, i;
@@ -203,13 +191,12 @@ define(
 				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
 			}
 			$brandSelect.append(html);
-		}
+		};
 
-		function populateSubtypeSelect() {
+		populateSubtypeSelect = function() {
 			var gearClassification = App.gearClassification.data.classification,
 				html = '<option> Choose subtype: </option>',
 				$subtypeSelect,
-				$brandSelect,
 				gearSubtypes, i;
 
 			$subtypeSelect = $('#editgear-subtype', this.$element);
@@ -220,9 +207,9 @@ define(
 				html += '<option value="' + gearSubtypes[i] + '">' + gearSubtypes[i] + '</option>';
 			}
 			$subtypeSelect.append(html);
-		}
+		};
 
-		function populateImages() {
+		populateImages = function() {
 			var images = this.gear.data.images.split(','),
 				html = '',
 				i;
@@ -233,26 +220,25 @@ define(
 				}
 			}
 			$('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
-		}
+		};
 
-        function handleDeliveryCheckbox(event){
+        handleDeliveryCheckbox = function(){
+            if(this.checked === true) {
+                $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled');
+            }
+            else {
+                $(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
+            }
+        };
 
-            this.checked ?
-                $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled')
-                : $(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
-        }
-
-
-		function handleCancel(event) {
-			var view = event.data;
+		handleCancel = function() {
             var currentVerticalPosition = $(window).scrollTop();
             App.router.closeModalView();
-            $("body, html").animate({scrollTop: currentVerticalPosition},50);
+            $('body, html').animate({scrollTop: currentVerticalPosition},50);
+		};
 
-		}
-
-		function handleImageUpload(event) {
-			var view = event.data
+		handleImageUpload = function(event) {
+			var view = event.data,
 				$file = $(this);
 			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
 				var $thumbList, html;
@@ -263,17 +249,16 @@ define(
 					return;
 				}
 
-				console.log("Edit picture URL: " + url);
+				console.log('Edit picture URL: ' + url);
 
 				$thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
 			});
-		}
+		};
 
-		function handleNext(event) {
+		handleNext = function(event) {
 			var view = event.data,
-			updatedGearData,
 			isLocationSame = false,
 			currentAddress = view.gear.data.address,
 			currentPostalCode = view.gear.data.postalcode,
@@ -286,7 +271,7 @@ define(
             currentBtn = $(this),
             alwaysFlag = view.alwaysFlag,
             availabilityArray = [],
-            month, monthSelections, selection, j;;
+            month, monthSelections, selection, j;
 
             currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
@@ -323,51 +308,51 @@ define(
             };
 
             if ($('#editgear-subtype', view.$element).selectedIndex===0) {
-                alert("The subtype field is required.");
+                alert('The subtype field is required.');
                 return;
             }
             if ($('#editgear-brand', view.$element).selectedIndex===0) {
-                alert("The brand field is required.");
+                alert('The brand field is required.');
                 return;
             }
             if ($('#editgear-model', view.$element).val()==='') {
-                alert("The model field is required.");
+                alert('The model field is required.');
                 return;
             }
             if ($('#editgearpricing-form #price_a', this.$element).val()==='') {
-                alert("The rental price field is required.");
+                alert('The rental price field is required.');
                 return;
             }
             if ($('#editgearpricing-form #price_b', this.$element).val()==='') {
-                alert("The rental price field is required.");
+                alert('The rental price field is required.');
                 return;
             }
             if ($('#editgearpricing-form #price_c', this.$element).val()==='') {
-                alert("The rental price field is required.");
+                alert('The rental price field is required.');
                 return;
             }
             if ($('#editgearpricingloc-form #editgearpricing-address', this.$element).val()==='') {
-                alert("The address field is required.");
+                alert('The address field is required.');
                 return;
             }
             if ($('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val()==='') {
-                alert("The postalcode field is required.");
+                alert('The postalcode field is required.');
                 return;
             }
             if ($('#editgearpricingloc-form #editgearpricing-city', this.$element).val()==='') {
-                alert("The city field is required.");
+                alert('The city field is required.');
                 return;
             }
             if ($('#editgearpricingloc-form #editgearpricing-country').selectedIndex===0||
                 $('#editgearpricingloc-form #editgearpricing-country').selectedIndex===null) {
-                alert("The country field is required.");
+                alert('The country field is required.');
                 return;
             }
 
             _.extend(view.gear.data, updatedGearData);
 
 			updateCall = function() {
-				view.gear.save(App.user.data.id, function(error, gear) {
+				view.gear.save(App.user.data.id, function(error) {
                     currentBtn.text('Save');
                     if(error) {
 						console.log(error);
@@ -399,9 +384,9 @@ define(
 			else {
 				updateCall();
 			}
-		}
+		};
 
-        function renderMonthCalendar($monthCalendarContainer) {
+        renderMonthCalendar = function($monthCalendarContainer) {
             var header, dayRows, i;
             header = '<div class="row calendar-header">';
             header += '<div class="col-md-1 col-md-offset-1"></div>';
@@ -427,9 +412,9 @@ define(
                 dayRows += '</div>';
             }
             $monthCalendarContainer.append(header + dayRows);
-        }
+        };
 
-        function setupMonthCalendar() {
+        setupMonthCalendar = function() {
             var moment, startDay, $calendarContainer, $dayBox, row, col, date;
 
             moment = new Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
@@ -455,15 +440,15 @@ define(
             }
 
             $('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
-        }
+        };
 
-        function clearSelections() {
+        clearSelections = function() {
             $('#gearavailability-months-container .day-row .day').each(function() {
                 $(this).removeClass('selected');
             });
-        }
+        };
 
-        function renderSelections() {
+        renderSelections = function() {
             var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
                 $calendarContainer = $('#gearavailability-months-container', this.$element),
                 i, startMoment, endMoment, momentIterator;
@@ -493,10 +478,9 @@ define(
                 }
                 $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
             }
-        }
+        };
 
-
-        function addCellsToSelections() {
+        addCellsToSelections = function() {
             var view = this,
                 moment, currentMoment, inInterval, selection, start, end;
 
@@ -537,49 +521,49 @@ define(
                     currentMoment.add(1, 'days');
                 }
             });
-        }
+        };
 
-        function handleToday(event) {
+        handleToday = function(event) {
             var view = event.data;
             view.shownMoment = new Moment();
             view.setupMonthCalendar();
             view.clearSelections();
             view.renderSelections();
-        }
+        };
 
-        function handlePrevious(event) {
+        handlePrevious = function(event) {
             var view = event.data;
             view.shownMoment.subtract(1, 'month');
             view.setupMonthCalendar();
             view.clearSelections();
             view.renderSelections();
-        }
+        };
 
-        function handleNextButton(event) {
+        handleNextButton = function(event) {
             var view = event.data;
             view.shownMoment.add(1, 'month');
             view.setupMonthCalendar();
             view.clearSelections();
             view.renderSelections();
-        }
+        };
 
-        function handleClearMonth(event) {
+        handleClearMonth = function(event) {
             var view = event.data;
             view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
             view.clearSelections();
             view.renderSelections();
-        }
+        };
 
-        function handleAlwaysAvailable(event) {
+        handleAlwaysAvailable = function(event) {
             var view = event.data;
             view.alwaysFlag = 1;
             view.selections = {};
 
             view.clearSelections();
             view.renderSelections();
-        }
+        };
 
-        function handleNeverAvailable(event) {
+        handleNeverAvailable = function(event) {
             var view = event.data;
 
             view.alwaysFlag = 0;
@@ -590,9 +574,9 @@ define(
             view.setupMonthCalendar();
             view.clearSelections();
             view.renderSelections();
-        }
+        };
 
-        function handleDayStartSelect(event) {
+        handleDayStartSelect = function(event) {
             var view = event.data,
                 $this = $(this),
                 selection;
@@ -623,9 +607,9 @@ define(
 
             view.clearSelections();
             view.renderSelections();
-        }
+        };
 
-        function handleDayMoveSelect(event) {
+        handleDayMoveSelect = function(event) {
             //Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
             var view = event.data,
                 $calendarContainer, selectionX, selectionY;
@@ -660,10 +644,10 @@ define(
 
             view.clearSelections();
             view.renderSelections();
-        }
+        };
 
         //TODO: Optimize to join adjacent selections
-        function handleDayEndSelect(event) {
+        handleDayEndSelect = function(event) {
             var view = event.data,
                 monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
             $('body').off('mousemove touchmove', view.handleDayMoveSelect);
@@ -709,15 +693,57 @@ define(
                     i++;
                 }
             }
-        }
+        };
 
-        function isBeforeOrSameDay(momentA, momentB) {
+        isBeforeOrSameDay = function(momentA, momentB) {
             return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
-        }
+        };
 
-        function isAfterOrSameDay(momentA, momentB) {
+        isAfterOrSameDay = function(momentA, momentB) {
             return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
-        }
+        };
+
+        return ViewController.inherit({
+            gear: null,
+            geocoder: new GoogleMaps.Geocoder(),
+
+            didInitialize: didInitialize,
+            didRender: didRender,
+
+            initAvailability:initAvailability,
+
+            populateBrandSelect: populateBrandSelect,
+            populateSubtypeSelect: populateSubtypeSelect,
+            populateImages: populateImages,
+            populateLocation: populateLocation,
+            populateCountry: populateCountry,
+            populateDelivery:populateDelivery,
+            handleCancel: handleCancel,
+            handleImageUpload: handleImageUpload,
+            handleDeliveryCheckbox:handleDeliveryCheckbox,
+            handleNext: handleNext,
+
+            renderMonthCalendar:renderMonthCalendar,
+            setupMonthCalendar:setupMonthCalendar,
+            clearSelections:clearSelections,
+            renderSelections:renderSelections,
+            addCellsToSelections:addCellsToSelections,
+            renderAvailability:renderAvailability,
+
+            handleToday:handleToday,
+            handlePrevious:handlePrevious,
+            handleNextButton: handleNextButton,
+            handleClearMonth:handleClearMonth,
+            handleAlwaysAvailable:handleAlwaysAvailable,
+            handleNeverAvailable:handleNeverAvailable,
+
+            handleDayStartSelect:handleDayStartSelect,
+            handleDayMoveSelect:handleDayMoveSelect,
+            handleDayEndSelect:handleDayEndSelect,
+
+            isBeforeOrSameDay:isBeforeOrSameDay,
+            isAfterOrSameDay:isAfterOrSameDay
+        });
 
 	}
 );
