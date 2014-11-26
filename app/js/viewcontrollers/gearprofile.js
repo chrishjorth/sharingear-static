@@ -120,7 +120,6 @@ define(
 
             this.renderPopup();
 
-
             this.addEditButtonIfOwner();
 
             this.setupEvent('click', '#gearprofile-book-btn', this, this.handleBooking);
@@ -146,7 +145,7 @@ define(
             		console.log('Error getting gear availability: ' + error);
             		mustDisable = true;
             	}
-                else if(result.availabilityArray.length === 0){
+                else if(result.alwaysFlag === 0) {
                     mustDisable = true;
                 }
                 if(mustDisable === true) {

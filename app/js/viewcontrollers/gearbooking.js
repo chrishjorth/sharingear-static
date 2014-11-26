@@ -89,13 +89,11 @@ define(
 
             this.availabilityArray = [];
             this.gear.getAvailability(App.user.data.id, function(error, result) {
-            	var availabilityArray;
             	if(error) {
             		console.log(error);
 					return;
 				}
-				availabilityArray = result.availabilityArray;
-            	view.availabilityArray = availabilityArray;
+            	view.availabilityArray = result.availabilityArray;
             	view.alwaysFlag = result.alwaysFlag;
             	view.render();
             });
@@ -590,12 +588,6 @@ define(
             	return;
             }
 
-			view.clearLeftSelection();
-
-			if(view.startMoment === null || view.endMoment === null) {
-				view.initializeMoments();
-			}
-
 			view.startMoment.date(date);
 			view.startMoment.month(month);
 			view.startMoment.year(year);
@@ -658,12 +650,6 @@ define(
             if(view.startMoment.year() === year && view.startMoment.month() === month && view.startMoment.date() === date) {
             	return;
             }
-
-			view.clearRightSelection();
-
-			if(view.startMoment === null || view.endMoment === null) {
-				view.initializeMoments();
-			}
 
 			view.endMoment.date(date);
 			view.endMoment.month(month);
