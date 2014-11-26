@@ -3311,8 +3311,8 @@ span.num {
 }
 
 .profile_im{
-    width:205px;
-    height: 205px;
+    width:100%;
+    height: 250px;
     background: no-repeat 50% 50%;
 
 }

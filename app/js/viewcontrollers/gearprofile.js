@@ -166,10 +166,10 @@ define(
         	img.onload = function() {
         		isVertical = img.width < img.height;
         		if(isVertical === true) {
-        			backgroundSize = '205px auto';
+        			backgroundSize = '255px auto';
         		}
         		else {
-        			backgroundSize = 'auto 205px';
+        			backgroundSize = 'auto 255px';
         		}
         		$('#owner_picture').css({
         			'background-image': 'url(' + img.src + ')',
