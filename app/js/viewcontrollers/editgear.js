@@ -262,27 +262,23 @@ define(
 
 		handleSave = function(event) {
 			var view = event.data,
-			isLocationSame = false,
-			currentAddress = view.gear.data.address,
-			currentPostalCode = view.gear.data.postalcode,
-			currentCity = view.gear.data.city,
-			currentRegion = view.gear.data.region,
-			currentCountry = view.gear.data.country,
-			updatedGearData,
-			addressOneliner,
-			updateCall,
-            currentBtn = $(this),
-            alwaysFlag = view.alwaysFlag,
-            availabilityArray = [],
-            month, monthSelections, selection, j;
+                $saveBtn = $(this),
+                isLocationSame = false,
+                currentAddress = view.gear.data.address,
+                currentPostalCode = view.gear.data.postalcode,
+                currentCity = view.gear.data.city,
+                currentRegion = view.gear.data.region,
+                currentCountry = view.gear.data.country,
+                availabilityArray = [],
+                updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
 
-            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+            $saveBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
             view.addCellsToSelections();
 
+            //Convert selections to availability array
             for(month in view.selections) {
                 monthSelections = view.selections[month];
-
                 for(j = 0; j < monthSelections.length; j++) {
                     selection = monthSelections[j];
                     availabilityArray.push({
@@ -291,7 +287,7 @@ define(
                     });
                 }
             }
-            view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function() {});
+            view.gear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function() {});
 
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
@@ -356,7 +352,7 @@ define(
 
 			updateCall = function() {
 				view.gear.save(App.user.data.id, function(error) {
-                    currentBtn.text('Save');
+                    $saveBtn.text('Save');
                     if(error) {
 						console.log(error);
 						return;
@@ -456,17 +452,15 @@ define(
                 $calendarContainer = $('#gearavailability-months-container', this.$element),
                 i, startMoment, endMoment, momentIterator;
 
-            if(this.alwaysFlag === 1) {
-                $('.day', $calendarContainer).each(function() {
-                    var $this = $(this);
-                    if($this.hasClass('disabled') === false) {
-                        $this.addClass('selected');
-                    }
-                });
-                return;
-            }
-
             if(Array.isArray(selections) === false) {
+                if(this.alwaysFlag === 1) {
+                    $('.day', $calendarContainer).each(function() {
+                        var $this = $(this);
+                        if($this.hasClass('disabled') === false) {
+                            $this.addClass('selected');
+                        }
+                    });
+                }
                 return;
             }
 
