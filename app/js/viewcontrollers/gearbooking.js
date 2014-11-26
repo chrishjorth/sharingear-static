@@ -96,6 +96,7 @@ define(
 				}
 				availabilityArray = result.availabilityArray;
             	view.availabilityArray = availabilityArray;
+            	view.alwaysFlag = result.alwaysFlag;
             	view.render();
             });
 
@@ -370,6 +371,16 @@ define(
 
 		disableUnavailableDays = function() {
 			var $leftCalendarContainer, $rightCalendarContainer, startMoment, endMoment, momentIterator, i;
+
+			if(this.alwaysFlag === 0) {
+				return;
+			}
+
+			if(this.alwaysFlag === 1) {
+				$('.day', $leftCalendarContainer).removeClass('unavailable');
+				$('.day', $rightCalendarContainer).removeClass('unavailable');
+				return;
+			}
 
 			$leftCalendarContainer = $('#gearbooking-leftmonths-container', this.$element);
 			$rightCalendarContainer = $('#gearbooking-rightmonths-container', this.$element);
