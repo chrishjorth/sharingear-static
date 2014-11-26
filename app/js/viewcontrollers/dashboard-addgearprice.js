@@ -92,7 +92,8 @@ define(
                 // clear spinner on btn after response
                 $('#dashboard-addgearprice-form #submit').text('Save');
                 if(!error) {
-					App.router.navigateTo('dashboard/addgearend', view.newGear);
+//					App.router.navigateTo('dashboard/addgearend', view.newGear);
+					App.router.navigateTo('dashboard/gearavailability', view.newGear);
 				}
 			});
 		}
@@ -104,7 +105,7 @@ define(
 				if(!error) {
 					App.router.navigateTo('dashboard/addgearphotos', view.newGear);
 				}
-			})
+			});
 		}
 
 		function save(callback) {
@@ -115,7 +116,7 @@ define(
 				currentRegion = this.newGear.region,
 				currentCountry = this.newGear.country,
 				didLocationChange = false,
-				addressOneliner, newGearData, longitude, latitude, saveCall;
+                isLocationSame, addressOneliner, newGearData, longitude, latitude, saveCall;
 
 			_.extend(this.newGear.data, {
 				price_a: $('#dashboard-addgearprice-form #price_a', this.$element).val(),
