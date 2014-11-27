@@ -24,8 +24,6 @@ define(
 			booking.data.preauth_id = this.passedData.preAuthorizationID;
 			booking.data.booking_status = 'pending';
 			booking.data.gear_id = this.passedData.gear_id;
-			console.log('Booking data: ');
-			console.log(booking.data);
 			booking.update(App.user.data.id, function(error) {
 				if(error) {
 					console.log('Error updating booking: ' + error);

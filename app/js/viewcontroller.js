@@ -73,12 +73,13 @@ define([
 		this.unbindEvents();
 
 		this.$element.html(template);
-		if(this.didRender && typeof this.didRender == 'function') {
-			this.didRender();
-		}
-		
+
 		if(callback && typeof callback === 'function') {
 			callback();
+		}
+
+		if(this.didRender && typeof this.didRender == 'function') {
+			this.didRender();
 		}
 	}
 

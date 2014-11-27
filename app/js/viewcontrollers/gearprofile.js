@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Gear profile page view.
- * @author: Chris Hjorth, Horatiu Roman
+ * @author: Chris Hjorth
  */
 
 'use strict';
@@ -127,18 +127,6 @@ define(
             this.setupEvent('click', '#fb-share-gear', this, this.handleFacebookShare);
             this.setupEvent('click', '#tw-share-gear', this, this.handleTwitterShare);
 
-            //Check for querystring sent by a booking payment process
-			preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
-			bookingID = Utilities.getQueryStringParameterValue(window.location.search, 'booking_id');
-			if(paymentSuccessModalOpen === false && preAuthorizationID && bookingID) {
-				App.router.openModalView('paymentsuccessful', {
-					preAuthorizationID: preAuthorizationID,
-					bookingID: bookingID,
-					gear_id: this.gear.data.id
-				});
-				paymentSuccessModalOpen = true;
-			}
-
             this.gear.getAvailability(App.user.data.id, function(error, result) {
             	var mustDisable = false;
             	if(error) {
@@ -154,6 +142,18 @@ define(
                     $('#gearprofile-book-btn').addClass('disabled-btn');
                 }
             });
+
+            //Check for querystring sent by a booking payment process
+			preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
+			bookingID = Utilities.getQueryStringParameterValue(window.location.search, 'booking_id');
+			if(paymentSuccessModalOpen === false && preAuthorizationID && bookingID) {
+				App.router.openModalView('paymentsuccessful', {
+					preAuthorizationID: preAuthorizationID,
+					bookingID: bookingID,
+					gear_id: this.gear.data.id
+				});
+				paymentSuccessModalOpen = true;
+			}
 		};
 
 

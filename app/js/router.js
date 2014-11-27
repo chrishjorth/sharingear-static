@@ -9,6 +9,13 @@ define(
 	['jquery'],
 	function($) {
 		var Router,
+			mainViewContainer,
+			modalViewLightbox,
+			modalViewContainer,
+			hashUpdated,
+			navigateToViewCalled,
+			openModalViews,
+
 			addRoutes,
 			getRoute,
 			routeExists,
@@ -19,6 +26,13 @@ define(
 			loadModalView,
 			closeModalView,
 			setQueryString;
+
+		mainViewContainer = '.view-container';
+		modalViewLightbox = '.modal-view-lightbox';
+		modalViewContainer = '.modal-view-container';
+		hashUpdated = false; //Semaphore variable
+		navigateToViewCalled = false; //Semaphore variable
+		openModalViews = [];
 
 		addRoutes = function() {
 			var i;
@@ -65,32 +79,32 @@ define(
 		 */
 		handleHashChange = function() {
 			//Handle semaphore
-			if(Router.navigateToViewCalled === false){
+			if(navigateToViewCalled === false){
 				//Origin of event is URL or
 				// direct link
-				Router.hashUpdated = true;
+				hashUpdated = true;
 				Router.navigateTo(window.location.hash.substring(1), null);
 			}
 			else {
 				//Origin of event is navigateTo
-				Router.navigateToViewCalled = false;
+				navigateToViewCalled = false;
 			}
 		};
 
 		navigateTo = function(route, data, callback) {
             var router = this,
             	queryIndex;
-			if(router.hashUpdated === false) {
+			if(hashUpdated === false) {
 				//Hash change event not fired
 				//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
 				if(window.location.hash !== '#' + route) {
-					router.navigateToViewCalled = true;
+					navigateToViewCalled = true;
 					window.location.hash = '#' + route; //This triggers handleHashChange, which is why we set the semaphores so that navigateTo is not called again
 				}
 			}
 			else {
 				//Hash change event fired
-				router.hashUpdated = false;
+				hashUpdated = false;
 			}
 
 			//Strip querystring from route
@@ -127,7 +141,7 @@ define(
 				if(router.currentViewController !== null) {
 					router.currentViewController.close();
 				}
-				router.currentViewController = new ViewController.constructor({name: view, $element: $(router.mainViewContainer), labels: {}, template: ViewTemplate, path: path, passedData: data});
+				router.currentViewController = new ViewController.constructor({name: view, $element: $(mainViewContainer), labels: {}, template: ViewTemplate, path: path, passedData: data});
 				//The ready property is so a controller can abort loading, useful if a redirect is being called
 				if(router.currentViewController.ready === true) {
 					router.currentViewController.render(function() {
@@ -147,21 +161,29 @@ define(
 		};
 
 		openModalView = function(route, data, callback) {
-			this.loadModalView(this.getRoute(route), route, data, callback);
+			//if a modal is already open, store it, and open the new one, then on close open the old... use a queue!
+			var view = this.getRoute(route);
+			openModalViews.unshift({
+				view: route,
+				data: data,
+				callback: callback
+			});
+			
+			if(openModalViews.length <= 1) {
+				this.loadModalView(view, route, data, callback);
+			}
 		};
 
 		loadModalView = function(view, path, data, callback) {
 			var router = this;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
-                var $modalViewLightbox = $(router.modalViewLightbox),
+                var $modalViewLightbox = $(modalViewLightbox),
                     $modalViewContainer;
 
+                $modalViewContainer = $(modalViewContainer);
+                //TODO: remove this once out of closed beta
                 if (view === "closedbeta") {
-                    $modalViewContainer = $(router.modalViewContainer);
                     $modalViewContainer.addClass('closed-beta-modal');
-                } else {
-                    $modalViewContainer = $(router.modalViewContainer);
-                    $modalViewContainer.removeClass('closed-beta-modal');
                 }
 
 				if(router.currentModalViewController !== null) {
@@ -186,22 +208,33 @@ define(
 
 		closeModalView = function(callback) {
 			var router = this,
-				$modalViewLightbox = $(this.modalViewLightbox);
+				$modalViewLightbox = $(modalViewLightbox),
+				previousModal;
 
 			if(this.currentModalViewController !== null) {
 				this.currentModalViewController.close();
-				//this.currentModalViewController = null;
+				openModalViews.pop();
+				this.currentModalViewController = null;
 			}
 			if($modalViewLightbox.hasClass('hidden') === false) {
 				$modalViewLightbox.addClass('hidden');
 				$('body').removeClass('modal-open');
 			}
 
-			//Render the underlying view again so that data gets updated
-			this.currentViewController.initialize();
-			this.currentViewController.render(function() {
-				router.currentViewController.renderSubviews();
-			});
+			//TODO: remove once out of closed beta
+			$(modalViewContainer).removeClass('closed-beta-modal');
+
+			if(openModalViews.length > 0) {
+				previousModal = openModalViews.pop();
+				router.openModalView(previousModal.view, previousModal.data, previousModal.callback);
+			}
+			else {
+				//Render the underlying view again so that data gets updated
+				this.currentViewController.initialize();
+				this.currentViewController.render(function() {
+					router.currentViewController.renderSubviews();
+				});
+			}
 
 			if(callback && typeof callback === 'function') {
 				callback();
@@ -226,11 +259,6 @@ define(
 			routes: ['error'], //The default error route must always be present for error handling
 			currentViewController: null,
 			currentModalViewController: null,
-			mainViewContainer: '.view-container',
-			modalViewLightbox: '.modal-view-lightbox',
-			modalViewContainer: '.modal-view-container',
-			hashUpdated: false, //Semaphore variable
-			navigateToViewCalled: false, //Semaphore variable
 
 			addRoutes: addRoutes,
 			getRoute: getRoute,
