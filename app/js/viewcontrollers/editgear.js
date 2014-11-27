@@ -50,6 +50,13 @@ define(
         geocoder = new GoogleMaps.Geocoder();
 
 		didInitialize = function() {
+            Moment.locale('en-custom', {
+                week: {
+                    dow: 1,
+                    doy: 4
+                }
+            });
+
 			this.gear = this.passedData;
 			this.templateParameters = this.gear.data;
             this.initAvailability();
@@ -119,20 +126,18 @@ define(
         initAvailability = function() {
             var view = this;
 
-            Moment.locale('en-custom', {
-                week: {
-                    dow: 1,
-                    doy: 4
-                }
-            });
             this.shownMoment = new Moment();
 
             this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
             this.alwaysFlag = -1;
 
             this.gear.getAvailability(App.user.data.id, function(error, result) {
-                var i, startMoment, endMoment;
-                var availabilityArray = result.availabilityArray;
+                var availabilityArray = result.availabilityArray,
+                    i, startMoment, endMoment;
+
+                console.log('availability:');
+                console.log(result);
+
                 view.alwaysFlag = result.alwaysFlag; // here the flag is set from the DB !!!!
 
                 $('#gearavailability-always-btn').removeClass('disabled');
@@ -274,8 +279,6 @@ define(
 
             $saveBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
-            view.addCellsToSelections();
-
             //Convert selections to availability array
             for(month in view.selections) {
                 monthSelections = view.selections[month];
@@ -287,6 +290,7 @@ define(
                     });
                 }
             }
+            
             view.gear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function() {});
 
 			updatedGearData = {
@@ -492,11 +496,12 @@ define(
             view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
 
             $('#gearavailability-months-container .day-row .day').each(function() {
-                //TODO: This is an ugly if construction, invert it
                 if($(this).hasClass('disabled') && inInterval === false) {
                     // console.log('do nothing');
+                    return;
                 }
-                else if($(this).hasClass('selected')) {
+
+                if($(this).hasClass('selected')) {
                     //if not in an active interval initiate one
                     if (inInterval === false) {
                         inInterval = !inInterval;
@@ -505,6 +510,7 @@ define(
                     currentMoment.add(1, 'days');
                 }
                 else {
+                    //The interval must not be because of always available
                     if(inInterval === true) {
                         inInterval = !inInterval;
                         end = new Moment(currentMoment);
@@ -566,9 +572,9 @@ define(
             view.alwaysFlag = 0;
 
             view.selections = {};
-            view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
+            //view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
 
-            view.setupMonthCalendar();
+            //view.setupMonthCalendar();
             view.clearSelections();
             view.renderSelections();
         };
@@ -657,27 +663,44 @@ define(
                 currentSelection = monthSelections[i];
                 j = i + 1;
                 didSplice = false;
+                //Match a selection against all the following selections
                 while(j < monthSelections.length) {
                     startMomentA = currentSelection.startMoment;
                     endMomentA = currentSelection.endMoment;
                     startMomentB = monthSelections[j].startMoment;
                     endMomentB = monthSelections[j].endMoment;
                     if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(startMomentA, endMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
+                        //startA is between B and endA is after endB: startA becomes startB so that B is included in A, then remove B
                         currentSelection.startMoment = startMomentB;
                         monthSelections.splice(j, 1);
                         didSplice = true;
                     }
                     else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
+                        //startB is between A and endB is after endA: endA becomes endB so that B is included in A, then remove B
                         currentSelection.endMoment = endMomentB;
                         monthSelections.splice(j, 1);
                         didSplice = true;
                     }
                     else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
+                        //B is included in A: remove B
                         monthSelections.splice(j, 1);
                         didSplice = true;
                     }
                     else if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
+                        //A is included in B: A becomes B, then remove B
                         currentSelection.startMoment = startMomentB;
+                        currentSelection.endMoment = endMomentB;
+                        monthSelections.splice(j, 1);
+                        didSplice = true;
+                    }
+                    else if(endMomentB.date() + 1 === startMomentA.date() && endMomentB.month() === startMomentA.month() && endMomentB.year() === startMomentA.year()) {
+                        //B is left adjacent to A: startA becomes startB so that they are joined, remove B
+                        currentSelection.startMoment = startMomentB;
+                        monthSelections.splice(j, 1);
+                        didSplice = true;
+                    }
+                    else if(endMomentA.date() + 1 === startMomentB.date() && endMomentA.month() === startMomentB.month() && endMomentA.year() === startMomentB.year()) {
+                        //B is right adjacent to A: endA becomes endB so that they are joined, remove A
                         currentSelection.endMoment = endMomentB;
                         monthSelections.splice(j, 1);
                         didSplice = true;
@@ -690,6 +713,8 @@ define(
                     i++;
                 }
             }
+            view.clearSelections();
+            view.renderSelections();
         };
 
         isBeforeOrSameDay = function(momentA, momentB) {

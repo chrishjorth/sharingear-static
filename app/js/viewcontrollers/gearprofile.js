@@ -145,7 +145,7 @@ define(
             		console.log('Error getting gear availability: ' + error);
             		mustDisable = true;
             	}
-                else if(result.alwaysFlag === 0) {
+                else if(result.alwaysFlag === 0 && result.availabilityArray.length <= 0) {
                     mustDisable = true;
                 }
                 if(mustDisable === true) {
@@ -166,10 +166,10 @@ define(
         	img.onload = function() {
         		isVertical = img.width < img.height;
         		if(isVertical === true) {
-        			backgroundSize = '205px auto';
+        			backgroundSize = '255px auto';
         		}
         		else {
-        			backgroundSize = 'auto 205px';
+        			backgroundSize = 'auto 255px';
         		}
         		$('#owner_picture').css({
         			'background-image': 'url(' + img.src + ')',

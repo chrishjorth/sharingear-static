@@ -87,14 +87,27 @@ define(
 			this.endMoment.minutes(0);
 			this.endMoment.seconds(0);
 
-			this.availabilityArray = [];
+			this.availability = {};
 			this.gear.getAvailability(App.user.data.id, function(error, result) {
+				var availabilityArray, i, startMoment, endMoment;
 				if(error) {
 					console.log(error);
 					return;
 				}
-				view.availabilityArray = result.availabilityArray;
+				availabilityArray = result.availabilityArray;
+				view.availabilityArray = availabilityArray;
 				view.alwaysFlag = result.alwaysFlag;
+				for(i = 0; i < availabilityArray.length; i++) {
+                    startMoment = new Moment(availabilityArray[i].start);
+                    endMoment = new Moment(availabilityArray[i].end);
+                    if(Array.isArray(view.availability[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
+                        view.availability[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
+                    }
+                    view.availability[startMoment.year() + '-' + (startMoment.month() + 1)].push({
+                        startMoment: startMoment,
+                        endMoment: endMoment
+                    });
+                }
 				view.render();
 			});
 
@@ -144,7 +157,7 @@ define(
 				for(row = 1; row <= 6; row++) {
 					for(col = 1; col <= 7; col++) {
 						//Reset cell
-						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-xs-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
 						$box.removeClass('escluded selected included');
 						if(momentIterator.isBefore(this.startMoment, 'month')) {
 							//$box.addClass('escluded');
@@ -180,7 +193,7 @@ define(
 				momentIterator.subtract(startDay, 'days');
 				for(row = 1; row <= 6; row++) {
 					for(col = 1; col <= 7; col++) {
-						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-xs-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
 						$box.removeClass('escluded selected included');
 						if(momentIterator.isBefore(this.startMoment, 'day')) {
 							$box.addClass('escluded');
@@ -281,26 +294,26 @@ define(
 		renderMonthCalendar = function($monthCalendarContainer) {
 			var header, dayRows, i;
 			header = '<div class="row calendar-header">';
-			header += '<div class="col-md-1 col-md-offset-1"></div>';
-			header += '<div class="col-md-1">M</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">W</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">F</div>';
-			header += '<div class="col-md-1">S</div>';
-			header += '<div class="col-md-1">S</div>';
+			header += '<div class="col-xs-1 col-xs-offset-1"></div>';
+			header += '<div class="col-xs-1">M</div>';
+			header += '<div class="col-xs-1">T</div>';
+			header += '<div class="col-xs-1">W</div>';
+			header += '<div class="col-xs-1">T</div>';
+			header += '<div class="col-xs-1">F</div>';
+			header += '<div class="col-xs-1">S</div>';
+			header += '<div class="col-xs-1">S</div>';
 			header += '</div>';
 			dayRows = '';
 			for(i = 0; i < 6; i++) {
 				dayRows += '<div class="row day-row">';
-				dayRows += '<div class="col-md-1 col-md-offset-1"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '<div class="col-xs-1 col-xs-offset-1"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
 				dayRows += '</div>';
 			}
 			$monthCalendarContainer.append(header + dayRows);
@@ -336,7 +349,7 @@ define(
 			moment.subtract(startDay, 'days');
 			for(row = 1; row <= 6; row++) { //6 possible week pieces
 				for(col = 1; col <= 7; col++) { //7 days
-					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-xs-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
 					date = moment.date();
 					$dayBox.html(date);
 					$dayBox.data('date', date);
@@ -368,29 +381,42 @@ define(
 		};
 
 		disableUnavailableDays = function() {
-			var $leftCalendarContainer, $rightCalendarContainer, startMoment, endMoment, momentIterator, i;
+			var leftAvailability = this.availability[this.leftMoment.year() + '-' + (this.leftMoment.month() + 1)],
+				rightAvailability = this.availability[this.rightMoment.year() + '-' + (this.rightMoment.month() + 1)],
+				$leftCalendarContainer, $rightCalendarContainer, startMoment, endMoment, momentIterator, i, disableUnavailableDaysForMonth;
 
-			if(this.alwaysFlag === 0) {
+			if(this.alwaysFlag === 0 && Array.isArray(leftAvailability) === false && Array.isArray(rightAvailability) === false) {
+				//Not available in any of the two months
 				return;
 			}
 
-			if(this.alwaysFlag === 1) {
-				$('.day', $leftCalendarContainer).removeClass('unavailable');
-				$('.day', $rightCalendarContainer).removeClass('unavailable');
-				return;
-			}
+			disableUnavailableDaysForMonth = function(monthAvailability, $monthContainer, dayIDprefix) {
+				console.log('GO!');
+				for(i = 0; i < monthAvailability.length; i++) {
+                	startMoment = monthAvailability[i].startMoment;
+                	endMoment = monthAvailability[i].endMoment;
+                	momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
+                	while(momentIterator.isBefore(endMoment, 'day') === true || momentIterator.isSame(endMoment, 'day') === true) {
+                    	$('#' + dayIDprefix + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date(), $monthContainer).removeClass('unavailable');
+                    	momentIterator.add(1, 'days');
+                	}
+                }
+			};
 
 			$leftCalendarContainer = $('#gearbooking-leftmonths-container', this.$element);
+			if(Array.isArray(leftAvailability) === false && this.alwaysFlag === 1) {
+				$('.day', $leftCalendarContainer).removeClass('unavailable');
+			}
+			else if(Array.isArray(leftAvailability) === true) {
+				disableUnavailableDaysForMonth(leftAvailability, $leftCalendarContainer, 'gearbooking-leftday-');
+			}
+
 			$rightCalendarContainer = $('#gearbooking-rightmonths-container', this.$element);
-			for(i = 0; i < this.availabilityArray.length; i++) {
-				startMoment = new Moment(this.availabilityArray[i].start);
-				endMoment = new Moment(this.availabilityArray[i].end);
-				momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
-				while(momentIterator.isBefore(endMoment, 'day') === true || momentIterator.isSame(endMoment, 'day') === true) {
-					$('#gearbooking-leftday-' + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date(), $leftCalendarContainer).removeClass('unavailable');
-					$('#gearbooking-rightday-' + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date(), $rightCalendarContainer).removeClass('unavailable');
-					momentIterator.add(1, 'days');
-				}
+			if(Array.isArray(rightAvailability) === false && this.alwaysFlag === 1) {
+				$('.day', $rightCalendarContainer).removeClass('unavailable');
+			}
+			else if(Array.isArray(rightAvailability) === true) {
+				disableUnavailableDaysForMonth(rightAvailability, $rightCalendarContainer, 'gearbooking-rightday-');
 			}
 		};
 

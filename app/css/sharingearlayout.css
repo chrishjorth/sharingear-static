@@ -1366,6 +1366,50 @@ background-color: rgb(56,143,192);
     text-align: right;
 }
 
+.calendar-header .col-xs-1 {
+	padding: 0;
+	text-align: center;
+}
+
+.calendar .row .col-xs-1 {
+	padding: 0;
+	width: 9.4%;
+	text-align: center;
+	font-weight: 300;
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #ffffff;
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #ffffff;
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+	user-select: none;
+}
+
+.calendar .row .col-xs-1:last-child {
+	border-right-width: 2px;
+	border-right-style: solid;
+	border-right-color: #ffffff;
+}
+
+.calendar .row:last-child .col-xs-1 {
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+	border-bottom-color: #ffffff;
+}
+
+.calendar .row:last-child .col-xs-offset-1 {
+	border: none;
+}
+
+.calendar .row .col-xs-offset-1 {
+	border: none;
+	text-align: right;
+}
+
+
 .week-calendar .hour-row .col-md-1 {
     height: 30px;
 }
@@ -3267,8 +3311,8 @@ span.num {
 }
 
 .profile_im{
-    width:205px;
-    height: 205px;
+    width:100%;
+    height: 250px;
     background: no-repeat 50% 50%;
 
 }
@@ -3300,6 +3344,7 @@ span.num {
 	padding: 10px;
 	padding-bottom: 0px;
 	margin-left: -30px;
+	min-width: 155px;
 }
 
 .owl-item2 img {
@@ -3678,6 +3723,13 @@ span.num {
         position: inherit;
         padding-left: 37px;
     }
+	.price-container{
+		margin-left: 0;
+	}
+
+	.calendar .row .col-md-1{
+		width: auto;
+	}
 }
 
 #availablilty-message-container{
@@ -3894,4 +3946,16 @@ span.num {
     color: #000;
     margin-top: 1px;
     margin-left: 4px !important;
+}
+
+#gearbooking-starttime{
+
+	border-radius: 0px;
+
+}
+
+#gearbooking-endtime{
+
+	border-radius: 0px;
+
 }
