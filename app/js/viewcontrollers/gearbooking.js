@@ -157,7 +157,7 @@ define(
 				for(row = 1; row <= 6; row++) {
 					for(col = 1; col <= 7; col++) {
 						//Reset cell
-						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-xs-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
 						$box.removeClass('escluded selected included');
 						if(momentIterator.isBefore(this.startMoment, 'month')) {
 							//$box.addClass('escluded');
@@ -193,7 +193,7 @@ define(
 				momentIterator.subtract(startDay, 'days');
 				for(row = 1; row <= 6; row++) {
 					for(col = 1; col <= 7; col++) {
-						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+						$box = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-xs-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
 						$box.removeClass('escluded selected included');
 						if(momentIterator.isBefore(this.startMoment, 'day')) {
 							$box.addClass('escluded');
@@ -294,26 +294,26 @@ define(
 		renderMonthCalendar = function($monthCalendarContainer) {
 			var header, dayRows, i;
 			header = '<div class="row calendar-header">';
-			header += '<div class="col-md-1 col-md-offset-1"></div>';
-			header += '<div class="col-md-1">M</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">W</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">F</div>';
-			header += '<div class="col-md-1">S</div>';
-			header += '<div class="col-md-1">S</div>';
+			header += '<div class="col-xs-1 col-xs-offset-1"></div>';
+			header += '<div class="col-xs-1">M</div>';
+			header += '<div class="col-xs-1">T</div>';
+			header += '<div class="col-xs-1">W</div>';
+			header += '<div class="col-xs-1">T</div>';
+			header += '<div class="col-xs-1">F</div>';
+			header += '<div class="col-xs-1">S</div>';
+			header += '<div class="col-xs-1">S</div>';
 			header += '</div>';
 			dayRows = '';
 			for(i = 0; i < 6; i++) {
 				dayRows += '<div class="row day-row">';
-				dayRows += '<div class="col-md-1 col-md-offset-1"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
+				dayRows += '<div class="col-xs-1 col-xs-offset-1"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
+				dayRows += '<div class="col-xs-1 day"></div>';
 				dayRows += '</div>';
 			}
 			$monthCalendarContainer.append(header + dayRows);
@@ -349,7 +349,7 @@ define(
 			moment.subtract(startDay, 'days');
 			for(row = 1; row <= 6; row++) { //6 possible week pieces
 				for(col = 1; col <= 7; col++) { //7 days
-					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
+					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-xs-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
 					date = moment.date();
 					$dayBox.html(date);
 					$dayBox.data('date', date);
