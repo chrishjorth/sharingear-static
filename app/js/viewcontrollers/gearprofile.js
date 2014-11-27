@@ -145,7 +145,7 @@ define(
             		console.log('Error getting gear availability: ' + error);
             		mustDisable = true;
             	}
-                else if(result.alwaysFlag === 0) {
+                else if(result.alwaysFlag === 0 && result.availabilityArray.length <= 0) {
                     mustDisable = true;
                 }
                 if(mustDisable === true) {
