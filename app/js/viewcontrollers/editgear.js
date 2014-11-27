@@ -270,7 +270,7 @@ define(
                 $saveBtn = $(this),
                 isLocationSame = false,
                 currentAddress = view.gear.data.address,
-                currentPostalCode = view.gear.data.postalcode,
+                currentPostalCode = view.gear.data.postal_code,
                 currentCity = view.gear.data.city,
                 currentRegion = view.gear.data.region,
                 currentCountry = view.gear.data.country,
@@ -372,7 +372,7 @@ define(
 				currentCountry === updatedGearData.country);
 
 			if(isLocationSame === false) {
-				addressOneliner = updatedGearData.address + ', ' + updatedGearData.postalcode + ' ' + updatedGearData.city + ', ' + updatedGearData.region + ', ' + updatedGearData.country;
+				addressOneliner = updatedGearData.address + ', ' + updatedGearData.postal_code + ' ' + updatedGearData.city + ', ' + updatedGearData.region + ', ' + updatedGearData.country;
 				geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.gear.data.longitude = results[0].geometry.location.lng();
