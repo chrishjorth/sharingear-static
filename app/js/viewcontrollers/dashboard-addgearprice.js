@@ -34,7 +34,7 @@ define(
                     delivery_price: null,
                     delivery_distance: null,
 					address: '',
-					postalcode: null,
+					postal_code: null,
 					city: '',
 					region: '',
 					country: '',
@@ -111,7 +111,7 @@ define(
 		function save(callback) {
 			var view = this,
 				currentAddress = this.newGear.address,
-				currentPostalCode = this.newGear.postalcode,
+				currentPostalCode = this.newGear.postal_code,
 				currentCity = this.newGear.city,
 				currentRegion = this.newGear.region,
 				currentCountry = this.newGear.country,
@@ -127,7 +127,7 @@ define(
 				delivery_distance: $('#dashboard-addgearprice-form input[name="delivery_distance"]', this.$element).val(),
 
                 address: $('#dashboard-addgearprice-form #dashboard-addgearprice-address', this.$element).val(),
-				postalcode: $('#dashboard-addgearprice-form #dashboard-addgearprice-postalcode', this.$element).val(),
+				postal_code: $('#dashboard-addgearprice-form #dashboard-addgearprice-postalcode', this.$element).val(),
 				city: $('#dashboard-addgearprice-form #dashboard-addgearprice-city', this.$element).val(),
 				region: $('#dashboard-addgearprice-form #dashboard-addgearprice-region', this.$element).val(),
 				country: $('#dashboard-addgearprice-form #dashboard-addgearprice-country option:selected').val()
@@ -136,7 +136,7 @@ define(
 			newGearData = this.newGear.data;
 
 			isLocationSame = (currentAddress === newGearData.address &&
-				currentPostalCode === newGearData.postalcode &&
+				currentPostalCode === newGearData.postal_code &&
 				currentCity === newGearData.city &&
 				currentRegion === newGearData.region &&
 				currentCountry === newGearData.country);
@@ -155,7 +155,7 @@ define(
 			};
 
 			if(isLocationSame === false) {
-				addressOneliner = newGearData.address + ', ' + newGearData.postalcode + ' ' + newGearData.city + ', ' + newGearData.region + ', ' + newGearData.country;
+				addressOneliner = newGearData.address + ', ' + newGearData.postal_code + ' ' + newGearData.city + ', ' + newGearData.region + ', ' + newGearData.country;
 				this.geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.newGear.data.longitude = results[0].geometry.location.lng();
@@ -165,7 +165,6 @@ define(
 					else {
 						console.log('Error geocoding: ' + status);
                         alert('Address error');
-
 					}
 				});
 			}
