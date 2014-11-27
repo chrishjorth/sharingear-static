@@ -23,6 +23,7 @@ define(
 			navigateTo,
 			loadView,
 			openModalView,
+			openModalSiblingView,
 			loadModalView,
 			closeModalView,
 			setQueryString;
@@ -174,6 +175,13 @@ define(
 			}
 		};
 
+		/**
+		 * Opens a modal view by closing any already open modals.
+		 */
+		openModalSiblingView = function(route, data, callback) {
+			this.loadModalView(this.getRoute(route), route, data, callback);
+		};
+
 		loadModalView = function(view, path, data, callback) {
 			var router = this;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
@@ -267,6 +275,7 @@ define(
 			navigateTo: navigateTo,
 			loadView: loadView,
 			openModalView: openModalView,
+			openModalSiblingView: openModalSiblingView,
 			loadModalView: loadModalView,
 			closeModalView: closeModalView,
 			setQueryString: setQueryString

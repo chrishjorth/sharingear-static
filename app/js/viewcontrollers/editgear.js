@@ -418,8 +418,9 @@ define(
         };
 
         setupMonthCalendar = function() {
-            var moment, startDay, $calendarContainer, $dayBox, row, col, date;
+            var moment, today, startDay, $calendarContainer, $dayBox, row, col, date;
 
+            today = new Moment();
             moment = new Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
             startDay = moment.date(1).weekday();
             $calendarContainer = $('#gearavailability-months-container', this.$element);
@@ -435,7 +436,7 @@ define(
                     $dayBox.data('month', moment.month());
                     $dayBox.attr('id', 'gearavailability-day-' + moment.month() + '-' + date);
                     $dayBox.removeClass('disabled');
-                    if(moment.month() !== this.shownMoment.month()) {
+                    if(moment.month() !== this.shownMoment.month() || moment.isBefore(today)) {
                         $dayBox.addClass('disabled');
                     }
                     moment.add(1, 'days');

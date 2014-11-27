@@ -1,13 +1,13 @@
 /**
  * Controller for the Sharingear gear booking page view.
- * @author: Chris Hjorth, Horatiu Roman
+ * @author: Chris Hjorth
  */
 
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'models/booking', 'moment'],
-	function(_, $, ViewController, App, Gear, Booking, Moment) {
+	['underscore', 'jquery', 'viewcontroller', 'utilities', 'app', 'models/gear', 'models/booking', 'moment'],
+	function(_, $, ViewController, Utilities, App, Gear, Booking, Moment) {
 		var didInitialize,
 			didRender,
 			renderPrice,
@@ -36,7 +36,9 @@ define(
 			handleRightDaySelection,
 
 			clearLeftSelection,
-			clearRightSelection;
+			clearRightSelection,
+
+			enableBooking;
 
 		didInitialize = function() {
 			var view = this,
@@ -50,21 +52,18 @@ define(
 
 			this.gear = this.passedData;
 
+			this.bookingBtnEnabled = false;
+
 			this.pricePerHour = this.gear.data.price_a;
 			this.pricePerDay = this.gear.data.price_b;
 			this.pricePerWeek = this.gear.data.price_c;
 
 			intervalStart = App.user.getIntervalStart();
-			if(intervalStart === null) {
-				this.leftMoment = new Moment();
-				this.leftMoment.add(1, 'days');
-				this.startMoment = new Moment();
-				this.startMoment.add(1, 'days');
-			}
-			else {
-				this.leftMoment = new Moment(intervalStart, 'YYYYMMDD');
-				this.startMoment = new Moment(intervalStart, 'YYYYMMDD');
-			}
+			this.leftMoment = new Moment();
+			this.leftMoment.add(1, 'days');
+			this.startMoment = new Moment();
+			this.startMoment.add(1, 'days');
+
 			this.leftMoment.startOf('week').weekday(0);
 			this.leftMoment.hour(12);
 			this.startMoment.hour(12);
@@ -72,15 +71,10 @@ define(
 			this.startMoment.seconds(0);
 
 			intervalEnd = App.user.getIntervalEnd();
-			if(intervalEnd === null) {
-				this.rightMoment = new Moment(this.leftMoment);
-				this.endMoment = new Moment(this.startMoment);
-				this.endMoment.add(1, 'days');
-			}
-			else {
-				this.rightMoment = new Moment(intervalEnd, 'YYYYMMDD');
-				this.endMoment = new Moment(intervalEnd, 'YYYYMMDD');
-			}
+			this.rightMoment = new Moment(this.leftMoment);
+			this.endMoment = new Moment(this.startMoment);
+			this.endMoment.add(1, 'days');
+			
 			this.rightMoment.startOf('week').weekday(0);
 			this.rightMoment.hour(12);
 			this.endMoment.hour(12);
@@ -89,7 +83,7 @@ define(
 
 			this.availability = {};
 			this.gear.getAvailability(App.user.data.id, function(error, result) {
-				var availabilityArray, i, startMoment, endMoment;
+				var availabilityArray, i, startMoment, endMoment, intervalStartMoment, intervalEndMoment, userIntervalIsAvailable;
 				if(error) {
 					console.log(error);
 					return;
@@ -97,6 +91,9 @@ define(
 				availabilityArray = result.availabilityArray;
 				view.availabilityArray = availabilityArray;
 				view.alwaysFlag = result.alwaysFlag;
+				userIntervalIsAvailable = false;
+				intervalStartMoment = new Moment(intervalStart, 'YYYYMMDD');
+				intervalEndMoment = new Moment(intervalEnd, 'YYYYMMDD');
 				for(i = 0; i < availabilityArray.length; i++) {
                     startMoment = new Moment(availabilityArray[i].start);
                     endMoment = new Moment(availabilityArray[i].end);
@@ -107,6 +104,17 @@ define(
                         startMoment: startMoment,
                         endMoment: endMoment
                     });
+
+                    //Check if intervalStart and intervalEnd are between startMoment and endMoment
+                    if(intervalStart !== null && intervalEnd !== null && Utilities.isMomentBetween(intervalStartMoment, startMoment, endMoment) === true && Utilities.isMomentBetween(intervalEndMoment, startMoment, endMoment) === true) {
+                    	userIntervalIsAvailable = true;
+                    }
+                }
+                if(userIntervalIsAvailable === true && intervalStart !== null && intervalEnd !== null) {
+                	view.leftMoment = new Moment(intervalStart, 'YYYYMMDD');
+					view.startMoment = new Moment(intervalStart, 'YYYYMMDD');
+					view.rightMoment = new Moment(intervalEnd, 'YYYYMMDD');
+					view.endMoment = new Moment(intervalEnd, 'YYYYMMDD');
                 }
 				view.render();
 			});
@@ -127,7 +135,6 @@ define(
 			this.renderPrice();
 
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
-			this.setupEvent('click', '#gearbooking-book-btn', this, this.handleBook);
 			//Navigation events
 			this.setupEvent('click', '#gearbooking-lefttoday-btn', this, this.handleLeftToday);
 			this.setupEvent('click', '#gearbooking-leftprevious-btn', this, this.handleLeftPrevious);
@@ -391,7 +398,6 @@ define(
 			}
 
 			disableUnavailableDaysForMonth = function(monthAvailability, $monthContainer, dayIDprefix) {
-				console.log('GO!');
 				for(i = 0; i < monthAvailability.length; i++) {
                 	startMoment = monthAvailability[i].startMoment;
                 	endMoment = monthAvailability[i].endMoment;
@@ -490,7 +496,7 @@ define(
 
 			_.extend(view.newBooking.data, bookingData);
 
-			App.router.openModalView('payment', view.newBooking);
+			App.router.openModalSiblingView('payment', view.newBooking);
 		};
 
 		handleLeftToday = function(event) {
@@ -648,6 +654,8 @@ define(
 			view.handleRightHourDropdown(event);
 			view.renderSelection();
 			view.renderPrice(event);
+
+			view.enableBooking();
 		};
 
 		handleRightDaySelection = function(event) {
@@ -711,6 +719,8 @@ define(
 			view.handleRightHourDropdown(event);
 			view.renderSelection();
 			view.renderPrice(event);
+
+			view.enableBooking();
 		};
 
 		clearLeftSelection = function() {
@@ -729,6 +739,13 @@ define(
 			$('#gearbooking-rightmonths-container .day-row .day').each(function() {
 				$(this).removeClass('selected');
 			});
+		};
+
+		enableBooking = function() {
+			if(this.bookingBtnEnabled === false) {
+				$('#gearbooking-book-btn', this.$element).prop("disabled", false);
+				this.setupEvent('click', '#gearbooking-book-btn', this, this.handleBook);
+			}
 		};
 
 		return ViewController.inherit({
@@ -759,7 +776,9 @@ define(
 			clearRightSelection: clearRightSelection,
 			renderSelection: renderSelection,
 			handleLeftHourDropdown: handleLeftHourDropdown,
-			handleRightHourDropdown: handleRightHourDropdown
+			handleRightHourDropdown: handleRightHourDropdown,
+
+			enableBooking: enableBooking
 		});
 	}
 );

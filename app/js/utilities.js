@@ -15,7 +15,8 @@ define(
     		geoLocationGetCity,
     		getCityFromCoordinates,
     		getQueryStringParameterValue,
-    		capitalizeString;
+    		capitalizeString,
+    		isMomentBetween;
 
     	geocoder = new GoogleMaps.Geocoder();
 
@@ -143,6 +144,9 @@ define(
 			return string.charAt(0).toUpperCase() + string.slice(1);
 		};
 
+		isMomentBetween = function(moment, intervalStart, intervalEnd) {
+			return ((moment.isAfter(intervalStart, 'day') === true || moment.isSame(intervalStart, 'day') === true) && (moment.isBefore(intervalEnd, 'day') === true || moment.isSame(intervalEnd, 'day') === true));
+		};
 
 		return {
         	inherit: inherit,
@@ -151,7 +155,8 @@ define(
         	geoLocationGetCity: geoLocationGetCity,
         	getCityFromCoordinates: getCityFromCoordinates,
         	getQueryStringParameterValue: getQueryStringParameterValue,
-        	capitalizeString: capitalizeString
+        	capitalizeString: capitalizeString,
+        	isMomentBetween: isMomentBetween
     	};
 	}
 );
