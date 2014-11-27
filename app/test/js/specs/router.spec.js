@@ -75,7 +75,7 @@ define(
 				});
 			});
 
-			it('Can close a modal view', function(done) {
+			it.skip('Can close a modal view', function(done) {
 				Router.loadModalView('error', '', null, function() {
 					sinon.spy(Router.currentModalViewController, 'close');
 					Router.closeModalView(function() {
