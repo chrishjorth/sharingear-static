@@ -3,6 +3,8 @@
  * @author: Chris Hjorth
  */
 
+console.log('Main entrypoint reached...');
+
 requirejs.config({
 	baseUrl: 'js',
 	paths: {
@@ -68,6 +70,7 @@ require(
 			interpolate: /\{\{(.+?)\}\}/g,
 			escape: /\{\{-(.+?)\}\}/g
 		};
+		console.log('Run the app...');
 		App.run();
 	}
 );
