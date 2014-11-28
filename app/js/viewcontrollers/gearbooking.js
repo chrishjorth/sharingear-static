@@ -296,7 +296,14 @@ define(
 			display += '<span class="total-price">' + price + '</span></p>';
 			$('#totalprice', this.$element).html(display);
 			this.newBooking.data.price = price;
+			this.newBooking.data.pricePerHour = this.pricePerHour;
+			this.newBooking.data.pricePerDay = this.pricePerDay;
+			this.newBooking.data.pricePerWeek = this.pricePerWeek;
+			this.newBooking.data.numberOfHours = numberOfHours;
+			this.newBooking.data.numberOfDays = numberOfDays;
+			this.newBooking.data.numberOfWeeks = numberOfWeeks;
 		};
+
 
 		renderMonthCalendar = function($monthCalendarContainer) {
 			var header, dayRows, i;
@@ -482,11 +489,14 @@ define(
 
 			// check if time was selected
 			if(view.startMoment && view.endMoment) {
+				var gearData = view.gear.data.brand+" "+view.gear.data.subtype+" "+view.gear.data.model;
+				console.log("gearData is: "+gearData);
 				bookingData = {
 					user_id: App.user.data.id,
 					gear_id: view.gear.data.id,
 					start_time: view.startMoment.format('YYYY-MM-DD HH:mm:ss'),
-					end_time: view.endMoment.format('YYYY-MM-DD HH:mm:ss')
+					end_time: view.endMoment.format('YYYY-MM-DD HH:mm:ss'),
+					gearInfo: gearData
 				};
 			}
 			else {

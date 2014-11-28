@@ -516,6 +516,26 @@ footer a:hover {
     padding: 6px;
 }
 
+.payment-modal {
+	z-index: 101;
+	position: absolute;
+	background-color: #ffffff;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #dddddd;
+	color: #333333;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: 505px;
+	height: 465px;
+	padding: 10px;
+
+}
 
 /*----------------------------- closed beta -------------------------- */
 
@@ -643,6 +663,16 @@ footer a:hover {
 
 
 /*------------- LIST YOUR GEAR --------------------*/
+
+.right {
+	float: right;
+	text-align: right;
+}
+
+.center {
+	text-align: center;
+	margin: 0 auto;
+}
 
 .testimonials {
     position: static;
@@ -3334,8 +3364,24 @@ span.num {
     content: ' DKK';
 }
 
+.total-price-payment-container{
+	margin-top: -20px;
+	margin-bottom: 10px;
+	text-align: right;
+	padding: 0px;
+}
+
 .price-info{
 
+}
+
+.payment-small-box-fix{
+	padding: 0;
+	font-weight: bold;
+}
+
+.payment-small-box-fix2{
+	padding: 0;
 }
 
 .price-container{
@@ -3345,6 +3391,32 @@ span.num {
 	padding-bottom: 0px;
 	margin-left: -30px;
 	min-width: 155px;
+}
+
+.price-container-payment{
+	background-color: #f4f4f4;
+	padding: 5px 10px;
+	min-width: 155px;
+}
+
+.price-container-payment-right{
+
+	border-left: 10px solid white;
+
+}
+
+.payment-row-padding{
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.bottom-line{
+	border-bottom: 1px solid #dddddd;
+}
+
+.payment-dates{
+	color: #00aeff;
+	font-weight: bold;
 }
 
 .owl-item2 img {

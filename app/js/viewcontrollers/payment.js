@@ -25,13 +25,37 @@ define(
 			newBooking = this.passedData;
 			this.templateParameters = {
 				price: newBooking.data.price,
-				currency: 'DKK'
+				currency: 'DKK',
+				priceperhour: newBooking.data.pricePerDay,
+				priceperday: newBooking.data.pricePerHour,
+				priceperweek: newBooking.data.pricePerWeek,
+				numberofhours: newBooking.data.numberOfHours,
+				numberofdays: newBooking.data.numberOfDays,
+				numberofweeks: newBooking.data.numberOfWeeks,
+				startdate: newBooking.data.start_time,
+				enddate: newBooking.data.end_time,
+				gear: newBooking.data.gearInfo
 			};
 			this.isPaying = false;
 		};
 
 		didRender = function () {
+			var displayDatesFrom,displayDatesTo;
 			this.renderMissingDataInputs();
+			displayDatesFrom = this.templateParameters.startdate;
+			displayDatesTo = this.templateParameters.enddate;
+
+			$('#payment-price-of-hour', this.$element).html(this.templateParameters.priceperhour + ' DKK');
+			$('#payment-price-of-day', this.$element).html(this.templateParameters.priceperday + ' DKK');
+			$('#payment-price-of-week', this.$element).html(this.templateParameters.priceperweek + ' DKK');
+
+			$('#payment-number-of-hours', this.$element).html(this.templateParameters.numberofhours);
+			$('#payment-number-of-days', this.$element).html(this.templateParameters.numberofdays);
+			$('#payment-number-of-weeks', this.$element).html(this.templateParameters.numberofweeks);
+
+			$('#payment-gear-info', this.$element).html('<h3 style="margin-bottom: -30px;">' + this.templateParameters.gear + '</h3></br>');
+			$('#payment-gear-datesfrom', this.$element).html(displayDatesFrom);
+			$('#payment-gear-datesto', this.$element).html(displayDatesTo);
 
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
 			this.setupEvent('submit', '#payment-form', this, this.handlePay);

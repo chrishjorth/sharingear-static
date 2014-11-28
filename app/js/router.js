@@ -186,13 +186,13 @@ define(
 			var router = this;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
                 var $modalViewLightbox = $(modalViewLightbox),
-                    $modalViewContainer;
+                    $modalViewContainer = $(modalViewContainer);
 
-                $modalViewContainer = $(modalViewContainer);
                 //TODO: remove this once out of closed beta
                 if (view === "closedbeta") {
                     $modalViewContainer.addClass('closed-beta-modal');
                 }
+
 
 				if(router.currentModalViewController !== null) {
 					router.currentModalViewController.close();
