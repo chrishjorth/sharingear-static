@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'router', 'models/user', 'models/gearclassification', 'models/localization'],
-	function($, Router, User, GearClassification, Localization) {
+	['jquery', 'router', 'utilities', 'models/user', 'models/gearclassification', 'models/localization'],
+	function($, Router, Utilities, User, GearClassification, Localization) {
 		var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
 			API_URL,
 			App,
@@ -87,6 +87,17 @@ define(
 			App.gearClassification = new GearClassification.constructor({
 				rootURL: App.API_URL
 			});
+
+			if(navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position){
+                    var lat, lon; 
+                    lat = position.coords.latitude;
+                    lon = position.coords.longitude;
+                    Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
+                        App.user.data.currentCity = locationCity;
+                    });
+                });
+			}
 
 			App.localization = new Localization.constructor();
 
