@@ -43,15 +43,10 @@ define(
 		function get(url, callback) {
 			var encodedURL = encodeURI(this.rootURL + url);
 
-			console.log('Perform get to URL: ' + url);
-
 			$.ajax({
 				dataType: 'json',
 				type: 'GET',
 				url: encodedURL,
-				beforeSend: function() {
-					console.log('GET before send');
-				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.log(jqXHR);
 					console.log(textStatus);

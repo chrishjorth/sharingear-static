@@ -49,7 +49,8 @@ define(
             	$searchPickup, $searchReturn, previousSearchLocation, previousSearchGear, previousSearchDate;
 
             //Filling the Location input with current location using HTML5 only if User.city is empty
-            if(App.user.data.city === '' && navigator.geolocation) {
+            //TODO: Move navigator.geolocation retrieval to app.js and fetch lat and long when needed
+            /*if(App.user.data.city === '' && navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position){
                     var lat, lon; 
                     lat = position.coords.latitude;
@@ -62,7 +63,7 @@ define(
             }
             else {
                 $('#search-location', view.$element).attr('placeholder', App.user.data.city);
-            }
+            }*/
 
             $searchPickup = $('#search-pickup', view.$element);
             $searchReturn = $('#search-return', view.$element);
