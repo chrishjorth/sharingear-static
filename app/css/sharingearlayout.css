@@ -966,11 +966,20 @@ background-color: rgb(56,143,192);
     text-transform: capitalize;
 }
 
+.btn {
+	border-radius: 0 !important;
+}
+
 .profile-left {
     width: 50%;
 }
 .profile#saveSuccessDiv {
     margin: 0px 10px 0px 10px;
+}
+
+#saveButton {
+	margin-right: 15px;
+	margin-left: 8px;
 }
 
 /* ------------------ START - DASHBOARD YOUR GEAR --------------- */
