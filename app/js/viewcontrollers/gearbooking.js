@@ -38,7 +38,9 @@ define(
 			clearLeftSelection,
 			clearRightSelection,
 
-			enableBooking;
+			enableBooking,
+			setStartMoment,
+			setEndMoment;
 
 		didInitialize = function() {
 			var view = this,
@@ -59,27 +61,19 @@ define(
 			this.pricePerWeek = this.gear.data.price_c;
 
 			intervalStart = App.user.getIntervalStart();
+			intervalEnd = App.user.getIntervalEnd();
+			view.startMoment = null;
+			view.endMoment = null;
+
+			
 			this.leftMoment = new Moment();
 			this.leftMoment.add(1, 'days');
-			this.startMoment = new Moment();
-			this.startMoment.add(1, 'days');
-
 			this.leftMoment.startOf('week').weekday(0);
 			this.leftMoment.hour(12);
-			this.startMoment.hour(12);
-			this.startMoment.minutes(0);
-			this.startMoment.seconds(0);
 
-			intervalEnd = App.user.getIntervalEnd();
 			this.rightMoment = new Moment(this.leftMoment);
-			this.endMoment = new Moment(this.startMoment);
-			this.endMoment.add(1, 'days');
-			
 			this.rightMoment.startOf('week').weekday(0);
 			this.rightMoment.hour(12);
-			this.endMoment.hour(12);
-			this.endMoment.minutes(0);
-			this.endMoment.seconds(0);
 
 			this.availability = {};
 			this.gear.getAvailability(App.user.data.id, function(error, result) {
@@ -112,9 +106,9 @@ define(
                 }
                 if(userIntervalIsAvailable === true && intervalStart !== null && intervalEnd !== null) {
                 	view.leftMoment = new Moment(intervalStart, 'YYYYMMDD');
-					view.startMoment = new Moment(intervalStart, 'YYYYMMDD');
+					//view.startMoment = new Moment(intervalStart, 'YYYYMMDD');
 					view.rightMoment = new Moment(intervalEnd, 'YYYYMMDD');
-					view.endMoment = new Moment(intervalEnd, 'YYYYMMDD');
+					//view.endMoment = new Moment(intervalEnd, 'YYYYMMDD');
                 }
 				view.render();
 			});
@@ -157,7 +151,7 @@ define(
 			if(this.startMoment !== null) {
 				//Render left month view
 				$calendarContainer = $('#gearbooking-leftmonths-container');
-				momentIterator = new Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), day: this.leftMoment.date(), hour: this.leftMoment.hour()});
+				momentIterator = new Moment(this.leftMoment);
 				startDay = momentIterator.date(1).weekday();
 				momentIterator.subtract(startDay, 'days');
 				//Iterate through the month by day cell
@@ -360,7 +354,7 @@ define(
 					date = moment.date();
 					$dayBox.html(date);
 					$dayBox.data('date', date);
-					$dayBox.data('month', moment.month());
+					$dayBox.data('month', moment.month() + 1);
 					$dayBox.data('year', moment.year());
 					$dayBox.removeClass('disabled');
 					$dayBox.addClass('unavailable');
@@ -603,7 +597,7 @@ define(
 			year = $this.data('year');
 
 			//Do not allow selecting outside of the month
-			if(month !== view.leftMoment.month()) {
+			if(month !== (view.leftMoment.month() + 1)) {
 				return;
 			}
 
@@ -616,17 +610,14 @@ define(
 			}
 
 			//Do not allow selecting same day, minimal rental period is one day
-			if(view.endMoment.year() === year && view.endMoment.month() === month && view.endMoment.date() === date) {
+			if(view.endMoment !== null && view.endMoment.year() === year && view.endMoment.month() + 1 === month && view.endMoment.date() === date) {
 				return;
 			}
 
-			view.startMoment.date(date);
-			view.startMoment.month(month);
-			view.startMoment.year(year);
+			view.setStartMoment(year, month, date);
 
-			if(view.startMoment.isAfter(view.endMoment, 'day') === true) {
-				view.endMoment.date(date);
-				view.endMoment.month(month);
+			if(view.endMoment === null || view.startMoment.isAfter(view.endMoment, 'day') === true) {
+				view.setEndMoment(year, month, date);
 				view.endMoment.add(1, 'days');
 			}
 
@@ -668,7 +659,7 @@ define(
 			year = $this.data('year');
 
 			//Do not allow selecting outside of the month
-			if($this.data('month') !== view.rightMoment.month()) {
+			if(month !== (view.rightMoment.month() + 1)) {
 				return;
 			}
 
@@ -681,17 +672,14 @@ define(
 			}
 
 			//Do not allow selecting same day, minimal rental period is one day
-			if(view.startMoment.year() === year && view.startMoment.month() === month && view.startMoment.date() === date) {
+			if(view.startMoment !== null && view.startMoment.year() === year && view.startMoment.month() + 1 === month && view.startMoment.date() === date) {
 				return;
 			}
 
-			view.endMoment.date(date);
-			view.endMoment.month(month);
-			view.endMoment.year(year);
+			view.setEndMoment(year, month, date);
 
-			if(view.endMoment.isBefore(view.startMoment, 'day')) {
-				view.startMoment.date(date);
-				view.startMoment.month(month);
+			if(view.startMoment === null || view.endMoment.isBefore(view.startMoment, 'day')) {
+				view.setStartMoment(year, month, date);
 				view.startMoment.subtract(1, 'days');
 			}
 
@@ -743,8 +731,30 @@ define(
 
 		enableBooking = function() {
 			if(this.bookingBtnEnabled === false) {
-				$('#gearbooking-book-btn', this.$element).prop("disabled", false);
+				$('#gearbooking-book-btn', this.$element).prop('disabled', false);
 				this.setupEvent('click', '#gearbooking-book-btn', this, this.handleBook);
+			}
+		};
+
+		setStartMoment = function(year, month, date) {
+			if(this.startMoment === null) {
+				this.startMoment = new Moment(year + '-' + month + '-' + date, 'YYYY-MM-DD');
+			}
+			else {
+				this.startMoment.date(date);
+				this.startMoment.month(month - 1);
+				this.startMoment.year(year);
+			}
+		};
+
+		setEndMoment = function(year, month, date) {
+			if(this.endMoment === null) {
+				this.endMoment = new Moment(year + '-' + month + '-' + date, 'YYYY-MM-DD');
+			}
+			else {
+				this.endMoment.date(date);
+				this.endMoment.month(month - 1);
+				this.endMoment.year(year);
 			}
 		};
 
@@ -778,7 +788,9 @@ define(
 			handleLeftHourDropdown: handleLeftHourDropdown,
 			handleRightHourDropdown: handleRightHourDropdown,
 
-			enableBooking: enableBooking
+			enableBooking: enableBooking,
+			setStartMoment: setStartMoment,
+			setEndMoment: setEndMoment
 		});
 	}
 );
