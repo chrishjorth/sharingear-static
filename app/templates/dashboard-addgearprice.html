@@ -16,17 +16,14 @@
         </div>
         <div class="panel-body">
         	<form id="dashboard-addgearprice-form" onsubmit="return false;">
+				<div class="col-md-6 form-left">
         		<div class="form-group">
         			<label for="price_a">Hourly rental price:</label>
-        			<input type="text" name="price_a" id="price_a" class="form-control">
-        		</div>
-        		<div class="form-group">
+        			<div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control"></div>
         			<label for="price_b">Daily rental price:</label>
-        			<input type="text" name="price_b" id="price_b" class="form-control">
-        		</div>
-        		<div class="form-group">
+					<div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control"></div>
         			<label for="price_c">Weekly rental price:</label>
-        			<input type="text" name="price_c" id="price_c" class="form-control">
+					<div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control"></div>
         		</div>
                 <div id="addDeliveryPriceContainer">
                     <div class="checkbox">
@@ -38,15 +35,17 @@
                         <div class="form-group">
                             <label>
                                 Delivery price:
-                                <input type="text" placeholder="Price" name="delivery_price"/>
                             </label>
+                                <input type="text" placeholder="Price" class="form-control" name="delivery_price"/>
                             <label>
                                 Max distance:
-                                <input type="text" placeholder="Distance in km" name="delivery_distance"/>
                             </label>
+                                <input type="text" placeholder="Distance in km" class="form-control" name="delivery_distance"/>
                         </div>
                     </fieldset>
                 </div>
+				</div>
+				<div class="col-md-6 form-right">
                 <div class="form-group">
                     <label for="dashboard-addgearprice-address">Address</label>
                     <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
@@ -60,8 +59,9 @@
                     <select name="country" id="dashboard-addgearprice-country" class="form-control">
                     </select>
                 </div>
-        		<button type="submit" id="submit" class="btn btn-info pull-right">Next</button>
-        	</form>
+        		<button type="submit" id="submit" class="btn editgear-save-button btn-info pull-right">Next</button>
+        		</div>
+			</form>
         </div>
     </div>
 </div>

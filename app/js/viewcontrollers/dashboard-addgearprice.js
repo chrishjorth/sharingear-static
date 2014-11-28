@@ -92,7 +92,6 @@ define(
                 // clear spinner on btn after response
                 $('#dashboard-addgearprice-form #submit').text('Save');
                 if(!error) {
-//					App.router.navigateTo('dashboard/addgearend', view.newGear);
 					App.router.navigateTo('dashboard/gearavailability', view.newGear);
 				}
 			});

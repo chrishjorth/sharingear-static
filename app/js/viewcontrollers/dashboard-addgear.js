@@ -49,7 +49,6 @@ define(
 			this.addGearIcons(function() {
 				view.prepopulate();
 			});
-
 			this.setupEvent('submit', '#dashboard-addgear-form', this, this.handleNext);
 		};
 

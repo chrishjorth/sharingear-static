@@ -822,6 +822,12 @@ footer a:hover {
 
 }
 
+#addDeliveryPriceContainer .checkbox {
+
+	padding-left: 0px	;
+
+}
+
 .fieldset {
     padding-left: 12.5px;
     padding-right: 12.5px;
@@ -2719,6 +2725,21 @@ footer a:hover {
     border-right-style: solid;
     border-right-color: #dddddd;
     padding-right: 20px;
+}
+.form-control-price {
+
+	line-height: 40px;
+
+}
+
+.form-control-price input{
+	width: 75%;
+	float:left;
+	margin-right: 10px;
+}
+
+.form-control-price::after{
+	content: ' DKK';
 }
 
 .editgear-photos-list ul{
