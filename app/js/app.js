@@ -37,6 +37,8 @@ define(
 				loginDeferred = $.Deferred(),
 				documentReadyDeferred = $.Deferred();
 
+			console.log('Run Sharingear...');
+
 			router.addRoutes(
 				'home',
 				'listyourgear',
@@ -81,6 +83,7 @@ define(
 			});
 
 			$(document).ready(function() {
+				console.log('Document ready');
 				documentReadyDeferred.resolve();
 			});
 
@@ -93,6 +96,8 @@ define(
 			$.when(loginDeferred, documentReadyDeferred).then(function() {
 				var route = null,
 					hash = '';
+
+				console.log('Sharingear loaded.');
 
 				//Load header and footer
 				App.loadHeader();
