@@ -21,6 +21,8 @@ define(
 		function getClassification(callback) {
 			var model = this;
 
+			console.log('Get gear classification');
+
 			if(_.isEmpty(this.data) === false) {
 				if(callback && typeof callback === 'function') {
 					callback(this.data);
@@ -29,6 +31,7 @@ define(
 			}
 
 			this.get('/gearclassification', function(error, gearClassification) {
+				console.log('Gear classification returned.');
 				if(error) {
 					console.log(error);
 					return;
