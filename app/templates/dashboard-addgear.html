@@ -1,50 +1,126 @@
 <div class="addgear subview">
-    <div class="panel panel-default">
-        <div class="addgearpanel">
-            
-            <ol class="breadcrumb" id="crumbs">
-            <li class="active">Add Gear</li>
-            <li>Photos</li>
-            <li>Price &amp; Location</li>
-            <li>Availability</li>
-            </ol>
-            <!-- OLD BREADCRUMBS -->
-            <!-- <div class="btn-group">
-                <div class="btn-large boxaddgear">ADD GEAR &gt;&gt;</div>
-            </div>
-            <div class="btn-group">
-                  <div class="btn-large boxaddgeartwo">PHOTOS &gt;&gt;</div>
-            </div>
-            <div class="btn-group">
-                  <div class="btn-large boxaddgeartwo">PRICE &amp; LOCATION &gt;&gt;</div>
-            </div> -->
-            <!-- OLD BREADCRUMBS END-->
-            
-            <!--<div class="btn-group">
-                <a href="profile.html"> <button class="btn-large btnaddgeartwo">PREVIEW</button></a>
-            </div>-->
-        </div>
-        <div class="panel-body">
-            <form id="dashboard-addgear-form" onsubmit="return false;">
-                <div class="form-group">
-                    <div class="gearbuttonlist-container"></div>
-                </div>
-                <div class="form-group hidden" id="gear-subtype-container">
-                    <select class="form-control" id="dashboard-addgear-form-subtype"></select>
-                </div>
-                <div class="form-group hidden" id="gear-brand-container">
-                    <select class="form-control" id="dashboard-addgear-form-brand"></select>
-                </div>
-                <div class="form-group">
-                    <label for="dashboard-addgear-form-model">Model:</label>
-                    <input type="text" id="dashboard-addgear-form-model" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="dashboard-addgear-form-model">Description:</label>
-                    <textarea id="dashboard-addgear-form-description" class="form-control"></textarea>
-                </div>
-                <input type="submit" id="submit" value="Next" class="btn btn-info pull-right">
-            </form>
-        </div>
+  <div class="panel panel-default">
+    <div class="addgearpanel">
+      <ul class="breadcrumb" id="addgear-crumbs" role="tablist">
+        <li class="active"><a href="#addgear-instrument" role="tab" data-toggle="tab">Add Gear</a></li>
+        <li><a href="#addgear-photos" role="tab" data-toggle="tab">Photos</a></li>
+        <li><a href="#addgear-pricelocation" role="tab" data-toggle="tab">Price &amp; Location</a></li>
+        <li><a href="#addgear-availability" role="tab" data-toggle="tab">Availability</a></li>
+      </ul>
     </div>
+
+    <div class="panel-body">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="addgear-instrument">
+          <form id="dashboard-addgear-form" onsubmit="return false;">
+            <div class="form-group">
+              <div class="gearbuttonlist-container"></div>
+            </div>
+            <div class="form-group hidden" id="gear-subtype-container">
+              <select class="form-control" id="dashboard-addgear-form-subtype">
+              </select>
+            </div>
+            <div class="form-group hidden" id="gear-brand-container">
+              <select class="form-control" id="dashboard-addgear-form-brand">
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="dashboard-addgear-form-model">Model:</label>
+              <input type="text" id="dashboard-addgear-form-model" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="dashboard-addgear-form-model">Description:</label>
+              <textarea id="dashboard-addgear-form-description" class="form-control"></textarea>
+            </div>
+          </form>
+        </div>
+      
+
+        <div class="tab-pane fade in" id="addgear-photos">
+          <form id="dashboard-addgearphotos-form" onsubmit="return false;">
+            <div class="form-group">
+              <label for="dashboard-addgearphotos-form-imageupload">Upload image:</label>
+              <input type="file" id="dashboard-addgearphotos-form-imageupload" name="gearpic">
+              <div class="thumb-list-container">
+                <ul>
+                </ul>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="tab-pane fade in" id="addgear-pricelocation">
+          <form id="dashboard-addgearprice-form" onsubmit="return false;">
+            <div class="col-md-6 form-left">
+              <div class="form-group">
+                <label for="price_a">Hourly rental price:</label>
+                <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
+                <label for="price_b">Daily rental price:</label>
+                <div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control price"></div>
+                <label for="price_c">Weekly rental price:</label>
+                <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
+              </div>
+              <div id="addDeliveryPriceContainer">
+                <div class="checkbox">
+                  <label><input type="checkbox" id="gear-delivery-available-checkbox"> Gear available for delivery</label>
+                </div>
+                <fieldset disabled>
+                  <div class="form-group">
+                    <label>Delivery price:</label>
+                    <input type="text" placeholder="Price" class="form-control price" name="delivery_price"/>
+                    <label>Max distance:</label>
+                    <input type="text" placeholder="Distance in km" class="form-control" name="delivery_distance"/>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <div class="col-md-6 form-right">
+              <div class="form-group">
+                <label for="dashboard-addgearprice-address">Address</label>
+                <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
+                <label for="dashboard-addgearprice-postalcode">Postal code</label>
+                <input type="text" name="postalcode" id="dashboard-addgearprice-postalcode" class="form-control">
+                <label for="dashboard-addgearprice-city">City</label>
+                <input type="text" name="city" id="dashboard-addgearprice-city" class="form-control">
+                <label for="dashboard-addgearprice-region">Region</label>
+                <input type="text" name="region" id="dashboard-addgearprice-region" class="form-control">
+                <label for="dashboard-addgearprice-country">Country</label>
+                <select name="country" id="dashboard-addgearprice-country" class="form-control">
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="tab-pane fade in" id="addgear-availability">
+          <div class="row">
+            <div class="col-md-12"><h2>Availability</h2></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12" id="gearavailability-monthtitle"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-default" id="gearavailability-today-btn">Today</button>
+              <button class="btn btn-default" id="gearavailability-previous-btn">Previous</button>
+              <button class="btn btn-default" id="gearavailability-next-btn">Next</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-default" id="gearavailability-clearmonth-btn">Clear month</button><button class="btn btn-default" id="gearavailability-always-btn">Always available</button><button class="btn btn-default" id="gearavailability-never-btn">Never available</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 calendar month calendar" id="gearavailability-months-container"></div>
+          </div>
+        </div>  
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-default" id="editgear-next-btn">Next</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>

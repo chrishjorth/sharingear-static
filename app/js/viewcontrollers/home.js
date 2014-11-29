@@ -48,20 +48,8 @@ define(
             	startDate = new Moment(),
             	$searchPickup, $searchReturn, previousSearchLocation, previousSearchGear, previousSearchDate;
 
-            //Filling the Location input with current location using HTML5 only if User.city is empty
-            if(App.user.data.city === '' && navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position){
-                    var lat, lon; 
-                    lat = position.coords.latitude;
-                    lon = position.coords.longitude;
-                    Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
-                        App.user.data.city = locationCity;
-                        $('#search-location', view.$element).attr('placeholder', locationCity);
-                    });
-                });
-            }
-            else {
-                $('#search-location', view.$element).attr('placeholder', App.user.data.city);
+            if(App.user.data.currentCity !== '') {
+                $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
             }
 
             $searchPickup = $('#search-pickup', view.$element);
