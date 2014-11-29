@@ -382,6 +382,13 @@ footer {
     /*margin-top: 50px;*/
 
 }
+
+footer a {
+
+	font-size: 13px;
+
+}
+
 footer a:hover {
     color: #00aeff;
     text-decoration: none
@@ -424,9 +431,10 @@ footer a:hover {
 */
 }
 .followusfooter {
-    font-size: 100%;
+    font-size: 13px;
     /*font-family: 'BrandonText-Medium', sans-serif */
     color: #00aeff;
+	margin-top: 50px;
 }
 .footericons {
     max-width: 70px;
@@ -3186,7 +3194,7 @@ footer a:hover {
 }*/
 
 .followusfooter {
-    font-size:100%;
+    font-size:13px;
     /*font-family: 'BrandonText-Medium', sans-serif */
     color:#00aeff;
 }
@@ -4064,4 +4072,12 @@ span.num {
 
 	border-radius: 0px;
 
+}
+
+.wall-of-text{
+	color:black;
+}
+
+.nav-footer{
+	margin-bottom: 30px;
 }
