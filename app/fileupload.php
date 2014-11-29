@@ -52,7 +52,7 @@ if(!move_uploaded_file($_FILES[FILENAME]['tmp_name'], $tmpPath)) {
     exit;
 }
 
-//Check that file size does not exceed 5MB
+//Check that file size does not exceed max size
 $filesize = $_FILES[FILENAME]['size'];
 if($filesize > SG_MAX_FILE_SIZE) {
     // Delete invalidly uploaded files
@@ -60,7 +60,7 @@ if($filesize > SG_MAX_FILE_SIZE) {
 
     echo json_encode([
         'status' => 'error',
-        'message' => 'Upload failed - no file.',
+        'message' => 'Upload failed - File size too large.',
         'code' => '401'
     ]);
     exit;

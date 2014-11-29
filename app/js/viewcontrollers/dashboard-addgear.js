@@ -315,8 +315,7 @@ define(
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
 
-                $('#addimage_modal_next').show();
-                $('#addimage_image_loading').hide();
+                view.toggleLoading();
             });
 		};
 
