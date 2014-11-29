@@ -92,7 +92,7 @@ require(
 				'../test/js/specs/viewcontrollers/gearprofile.spec',
 				'../test/js/specs/viewcontrollers/aboutus.spec',
 				'../test/js/specs/viewcontrollers/contactus.spec',
-				'../test/js/specs/viewcontrollers/insurance.spec',
+				//'../test/js/specs/viewcontrollers/insurance.spec',
 				'../test/js/specs/viewcontrollers/privacy.spec',
 				'../test/js/specs/models/gearlist.spec',
 				'../test/js/specs/models/user.spec'
