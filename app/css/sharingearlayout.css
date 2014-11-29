@@ -1307,6 +1307,10 @@ background-color: rgb(56,143,192);
     margin-left: -7px;
     margin-bottom: -13px;
 }
+
+.breadcrumb .active a {
+    color: #cccccc;
+}
 /* YOUR GEAR */
 
 .img {
