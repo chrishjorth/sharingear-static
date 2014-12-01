@@ -13,6 +13,8 @@ define(
             didInitialize,
             didRender,
 
+            toggleLoading,
+
             populateBrandSelect,
             populateSubtypeSelect,
 
@@ -56,6 +58,8 @@ define(
                     doy: 4
                 }
             });
+
+            this.isLoading = false;
 
 			this.gear = this.passedData;
 			this.templateParameters = this.gear.data;
@@ -108,6 +112,17 @@ define(
             this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
         };
 
+        toggleLoading = function() {
+            if(this.isLoading === true) {
+                $('#editgear-save-btn', this.$element).html('Next');
+                this.isLoading = false;
+            }
+            else {
+                $('#editgear-save-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+                this.isLoading = true;
+            }
+        };
+
         populateDelivery = function(){
             var price = this.gear.data.delivery_price ? this.gear.data.delivery_price : '',
                 distance = this.gear.data.delivery_distance ? this.gear.data.delivery_distance : '';
@@ -134,9 +149,6 @@ define(
             this.gear.getAvailability(App.user.data.id, function(error, result) {
                 var availabilityArray = result.availabilityArray,
                     i, startMoment, endMoment;
-
-                console.log('availability:');
-                console.log(result);
 
                 view.alwaysFlag = result.alwaysFlag; // here the flag is set from the DB !!!!
 
@@ -248,26 +260,29 @@ define(
 		handleImageUpload = function(event) {
 			var view = event.data,
 				$file = $(this);
+
+            view.toggleLoading();
+
 			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
 				var $thumbList, html;
 				$('#editgear-form-imageupload').val('');
 				if(error) {
 					alert('Error uploading file.');
 					console.log(error);
+                    view.toggleLoading();
 					return;
 				}
-
-				console.log('Edit picture URL: ' + url);
 
 				$thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
 				$thumbList.append(html);
+
+                view.toggleLoading();
 			});
 		};
 
 		handleSave = function(event) {
 			var view = event.data,
-                $saveBtn = $(this),
                 isLocationSame = false,
                 currentAddress = view.gear.data.address,
                 currentPostalCode = view.gear.data.postal_code,
@@ -277,7 +292,7 @@ define(
                 availabilityArray = [],
                 updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
 
-            $saveBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+            view.toggleLoading();
 
             //Convert selections to availability array
             for(month in view.selections) {
@@ -291,7 +306,13 @@ define(
                 }
             }
             
-            view.gear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function() {});
+            view.gear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function(error) {
+                if(error) {
+                    alert('Error saving availability.');
+                    console.log(error);
+                    view.toggleLoading();
+                }
+            });
 
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
@@ -310,44 +331,43 @@ define(
 				country: $('#editgearpricingloc-form #editgearpricing-country option:selected').val()
             };
 
-            if ($('#editgear-subtype', view.$element).selectedIndex===0) {
+            if ($('#editgear-subtype', view.$element).selectedIndex === 0) {
                 alert('The subtype field is required.');
                 return;
             }
-            if ($('#editgear-brand', view.$element).selectedIndex===0) {
+            if ($('#editgear-brand', view.$element).selectedIndex === 0) {
                 alert('The brand field is required.');
                 return;
             }
-            if ($('#editgear-model', view.$element).val()==='') {
+            if ($('#editgear-model', view.$element).val() === '') {
                 alert('The model field is required.');
                 return;
             }
-            if ($('#editgearpricing-form #price_a', this.$element).val()==='') {
+            if ($('#editgearpricing-form #price_a', this.$element).val() === '') {
                 alert('The rental price field is required.');
                 return;
             }
-            if ($('#editgearpricing-form #price_b', this.$element).val()==='') {
+            if ($('#editgearpricing-form #price_b', this.$element).val() === '') {
                 alert('The rental price field is required.');
                 return;
             }
-            if ($('#editgearpricing-form #price_c', this.$element).val()==='') {
+            if ($('#editgearpricing-form #price_c', this.$element).val() === '') {
                 alert('The rental price field is required.');
                 return;
             }
-            if ($('#editgearpricingloc-form #editgearpricing-address', this.$element).val()==='') {
+            if ($('#editgearpricingloc-form #editgearpricing-address', this.$element).val() === '') {
                 alert('The address field is required.');
                 return;
             }
-            if ($('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val()==='') {
+            if ($('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val() === '') {
                 alert('The postalcode field is required.');
                 return;
             }
-            if ($('#editgearpricingloc-form #editgearpricing-city', this.$element).val()==='') {
+            if ($('#editgearpricingloc-form #editgearpricing-city', this.$element).val() === '') {
                 alert('The city field is required.');
                 return;
             }
-            if ($('#editgearpricingloc-form #editgearpricing-country').selectedIndex===0||
-                $('#editgearpricingloc-form #editgearpricing-country').selectedIndex===null) {
+            if ($('#editgearpricingloc-form #editgearpricing-country').selectedIndex === 0 || $('#editgearpricingloc-form #editgearpricing-country').selectedIndex === null) {
                 alert('The country field is required.');
                 return;
             }
@@ -356,9 +376,10 @@ define(
 
 			updateCall = function() {
 				view.gear.save(App.user.data.id, function(error) {
-                    $saveBtn.text('Save');
                     if(error) {
+                        alert('Error updating gear.');
 						console.log(error);
+                        view.toggleLoading();
 						return;
 					}
 					App.router.closeModalView();
@@ -381,6 +402,7 @@ define(
 					}
 					else {
                         alert('The address is not valid!');
+                        view.toggleLoading();
 					}
 				});
 			}
@@ -573,9 +595,7 @@ define(
             view.alwaysFlag = 0;
 
             view.selections = {};
-            //view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
-
-            //view.setupMonthCalendar();
+            
             view.clearSelections();
             view.renderSelections();
         };
@@ -650,7 +670,6 @@ define(
             view.renderSelections();
         };
 
-        //TODO: Optimize to join adjacent selections
         handleDayEndSelect = function(event) {
             var view = event.data,
                 monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
@@ -729,6 +748,8 @@ define(
         return ViewController.inherit({
             didInitialize: didInitialize,
             didRender: didRender,
+
+            toggleLoading: toggleLoading,
 
             populateBrandSelect: populateBrandSelect,
             populateSubtypeSelect: populateSubtypeSelect,

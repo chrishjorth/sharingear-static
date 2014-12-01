@@ -306,10 +306,9 @@ define(
 				if(error) {
 					alert('Error uploading file.');
 					console.log(error);
+					view.toggleLoading();
 					return;
 				}
-
-				console.log('Add picture URL: ' + url);
 
 				$thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
 				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
@@ -432,6 +431,7 @@ define(
 				view.newGear.save(App.user.data.id, function(error) {
 					if(error) {
 						alert('Error saving data');
+						view.toggleLoading();
 						return;
 					}
 					$('#addgear-crumbs a[href="#addgear-availability"]', view.$element).tab('show');
@@ -450,6 +450,7 @@ define(
 					else {
 						console.log('Error geocoding: ' + status);
                         alert('Address error');
+                        view.toggleLoading();
 					}
 				});
 			}
@@ -782,6 +783,8 @@ define(
 				availabilityArray = [],
 				month, monthSelections, selection, j;
 
+			view.toggleLoading();
+
 			view.addCellsToSelections();
 
 			for(month in view.selections) {
@@ -799,6 +802,7 @@ define(
       		view.newGear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function(error) {
       			if(error) {
       				console.log(error);
+      				view.toggleLoading();
       				return;
       			}
       			App.router.navigateTo('dashboard/addgearend', view.newGear);
