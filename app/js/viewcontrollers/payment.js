@@ -229,7 +229,6 @@ define(
 				rootURL: App.API_URL
 			});
 			cardData = {
-				//cardType: $('#payment-form input[name="cardtype"]', view.$element).val(),
 				cardType: 'CB_VISA_MASTERCARD',
 				cardNumber: cardNumber,
 				cardExpirationDate: expirationDate,
