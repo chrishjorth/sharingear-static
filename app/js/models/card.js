@@ -5,14 +5,19 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'model', 'mangopay'],
-	function(_, Utilities, Model, MangoPay) { //MangoPay does not support AMD so we need to use global object mangoPay
-		var didInitialize,
+	['underscore', 'utilities', 'model', 'app', 'mangopay'],
+	function(_, Utilities, Model, App) { //MangoPay does not support AMD so we need to use global object mangoPay
+		var mangoPay = window.mangoPay,
+			didInitialize,
 			registerCard;
 
 		didInitialize = function() {
-			mangoPay.cardRegistration.baseURL = "https://api.sandbox.mangopay.com";
-			//mangoPay.cardRegistration.baseURL = "https://api.mangopay.com"; //Production
+			if(App.isProduction() === true) {
+				mangoPay.cardRegistration.baseURL = 'https://api.mangopay.com'; //Production
+			}
+			else {
+				mangoPay.cardRegistration.baseURL = 'https://api.sandbox.mangopay.com';
+			}
 			mangoPay.cardRegistration.clientId = 'sharingear';
 		};
 
