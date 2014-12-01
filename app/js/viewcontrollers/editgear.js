@@ -193,7 +193,13 @@ define(
                 html += '<option value="' + countryList[i].alpha2 + '">' + countryList[i].name + '</option>';
             }
             $countrySelect.html(html);
-            $countrySelect.val(currentCountry.toLowerCase());
+
+						if (!currentCountry) {
+								console.log("Country is null");
+						}
+						else {
+            	$countrySelect.val(currentCountry.toLowerCase());
+						};
         };
 
 		populateBrandSelect = function() {
@@ -305,7 +311,7 @@ define(
                     });
                 }
             }
-            
+
             view.gear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function(error) {
                 if(error) {
                     alert('Error saving availability.');
@@ -595,7 +601,7 @@ define(
             view.alwaysFlag = 0;
 
             view.selections = {};
-            
+
             view.clearSelections();
             view.renderSelections();
         };
