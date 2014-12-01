@@ -688,9 +688,10 @@ define(
 
 			view.setEndMoment(year, month, date);
 
-			if(view.startMoment === null || view.endMoment.isBefore(view.startMoment, 'day')) {
-				view.setStartMoment(year, month, date);
-				view.startMoment.subtract(1, 'days');
+			if(view.startMoment === null || view.endMoment.isBefore(view.startMoment, 'day') === true) {
+				//Case of user selecting end moment first and selecting first available day
+				view.startMoment = new Moment(view.endMoment);
+				view.endMoment.add(1, 'days');
 			}
 
 			//Check if there is a hole in the selection and if yes move startMoment forth
