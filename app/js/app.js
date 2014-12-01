@@ -12,6 +12,7 @@ define(
 			API_URL,
 			App,
 
+			isProduction,
 			run,
 			loadHeader,
 			loadFooter;
@@ -24,6 +25,10 @@ define(
 		}
 
 		//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+
+		isProduction = function() {
+			return (IS_PRODUCTION === true);
+		};
 
 		/**
 		 * Initializes the app, that is:
@@ -158,7 +163,7 @@ define(
 		};
 
 		App = {
-			IS_PRODUCTION: IS_PRODUCTION,
+			isProduction: isProduction,
 			router: Router,
 			header: null,
 			footer: null,
