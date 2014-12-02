@@ -97,6 +97,8 @@ define(
 			$('#dashboard-addgearprice-form #price_b', this.$element).val(this.newGear.data.price_b);
 			$('#dashboard-addgearprice-form #price_c', this.$element).val(this.newGear.data.price_c);
 
+
+
             this.renderMonthCalendar($('#gearavailability-months-container'));
 			this.setupMonthCalendar();
 			this.clearSelections();
@@ -120,7 +122,7 @@ define(
 		};
 
 		getTabID = function() {
-			return $('#addgear-crumbs li.active a', this.$element).attr('href');
+			return $('#addgear-crumbs li.active', this.$element).attr('id');
 		};
 
 		toggleLoading = function() {
@@ -269,6 +271,8 @@ define(
 					alert('Error saving gear');
 					return;
 				}
+
+				$('#addgear-photos-li', view.$element).html('<a href="#addgear-photos" role="tab" data-toggle="tab">Photos</a>');
 				$('#addgear-crumbs a[href="#addgear-photos"]', view.$element).tab('show');
 				view.toggleLoading();
 			};
@@ -434,6 +438,7 @@ define(
 						view.toggleLoading();
 						return;
 					}
+					$('#addgear-availability-li', view.$element).html('<a href="#addgear-availability" role="tab" data-toggle="tab">Availability</a>');
 					$('#addgear-crumbs a[href="#addgear-availability"]', view.$element).tab('show');
 					view.toggleLoading();
 				});
@@ -813,16 +818,17 @@ define(
 			var view = event.data;
 
 			switch(view.getTabID()) {
-				case '#addgear-instrument':
+				case 'addgear-instrument-li':
 					view.saveInstrument();
 					break;
-				case '#addgear-photos':
+				case 'addgear-photos-li':
+					$('#addgear-pricelocation-li', view.$element).html('<a href="#addgear-pricelocation" role="tab" data-toggle="tab">Price &amp; Location</a>');
 					$('#addgear-crumbs a[href="#addgear-pricelocation"]', view.$element).tab('show');
 					break;
-				case '#addgear-pricelocation':
+				case 'addgear-pricelocation-li':
 					view.savePriceLocation();
 					break;
-				case '#addgear-availability':
+				case 'addgear-availability-li':
 					view.saveAvailability();
 					break;
 			}
