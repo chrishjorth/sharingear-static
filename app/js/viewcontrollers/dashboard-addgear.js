@@ -637,14 +637,12 @@ define(
 				if(error) {
 					console.log(error);
 					alert('Error saving user data.');
-					App.router.closeModalView();
 					return;
 				}
 				App.user.updateBankDetails(function(error) {
 					if(error) {
 						console.log(error);
 						alert('Error registering bank data.');
-						App.router.closeModalView();
 						return;
 					}
 					$('#addgear-availability-terms', view.$element).addClass('hidden');
