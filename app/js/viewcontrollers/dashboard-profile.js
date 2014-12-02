@@ -9,11 +9,7 @@ define(
 	['underscore', 'viewcontroller', 'app'],
 	function(_, ViewController, App) {
 
-		var user = null,
-			profileImg = null,
-			profileImgLoaded = $.Deferred(),
-			renderResolve = $.Deferred(),
-			didInitialize,
+		var didInitialize,
 			handleImageUpload,
 			didRender,
 			handleSave,
@@ -21,6 +17,10 @@ define(
 
         didInitialize= function() {
             var view = this,
+				user = null,
+				profileImg = null,
+				profileImgLoaded = $.Deferred(),
+				renderResolve = $.Deferred(),
                 userData;
 
             if(App.user.data.id === null) {
@@ -39,7 +39,7 @@ define(
             //Start loading profile image
             this.profileImg = new Image();
             this.profileImg.onload = function() {
-                view.profileImgLoaded.resolve();
+                profileImgLoaded.resolve();
             };
             this.profileImg.src = this.user.data.image_url;
         };
@@ -47,7 +47,7 @@ define(
         didRender=function() {
             var view = this,
                 userData = this.user.data;
-            
+
             $('#dashboard-profile-form #name', this.$element).val(userData.name);
             $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
             $('#dashboard-profile-form #email', this.$element).val(userData.email);
