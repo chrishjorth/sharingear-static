@@ -3,24 +3,23 @@
  * @author: Chris Hjorth, Horatiu Roman
  */
 
+'use strict';
+
 define(
 	['underscore', 'viewcontroller', 'app'],
 	function(_, ViewController, App) {
-		var Profile = ViewController.inherit({
-            user: null,
-            profileImg: null,
-            profileImgLoaded: $.Deferred(),
-            renderResolve: $.Deferred(),
 
-			didInitialize: didInitialize,
-            handleImageUpload: handleImageUpload,
-            didRender: didRender,
-            handleSave:handleSave,
-            enableSaveButton:enableSaveButton
-		}); 
-		return Profile;
+		var user = null,
+			profileImg = null,
+			profileImgLoaded = $.Deferred(),
+			renderResolve = $.Deferred(),
+			didInitialize,
+			handleImageUpload,
+			didRender,
+			handleSave,
+			enableSaveButton;
 
-        function didInitialize() {
+        didInitialize= function() {
             var view = this,
                 userData;
 
@@ -34,7 +33,7 @@ define(
 
             userData = this.user.data;
             this.templateParameters = {
-                bio: userData.bio,
+                bio: userData.bio
             };
 
             //Start loading profile image
@@ -43,9 +42,9 @@ define(
                 view.profileImgLoaded.resolve();
             };
             this.profileImg.src = this.user.data.image_url;
-        }
+        };
 
-        function didRender() {
+        didRender=function() {
             var view = this,
                 userData = this.user.data;
             
@@ -57,7 +56,7 @@ define(
             // when page loads, save is disabled
             view.enableSaveButton(false);
             // enable save when something changes in one of the input fields
-            $('input, textarea').on('input', function() {
+            $('input, textarea', view.$element).on('input', function() {
                 view.enableSaveButton(true);
             });
             //Enable on image change
@@ -79,19 +78,19 @@ define(
 
             this.setupEvent('change', '#profile-pic', this, this.handleImageUpload);
             this.setupEvent('submit', '#dashboard-profile-form', this, this.handleSave);
-        }
+        };
 
-        function handleImageUpload(event) {
+        handleImageUpload = function(event) {
             var view = event.data;
-            $file = $(this);
+            var $file = $(this);
 
-            $('#profile_image_loading').show();
-            $('#saveButton').hide();
+            $('#profile_image_loading', view.$element).show();
+            $('#saveButton', view.$element).hide();
 
             view.user.uploadProfilePicture($file.get(0).files[0], $file.val().split('\\').pop(),App.user.data.id, function (error,url) {
 
-                $('#profile_image_loading').hide();
-                $('#saveButton').show();
+                $('#profile_image_loading', view.$element).hide();
+                $('#saveButton', view.$element).show();
 
                 if(error) {
                     alert('Error uploading file.');
@@ -101,35 +100,35 @@ define(
                     $profilePic.css('background-image', 'url("' + url + '")');
                 }
             });
-        }
+        };
 
-        function handleSave(event) {
+        handleSave = function(event) {
 
             var view = event.data,
                 saveData;
 
             // add spinner to btn
-            $('#saveButton').html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+            $('#saveButton', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
             saveData = {
-                name: $('#dashboard-profile-form #name').val(),
-                surname: $('#dashboard-profile-form #surname').val(),
-                email: $('#dashboard-profile-form #email').val(),
-                city: $('#dashboard-profile-form #hometown').val(),
-                bio: $('#dashboard-profile-form #bio').val()
+                name: $('#dashboard-profile-form #name', view.$element).val(),
+                surname: $('#dashboard-profile-form #surname', view.$element).val(),
+                email: $('#dashboard-profile-form #email', view.$element).val(),
+                city: $('#dashboard-profile-form #hometown', view.$element).val(),
+                bio: $('#dashboard-profile-form #bio', view.$element).val()
             };
 
-            if ($('#dashboard-profile-form #name').val()==='') {
+            if ($('#dashboard-profile-form #name', view.$element).val()==='') {
                 alert("The name field is required.");
                 return;
             }
 
-            if ($('#dashboard-profile-form #surname').val()==='') {
+            if ($('#dashboard-profile-form #surname', view.$element).val()==='') {
                 alert("The surname field is required.");
                 return;
             }
 
-            if ($('#dashboard-profile-form #email').val()==='') {
+            if ($('#dashboard-profile-form #email', view.$element).val()==='') {
                 alert("The email field is required.");
                 return;
             }
@@ -138,29 +137,38 @@ define(
 
             view.user.update(function (error) {
                 // clear spinner on the button
-                $('#saveButton').text('Save');
+                $('#saveButton', view.$element).text('Save');
 
                 if(error){
                     console.log(error);
                     return;
                 }
-                $('#saveSuccessDiv').html("Your profile has been updated.");
+                $('#saveSuccessDiv', view.$element).html("Your profile has been updated.");
                 view.enableSaveButton(false);
             });
-        }
+        };
 
         // if active==true, enables save button, else disables
-        function enableSaveButton(active) {
+        enableSaveButton = function(active) {
 
             if (!active) {
                 // disable button
-                $('#saveButton').attr({disabled: "disabled"});
+                $('#saveButton', this.$element).attr({disabled: "disabled"});
             } else {
                 // enable button
-                $('#saveButton').removeAttr("disabled");
+                $('#saveButton', this.$element).removeAttr("disabled");
                 // clear success message
-                $('#saveSuccessDiv').html("");
+                $('#saveSuccessDiv', this.$element).html("");
             }
-        }
+        };
+
+		return ViewController.inherit({
+			didInitialize: didInitialize,
+			handleImageUpload: handleImageUpload,
+			didRender: didRender,
+			handleSave:handleSave,
+			enableSaveButton:enableSaveButton
+		});
+
 	}
 );
