@@ -57,6 +57,9 @@ define(
             $searchPickup.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
+				locale: {
+					firstDay: 1
+				},
                 startDate: startDate.format('DD/MM/YYYY'),
                 endDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
@@ -71,7 +74,10 @@ define(
             $searchReturn.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
-                startDate: startDate.format('DD/MM/YYYY'),
+				locale: {
+					firstDay: 1
+				},
+				startDate: startDate.format('DD/MM/YYYY'),
                 endDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
                 minDate: startDate.format('DD/MM/YYYY'),
