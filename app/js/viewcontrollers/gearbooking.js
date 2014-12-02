@@ -56,6 +56,10 @@ define(
 
 			this.bookingBtnEnabled = false;
 
+			this.numberOfHours = 0;
+			this.numberOfDays = 0;
+			this.numberOfWeeks = 0;
+
 			this.pricePerHour = this.gear.data.price_a;
 			this.pricePerDay = this.gear.data.price_b;
 			this.pricePerWeek = this.gear.data.price_c;
@@ -219,14 +223,14 @@ define(
 
 		renderPrice = function() {
 			var price = 0,
-				startDate, endDate, numberOfHours, numberOfDays, numberOfWeeks, difference, display;
+				startDate, endDate, difference, display;
 
 			startDate = new Moment(this.startMoment);
 			endDate = new Moment(this.endMoment);
 
-			numberOfHours = 0;
-			numberOfDays = 0;
-			numberOfWeeks = 0;
+			this.numberOfHours = 0;
+			this.numberOfDays = 0;
+			this.numberOfWeeks = 0;
 			difference = 0;
 
 			if(startDate.isDST() && !endDate.isDST()) {
@@ -243,47 +247,50 @@ define(
 			}
 
 			if(difference >= 604800000) { //exactly one week or more in milliseconds
-				numberOfWeeks = Math.round(difference / 604800000);
-				difference -= 604800000 * numberOfWeeks;
+				this.numberOfWeeks = Math.round(difference / 604800000);
+				difference -= 604800000 * this.numberOfWeeks;
 			}
 
 			if(difference >= 86400000) {//exactly one day or more in milliseconds
-				numberOfDays = Math.round(difference / 86400000);
-				difference -= 86400000 * numberOfDays;
+				this.numberOfDays = Math.round(difference / 86400000);
+				difference -= 86400000 * this.numberOfDays;
 			}
 
-			numberOfHours = difference / 3600000;
-			numberOfHours = Math.round(numberOfHours);
+			this.numberOfHours = difference / 3600000;
+			this.numberOfHours = Math.round(this.numberOfHours);
 
-			if(numberOfHours === 24) { //Check hours for positive overload
-				numberOfDays += 1;
-				numberOfHours -= 24;
+			if(this.numberOfHours === 24) { //Check hours for positive overload
+				this.numberOfDays += 1;
+				this.numberOfHours -= 24;
 			}
 
-			if (numberOfDays === 7) { //Check days for overload
-				numberOfWeeks += 1;
-				numberOfDays -= 7;
+			if (this.numberOfDays === 7) { //Check days for overload
+				this.numberOfWeeks += 1;
+				this.numberOfDays -= 7;
 			}
 
-			while(numberOfHours < 0) { //Check hours for negative overload
-				if(numberOfHours < 0) {
-					numberOfDays -= 1;
-					numberOfHours += 24;
+			while(this.numberOfHours < 0) { //Check hours for negative overload
+				if(this.numberOfHours < 0) {
+					this.numberOfDays -= 1;
+					this.numberOfHours += 24;
 				}
 			}
 
-			while(numberOfDays < 0) { //Check days for negative overload
-				if(numberOfDays < 0) {
-					numberOfWeeks -= 1;
-					numberOfDays += 7;
+			while(this.numberOfDays < 0) { //Check days for negative overload
+				if(this.numberOfDays < 0) {
+					this.numberOfWeeks -= 1;
+					this.numberOfDays += 7;
 				}
 			}
 
-			price = this.pricePerWeek * numberOfWeeks + this.pricePerDay * numberOfDays + this.pricePerHour * numberOfHours;
+			price = this.pricePerWeek * this.numberOfWeeks + this.pricePerDay * this.numberOfDays + this.pricePerHour * this.numberOfHours;
+			if(isNaN(price) === true) {
+				price = 0;
+			}
 			display = '<p class="price-info">';
-			display += 'Hours: ' + numberOfHours + '</br>';
-			display += 'Days: ' + numberOfDays + '</br>';
-			display += 'Weeks: ' + numberOfWeeks + '</br>';
+			display += 'Hours: ' + this.numberOfHours + '</br>';
+			display += 'Days: ' + this.numberOfDays + '</br>';
+			display += 'Weeks: ' + this.numberOfWeeks + '</br>';
 			display += 'Price per hour:' + this.pricePerHour + '</br>';
 			display += 'Price per day:' + this.pricePerDay + '</br>';
 			display += 'Price per week:' + this.pricePerWeek + '</br>';
@@ -293,9 +300,6 @@ define(
 			this.newBooking.data.pricePerHour = this.pricePerHour;
 			this.newBooking.data.pricePerDay = this.pricePerDay;
 			this.newBooking.data.pricePerWeek = this.pricePerWeek;
-			this.newBooking.data.numberOfHours = numberOfHours;
-			this.newBooking.data.numberOfDays = numberOfDays;
-			this.newBooking.data.numberOfWeeks = numberOfWeeks;
 		};
 
 
@@ -482,25 +486,26 @@ define(
 				bookingData;
 
 			// check if time was selected
-			if(view.startMoment && view.endMoment) {
-				var gearData = view.gear.data.brand+" "+view.gear.data.subtype+" "+view.gear.data.model;
-				console.log("gearData is: "+gearData);
-				bookingData = {
-					user_id: App.user.data.id,
-					gear_id: view.gear.data.id,
-					start_time: view.startMoment.format('YYYY-MM-DD HH:mm:ss'),
-					end_time: view.endMoment.format('YYYY-MM-DD HH:mm:ss'),
-					gearInfo: gearData
-				};
-			}
-			else {
-				console.log('No dates selected');
+			if(!view.startMoment || !view.endMoment) {
+				alert('No dates selected.');
 				return;
 			}
 
-			_.extend(view.newBooking.data, bookingData);
+			bookingData = {
+				price: view.newBooking.data.price,
+				gear_id: view.gear.data.id,
+				start_time: view.startMoment.format('YYYY-MM-DD HH:mm:ss'),
+				end_time: view.endMoment.format('YYYY-MM-DD HH:mm:ss'),
+				gearInfo: view.gear.data.brand + ' ' + view.gear.data.subtype + ' ' + view.gear.data.model,
+				price_a: view.gear.data.price_a,
+				price_b: view.gear.data.price_b,
+				price_c: view.gear.data.price_c,
+				hours: view.numberOfHours,
+				days: view.numberOfDays,
+				weeks: view.numberOfWeeks
+			};
 
-			App.router.openModalSiblingView('payment', view.newBooking);
+			App.router.openModalSiblingView('payment', bookingData);
 		};
 
 		handleLeftToday = function(event) {
@@ -744,6 +749,7 @@ define(
 			if(this.bookingBtnEnabled === false) {
 				$('#gearbooking-book-btn', this.$element).prop('disabled', false);
 				this.setupEvent('click', '#gearbooking-book-btn', this, this.handleBook);
+				this.bookingBtnEnabled = true;
 			}
 		};
 

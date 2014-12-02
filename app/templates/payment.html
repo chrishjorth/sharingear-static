@@ -77,32 +77,32 @@
 			<div class="col-xs-6 form-group price-container-payment">
 				<div class="row payment-row-padding">
 					<div class="col-xs-8 payment-small-box-fix">Price per hour:</div>
-					<div id="payment-price-of-hour" class="col-xs-4 payment-small-box-fix2 right">100</div>
+					<div id="payment-price-of-hour" class="col-xs-4 payment-small-box-fix2 right">{{price_a}}</div>
 				</div>
 				<div class="row payment-row-padding">
 					<div class="col-xs-8 payment-small-box-fix">Price per day:</div>
-					<div id="payment-price-of-day" class="col-xs-4 payment-small-box-fix2 right">1000</div>
+					<div id="payment-price-of-day" class="col-xs-4 payment-small-box-fix2 right">{{price_b}}</div>
 				</div>
 				<div class="row payment-row-padding">
 					<div class="col-xs-8 payment-small-box-fix">Price per week:</div>
-					<div id="payment-price-of-week" class="col-xs-4 payment-small-box-fix2 right">2</div>
+					<div id="payment-price-of-week" class="col-xs-4 payment-small-box-fix2 right">{{price_c}}</div>
 				</div>
 			</div>
 			<div class="col-xs-6 price-container-payment price-container-payment-right">
 				<div class="row payment-row-padding">
 					<div class="col-xs-10 payment-small-box-fix">Number of hours:</div>
-					<div id="payment-number-of-hours" class="col-xs-2 payment-small-box-fix2 right">100</div>
+					<div id="payment-number-of-hours" class="col-xs-2 payment-small-box-fix2 right">{{hours}}</div>
 				</div>
 				<div class="row payment-row-padding">
 					<div class="col-xs-10 payment-small-box-fix">Number of days:</div>
-					<div id="payment-number-of-days" class="col-xs-2 payment-small-box-fix2 right">1000</div>
+					<div id="payment-number-of-days" class="col-xs-2 payment-small-box-fix2 right">{{days}}</div>
 				</div>
 				<div class="row payment-row-padding">
 					<div class="col-xs-10 payment-small-box-fix">Number of weeks:</div>
-					<div id="payment-number-of-weeks" class="col-xs-2 payment-small-box-fix2 right">2</div>
+					<div id="payment-number-of-weeks" class="col-xs-2 payment-small-box-fix2 right">{{weeks}}</div>
 				</div>
 			</div>
-			<div class="col-xs-12 form-group total-price-payment-container"><span class="total-price">Total price is: 100</span></div>
+			<div class="col-xs-12 form-group total-price-payment-container"><span class="total-price">Total price is: {{price}}</span></div>
 			<div class="form-group right">
 				<button class="btn editgear-cancel-button btn-default" id="payment-cancel-btn">Cancel</button>
 				<button type="submit" class="btn editgear-save-button btn-default" id="payment-btn">Pay {{price}} {{currency}}</button>

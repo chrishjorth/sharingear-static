@@ -2707,15 +2707,21 @@ footer a:hover {
 .box .price-boxes .price .value {
     font-size:16px;
 }
-.price {
-    position:relative;
-    font-size:20px;
-    color:#636363;
-    padding:0px 7px 3px;
+
+.price-form {
+  position:relative;
+  padding:0px 15px 3px;
 }
 
-.price::before {
-    content: "$";
+.price-input-font {
+  font-size:20px;
+  color:#636363;
+  font-weight: normal;
+}
+
+.price-delivery-input-font {
+  color:#636363;
+  font-weight: normal;
 }
 
 .price-button-margin {
