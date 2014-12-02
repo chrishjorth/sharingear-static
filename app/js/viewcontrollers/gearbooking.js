@@ -132,6 +132,14 @@ define(
 			this.renderSelection();
 			this.renderPrice();
 
+			//Disable buttons at start
+			$('#gearbooking-leftprevious-btn').prop('disabled',true);
+			$('#gearbooking-lefttoday-btn').prop('disabled',true);
+			$('#gearbooking-lefttitle').html(this.leftMoment.format('MMMM YYYY'));
+			$('#gearbooking-rightprevious-btn').prop('disabled',true);
+			$('#gearbooking-righttoday-btn').prop('disabled',true);
+			$('#gearbooking-righttitle').html(this.rightMoment.format('MMMM YYYY'));
+
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
 			//Navigation events
 			this.setupEvent('click', '#gearbooking-lefttoday-btn', this, this.handleLeftToday);
@@ -336,10 +344,7 @@ define(
 			moment = new Moment({year: this.leftMoment.year(), month: this.leftMoment.month(), date: this.leftMoment.date()});
 			this.setupMonthCalendar(moment, $('#gearbooking-leftmonths-container', this.$element),true);
 
-			//Disable buttons at start
-			$('#gearbooking-rightprevious-btn').prop('disabled',true);
-			$('#gearbooking-righttoday-btn').prop('disabled',true);
-			$('#gearbooking-lefttitle').html(this.leftMoment.format('MMMM YYYY'));
+
 		};
 
 		setupRightMonthCalendar = function() {
@@ -347,10 +352,7 @@ define(
 			moment = new Moment({year: this.rightMoment.year(), month: this.rightMoment.month(), date: this.rightMoment.date()});
 			this.setupMonthCalendar(moment, $('#gearbooking-rightmonths-container', this.$element),false);
 
-			//Disable buttons at start
-			$('#gearbooking-leftprevious-btn').prop('disabled',true);
-			$('#gearbooking-lefttoday-btn').prop('disabled',true);
-			$('#gearbooking-righttitle').html(this.rightMoment.format('MMMM YYYY'));
+
 		};
 
 		setupMonthCalendar = function(moment, $calendarContainer, leftOrRight) {
