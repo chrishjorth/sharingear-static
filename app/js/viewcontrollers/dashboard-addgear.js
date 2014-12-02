@@ -35,6 +35,11 @@ define(
 			handleDeliveryCheckbox,
 			savePriceLocation,
 
+			renderAvailability,
+			renderSubmerchantForm,
+			handleSubmerchantSkip,
+			handleSubmerchantSubmit,
+			handleSubmerchantAccept,
 			renderMonthCalendar,
 			setupMonthCalendar,
 			clearSelections,
@@ -91,16 +96,11 @@ define(
 			this.addGearIcons();
 			this.prepopulateInstrument();
 			this.populatePhotos();
-			this.populateCountries();
+			this.populateCountries($('#dashboard-addgearprice-country', this.$element));
 
 			$('#dashboard-addgearprice-form #price_a', this.$element).val(this.newGear.data.price_a);
 			$('#dashboard-addgearprice-form #price_b', this.$element).val(this.newGear.data.price_b);
 			$('#dashboard-addgearprice-form #price_c', this.$element).val(this.newGear.data.price_c);
-
-            this.renderMonthCalendar($('#gearavailability-months-container'));
-			this.setupMonthCalendar();
-			this.clearSelections();
-			this.renderSelections();
 
 			this.setupEvent('click', '#editgear-next-btn', this, this.handleNext);
 			this.setupEvent('change', '#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
@@ -108,19 +108,10 @@ define(
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
-
-			this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
-			this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
-			this.setupEvent('click', '#gearavailability-next-btn', this, this.handleAvailabilityNext);
-
-			this.setupEvent('click', '#gearavailability-clearmonth-btn', this, this.handleClearMonth);
-			this.setupEvent('click', '#gearavailability-always-btn', this, this.handleAlwaysAvailable);
-			this.setupEvent('click', '#gearavailability-never-btn', this, this.handleNeverAvailable);
-			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
 		};
 
 		getTabID = function() {
-			return $('#addgear-crumbs li.active a', this.$element).attr('href');
+			return $('#addgear-crumbs li.active', this.$element).attr('id');
 		};
 
 		toggleLoading = function() {
@@ -269,6 +260,8 @@ define(
 					alert('Error saving gear');
 					return;
 				}
+
+				$('#addgear-photos-li', view.$element).html('<a href="#addgear-photos" role="tab" data-toggle="tab">Photos</a>');
 				$('#addgear-crumbs a[href="#addgear-photos"]', view.$element).tab('show');
 				view.toggleLoading();
 			};
@@ -318,15 +311,14 @@ define(
             });
 		};
 
-		populateCountries = function() {
-			var countriesArray = App.localization.getCountries(),
-                html, i;
-
-            html = '<option selected="selected" value="">' + countryDefault + '</option>';
+		populateCountries = function($select) {
+            var countriesArray = App.localization.getCountries(),
+				html = $('option', $select).first()[0].outerHTML,
+				i;
 			for(i = 0; i < countriesArray.length; i++) {
-                html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
-            }
-            $('#dashboard-addgearprice-country', this.$element).append(html);
+				html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
+			}
+			$select.html(html);
 		};
 
 		handlePriceChange = function() {
@@ -434,7 +426,14 @@ define(
 						view.toggleLoading();
 						return;
 					}
+					$('#addgear-availability-li', view.$element).html('<a href="#addgear-availability" role="tab" data-toggle="tab">Availability</a>');
 					$('#addgear-crumbs a[href="#addgear-availability"]', view.$element).tab('show');
+					if(App.user.isSubMerchant() === false) {
+						view.renderSubmerchantForm();
+					}
+					else {
+						view.renderAvailability();
+					}
 					view.toggleLoading();
 				});
 			};
@@ -457,6 +456,206 @@ define(
 			else {
 				saveCall();
 			}
+		};
+
+		renderAvailability = function() {
+			$('#addgear-availability-calendar', this.$element).removeClass('hidden');
+
+			this.renderMonthCalendar($('#gearavailability-months-container'));
+			this.setupMonthCalendar();
+			this.clearSelections();
+			this.renderSelections();
+
+			this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
+			this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
+			this.setupEvent('click', '#gearavailability-next-btn', this, this.handleAvailabilityNext);
+
+			this.setupEvent('click', '#gearavailability-clearmonth-btn', this, this.handleClearMonth);
+			this.setupEvent('click', '#gearavailability-always-btn', this, this.handleAlwaysAvailable);
+			this.setupEvent('click', '#gearavailability-never-btn', this, this.handleNeverAvailable);
+			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
+		};
+
+		renderSubmerchantForm = function() {
+			var user = App.user.data;
+
+			$('#addgear-availability-submerchantform', this.$element).removeClass('hidden');
+			$('#editgear-next-btn', this.$element).addClass('hidden');
+
+			if(user.birthdate && user.birthdate !== '') {
+				$('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
+			}
+			if(user.address && user.address !== '') {
+				$('#submerchantregistration-address', this.$element).parent().addClass('hidden');
+			}
+			if(user.postal_code && user.postal_code !== '') {
+				$('#submerchantregistration-postalcode', this.$element).parent().addClass('hidden');
+			}
+			if(user.city && user.city !== '') {
+				$('#submerchantregistration-city', this.$element).parent().addClass('hidden');
+			}
+			if(user.region && user.region !== '') {
+				$('#submerchantregistration-region', this.$element).parent().addClass('hidden');
+			}
+			if(user.country && user.country !== '') {
+				$('#submerchantregistration-country', this.$element).parent().addClass('hidden');
+			}
+			else {
+				populateCountries($('#submerchantregistration-country', this.$element));
+			}
+			if(user.nationality && user.nationality !== '') {
+				$('#submerchantregistration-nationality', this.$element).parent().addClass('hidden');
+			}
+			else {
+				populateCountries($('#submerchantregistration-nationality', this.$element));
+			}
+			if(user.phone && user.phone !== '') {
+				$('#submerchantregistration-phone', this.$element).parent().addClass('hidden');
+			}
+
+			this.setupEvent('click', '#addgear-availability .btn-skip', this, this.handleSubmerchantSkip);
+			this.setupEvent('submit', '#addgear-submerchantform', this, this.handleSubmerchantSubmit);
+			this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
+		};
+
+		handleSubmerchantSkip = function(event) {
+			var view = event.data;
+			App.router.navigateTo('dashboard/addgearend', view.newGear);
+		};
+
+		handleSubmerchantSubmit = function(event) {
+			var view = event.data,
+				user = App.user.data,
+				tempUser = {},
+				addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx;
+
+			_.extend(tempUser, user);
+
+			if(user.birthdate === null) {
+				tempUser.birthdate = $('#submerchantregistration-birthdate', view.$element).val();
+				if(tempUser.birthdate !== '') {
+					tempUser.birthdate = (new Moment(tempUser.birthdate, 'DD/MM/YYYY')).format('YYYY-MM-DD');
+				}
+			}
+			if(user.address === null) {
+				tempUser.address = $('#submerchantregistration-address', view.$element).val();
+			}
+			if(user.postal_code === null) {
+				tempUser.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
+			}
+			if(user.city === null) {
+				tempUser.city = $('#submerchantregistration-city', view.$element).val();
+			}
+			if(user.region === null) {
+				tempUser.region = $('#submerchantregistration-region', view.$element).val();
+			}
+			if(user.country === null) {
+				$select = $('#submerchantregistration-country', view.$element);
+				content = $select.val();
+				if(content !== $('option', $select).first().attr('value')) {
+					tempUser.country = content;
+				}
+				else {
+                	alert('Please select a country.');
+                	return;
+            	}
+			}
+			if(user.nationality === null) {
+				$select = $('#submerchantregistration-nationality', view.$element);
+				content = $select.val();
+				if(content !== $('option', $select).first().attr('value')) {
+					tempUser.nationality = content;
+				}
+				else {
+                	alert('Please select a nationality.');
+                	return;
+            	}
+			}
+			if(user.phone === null) {
+				tempUser.phone = $('#submerchantregistration-phone', view.$element).val();
+			}
+
+			//Validate
+			if(tempUser.birthdate === '') {
+                alert('The birthday field is required.');
+                return;
+            }
+            if(tempUser.address === '') {
+            	alert('The address field is required.');
+            	return;
+			}
+			if(tempUser.postal_code === '') {
+				alert('The postal code field is required.');
+				return;
+			}
+			if(tempUser.city === '') {
+				alert('The city field is required.');
+				return;
+			}
+            if(tempUser.phone === '') {
+                alert('The phone field is required.');
+                return;
+            }
+            
+            iban = $('#submerchantregistration-iban', view.$element).val();
+			ibanRegEx = /^[a-zA-Z]{2}\d{2}\s*(\w{4}\s*){2,7}\w{1,4}\s*$/;
+			iban = iban.match(ibanRegEx);
+			if(iban === null) {
+				alert('Please insert a correct IBAN.');
+				return;
+			}
+			user.iban = iban[0];
+
+            swift = $('#submerchantregistration-swift', view.$element).val();
+			swiftRegEx = /^[a-zA-Z]{6}\w{2}(\w{3})?$/;
+			swift = swift.match(swiftRegEx);
+			if(swift === null) {
+				alert('Please insert a correct SWIFT');
+				return;
+			}
+			user.swift = swift[0];
+
+            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.region + ', ' + tempUser.country;
+            geocoder.geocode({'address': addressOneliner}, function(results, status) {
+                if(status === GoogleMaps.GeocoderStatus.OK) {
+                	_.extend(user, tempUser);
+                    $('#addgear-availability-submerchantform', view.$element).addClass('hidden');
+					$('#addgear-availability-terms', view.$element).removeClass('hidden');
+                }
+                else {
+                    alert('The address is not valid!');
+                }
+            });
+		};
+
+		handleSubmerchantAccept = function(event) {
+			var view = event.data,
+                currentBtn = $(this);
+
+            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
+			App.user.update(function(error) {
+				if(error) {
+					console.log(error);
+					alert('Error saving user data.');
+					return;
+				}
+				App.user.updateBankDetails(function(error) {
+					if(error) {
+						console.log(error);
+						alert('Error registering bank data.');
+						return;
+					}
+					$('#addgear-availability-terms', view.$element).addClass('hidden');
+					$('#addgear-availability-calendar', view.$element).removeClass('hidden');
+					$('#editgear-next-btn', view.$element).removeClass('hidden');
+					view.renderAvailability();
+					App.user.fetch(function(error) {
+						if(error) {
+							console.log('Error fetching user: ' + error);
+						}
+					});
+				});
+			});
 		};
 
 		renderMonthCalendar = function($monthCalendarContainer) {
@@ -813,16 +1012,17 @@ define(
 			var view = event.data;
 
 			switch(view.getTabID()) {
-				case '#addgear-instrument':
+				case 'addgear-instrument-li':
 					view.saveInstrument();
 					break;
-				case '#addgear-photos':
+				case 'addgear-photos-li':
+					$('#addgear-pricelocation-li', view.$element).html('<a href="#addgear-pricelocation" role="tab" data-toggle="tab">Price &amp; Location</a>');
 					$('#addgear-crumbs a[href="#addgear-pricelocation"]', view.$element).tab('show');
 					break;
-				case '#addgear-pricelocation':
+				case 'addgear-pricelocation-li':
 					view.savePriceLocation();
 					break;
-				case '#addgear-availability':
+				case 'addgear-availability-li':
 					view.saveAvailability();
 					break;
 			}
@@ -851,6 +1051,11 @@ define(
 			handleDeliveryCheckbox: handleDeliveryCheckbox,
 			savePriceLocation: savePriceLocation,
 
+			renderAvailability: renderAvailability,
+			renderSubmerchantForm: renderSubmerchantForm,
+			handleSubmerchantSkip: handleSubmerchantSkip,
+			handleSubmerchantSubmit: handleSubmerchantSubmit,
+			handleSubmerchantAccept: handleSubmerchantAccept,
 			renderMonthCalendar: renderMonthCalendar,
 			setupMonthCalendar: setupMonthCalendar,
 			clearSelections: clearSelections,

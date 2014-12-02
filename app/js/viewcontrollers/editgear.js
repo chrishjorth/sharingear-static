@@ -22,12 +22,14 @@ define(
             handleImageUpload,
 
             populateLocation,
-            populateCountry,
+            populateCountries,
             populateDelivery,
             handleDeliveryCheckbox,
 
             initAvailability,
             renderAvailability,
+            handleSubmerchantSubmit,
+            handleSubmerchantAccept,
             renderMonthCalendar,
             setupMonthCalendar,
             clearSelections,
@@ -72,7 +74,7 @@ define(
 
 			this.populateImages();
 
-            this.populateCountry();
+            this.populateCountries($('#editgearpricing-country', this.$element));
             this.populateLocation();
             this.populateDelivery();
             this.renderAvailability();
@@ -132,10 +134,185 @@ define(
         };
 
         renderAvailability = function() {
-            this.renderMonthCalendar($('#gearavailability-months-container'));
-            this.setupMonthCalendar();
-            this.clearSelections();
-            this.renderSelections();
+            if(App.user.isSubMerchant() === true) {
+                $('#editgear-availability-calendar', this.$element).removeClass('hidden');
+                this.renderMonthCalendar($('#gearavailability-months-container'));
+                this.setupMonthCalendar();
+                this.clearSelections();
+                this.renderSelections();
+            }
+            else {
+                $('#editgear-availability-submerchantform', this.$element).removeClass('hidden');
+                var user = App.user.data;
+
+                if(user.birthdate && user.birthdate !== '') {
+                    $('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
+                }
+                if(user.address && user.address !== '') {
+                    $('#submerchantregistration-address', this.$element).parent().addClass('hidden');
+                }
+                if(user.postal_code && user.postal_code !== '') {
+                    $('#submerchantregistration-postalcode', this.$element).parent().addClass('hidden');
+                }
+                if(user.city && user.city !== '') {
+                    $('#submerchantregistration-city', this.$element).parent().addClass('hidden');
+                }
+                if(user.region && user.region !== '') {
+                    $('#submerchantregistration-region', this.$element).parent().addClass('hidden');
+                }
+                if(user.country && user.country !== '') {
+                    $('#submerchantregistration-country', this.$element).parent().addClass('hidden');
+                }
+                else {
+                    populateCountries($('#submerchantregistration-country', this.$element));
+                }
+                if(user.nationality && user.nationality !== '') {
+                    $('#submerchantregistration-nationality', this.$element).parent().addClass('hidden');
+                }
+                else {
+                    populateCountries($('#submerchantregistration-nationality', this.$element));
+                }
+                if(user.phone && user.phone !== '') {
+                    $('#submerchantregistration-phone', this.$element).parent().addClass('hidden');
+                }
+
+                this.setupEvent('submit', '#editgear-submerchantform', this, this.handleSubmerchantSubmit);
+                this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
+            }
+        };
+
+        handleSubmerchantSubmit = function(event) {
+            var view = event.data,
+                user = App.user.data,
+                tempUser = {},
+                addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx;
+
+            _.extend(tempUser, user);
+
+            if(user.birthdate === null) {
+                tempUser.birthdate = $('#submerchantregistration-birthdate', view.$element).val();
+                if(tempUser.birthdate !== '') {
+                    tempUser.birthdate = (new Moment(tempUser.birthdate, 'DD/MM/YYYY')).format('YYYY-MM-DD');
+                }
+            }
+            if(user.address === null) {
+                tempUser.address = $('#submerchantregistration-address', view.$element).val();
+            }
+            if(user.postal_code === null) {
+                tempUser.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
+            }
+            if(user.city === null) {
+                tempUser.city = $('#submerchantregistration-city', view.$element).val();
+            }
+            if(user.region === null) {
+                tempUser.region = $('#submerchantregistration-region', view.$element).val();
+            }
+            if(user.country === null) {
+                $select = $('#submerchantregistration-country', view.$element);
+                content = $select.val();
+                if(content !== $('option', $select).first().attr('value')) {
+                    tempUser.country = content;
+                }
+                else {
+                    alert('Please select a country.');
+                    return;
+                }
+            }
+            if(user.nationality === null) {
+                $select = $('#submerchantregistration-nationality', view.$element);
+                content = $select.val();
+                if(content !== $('option', $select).first().attr('value')) {
+                    tempUser.nationality = content;
+                }
+                else {
+                    alert('Please select a nationality.');
+                    return;
+                }
+            }
+            if(user.phone === null) {
+                tempUser.phone = $('#submerchantregistration-phone', view.$element).val();
+            }
+
+            //Validate
+            if(tempUser.birthdate === '') {
+                alert('The birthday field is required.');
+                return;
+            }
+            if(tempUser.address === '') {
+                alert('The address field is required.');
+                return;
+            }
+            if(tempUser.postal_code === '') {
+                alert('The postal code field is required.');
+                return;
+            }
+            if(tempUser.city === '') {
+                alert('The city field is required.');
+                return;
+            }
+            if(tempUser.phone === '') {
+                alert('The phone field is required.');
+                return;
+            }
+            
+            iban = $('#submerchantregistration-iban', view.$element).val();
+            ibanRegEx = /^[a-zA-Z]{2}\d{2}\s*(\w{4}\s*){2,7}\w{1,4}\s*$/;
+            iban = iban.match(ibanRegEx);
+            if(iban === null) {
+                alert('Please insert a correct IBAN.');
+                return;
+            }
+            user.iban = iban[0];
+
+            swift = $('#submerchantregistration-swift', view.$element).val();
+            swiftRegEx = /^[a-zA-Z]{6}\w{2}(\w{3})?$/;
+            swift = swift.match(swiftRegEx);
+            if(swift === null) {
+                alert('Please insert a correct SWIFT');
+                return;
+            }
+            user.swift = swift[0];
+
+            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.region + ', ' + tempUser.country;
+            geocoder.geocode({'address': addressOneliner}, function(results, status) {
+                if(status === GoogleMaps.GeocoderStatus.OK) {
+                    _.extend(user, tempUser);
+                    $('#editgear-availability-submerchantform', view.$element).addClass('hidden');
+                    $('#editgear-availability-terms', view.$element).removeClass('hidden');
+                }
+                else {
+                    alert('The address is not valid!');
+                }
+            });
+        };
+
+        handleSubmerchantAccept = function(event) {
+            var view = event.data,
+                currentBtn = $(this);
+
+            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
+            App.user.update(function(error) {
+                if(error) {
+                    console.log(error);
+                    alert('Error saving user data.');
+                    return;
+                }
+                App.user.updateBankDetails(function(error) {
+                    if(error) {
+                        console.log(error);
+                        alert('Error registering bank data.');
+                        return;
+                    }
+                    $('#editgear-availability-terms', view.$element).addClass('hidden');
+                    $('#editgear-availability-calendar', view.$element).removeClass('hidden');
+                    view.renderAvailability();
+                    App.user.fetch(function(error) {
+                        if(error) {
+                            console.log('Error fetching user: ' + error);
+                        }
+                    });
+                });
+            });
         };
 
         initAvailability = function() {
@@ -180,26 +357,14 @@ define(
             $('#editgearpricingloc-form #editgearpricing-region').val(this.gear.data.region);
         };
 
-        populateCountry = function() {
-            var countryList = App.localization.getCountries(),
-                currentCountry = this.gear.data.country,
-                html = '',
-                $countrySelect,i;
-
-            $countrySelect = $('#editgearpricing-country', this.$element);
-            $countrySelect.empty();
-
-            for(i = 0; i < countryList.length; i++) {
-                html += '<option value="' + countryList[i].alpha2 + '">' + countryList[i].name + '</option>';
+        populateCountries = function($select) {
+            var countriesArray = App.localization.getCountries(),
+                html = $('option', $select).first()[0].outerHTML,
+                i;
+            for(i = 0; i < countriesArray.length; i++) {
+                html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
             }
-            $countrySelect.html(html);
-
-						if (!currentCountry) {
-								console.log("Country is null");
-						}
-						else {
-            	$countrySelect.val(currentCountry.toLowerCase());
-						};
+            $select.html(html);
         };
 
 		populateBrandSelect = function() {
@@ -764,12 +929,14 @@ define(
             handleImageUpload: handleImageUpload,
 
             populateLocation: populateLocation,
-            populateCountry: populateCountry,
+            populateCountries: populateCountries,
             populateDelivery:populateDelivery,
             handleDeliveryCheckbox:handleDeliveryCheckbox,
 
             initAvailability:initAvailability,
             renderAvailability:renderAvailability,
+            handleSubmerchantSubmit: handleSubmerchantSubmit,
+            handleSubmerchantAccept: handleSubmerchantAccept,
             renderMonthCalendar:renderMonthCalendar,
             setupMonthCalendar:setupMonthCalendar,
             clearSelections:clearSelections,

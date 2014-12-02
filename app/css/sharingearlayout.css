@@ -580,11 +580,11 @@ footer a:hover {
 }
 
 .image-blocks-horizontal {
-    background-size: auto 230px;
+    background-size: auto 215px;
 }
 
 .image-blocks-vertical {
-    background-size: 300px auto;
+    background-size: 279px auto;
 }
 
 /*TODO Design of search results*/
@@ -3642,7 +3642,7 @@ span.num {
     line-height: 1.59;
     -webkit-user-select: none;
     -moz-user-select: none;
-    -ms-user-sele t: none;
+    -ms-user-select: none;
     user-select: none;
     white-space: nowrap;
     cursor: pointer;
@@ -3652,6 +3652,29 @@ span.num {
     background-color: #FFAE00;
     color: #000;
     margin-top: 1px;
+}
+
+.yellow-button{
+	display: inline-block;
+	margin-bottom: 0;
+	border-radius: 0px;
+	border: 0;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	line-height: 1.59;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	cursor: pointer;
+	padding: 9px  12px;
+	font-size: 15px;
+	border-color: #FFAE00;
+	background-color: #FFAE00;
+	color: #000;
+	margin-top: 1px;
 }
 
 .editgear-cancel-button{
@@ -3817,6 +3840,13 @@ span.num {
     padding-left: 10px;
 
 }
+
+#search-pickup{
+
+	padding-left: 10px;
+
+}
+
 #search-return{
 
     padding-left: 10px;
@@ -4068,6 +4098,30 @@ span.num {
     margin-left: 4px !important;
 }
 
+.booking-buttons2 button{
+	display: inline-block;
+	margin-bottom: 0;
+	border-radius: 0px;
+	border: 0;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	line-height: 1.59;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	cursor: pointer;
+	padding: 9px  12px;
+	font-size: 15px;
+
+	background-color: #ececec;
+	color: #000;
+	margin-top: 1px;
+	margin-left: 4px !important;
+}
+
 #gearbooking-starttime{
 
 	border-radius: 0px;
@@ -4086,4 +4140,10 @@ span.num {
 
 .nav-footer{
 	margin-bottom: 30px;
+}
+
+.margin-for-buttons{
+
+	margin-right: 5px;
+
 }

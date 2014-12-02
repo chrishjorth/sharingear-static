@@ -57,6 +57,9 @@ define(
             $searchPickup.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
+				locale: {
+					firstDay: 1
+				},
                 startDate: startDate.format('DD/MM/YYYY'),
                 endDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
@@ -71,7 +74,10 @@ define(
             $searchReturn.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
-                startDate: startDate.format('DD/MM/YYYY'),
+				locale: {
+					firstDay: 1
+				},
+				startDate: startDate.format('DD/MM/YYYY'),
                 endDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
                 minDate: startDate.format('DD/MM/YYYY'),
@@ -191,16 +197,6 @@ define(
 					owner_id: null
 				};
 
-				handleImageLoad = function() {
-                    var $this = $(this);
-                    if(this.width < this.height) {
-                        $this.addClass('image-blocks-vertical');
-                    }
-                   	else {
-                        $this.addClass('image-blocks-horizontal');
-                    }
-                };
-
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i].data;
 					imagesTest = searchResult.images.split(',');
@@ -217,10 +213,15 @@ define(
                     //Set background-image with jQuery
                     $searchBlock.children().eq(i).children(':first').css('background-image', 'url("' + searchResult.image + '")');
 
-                    //Check if image is vertical or horizontal
-                    img = new Image();
-                    img.onload = handleImageLoad;
-                    img.src = searchResult.image;
+					img = new Image();
+					img.src = searchResult.image;
+
+					if(img.width < img.height) {
+						$searchBlock.children().eq(i).children(':first').addClass('image-blocks-vertical');
+					}
+					else {
+						$searchBlock.children().eq(i).children(':first').addClass('image-blocks-horizontal');
+					}
 
 				}
 				if(callback && typeof callback === 'function') {

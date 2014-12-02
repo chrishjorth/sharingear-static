@@ -149,6 +149,7 @@
 									<input type="text" name="region" id="editgearpricing-region" class="form-control">
 									<label for="dashboard-addgearprice-country">Country*</label>
 									<select name="country" id="editgearpricing-country" class="form-control">
+										<option value="">Select country</option>
 									</select>
 								</div>
 							</div>
@@ -165,30 +166,97 @@
 					<div class="row">
 						<div class="col-md-12"><h2>Availability</h2></div>
 					</div>
-					<div class="row">
-						<div class="col-md-12" id="gearavailability-monthtitle"></div>
+					<div id="editgear-availability-submerchantform" class="hidden">
+						<div class="row">
+              <div class="col-md-12">In order to put your gear up for rent we need some extra information about you so that we can pay you.</div>
+            </div>
+            <form id="editgear-submerchantform" onsubmit="return false;">
+              <div class="form-group">
+                <label for="submerchantregistration-birthdate">Date of birth (DD/MM/YYYY):*</label>
+                <input type="text" name="address" id="submerchantregistration-birthdate">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-address">Address:*</label>
+                <input type="text" name="address" id="submerchantregistration-address">
+              </div>
+              <div class="form-group">
+               <label for="submerchantregistration-postalcode">Postal code:*</label>
+                <input type="text" name="postal_code" id="submerchantregistration-postalcode">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-city">City:*</label>
+                <input type="text" name="city" id="submerchantregistration-city">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-region">Region:</label>
+                <input type="text" name="region" id="submerchantregistration-region">
+              </div>
+              <div class="form-group">
+                <select name="country" id="submerchantregistration-country">
+                  <option value="">Select your country</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select name="nationality" id="submerchantregistration-nationality">
+                  <option value="">Select your nationality</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-phone">Phone:*</label>
+                <input type="text" name="phone" id="submerchantregistration-phone">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-iban">IBAN:*</label>
+                <input type="text" name="iban" id="submerchantregistration-iban">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-swift">BIC/SWIFT:*</label>
+                <input type="text" name="swift" id="submerchantregistration-swift">
+              </div>
+              <button type="submit" class="btn btn-info">Submit</button>
+            </form>
 					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<button class="btn btn-default" id="gearavailability-today-btn">Today</button>
-							<button class="btn btn-default" id="gearavailability-previous-btn">Previous</button>
-							<button class="btn btn-default" id="gearavailability-next-btn">Next</button>
+					<div id="editgear-availability-terms" class="hidden">
+						<div class="row">
+              <div class="col-md-12">
+                <p>
+                  By pressing accept you confirm that you have read and accepted the Sharingear Terms and Conditions.
+                  If you press cancel your gear will be saved, but it will not be possible to rent it.
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button class="btn btn-info" id="submerchantregistration-accept">Accept</button>
+              </div>
+            </div>
+					</div>
+					<div id="editgear-availability-calendar" class="hidden">
+						<div class="row">
+							<div class="col-md-12" id="gearavailability-monthtitle"></div>
 						</div>
-						<div class="col-md-6">
-							<button class="btn btn-default" id="gearavailability-clearmonth-btn">Clear month</button><button class="btn btn-default" id="gearavailability-always-btn">Always available</button><button class="btn btn-default" id="gearavailability-never-btn">Never available</button>
+						<div class="row">
+							<div class="col-md-6">
+								<button class="btn btn-default" id="gearavailability-today-btn">Today</button>
+								<button class="btn btn-default" id="gearavailability-previous-btn">Previous</button>
+								<button class="btn btn-default" id="gearavailability-next-btn">Next</button>
+							</div>
+							<div class="col-md-6">
+								<button class="btn btn-default" id="gearavailability-clearmonth-btn">Clear month</button><button class="btn btn-default" id="gearavailability-always-btn">Always available</button><button class="btn btn-default" id="gearavailability-never-btn">Never available</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 calendar month calendar" id="gearavailability-months-container"></div>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-12 calendar month calendar" id="gearavailability-months-container"></div>
-					</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-  	<div class="col-md-12">
-  		<button class="btn editgear-cancel-button btn-default btn-cancel button-margin">Cancel</button>
-  		<button class="btn editgear-save-button btn-primary btn-save price-button-margin" id="editgear-save-btn">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+  		<div class="col-md-12">
+  			<button class="btn editgear-cancel-button btn-default btn-cancel button-margin">Cancel</button>
+  			<button class="btn editgear-save-button btn-primary btn-save price-button-margin" id="editgear-save-btn">Save</button>
+  		</div>
   	</div>
-  </div>
 </div>
