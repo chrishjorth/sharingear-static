@@ -36,6 +36,8 @@ define(
                 bio: userData.bio
             };
 
+            this.isSaving = false;
+
             //Start loading profile image
             this.profileImg = new Image();
             this.profileImg.onload = function() {
@@ -103,9 +105,12 @@ define(
         };
 
         handleSave = function(event) {
-
             var view = event.data,
                 saveData;
+
+            if(view.isSaving === true) {
+                return;
+            }
 
             // add spinner to btn
             $('#saveButton', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
@@ -133,9 +138,12 @@ define(
                 return;
             }
 
+            view.isSaving = true;
+
             _.extend(view.user.data, saveData);
 
             view.user.update(function (error) {
+                view.isSaving = false;
                 // clear spinner on the button
                 $('#saveButton', view.$element).text('Save');
 
@@ -148,16 +156,12 @@ define(
             });
         };
 
-        // if active==true, enables save button, else disables
         enableSaveButton = function(active) {
-
-            if (!active) {
-                // disable button
+            if (active === false) {
                 $('#saveButton', this.$element).attr({disabled: "disabled"});
-            } else {
-                // enable button
+            }
+            else {
                 $('#saveButton', this.$element).removeAttr("disabled");
-                // clear success message
                 $('#saveSuccessDiv', this.$element).html("");
             }
         };
