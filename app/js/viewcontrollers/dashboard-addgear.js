@@ -224,6 +224,10 @@ define(
 			var view = this,
 				newData, callback;
 
+			if(view.isLoading === true) {
+				return;
+			}
+
 			//Create new gear model object from form data
 			newData = {
 				type: $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked').val(),
@@ -347,6 +351,10 @@ define(
 			var view = this,
                 isLocationSame, addressOneliner, newGearData, saveCall,
                 currentAddress, currentPostalCode, currentCity, currentRegion, currentCountry, didLocationChange;
+
+            if(view.isLoading === true) {
+            	return;
+            }
 
             currentAddress = this.newGear.address;
 			currentPostalCode = this.newGear.postal_code;
@@ -632,14 +640,18 @@ define(
 			var view = event.data,
                 currentBtn = $(this);
 
+            view.isLoading = true;
+
             currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
 			App.user.update(function(error) {
 				if(error) {
 					console.log(error);
 					alert('Error saving user data.');
+					view.isLoading = false;
 					return;
 				}
 				App.user.updateBankDetails(function(error) {
+					view.isLoading = false;
 					if(error) {
 						console.log(error);
 						alert('Error registering bank data.');
@@ -982,6 +994,10 @@ define(
 				availabilityArray = [],
 				month, monthSelections, selection, j;
 
+			if(view.isLoading === true) {
+				return;
+			}
+
 			view.toggleLoading();
 
 			view.addCellsToSelections();
@@ -1016,8 +1032,10 @@ define(
 					view.saveInstrument();
 					break;
 				case 'addgear-photos-li':
-					$('#addgear-pricelocation-li', view.$element).html('<a href="#addgear-pricelocation" role="tab" data-toggle="tab">Price &amp; Location</a>');
-					$('#addgear-crumbs a[href="#addgear-pricelocation"]', view.$element).tab('show');
+					if(view.isLoading === false) {
+						$('#addgear-pricelocation-li', view.$element).html('<a href="#addgear-pricelocation" role="tab" data-toggle="tab">Price &amp; Location</a>');
+						$('#addgear-crumbs a[href="#addgear-pricelocation"]', view.$element).tab('show');
+					}
 					break;
 				case 'addgear-pricelocation-li':
 					view.savePriceLocation();

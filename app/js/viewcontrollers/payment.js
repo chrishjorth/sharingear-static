@@ -183,7 +183,6 @@ define(
 
 			//Avoid user clicking multiple times and starting multiple payments
 			if(view.isPaying === true) {
-				console.log('already paying');
 				return;
 			}
 

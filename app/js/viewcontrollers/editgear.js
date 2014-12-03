@@ -463,6 +463,10 @@ define(
                 availabilityArray = [],
                 updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
 
+            if(view.isLoading === true) {
+                return;
+            }
+
             view.toggleLoading();
 
             //Convert selections to availability array
