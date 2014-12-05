@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'model'],
-	function(_, Utilities, Model) {
+	['underscore', 'utilities', 'model', 'app'],
+	function(_, Utilities, Model, App) {
 		var didInitialize,
             createBooking,
             getBookingInfo,
@@ -25,7 +25,7 @@ define(
                 url,
 				postData;
 
-            url = '/users/' + newBooking.user_id +'/gear/' + newBooking.gear_id + '/bookings';
+            url = '/users/' + App.user.data.id +'/gear/' + newBooking.gear_id + '/bookings';
 
 			postData = {
 				gear_id: newBooking.gear_id,
@@ -50,13 +50,9 @@ define(
 			});
 		};
 
-        // GET: /users/:user_id/gear/:gear_id/bookings/:booking_id (also accepts 'latest')
-        /**
-         * @param userID: The id of the logged in user, required for authorization
-         */
-        getBookingInfo = function(userID, bookingId, callback) {
+        getBookingInfo = function(userID, callback) {
             var model = this,
-                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + bookingId;
+                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
 
             this.get(url, function(error, booking) {
                 if(error) {

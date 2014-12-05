@@ -133,7 +133,7 @@ define(
 			$locationContainer = $('#home-search-form #search-location', view.$element);
 			location = $locationContainer.val();
 			if(location === '') {
-//				location = $locationContainer.attr('placeholder');
+				location = $locationContainer.attr('placeholder');
 			}
 
             //URI playground
