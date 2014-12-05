@@ -86,6 +86,9 @@ define(
                     else if(gear.data.booking_status === 'accepted') {
                     	defaultGear.gear_status = '<button class="btn btn-default yourrentals-status booking-btn" data-yourgear-bookingid="' + gear.data.booking_id + '">' + 'ACCEPTED' + '</button>';
                     }
+                    else if(gear.data.booking_status === 'ended') {
+                    	defaultGear.gear_status = 'ended';
+                    }
                     else {
                     	defaultGear.gear_status = 'failed';
                     }

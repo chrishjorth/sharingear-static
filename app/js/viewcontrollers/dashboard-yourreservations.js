@@ -71,8 +71,6 @@ define(
                         defaultReservation.img_url = defaultReservation.images.split(',')[0];
                     }
 
-                    console.log('status: ' + defaultReservation.booking_status);
-
                     if(defaultReservation.booking_status === 'pending') {
                     	defaultReservation.gear_status = '<span class="yourgear-status pending">PENDING</span>';
                     }
@@ -90,6 +88,9 @@ define(
                     }
                     else if(defaultReservation.booking_status === 'owner-returned') {
                     	defaultReservation.gear_status = '<button class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">WAITING FOR RENTER</button>';
+                    }
+                    else {
+                    	defaultReservation.gear_status = '<span class="yourgear-status pending">FAILED</span>';
                     }
 
 					$('#' + reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
