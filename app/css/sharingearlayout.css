@@ -3582,8 +3582,8 @@ span.num {
 .gear-suggestion-selected .gear-suggestion-icon {
     background-position: -16px 0px;
     background-repeat: no-repeat;
-    
-    
+
+
 }
 
 .search-container #home-search-form .form-group{
@@ -4145,5 +4145,40 @@ span.num {
 .margin-for-buttons{
 
 	margin-right: 5px;
+
+}
+
+/* ---------booking confirmation screen--------------*/
+
+
+.booking-confirm-header {
+
+  color: rgb(0, 174, 255);
+  margin: 25px;
+
+}
+
+.booking-confirm-warning {
+
+  background-color: rgb(255, 210, 0);
+  /*margin: 0px 20px 20px 20px;*/
+  padding-bottom: 10px;
+
+}
+
+.booking-confirm-table {
+
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border: solid;
+  border-top: none;
+  border-width: 1px;
+  border-color: rgb(230,230,230);
+
+}
+
+.booking-confirm-button {
+
+  margin-top: 30px;
 
 }

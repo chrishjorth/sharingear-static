@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'models/booking'],
-	function($, ViewController, App, Booking) {
+	['jquery', 'viewcontroller', 'app', 'models/booking', 'moment'],
+	function($, ViewController, App, Booking, Moment) {
 		var booking,
 
 			didInitialize,
@@ -17,6 +17,14 @@ define(
 
 		didInitialize = function () {
 			var view = this;
+
+			view.templateParameters = {
+						start_time : '',
+						end_time : '',
+						price : '',
+						currency : "DKK"
+			};
+
 			booking = new Booking.constructor({
 				rootURL: App.API_URL
 			});
@@ -28,8 +36,24 @@ define(
 				if(error) {
 					console.log('Error updating booking: ' + error);
 					return;
-				}
-				view.render();
+				};
+
+				booking.getBookingInfo(App.user.data.id, booking.data.id, function(error){
+					if(error) {
+							console.log('Error getting booking info: ' + error);
+							return;
+					};
+
+					var timeFormat = 'MMMM Do YYYY, H:mm';
+					var formattedEnd = Moment(booking.data.end_time).format(timeFormat);
+					var formattedStart = Moment(booking.data.start_time).format(timeFormat);
+
+					view.templateParameters.start_time = formattedStart;
+					view.templateParameters.end_time = formattedEnd;
+					view.templateParameters.price = booking.data.price;
+
+					view.render();
+				});
 			});
 		};
 
