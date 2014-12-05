@@ -27,16 +27,29 @@ define(
 		function search(location, gear, daterange, callback) {
 			var view = this;
 
-			this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(searchResults);
-					callback(view.data);
-				}
-			});
+			if (location===null||location==='all'||location==='') {
+				this.get('/gear/search/all/' + gear + '/' + daterange, function(error, searchResults) {
+					if(error) {
+						console.log(error);
+						callback([]);
+					}
+					else {
+						view.loadFromArray(searchResults);
+						callback(view.data);
+					}
+				});
+			}else{
+				this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+					if(error) {
+						console.log(error);
+						callback([]);
+					}
+					else {
+						view.loadFromArray(searchResults);
+						callback(view.data);
+					}
+				});
+			}
 		}
 
 		function getUserGear(userID, callback) {
