@@ -28,29 +28,19 @@ define(
 		search = function(location, gear, daterange, callback) {
 			var view = this;
 
-			if (location===null||location==='all'||location==='') {
-				this.get('/gear/search/all/' + gear + '/' + daterange, function(error, searchResults) {
-					if(error) {
-						console.log(error);
-						callback([]);
-					}
-					else {
-						view.loadFromArray(searchResults);
-						callback(view.data);
-					}
-				});
-			}else{
-				this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-					if(error) {
-						console.log(error);
-						callback([]);
-					}
-					else {
-						view.loadFromArray(searchResults);
-						callback(view.data);
-					}
-				});
+			if(location === null || location === '') {
+				location = 'all';
 			}
+			this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+				if(error) {
+					console.log(error);
+					callback([]);
+				}
+				else {
+					view.loadFromArray(searchResults);
+					callback(view.data);
+				}
+			});
 		}
 
 		getUserGear = function(userID, callback) {
