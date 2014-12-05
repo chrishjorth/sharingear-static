@@ -2,45 +2,57 @@
  * Defines a list of gear.
  * @author: Chris Hjorth
  */
-
-'use strict';
-
 define(
-	['underscore', 'model', 'models/gear'],
-	function(_, Model, Gear) {
-		var didInitialize,
+	['model', 'models/gear'],
+	function(Model, Gear) {
+		var GearList = Model.inherit({
+			didInitialize: didInitialize,
 
-			search,
-			getUserGear,
-			getUserRentals,
-			getUserReservations,
-			getGearItem,
-			isEmpty,
-			updateGearItem,
-			loadFromArray;
+			search: search,
+			getUserGear: getUserGear,
+			getUserReservations: getUserReservations,
+			getGearItem: getGearItem,
+			listGear: listGear,
+			isEmpty: isEmpty,
+			updateGearItem: updateGearItem,
+			loadFromArray: loadFromArray
+		});
 
-		didInitialize = function() {
-			if(this.data === null) {
-				this.data = [];
-			}
-		};
+		return GearList;
 
-		search = function(location, gear, daterange, callback) {
+		function didInitialize() {
+			this.data = [];
+		}
+
+		function search(location, gear, daterange, callback) {
 			var view = this;
 
-			this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(searchResults);
-					callback(view.data);
-				}
-			});
-		};
+			if (location===null||location==='all'||location==='') {
+				this.get('/gear/search/all/' + gear + '/' + daterange, function(error, searchResults) {
+					if(error) {
+						console.log(error);
+						callback([]);
+					}
+					else {
+						view.loadFromArray(searchResults);
+						callback(view.data);
+					}
+				});
+			}else{
+				this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+					if(error) {
+						console.log(error);
+						callback([]);
+					}
+					else {
+						view.loadFromArray(searchResults);
+						callback(view.data);
+					}
+				});
+			}
+		}
 
-		getUserGear = function(userID, callback) {
+		function getUserGear(userID, callback) {
 			var view = this;
 			this.get('/users/' + userID + '/gear', function(error, userGear) {
 				if(error) {
@@ -52,23 +64,9 @@ define(
 					callback(view.data);
 				}
 			});
-		};
+		}
 
-		getUserRentals = function(userID, callback) {
-			var view = this;
-			this.get('/users/' + userID + '/rentals', function(error, userRentals) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(userRentals);
-					callback(view.data);
-				}
-			});
-		};
-
-		getUserReservations = function(userID, callback) {
+		function getUserReservations(userID, callback) {
 			var view = this;
             
             view.get('/users/' + userID + '/reservations', function (error, userReservations) {
@@ -80,20 +78,20 @@ define(
             		callback(view.data);
             	}
             });
-		};
+		}
 
-		getGearItem = function(property, key) {
+		function getGearItem(gearID) {
 			var i;
 			for(i = 0; i < this.data.length; i++) {
-				if(this.data[i].data[property] === key) {
+				if(this.data[i].data.id === gearID) {
 					return this.data[i];
 				}
 			}
 			return null;
-		};
+		}
 
 
-		/*listGear = function(gearArray, userID, callback) {
+		function listGear(gearArray, userID, callback) {
 			var parsedGearArray = JSON.stringify(gearArray),
 				postData;
 			postData = {
@@ -107,13 +105,13 @@ define(
 				}
 				return;
 			});
-		};*/
+		}
 
-		isEmpty = function() {
+		function isEmpty() {
 			return this.data.length <= 0;
-		};
+		}
 
-		updateGearItem = function(gearItem) {
+		function updateGearItem(gearItem) {
 			var i;
 			for(i = 0; i < this.data.length; i++) {
 				if(this.data[i].id === gearItem.data.id) {
@@ -121,9 +119,9 @@ define(
 					return;
 				}
 			}
-		};
+		}
 
-		loadFromArray = function(gearArray) {
+		function loadFromArray(gearArray) {
 			var i, gearItem;
 
             this.data = [];
@@ -135,19 +133,6 @@ define(
                 _.extend(gearItem.data, gearArray[i]);
 				this.data.push(gearItem);
 			}
-		};
-
-		return Model.inherit({
-			didInitialize: didInitialize,
-
-			search: search,
-			getUserGear: getUserGear,
-			getUserRentals: getUserRentals,
-			getUserReservations: getUserReservations,
-			getGearItem: getGearItem,
-			isEmpty: isEmpty,
-			updateGearItem: updateGearItem,
-			loadFromArray: loadFromArray
-		});
+		}
 	}
 );
