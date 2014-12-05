@@ -386,12 +386,24 @@ define(
 				alert('Price is missing.');
 				return;
 			}
+			if(newGearData.price_a%1!==0) {
+				alert('Hourly price is invalid.');
+				return;
+			}
 			if(newGearData.price_b === '') {
 				alert('Price is missing.');
 				return;
 			}
+			if(newGearData.price_b%1!==0) {
+				alert('Daily is invalid.');
+				return;
+			}
 			if(newGearData.price_c === '') {
 				alert('Price is missing.');
+				return;
+			}
+			if(newGearData.price_c%1!==0) {
+				alert('Weekly is invalid.');
 				return;
 			}
 			if(this.hasDelivery === true && newGearData.delivery_price === '') {

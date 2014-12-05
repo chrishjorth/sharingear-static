@@ -45,7 +45,6 @@ define(
 		};
 
 		didRender = function () {
-			var displayDatesFrom,displayDatesTo;
 			this.renderMissingDataInputs();
 
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
@@ -232,14 +231,14 @@ define(
 					return;
 				}
 				//Pre-authorize the card for the withdrawal
-				newBooking.createBooking(cardId, function(error) {
+				view.booking.createBooking(cardId, function(error) {
                 	if (error) {
-                    	console.log('booking gave error');
+                    	console.log('Error creating booking: ');
                     	console.log(error);
                     	view.resetPayButton();
                     	return;
                 	}
-                	window.location.href = newBooking.data.verificationURL;
+                	window.location.href = view.booking.data.verificationURL;
             	});
 			});
 		};

@@ -48,6 +48,7 @@ define(
 				'dashboard',
 				'dashboard/profile',
 				'dashboard/yourgear',
+				'dashboard/yourrentals',
 				'dashboard/yourreservations',
 				'dashboard/calendar',
 				'dashboard/settings',

@@ -409,21 +409,30 @@ define(
 			var view = this;
 			
 			App.user.setSearchInterval(dateRange);
+			if (location === '' || location === 'all' || location === null) {
 
-			geocoder.geocode({address: location}, function(results, status) {
-				var locationData;
-				if(status === GoogleMaps.GeocoderStatus.OK) {
-					locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
-					view.gearList.search(locationData, gear, dateRange, function(searchResults) {
-                        view.populateSearchBlock(searchResults);
-					});
-				}
-				else {
-					console.log('Error geocoding: ' + status);
-					alert('Couldn\'t find location');
-                    view.populateSearchBlock([]);
-				}
-			});
+				location = 'all';
+				view.gearList.search(location, gear, dateRange, function(searchResults) {
+					view.populateSearchBlock(searchResults);
+				});
+
+			}else{
+
+				geocoder.geocode({address: location}, function(results, status) {
+					var locationData;
+					if(status === GoogleMaps.GeocoderStatus.OK) {
+						locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
+						view.gearList.search(locationData, gear, dateRange, function(searchResults) {
+							view.populateSearchBlock(searchResults);
+						});
+					}
+					else {
+						console.log('Error geocoding: ' + status);
+						alert('Couldn\'t find this location. You can use the keyword all, to get locationless results.');
+						view.populateSearchBlock([]);
+					}
+				});
+			}
 
 			view.setupEvent('click', '#fb-share-btn', view, function() {
 				var instrument, description;
