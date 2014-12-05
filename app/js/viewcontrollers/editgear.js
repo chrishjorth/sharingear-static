@@ -44,6 +44,7 @@ define(
             handleDayStartSelect,
             handleDayMoveSelect,
             handleDayEndSelect,
+			handlePriceChange,
 
             handleCancel,
             handleSave,
@@ -104,6 +105,7 @@ define(
 			this.setupEvent('click', '.btn-save', this, this.handleSave);
             this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
             this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
+			this.setupEvent('change', '.price', this, this.handlePriceChange);
 
             this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
             this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
@@ -422,6 +424,16 @@ define(
             }
         };
 
+		handlePriceChange = function() {
+			var $this = $(this),
+				price;
+			price = parseInt($this.val(), 10);
+			if(isNaN(price)) {
+				price = '';
+			}
+			$this.val(price);
+		};
+
 		handleCancel = function() {
             var currentVerticalPosition = $(window).scrollTop();
             App.router.closeModalView();
@@ -467,7 +479,7 @@ define(
                 return;
             }
 
-            view.toggleLoading();
+			view.toggleLoading();
 
             //Convert selections to availability array
             for(month in view.selections) {
@@ -508,43 +520,68 @@ define(
 
             if ($('#editgear-subtype', view.$element).selectedIndex === 0) {
                 alert('The subtype field is required.');
+				view.toggleLoading();
                 return;
             }
             if ($('#editgear-brand', view.$element).selectedIndex === 0) {
                 alert('The brand field is required.');
-                return;
+				view.toggleLoading();
+				return;
             }
             if ($('#editgear-model', view.$element).val() === '') {
                 alert('The model field is required.');
-                return;
+                view.toggleLoading();
+				return;
             }
             if ($('#editgearpricing-form #price_a', this.$element).val() === '') {
                 alert('The rental price field is required.');
-                return;
+                view.toggleLoading();
+				return;
             }
+			if (parseFloat($('#editgearpricing-form #price_a', this.$element).val())%1!==0) {
+				alert('The hourly rental price is invalid.');
+				view.toggleLoading();
+				return;
+			}
             if ($('#editgearpricing-form #price_b', this.$element).val() === '') {
                 alert('The rental price field is required.');
-                return;
+                view.toggleLoading();
+				return;
             }
+			if (parseFloat($('#editgearpricing-form #price_b', this.$element).val())%1!==0) {
+				alert('The daily rental price is invalid.');
+				view.toggleLoading();
+				return;
+			}
             if ($('#editgearpricing-form #price_c', this.$element).val() === '') {
                 alert('The rental price field is required.');
-                return;
+                view.toggleLoading();
+				return;
             }
+			if (parseFloat($('#editgearpricing-form #price_c', this.$element).val())%1!==0) {
+				alert('The weekly rental price is invalid.');
+				view.toggleLoading();
+				return;
+			}
             if ($('#editgearpricingloc-form #editgearpricing-address', this.$element).val() === '') {
                 alert('The address field is required.');
-                return;
+                view.toggleLoading();               
+				return;
             }
             if ($('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val() === '') {
                 alert('The postalcode field is required.');
-                return;
+                view.toggleLoading();                
+				return;
             }
             if ($('#editgearpricingloc-form #editgearpricing-city', this.$element).val() === '') {
                 alert('The city field is required.');
-                return;
+                view.toggleLoading(); 
+				return;
             }
             if ($('#editgearpricingloc-form #editgearpricing-country').selectedIndex === 0 || $('#editgearpricingloc-form #editgearpricing-country').selectedIndex === null) {
                 alert('The country field is required.');
-                return;
+                view.toggleLoading();                 
+				return;
             }
 
             _.extend(view.gear.data, updatedGearData);
@@ -936,6 +973,7 @@ define(
             populateCountries: populateCountries,
             populateDelivery:populateDelivery,
             handleDeliveryCheckbox:handleDeliveryCheckbox,
+			handlePriceChange:handlePriceChange,
 
             initAvailability:initAvailability,
             renderAvailability:renderAvailability,
