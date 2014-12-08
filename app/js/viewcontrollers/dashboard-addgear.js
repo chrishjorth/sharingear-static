@@ -749,17 +749,15 @@ define(
 				$calendarContainer = $('#gearavailability-months-container', this.$element),
 				i, startMoment, endMoment, momentIterator;
 
-			if(this.alwaysFlag === 1) {
-				$('.day', $calendarContainer).each(function() {
-					var $this = $(this);
-					if($this.hasClass('disabled') === false) {
-						$this.addClass('selected');
-					}
-				});
-				return;
-			}
-
 			if(Array.isArray(selections) === false) {
+				if(this.alwaysFlag === 1) {
+					$('.day', $calendarContainer).each(function() {
+						var $this = $(this);
+						if($this.hasClass('disabled') === false) {
+							$this.addClass('selected');
+						}
+					});	
+				}
 				return;
 			}
 
@@ -769,10 +767,20 @@ define(
 				endMoment = selections[i].endMoment;
 				momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
 				while(momentIterator.isBefore(endMoment, 'day') === true) {
-					$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
+					if(this.alwaysFlag === 0) {
+                        $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');    
+                    }
+                    else {
+                        $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
+                    }
 					momentIterator.add(1, 'days');
 				}
-				$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
+				if(this.alwaysFlag === 0) {
+					$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');    
+                }
+                else {
+                    $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
+                }
 			}
 		};
 
@@ -845,7 +853,15 @@ define(
 
 		handleClearMonth = function(event) {
 			var view = event.data;
-			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
+			if(view.alwaysFlag === 1) {
+                view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [{
+                    startMoment: new Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: 1}),
+                    endMoment: new Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: view.shownMoment.daysInMonth()})
+                }];
+            }
+            else {
+                view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
+            }
 			view.clearSelections();
 			view.renderSelections();
 		};
@@ -1012,11 +1028,8 @@ define(
 
 			view.toggleLoading();
 
-			view.addCellsToSelections();
-
 			for(month in view.selections) {
 				monthSelections = view.selections[month];
-
 				for(j = 0; j < monthSelections.length; j++) {
 					selection = monthSelections[j];
 					availabilityArray.push({
