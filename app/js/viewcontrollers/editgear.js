@@ -144,8 +144,9 @@ define(
                 this.renderSelections();
             }
             else {
-                $('#editgear-availability-submerchantform', this.$element).removeClass('hidden');
                 var user = App.user.data;
+
+                $('#editgear-availability-submerchantform', this.$element).removeClass('hidden');
 
                 if(user.birthdate && user.birthdate !== '') {
                     $('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
@@ -307,6 +308,7 @@ define(
                     }
                     $('#editgear-availability-terms', view.$element).addClass('hidden');
                     $('#editgear-availability-calendar', view.$element).removeClass('hidden');
+                    view.alwaysFlag = 1; //Gear is always available as default
                     view.renderAvailability();
                     App.user.fetch(function(error) {
                         if(error) {
@@ -323,7 +325,7 @@ define(
             this.shownMoment = new Moment();
 
             this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
-            this.alwaysFlag = -1;
+            this.alwaysFlag = 0;
 
             this.gear.getAvailability(App.user.data.id, function(error, result) {
                 var availabilityArray = result.availabilityArray,

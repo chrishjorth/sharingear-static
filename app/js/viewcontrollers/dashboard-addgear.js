@@ -86,7 +86,7 @@ define(
 
 			this.shownMoment = new Moment();
 			this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
-			this.alwaysFlag = 0;
+			this.alwaysFlag = 1; //New gear is always available by default
 
 			$('#gearavailability-always-btn', this.$element).removeClass('disabled');
 			$('#gearavailability-never-btn', this.$element).removeClass('disabled');
