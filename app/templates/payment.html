@@ -46,7 +46,18 @@
 		</div>
 		<div class="form-group">
 			<label for="payment-expirationdate">Expiration date (MM/YY):</label>
-			<input type="text" name="expirationdate" id="payment-expirationdate" class="form-control">
+			<div class="row">
+				<div class="col-xs-6">
+					<select name="expiration-month" id="expiration-month" class="form-control">
+						<option value="">Select month</option>
+					</select>
+				</div>
+				<div class="col-xs-6">
+					<select name="expiration-year" id="expiration-year" class="form-control">
+						<option value="">Select year</option>
+					</select>
+				</div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="payment-csc">Security code:</label>

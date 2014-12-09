@@ -3834,6 +3834,11 @@ span.num {
 
 }
 
+#dashboard-addgear-accessories-container input[type="checkbox"]{
+
+	margin-left: 15px;
+
+}
 
 .edit-gear-buttons-margin-fix{
 
