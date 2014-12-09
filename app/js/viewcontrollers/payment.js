@@ -15,7 +15,7 @@ define(
 
 			handleCancel,
 			handlePay,
-
+			initExpiration,
 			processPayment,
 			resetPayButton;
 
@@ -23,6 +23,7 @@ define(
 			this.booking = new Booking.constructor({
 				rootURL: App.API_URL
 			});
+
 			this.booking.data.gear_id = this.passedData.gear_id;
 			this.booking.data.start_time = this.passedData.start_time;
 			this.booking.data.end_time = this.passedData.end_time;
@@ -46,9 +47,27 @@ define(
 
 		didRender = function () {
 			this.renderMissingDataInputs();
-
+			this.initExpiration($('#expiration-month',this.$element),$('#expiration-year',this.$element));
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
 			this.setupEvent('submit', '#payment-form', this, this.handlePay);
+		};
+
+		initExpiration = function ($select1,$select2) {
+			var monthsArray = ['January','February','March','April','May','June','July','August','September','October','November','December'],
+				html = $('option', $select1).first()[0].outerHTML,
+				i;
+			for(i = 0; i < monthsArray.length; i++) {
+				html += '<option value="' + monthsArray[i] + '">' + monthsArray[i] + '</option>';
+			}
+			$select1.html(html);
+
+			html=$('option', $select2).first()[0].outerHTML;
+			for(i = 2014; i < 2051; i++) {
+				html += '<option value="' + i + '">' + i + '</option>';
+			}
+			$select2.html(html);
+
+
 		};
 
 		renderMissingDataInputs = function() {
@@ -100,7 +119,7 @@ define(
 			var view = event.data,
 				userData = App.user.data,
 				needToUpdateUser = false,
-				cardNumber, expirationDate, CSC;
+				cardNumber, expirationDateMonth,expirationDateYear,expirationDate, CSC;
 
 			if(userData.birthdate === null || userData.birthdate === '') {
 				userData.birthdate = new Moment($('#payment-birthdate', view.$element).val(), 'DD/MM/YYYY');
@@ -169,11 +188,19 @@ define(
 				alert('Missing card number.');
 				return;
 			}
-			expirationDate = $('#payment-expirationdate', view.$element).val();
-			if(expirationDate === '') {
-				alert('Missing expiration date.');
+			expirationDateMonth = $('#expiration-month', view.$element).val();
+			expirationDateYear = $('#expiration-year', view.$element).val();
+
+			if(expirationDateMonth === 'Select month'||expirationDateMonth==='') {
+				alert('Missing expiration month.');
 				return;
 			}
+
+			if(expirationDateYear === 'Select year'||expirationDateYear==='') {
+				alert('Missing expiration year.');
+				return;
+			}
+
 			CSC = $('#payment-csc', view.$element).val();
 			if(CSC === '') {
 				alert('Missing security code.');
@@ -188,6 +215,10 @@ define(
 			view.isPaying = true;
 
 			$('#payment-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+
+			expirationDate += $("select[name='expiration-month'] option:selected").index();
+			expirationDate += '/';
+			expirationDate += expirationDateYear;
 
 			if(needToUpdateUser === true) {
 				App.user.update(function(error) {
@@ -255,6 +286,7 @@ define(
 
 			handleCancel: handleCancel,
 			handlePay: handlePay,
+			initExpiration:initExpiration,
 
 			processPayment: processPayment,
 			resetPayButton: resetPayButton
