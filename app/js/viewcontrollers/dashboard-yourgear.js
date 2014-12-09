@@ -24,7 +24,7 @@ define(
 				rootURL: App.API_URL
 			});
 			view.gearList.getUserGear(App.user.data.id, function(userGear) {
-				if(userGear.length!==0) {
+				if(userGear.length > 0) {
 					view.populateYourGear();
 				}
 				else {
