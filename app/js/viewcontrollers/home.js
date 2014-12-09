@@ -247,44 +247,28 @@ define(
 
 			searchString = searchString.toLowerCase().trim();
 
-
-			// get list of possible gear items
-			// info about gearClassification
-			// gList == {brands: [...], classification: {}}
-			// gList.brands == ["Ampeg", "Avid", "Bose", "Behringer", ...]
-			// gList.classification == {amp: ["Guitar amp", "Bass combo", ...], bass: [], dj: [], ...}
 			gList = App.gearClassification.data;
+			classificationSuggestions = _.map(gList.classification, function(value) {
+				var gear;
+				gear = _.filter(value, function(subtype) {
+					var subtypeName = subtype.subtype.toLowerCase(),
+						searchIndex;
+					searchIndex = subtypeName.indexOf(searchString);
+					return searchIndex >= 0;
+				});
+				return _.map(gear, function(value) {
+					return value.subtype;
+				});
+			});
+			classificationSuggestions = _.flatten(classificationSuggestions);
 
-			// find the gear items that contain input string
-			brandsSuggestions = _.chain(gList.brands)
-				.filter(function(b) {
-					var j = b.toLowerCase().indexOf(searchString);
-					return (j > -1 && (j === 0 || b[j - 1] == ' '));
-				})
-				.first(numberOfGearSuggestions)
-				.value();
-
-			// if we got more elements, add them from classificationsuggestions
-			//if (brandsSuggestions.length < N)
-			classificationSuggestions = _.chain(gList.classification)
-				.map(function(c) {
-					return _.filter(c, function(cItem) {
-						var j = cItem.toLowerCase().indexOf(searchString);
-						return j > -1 && (j === 0 || cItem[j - 1] == ' ');
-					});
-				})
-				.flatten()
-				.first(numberOfGearSuggestions)
-				.value();
-
-			if (classificationSuggestions !== undefined) {
-				// change order of suggestions here.
-				view.gearSuggestionsArray = classificationSuggestions.concat(brandsSuggestions);
-			}
-			else {
-				view.gearSuggestionsArray = brandsSuggestions;
-			}
-
+			brandsSuggestions = _.filter(gList.brands, function(brand) {
+				var searchIndex = brand.toLowerCase().indexOf(searchString);
+				return searchIndex >= 0;
+			});
+			
+			view.gearSuggestionsArray = classificationSuggestions.concat(brandsSuggestions);
+			view.gearSuggestionsArray = _.first(view.gearSuggestionsArray, numberOfGearSuggestions)
 			view.drawGearSuggestions();
 		};
 

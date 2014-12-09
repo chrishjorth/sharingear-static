@@ -34,8 +34,7 @@ define(
     		'SI': 'slovenia',
     		'ES': 'spain',
     		'SE': 'sweden',
-    		'GB': 'united kingdom',
-    		'US': 'united states',
+    		'GB': 'united kingdom'
 		};
 
 		getCountries = function() {

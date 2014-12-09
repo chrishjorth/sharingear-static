@@ -60,9 +60,10 @@ define(
             booking = new Booking.constructor({
                 rootURL: App.API_URL
             });
+            booking.data.id = gear.data.booking_id;
             booking.data.gear_id = gear.data.id;
 
-            handleFetchBooking = function(error) {
+            booking.getBookingInfo(App.user.data.id, function(error) {
                 if(error){
                     console.log('Error retrieving latest booking: ' + error);
                     return;
@@ -86,14 +87,7 @@ define(
                 	});
                 	view.render();
             	});
-            };
-
-            if(isViewerOwner === true) {
-            	booking.getBookingInfo(App.user.data.id, 'latest', handleFetchBooking);
-            }
-            else {
-            	booking.getBookingInfo(App.user.data.id, gear.data.booking_id, handleFetchBooking);
-            }
+            });
 		};
 
 		didRender = function() {
@@ -104,7 +98,7 @@ define(
             if(gear.data.booking_status === 'denied') {
             	$('#renterview-confirm', this.$element).removeClass('hidden');
             }
-            if((gear.data.booking_status === 'accepted' || gear.data.booking_status === 'renter-returned' || gear.data.booking_status === 'owner-returned') && gear.data.gear_status === 'rented-out') {
+            if(gear.data.booking_status === 'accepted' || gear.data.booking_status === 'renter-returned' || gear.data.booking_status === 'owner-returned') {
             	$('#endbooking-confirm', this.$element).removeClass('hidden');
             	this.setupEvent('click', '#booking-end-btn', this, this.handleEnd);
             }

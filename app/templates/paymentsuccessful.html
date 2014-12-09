@@ -1,4 +1,50 @@
 <div class="container-fluid">
-	<h2>Booking was successful. Waiting for confirmation by the gear owner.</h2>
-	<button class="btn btn-default" id="paymentsuccess-close-btn">Close</button>
+	<div class="row">
+		<div class="col-md-12 booking-confirm-header text-center">
+			<h1>Your selected gear was successfully booked.</h1>
+		</div>
+	</div>
+
+	<div class="row text-center">
+		<div class="col-md-8 col-md-offset-2 booking-confirm-warning">
+			<h3><p>
+				<span class="fa fa-exclamation-circle" aria-hidden="true"></span>&nbsp;&nbsp;The owner of the gear must first confirm your booking before it becomes valid
+			</p></h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2 col-xs-12 booking-confirm-table">
+			<div class="col-xs-12 col-md-6 text-center form-left">
+				<h3><strong>Booked from: </strong>{{start_time}}</h3>
+			</div>
+			<div class="col-xs-12 col-md-6 text-center">
+				<h3><strong>Return date: </strong>{{end_time}}</h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2 col-xs-12 text-center booking-confirm-table">
+			<h3><strong>Total:</strong> {{price}} {{currency}}</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-8 col-xs-offset-2 text-center">
+			<h4>The total is reserved on your card, and will be charged upon gear owner's confirmation.</h4>
+		</div>
+	</div>
+
+	<div class="row text-center booking-confirm-button">
+		<button class="btn btn-default editgear-save-button btn-primary" id="paymentsuccess-close-btn">Close</button>
+	</div>
+
+	<!-- <table class="table-bordered">
+		<tr>
+			<td><h3>Booked from: {{start_time}}</h3></td>
+			<td><h3>Return date: {{end_time}}</h3></td>
+		</tr>
+	</table> -->
+
 </div>
