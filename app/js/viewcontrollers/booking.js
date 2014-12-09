@@ -157,13 +157,13 @@ define(
 			$monthCalendarContainer.append(header + dayRows);
 		};
 
-		toggleLoading = function() {
+		toggleLoading = function($selector,initstring) {
 			if(this.isLoading === true) {
-				$('#booking-end-btn', this.$element).html('End booking');
+				$selector.html(initstring);
 				this.isLoading = false;
 			}
 			else {
-				$('#booking-end-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+				$selector.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 				this.isLoading = true;
 			}
 		};
@@ -243,15 +243,24 @@ define(
 		/**
 		 * @assertion: selections are not overlapping.
 		 */
-		handleConfirm = function() {
-            booking.data.booking_status = 'accepted';
+		handleConfirm = function(event) {
+            var view = event.data;
+
+			if(view.isLoading === true) {
+				return;
+			}
+			view.toggleLoading($('#booking-confirm-btn',view.$element),'Confirm');
+
+			booking.data.booking_status = 'accepted';
             booking.update(App.user.data.id, function(error) {
             	if(error) {
             		console.log(error);
             		alert('Error updating booking.');
-            		return;
+					view.toggleLoading($('#booking-confirm-btn',view.$element),'Confirm');
+					return;
             	}
             	else {
+					view.toggleLoading($('#booking-confirm-btn',view.$element),'Confirm');
             		App.router.closeModalView();
             	}
             });
@@ -263,16 +272,17 @@ define(
 				return;
 			}
 
-			this.toggleLoading();
+			view.toggleLoading($('#booking-end-btn',view.$element),'End booking');
 			booking.data.booking_status = (isViewerOwner === true ? 'owner-returned' : 'renter-returned');
 			booking.update(App.user.data.id, function(error) {
             	if(error) {
             		console.log(error);
             		alert('Error updating booking.');
+					view.toggleLoading($('#booking-end-btn',view.$element),'End booking');
             		return;
             	}
             	else {
-					view.toggleLoading();
+					view.toggleLoading($('#booking-end-btn',view.$element),'End booking');
             		App.router.closeModalView();
             	}
             });

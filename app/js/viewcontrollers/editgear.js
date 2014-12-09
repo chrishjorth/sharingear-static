@@ -817,6 +817,9 @@ define(
             view.alwaysFlag = 1;
             view.selections = {};
 
+			$('#gearavailability-always-btn',view.$element).addClass('button-selected-state');
+			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
+
             view.clearSelections();
             view.renderSelections();
         };
@@ -828,7 +831,10 @@ define(
 
             view.selections = {};
 
-            view.clearSelections();
+			$('#gearavailability-never-btn',view.$element).addClass('button-selected-state');
+			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
+
+			view.clearSelections();
             view.renderSelections();
         };
 
@@ -851,7 +857,10 @@ define(
                 view.dragMakeAvailable = true;
             }
 
-            $('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
+			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
+			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
+
+			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
             $('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
         };
 
