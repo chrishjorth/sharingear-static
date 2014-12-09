@@ -399,7 +399,7 @@ define(
 
 			gearSubtypes = gearClassification[this.gear.data.type];
 			for(i = 0; i < gearSubtypes.length; i++) {
-				html += '<option value="' + gearSubtypes[i] + '">' + gearSubtypes[i] + '</option>';
+				html += '<option value="' + gearSubtypes[i].subtype + '">' + gearSubtypes[i].subtype + '</option>';
 			}
 			$subtypeSelect.append(html);
 		};

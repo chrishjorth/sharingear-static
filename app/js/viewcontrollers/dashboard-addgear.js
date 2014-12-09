@@ -185,7 +185,7 @@ define(
 			
 			gearSubtypes = gearClassification[gearType];
 			for(i = 0; i < gearSubtypes.length; i++) {
-				html += '<option value="' + gearSubtypes[i] + '">' + gearSubtypes[i] + '</option>';
+				html += '<option value="' + gearSubtypes[i].subtype + '">' + gearSubtypes[i].subtype + '</option>';
 			}
 			$subtypeSelect.append(html);
 			this.setupEvent('change', '#gear-subtype-container select', this, this.handleSelectSubtype);
