@@ -30,6 +30,9 @@ define(
 			populatePhotos,
 			handleImageUpload,
 
+			initAccessories,
+			populateAccessories,
+
 			populateCountries,
 			handlePriceChange,
 			handleDeliveryCheckbox,
@@ -102,9 +105,12 @@ define(
 			$('#dashboard-addgearprice-form #price_b', this.$element).val(this.newGear.data.price_b);
 			$('#dashboard-addgearprice-form #price_c', this.$element).val(this.newGear.data.price_c);
 
+			this.initAccessories();
+
 			this.setupEvent('click', '#editgear-next-btn', this, this.handleNext);
 			this.setupEvent('change', '#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
 			this.setupEvent('change', '#dashboard-addgearphotos-form-imageupload', this, this.handleImageUpload);
+			this.setupEvent('change', '#dashboard-addgear-form-subtype', this, this.populateAccessories);
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
@@ -123,6 +129,46 @@ define(
 				$('#editgear-next-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 				this.isLoading = true;
 			}
+		};
+
+		initAccessories = function(){
+			var gearClassification = App.gearClassification.data.classification,
+				html = "",
+				view,gearSubtypes,i;
+
+			view = this;
+
+			gearSubtypes = gearClassification[view.gear.data.type];
+
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype',view.$element).val()) {
+					var j;
+					for(j=0;j<gearSubtypes[i].accessories.length;j++){
+						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+					}
+				}
+			}
+			$('#dashboard-addgear-accessories-container',view.$element).html(html);
+		};
+
+		populateAccessories = function (event) {
+			var gearClassification = App.gearClassification.data.classification,
+				html = "",
+				view,gearSubtypes,i;
+
+			view = event.data;
+
+			gearSubtypes = gearClassification[view.gear.data.type];
+
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype',view.$element).val()) {
+					var j;
+					for(j=0;j<gearSubtypes[i].accessories.length;j++){
+						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+					}
+				}
+			}
+			$('#dashboard-addgear-accessories-container',view.$element).html(html);
 		};
 
 		addGearIcons = function() {
@@ -1069,6 +1115,9 @@ define(
 
 			populatePhotos: populatePhotos,
 			handleImageUpload: handleImageUpload,
+
+			initAccessories:initAccessories,
+			populateAccessories:populateAccessories,
 
 			populateCountries: populateCountries,
 			handlePriceChange: handlePriceChange,

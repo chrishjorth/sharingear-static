@@ -27,6 +27,7 @@ define(
             populateDelivery,
             handleDeliveryCheckbox,
 
+			initAccessories,
             initAvailability,
             renderAvailability,
             handleSubmerchantSubmit,
@@ -67,6 +68,7 @@ define(
 			this.gear = this.passedData;
 			this.templateParameters = this.gear.data;
             this.initAvailability();
+
             this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 		};
 
@@ -102,6 +104,8 @@ define(
                 $('#editgearpricingloc-form #editgearpricing-country', this.$element).val(this.gear.data.country);
             }
 
+			this.initAccessories();
+
             this.setupEvent('click', '.btn-cancel', this, this.handleCancel);
 			this.setupEvent('click', '.btn-save', this, this.handleSave);
             this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
@@ -136,6 +140,26 @@ define(
             $('#editgearpricingloc-form #delivery_price').val(price);
             $('#editgearpricingloc-form #delivery_distance').val(distance);
         };
+
+		initAccessories = function () {
+			var gearClassification = App.gearClassification.data.classification,
+				html = "",
+				view,gearSubtypes,i;
+
+			view = this;
+
+			gearSubtypes = gearClassification[view.gear.data.type];
+
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].subtype === $('#editgear-subtype',view.$element).val()) {
+					var j;
+					for(j=0;j<gearSubtypes[i].accessories.length;j++){
+						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+					}
+				}
+			}
+			$('#editgear-accessories-container',view.$element).html(html);
+		};
 
         renderAvailability = function() {
             if(App.user.isSubMerchant() === true) {
@@ -424,13 +448,13 @@ define(
 			view,gearSubtypes,i;
 			view = event.data;
 
-
 			gearSubtypes = gearClassification[view.gear.data.type];
+
 			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].name === $('#editgear-subtype').val()) {
+				if (gearSubtypes[i].subtype === $('#editgear-subtype',this.$element).val()) {
 					var j;
 					for(j=0;j<gearSubtypes[i].accessories.length;j++){
-						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j]+'<br>';
+						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
 					}
 				}
 			}
@@ -995,6 +1019,7 @@ define(
             handleDeliveryCheckbox:handleDeliveryCheckbox,
 			handlePriceChange:handlePriceChange,
 
+			initAccessories:initAccessories,
             initAvailability:initAvailability,
             renderAvailability:renderAvailability,
             handleSubmerchantSubmit: handleSubmerchantSubmit,
