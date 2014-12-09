@@ -30,7 +30,6 @@ define(
 			populatePhotos,
 			handleImageUpload,
 
-			initAccessories,
 			populateAccessories,
 
 			populateCountries,
@@ -81,7 +80,7 @@ define(
 			this.isLoading = false;
 
 			this.newGear = new Gear.constructor({
-				rootURL: App.API_URL,
+				rootURL: App.API_URL
 			});
 
 			this.hasDelivery = false;
@@ -105,7 +104,6 @@ define(
 			$('#dashboard-addgearprice-form #price_b', this.$element).val(this.newGear.data.price_b);
 			$('#dashboard-addgearprice-form #price_c', this.$element).val(this.newGear.data.price_c);
 
-			this.initAccessories();
 
 			this.setupEvent('click', '#editgear-next-btn', this, this.handleNext);
 			this.setupEvent('change', '#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
@@ -131,35 +129,15 @@ define(
 			}
 		};
 
-		initAccessories = function(){
-			var gearClassification = App.gearClassification.data.classification,
-				html = "",
-				view,gearSubtypes,i;
-
-			view = this;
-
-			gearSubtypes = gearClassification[view.gear.data.type];
-
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype',view.$element).val()) {
-					var j;
-					for(j=0;j<gearSubtypes[i].accessories.length;j++){
-						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
-					}
-				}
-			}
-			$('#dashboard-addgear-accessories-container',view.$element).html(html);
-		};
-
 		populateAccessories = function (event) {
 			var gearClassification = App.gearClassification.data.classification,
 				html = "",
 				view,gearSubtypes,i;
 
 			view = event.data;
+			var geartype = $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked',view.$element).val();
 
-			gearSubtypes = gearClassification[view.gear.data.type];
-
+			gearSubtypes = gearClassification[geartype];
 			for(i = 0; i < gearSubtypes.length; i++) {
 				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype',view.$element).val()) {
 					var j;
@@ -1116,7 +1094,6 @@ define(
 			populatePhotos: populatePhotos,
 			handleImageUpload: handleImageUpload,
 
-			initAccessories:initAccessories,
 			populateAccessories:populateAccessories,
 
 			populateCountries: populateCountries,

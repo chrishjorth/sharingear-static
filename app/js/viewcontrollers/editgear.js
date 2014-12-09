@@ -148,7 +148,7 @@ define(
 
 			view = this;
 
-			gearSubtypes = gearClassification[view.gear.data.type];
+			gearSubtypes = gearClassification[view.gear.data.gear_type];
 
 			for(i = 0; i < gearSubtypes.length; i++) {
 				if (gearSubtypes[i].subtype === $('#editgear-subtype',view.$element).val()) {
@@ -448,12 +448,12 @@ define(
 			view,gearSubtypes,i;
 			view = event.data;
 
-			gearSubtypes = gearClassification[view.gear.data.type];
+			gearSubtypes = gearClassification[view.gear.data.gear_type];
 
 			for(i = 0; i < gearSubtypes.length; i++) {
 				if (gearSubtypes[i].subtype === $('#editgear-subtype',this.$element).val()) {
 					var j;
-					for(j=0;j<gearSubtypes[i].accessories.length;j++){
+					for(j = 0;j<gearSubtypes[i].accessories.length;j++){
 						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
 					}
 				}
