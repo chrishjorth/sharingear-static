@@ -78,7 +78,7 @@ define(
 							price_a: gearData.price_a,
 							price_b: gearData.price_b,
 							price_c: gearData.price_c,
-							name: ownerData.name + ' ' + ownerData.surname,
+							name: ownerData.name,
 							bio: ownerData.bio
 						};
 						view.render();

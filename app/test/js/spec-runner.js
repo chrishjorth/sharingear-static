@@ -88,7 +88,6 @@ require(
 				//'../test/js/specs/viewcontrollers/dashboard-yourreservations.spec',
 				//'../test/js/specs/viewcontrollers/dashboard-calendar.spec',
 				//'../test/js/specs/viewcontrollers/dashboard-settings.spec',
-				'../test/js/specs/viewcontrollers/listyourgear.spec',
 				'../test/js/specs/viewcontrollers/gearprofile.spec',
 				'../test/js/specs/viewcontrollers/aboutus.spec',
 				'../test/js/specs/viewcontrollers/contactus.spec',

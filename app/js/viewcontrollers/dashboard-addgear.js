@@ -153,9 +153,9 @@ define(
 				return;
 			}
 			gear = this.passedData.data;
-			if(gear.type && gear.type.length >= 0) {
-				$('#dashboard-addgear-form .gearbuttonlist-container #gear-radio-' + gear.type.toLowerCase()).prop('checked', true);
-				this.populateSubtypeSelect(gear.type);
+			if(gear.gear_type && gear.gear_type.length >= 0) {
+				$('#dashboard-addgear-form .gearbuttonlist-container #gear-radio-' + gear.gear_type.toLowerCase()).prop('checked', true);
+				this.populateSubtypeSelect(gear.gear_type);
 				if(gear.subtype && gear.subtype.length >= 0) {
 					$('#gear-subtype-container select').val(gear.subtype);
 					this.populateBrandSelect();
@@ -230,7 +230,7 @@ define(
 
 			//Create new gear model object from form data
 			newData = {
-				type: $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked').val(),
+				gear_type: $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked').val(),
 				subtype: $('#dashboard-addgear-form-subtype option:selected').val(),
 				brand: $('#dashboard-addgear-form-brand option:selected').val(),
 				model: $('#dashboard-addgear-form-model').val(),
@@ -238,7 +238,7 @@ define(
 			};
 
 			//Validate
-			if(!newData.type || newData.type === '') {
+			if(!newData.gear_type || newData.gear_type === '') {
 				alert('Please select a type of instrument.');
 				return;
 			}
