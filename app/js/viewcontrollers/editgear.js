@@ -419,13 +419,13 @@ define(
 		};
 
 		populateAccessories = function (event) {
-		var gearClassification = App.gearClassification.data.classification,
-			html = "",
-			view,gearSubtypes,i;
-			view = event.data;
+            var gearClassification = App.gearClassification.data.classification,
+                html = "",
+                view,gearSubtypes,i;
+			
+            view = event.data;
 
-
-			gearSubtypes = gearClassification[view.gear.data.type];
+			gearSubtypes = gearClassification[view.gear.data.gear_type];
 			for(i = 0; i < gearSubtypes.length; i++) {
 				if (gearSubtypes[i].name === $('#editgear-subtype').val()) {
 					var j;
@@ -434,8 +434,7 @@ define(
 					}
 				}
 			}
-
-		$('#editgear-accessories-container',this.$element).html(html);
+            $('#editgear-accessories-container',this.$element).html(html);
 		};
 
         handleDeliveryCheckbox = function(){
