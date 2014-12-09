@@ -21,7 +21,7 @@ define(
 			if(this.data === null) {
 				this.data = {
 					id: null,
-					type: '',
+					gear_type: '',
 					subtype: '',
 					brand: '',
 					model: '',
@@ -51,7 +51,7 @@ define(
 				postData;
 
 			postData = {
-				type: newGear.type,
+				gear_type: newGear.gear_type,
 				subtype: newGear.subtype,
 				brand: newGear.brand,
 				model: newGear.model,

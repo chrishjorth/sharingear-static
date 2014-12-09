@@ -58,7 +58,7 @@ define(
 				for(i = 0; i < yourRentals.length; i++) {
 					defaultGear = {
 						id: null,
-						type: '',
+						gear_type: '',
 						subtype: '',
 						brand: '',
 						model: '',

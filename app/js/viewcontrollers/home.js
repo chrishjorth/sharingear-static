@@ -181,7 +181,7 @@ define(
 
 				defaultSearchResults = {
 					id: 0,
-					type: 0,
+					gear_type: 0,
 					subtype: 0,
 					brand: 0,
 					model: '',
