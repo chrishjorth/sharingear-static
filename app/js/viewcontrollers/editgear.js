@@ -17,6 +17,7 @@ define(
 
             populateBrandSelect,
             populateSubtypeSelect,
+			populateAccessories,
 
             populateImages,
             handleImageUpload,
@@ -73,8 +74,8 @@ define(
 			this.populateBrandSelect();
 			this.populateSubtypeSelect();
 
-			this.populateImages();
 
+			this.populateImages();
             this.populateCountries($('#editgearpricing-country', this.$element));
             this.populateLocation();
             this.populateDelivery();
@@ -106,6 +107,7 @@ define(
             this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
             this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
+			this.setupEvent('change', '#editgear-subtype', this, this.populateAccessories);
 
             this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
             this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
@@ -393,7 +395,6 @@ define(
 				html = '<option> Choose subtype: </option>',
 				$subtypeSelect,
 				gearSubtypes, i;
-
 			$subtypeSelect = $('#editgear-subtype', this.$element);
 			$subtypeSelect.empty();
 
@@ -415,6 +416,26 @@ define(
 				}
 			}
 			$('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
+		};
+
+		populateAccessories = function (event) {
+		var gearClassification = App.gearClassification.data.classification,
+			html = "",
+			view,gearSubtypes,i;
+			view = event.data;
+
+
+			gearSubtypes = gearClassification[view.gear.data.type];
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].name === $('#editgear-subtype').val()) {
+					var j;
+					for(j=0;j<gearSubtypes[i].accessories.length;j++){
+						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j]+'<br>';
+					}
+				}
+			}
+
+		$('#editgear-accessories-container',this.$element).html(html);
 		};
 
         handleDeliveryCheckbox = function(){
@@ -963,6 +984,7 @@ define(
 
             populateBrandSelect: populateBrandSelect,
             populateSubtypeSelect: populateSubtypeSelect,
+			populateAccessories:populateAccessories,
 
             populateImages: populateImages,
             handleImageUpload: handleImageUpload,
