@@ -3826,6 +3826,12 @@ span.num {
 
 }
 
+#editgear-form input[type="checkbox"]{
+
+	margin-left: 15px;
+
+}
+
 
 .edit-gear-buttons-margin-fix{
 
