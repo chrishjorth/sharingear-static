@@ -52,7 +52,7 @@ define(
 				for(i = 0; i < yourReserv.length; i++) {
                     defaultReservation = {
                         id: null,
-                        type: '',
+                        gear_type: '',
                         subtype: '',
                         brand: '',
                         start_time:'',
