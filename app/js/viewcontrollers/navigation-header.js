@@ -46,6 +46,7 @@ define(
                 hovermenu += '<li><a href="#dashboard/profile"><span class="dropdown-profile-icon dropdown-icon"></span>Profile</a></li>';
                 hovermenu += '<li><a href="#dashboard/addgear"><span class="dropdown-addgear-icon dropdown-icon"></span>Add gear</a></li>';
                 hovermenu += '<li><a href="#dashboard/yourgear"><span class="dropdown-yourgear-icon dropdown-icon"></span>Your gear</a></li>';
+				hovermenu += '<li><a href="#dashboard/yourrentals"><span class="dropdown-rentals-icon dropdown-icon"></span>Your rentals</a></li>';
                 hovermenu += '<li><a href="#dashboard/yourreservations"><span class="dropdown-reservation-icon dropdown-icon"></span>Reservations</a></li>';
                     //'<li><a href="#dashboard/calendar"><span class="dropdown-calendar-icon dropdown-icon"></span>Calendar</a></li>' +
                     //'<li><a href="#dashboard/settings"><span class="dropdown-settings-icon dropdown-icon"></span>Settings</a></li></ul>';
