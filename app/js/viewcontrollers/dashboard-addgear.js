@@ -246,11 +246,15 @@ define(
 
 		saveInstrument = function() {
 			var view = this,
+				accessoriesArray = [],
 				newData, callback;
 
 			if(view.isLoading === true) {
 				return;
 			}
+
+			//Push the checked checkboxes to an array
+			Array.prototype.push.apply(accessoriesArray, $('#dashboard-addgear-accessories-container input:checked',view.$element).map(function(){return this.name;}));
 
 			//Create new gear model object from form data
 			newData = {
@@ -258,6 +262,7 @@ define(
 				subtype: $('#dashboard-addgear-form-subtype option:selected').val(),
 				brand: $('#dashboard-addgear-form-brand option:selected').val(),
 				model: $('#dashboard-addgear-form-model').val(),
+				accessories: accessoriesArray,
 				description: $('#dashboard-addgear-form-description').val()
 			};
 

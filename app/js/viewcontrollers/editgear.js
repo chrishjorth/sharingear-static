@@ -560,8 +560,8 @@ define(
                 }
             });
 
-			var accessories = $('#editgear-accessories-container input:checked',view.$element).map(function(){return this.name;});
-			Array.prototype.push.apply(accessoriesArray, accessories);
+			//Push the checked checkboxes to the array
+			Array.prototype.push.apply(accessoriesArray, $('#editgear-accessories-container input:checked',view.$element).map(function(){return this.name;}));
 
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
