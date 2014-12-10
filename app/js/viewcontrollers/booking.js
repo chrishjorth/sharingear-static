@@ -16,6 +16,7 @@ define(
 
 			didInitialize,
 			didRender,
+			toggleLoading,
 			renderMonthCalendar,
 			setupMonthCalendar,
 			renderBooking,
@@ -29,6 +30,8 @@ define(
 				title = '',
 				handleFetchBooking;
 
+			this.isLoading = false;
+
 			Moment.locale('en-custom', {
 				week: {
 					dow: 1,
@@ -38,6 +41,7 @@ define(
 
 			gear = view.passedData;
 			isViewerOwner = (App.user.data.id === gear.data.owner_id);
+
 
 			if(gear.data.booking_status === 'denied') {
 				title = 'Booking denied';
@@ -153,6 +157,17 @@ define(
 			$monthCalendarContainer.append(header + dayRows);
 		};
 
+		toggleLoading = function($selector,initstring) {
+			if(this.isLoading === true) {
+				$selector.html(initstring);
+				this.isLoading = false;
+			}
+			else {
+				$selector.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+				this.isLoading = true;
+			}
+		};
+
 		setupMonthCalendar = function() {
 			var shownMoment = new Moment(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss'),
 				moment, startDay, $calendarContainer, $dayBox, row, col, date;
@@ -228,29 +243,46 @@ define(
 		/**
 		 * @assertion: selections are not overlapping.
 		 */
-		handleConfirm = function() {
-            booking.data.booking_status = 'accepted';
+		handleConfirm = function(event) {
+            var view = event.data;
+
+			if(view.isLoading === true) {
+				return;
+			}
+			view.toggleLoading($('#booking-confirm-btn',view.$element),'Confirm');
+
+			booking.data.booking_status = 'accepted';
             booking.update(App.user.data.id, function(error) {
             	if(error) {
             		console.log(error);
             		alert('Error updating booking.');
-            		return;
+					view.toggleLoading($('#booking-confirm-btn',view.$element),'Confirm');
+					return;
             	}
             	else {
+					view.toggleLoading($('#booking-confirm-btn',view.$element),'Confirm');
             		App.router.closeModalView();
             	}
             });
 		};
 
 		handleEnd = function(event) {
+			var view = event.data;
+			if(view.isLoading === true) {
+				return;
+			}
+
+			view.toggleLoading($('#booking-end-btn',view.$element),'End booking');
 			booking.data.booking_status = (isViewerOwner === true ? 'owner-returned' : 'renter-returned');
 			booking.update(App.user.data.id, function(error) {
             	if(error) {
             		console.log(error);
             		alert('Error updating booking.');
+					view.toggleLoading($('#booking-end-btn',view.$element),'End booking');
             		return;
             	}
             	else {
+					view.toggleLoading($('#booking-end-btn',view.$element),'End booking');
             		App.router.closeModalView();
             	}
             });
@@ -264,6 +296,7 @@ define(
 			setupMonthCalendar: setupMonthCalendar,
 
 			renderBooking: renderBooking,
+			toggleLoading:toggleLoading,
 
 			handleCancel: handleCancel,
             handleDeny : handleDeny,

@@ -35,9 +35,6 @@ define(
                 returnURL: window.location.href
 			};
 
-            console.log('create booking postData:');
-            console.log(postData);
-
 			this.post(url, postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {

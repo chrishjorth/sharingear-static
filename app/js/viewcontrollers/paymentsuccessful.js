@@ -18,11 +18,13 @@ define(
 		didInitialize = function () {
 			var view = this;
 
+			view.paymentSuccessful = null; //null: waiting for server
+
 			view.templateParameters = {
-						start_time : '',
-						end_time : '',
-						price : '',
-						currency : "DKK"
+				start_time: '',
+				end_time: '',
+				price: '',
+				currency: "DKK"
 			};
 
 			booking = new Booking.constructor({
@@ -35,13 +37,15 @@ define(
 			booking.update(App.user.data.id, function(error) {
 				if(error) {
 					console.log('Error updating booking: ' + error);
+					view.paymentSuccessful = false;
+					view.render();
 					return;
 				};
 
-				booking.getBookingInfo(App.user.data.id, booking.data.id, function(error){
+				booking.getBookingInfo(App.user.data.id, function(error){
 					if(error) {
-							console.log('Error getting booking info: ' + error);
-							return;
+						console.log('Error getting booking info: ' + error);
+						return;
 					};
 
 					var timeFormat = 'MMMM Do YYYY, H:mm';
@@ -51,13 +55,19 @@ define(
 					view.templateParameters.start_time = formattedStart;
 					view.templateParameters.end_time = formattedEnd;
 					view.templateParameters.price = booking.data.price;
-
+					view.paymentSuccessful = true;
 					view.render();
 				});
 			});
 		};
 
 		didRender = function () {
+			if(this.paymentSuccessful === true) {
+				$('.payment-success', this.$element).removeClass('hidden');
+			}
+			if(this.paymentSuccessful === false) {
+				$('.payment-failure', this.$element).removeClass('hidden');
+			}
 			this.setupEvent('click', '#paymentsuccess-close-btn', this, this.handleClose);
 		};
 

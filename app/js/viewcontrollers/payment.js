@@ -216,9 +216,19 @@ define(
 
 			$('#payment-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
-			expirationDate += $("select[name='expiration-month'] option:selected").index();
+			var expmonth = $("select[name='expiration-month'] option:selected").index();
+
+			expirationDate = '';
+			if (expmonth>=1&&expmonth<=9){
+				expirationDate += '0';
+				expirationDate += expmonth.toString();
+			}else{
+				expirationDate += expmonth.toString();
+			}
+
 			expirationDate += '/';
-			expirationDate += expirationDateYear;
+			expirationDate += expirationDateYear.slice(2,4);
+			console.log(expirationDate);
 
 			if(needToUpdateUser === true) {
 				App.user.update(function(error) {

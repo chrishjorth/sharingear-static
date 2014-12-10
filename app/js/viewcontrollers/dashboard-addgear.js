@@ -853,6 +853,9 @@ define(
 			view.alwaysFlag = 1;
 			view.selections = {};
 
+
+			$('#gearavailability-always-btn',view.$element).addClass('button-selected-state');
+			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
 			view.clearSelections();
 			view.renderSelections();
 		};
@@ -865,9 +868,13 @@ define(
 			view.selections = {};
 			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
 
+			$('#gearavailability-never-btn',view.$element).addClass('button-selected-state');
+			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
+
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
+
 		};
 
 		handleDayStartSelect = function(event) {
@@ -888,6 +895,9 @@ define(
                 $this.addClass('selected');
                 view.dragMakeAvailable = true;
             }
+
+			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
+			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
 
 			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
 			$('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
