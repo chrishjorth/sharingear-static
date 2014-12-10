@@ -38,6 +38,7 @@ define(
 				if(error) {
 					console.log('Error updating booking: ' + error);
 					view.paymentSuccessful = false;
+					view.render();
 					return;
 				};
 
@@ -62,10 +63,10 @@ define(
 
 		didRender = function () {
 			if(this.paymentSuccessful === true) {
-				$('.payment-success', view.$element).removeClass('hidden');
+				$('.payment-success', this.$element).removeClass('hidden');
 			}
 			if(this.paymentSuccessful === false) {
-				$('.payment-failure', view.$element).removeClass('hidden');
+				$('.payment-failure', this.$element).removeClass('hidden');
 			}
 			this.setupEvent('click', '#paymentsuccess-close-btn', this, this.handleClose);
 		};
