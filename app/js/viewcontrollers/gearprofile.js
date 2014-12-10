@@ -16,6 +16,7 @@ define(
 			renderOwnerPicture,
 			renderGearPictures,
 			renderMap,
+			renderAccessories,
 			handleBooking,
             handleEditProfile,
             handleFacebookShare,
@@ -31,6 +32,7 @@ define(
 				subtype: '',
 				model: '',
 				description: '',
+				accessories:null,
 				price_a: '',
 				price_b: '',
 				price_c: '',
@@ -52,6 +54,7 @@ define(
 					view.gear = new Gear.constructor({
 						rootURL: App.API_URL
 					});
+
 					view.gear.data.id = view.subPath;
 					view.subPath = ''; //To avoid rendering a subview based on the gear id
 				}
@@ -75,6 +78,7 @@ define(
 							subtype: gearData.subtype,
 							model: gearData.model,
 							description: gearData.description,
+							accessories: gearData.accessories,
 							price_a: gearData.price_a,
 							price_b: gearData.price_b,
 							price_c: gearData.price_c,
@@ -92,6 +96,7 @@ define(
 			
 			this.renderGearPictures();
 			this.renderOwnerPicture();
+			this.renderAccessories();
 			this.renderMap();
 
             $owl = $('#gearprofile-owl', this.$element);
@@ -101,7 +106,9 @@ define(
                 paginationSpeed: 400,
                 singleItem: true
             });
-	        
+			$('#gearprofile-additional',this.$element).addClass();
+
+
             $('.owl-controls .owl-page').append('<a class=\"item-link\"/>');
 
             $paginatorsLink = $('.owl-controls .item-link', this.$element);
@@ -156,6 +163,24 @@ define(
 			}
 		};
 
+		renderAccessories = function () {
+			var accessories = this.gear.data.accessories, i,html='';
+
+			if (accessories===null||accessories.length===0) {
+				html='This gear doesn\'t have any accessories.';
+				$('#accesories-holder',this.$element).removeClass('text-capitalize');
+				$('#accesories-holder',this.$element).html(html);
+				return;
+			}
+
+			html+='<ul>';
+			for(i=0;i<accessories.length;i++){
+				html+='<li>'+accessories[i]+'</li>';
+			}
+			html+='</ul>';
+			$('#accesories-holder',this.$element).addClass('text-capitalize');
+			$('#accesories-holder',this.$element).html(html);
+		};
 
         renderOwnerPicture = function() {
         	var img, isVertical, backgroundSize;
@@ -308,6 +333,7 @@ define(
 			didRender: didRender,
 			renderGearPictures: renderGearPictures,
 			renderMap: renderMap,
+			renderAccessories: renderAccessories,
             renderOwnerPicture: renderOwnerPicture,
 			renderPopup: renderPopup,
 			addEditButtonIfOwner: addEditButtonIfOwner,

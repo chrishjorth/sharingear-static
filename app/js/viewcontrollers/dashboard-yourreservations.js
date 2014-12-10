@@ -88,19 +88,19 @@ define(
                     	defaultReservation.gear_status = '<div class="yourgear-status pending" style="background-color: #EE0000;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;">PENDING</div>';
                     }
                     else if(defaultReservation.booking_status === 'denied') {
-                    	defaultReservation.gear_status = '<button style="background-color: #EE0000;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;" class="btn btn-warning yourgear-status denied" data-bookingid="' + reservation.data.booking_id + '">DENIED</button>';
+                    	defaultReservation.gear_status = '<button style="background-color: #EE0000;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-warning yourgear-status denied" data-bookingid="' + reservation.data.booking_id + '">DENIED</button>';
                     }
                     else if(defaultReservation.gear_status === 'rented-out') {
-                    	defaultReservation.gear_status = '<button style="background-color: #fcd700;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">IN RENTAL</button>';
+                    	defaultReservation.gear_status = '<button style="background-color: #fcd700;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">IN RENTAL</button>';
                     }
                     else if(defaultReservation.booking_status === 'accepted') {
-                    	defaultReservation.gear_status = '<button style="background-color: #71d800;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">ACCEPTED</button>';
+                    	defaultReservation.gear_status = '<button style="background-color: #71d800;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">ACCEPTED</button>';
                     }
                     else if(defaultReservation.booking_status === 'renter-returned') {
-                    	defaultReservation.gear_status = '<button style="background-color: #00aeff;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">AWAIT OWNER</button>';
+                    	defaultReservation.gear_status = '<button style="background-color: #00aeff;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">AWAIT OWNER</button>';
                     }
                     else if(defaultReservation.booking_status === 'owner-returned') {
-                    	defaultReservation.gear_status = '<button style="background-color: #00aeff;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">AWAIT RENTER</button>';
+                    	defaultReservation.gear_status = '<button style="background-color: #00aeff;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">AWAIT RENTER</button>';
                     }
                     else if(defaultReservation.booking_status === 'ended') {
                     	defaultReservation.gear_status = '<div class="yourgear-status pending" style="background-color: #EE0000;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;">ENDED</div>';

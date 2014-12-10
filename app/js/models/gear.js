@@ -32,6 +32,7 @@ define(
 					price_c: '',
                     delivery_price: '',
                     delivery_distance: '',
+					accessories: null,
 					address: '',
 					postal_code: '',
 					city: '',
@@ -57,6 +58,7 @@ define(
 				model: newGear.model,
 				description: newGear.description,
 				images: newGear.images,
+				accessories: newGear.accessories,
 				price_a: newGear.price_a,
 				price_b: newGear.price_b,
 				price_c: newGear.price_c,
@@ -154,7 +156,8 @@ define(
 				region: this.data.region,
 				country: this.data.country,
 				latitude: this.data.latitude,
-				longitude: this.data.longitude
+				longitude: this.data.longitude,
+				accessories: JSON.stringify(this.data.accessories)
 			};
 
 			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
