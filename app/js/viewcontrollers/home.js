@@ -394,7 +394,6 @@ define(
 			
 			App.user.setSearchInterval(dateRange);
 			if (location === '' || location === 'all' || location === null) {
-
 				location = 'all';
 				view.gearList.search(location, gear, dateRange, function(searchResults) {
 					view.populateSearchBlock(searchResults);

@@ -145,7 +145,6 @@ define(
 				model: this.data.model,
 				description: this.data.description,
 				images: this.data.images,
-				accessories: this.data.accessories,
 				price_a: this.data.price_a,
 				price_b: this.data.price_b,
 				price_c: this.data.price_c,
@@ -157,7 +156,8 @@ define(
 				region: this.data.region,
 				country: this.data.country,
 				latitude: this.data.latitude,
-				longitude: this.data.longitude
+				longitude: this.data.longitude,
+				accessories: JSON.stringify(this.data.accessories)
 			};
 
 			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {

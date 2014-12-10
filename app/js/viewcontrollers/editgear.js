@@ -561,7 +561,9 @@ define(
             });
 
 			//Push the checked checkboxes to the array
-			Array.prototype.push.apply(accessoriesArray, $('#editgear-accessories-container input:checked',view.$element).map(function(){return this.name;}));
+            $('#editgear-accessories-container input:checked', view.$element).each(function() {
+                accessoriesArray.push(this.name);
+            });
 
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
