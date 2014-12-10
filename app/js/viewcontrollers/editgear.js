@@ -154,7 +154,13 @@ define(
 				if (gearSubtypes[i].subtype === $('#editgear-subtype',view.$element).val()) {
 					var j;
 					for(j=0;j<gearSubtypes[i].accessories.length;j++){
-						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+
+						//Check the checkbox if the specific accessory was selected for this gear before
+						if (view.gear.data.accessories.indexOf(gearSubtypes[i].accessories[j])>-1) {
+							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'" checked> '+gearSubtypes[i].accessories[j];
+						}else{
+							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+						}
 					}
 				}
 			}
@@ -454,7 +460,13 @@ define(
 				if (gearSubtypes[i].subtype === $('#editgear-subtype',this.$element).val()) {
 					var j;
 					for(j = 0;j<gearSubtypes[i].accessories.length;j++){
-						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+
+						//Check the checkbox if the specific accessory was selected for this gear before
+						if (view.gear.data.accessories.indexOf(gearSubtypes[i].accessories[j])>-1) {
+							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'" checked> '+gearSubtypes[i].accessories[j];
+						}else{
+							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+						}
 					}
 				}
 			}
@@ -519,6 +531,7 @@ define(
                 currentRegion = view.gear.data.region,
                 currentCountry = view.gear.data.country,
                 availabilityArray = [],
+				accessoriesArray = [],
                 updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
 
             if(view.isLoading === true) {
@@ -547,6 +560,9 @@ define(
                 }
             });
 
+			var accessories = $('#editgear-accessories-container input:checked',view.$element).map(function(){return this.name;});
+			Array.prototype.push.apply(accessoriesArray, accessories);
+
 			updatedGearData = {
 				brand: $('#editgear-brand option:selected', view.$element).val(),
 				subtype: $('#editgear-subtype option:selected', view.$element).val(),
@@ -557,6 +573,7 @@ define(
 				price_c: $('#editgearpricing-form #price_c', this.$element).val(),
                 delivery_price: '',
                 delivery_distance: '',
+				accessories: accessoriesArray,
 				address: $('#editgearpricingloc-form #editgearpricing-address', this.$element).val(),
 				postal_code: $('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val(),
 				city: $('#editgearpricingloc-form #editgearpricing-city', this.$element).val(),
@@ -629,7 +646,6 @@ define(
                 view.toggleLoading();                 
 				return;
             }
-
             _.extend(view.gear.data, updatedGearData);
 
 			updateCall = function() {
