@@ -4245,3 +4245,37 @@ span.num {
 	margin-left: 4px;
 	margin-right: 4px;
 }
+
+.yellow-text{
+	color: #dba820;
+	border-bottom: 1px solid #dddddd;
+	font-size: 20px;
+	line-height: 30px;
+	font-weight: 500;
+}
+
+.yellow-text::after{
+
+	content: 'DKK';
+	padding-left: 5px;
+	font-size: 20px;
+	font-weight: normal;
+	color: #636363;
+}
+
+.yellow-text-left{
+
+	line-height: 30px;
+	font-weight: bold;
+}
+
+.bulp-background{
+	background-image: url("../images/bulp.png");
+	background-repeat: no-repeat;
+	background-size: 25px;
+	background-position-x: 15px;
+	background-position-y: 15px;
+	padding-left: 50px;
+	padding-right: 50px;
+	min-height: 350px;
+}
