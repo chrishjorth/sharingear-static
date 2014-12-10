@@ -21,6 +21,7 @@ define(
 
 			addGearIcons,
 			prepopulateInstrument,
+			populatePriceSuggestions,
 			populateSubtypeSelect,
 			populateBrandSelect,
 			handleGearRadio,
@@ -109,6 +110,7 @@ define(
 			this.setupEvent('change', '#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
 			this.setupEvent('change', '#dashboard-addgearphotos-form-imageupload', this, this.handleImageUpload);
 			this.setupEvent('change', '#dashboard-addgear-form-subtype', this, this.populateAccessories);
+			this.setupEvent('change', '#dashboard-addgear-form-subtype', this, this.populatePriceSuggestions);
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
@@ -116,6 +118,23 @@ define(
 
 		getTabID = function() {
 			return $('#addgear-crumbs li.active', this.$element).attr('id');
+		};
+
+		populatePriceSuggestions = function (event) {
+			var gearClassification = App.gearClassification.data.classification,
+				view,gearSubtypes,i;
+
+			view = event.data;
+			var geartype = $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked',view.$element).val();
+
+			gearSubtypes = gearClassification[geartype];
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype', view.$element).val()) {
+					$('#addgear-price_a-suggestion').html(gearSubtypes[i].price_a_suggestion);
+					$('#addgear-price_b-suggestion').html(gearSubtypes[i].price_b_suggestion);
+					$('#addgear-price_c-suggestion').html(gearSubtypes[i].price_c_suggestion);
+				}
+			}
 		};
 
 		toggleLoading = function() {
@@ -1110,6 +1129,7 @@ define(
 			handleImageUpload: handleImageUpload,
 
 			populateAccessories:populateAccessories,
+			populatePriceSuggestions:populatePriceSuggestions,
 
 			populateCountries: populateCountries,
 			handlePriceChange: handlePriceChange,

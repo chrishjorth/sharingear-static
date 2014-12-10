@@ -3062,7 +3062,8 @@ footer a:hover {
 }
 .image-1 {
     float:left;
-    width:193px;
+    width:183px;
+	height: 35px;
     margin:8px 0 0 16.8333333333%;
 }
 .image-10 {
