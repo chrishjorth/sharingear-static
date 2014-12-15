@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery'],
-	function($) {
+	['underscore', 'jquery'],
+	function(_, $) {
 		var Router,
 			mainViewContainer,
 			modalViewLightbox,
@@ -84,7 +84,9 @@ define(
 				//Origin of event is URL or
 				// direct link
 				hashUpdated = true;
-				Router.navigateTo(window.location.hash.substring(1), null);
+				Router.navigateTo(window.location.hash.substring(1), null, function() {
+					navigateToViewCalled = true;
+				});
 			}
 			else {
 				//Origin of event is navigateTo
@@ -93,8 +95,7 @@ define(
 		};
 
 		navigateTo = function(route, data, callback) {
-            var router = this,
-            	queryIndex;
+            var queryIndex;
 			if(hashUpdated === false) {
 				//Hash change event not fired
 				//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
@@ -114,9 +115,9 @@ define(
 				route = route.substring(0, queryIndex);
 			}
 
-			this.loadView(this.getRoute(route), route, data, function(error) {
-				if(callback && typeof callback === 'function') {
-					callback(error);
+			this.loadView(this.getRoute(route), route, data, function() {
+				if(_.isFunction(callback)) {
+					callback();
 				}
 			});
 		};
@@ -189,7 +190,7 @@ define(
                     $modalViewContainer = $(modalViewContainer);
 
                 //TODO: remove this once out of closed beta
-                if (view === "closedbeta") {
+                if (view === 'closedbeta') {
                     $modalViewContainer.addClass('closed-beta-modal');
                 }
 
