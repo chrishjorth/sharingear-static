@@ -52,14 +52,6 @@ requirejs.config({
 	}
 });
 
-//Based on http://blog.millermedeiros.com/requirejs-2-0-delayed-module-evaluation-and-google-maps/
-// convert Google Maps into an AMD module
-//
-/*define('googlemaps', ['async!http://maps.googleapis.com/maps/api/js?key=AIzaSyByhkzhQYoAk2bAGRYIuvHOl1jIP99_iyE&libraries=places'], function(){
-    // return the googlemaps namespace for brevity
-    return window.google.maps;
-});*/
-
 require(
 	['underscore', 'mocha', 'jquery'],
 	function(_, Mocha, $) {
@@ -75,7 +67,7 @@ require(
 		$(document).ready(function() {
 			require([
 				'../test/js/specs/app.spec',
-				//'../test/js/specs/router.spec',
+				'../test/js/specs/router.spec',
 				//'../test/js/specs/viewcontroller.spec',
 				//'../test/js/specs/model.spec',
 				//'../test/js/specs/utilities.spec',
