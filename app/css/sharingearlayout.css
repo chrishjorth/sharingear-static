@@ -4195,6 +4195,16 @@ span.num {
 
 }
 
+.booking-error-warning{
+
+  background-color: rgb(0, 0, 0);
+  color: rgb(255,255,255);
+  /*margin: 0px 20px 20px 20px;*/
+  padding-bottom: 10px;
+
+}
+
+
 .booking-confirm-table {
 
   padding-top: 20px;
