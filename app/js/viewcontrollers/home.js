@@ -48,7 +48,7 @@ define(
             	startDate = new Moment(),
             	$searchPickup, $searchReturn, previousSearchLocation, previousSearchGear, previousSearchDate;
 
-            if(App.user.data.currentCity !== '') {
+            if(App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
                 $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
             }
 

@@ -109,19 +109,16 @@ define(
         	});
     	};
 
-		getCityFromCoordinates = function(lat, lon, callback) {
-			var latitude = lat;
-			var longitude = lon;
-			var geocoder = new GoogleMaps.Geocoder();
-			var locationCity = '';
-	
-			//Use Google Geocoder to translate the coordinates to city name
-        	var latLng = new GoogleMaps.LatLng(latitude,longitude);
-        	geocoder.geocode({'latLng':latLng}, function (results, status) {
+		getCityFromCoordinates = function(latitude, longitude, callback) {
+			var geocoder = new GoogleMaps.Geocoder(),
+				latLng = new GoogleMaps.LatLng(latitude,longitude);
+        	//Use Google Geocoder to translate the coordinates to city name
+        	geocoder.geocode({'latLng': latLng}, function (results, status) {
+        		var locationCity = null;
         		if(status === GoogleMaps.GeocoderStatus.OK) {
         			locationCity = results[0].address_components[2].long_name;
-        			callback(locationCity);
         		}
+        		callback(locationCity);
         	});
     	};
 

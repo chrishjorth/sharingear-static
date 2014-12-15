@@ -26,6 +26,7 @@ define(
 		});
 
 		didInitialize = function() {
+			
 			if(this.data === null) {
 				this.data = {
 					id: null,
