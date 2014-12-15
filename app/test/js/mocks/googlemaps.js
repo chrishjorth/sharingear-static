@@ -6,6 +6,9 @@ define(
 	[],
 	function() {
 		return {
+			GeocoderStatus: {
+				OK: true
+			},
 			Geocoder: Geocoder,
 			LatLng: LatLng,
 			places: {
@@ -19,8 +22,8 @@ define(
 			}
 		}
 
-		function geocode() {
-			
+		function geocode(params, callback) {
+			callback(null, null);
 		}
 
 		function LatLng(latitude, longitude) {

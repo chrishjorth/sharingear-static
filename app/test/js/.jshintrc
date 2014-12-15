@@ -1,0 +1,12 @@
+{
+	"devel": true,
+	"globals": {
+		"define": false,
+		"require": false,
+		"describe": false,
+		"before": false,
+		"after": false,
+		"it": false,
+		"sinon": false
+	}
+}
