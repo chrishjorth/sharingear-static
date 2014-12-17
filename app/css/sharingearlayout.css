@@ -1492,7 +1492,7 @@ footer a:hover {
 
 .day {
     cursor: pointer;
-    background-color: #eeeeee;
+    background-color: #dddddd;
 }
 
 .calendar .selected {
@@ -1502,7 +1502,7 @@ footer a:hover {
 }
 
 .calendar .escluded {
-    background-color: #eeeeee;
+    background-color: #dddddd;
 
 }
 
@@ -4053,6 +4053,21 @@ span.num {
 
 .gearprofile_prices {
 	padding: 8px;
+}
+
+.availability-legend{
+	padding-top: 23px;
+	font-weight: bold;
+}
+
+.availability-legend p{
+	line-height: 30px;
+}
+
+.availability-legend-box{
+	width: 55px;height: 30px;
+	float: left;
+	margin-right: 10px;
 }
 
 /* --------- ABOUT US --------------*/
