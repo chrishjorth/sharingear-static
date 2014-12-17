@@ -3380,7 +3380,7 @@ border-color: #dedede;
 }
 
 span.num {
-    font-size: 25px;
+    font-size: 24px;
 }
 
 .adress_click {
@@ -4313,4 +4313,8 @@ span.num {
 
 .acclist{
 	text-transform: capitalize;
+}
+
+.gearprofile_prices{
+	padding: 8px;
 }
