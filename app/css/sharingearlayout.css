@@ -4056,4 +4056,8 @@ span.num {
 }
 
 /* --------- ABOUT US --------------*/
+.aboutus .row {
+    color: #000000;
+    text-align: center;
+}
 
