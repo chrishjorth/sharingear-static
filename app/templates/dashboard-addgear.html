@@ -1,6 +1,6 @@
-<div class="addgear subview">
-  <div class="panel panel-default">
-    <div class="addgearpanel">
+<div class="addgear subview col-md-12">
+  <div class="panel panel-default col-md-12">
+    <div class="addgearpanel col-md-12">
       <ul class="breadcrumb" id="addgear-crumbs" role="tablist">
         <li class="active" id="addgear-instrument-li"><a href="#addgear-instrument" role="tab" data-toggle="tab" disabled>Add Gear</a></li>
         <li id="addgear-photos-li">Photos</li>
@@ -13,26 +13,26 @@
       <div class="tab-content">
         <div class="tab-pane fade in active" id="addgear-instrument">
           <form id="dashboard-addgear-form" onsubmit="return false;">
-            <div class="form-group">
+            <div class="form-group col-md-9">
               <div class="gearbuttonlist-container"></div>
             </div>
-            <div class="form-group hidden" id="gear-subtype-container">
+            <div class="form-group hidden col-md-9" id="gear-subtype-container">
               <select class="form-control" id="dashboard-addgear-form-subtype">
               </select>
             </div>
-            <div class="form-group hidden" id="gear-brand-container">
+            <div class="form-group hidden col-md-9" id="gear-brand-container">
               <select class="form-control" id="dashboard-addgear-form-brand">
               </select>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-9">
               <label for="dashboard-addgear-form-model">Model:</label>
               <input type="text" id="dashboard-addgear-form-model" class="form-control">
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-9">
               <label for="dashboard-addgear-form-model">Description:</label>
               <textarea id="dashboard-addgear-form-description" class="form-control"></textarea>
             </div>
-			<div class="form-group">
+			<div class="form-group col-md-9">
 			  <label for="">Accessories:</label>
 			  <div id="dashboard-addgear-accessories-container">
 			  </div>
@@ -56,7 +56,7 @@
 
         <div class="tab-pane fade in" id="addgear-pricelocation">
           <form id="dashboard-addgearprice-form" onsubmit="return false;">
-            <div class="col-md-6 form-left">
+            <div class="col-md-4 form-left">
               <div class="form-group">
                 <label for="price_a">Hourly rental price:</label>
                 <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
@@ -79,7 +79,27 @@
                 </fieldset>
               </div>
             </div>
-            <div class="col-md-6 form-right">
+			  <div class="col-md-4 form-left bulp-background">
+
+				  <h3>Setting the price:</h3>
+				  <p>For the following type of instrument we recommend the following prices.</p>
+
+				  <!--TODO the recommended prices are hardcoded-->
+				  <div class="row">
+					  <div class="col-xs-4 yellow-text-left">Hourly:</div>
+					  <div id="addgear-price_a-suggestion" class="col-xs-8 right yellow-text"></div>
+				  </div>
+				  <div class="row">
+					  <div class="col-xs-4 yellow-text-left">Daily:</div>
+					  <div id="addgear-price_b-suggestion" class="col-xs-8 right yellow-text"></div>
+				  </div>
+				  <div class="row">
+					  <div class="col-xs-4 yellow-text-left">Weekly:</div>
+					  <div id="addgear-price_c-suggestion" class="col-xs-8 right yellow-text"></div>
+				  </div>
+
+			  </div>
+            <div class="col-md-4 form-right">
               <div class="form-group">
                 <label for="dashboard-addgearprice-address">Street</label>
                 <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
@@ -100,7 +120,9 @@
 
         <div class="tab-pane fade in" id="addgear-availability">
           <div class="row">
-            <div class="col-md-12"><h2>Availability</h2></div>
+            <div class="col-md-3"><h2>Availability</h2></div>
+            <div class="col-md-3 availability-legend"><div class="availability-legend-box" style="background-color: #FA0;"></div><p>Available</p></div>
+            <div class="col-md-3 availability-legend"><div class="availability-legend-box" style="background-color: #DDD;"></div><p>Not available</p></div>
           </div>
           <div id="addgear-availability-submerchantform" class="hidden">
             <div class="row">
@@ -155,7 +177,7 @@
               <button type="submit" class="btn btn-info">Submit</button>
             </form>
           </div>
-          <div id="addgear-availability-terms" class="hidden">
+          <div id="addgear-availability-terms col-md-9" class="hidden">
             <div class="row">
               <div class="col-md-12">
                 <p>

@@ -6,16 +6,19 @@
 'use strict';
 
 define(
-	['jquery', 'router', 'utilities', 'models/user', 'models/gearclassification', 'models/localization'],
-	function($, Router, Utilities, User, GearClassification, Localization) {
-		var IS_PRODUCTION = true, //This variable should be set and saved according to the git branch: true for master and false for develop
+	['underscore', 'jquery', 'router', 'utilities', 'models/user', 'models/gearclassification', 'models/localization'],
+	function(_, $, Router, Utilities, User, GearClassification, Localization) {
+		var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
 			API_URL,
 			App,
 
 			isProduction,
 			run,
+			setUserLocation,
 			loadHeader,
-			loadFooter;
+			loadFooter,
+
+			$headerContainer, $footerContainer;
 
 		if(IS_PRODUCTION === true) {
 			API_URL = 'https://prod-api.sharingear.com';
@@ -25,6 +28,9 @@ define(
 		}
 
 		//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+
+		$headerContainer = $('.navigation-header');
+		$footerContainer = $('.footer');
 
 		isProduction = function() {
 			return (IS_PRODUCTION === true);
@@ -44,7 +50,6 @@ define(
 
 			router.addRoutes(
 				'home',
-				'listyourgear',
 				'dashboard',
 				'dashboard/profile',
 				'dashboard/yourgear',
@@ -59,8 +64,6 @@ define(
 				'copyright',
 				'privacy',
 				'editgear',
-				'editgearphotos',
-				'editgearpricing',
 				'gearbooking',
 				'gearavailability',
                 'booking',
@@ -69,10 +72,6 @@ define(
                 'submerchantregistration',
                 'closedbeta'
 			);
-
-			App.user = new User.constructor({
-				rootURL: API_URL
-			});
 
 			// if logged in on facebook, login user on the backend and go to required page.
 			App.user.getLoginStatus(function(response) {
@@ -95,27 +94,17 @@ define(
 				rootURL: App.API_URL
 			});
 
-			if(navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(position){
-                    var lat, lon; 
-                    lat = position.coords.latitude;
-                    lon = position.coords.longitude;
-                    Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
-                        App.user.data.currentCity = locationCity;
-                    });
-                });
-			}
-
 			App.localization = new Localization.constructor();
+			App.setUserLocation();
 
 			$.when(loginDeferred, documentReadyDeferred).then(function() {
 				var route = null,
 					hash = '';
 
 				//Load header and footer
-				App.loadHeader();
+				App.loadHeader($headerContainer);
 
-				App.loadFooter();
+				App.loadFooter($footerContainer);
 
 				//Load page based on hash
 				hash = window.location.hash;
@@ -129,21 +118,63 @@ define(
 					router.openModalView('closedbeta');
 				});
 
-				if(callback && typeof callback === 'function') {
+				function getCookie(cname) {
+			    var name = cname + '=';
+			    var ca = document.cookie.split(';');
+			    for(var i=0; i<ca.length; i++) {
+			        var c = ca[i];
+			        while (c.charAt(0)==' ') c = c.substring(1);
+			        if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
+			    }
+			    return '';
+				};
+
+				if(getCookie('cookie-consent') != '1') {
+					$('.cookie-opt-in').removeClass('hidden');
+				}
+
+				$( '.cookie-opt-in-button' ).click(function() {
+					document.cookie="cookie-consent=1";
+					$('.cookie-opt-in').addClass('hidden');
+				});
+
+				if(_.isFunction(callback)) {
 					callback();
 				}
 			});
 		};
 
+		setUserLocation = function(location, callback) {
+			if((!location || location === null) && navigator.geolocation && App.user.data.id !== null) {
+				navigator.geolocation.getCurrentPosition(function(position){
+                    var lat, lon; 
+                    lat = position.coords.latitude;
+                    lon = position.coords.longitude;
+                    Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
+                        App.user.data.currentCity = locationCity;
+                        if(_.isFunction(callback)) {
+							callback();
+						}
+                    });
+                });
+			}
+			else {
+				App.user.data.currentCity = location;
+				if(_.isFunction(callback)) {
+					callback();
+				}
+			}
+		};
+
 		/**
 		 * Loads the header portion of the site. The header contains Sharingear's main navigation and is the same across the app.
 		 */
-		loadHeader = function(callback) {
-			var header = this.header;
+		loadHeader = function($headerContainer, callback) {
+			var app = this;
 			require(['viewcontrollers/navigation-header', 'text!../templates/navigation-header.html'], function(HeaderController, HeaderTemplate) {
-				header = new HeaderController.constructor({name: 'header', $element: $('.navigation-header'), labels: {}, template: HeaderTemplate});
-				header.render();
-				if(callback && typeof callback === 'function') {
+				app.header = new HeaderController.constructor({name: 'header', $element: $headerContainer, labels: {}, template: HeaderTemplate});
+				app.header.render();
+				if(_.isFunction(callback)) {
 					callback();
 				}
 			});
@@ -152,31 +183,39 @@ define(
 		/**
 		 * Load the footer portion of the site.
 		 */
-		loadFooter = function(callback) {
-			var footer = this.footer;
+		loadFooter = function($footerContainer, callback) {
+			var app = this;
 			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
-				footer = new FooterController.constructor({name: 'footer', $element: $('.footer'), labels: {}, template: FooterTemplate});
-				footer.render();
-				if(callback && typeof callback === 'function') {
+				app.footer = new FooterController.constructor({name: 'footer', $element: $footerContainer, labels: {}, template: FooterTemplate});
+				app.footer.render();
+				if(_.isFunction(callback)) {
 					callback();
 				}
 			});
 		};
 
 		App = {
-			isProduction: isProduction,
+			API_URL: API_URL,
+			$headerContainer: $headerContainer,
+			$footerContainer: $footerContainer,
 			router: Router,
+			user: null,
 			header: null,
 			footer: null,
-			API_URL: API_URL,
-			user: null,
 			gearClassification: null,
 			localization: null,
 
+			isProduction: isProduction,
 			run: run,
+			setUserLocation: setUserLocation,
 			loadHeader: loadHeader,
 			loadFooter: loadFooter
 		};
+
+		App.user = new User.constructor({
+			rootURL: API_URL
+		});
+
 		return App;
 	}
 );

@@ -48,7 +48,7 @@ define(
             	startDate = new Moment(),
             	$searchPickup, $searchReturn, previousSearchLocation, previousSearchGear, previousSearchDate;
 
-            if(App.user.data.currentCity !== '') {
+            if(App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
                 $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
             }
 
@@ -63,7 +63,8 @@ define(
                 startDate: startDate.format('DD/MM/YYYY'),
                 endDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
-                minDate: startDate.format('DD/MM/YYYY')
+                minDate: startDate.format('DD/MM/YYYY'),
+                parentEl: view.$element
             }, function(start) {
             	start.add(1, 'days');
             	$searchReturn.data('daterangepicker').setStartDate(start);
@@ -81,7 +82,8 @@ define(
                 endDate: startDate.format('DD/MM/YYYY'),
                 showDropdowns: true,
                 minDate: startDate.format('DD/MM/YYYY'),
-                opens: 'right'
+                opens: 'right',
+                parentEl: view.$element
             });
 
             $searchPickup.data('daterangepicker').updateInputText();

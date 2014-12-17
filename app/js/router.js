@@ -6,34 +6,23 @@
 'use strict';
 
 define(
-	['jquery'],
-	function($) {
+	['underscore', 'jquery', 'viewloader'],
+	function(_, $, ViewLoader) {
 		var Router,
-			mainViewContainer,
-			modalViewLightbox,
-			modalViewContainer,
+			
 			hashUpdated,
-			navigateToViewCalled,
-			openModalViews,
 
 			addRoutes,
 			getRoute,
 			routeExists,
 			handleHashChange,
 			navigateTo,
-			loadView,
 			openModalView,
 			openModalSiblingView,
-			loadModalView,
 			closeModalView,
 			setQueryString;
-
-		mainViewContainer = '.view-container';
-		modalViewLightbox = '.modal-view-lightbox';
-		modalViewContainer = '.modal-view-container';
+		
 		hashUpdated = false; //Semaphore variable
-		navigateToViewCalled = false; //Semaphore variable
-		openModalViews = [];
 
 		addRoutes = function() {
 			var i;
@@ -76,20 +65,10 @@ define(
 
 		/**
 		 * NOTE: This function is triggered when the hash in the URL changes, no matter wether it is by code or by user interaction.
-		 * 		For this reason we need a semaphore to avoid views being loaded twice, since we updated the hash in the case of a navigateTo call.
 		 */
 		handleHashChange = function() {
-			//Handle semaphore
-			if(navigateToViewCalled === false){
-				//Origin of event is URL or
-				// direct link
-				hashUpdated = true;
-				Router.navigateTo(window.location.hash.substring(1), null);
-			}
-			else {
-				//Origin of event is navigateTo
-				navigateToViewCalled = false;
-			}
+			hashUpdated = true;
+			Router.navigateTo(window.location.hash.substring(1));
 		};
 
 		navigateTo = function(route, data, callback) {
@@ -99,8 +78,7 @@ define(
 				//Hash change event not fired
 				//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
 				if(window.location.hash !== '#' + route) {
-					navigateToViewCalled = true;
-					window.location.hash = '#' + route; //This triggers handleHashChange, which is why we set the semaphores so that navigateTo is not called again
+					history.replaceState({}, '', window.location.pathname + '#' + route); //This is to avoid calling handleHashChange by setting window.location.hash directly
 				}
 			}
 			else {
@@ -114,139 +92,57 @@ define(
 				route = route.substring(0, queryIndex);
 			}
 
-			this.loadView(this.getRoute(route), route, data, function(error) {
-				if(callback && typeof callback === 'function') {
-					callback(error);
+			ViewLoader.loadView(this.getRoute(route), route, data, function(error, loadedViewController) {
+				if(!error) {
+					router.currentViewController = loadedViewController;
 				}
-			});
-		};
-
-		/**
-		 * Note that a path for a subviews could also simply be a content reference, fx gear/1
-		 */
-		loadView = function(view, path, data, callback) {
-			var router = this;
-			//If the view is already loaded just update the path and call render subviews
-			if(this.currentViewController !== null && this.currentViewController.name === view && this.currentViewController.hasSubviews === true) {
-				this.currentViewController.path = path;
-				this.currentViewController.setSubPath();
-				//We run the callback before proceeding to rendering the subviews
-				if(callback && typeof callback === 'function') {
+				if(_.isFunction(callback)) {
 					callback();
-				}
-				this.currentViewController.renderSubviews(data);
-				return;
-			}
-			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
-				//Close the previous controller properly before loading a new one
-				if(router.currentViewController !== null) {
-					router.currentViewController.close();
-				}
-				router.currentViewController = new ViewController.constructor({name: view, $element: $(mainViewContainer), labels: {}, template: ViewTemplate, path: path, passedData: data});
-				//The ready property is so a controller can abort loading, useful if a redirect is being called
-				if(router.currentViewController.ready === true) {
-					router.currentViewController.render(function() {
-						//We run the callback before proceeding to rendering the subviews
-						if(callback && typeof callback === 'function') {
-							callback(null);
-						}
-						router.currentViewController.renderSubviews();
-					});
-				}
-				else {
-					if(callback && typeof callback === 'function') {
-						callback({error: 'Load aborted'});
-					}
 				}
 			});
 		};
 
 		openModalView = function(route, data, callback) {
-			//if a modal is already open, store it, and open the new one, then on close open the old... use a queue!
-			var view = this.getRoute(route);
-			openModalViews.unshift({
-				view: route,
-				data: data,
-				callback: callback
-			});
+			var router = this,
+				view = this.getRoute(route);
 			
-			if(openModalViews.length <= 1) {
-				this.loadModalView(view, route, data, callback);
-			}
+			ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
+				if(!error) {
+					router.currentModalViewController = loadedViewController;
+				}
+				if(_.isFunction(callback)) {
+					callback();
+				}
+			});
 		};
 
 		/**
-		 * Opens a modal view by closing any already open modals.
+		 * Opens a modal view by closing any current open modals.
 		 */
 		openModalSiblingView = function(route, data, callback) {
-			this.loadModalView(this.getRoute(route), route, data, callback);
-		};
+			var router = this,
+				view = this.getRoute(route);
 
-		loadModalView = function(view, path, data, callback) {
-			var router = this;
-			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
-                var $modalViewLightbox = $(modalViewLightbox),
-                    $modalViewContainer = $(modalViewContainer);
-
-                //TODO: remove this once out of closed beta
-                if (view === "closedbeta") {
-                    $modalViewContainer.addClass('closed-beta-modal');
-                }
-
-
-				if(router.currentModalViewController !== null) {
-					router.currentModalViewController.close();
+			ViewLoader.loadModalViewSibling(view, route, data, function(error, loadedViewController) {
+				if(!error) {
+					router.currentModalViewController = loadedViewController;
 				}
-
-				if($modalViewLightbox.hasClass('hidden') === true) {
-					$modalViewLightbox.removeClass('hidden');
-					$('body').addClass('modal-open');
-				}
-
-				router.currentModalViewController = new ViewController.constructor({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path, passedData: data});
-				if(router.currentModalViewController.ready === true) {
-					router.currentModalViewController.render();
-				}
-				
-				if(callback && typeof callback === 'function') {
+				if(_.isFunction(callback)) {
 					callback();
 				}
 			});
 		};
 
 		closeModalView = function(callback) {
-			var router = this,
-				$modalViewLightbox = $(modalViewLightbox),
-				previousModal;
-
-			if(this.currentModalViewController !== null) {
-				this.currentModalViewController.close();
-				openModalViews.pop();
-				this.currentModalViewController = null;
-			}
-			if($modalViewLightbox.hasClass('hidden') === false) {
-				$modalViewLightbox.addClass('hidden');
-				$('body').removeClass('modal-open');
-			}
-
-			//TODO: remove once out of closed beta
-			$(modalViewContainer).removeClass('closed-beta-modal');
-
-			if(openModalViews.length > 0) {
-				previousModal = openModalViews.pop();
-				router.openModalView(previousModal.view, previousModal.data, previousModal.callback);
-			}
-			else {
-				//Render the underlying view again so that data gets updated
-				this.currentViewController.initialize();
-				this.currentViewController.render(function() {
-					router.currentViewController.renderSubviews();
-				});
-			}
-
-			if(callback && typeof callback === 'function') {
-				callback();
-			}
+			var router = this;
+			ViewLoader.closeModalView(function(error, currentModalViewController) {
+				if(!error) {
+					router.currentModalViewController = currentModalViewController;
+				}
+				if(_.isFunction(callback)) {
+					callback();
+				}
+			});
 		};
 
 		setQueryString = function(queryString) {
@@ -261,25 +157,25 @@ define(
 			history.replaceState({}, '', newLocation);
 		};
 
-		window.onhashchange = handleHashChange;
-
 		Router = {
 			routes: ['error'], //The default error route must always be present for error handling
 			currentViewController: null,
 			currentModalViewController: null,
+			viewLoader: ViewLoader,
 
 			addRoutes: addRoutes,
 			getRoute: getRoute,
 			routeExists: routeExists,
 			handleHashChange: handleHashChange,
 			navigateTo: navigateTo,
-			loadView: loadView,
 			openModalView: openModalView,
 			openModalSiblingView: openModalSiblingView,
-			loadModalView: loadModalView,
 			closeModalView: closeModalView,
 			setQueryString: setQueryString
 		};
+
+		window.onhashchange = Router.handleHashChange;
+
 		return Router;
 	}
 );

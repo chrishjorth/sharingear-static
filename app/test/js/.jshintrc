@@ -1,0 +1,14 @@
+{
+	"devel": true,
+	"globals": {
+		"define": false,
+		"require": false,
+		"describe": false,
+		"before": false,
+		"beforeEach": false,
+		"afterEach": false,
+		"after": false,
+		"it": false,
+		"sinon": false
+	}
+}

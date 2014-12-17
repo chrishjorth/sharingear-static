@@ -112,15 +112,15 @@
 								<!--TODO the recommended prices are hardcoded-->
 								<div class="row">
 									<div class="col-xs-4 yellow-text-left">Hourly:</div>
-									<div class="col-xs-8 right yellow-text">50</div>
+									<div id="editgear-price_a-suggestion" class="col-xs-8 right yellow-text"></div>
 								</div>
 								<div class="row">
 									<div class="col-xs-4 yellow-text-left">Daily:</div>
-									<div class="col-xs-8 right yellow-text">100</div>
+									<div id="editgear-price_b-suggestion" class="col-xs-8 right yellow-text"></div>
 								</div>
 								<div class="row">
 									<div class="col-xs-4 yellow-text-left">Weekly:</div>
-									<div class="col-xs-8 right yellow-text">350</div>
+									<div id="editgear-price_c-suggestion" class="col-xs-8 right yellow-text"></div>
 								</div>
 
 							</div>
@@ -189,7 +189,9 @@
 			<div class="tab-pane fade" id="availability">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-md-12"><h2>Availability</h2></div>
+						<div class="col-md-3"><h2>Availability</h2></div>
+						<div class="col-md-3 availability-legend"><div class="availability-legend-box" style="background-color: #FA0;"></div><p>Available</p></div>
+						<div class="col-md-3 availability-legend"><div class="availability-legend-box" style="background-color: #DDD;"></div><p>Not available</p></div>
 					</div>
 					<div id="editgear-availability-submerchantform" class="hidden">
 						<div class="row">

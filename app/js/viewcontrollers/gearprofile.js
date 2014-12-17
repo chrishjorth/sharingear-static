@@ -168,17 +168,15 @@ define(
 
 			if (accessories===null||accessories.length===0) {
 				html='This gear doesn\'t have any accessories.';
-				$('#accesories-holder',this.$element).removeClass('text-capitalize');
 				$('#accesories-holder',this.$element).html(html);
 				return;
 			}
 
-			html+='<ul>';
+			html+='This instrument is delivered with:<br><ul class="acclist">';
 			for(i=0;i<accessories.length;i++){
 				html+='<li>'+accessories[i]+'</li>';
 			}
 			html+='</ul>';
-			$('#accesories-holder',this.$element).addClass('text-capitalize');
 			$('#accesories-holder',this.$element).html(html);
 		};
 

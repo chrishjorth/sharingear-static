@@ -29,6 +29,9 @@ define(
 
 			initAccessories,
             initAvailability,
+			initPriceSuggestions,
+			populatePriceSuggestions,
+
             renderAvailability,
             handleSubmerchantSubmit,
             handleSubmerchantAccept,
@@ -105,6 +108,7 @@ define(
             }
 
 			this.initAccessories();
+			this.initPriceSuggestions();
 
             this.setupEvent('click', '.btn-cancel', this, this.handleCancel);
 			this.setupEvent('click', '.btn-save', this, this.handleSave);
@@ -112,6 +116,7 @@ define(
             this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#editgear-subtype', this, this.populateAccessories);
+			this.setupEvent('change', '#editgear-subtype', this, this.populatePriceSuggestions);
 
             this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
             this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
@@ -140,6 +145,22 @@ define(
             $('#editgearpricingloc-form #delivery_price').val(price);
             $('#editgearpricingloc-form #delivery_distance').val(distance);
         };
+
+		initPriceSuggestions = function () {
+			var gearClassification = App.gearClassification.data.classification,
+				view,gearSubtypes,i;
+
+			view = this;
+
+			gearSubtypes = gearClassification[view.gear.data.gear_type];
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].subtype === $('#editgear-subtype', view.$element).val()) {
+					$('#editgear-price_a-suggestion').html(gearSubtypes[i].price_a_suggestion);
+					$('#editgear-price_b-suggestion').html(gearSubtypes[i].price_b_suggestion);
+					$('#editgear-price_c-suggestion').html(gearSubtypes[i].price_c_suggestion);
+				}
+			}
+		};
 
 		initAccessories = function () {
 			var gearClassification = App.gearClassification.data.classification,
@@ -446,6 +467,22 @@ define(
 				}
 			}
 			$('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
+		};
+
+		populatePriceSuggestions = function (event) {
+			var gearClassification = App.gearClassification.data.classification,
+				view,gearSubtypes,i;
+
+			view = event.data;
+
+			gearSubtypes = gearClassification[view.gear.data.gear_type];
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].subtype === $('#editgear-subtype', view.$element).val()) {
+					$('#editgear-price_a-suggestion').html(gearSubtypes[i].price_a_suggestion);
+					$('#editgear-price_b-suggestion').html(gearSubtypes[i].price_b_suggestion);
+					$('#editgear-price_c-suggestion').html(gearSubtypes[i].price_c_suggestion);
+				}
+			}
 		};
 
 		populateAccessories = function (event) {
@@ -1060,6 +1097,9 @@ define(
             handleClearMonth:handleClearMonth,
             handleAlwaysAvailable:handleAlwaysAvailable,
             handleNeverAvailable:handleNeverAvailable,
+
+			initPriceSuggestions:initPriceSuggestions,
+			populatePriceSuggestions:populatePriceSuggestions,
 
             handleDayStartSelect:handleDayStartSelect,
             handleDayMoveSelect:handleDayMoveSelect,
