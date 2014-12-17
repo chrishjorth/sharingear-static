@@ -2,7 +2,7 @@
  * @author: Chris Hjorth
  */
 
- 'use strict';
+'use strict';
 
 define(
 	['jquery', 'chai', 'sinon', 'app'],

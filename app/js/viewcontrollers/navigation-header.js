@@ -99,7 +99,8 @@ define(
 			});
 		}
 
-		function handleListYourGear() {
+		function handleListYourGear(event) {
+			var view = event.data;
 			App.user.login(function(error) {
 				if(!error) {
 					App.router.navigateTo('dashboard/addgear');

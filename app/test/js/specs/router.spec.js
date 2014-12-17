@@ -1,10 +1,46 @@
+/**
+ * @author: Chris Hjorth
+ */
+
+'use strict';
+
 define(
-	['jquery', 'chai', 'sinon', 'router'],
-	function($, chai, Sinon, Router) {
+	['jquery', 'chai', 'sinon', 'router', 'viewloader'],
+	function($, chai, Sinon, Router, ViewLoader) {
 		var expect = chai.expect;
 		
 		describe('Router', function() {
+			before(function() {
+				sinon.stub(ViewLoader, 'loadView', function(view, path, data, callback) {
+					callback(null, {
+						name: view
+					});
+				});
+				this.loadModalViewStub = sinon.stub(ViewLoader, 'loadModalView', function(view, path, data, callback) {
+					if(ViewLoader.currentModalViewController !== null) {
+						//Simulate close
+						ViewLoader.openModalViews.pop();
+						Router.currentViewController = null;
+					}
+					ViewLoader.currentModalViewController = {
+						name: view,
+						close: function() {}
+					};
+					callback(null, ViewLoader.currentModalViewController);
+				});
+			});
+
+			beforeEach(function() {
+				
+			});
+
+			afterEach(function() {
+				
+			});
+
 			after(function() {
+				ViewLoader.loadView.restore();
+				ViewLoader.loadModalView.restore();
 				//Reset routes
 				Router.routes = ['error'];
 				history.replaceState({}, '', window.location.pathname);
@@ -43,19 +79,13 @@ define(
 			});
 
 			it('Can navigate to route', function(done) {
-				sinon.stub(Router, 'loadView', function(view, path, data, callback) {
-					Router.currentViewController = {
-						name: view
-					};
-					callback();
-				});
 				Router.navigateTo('home', null, function() {
 					expect(Router.currentViewController.name).to.equal('home');
 					done();
 				});
 			});
 
-			it.skip('Can navigate to path', function(done) {
+			it('Can navigate to path', function(done) {
 				Router.addRoutes('dashboard');
 				Router.navigateTo('dashboard/profile', null, function() {
 					expect(Router.currentViewController.name).to.equal('dashboard');
@@ -63,40 +93,58 @@ define(
 				});
 			});
 
-			it.skip('Can load a view', function(done) {
-				Router.loadView('error', '', null, function() {
-					expect(Router.currentViewController.name).to.equal('error');
+			it('Can navigate to view with querystring', function(done) {
+				Router.navigateTo('home?key=value', null, function() {
+					expect(Router.currentViewController.name).to.equal('home');
 					done();
 				});
 			});
 
-			it.skip('Can open a modal view', function(done) {
-				Router.openModalView('error', null, function() {
-					expect(Router.currentModalViewController.name).to.equal('error');
-					done();
-				});
-			});
+			it('Can handle modal views', function(done) {
+				var spec = this,
+					passed = false;
 
-			it.skip('Can load a modal view', function(done) {
-				Router.loadModalView('error', '', null, function() {
-					expect(Router.currentModalViewController.name).to.equal('error');
-					done();
-				});
-			});
-
-			it.skip('Can close a modal view', function(done) {
-				Router.loadModalView('error', '', null, function() {
-					sinon.spy(Router.currentModalViewController, 'close');
-					Router.closeModalView(function() {
-						sinon.assert.calledOnce(Router.currentModalViewController.close);
-						Router.currentModalViewController.close.restore();
-						done();
+				Router.openModalView('home', null, function() {
+					expect(Router.currentModalViewController.name).to.equal('home');
+					expect(ViewLoader.openModalViews.length).to.equal(1);
+					
+					Router.openModalSiblingView('dashboard', null, function() {
+						if(passed === false) { //This callback will be triggered again by the last close modal view, since it will resurface this view
+							passed = true;
+							expect(Router.currentModalViewController.name).to.equal('dashboard');
+							expect(ViewLoader.openModalViews.length).to.equal(1);
+						
+							Router.openModalView('home', null, function() {
+								//This one does not trigger a load modal view because it gets queued instead
+								expect(Router.currentModalViewController.name).to.equal('dashboard');
+								expect(ViewLoader.openModalViews.length).to.equal(2);
+								
+								Router.closeModalView(function() {
+									expect(spec.loadModalViewStub.callCount).to.equal(3);
+									expect(ViewLoader.openModalViews.length).to.equal(1);
+									done();
+								});
+							});
+						}
 					});
 				});
 			});
 
-			it.skip('Has default error route', function() {
+			it('Has default error route', function() {
 				expect(Router.routeExists('error')).to.equal(true);
+			});
+
+			it('Can handle URL hash change', function() {
+				expect(window.onhashchange).to.be.a('function');
+				//Is onhashchange calling handleHashChange? 
+				sinon.stub(Router, 'handleHashChange', function() {
+					console.log('boom');
+					Router.handleHashChange.restore();
+					done();
+				});
+				//window.onhashchange = Router.handleHashChange;
+				window.onhashchange();
+				//expect(window.onhashchange.toString()).to.equal(Router.handleHashChange.toString());
 			});
 		});
 	}
