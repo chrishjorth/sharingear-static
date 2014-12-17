@@ -62,6 +62,7 @@ define(
 					viewLoader.currentViewController.close();
 				}
 				viewLoader.currentViewController = new ViewController.constructor({name: view, $element: $(mainViewContainer), labels: {}, template: ViewTemplate, path: path, passedData: data});
+				viewLoader.currentViewController.initialize();
 				//The ready property is so a controller can abort loading, useful if a redirect is being called
 				if(viewLoader.currentViewController.ready === true) {
 					viewLoader.currentViewController.render(function() {
@@ -83,6 +84,7 @@ define(
 					viewLoader.currentSubViewController.close();
 				}
 				viewLoader.currentSubViewController = new SubViewController.constructor({name: viewString, $element: viewLoader.currentViewController.$subViewContainer, labels: {}, template: SubViewTemplate, path: viewLoader.currentViewController.path, passedData: data});
+				viewLoader.currentSubViewController.initialize();
 				viewLoader.currentSubViewController.render(function() {
 					if(_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
 						viewLoader.currentViewController.didRenderSubview();
@@ -119,6 +121,7 @@ define(
 				}
 
 				viewLoader.currentModalViewController = new ViewController.constructor({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path, passedData: data});
+				viewLoader.currentModalViewController.initialize();
 				if(viewLoader.currentModalViewController.ready === true) {
 					viewLoader.currentModalViewController.render(function(error, subview, $subViewContainer) {
 						if(!error && subview && subview !== null) {

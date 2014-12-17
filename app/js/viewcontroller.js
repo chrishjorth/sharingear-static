@@ -21,23 +21,21 @@ define([
 	 * Allows reinitializing a views data.
 	 */
 	initialize = function() {
+		this.setSubPath();
+
 		if(this.didInitialize && typeof this.didInitialize == 'function') {
 			this.didInitialize();
 		}
 	};
 
 	render = function(callback) {
-		var template = this.template(this.templateParameters),
-			subview = null;
+		var template = this.template(this.templateParameters);
 
 		//Unbind events to avoid double ups on multiple renders
 		this.unbindEvents();
 
 		this.$element.html(template);
-
-		if(this.subPath !== '' && this.hasSubviews === true) {
-			subview = this.subPath;
-		}
+		
 		if(callback && typeof callback === 'function') {
 			callback();
 		}
@@ -128,10 +126,6 @@ define([
 
 		this.template = _.template(this.template);
 		this.userEvents = [];
-		
-		this.setSubPath();
-
-		this.initialize();
 	};
 
 	inherit = function(inheritOptions) {
