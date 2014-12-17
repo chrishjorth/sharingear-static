@@ -192,10 +192,13 @@ define(
 		 */
 		prepopulateInstrument = function() {
 			var gear;
-			if(this.passedData === null || !(this.passedData)) { // added !(this.passedData) because it was undefined. Horatiu
+			if(!this.passedData || this.passedData === null) {
 				return;
 			}
 			gear = this.passedData.data;
+			if(!gear) {
+				return;
+			}
 			if(gear.gear_type && gear.gear_type.length >= 0) {
 				$('#dashboard-addgear-form .gearbuttonlist-container #gear-radio-' + gear.gear_type.toLowerCase()).prop('checked', true);
 				this.populateSubtypeSelect(gear.gear_type);
@@ -364,9 +367,12 @@ define(
 		};
 
 		populateCountries = function($select) {
-            var countriesArray = App.localization.getCountries(),
-				html = $('option', $select).first()[0].outerHTML,
-				i;
+            var html = $('option', $select).first()[0].outerHTML,
+            	countriesArray, i;
+            if(!App.localization) {
+            	return;
+            }
+			countriesArray = App.localization.getCountries();
 			for(i = 0; i < countriesArray.length; i++) {
 				html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
 			}

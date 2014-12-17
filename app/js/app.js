@@ -145,7 +145,7 @@ define(
 		};
 
 		setUserLocation = function(location, callback) {
-			if((!location || location === null) && navigator.geolocation) {
+			if((!location || location === null) && navigator.geolocation && App.user.data.id !== null) {
 				navigator.geolocation.getCurrentPosition(function(position){
                     var lat, lon; 
                     lat = position.coords.latitude;

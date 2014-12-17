@@ -16,7 +16,10 @@ define(
 			loadView,
 			loadSubview,
 			loadModalView,
-			closeModalView;
+			loadModalViewSibling,
+			closeModalView,
+
+			_loadModalView;
 
 		mainViewContainer = '.view-container';
 		modalViewLightbox = '.modal-view-lightbox';
@@ -33,11 +36,7 @@ define(
 			renderSubviews = function() {
 				var subview = viewLoader.currentViewController.subPath;
 				if(subview !== null && subview !== '') {
-					viewLoader.loadSubview(data, function(error, loadedSubviewController) {
-						viewLoader.currentSubViewController = loadedSubviewController;
-						if(_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
-							viewLoader.currentViewController.didRenderSubview();
-						}
+					viewLoader.loadSubview(data, function() {
 						if(_.isFunction(callback) === true) {
 							callback(null, viewLoader.currentViewController);
 						}
@@ -83,10 +82,10 @@ define(
 				if(viewLoader.currentSubViewController !== null) {
 					viewLoader.currentSubViewController.close();
 				}
-				viewLoader.currentSubViewController = new SubViewController.constructor({name: subview, $element: viewLoader.currentViewController.$subViewContainer, labels: {}, template: SubViewTemplate, path: viewLoader.currentViewController.path, passedData: data});
+				viewLoader.currentSubViewController = new SubViewController.constructor({name: viewString, $element: viewLoader.currentViewController.$subViewContainer, labels: {}, template: SubViewTemplate, path: viewLoader.currentViewController.path, passedData: data});
 				viewLoader.currentSubViewController.render(function() {
-					if(_.isFunction(viewLoader.currentViewController.didRenderSubviews) === true) {
-						viewLoader.currentViewController.didRenderSubviews();
+					if(_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
+						viewLoader.currentViewController.didRenderSubview();
 					}
 				});
 				if(_.isFunction(callback) === true) {
@@ -95,8 +94,11 @@ define(
 			});
 		};
 
-		loadModalView = function(view, path, data, callback) {
-			var viewLoader = this;
+		/**
+		 * Does the heavy lifting regardless of the openModalViews array.
+		 */
+		_loadModalView = function(view, path, data, callback) {
+			var viewLoader = ViewLoader;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
                 var $modalViewLightbox = $(modalViewLightbox),
                     $modalViewContainer = $(modalViewContainer);
@@ -129,6 +131,34 @@ define(
 			});
 		};
 
+		loadModalView = function(view, path, data, callback) {
+			var viewLoader = this;
+			
+			viewLoader.openModalViews.unshift({
+				view: view,
+				path: path,
+				data: data,
+				callback: callback
+			});
+
+			if(viewLoader.openModalViews.length <= 1) {
+				_loadModalView(view, path, data, callback);
+			}
+			else {
+				callback(null, viewLoader.currentModalViewController);
+			}
+		};
+
+		loadModalViewSibling = function(view, path, data, callback) {
+			this.openModalViews.unshift({
+				view: view,
+				path: path,
+				data: data,
+				callback: callback
+			});
+			_loadModalView(view, path, data, callback);
+		};
+
 		closeModalView = function(callback) {
 			var viewLoader = this,
 				$modalViewLightbox = $(modalViewLightbox),
@@ -151,7 +181,7 @@ define(
 
 			if(this.openModalViews.length > 0) {
 				previousModal = this.openModalViews[this.openModalViews.length - 1];
-				this.loadModalView(previousModal.view, previousModal.route, previousModal.data, function(error, loadedModalViewController) {
+				_loadModalView(previousModal.view, previousModal.path, previousModal.data, function(error, loadedModalViewController) {
 					if(_.isFunction(previousModal.callback) === true) {
 						previousModal.callback();
 					}
@@ -165,16 +195,6 @@ define(
 						callback(null, previousModal);
 					}
 				});
-				/*this.currentViewController.initialize();
-				this.currentViewController.render(function(error, subview, $subViewContainer) {
-					if(!error && subview && subview !== null) {
-						viewLoader.loadSubview(subview, $subViewContainer, null, function(error, loadedSubviewController) {
-							if(!error) {
-								viewLoader.currentSubViewController = loadedSubviewController;
-							}
-						});
-					}
-				});*/
 			}
 		};
 
@@ -187,6 +207,7 @@ define(
 			loadView: loadView,
 			loadSubview: loadSubview,
 			loadModalView: loadModalView,
+			loadModalViewSibling: loadModalViewSibling,
 			closeModalView: closeModalView
 		};
 		return ViewLoader;

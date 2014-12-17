@@ -105,31 +105,15 @@ define(
 		openModalView = function(route, data, callback) {
 			var router = this,
 				view = this.getRoute(route);
-			//Add new modal to queue
-			ViewLoader.openModalViews.unshift({
-				view: view,
-				route: route,
-				data: data,
-				callback: callback
-			});
 			
-			if(ViewLoader.openModalViews.length <= 1) {
-				//Only open if no other modals are open
-				ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
-					if(!error) {
-						router.currentModalViewController = loadedViewController;
-					}
-					if(_.isFunction(callback)) {
-						callback();
-					}
-				});
-			}
-			else {
-				//We let the close modal handle opening of queued modals
+			ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
+				if(!error) {
+					router.currentModalViewController = loadedViewController;
+				}
 				if(_.isFunction(callback)) {
 					callback();
 				}
-			}
+			});
 		};
 
 		/**
@@ -138,15 +122,8 @@ define(
 		openModalSiblingView = function(route, data, callback) {
 			var router = this,
 				view = this.getRoute(route);
-			//Add new modal to queue
-			ViewLoader.openModalViews.unshift({
-				view: view,
-				route: route,
-				data: data,
-				callback: callback
-			});
 
-			ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
+			ViewLoader.loadModalViewSibling(view, route, data, function(error, loadedViewController) {
 				if(!error) {
 					router.currentModalViewController = loadedViewController;
 				}
@@ -159,10 +136,9 @@ define(
 		closeModalView = function(callback) {
 			var router = this;
 			ViewLoader.closeModalView(function(error, currentModalViewController) {
-				if(error) {
-					return;
+				if(!error) {
+					router.currentModalViewController = currentModalViewController;
 				}
-				router.currentModalViewController = currentModalViewController;
 				if(_.isFunction(callback)) {
 					callback();
 				}

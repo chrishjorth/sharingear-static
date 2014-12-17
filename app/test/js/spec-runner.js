@@ -68,6 +68,7 @@ require(
 			require([
 				'../test/js/specs/app.spec',
 				'../test/js/specs/router.spec',
+				'../test/js/specs/viewloader.spec',
 				//'../test/js/specs/viewcontroller.spec',
 				//'../test/js/specs/model.spec',
 				//'../test/js/specs/utilities.spec',

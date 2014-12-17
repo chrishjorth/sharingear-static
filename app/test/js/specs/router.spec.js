@@ -17,30 +17,25 @@ define(
 					});
 				});
 				this.loadModalViewStub = sinon.stub(ViewLoader, 'loadModalView', function(view, path, data, callback) {
-					if(ViewLoader.currentModalViewController !== null) {
-						//Simulate close
-						ViewLoader.openModalViews.pop();
-						Router.currentViewController = null;
-					}
-					ViewLoader.currentModalViewController = {
-						name: view,
-						close: function() {}
-					};
-					callback(null, ViewLoader.currentModalViewController);
+					callback(null, {
+						name: view
+					});
 				});
-			});
-
-			beforeEach(function() {
-				
-			});
-
-			afterEach(function() {
-				
+				this.loadModalViewSiblingStub = sinon.stub(ViewLoader, 'loadModalViewSibling', function(view, path, data, callback) {
+					callback(null, {
+						name: view
+					});
+				});
+				this.closeModalViewStub = sinon.stub(ViewLoader, 'closeModalView', function(callback) {
+					callback();
+				});
 			});
 
 			after(function() {
 				ViewLoader.loadView.restore();
 				ViewLoader.loadModalView.restore();
+				ViewLoader.loadModalViewSibling.restore();
+				ViewLoader.closeModalView.restore();
 				//Reset routes
 				Router.routes = ['error'];
 				history.replaceState({}, '', window.location.pathname);
@@ -99,34 +94,28 @@ define(
 					done();
 				});
 			});
-
-			it('Can handle modal views', function(done) {
-				var spec = this,
-					passed = false;
-
+			
+			it('Can open a modal view', function(done) {
+				var spec = this;
 				Router.openModalView('home', null, function() {
-					expect(Router.currentModalViewController.name).to.equal('home');
-					expect(ViewLoader.openModalViews.length).to.equal(1);
-					
-					Router.openModalSiblingView('dashboard', null, function() {
-						if(passed === false) { //This callback will be triggered again by the last close modal view, since it will resurface this view
-							passed = true;
-							expect(Router.currentModalViewController.name).to.equal('dashboard');
-							expect(ViewLoader.openModalViews.length).to.equal(1);
-						
-							Router.openModalView('home', null, function() {
-								//This one does not trigger a load modal view because it gets queued instead
-								expect(Router.currentModalViewController.name).to.equal('dashboard');
-								expect(ViewLoader.openModalViews.length).to.equal(2);
-								
-								Router.closeModalView(function() {
-									expect(spec.loadModalViewStub.callCount).to.equal(3);
-									expect(ViewLoader.openModalViews.length).to.equal(1);
-									done();
-								});
-							});
-						}
-					});
+					sinon.assert.calledWith(spec.loadModalViewStub, 'home', 'home', null);
+					done();
+				});
+			});
+
+			it('Can open a modal view closing the current modal view', function(done) {
+				var spec = this;
+				Router.openModalSiblingView('dashboard/profile', null, function() {
+					sinon.assert.calledWith(spec.loadModalViewSiblingStub, 'dashboard', 'dashboard/profile', null);
+					done();
+				});
+			});
+
+			it('Can close a modal view', function(done) {
+				var spec = this;
+				Router.closeModalView(function() {
+					sinon.assert.calledOnce(spec.closeModalViewStub);
+					done();
 				});
 			});
 
@@ -134,7 +123,7 @@ define(
 				expect(Router.routeExists('error')).to.equal(true);
 			});
 
-			it('Can handle URL hash change', function() {
+			it('Can handle URL hash change', function(done) {
 				expect(window.onhashchange).to.be.a('function');
 				sinon.stub(Router, 'handleHashChange', function() {
 					var navigateToSpy;
@@ -147,6 +136,8 @@ define(
 
 					done();
 				});
+				//We need to re-register since the stub breaks the registration in Router.js
+				window.onhashchange = Router.handleHashChange;
 				window.location.hash = '#dashboard';
 			});
 		});
