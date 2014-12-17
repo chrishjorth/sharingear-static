@@ -4310,3 +4310,7 @@ span.num {
     margin-top: 3px;
     margin-bottom: 5px;
 }
+
+.acclist{
+	text-transform: capitalize;
+}
