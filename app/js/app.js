@@ -17,6 +17,7 @@ define(
 			setUserLocation,
 			loadHeader,
 			loadFooter,
+			getCookie,
 
 			$headerContainer, $footerContainer;
 
@@ -118,23 +119,12 @@ define(
 					router.openModalView('closedbeta');
 				});
 
-				function getCookie(cname) {
-			    var name = cname + '=';
-			    var ca = document.cookie.split(';');
-			    for(var i=0; i<ca.length; i++) {
-			        var c = ca[i];
-			        while (c.charAt(0)==' ') c = c.substring(1);
-			        if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
-			    }
-			    return '';
-				};
-
 				if(getCookie('cookie-consent') != '1') {
 					$('.cookie-opt-in').removeClass('hidden');
 				}
 
-				$( '.cookie-opt-in-button' ).click(function() {
-					document.cookie="cookie-consent=1";
+				$('.cookie-opt-in-button').click(function() {
+					document.cookie = 'cookie-consent=1';
 					$('.cookie-opt-in').addClass('hidden');
 				});
 
@@ -194,6 +184,22 @@ define(
 			});
 		};
 
+		getCookie = function(cname) {
+			var name = cname + '=',
+				ca = document.cookie.split(';'),
+				i, c;
+			for(i = 0; i < ca.length; i++) {
+				c = ca[i];
+				while (c.charAt(0) === ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) !== -1) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return '';
+		};
+
 		App = {
 			API_URL: API_URL,
 			$headerContainer: $headerContainer,
@@ -209,7 +215,8 @@ define(
 			run: run,
 			setUserLocation: setUserLocation,
 			loadHeader: loadHeader,
-			loadFooter: loadFooter
+			loadFooter: loadFooter,
+			getCookie: getCookie
 		};
 
 		App.user = new User.constructor({

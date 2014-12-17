@@ -118,6 +118,8 @@ define(
 					done();
 				});
 			});
+
+			it('Can handle cookie warning');
 		});
 	}
 );
