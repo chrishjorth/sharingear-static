@@ -4290,3 +4290,23 @@ span.num {
 	padding-right: 50px;
 	min-height: 350px;
 }
+
+/* ---------cookie opt-in--------------*/
+.cookie-opt-in{
+  width:100%;
+  position: fixed;
+  bottom: 0px;
+  text-align: center;
+  color: black;
+  /*padding-top: 10px;*/
+  background-color: rgb(255, 210, 0);
+}
+
+.cookie-opt-in-button{
+    border: 0;
+    background-color: #FFAE00;
+    color: #000;
+    margin-left: 10px;
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
