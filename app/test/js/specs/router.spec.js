@@ -136,15 +136,18 @@ define(
 
 			it('Can handle URL hash change', function() {
 				expect(window.onhashchange).to.be.a('function');
-				//Is onhashchange calling handleHashChange? 
 				sinon.stub(Router, 'handleHashChange', function() {
-					console.log('boom');
+					var navigateToSpy;
 					Router.handleHashChange.restore();
+
+					navigateToSpy = sinon.spy(Router, 'navigateTo');
+					Router.handleHashChange();
+					sinon.assert.calledOnce(navigateToSpy);
+					Router.navigateTo.restore();
+
 					done();
 				});
-				//window.onhashchange = Router.handleHashChange;
-				window.onhashchange();
-				//expect(window.onhashchange.toString()).to.equal(Router.handleHashChange.toString());
+				window.location.hash = '#dashboard';
 			});
 		});
 	}
