@@ -493,10 +493,10 @@ footer a:hover {
     position: absolute;
     background-color: #ffffff;
     border-style: solid;
-    border-width: 1px;
+    border-width: 0px;
     border-color: #dddddd;
     color: #333333;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     top: 0;
     right: 0;
@@ -3264,11 +3264,20 @@ span.num {
     margin: 40px 0;
 }
 
+
+.total-price-info {
+
+	font-size: 20px;
+	font-weight: 500;
+	color: #00aeff;
+
+}
+
 .total-price {
 
     font-size: 20px;
     font-weight: 500;
-    color: #4989af;
+    color: #00aeff;
 
 }
 .total-price::after{
@@ -4082,4 +4091,92 @@ span.num {
 	width: 500px;
 	height: 300px;
 	margin-bottom: 100px;
+}
+
+
+/*-----------BOOKING------------*/
+
+.bluetop{
+	background-color: #00aeff;
+	color: #ffffff;
+	height: 64px;
+	margin-bottom: 10px;
+}
+
+.bluetop h2{
+	margin: 0px;
+	padding: 0px;
+	line-height: 64px;
+}
+
+.bluetop img{
+	float: left;
+	margin-right: 21px;
+	margin-top: 13px;
+	margin-right: 15px;
+	width: 41px;
+}
+
+.close-booking{
+	margin-right: 20px !important;
+	margin-top: 17px !important;
+	width: 31px !important;
+}
+
+.container-fluid{
+
+	padding-left: 12px;
+	padding-right: 0px;
+
+}
+
+.close-booking-button{
+	cursor: pointer;
+}
+
+.booking-results table{
+
+	vertical-align: middle;
+	text-align: center;
+	border: 1px solid #dddddd;
+	border-collapse: collapse;
+
+}
+
+.booking-results table tr td{
+	border: 1px solid #dddddd;
+	border-collapse: collapse;
+	font-size: smaller;
+}
+
+.booking-table-left{
+
+	width: 50%;
+	font-weight: 600;
+
+}
+
+.rental-period{
+	color: #00aeff;
+	background-color: #000000;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	border: 0;
+	padding: 4px;
+	margin-bottom: 5px;
+	margin-top: 20px;
+}
+
+.booking-margin{
+
+	margin-bottom: 14px;
+
+}
+
+.rental-period p{
+
+	text-transform: uppercase;
+	font-weight: bold;
+
 }

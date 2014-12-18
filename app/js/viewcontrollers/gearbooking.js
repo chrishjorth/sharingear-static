@@ -293,15 +293,15 @@ define(
 			if(isNaN(price) === true) {
 				price = 0;
 			}
-			display = '<p class="price-info">';
-			display += 'Hours: ' + this.numberOfHours + '</br>';
-			display += 'Days: ' + this.numberOfDays + '</br>';
-			display += 'Weeks: ' + this.numberOfWeeks + '</br>';
-			display += 'Price per hour:' + this.pricePerHour + '</br>';
-			display += 'Price per day:' + this.pricePerDay + '</br>';
-			display += 'Price per week:' + this.pricePerWeek + '</br>';
-			display += '<span class="total-price">' + price + '</span></p>';
-			$('#totalprice', this.$element).html(display);
+
+			$('#booking-hours', this.$element).html(this.numberOfHours);
+			$('#booking-days', this.$element).html(this.numberOfDays);
+			$('#booking-weeks', this.$element).html(this.numberOfWeeks);
+			$('#booking-hourly-price', this.$element).html(this.pricePerHour);
+			$('#booking-daily-price', this.$element).html(this.pricePerDay);
+			$('#booking-weekly-price', this.$element).html(this.pricePerWeek);
+			$('#totalprice', this.$element).html(price);
+
 			this.newBooking.data.price = price;
 			this.newBooking.data.pricePerHour = this.pricePerHour;
 			this.newBooking.data.pricePerDay = this.pricePerDay;

@@ -1,19 +1,26 @@
 <div class="container-fluid">
-	<form class="form-inline" onsubmit="return false;">
+	<form class="form-inline" style="margin-right: 11px;" onsubmit="return false;">
 		<div class="row">
-			<div class="col-xs-12"><h2>Book</h2></div>
+			<div class="col-xs-11 bluetop">
+				<img src="images/sgmark@2x.png" alt="Sharingear"/>
+				<h2>Booking request</h2>
+				</div>
+			<div class="col-xs-1 bluetop">
+					<a id="gearbooking-cancel-btn" class="close-booking-button"><img src="images/close@2x.png" alt="close" class="close-booking"/></a>
+			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-5">
+			<div class="col-md-4">
+				<div class="col-md-offset-1 col-md-11">
 				<p>Pickup date</p>
-				<h3 style="color: #00aeff" id="gearbooking-lefttitle"></h3>
+				<h3 style="color: #00aeff" id="gearbooking-lefttitle" class="bottom-line"></h3>
 				<div class="btn-group booking-buttons">
 					<button class="btn btn-default" id="gearbooking-lefttoday-btn">Today</button>
 					<button class="btn btn-default" id="gearbooking-leftprevious-btn">Previous</button>
 					<button class="btn btn-default" id="gearbooking-leftnext-btn">Next</button>
 				</div>
 				<div class="calendar month calendar" id="gearbooking-leftmonths-container"></div>
-				<br/>
+
 				<label for="gearbooking-starttime">Start time:</label>
 				<select class="form-control" id="gearbooking-starttime">
 					<option>00:00</option>
@@ -41,18 +48,18 @@
 					<option>22:00</option>
 					<option>23:00</option>
 				</select>
-
 			</div>
-			<div class="col-md-5">
+			</div>
+			<div class="col-md-4">
 				<p>Return date</p>
-				<h3 id="gearbooking-righttitle"></h3>
+				<h3 id="gearbooking-righttitle" class="bottom-line"></h3>
 				<div class="btn-group booking-buttons">
 					<button class="btn btn-default" id="gearbooking-righttoday-btn">Today</button>
 					<button class="btn btn-default" id="gearbooking-rightprevious-btn">Previous</button>
 					<button class="btn btn-default" id="gearbooking-rightnext-btn">Next</button>
 				</div>
 				<div class="calendar month calendar" id="gearbooking-rightmonths-container"></div>
-				<br/>
+
 				<label for="gearbooking-endtime">End time:</label>
 				<select class="form-control" id="gearbooking-endtime">
 					<option>00:00</option>
@@ -81,13 +88,58 @@
 					<option>23:00</option>
 				</select>
 			</div>
-			<div class="price-container col-md-2">
-				<div id="totalprice" class="">
-					<h3>Total</h3>
-					<span class="total-price">0</span>
+			<div class="col-md-4">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="row rental-period">
+						<p>Rental period</p>
+					</div>
+					<div class="row booking-results">
+						<table class="col-xs-12 booking-margin">
+							<tr>
+								<td class="booking-table-left">Hours</td>
+								<td id="booking-hours">0</td>
+							</tr>
+							<tr>
+								<td class="booking-table-left">Days</td>
+								<td id="booking-days">0</td>
+							</tr>
+							<tr>
+								<td class="booking-table-left">Weeks</td>
+								<td id="booking-weeks">0</td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="row booking-results booking-margin">
+						<table class="col-xs-12">
+							<tr>
+								<td class="booking-table-left">Hourly price</td>
+								<td id="booking-hourly-price"></td>
+							</tr>
+							<tr>
+								<td class="booking-table-left">Daily price</td>
+								<td id="booking-daily-price"></td>
+							</tr>
+							<tr>
+								<td class="booking-table-left">Weekly price</td>
+								<td id="booking-weekly-price"></td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="row table-bordered booking-margin">
+					<div class="col-xs-6">
+						<span class="total-price-info">TOTAL</span>
+					</div>
+					<div class="col-xs-6 right">
+						<span id="totalprice" class="total-price">0</span>
+					</div>
+					</div>
 				</div>
-				<button class="btn btn-default editgear-cancel-button" id="gearbooking-cancel-btn">Cancel</button>
-				<button class="btn btn-info editgear-save-button" id="gearbooking-book-btn" disabled="disabled">Book</button>
+				<div class="row">
+						<button class="col-md-10 col-md-offset-1 btn btn-info editgear-save-button" id="gearbooking-book-btn" disabled="disabled">Book</button>
+				</div>
+
 			</div>
 		</div>
 	</form>
