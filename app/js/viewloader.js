@@ -180,7 +180,7 @@ define(
 			$(modalViewContainer).removeClass('closed-beta-modal');
 
 			//Remove modal from queue
-			this.openModalViews.shift();
+			this.openModalViews.pop();
 
 			if(this.openModalViews.length > 0) {
 				previousModal = this.openModalViews[this.openModalViews.length - 1];

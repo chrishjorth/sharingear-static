@@ -90,9 +90,22 @@ define(
 			});
 
 			it('Can load a modal view closing an opened modal view', function(done) {
-				var passed = false;
 				expect(ViewLoader.openModalViews.length).to.equal(1);
 				ViewLoader.loadModalViewSibling('dashboard', 'dashboard/profile', {test: 'test4'}, function(error, loadedViewController) {
+					expect(loadedViewController.name).to.equal('dashboard');
+					expect(loadedViewController.path).to.equal('dashboard/profile');
+					expect(loadedViewController.passedData.test).to.equal('test4');
+
+					expect(ViewLoader.openModalViews.length).to.equal(1);
+
+					done();
+				});
+			});
+
+			it('Can queue a modal view', function(done) {
+				var passed = false;
+				ViewLoader.loadModalView('home', 'home', {test: 'test5'}, function(error, loadedViewController) {
+					var queuedView;
 					if(passed === false) {
 						//Avoid running this when the modal is closed
 						passed = true;
@@ -100,28 +113,15 @@ define(
 						expect(loadedViewController.path).to.equal('dashboard/profile');
 						expect(loadedViewController.passedData.test).to.equal('test4');
 
-						expect(ViewLoader.openModalViews.length).to.equal(1);
+						expect(ViewLoader.openModalViews.length).to.equal(2);
+
+						queuedView = ViewLoader.openModalViews[0];
+						expect(queuedView.view).to.equal('home');
+						expect(queuedView.path).to.equal('home');
+						expect(queuedView.data.test).to.equal('test5');
 
 						done();
 					}
-				});
-			});
-
-			it('Can queue a modal view', function(done) {
-				ViewLoader.loadModalView('home', 'home', {test: 'test5'}, function(error, loadedViewController) {
-					var queuedView;
-					expect(loadedViewController.name).to.equal('dashboard');
-					expect(loadedViewController.path).to.equal('dashboard/profile');
-					expect(loadedViewController.passedData.test).to.equal('test4');
-
-					expect(ViewLoader.openModalViews.length).to.equal(2);
-
-					queuedView = ViewLoader.openModalViews[0];
-					expect(queuedView.view).to.equal('home');
-					expect(queuedView.path).to.equal('home');
-					expect(queuedView.data.test).to.equal('test5');
-
-					done();
 				});
 			});
 
