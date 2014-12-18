@@ -24,12 +24,13 @@ define(
 				start_time: '',
 				end_time: '',
 				price: '',
-				currency: "DKK"
+				currency: 'DKK'
 			};
 
 			booking = new Booking.constructor({
 				rootURL: App.API_URL
 			});
+			booking.initialize();
 			booking.data.id = this.passedData.bookingID;
 			booking.data.preauth_id = this.passedData.preAuthorizationID;
 			booking.data.booking_status = 'pending';
@@ -40,17 +41,18 @@ define(
 					view.paymentSuccessful = false;
 					view.render();
 					return;
-				};
+				}
 
 				booking.getBookingInfo(App.user.data.id, function(error){
+					var timeFormat, formattedEnd, formattedStart;
 					if(error) {
 						console.log('Error getting booking info: ' + error);
 						return;
-					};
+					}
 
-					var timeFormat = 'MMMM Do YYYY, H:mm';
-					var formattedEnd = Moment(booking.data.end_time).format(timeFormat);
-					var formattedStart = Moment(booking.data.start_time).format(timeFormat);
+					timeFormat = 'MMMM Do YYYY, H:mm';
+					formattedEnd = new Moment(booking.data.end_time).format(timeFormat);
+					formattedStart = new Moment(booking.data.start_time).format(timeFormat);
 
 					view.templateParameters.start_time = formattedStart;
 					view.templateParameters.end_time = formattedEnd;

@@ -4073,6 +4073,13 @@ span.num {
 /* --------- ABOUT US --------------*/
 .aboutus .row {
     color: #000000;
-    text-align: center;
+    text-align: left;
+	max-width: 1170px;
+	margin: 0 auto;
 }
 
+#aboutus-map {
+	width: 500px;
+	height: 300px;
+	margin-bottom: 100px;
+}

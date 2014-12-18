@@ -23,6 +23,7 @@ define(
 			view.gearList = new GearList.constructor({
 				rootURL: App.API_URL
 			});
+			view.gearList.initialize();
 			view.gearList.getUserGear(App.user.data.id, function(userGear) {
 				if(userGear.length > 0) {
 					view.populateYourGear();
