@@ -36,6 +36,7 @@ define(
 			this.gearList = new GearList.constructor({
 				rootURL: App.API_URL
 			});
+			this.gearList.initialize();
 			this.gearSelectionIndex = 0;
 			this.gearInputString = '';
 			this.gearSuggestionsArray = null; // array of strings

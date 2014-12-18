@@ -64,6 +64,7 @@ define(
             booking = new Booking.constructor({
                 rootURL: App.API_URL
             });
+            booking.initialize();
             booking.data.id = gear.data.booking_id;
             booking.data.gear_id = gear.data.id;
 
@@ -75,6 +76,7 @@ define(
                 gearUser = new User.constructor({
                 	rootURL: App.API_URL
            		});
+           		gearUser.initialize();
            		gearUser.data.id = (isViewerOwner === true ? booking.data.renter_id : gear.data.owner_id); //Depends on who is viewing the booking
 
            		gearUser.getPublicInfo(function(error) {

@@ -28,6 +28,7 @@ define(
 			this.gearList = new GearList.constructor({
 				rootURL: App.API_URL
 			});
+			this.gearList.initialize();
 			this.gearList.getUserRentals(App.user.data.id, function() {
 				view.didFetch = true;
 				view.render();

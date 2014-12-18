@@ -25,6 +25,7 @@ define(
 			view.gearList = new GearList.constructor({
 				rootURL: App.API_URL
 			});
+			view.gearList.initialize();
 			view.gearList.getUserReservations(App.user.data.id, function (data) {
 				if(data.length !== 0){
 					view.populateYourReservations();

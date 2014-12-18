@@ -94,8 +94,10 @@ define(
 			App.gearClassification = new GearClassification.constructor({
 				rootURL: App.API_URL
 			});
+			App.gearClassification.initialize();
 
 			App.localization = new Localization.constructor();
+			App.localization.initialize();
 			App.setUserLocation();
 
 			$.when(loginDeferred, documentReadyDeferred).then(function() {
@@ -222,6 +224,7 @@ define(
 		App.user = new User.constructor({
 			rootURL: API_URL
 		});
+		App.user.initialize();
 
 		return App;
 	}

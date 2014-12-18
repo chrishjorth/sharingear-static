@@ -8,12 +8,19 @@
 define(
 	['underscore', 'jquery', 'utilities'], 
 	function(_, $, Utilities) {
-		var get,
+		var initialize,
+			get,
 			post,
 			put,
 			del,
 
 			constructor, inherit;
+
+		initialize = function() {
+			if(this.didInitialize && typeof this.didInitialize == 'function') {
+				this.didInitialize();
+			}
+		};
 
 		get = function(url, callback) {
 			var encodedURL = encodeURI(this.rootURL + url);
@@ -98,16 +105,13 @@ define(
 			};
 
 			methods = {
+				initialize: initialize,
 				get: get,
 				post: post,
 				put: put,
 				del: del
 			};
 			_.extend(this, defaults, methods, options);
-			
-			if(this.didInitialize && typeof this.didInitialize == 'function') {
-				this.didInitialize();
-			}
 		};
 
 		inherit = function(inheritOptions) {

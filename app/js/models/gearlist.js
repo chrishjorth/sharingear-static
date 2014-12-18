@@ -135,6 +135,7 @@ define(
                 gearItem = new Gear.constructor({
                     rootURL: this.rootURL
                 });
+                gearItem.initialize();
                 _.extend(gearItem.data, gearArray[i]);
 				this.data.push(gearItem);
 			}
