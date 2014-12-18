@@ -43,6 +43,7 @@ define(
 			view.owner = new User.constructor({
 				rootURL: App.API_URL
 			});
+			view.owner.initialize();
 
 			if(view.passedData) {
 				//No need to fetch gear from backend
@@ -54,6 +55,7 @@ define(
 					view.gear = new Gear.constructor({
 						rootURL: App.API_URL
 					});
+					view.gear.initialize();
 
 					view.gear.data.id = view.subPath;
 					view.subPath = ''; //To avoid rendering a subview based on the gear id

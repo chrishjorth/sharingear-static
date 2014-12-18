@@ -120,6 +120,7 @@ define(
 			this.newBooking = new Booking.constructor({
 				rootURL: App.API_URL
 			});
+			this.newBooking.initialize();
 		};
 
 		didRender = function() {

@@ -83,6 +83,7 @@ define(
 			this.newGear = new Gear.constructor({
 				rootURL: App.API_URL
 			});
+			this.newGear.initialize();
 
 			this.hasDelivery = false;
 

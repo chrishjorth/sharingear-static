@@ -23,6 +23,7 @@ define(
 			this.booking = new Booking.constructor({
 				rootURL: App.API_URL
 			});
+			this.booking.initialize();
 
 			this.booking.data.gear_id = this.passedData.gear_id;
 			this.booking.data.start_time = this.passedData.start_time;
@@ -216,19 +217,19 @@ define(
 
 			$('#payment-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
-			var expmonth = $("select[name='expiration-month'] option:selected").index();
+			var expmonth = $('select[name="expiration-month"] option:selected').index();
 
 			expirationDate = '';
-			if (expmonth>=1&&expmonth<=9){
+			if (expmonth >= 1 && expmonth <= 9) {
 				expirationDate += '0';
 				expirationDate += expmonth.toString();
-			}else{
+			}
+			else {
 				expirationDate += expmonth.toString();
 			}
 
 			expirationDate += '/';
 			expirationDate += expirationDateYear.slice(2,4);
-			console.log(expirationDate);
 
 			if(needToUpdateUser === true) {
 				App.user.update(function(error) {
@@ -258,6 +259,7 @@ define(
 			card = new Card.constructor({
 				rootURL: App.API_URL
 			});
+			card.initialize();
 			cardData = {
 				cardType: 'CB_VISA_MASTERCARD',
 				cardNumber: cardNumber,

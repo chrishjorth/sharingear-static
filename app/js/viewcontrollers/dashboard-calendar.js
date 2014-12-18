@@ -33,6 +33,8 @@ define(
             isAfterOrSameDay: isAfterOrSameDay
 		});
 
+		Calendar.gearList.initialize();
+
 		return Calendar;
 
 		function didInitialize() {
