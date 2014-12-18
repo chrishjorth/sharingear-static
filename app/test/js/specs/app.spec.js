@@ -43,7 +43,7 @@ define(
 			});
 
 			it('Has correct API URL', function() {
-				if(App.IS_PRODUCTION === true) {
+				if(App.isProduction() === true) {
 					expect(App.API_URL).to.equal('https://prod-api.sharingear.com');
 				}
 				else {
