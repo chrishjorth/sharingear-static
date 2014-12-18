@@ -514,7 +514,7 @@ define(
 			};
 
 			if(isLocationSame === false) {
-				addressOneliner = newGearData.address + ', ' + newGearData.postal_code + ' ' + newGearData.city + ', ' + newGearData.region + ', ' + newGearData.country;
+				addressOneliner = newGearData.address + ', ' + newGearData.postal_code + ' ' + newGearData.city + ', ' + newGearData.country;
 				geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.newGear.data.longitude = results[0].geometry.location.lng();
@@ -690,7 +690,7 @@ define(
 			}
 			user.swift = swift[0];
 
-            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.region + ', ' + tempUser.country;
+            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.country;
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
                 if(status === GoogleMaps.GeocoderStatus.OK) {
                 	_.extend(user, tempUser);
