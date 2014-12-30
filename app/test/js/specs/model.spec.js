@@ -43,6 +43,7 @@ define(
 				var spec = this;
 				this.model.get('/someurl', function() {
 					sinon.assert.calledOnce(spec.ajaxStub);
+					expect(spec.ajaxStub.args[0][0].type).to.equal('GET');
 					expect(spec.ajaxStub.args[0][0].url).to.equal(App.API_URL + '/someurl');
 					done();
 				});
@@ -52,6 +53,7 @@ define(
 				var spec = this;
 				this.model.post('/someurl', {test: 'test1'}, function() {
 					sinon.assert.calledOnce(spec.ajaxStub);
+					expect(spec.ajaxStub.args[0][0].type).to.equal('POST');
 					expect(spec.ajaxStub.args[0][0].url).to.equal(App.API_URL + '/someurl');
 					expect(spec.ajaxStub.args[0][0].data.test).to.equal('test1');
 					done();
@@ -62,6 +64,7 @@ define(
 				var spec = this;
 				this.model.put('/someurl', {test: 'test2'}, function() {
 					sinon.assert.calledOnce(spec.ajaxStub);
+					expect(spec.ajaxStub.args[0][0].type).to.equal('PUT');
 					expect(spec.ajaxStub.args[0][0].url).to.equal(App.API_URL + '/someurl');
 					expect(spec.ajaxStub.args[0][0].data.test).to.equal('test2');
 					done();
