@@ -173,7 +173,7 @@ define(
 			});
 		};
 
-		getCookie = function(cname) {
+		getCookie = function(cname) {    /// comment
 			var name = cname + '=',
 				ca = document.cookie.split(';'),
 				i, c;
