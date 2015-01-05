@@ -17,7 +17,8 @@ requirejs.config({
 		sinon: '../test/js/libraries/sinon-1.10.3',
 		squire: '../test/js/libraries/squire',
 		facebook: '../test/js/mocks/facebook', //We use a mock to avoid having to connect to the Facebook server
-		googlemaps: '../test/js/mocks/googlemaps', //We use a mock to avoid having to connect to the Google Maps server
+		//googlemaps: '../test/js/mocks/googlemaps', //We use a mock to avoid having to connect to the Google Maps server
+		
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker',
 		magnificpopup: 'libraries/magnificpopup/magnificpopup'
@@ -52,6 +53,13 @@ requirejs.config({
 	}
 });
 
+//Based on http://blog.millermedeiros.com/requirejs-2-0-delayed-module-evaluation-and-google-maps/
+// convert Google Maps into an AMD module
+define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyByhkzhQYoAk2bAGRYIuvHOl1jIP99_iyE&libraries=places'], function(){
+    // return the googlemaps namespace for brevity
+    return window.google.maps;
+});
+
 require(
 	['underscore', 'mocha', 'jquery'],
 	function(_, Mocha, $) {
@@ -71,7 +79,8 @@ require(
 				'../test/js/specs/viewloader.spec',
 				'../test/js/specs/viewcontroller.spec',
 				'../test/js/specs/model.spec',
-				//'../test/js/specs/utilities.spec',
+				'../test/js/specs/utilities.spec',
+				
 				//'../test/js/specs/viewcontrollers/error.spec',
 				//'../test/js/specs/viewcontrollers/footer.spec',
 				//'../test/js/specs/viewcontrollers/home.spec',

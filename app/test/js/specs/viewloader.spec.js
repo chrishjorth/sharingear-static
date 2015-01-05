@@ -107,8 +107,9 @@ define(
 				ViewLoader.loadModalView('home', 'home', {test: 'test5'}, function(error, loadedViewController) {
 					var queuedView;
 					if(passed === false) {
-						//Avoid running this when the modal is closed
+						//Avoid running this again when the previous modal is closed
 						passed = true;
+						//The current modal view controller is still the one of the already open view
 						expect(loadedViewController.name).to.equal('dashboard');
 						expect(loadedViewController.path).to.equal('dashboard/profile');
 						expect(loadedViewController.passedData.test).to.equal('test4');
@@ -128,6 +129,9 @@ define(
 			it('Can close a modal view', function(done) {
 				ViewLoader.closeModalView(function() {
 					expect(ViewLoader.openModalViews.length).to.equal(1);
+					expect(ViewLoader.currentModalViewController.name).to.equal('home');
+					expect(ViewLoader.currentModalViewController.path).to.equal('home');
+					expect(ViewLoader.currentModalViewController.passedData.test).to.equal('test5');
 					done();
 				});
 			});
