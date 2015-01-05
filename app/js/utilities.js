@@ -12,7 +12,6 @@ define(
     		inherit,
     		getBaseURL,
     		ajajFileUpload,
-    		geoLocationGetCity,
     		getCityFromCoordinates,
     		getQueryStringParameterValue,
     		capitalizeString,
@@ -88,27 +87,6 @@ define(
 			});
 		};
 
-    	//Get city name based on latitude and longitude
-    	geoLocationGetCity = function(lat, lon, callback) {
-        	var latitude = lat;
-        	var longitude = lon;
-        	var geocoder = new GoogleMaps.Geocoder();
-        	var locationCity = '';
-
-        	//Use Google Geocoder to translate the coordinates to city name
-        	var latLng = new GoogleMaps.LatLng(latitude,longitude);
-        	geocoder.geocode({'latLng':latLng}, function (results, status) {
-
-            	if(status === GoogleMaps.GeocoderStatus.OK) {
-                	locationCity = results[0].address_components[2].long_name;
-
-                	$('#search-location').val(locationCity);
-                	$('#listyourgear-location').val(locationCity);
-                	callback(locationCity);
-            	}
-        	});
-    	};
-
 		getCityFromCoordinates = function(latitude, longitude, callback) {
 			var geocoder = new GoogleMaps.Geocoder(),
 				latLng = new GoogleMaps.LatLng(latitude,longitude);
@@ -123,10 +101,10 @@ define(
     	};
 
     	/**
-		 * Receives a query string and returns the value for the specified parameter.
+		 * Receives a query string and returns the value for the specified key.
 		 * Inspired by http://stackoverflow.com/a/1099670
 		 */
-		getQueryStringParameterValue = function(queryString, parameter) {
+		getQueryStringParameterValue = function(queryString, key) {
 			var regEx = /[?&]?([^=]+)=([^&]*)/g,
 				parameters = {},
 				tokens;
@@ -134,13 +112,18 @@ define(
         	while( (tokens = regEx.exec(queryString)) !== null ) {
 				parameters[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
         	}
-        	return parameters[parameter];
+        	return parameters[key];
 		};
 
 		capitalizeString = function(string) {
 			return string.charAt(0).toUpperCase() + string.slice(1);
 		};
 
+		/**
+		 * This function considers days as smallest time unit.
+		 * This function is inclusive.
+		 */
+		//TODO: rename to isDayMomentBetween
 		isMomentBetween = function(moment, intervalStart, intervalEnd) {
 			return ((moment.isAfter(intervalStart, 'day') === true || moment.isSame(intervalStart, 'day') === true) && (moment.isBefore(intervalEnd, 'day') === true || moment.isSame(intervalEnd, 'day') === true));
 		};
@@ -149,7 +132,6 @@ define(
         	inherit: inherit,
         	getBaseURL: getBaseURL,
         	ajajFileUpload: ajajFileUpload,
-        	geoLocationGetCity: geoLocationGetCity,
         	getCityFromCoordinates: getCityFromCoordinates,
         	getQueryStringParameterValue: getQueryStringParameterValue,
         	capitalizeString: capitalizeString,
