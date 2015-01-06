@@ -15,7 +15,8 @@ define(
     		getCityFromCoordinates,
     		getQueryStringParameterValue,
     		capitalizeString,
-    		isMomentBetween;
+    		isMomentBetween,
+    		isMobile;
 
     	geocoder = new GoogleMaps.Geocoder();
 
@@ -128,6 +129,15 @@ define(
 			return ((moment.isAfter(intervalStart, 'day') === true || moment.isSame(intervalStart, 'day') === true) && (moment.isBefore(intervalEnd, 'day') === true || moment.isSame(intervalEnd, 'day') === true));
 		};
 
+		/**
+		 * Breakpoints are Bootstrap compatible.
+		 */
+		isMobile = function() {
+			var breakpoints = [768, 992, 1200],
+				viewWidth = $(document).width();
+			return (viewWidth < breakpoints[0]);
+		};
+
 		return {
         	inherit: inherit,
         	getBaseURL: getBaseURL,
@@ -135,7 +145,8 @@ define(
         	getCityFromCoordinates: getCityFromCoordinates,
         	getQueryStringParameterValue: getQueryStringParameterValue,
         	capitalizeString: capitalizeString,
-        	isMomentBetween: isMomentBetween
+        	isMomentBetween: isMomentBetween,
+        	isMobile: isMobile
     	};
 	}
 );

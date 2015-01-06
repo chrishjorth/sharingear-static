@@ -23,7 +23,7 @@ define([
 	initialize = function() {
 		this.setSubPath();
 
-		if(this.didInitialize && typeof this.didInitialize == 'function') {
+		if(_.isFunction(this.didInitialize) === true) {
 			this.didInitialize();
 		}
 	};
@@ -33,15 +33,22 @@ define([
 
 		//Unbind events to avoid double ups on multiple renders
 		this.unbindEvents();
+		if(_.isFunction(this.didResize) === true) {
+			$(window).off('resize', this.didResize);
+		}
 
 		this.$element.html(template);
 		
-		if(callback && typeof callback === 'function') {
+		if(_.isFunction(callback) === true) {
 			callback();
 		}
 
-		if(this.didRender && typeof this.didRender == 'function') {
+		if(_.isFunction(this.didRender) === true) {
 			this.didRender();
+		}
+		
+		if(_.isFunction(this.didResize) === true) {
+			$(window).on('resize', null, this, this.didResize);
 		}
 	};
 
@@ -75,7 +82,7 @@ define([
 	close = function() {
 		this.unbindEvents();
 		this.$element.empty();
-		if(this.didClose && typeof this.didClose == 'function') {
+		if(_.isFunction(this.didClose) === true) {
 			this.didClose();
 		}
 	};

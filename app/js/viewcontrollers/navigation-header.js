@@ -3,59 +3,142 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 define(
-	['viewcontroller', 'app'],
-	function(ViewController, App) {
-		var Header = ViewController.inherit({
-			didRender: didRender,
-			setupView: setupView,
-			setupEvents: setupEvents,
-			handleLogin: handleLogin,
-			handleListYourGear: handleListYourGear,
-            renderProfilePicture: renderProfilePicture
-		});
+	['jquery', 'viewcontroller', 'app', 'utilities'],
+	function($, ViewController, App, Utilities) {
+		var didInitialize,
+			didRender,
+			didResize,
+			populateMainMenu,
+			handleNavbarToggle,
+			handleLogin,
+			//handleListYourGear,
+			renderProfilePicture;
 
-		return Header;
 
-		function didRender() {
-			this.setupView();
-			this.setupEvents();
+		didInitialize = function() {
+			this.isMobile = false;
+		};
+
+		didRender = function() {
+			this.populateMainMenu();
+			
             this.renderProfilePicture();
 
+            this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
+            this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
+			this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+			//this.setupEvent('click', '#navigation-header-listyourgear', this, this.handleListYourGear);
+		};
 
-            $(".dropdownli").click(
-                function () {
-                    $('ul.file_menu').slideToggle('medium');
-                    $('#avatar-arrow-id').toggleClass('fa-rotate-180');
-                }
-            );
-		}
+		didResize = function(event) {
+			var view = event.data;
+			if(Utilities.isMobile() !== view.isMobile) {
+				view.populateMainMenu();
+			}
+		};
 
-		function setupView() {
-			var $buttonsRightContainer = $('#navigationheader-buttonsright', this.$element),
-				html = '',
-                hovermenu = '';
+		populateMainMenu = function() {
+			var html = '',
+				$slideMenu, $dropdownMenu, $menuList;
+
+			$slideMenu = $('#navigation-header-slidemenu-left', this.$element);
+			$dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
+
+			if(Utilities.isMobile() === true) {
+				this.isMobile = true;
+				$slideMenu.removeClass('hidden');
+				if($dropdownMenu.hasClass('hidden') === false) {
+					$dropdownMenu.addClass('hidden');
+				}
+				$menuList = $('ul', $slideMenu);
+				html += '<li>Sharingear</li>';
+			}
+			else {
+				this.isMobile = false;
+				$dropdownMenu.removeClass('hidden');
+				if($slideMenu.hasClass('hidden') === false) {
+					$slideMenu.addClass('hidden');
+				}
+				$menuList = $('ul', $dropdownMenu);
+			}
+
+			html += '<li>Search</li>';
+
 			if(App.user.data.id === null) {
-				html += '<li class="_button-1"><a href="javascript:;" id="navigation-header-signup">SIGN UP</a></li>';
-				html += '<li class="_button-2"><a href="javascript:;" id="navigation-header-login">LOG IN</a></li>';
-				html += '<li class="active _button-3"><a href="javascript:;" id="navigation-header-listyourgear">LIST YOUR GEAR</a></li>';
-				$buttonsRightContainer.html(html);
+				html += '<li>Login</li>';
             }
 			else {
-                hovermenu = '<ul class="file_menu">';
-                hovermenu += '<li><a href="#dashboard/profile"><span class="dropdown-profile-icon dropdown-icon"></span>Profile</a></li>';
-                hovermenu += '<li><a href="#dashboard/addgear"><span class="dropdown-addgear-icon dropdown-icon"></span>Add gear</a></li>';
-                hovermenu += '<li><a href="#dashboard/yourgear"><span class="dropdown-yourgear-icon dropdown-icon"></span>Your gear</a></li>';
-				hovermenu += '<li><a href="#dashboard/yourrentals"><span class="dropdown-rentals-icon dropdown-icon"></span>Your rentals</a></li>';
-                hovermenu += '<li><a href="#dashboard/yourreservations"><span class="dropdown-reservation-icon dropdown-icon"></span>Reservations</a></li>';
-                    //'<li><a href="#dashboard/calendar"><span class="dropdown-calendar-icon dropdown-icon"></span>Calendar</a></li>' +
-                    //'<li><a href="#dashboard/settings"><span class="dropdown-settings-icon dropdown-icon"></span>Settings</a></li></ul>';
-                html += '<li class="_button-1 dropdownli list-group-item-selected"><a href="javascript:"><div id="small-profile-pic"></div><span class="avatar-text">'+App.user.data.name+'</span><i id="avatar-arrow-id" class="fa fa-chevron-down avatar-arrow"></i></a>'+hovermenu+'</li>';
-                $buttonsRightContainer.html(html);
+                html += '<li>Your profile</li>';
+                html += '<li>Your gear</li>';
+                html += '<li>Your tech profile</li>';
+                html += '<li>Your vans</li>';
+                html += '<li>Gear rentals</li>';
+                html += '<li>Tech hires</li>';
+                html += '<li>Van rentals</li>';
+                html += '<li>Gear reservations</li>';
+                html += '<li>Tech reservations</li>';
+                html += '<li>Van reservations</li>';
+                html += '<li>Settings</li>';
 			}
-		}
 
-        function renderProfilePicture() {
+			$menuList.html(html);
+		};
+
+		handleNavbarToggle = function(event) {
+			var view = event.data,
+				$viewContainer = $('.view-container'),
+				handleTransition;
+
+			handleTransition = function() {
+				var $this = $(this);
+				$this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
+				$this.removeClass('sliding-right');
+			};
+			view.$element.addClass('sliding-right');
+			view.$element.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+			$viewContainer.addClass('sliding-right');
+			$viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+
+			if(view.$element.hasClass('slide-right') === true) {
+				view.$element.removeClass('slide-right');
+				$viewContainer.removeClass('slide-right');
+			}
+			else {
+				view.$element.addClass('slide-right');
+				$viewContainer.addClass('slide-right');
+			}
+		};
+
+		handleLogin = function(event, callback) {
+			var view = event.data,
+				user = App.user;
+
+			user.login(function(error) {
+				if(!error) {
+				    App.router.navigateTo('dashboard');
+				    view.setupView();
+                }
+				
+				if(callback && typeof callback === 'function') {
+					callback();
+				}
+			});
+		};
+
+		/*handleListYourGear = function(event) {
+			var view = event.data;
+			App.user.login(function(error) {
+				if(!error) {
+					App.router.navigateTo('dashboard/addgear');
+				    view.setupView();
+				}
+			});
+		};*/
+
+		renderProfilePicture = function() {
             var img, isVertical, backgroundSize;
             if(!App.user.data.image_url) {
                 return;
@@ -75,38 +158,17 @@ define(
                 });
             };
             img.src = App.user.data.image_url;
-        }
+        };
 
-		function setupEvents() {
-			this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
-			this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
-			this.setupEvent('click', '#navigation-header-listyourgear', this, this.handleListYourGear);
-		}
-
-		function handleLogin(event, callback) {
-			var view = event.data,
-				user = App.user;
-
-			user.login(function(error) {
-				if(!error) {
-				    App.router.navigateTo('dashboard');
-				    view.setupView();
-                }
-				
-				if(callback && typeof callback === 'function') {
-					callback();
-				}
-			});
-		}
-
-		function handleListYourGear(event) {
-			var view = event.data;
-			App.user.login(function(error) {
-				if(!error) {
-					App.router.navigateTo('dashboard/addgear');
-				    view.setupView();
-				}
-			});
-		}
+		return ViewController.inherit({
+			didInitialize: didInitialize,
+			didRender: didRender,
+			didResize: didResize,
+			populateMainMenu: populateMainMenu,
+			handleNavbarToggle: handleNavbarToggle,
+			handleLogin: handleLogin,
+			//handleListYourGear: handleListYourGear,
+            renderProfilePicture: renderProfilePicture
+		});
 	}
 );

@@ -20,7 +20,8 @@ define(
 
 					didInitialize: function() {},
 					didRender: function() {},
-					didClose: function() {}
+					didClose: function() {},
+					didResize: function() {}
 				});
 			});
 
@@ -60,6 +61,16 @@ define(
 				sinon.assert.calledOnce(didRenderSpy);
 				this.vc.unbindEvents.restore();
 				this.vc.didRender.restore();
+			});
+
+			it('Can handle window resize event', function(done) {
+				var spec = this;
+				sinon.stub(this.vc, 'didResize', function() {
+					spec.vc.didResize.restore();
+					done();
+				});
+				this.vc.render();
+				$(window).resize();
 			});
 
 			it('Can set sub-path', function() {

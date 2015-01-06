@@ -107,7 +107,7 @@ define(
 				//Load header and footer
 				App.loadHeader($headerContainer);
 
-				App.loadFooter($footerContainer);
+				//App.loadFooter($footerContainer);
 
 				//Load page based on hash
 				hash = window.location.hash;
@@ -176,14 +176,14 @@ define(
 		 * Load the footer portion of the site.
 		 */
 		loadFooter = function($footerContainer, callback) {
-			var app = this;
+			/*var app = this;
 			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
 				app.footer = new FooterController.constructor({name: 'footer', $element: $footerContainer, labels: {}, template: FooterTemplate});
 				app.footer.render();
 				if(_.isFunction(callback)) {
 					callback();
 				}
-			});
+			});*/
 		};
 
 		getCookie = function(cname) {

@@ -4,18 +4,24 @@
  * TABLE OF CONTENTS:
  * 1. BOOTSTRAP LOOK OVERRIDES
  * 2. VIEW STRUCTURE
- *	2.a MODAL VIEWS
- *	2.b BOTTOM NOTIFICATIONS
- * 3. GENERAL VIEW ELEMENTS
- * 4. GENERAL TYPOGRAPHY
- * 5. GENERAL CUSTOM ELEMENTS
- * 	5.a BUTTONS
- * 6. SPECIFIC VIEWS
+ *	2.a MENUS
+ *	2.b MODAL VIEWS
+ *	2.c BOTTOM NOTIFICATIONS
+ * 3. TRANSITIONS
+ *	3.a TRANSITION POSITIONS
+ * 4. GENERAL VIEW ELEMENTS
+ * 5. GENERAL TYPOGRAPHY
+ * 6. GENERAL CUSTOM ELEMENTS
+ * 	6.a BUTTONS
+ * 7. SPECIFIC VIEWS
  *
  * Z-INDEX HIERARCHY:
- * 0: view container
- * 100: modal views
- * 200: notifications
+ * 0: footer
+ * 100: slide menus
+ * 200: view container
+ * 300: header
+ * 400: modal views
+ * 500: notifications
  * The z-index hierarchy must be reviewed when third party components are introduced.
  *
  * @author: Chris Hjorth
@@ -26,15 +32,77 @@
  * These are modifications to default Bootstrap look. Please do not modify the way Bootstrap does layout, only the looks.
  */
 
+.navbar {
+	border-radius: 0;
+	border: 0;
+}
+
+.navbar-brand {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+.navbar-toggle {
+	float: left;
+	margin-right: 0;
+	margin-left: 15px;
+}
+
 /******* 2. VIEW STRUCTURE *******/
 /**
  * These are rules that define the positioning of views and hence the appearance of navigation on the site.
  * These rules should only concern the index.html file and the view containers.
  */
+.sg-navbar {
+	z-index: 300;
+	position: fixed;
+	width: 100%;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-style: solid;
+	border-color: transparent;
+	background-color: #ffffff;
+}
 
-/*------ 2.a MODAL VIEWS ------*/
+.view-container {
+	z-index: 200;
+	position: absolute;
+	top: 0;
+	margin-top: 48px;
+	margin-left: 0;
+	width: 100%;
+}
+
+/*------ 2.a MENUS ------*/
+@media (min-width: 768px) {
+	.sg-navbar .col-xs-2 {
+		display: none;
+	}
+}
+
+.sg-navbar-slidemenu {
+	z-index: 100;
+	position: fixed;
+	top: 0;
+	width: 80%;
+	height: 100%;
+	background-color: #ffffff;
+}
+
+.sg-navbar-slidemenu-left {
+	left: 0;
+}
+
+.sg-navbar-slidemenu-right {
+	right: 0;
+}
+
+.sg-navbar-dropdownmenu {
+	position: relative;
+}
+
+/*------ 2.b MODAL VIEWS ------*/
 .modal-view-lightbox {
-    z-index: 100;
+    z-index: 400;
     position: fixed;
     top: 0;
     left: 0;
@@ -45,7 +113,7 @@
 }
 
 .modal-view-container {
-    z-index: 101;
+    z-index: 401;
     position: absolute;
     background-color: #ffffff;
     border-style: solid;
@@ -64,7 +132,7 @@
 	box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
 }
 
-/*------ 2.b BOTTOM NOTIFICATIONS ------*/
+/*------ 2.c BOTTOM NOTIFICATIONS ------*/
 .cookie-opt-in {
     width:100%;
     position: fixed;
@@ -74,24 +142,53 @@
     background-color: rgb(255, 210, 0);
 }
 
-/******* 3. GENERAL VIEW ELEMENTS *******/
+/******* 3. TRANSITIONS *******/
+/**
+ * These are element transitions. Please keep them as generic and reusable as possible.
+ */
+.sliding-right {
+	-moz-transition-timing-function: ease;
+	-webkit-transition-timing-function: ease;
+	-o-transition-timing-function: ease;
+	transition-timing-function: ease;
+	-moz-transition-duration: .35s;
+	-webkit-transition-duration: .35s;
+	-o-transition-duration: .35s;
+	transition-duration: .35s;
+	-moz-transition-property: margin-left;
+	-webkit-transition-property: margin-left;
+	-o-transition-property: margin-left;
+	transition-property: margin-left;
+}
+
+/*------ 2.a TRANSITION POSITIONS ------*/
+.slide-right {
+	margin-left: 80%;
+}
+
+/******* 4. GENERAL VIEW ELEMENTS *******/
 /**
  * These are the stylings for the view elements that repeat across views. They should define the general look of Sharingear views.
  */
+.navbar-brand img {
+	height: 34px;
+	margin-left: auto;
+	margin-right: auto;
+}
 
-/******* 4. GENERAL TYPOGRAPHY *******/
+/******* 5. GENERAL TYPOGRAPHY *******/
 /**
  * These are the typography rules that repeat across views. The goal is to avoid writing custom typography rules for all elements.
  */
 
-/******* 5. GENERAL CUSTOM ELEMENTS *******/
+/******* 6. GENERAL CUSTOM ELEMENTS *******/
 /**
  * These are stylings for custom elements such as buttons and form inputs.
  */
 
- /*------ 5.a BUTTONS ------*/
+ /*------ 6.a BUTTONS ------*/
 
- /******* 6. SPECIFIC VIEWS *******/
+ /******* 7. SPECIFIC VIEWS *******/
  /**
   * These are rules that only apply to a specific view. These types of rules should be avoided as much as possible.
   */

@@ -89,7 +89,7 @@ define(
 				expect(value).to.equal('Guitar');
 			});
 
-			it('Check if moment is between two moments', function() {
+			it('Can check if moment is between two moments', function() {
 				var intervalStart, intervalEnd, result;
 				intervalStart = new Moment('05-01-2015', 'DD-MM-YYYY');
 				intervalEnd = new Moment('07-01-2015', 'DD-MM-YYYY');
@@ -99,6 +99,16 @@ define(
 				expect(result).to.equal(true);
 				result = Utilities.isMomentBetween(new Moment('05-02-2015', 'DD-MM-YYYY'), intervalStart, intervalEnd);
 				expect(result).to.equal(false);
+			});
+
+			it('Can check if environment is mobile', function() {
+				var result;
+				sinon.stub($.prototype, 'width', function() {
+					return 320;
+				});
+				result = Utilities.isMobile();
+				expect(result).to.equal(true);
+				$.prototype.width.restore();
 			});
 		});
 	}
