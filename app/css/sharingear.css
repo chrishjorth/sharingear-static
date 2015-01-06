@@ -1,0 +1,97 @@
+/**
+ * This is the style sheet for Sharingear. It relies heavily on Bootstrap and the way Bootstrap does responsiveness.
+ * Please follow the organization of the following table of contents when modifying this file.
+ * TABLE OF CONTENTS:
+ * 1. BOOTSTRAP LOOK OVERRIDES
+ * 2. VIEW STRUCTURE
+ *	2.a MODAL VIEWS
+ *	2.b BOTTOM NOTIFICATIONS
+ * 3. GENERAL VIEW ELEMENTS
+ * 4. GENERAL TYPOGRAPHY
+ * 5. GENERAL CUSTOM ELEMENTS
+ * 	5.a BUTTONS
+ * 6. SPECIFIC VIEWS
+ *
+ * Z-INDEX HIERARCHY:
+ * 0: view container
+ * 100: modal views
+ * 200: notifications
+ * The z-index hierarchy must be reviewed when third party components are introduced.
+ *
+ * @author: Chris Hjorth
+ */
+
+/******* 1. BOOTSTRAP LOOK OVERRIDES *******/
+/**
+ * These are modifications to default Bootstrap look. Please do not modify the way Bootstrap does layout, only the looks.
+ */
+
+/******* 2. VIEW STRUCTURE *******/
+/**
+ * These are rules that define the positioning of views and hence the appearance of navigation on the site.
+ * These rules should only concern the index.html file and the view containers.
+ */
+
+/*------ 2.a MODAL VIEWS ------*/
+.modal-view-lightbox {
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modal-view-container {
+    z-index: 101;
+    position: absolute;
+    background-color: #ffffff;
+    border-style: solid;
+    border-width: 0;
+    border-color: #dddddd;
+    color: #333333;
+    overflow-y: auto;
+    overflow-x: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 6% 10%;
+	-webkit-box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
+	box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
+}
+
+/*------ 2.b BOTTOM NOTIFICATIONS ------*/
+.cookie-opt-in {
+    width:100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    color: black;
+    background-color: rgb(255, 210, 0);
+}
+
+/******* 3. GENERAL VIEW ELEMENTS *******/
+/**
+ * These are the stylings for the view elements that repeat across views. They should define the general look of Sharingear views.
+ */
+
+/******* 4. GENERAL TYPOGRAPHY *******/
+/**
+ * These are the typography rules that repeat across views. The goal is to avoid writing custom typography rules for all elements.
+ */
+
+/******* 5. GENERAL CUSTOM ELEMENTS *******/
+/**
+ * These are stylings for custom elements such as buttons and form inputs.
+ */
+
+ /*------ 5.a BUTTONS ------*/
+
+ /******* 6. SPECIFIC VIEWS *******/
+ /**
+  * These are rules that only apply to a specific view. These types of rules should be avoided as much as possible.
+  */
