@@ -19,7 +19,7 @@
  * 0: footer
  * 100: slide menus
  * 200: view container
- * 300: header
+ * 300: header/tabbar
  * 400: modal views
  * 500: notifications
  * The z-index hierarchy must be reviewed when third party components are introduced.
@@ -52,6 +52,18 @@
  * These are rules that define the positioning of views and hence the appearance of navigation on the site.
  * These rules should only concern the index.html file and the view containers.
  */
+.view-container {
+	z-index: 200;
+	position: absolute;
+	top: 0;
+	margin-top: 48px;
+	margin-left: 0;
+	width: 100%;
+	min-height: 100%;
+	background-color: #ffffff;
+}
+
+/*------ 2.a MENUS ------*/
 .sg-navbar {
 	z-index: 300;
 	position: fixed;
@@ -63,16 +75,7 @@
 	background-color: #ffffff;
 }
 
-.view-container {
-	z-index: 200;
-	position: absolute;
-	top: 0;
-	margin-top: 48px;
-	margin-left: 0;
-	width: 100%;
-}
-
-/*------ 2.a MENUS ------*/
+/* Hides the menu buttons when not in mobile environment */
 @media (min-width: 768px) {
 	.sg-navbar .col-xs-2 {
 		display: none;
@@ -98,6 +101,33 @@
 
 .sg-navbar-dropdownmenu {
 	position: relative;
+}
+
+.sg-tabbar {
+	z-index: 300;
+	position: fixed;
+	width: 100%;
+	height: 70px;
+	bottom: 0;
+	background-color: #000000;
+}
+.sg-tabbar ul {
+	padding-left: 0;
+	list-style: none;
+}
+.sg-tabbar ul li {
+	float: left;
+	text-align: center;
+	color: #ffffff;
+}
+.sg-tabbar-3 li {
+	width: 33.33333333%;
+}
+@media (min-width: 768px) {
+	.sg-tabbar {
+		position: static;
+		width: 100%;
+	}
 }
 
 /*------ 2.b MODAL VIEWS ------*/
@@ -176,10 +206,20 @@
 	margin-right: auto;
 }
 
+.sg-banner {
+	height: 128px;
+	background-image: url("../images/mainpic.jpg");
+    background-position: center bottom;
+}
+
 /******* 5. GENERAL TYPOGRAPHY *******/
 /**
  * These are the typography rules that repeat across views. The goal is to avoid writing custom typography rules for all elements.
  */
+.sg-banner h2 {
+	color: #ffffff;
+	font-size: 14px;
+}
 
 /******* 6. GENERAL CUSTOM ELEMENTS *******/
 /**
