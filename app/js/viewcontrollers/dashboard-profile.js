@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Profile dashboard page view.
- * @author: Chris Hjorth, Horatiu Roman
+ * @author: Chris Hjorth
  */
 
 'use strict';

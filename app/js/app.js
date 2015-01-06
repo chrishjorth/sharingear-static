@@ -71,7 +71,9 @@ define(
                 'payment',
                 'paymentsuccessful',
                 'submerchantregistration',
-                'closedbeta'
+                'closedbeta',
+                'search',
+                'user'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.
