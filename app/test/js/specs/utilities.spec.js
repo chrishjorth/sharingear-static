@@ -75,6 +75,15 @@ define(
 				});
 			});
 
+			it('Can return current querystring', function() {
+				var location = window.location.pathname,
+					result;
+				history.replaceState({}, '', location + '?test=1');
+				result = Utilities.getQueryString();
+				expect(result).to.equal('test=1');
+				history.replaceState({}, '', location);
+			});
+
 			it('Can return value for specified key in querystring', function() {
 				var value;
 				value = Utilities.getQueryStringParameterValue('test1=1&test2=2', 'test1');

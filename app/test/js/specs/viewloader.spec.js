@@ -40,9 +40,9 @@ define(
 			});
 
 			it('Can load a view', function(done) {
-				ViewLoader.loadView('home', 'home', {test: 'test'}, function(error, loadedViewController) {
-					expect(loadedViewController.name).to.equal('home');
-					expect(loadedViewController.path).to.equal('home');
+				ViewLoader.loadView('error', 'error', {test: 'test'}, function(error, loadedViewController) {
+					expect(loadedViewController.name).to.equal('error');
+					expect(loadedViewController.path).to.equal('error');
 					expect(loadedViewController.passedData.test).to.equal('test');
 					done();
 				});

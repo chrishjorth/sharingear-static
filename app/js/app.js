@@ -120,7 +120,7 @@ define(
 					route = 'home';
 				}
 				router.navigateTo(route, null, function() {
-					router.openModalView('closedbeta');
+					//router.openModalView('closedbeta');
 				});
 
 				if(getCookie('cookie-consent') != '1') {

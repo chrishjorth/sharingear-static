@@ -13,6 +13,7 @@ define(
     		getBaseURL,
     		ajajFileUpload,
     		getCityFromCoordinates,
+    		getQueryString,
     		getQueryStringParameterValue,
     		capitalizeString,
     		isMomentBetween,
@@ -101,6 +102,14 @@ define(
         	});
     	};
 
+    	getQueryString = function() {
+    		var queryString = window.location.href.split('?')[1];
+    		if(queryString) {
+    			queryString = queryString.split('#')[0];
+    		}
+    		return queryString;
+    	};
+
     	/**
 		 * Receives a query string and returns the value for the specified key.
 		 * Inspired by http://stackoverflow.com/a/1099670
@@ -143,6 +152,7 @@ define(
         	getBaseURL: getBaseURL,
         	ajajFileUpload: ajajFileUpload,
         	getCityFromCoordinates: getCityFromCoordinates,
+        	getQueryString: getQueryString,
         	getQueryStringParameterValue: getQueryStringParameterValue,
         	capitalizeString: capitalizeString,
         	isMomentBetween: isMomentBetween,
