@@ -197,10 +197,10 @@ define(
 					img.src = searchResult.image;
 
 					if(img.width < img.height) {
-						$searchBlock.children().eq(i).children(':first').addClass('image-blocks-vertical');
+						$searchBlock.children().eq(i).children(':first').addClass('search-result-gear-vertical');
 					}
 					else {
-						$searchBlock.children().eq(i).children(':first').addClass('image-blocks-horizontal');
+						$searchBlock.children().eq(i).children(':first').addClass('search-result-gear-horizontal');
 					}
 
 				}
