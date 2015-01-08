@@ -59,7 +59,7 @@
 	margin-top: 48px;
 	margin-left: 0;
 	width: 100%;
-	min-height: 100%;
+	height: 100%;
 	background-color: #ffffff;
 }
 
@@ -164,6 +164,7 @@
 
 /*------ 2.c BOTTOM NOTIFICATIONS ------*/
 .cookie-opt-in {
+	z-index: 500;
     width:100%;
     position: fixed;
     bottom: 0;
@@ -276,26 +277,40 @@
     background-repeat: no-repeat;
 }
 
+/*------ 6.a BUTTONS ------*/
+
+/******* 7. SPECIFIC VIEWS *******/
+/**
+ * These are rules that only apply to a specific view. These types of rules should be avoided as much as possible.
+ */
+
+/*------ 7.a SEARCH ------*/
+.search-results {
+    height: 100%;
+ }
+.search-results .map-row {
+	height: 100%;
+}
+.search-results .map-row .map-col {
+	display: none;
+}
+@media (min-width: 768px) {
+	.search-results .map-row .map-col {
+		display: block;
+		height: 100%;
+	}
+}
 .searchmap {
 	height: 100%;
 }
 
-
- /*------ 6.a BUTTONS ------*/
-
- /******* 7. SPECIFIC VIEWS *******/
- /**
-  * These are rules that only apply to a specific view. These types of rules should be avoided as much as possible.
-  */
-
- /*------ 7.a SEARCH ------*/
- .search-result-gear {
+.search-result-gear {
     width: 31%;
     margin: 8px;
     height: 215px;
-    border-radius: 12px 12px 0px 0px;
-    -webkit-border-radius: 12px 12px 0px 0px;
-    -moz-border-radius: 12px 12px 0px 0px;
+    -webkit-border-radius: 12px 12px 0 0;
+    -moz-border-radius: 12px 12px 0 0;
+    border-radius: 12px 12px 0 0;
     background: no-repeat 50% 50%;
     color:#ffffff;
 }
@@ -309,17 +324,19 @@
 }
 
 .search-result-gear-description {
-    background-color: rgba(0,0,0,0.7);
+	background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.7);
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 10%;
     width: 80%;
     text-align: center;
     font-weight: 500;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 0 0 10px 10px;
 }
 .search-result-gear-address {
     padding: 5px;
+    background-color: #000000;
     background-color: rgba(0,0,0,0.7);
     position: absolute;
     bottom: 0;
@@ -336,6 +353,7 @@
 
 .search-result-gear-price {
     padding: 2px 10px;
+    background-color: #000000;
     background-color: rgba(0,0,0,0.2);
     position: absolute;
     bottom: 57px;
@@ -343,5 +361,5 @@
     text-align: center;
     font-size: 20px;
     font-weight: bold;
-    border-radius: 10px 0px 0px 10px;
+    border-radius: 10px 0 0 10px;
 }

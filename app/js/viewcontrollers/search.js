@@ -14,6 +14,7 @@ define(
 			didInitialize,
 			didRender,
 			renderMap,
+			setCurrentLocation,
 
 			performSearch,
 			populateSearchBlock;
@@ -52,36 +53,47 @@ define(
 			}
 		};
 
-		renderMap = function() {
-			var mapOptions, latlong, marker;
+		renderMap = function(searchResults, latitude, longitude) {
+			var mapOptions, latlong, i, gear;
 
-			//get coordinates for location
+			if(!latitude || !longitude) {
+				latlong = new GoogleMaps.LatLng(0, 0);
+				mapOptions = {
+					center: latlong,
+					zoom: 1,
+					maxZoom: 17
+				};
+			}
+			else {
+				latlong = new GoogleMaps.LatLng(latitude, longitude);
+				mapOptions = {
+					center: latlong,
+					zoom: 12,
+					maxZoom: 17
+				};
+			}
 
 			//draw map
-			latlong = new GoogleMaps.LatLng(this.latitude, this.longitude);
-			mapOptions = {
-				center: latlong,
-				zoom: 14,
-				maxZoom: 14
-			};
 			this.map = new GoogleMaps.Map(document.getElementById('search-map'), mapOptions);
 
 			//add markers based on search results
-
-			/*if(gear.latitude !== null && gear.longitude !== null) {
+			console.log(searchResults);
+			for(i = 0; i < searchResults.length; i++) {
+				gear = searchResults[i].data;
 				latlong = new GoogleMaps.LatLng(gear.latitude, gear.longitude);
-				mapOptions = {
-					center: latlong,
-					zoom: 14,
-					maxZoom: 14
-				};
-				this.map = new GoogleMaps.Map(document.getElementById('gearprofile-map'), mapOptions);
-				marker = new GoogleMaps.Marker({
+				searchResults[i].marker = new GoogleMaps.Marker({
 					position: latlong,
 					map: this.map,
-					icon: 'images/shagicon_003.png' // TODO: put icon on server
+					icon: 'images/shagicon_003.png'
 				});
-			}*/
+			}
+		};
+
+		setCurrentLocation = function(location) {
+			if(location === 'all' || location === '') {
+				location = 'the world';
+			}
+			$('#search-currentlocation', this.$element).html('Showing gear near ' + location);
 		};
 
 		performSearch = function(gear, location, dateRange) {
@@ -92,7 +104,8 @@ define(
 				location = 'all';
 				view.gearList.search(location, gear, dateRange, function(searchResults) {
 					view.populateSearchBlock(searchResults);
-					view.renderMap();
+					view.renderMap(searchResults);
+					view.setCurrentLocation(location);
 				});
 			}
 			else {
@@ -102,14 +115,16 @@ define(
 						locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
 						view.gearList.search(locationData, gear, dateRange, function(searchResults) {
 							view.populateSearchBlock(searchResults);
-							view.renderMap();
+							view.renderMap(searchResults, results[0].geometry.location.lat(), results[0].geometry.location.lng());
+							view.setCurrentLocation(results[0].formatted_address);
 						});
 					}
 					else {
 						console.log('Error geocoding: ' + status);
 						alert('Couldn\'t find this location. You can use the keyword all, to get locationless results.');
 						view.populateSearchBlock([]);
-						view.renderMap();
+						view.renderMap(searchResults);
+						view.setCurrentLocation(location);
 					}
 				});
 			}
@@ -214,6 +229,7 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			renderMap: renderMap,
+			setCurrentLocation: setCurrentLocation,
 
 			performSearch: performSearch,
 			populateSearchBlock: populateSearchBlock
