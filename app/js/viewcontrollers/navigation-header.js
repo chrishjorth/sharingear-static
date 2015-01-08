@@ -28,7 +28,7 @@ define(
             this.renderProfilePicture();
 
             this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
-            this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
+            //this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
 			this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
 			//this.setupEvent('click', '#navigation-header-listyourgear', this, this.handleListYourGear);
 		};
@@ -54,7 +54,7 @@ define(
 					$dropdownMenu.addClass('hidden');
 				}
 				$menuList = $('ul', $slideMenu);
-				html += '<li>Sharingear</li>';
+				html += '<li><a href="#home">Sharingear</a></li>';
 			}
 			else {
 				this.isMobile = false;
@@ -65,20 +65,20 @@ define(
 				$menuList = $('ul', $dropdownMenu);
 			}
 
-			html += '<li>Search</li>';
+			html += '<li><a href="#search">Search</a></li>';
 
 			if(App.user.data.id === null) {
-				html += '<li>Login</li>';
+				html += '<li><a href="javascript:;" id="navigation-header-login">Login</a></li>';
             }
 			else {
-                html += '<li>Your profile</li>';
-                html += '<li>Your gear</li>';
-                html += '<li>Your tech profile</li>';
+                html += '<li><a href="#dashboard/profile">Your profile</a></li>';
+                html += '<li><a href="#dashboard/yourgear">Your gear</a></li>';
+                html += '<li>Your tech profile</a></li>';
                 html += '<li>Your vans</li>';
-                html += '<li>Gear rentals</li>';
+                html += '<li><a href="#dashboard/yourrentals">Gear rentals</a></li>';
                 html += '<li>Tech hires</li>';
                 html += '<li>Van rentals</li>';
-                html += '<li>Gear reservations</li>';
+                html += '<li><a href="#dashboard/yourrentals">Gear reservations</a></li>';
                 html += '<li>Tech reservations</li>';
                 html += '<li>Van reservations</li>';
                 html += '<li>Settings</li>';
@@ -119,7 +119,7 @@ define(
 			user.login(function(error) {
 				if(!error) {
 				    App.router.navigateTo('dashboard');
-				    view.setupView();
+				    view.render();
                 }
 				
 				if(callback && typeof callback === 'function') {

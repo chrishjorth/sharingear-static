@@ -56,7 +56,6 @@ define(
 				'dashboard/yourgear',
 				'dashboard/yourrentals',
 				'dashboard/yourreservations',
-				'dashboard/calendar',
 				'dashboard/settings',
 				'gearprofile',
 				'aboutus',
