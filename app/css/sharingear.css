@@ -31,6 +31,9 @@
 /**
  * These are modifications to default Bootstrap look. Please do not modify the way Bootstrap does layout, only the looks.
  */
+.body {
+	height: 100%;
+}
 
 .navbar {
 	border-radius: 0;
@@ -61,6 +64,19 @@
 	width: 100%;
 	height: 100%;
 	background-color: #ffffff;
+}
+.view-container .view {
+	height: 100%;
+}
+.view-container .scroll {
+	height: auto;
+	padding-bottom: 70px;
+}
+@media (min-width: 768px) {
+	.view-container .scroll {
+		height: 100%;
+		padding-bottom: 0;
+	}
 }
 
 /*------ 2.a MENUS ------*/

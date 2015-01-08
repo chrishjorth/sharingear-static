@@ -1,33 +1,35 @@
-<div class="jumbotron">
-  <div class="searchform-container"></div>
-</div>
+<div class="view">
+  <div class="jumbotron">
+    <div class="searchform-container"></div>
+  </div>
 
-<div class="container-fluid search-results">
-	<div class="row map-row">
-		<div class="col-sm-6 map-col">
-      <div class="searchmap" id="search-map"></div>  
+  <div class="container-fluid search-results">
+    <div class="row map-row">
+		  <div class="col-sm-6 map-col">
+        <div class="searchmap" id="search-map"></div>  
+      </div>
+		  <div class="col-xs-12 col-sm-6">
+        <div class="sg-tabbar sg-tabbar-3">
+          <ul>
+    		    <li>Gear</li>
+    		    <li>Technicians</li>
+    		    <li>Vans</li>
+          </ul>
+        </div>
+        <div class="row">
+				  <div class="col-sm-12" id="search-currentlocation"></div>
+        </div>
+        <div class="row searchresults" id="home-search-row"></div>
+        <div class="no-results-block hidden">
+          <div class="row sorry-section">
+            <h1>Sorry, no instruments matching your search were found.</h1>
+          </div>
+          <div class="row request-section">
+            <h2>Request an instrument: </h2>
+            <a href="javascript:;" id="fb-share-btn"><img src="images/fb_share_noitems.png" class="responsive-img"></a>
+          </div>
+        </div>
+      </div>
     </div>
-		<div class="col-xs-12 col-sm-6">
-			<div class="sg-tabbar sg-tabbar-3">
-				<ul>
-    			<li>Gear</li>
-    			<li>Technicians</li>
-    			<li>Vans</li>
-  			</ul>
-			</div>
-			<div class="row">
-				<div class="col-sm-12" id="search-currentlocation"></div>
-			</div>
-			<div class="row searchresults" id="home-search-row"></div>
-			<div class="no-results-block hidden">
-    		<div class="row sorry-section">
-    			<h1>Sorry, no instruments matching your search were found.</h1>
-    		</div>
-    		<div class="row request-section">
-    			<h2>Request an instrument: </h2>
-    			<a href="javascript:;" id="fb-share-btn"><img src="images/fb_share_noitems.png" class="responsive-img"></a>
-    		</div>
-    	</div>
-		</div>
-	</div>
+  </div>
 </div>
