@@ -166,6 +166,7 @@ define(
 			var app = this;
 			require(['viewcontrollers/navigation-header', 'text!../templates/navigation-header.html'], function(HeaderController, HeaderTemplate) {
 				app.header = new HeaderController.constructor({name: 'header', $element: $headerContainer, labels: {}, template: HeaderTemplate});
+				app.header.initialize();
 				app.header.render();
 				if(_.isFunction(callback)) {
 					callback();

@@ -6,7 +6,7 @@
 'use strict';
 
 define(
-	['jquery', 'underscore', 'viewcontroller', 'googlemaps', 'app', 'moment', 'utilities', 'daterangepicker'],
+	['jquery', 'underscore', 'viewcontroller', 'googlemaps', 'app', 'moment', 'utilities'],
 	function($, _, ViewController, GoogleMaps, App, Moment, Utilities) { //daterangepicker do not support AMD
 		var numberOfGearSuggestions = 5,
 			geocoder,
@@ -14,6 +14,10 @@ define(
 			didInitialize,
 			didRender,
 			prefillForm,
+
+			handlePickupDate,
+			handleDeliveryDate,
+			handlePickupDeliveryCalendarSelection,
 
 			handleSearch,
 			showGearSuggestions,
@@ -33,16 +37,16 @@ define(
 			this.gearInputString = '';
 			this.gearSuggestionsArray = null; // array of strings
             this.didSearchBefore = false;
+            this.calendarVC = null;
 		};
 
 		didRender = function() {
 			var view = this,
-				startDate = new Moment(),
             	$searchPickup, $searchReturn;
 
             $searchPickup = $('#search-pickup', view.$element);
             $searchReturn = $('#search-return', view.$element);
-            $searchPickup.daterangepicker({
+            /*$searchPickup.daterangepicker({
                 singleDatePicker: true,
                 format: 'DD/MM/YYYY',
 				locale: {
@@ -72,12 +76,14 @@ define(
                 minDate: startDate.format('DD/MM/YYYY'),
                 opens: 'right',
                 parentEl: view.$element
-            });
+            });*/
 
             new GoogleMaps.places.Autocomplete($('#search-location', view.$element)[0], {types: ['geocode']});
 
     		this.prefillForm();
 
+    		this.setupEvent('click', '#search-pickup', this, this.handlePickupDate);
+    		this.setupEvent('click', '#search-return', this, this.handleDeliveryDate);
 			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
 			this.setupEvent('input', '#search-gear', this, view.showGearSuggestions);
 			this.setupEvent('keydown', '#search-gear', this, view.gearInputArrowKeypress);
@@ -89,7 +95,7 @@ define(
 		prefillForm = function() {
 			var view = this,
 				$searchPickup, $searchReturn,
-				queryString, previousSearchGear, previousSearchLocation, previousSearchDateRange, previousPickupDate, previousDeliverDate;
+				queryString, previousSearchGear, previousSearchLocation, previousSearchDateRange;
 
 			$searchPickup = $('#search-pickup', view.$element);
             $searchReturn = $('#search-return', view.$element);
@@ -106,13 +112,66 @@ define(
             	previousSearchDateRange = previousSearchDateRange.split('-');
             	$('#search-gear', this.$element).val(previousSearchGear);
             	$('search-location', this.$element).val(previousSearchLocation);
-            	$searchPickup.data('daterangepicker').setStartDate(new Moment(previousSearchDateRange[0], 'YYYYMMDD'));
-            	$searchReturn.data('daterangepicker').setStartDate(new Moment(previousSearchDateRange[1], 'YYYYMMDD'));
+            	//$searchPickup.data('daterangepicker').setStartDate(new Moment(previousSearchDateRange[0], 'YYYYMMDD'));
+            	//$searchReturn.data('daterangepicker').setStartDate(new Moment(previousSearchDateRange[1], 'YYYYMMDD'));
 			}
 			else {
-				$searchPickup.data('daterangepicker').updateInputText();
-            	$searchReturn.data('daterangepicker').updateInputText();
+				//$searchPickup.data('daterangepicker').updateInputText();
+            	//$searchReturn.data('daterangepicker').updateInputText();
 			}
+		};
+
+		handlePickupDate = function(event) {
+			var view = event.data,
+				passedData = {},
+				$calendarContainer, pickupInputString;
+
+			pickupInputString = $('#search-pickup', view.$element).val();
+			
+			if(pickupInputString !== '') {
+				passedData = {
+					pickupDate: pickupInputString,
+					pickupActive: true
+				};
+			}
+
+			$calendarContainer = $('#gearsearchform-pickupdeliverycalendar', view.$element);
+			
+			require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
+				view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
+				view.calendarVC.initialize();
+				view.calendarVC.render();
+				view.calendarVC.on('close', view.handlePickupDeliveryCalendarSelection);
+			});
+		};
+
+		handleDeliveryDate = function(event) {
+			var view = event.data,
+				passedData = {},
+				$calendarContainer, deliveryInputString;
+
+			deliveryInputString = $('#search-return', view.$element).val();
+			if(deliveryInputString !== '') {
+				passedData = {
+					pickupDate: $('#search-pickup', view.$element).val(),
+					deliveryDate: deliveryInputString,
+					pickupActive: false
+				};
+			}
+			
+			$calendarContainer = $('#gearsearchform-pickupdeliverycalendar', view.$element);
+			
+			require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
+				view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
+				view.calendarVC.initialize();
+				view.calendarVC.render();
+				view.calendarVC.on('close', view.handlePickupDeliveryCalendarSelection);
+			});
+		};
+
+		handlePickupDeliveryCalendarSelection = function(vc) {
+			$('#search-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
+			$('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
 		};
 
 		/**
@@ -328,6 +387,10 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			prefillForm: prefillForm,
+
+			handlePickupDate: handlePickupDate,
+			handleDeliveryDate: handleDeliveryDate,
+			handlePickupDeliveryCalendarSelection: handlePickupDeliveryCalendarSelection,
 
 			handleSearch: handleSearch,
 			showGearSuggestions: showGearSuggestions,

@@ -39,13 +39,13 @@ define(
 				expect(this.vc.name).to.equal('testVC');
 				expect(this.vc.$element).to.equal(this.$fixtures);
 				expect(this.vc.template.toString()).to.equal(_.template('<div>Test Template</div>').toString());
-				expect(this.vc.userEvents).to.be.an('array');
 			});
 
 			it('Can initialize', function() {
 				var setSubPathSpy = sinon.spy(this.vc, 'setSubPath'),
 					didInitializeSpy = sinon.spy(this.vc, 'didInitialize');
 				this.vc.initialize();
+				expect(this.vc.userEvents).to.be.an('array');
 				sinon.assert.calledOnce(setSubPathSpy);
 				sinon.assert.calledOnce(didInitializeSpy);
 				this.vc.setSubPath.restore();

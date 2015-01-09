@@ -14,6 +14,7 @@ define([
 		close,
 		setupEvent,
 		unbindEvents,
+		on,
 
 		constructor, inherit;
 
@@ -22,6 +23,10 @@ define([
 	 */
 	initialize = function() {
 		this.setSubPath();
+		this.userEvents = [];
+		this.events = {
+			close: []
+		};
 
 		if(_.isFunction(this.didInitialize) === true) {
 			this.didInitialize();
@@ -80,8 +85,12 @@ define([
 	}*/
 
 	close = function() {
+		var i;
 		this.unbindEvents();
 		this.$element.empty();
+		for(i = 0; i < this.events.close.length; i++) {
+			this.events.close[i](this);
+		}
 		if(_.isFunction(this.didClose) === true) {
 			this.didClose();
 		}
@@ -106,6 +115,14 @@ define([
 		}
 	};
 
+	on = function(eventType, callback) {
+		switch(eventType) {
+			case 'close':
+				this.events.close.push(callback);
+				break;
+		}
+	};
+
 	constructor = function(options) {
 		var defaults = {
 			name: '',
@@ -117,7 +134,7 @@ define([
 			hasSubviews: true,
 			$subViewContainer: $(''),
 			subPath: '',
-			passedData: null, //stores extra data passed to the view
+			passedData: {}, //stores extra data passed to the view
 			ready: true,
 
 			initialize: initialize,
@@ -126,13 +143,13 @@ define([
 			//localize: localize,
 			close: close,
 			setupEvent: setupEvent,
-			unbindEvents: unbindEvents
+			unbindEvents: unbindEvents,
+			on: on
 		};
 
 		_.extend(this, defaults, options);
 
 		this.template = _.template(this.template);
-		this.userEvents = [];
 	};
 
 	inherit = function(inheritOptions) {

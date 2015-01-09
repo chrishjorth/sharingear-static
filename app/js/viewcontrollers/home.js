@@ -22,8 +22,12 @@ define(
 			if(this.searchFormVC === null) {
 				require(['viewcontrollers/gearsearchform', 'text!../templates/gearsearchform.html'], function(gearSearchVC, gearSearchVT) {
 					view.searchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('.searchform-container', view.$element), template: gearSearchVT});
+					view.searchFormVC.initialize();
 					view.searchFormVC.render();
 				});
+			}
+			else {
+				view.searchFormVC.render();
 			}
 
             $('#feedbacks', this.$element).owlCarousel({
