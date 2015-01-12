@@ -115,6 +115,30 @@ define(
 				this.vc.didClose.restore();
 			});
 
+			it('Can register viewcontroller events', function(done) {
+				var testVC = new ViewController.constructor({
+					name: 'testVC2',
+					$element: this.$fixtures,
+					labels: {},
+					template: '<div>Test Template 2</div>',
+
+					didInitialize: function() {},
+					didRender: function() {},
+					didClose: function() {},
+					didResize: function() {}
+				});
+				testVC.initialize();
+				expect(testVC.events).to.be.an('object');
+				expect(testVC.events).to.have.property('close');
+				expect(testVC.events.close).to.be.an('array');
+				expect(testVC.events.close.length).to.equal(0);
+				expect(testVC.on).to.be.a('function');
+				testVC.on('close', function(vc) {
+					done();
+				});
+				expect(testVC.events.close.length).to.equal(1);
+				testVC.close();
+			});
 		});
 	}
 );

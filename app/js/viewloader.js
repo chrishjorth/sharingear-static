@@ -105,11 +105,6 @@ define(
                 var $modalViewLightbox = $(modalViewLightbox),
                     $modalViewContainer = $(modalViewContainer);
 
-                //TODO: remove this once out of closed beta
-                if (view === 'closedbeta') {
-                    $modalViewContainer.addClass('closed-beta-modal');
-                }
-
 				if(viewLoader.currentModalViewController !== null) {
 					viewLoader.currentModalViewController.close();
 					viewLoader.openModalViews.pop();

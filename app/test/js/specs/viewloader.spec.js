@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-	['jquery', 'chai', 'sinon', 'viewloader', 'router', 'app'],
-	function($, chai, Sinon, ViewLoader, Router, App) {
+	['jquery', 'chai', 'sinon', 'viewloader', 'router', 'app', 'googlemaps'],
+	function($, chai, Sinon, ViewLoader, Router, App, GoogleMaps) {
 		var expect = chai.expect;
 
 		describe('ViewLoader', function() {
@@ -22,12 +22,15 @@ define(
 						classification: {}
 					}
 				};
+				//The search form in home view tries to run Google Maps Places Autocomplete
+				sinon.stub(GoogleMaps.places, 'Autocomplete', function() {});
 			});
 
 			after(function() {
 				this.$fixtures.empty();
 				Router.navigateTo.restore();
 				App.user.data = null;
+				GoogleMaps.places.Autocomplete.restore();
 			});
 
 			it('Provides the ViewLoader object', function() {
