@@ -35,19 +35,14 @@
 	height: 100%;
 }
 
-.navbar {
-	border-radius: 0;
-	border: 0;
-}
-
-.navbar-brand {
-	padding-top: 0;
-	padding-bottom: 0;
-}
 .navbar-toggle {
 	float: left;
 	margin-right: 0;
 	margin-left: 15px;
+}
+
+.sg-navbar .dropdown .btn-default {
+	border: none;
 }
 
 /******* 2. VIEW STRUCTURE *******/
@@ -89,6 +84,29 @@
 	border-style: solid;
 	border-color: transparent;
 	background-color: #ffffff;
+	height: 48px;
+}
+@media (min-width: 768px) {
+	.sg-navbar {
+		height: 60px;
+	}
+}
+.sg-navbar-brand {
+	text-align: center;
+}
+@media (min-width: 768px) {
+	.sg-navbar-brand {
+		text-align: left;
+	}
+}
+.sg-navbar-brand a {
+	display: inline-block;
+	padding-top: 4px;
+}
+@media (min-width: 768px) {
+	.sg-navbar-brand a {
+		padding-top: 8px;
+	}
 }
 
 /* Hides the menu buttons when not in mobile environment */
@@ -117,6 +135,53 @@
 
 .sg-navbar-dropdownmenu {
 	position: relative;
+	height: 60px;
+}
+.sg-navbar-dropdownmenu .dropdown .btn {
+	height: 60px;
+	border: none;
+	color: #00aeff;
+	background-color: inherit;
+	border-radius: 0;
+	box-shadow: none;
+}
+.sg-navbar-dropdownmenu .dropdown .btn:visited,
+.sg-navbar-dropdownmenu .dropdown .btn:hover,
+.sg-navbar-dropdownmenu .dropdown .btn:active {
+	border: none;
+	color: #0397dc;
+	background-color: inherit;
+	border-radius: 0;
+	box-shadow: none;
+}
+.sg-navbar-dropdownmenu .dropdown .profile-pic {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    display: inline-block;
+    border-color: #00aeff;
+    border-width: 2px;
+    border-style: solid;
+}
+.sg-navbar-dropdownmenu .dropdown:hover .profile-pic {
+	border-color: #0397dc;
+}
+.sg-navbar-dropdownmenu .dropdown .menu-text {
+	font-weight: bold;
+	font-size: 14px;
+	margin-top: 10px;
+	margin-left: 8px;
+	margin-right: 14px;
+	height: 40px;
+	display: block;
+	float: right;
+}
+.sg-navbar-dropdownmenu .dropdown-menu {
+	border-radius: 0;
+	margin-top: 0;
+	border: none;
+	min-width: 40px;
+	width: 100%;
 }
 
 .sg-tabbar {
@@ -443,6 +508,26 @@
 }
 .sg-btn-invisible-gray:active {
 	color: #565a5c;
+}
+
+.sg-btn-invisible-blue {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	background-color: inherit;
+	border: none;
+	cursor: pointer;
+	min-width: 44px;
+	color: #00aeff;
+}
+.sg-btn-invisible-blue:active {
+	color: #0397dc;
+}
+
+.sg-navbar-toggle {
+	height: 44px;
+	min-width: 40px;
+	font-size: 32px;
+	line-height: 44px;
 }
 
 /******* 7. SPECIFIC VIEWS *******/

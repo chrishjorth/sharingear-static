@@ -139,12 +139,14 @@ define(
 		};*/
 
 		renderProfilePicture = function() {
-            var img, isVertical, backgroundSize;
+            var view = this,
+            	img;
             if(!App.user.data.image_url) {
                 return;
             }
             img = new Image();
             img.onload = function() {
+            	var isVertical, backgroundSize;
                 isVertical = img.width < img.height;
                 if(isVertical === true) {
                     backgroundSize = '30px auto';
@@ -152,11 +154,12 @@ define(
                 else {
                     backgroundSize = 'auto 30px';
                 }
-                $('#small-profile-pic').css({
+                $('.profile-pic', view.$element).css({
                     'background-image': 'url(' + img.src + ')',
                     'background-size': backgroundSize
                 });
             };
+            console.log(App.user.data.image_url);
             img.src = App.user.data.image_url;
         };
 
