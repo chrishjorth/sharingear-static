@@ -16,7 +16,6 @@ define(
 			run,
 			setUserLocation,
 			loadHeader,
-			loadFooter,
 			getCookie,
 
 			$headerContainer, $footerContainer;
@@ -174,20 +173,6 @@ define(
 			});
 		};
 
-		/**
-		 * Load the footer portion of the site.
-		 */
-		loadFooter = function($footerContainer, callback) {
-			/*var app = this;
-			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
-				app.footer = new FooterController.constructor({name: 'footer', $element: $footerContainer, labels: {}, template: FooterTemplate});
-				app.footer.render();
-				if(_.isFunction(callback)) {
-					callback();
-				}
-			});*/
-		};
-
 		getCookie = function(cname) {
 			var name = cname + '=',
 				ca = document.cookie.split(';'),
@@ -219,7 +204,6 @@ define(
 			run: run,
 			setUserLocation: setUserLocation,
 			loadHeader: loadHeader,
-			loadFooter: loadFooter,
 			getCookie: getCookie
 		};
 

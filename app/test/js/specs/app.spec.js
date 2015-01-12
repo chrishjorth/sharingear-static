@@ -23,7 +23,6 @@ define(
 				});
 				this.setUserLocationSpy = sinon.spy(App, 'setUserLocation');
 				this.loadHeaderSpy = sinon.spy(App, 'loadHeader');
-				this.loadFooterSpy = sinon.spy(App, 'loadFooter');
 			});
 
 			afterEach(function() {
@@ -31,7 +30,6 @@ define(
 				App.router.navigateTo.restore();
 				App.setUserLocation.restore();
 				App.loadHeader.restore();
-				App.loadFooter.restore();
 				this.$fixtures.empty();
 			});
 
@@ -63,8 +61,6 @@ define(
 					sinon.assert.calledOnce(spec.setUserLocationSpy);
 					sinon.assert.calledOnce(spec.loadHeaderSpy);
 					sinon.assert.calledWith(spec.loadHeaderSpy, App.$headerContainer);
-					//sinon.assert.calledOnce(spec.loadFooterSpy);
-					//sinon.assert.calledWith(spec.loadFooterSpy, App.$footerContainer);
 					sinon.assert.calledOnce(spec.navigateToSpy);
 					sinon.assert.calledWith(spec.navigateToSpy, 'home');
 					done();

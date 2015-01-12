@@ -148,12 +148,14 @@ define(
 						$dayBox.addClass('disabled');
 					}
 					if(this.pickupActive === true && this.pickupDate !== null) {
-						if(iteratorMoment.isSame(this.pickupDate, 'day') === true) {
+						//We need to granulate to day, as pickupDate might have a pickup time set
+						if(iteratorMoment.isSame(this.pickupDate, 'day') === true && iteratorMoment.isSame(this.pickupDate, 'month') === true && iteratorMoment.isSame(this.pickupDate, 'year') === true) {
 							$dayBox.addClass('selected');
 						}
 					}
 					if(this.pickupActive === false && this.deliveryDate !== null) {
-						if(iteratorMoment.isSame(this.deliveryDate, 'day') === true) {
+						//We need to granulate to day, as deliveryDate might have a delivery time set
+						if(iteratorMoment.isSame(this.deliveryDate, 'day') === true && iteratorMoment.isSame(this.deliveryDate, 'month') === true && iteratorMoment.isSame(this.deliveryDate, 'year') === true) {
 							$dayBox.addClass('selected');
 						}
 					}
@@ -171,6 +173,8 @@ define(
 			var view = event.data,
 				$calendarContainer;
 
+			view.clearSelections();
+
 			$calendarContainer = $('.calendar', view.$element);
 			view.displayedMoment.subtract(1, 'months');
 			view.setupMonthCalendar(view.displayedMoment, $calendarContainer);
@@ -179,6 +183,8 @@ define(
 		handleNext = function (event) {
 			var view = event.data,
 				$calendarContainer;
+
+			view.clearSelections();
 
 			$calendarContainer = $('.calendar', view.$element);
 			view.displayedMoment.add(1, 'months');
@@ -192,7 +198,7 @@ define(
 			if($dayBox.hasClass('selected') === false) {
 				$dayBox.addClass('selected');
 			}
-			if(view.pickupDate === null) {
+			if(view.pickupActive === true) {
 				view.pickupDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
 				$tab = $('#pickupdeliverycalendar-pickupdate', view.$element);
 				$tab.removeClass('sg-toptab-active');

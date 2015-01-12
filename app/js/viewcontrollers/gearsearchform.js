@@ -46,37 +46,6 @@ define(
 
             $searchPickup = $('#search-pickup', view.$element);
             $searchReturn = $('#search-return', view.$element);
-            /*$searchPickup.daterangepicker({
-                singleDatePicker: true,
-                format: 'DD/MM/YYYY',
-				locale: {
-					firstDay: 1
-				},
-                startDate: startDate.format('DD/MM/YYYY'),
-                endDate: startDate.format('DD/MM/YYYY'),
-                showDropdowns: true,
-                minDate: startDate.format('DD/MM/YYYY'),
-                parentEl: view.$element
-            }, function(start) {
-            	start.add(1, 'days');
-            	$searchReturn.data('daterangepicker').setStartDate(start);
-            	$searchReturn.data('daterangepicker').setEndDate(start);
-            });
-
-            startDate.add(1, 'days');
-            $searchReturn.daterangepicker({
-                singleDatePicker: true,
-                format: 'DD/MM/YYYY',
-				locale: {
-					firstDay: 1
-				},
-				startDate: startDate.format('DD/MM/YYYY'),
-                endDate: startDate.format('DD/MM/YYYY'),
-                showDropdowns: true,
-                minDate: startDate.format('DD/MM/YYYY'),
-                opens: 'right',
-                parentEl: view.$element
-            });*/
 
             new GoogleMaps.places.Autocomplete($('#search-location', view.$element)[0], {types: ['geocode']});
 
