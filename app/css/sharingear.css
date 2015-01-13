@@ -230,7 +230,7 @@
 	border-color: #e9edf0;
 	height: 64px;
 	color: #e9edf0;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: bold;
 	padding: 0;
 	clear: both;
@@ -261,7 +261,7 @@
 	font-size: 36px;
 	line-height: 64px;
 	float: left;
-	padding: 0 24px 0 14px;
+	padding: 0 4% 0 4%;
 }
 .dashboard-menu .list-group-item .list-group-item-text {
 	float: left;
