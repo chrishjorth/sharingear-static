@@ -14,6 +14,7 @@
  * 6. GENERAL CUSTOM ELEMENTS
  * 	6.a BUTTONS
  * 7. SPECIFIC VIEWS
+ * 8. ICONS
  *
  * Z-INDEX HIERARCHY:
  * 0: footer
@@ -231,6 +232,8 @@
 	color: #e9edf0;
 	font-size: 14px;
 	font-weight: bold;
+	padding: 0;
+	clear: both;
 }
 .dashboard-menu .list-group-item:first-child {
 	border-radius: 0;
@@ -253,6 +256,16 @@
 }
 .dashboard-menu .list-group-item-selected a {
 	color: #ffffff;
+}
+.dashboard-menu .list-group-item .sg-icon {
+	font-size: 36px;
+	line-height: 64px;
+	float: left;
+	padding: 0 24px 0 14px;
+}
+.dashboard-menu .list-group-item .list-group-item-text {
+	float: left;
+	margin-top: 24px;
 }
 
 /*------ 2.b MODAL VIEWS ------*/
@@ -605,3 +618,64 @@
 	padding: 2%;
 }
 
+/******* 8. ICONS *******/
+@font-face {
+	font-family: 'icomoon';
+	src:url('../fonts/icomoon.eot?t4mtht');
+	src:url('../fonts/icomoon.eot?#iefixt4mtht') format('embedded-opentype'),
+		url('../fonts/icomoon.woff?t4mtht') format('woff'),
+		url('../fonts/icomoon.ttf?t4mtht') format('truetype'),
+		url('../fonts/icomoon.svg?t4mtht#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.sg-icon {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	/*line-height: 1;*/
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-dashboard-gearrentals:before {
+	content: "\e600";
+}
+
+.icon-dashboard-profile:before {
+	content: "\e601";
+}
+
+.icon-dashboard-reservations:before {
+	content: "\e602";
+}
+
+.icon-dashboard-settings:before {
+	content: "\e603";
+}
+
+.icon-dashboard-techhires:before {
+	content: "\e604";
+}
+
+.icon-dashboard-vanrentals:before {
+	content: "\e605";
+}
+
+.icon-dashboard-yourgear:before {
+	content: "\e606";
+}
+
+.icon-dashboard-yourtechprofile:before {
+	content: "\e607";
+}
+
+.icon-dashboard-yourvans:before {
+	content: "\e608";
+}
