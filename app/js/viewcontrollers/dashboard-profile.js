@@ -50,6 +50,8 @@ define(
             var view = this,
                 userData = this.user.data;
 
+            App.header.setTitle('Your profile');
+
             $('#dashboard-profile-form #name', this.$element).val(userData.name);
             $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
             $('#dashboard-profile-form #email', this.$element).val(userData.email);
