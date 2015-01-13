@@ -8,29 +8,32 @@
 define(
 	['jquery', 'viewcontroller', 'app', 'utilities'],
 	function($, ViewController, App, Utilities) {
-		var didInitialize,
+		var defaultTitle,
+
+			didInitialize,
 			didRender,
 			didResize,
 			populateMainMenu,
+			renderProfilePicture,
 			handleNavbarToggle,
 			handleLogin,
-			//handleListYourGear,
-			renderProfilePicture;
+			setTitle,
+			_updateTitle;
 
+		/* Static variables */
+		defaultTitle = '<a href="#home"><img src="images/old_logotop.png" alt="Sharingear logo"></a>';
 
 		didInitialize = function() {
 			this.isMobile = false;
 		};
 
 		didRender = function() {
+			this._updateTitle();
 			this.populateMainMenu();
-			
             this.renderProfilePicture();
 
             this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
-            //this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
 			this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
-			//this.setupEvent('click', '#navigation-header-listyourgear', this, this.handleListYourGear);
 		};
 
 		didResize = function(event) {
@@ -38,6 +41,7 @@ define(
 			if(Utilities.isMobile() !== view.isMobile) {
 				view.populateMainMenu();
 			}
+			view._updateTitle();
 		};
 
 		populateMainMenu = function() {
@@ -87,6 +91,31 @@ define(
 			$menuList.html(html);
 		};
 
+		renderProfilePicture = function() {
+            var view = this,
+            	img;
+            if(!App.user.data.image_url) {
+                return;
+            }
+            img = new Image();
+            img.onload = function() {
+            	var isVertical, backgroundSize;
+                isVertical = img.width < img.height;
+                if(isVertical === true) {
+                    backgroundSize = '30px auto';
+                }
+                else {
+                    backgroundSize = 'auto 30px';
+                }
+                $('.profile-pic', view.$element).css({
+                    'background-image': 'url(' + img.src + ')',
+                    'background-size': backgroundSize
+                });
+            };
+            console.log(App.user.data.image_url);
+            img.src = App.user.data.image_url;
+        };
+
 		handleNavbarToggle = function(event) {
 			var view = event.data,
 				$viewContainer = $('.view-container'),
@@ -128,50 +157,36 @@ define(
 			});
 		};
 
-		/*handleListYourGear = function(event) {
-			var view = event.data;
-			App.user.login(function(error) {
-				if(!error) {
-					App.router.navigateTo('dashboard/addgear');
-				    view.setupView();
-				}
-			});
-		};*/
+		/**
+		 * @param title: the text to display as title, if null title is set to default
+		 */
+		setTitle = function(title) {
+			if(title === null) {
+				title = defaultTitle;
+			}
+			this.title = title;
+			this._updateTitle();
+		};
 
-		renderProfilePicture = function() {
-            var view = this,
-            	img;
-            if(!App.user.data.image_url) {
-                return;
-            }
-            img = new Image();
-            img.onload = function() {
-            	var isVertical, backgroundSize;
-                isVertical = img.width < img.height;
-                if(isVertical === true) {
-                    backgroundSize = '30px auto';
-                }
-                else {
-                    backgroundSize = 'auto 30px';
-                }
-                $('.profile-pic', view.$element).css({
-                    'background-image': 'url(' + img.src + ')',
-                    'background-size': backgroundSize
-                });
-            };
-            console.log(App.user.data.image_url);
-            img.src = App.user.data.image_url;
-        };
+		_updateTitle = function() {
+			if(Utilities.isMobile() === true) {
+				$('.sg-navbar-brand', this.$element).html(this.title);
+			}
+			else {
+				$('.sg-navbar-brand', this.$element).html(defaultTitle);
+			}
+		}
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 			didResize: didResize,
 			populateMainMenu: populateMainMenu,
+			renderProfilePicture: renderProfilePicture,
 			handleNavbarToggle: handleNavbarToggle,
 			handleLogin: handleLogin,
-			//handleListYourGear: handleListYourGear,
-            renderProfilePicture: renderProfilePicture
+			setTitle: setTitle,
+			_updateTitle: _updateTitle
 		});
 	}
 );
