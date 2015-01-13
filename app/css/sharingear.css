@@ -11,14 +11,10 @@
  *	3.a TRANSITION POSITIONS
  * 4. GENERAL VIEW ELEMENTS
  * 5. GENERAL TYPOGRAPHY
- * 6. GENERAL COLORS
- * 7. GENERAL CUSTOM ELEMENTS
- *  7.a CALENDARS
- * 	7.b BUTTONS
- * 8. SPECIFIC VIEWS
- * 	8.a SEARCH
- * 	8.b DASHBOARD
- *	8.c DASHBOARD-PROFILE
+ * 6. GENERAL CUSTOM ELEMENTS
+ * 	6.a BUTTONS
+ * 7. SPECIFIC VIEWS
+ * 8. ICONS
  *
  * Z-INDEX HIERARCHY:
  * 0: footer
@@ -234,8 +230,10 @@
 	border-color: #e9edf0;
 	height: 64px;
 	color: #e9edf0;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: bold;
+	padding: 0;
+	clear: both;
 }
 .dashboard-menu .list-group-item:first-child {
 	border-radius: 0;
@@ -258,6 +256,16 @@
 }
 .dashboard-menu .list-group-item-selected a {
 	color: #ffffff;
+}
+.dashboard-menu .list-group-item .sg-icon {
+	font-size: 36px;
+	line-height: 64px;
+	float: left;
+	padding: 0 4% 0 4%;
+}
+.dashboard-menu .list-group-item .list-group-item-text {
+	float: left;
+	margin-top: 24px;
 }
 
 /*------ 2.b MODAL VIEWS ------*/
@@ -364,7 +372,7 @@
 	font-size: 14px;
 }
 
-/******* 7. GENERAL CUSTOM ELEMENTS *******/
+/******* 6. GENERAL CUSTOM ELEMENTS *******/
 /**
  * These are stylings for custom elements such as buttons and form inputs.
  */
@@ -419,7 +427,7 @@
     background-repeat: no-repeat;
 }
 
-/*------ 7.a CALENDARS ------*/
+/*------ 6. Calendars ------*/
 .pickupdeliverycalendar-container {
 	z-index: 401;
 	position: absolute;
@@ -545,7 +553,7 @@
 	width: 85%;
 }
 
-/*------ 7.b BUTTONS ------*/
+/*------ 6.a BUTTONS ------*/
 .sg-btn-invisible-gray {
 	-moz-appearance: none;
 	-webkit-appearance: none;
@@ -579,12 +587,12 @@
 	line-height: 44px;
 }
 
-/******* 8. SPECIFIC VIEWS *******/
+/******* 7. SPECIFIC VIEWS *******/
 /**
  * These are rules that only apply to a specific view. These types of rules should be avoided as much as possible.
  */
 
-/*------ 8.a SEARCH ------*/
+/*------ 7.a SEARCH ------*/
 .search-results {
     height: 100%;
  }
@@ -604,94 +612,70 @@
 	height: 100%;
 }
 
-/*----- 8.b DASHBOARD ------*/
+/*----- 7.b DASHBOARD ------*/
 .dashboard {
 	background-color: #f7f7f7;
 	padding: 2%;
 }
 
-/*----- 8.c DASHBOARD-PROFILE ------*/
-
-.dashboard-profile-pic-view {
-
-	height: 165px;
+/******* 8. ICONS *******/
+@font-face {
+	font-family: 'icomoon';
+	src:url('../fonts/icomoon.eot?t4mtht');
+	src:url('../fonts/icomoon.eot?#iefixt4mtht') format('embedded-opentype'),
+		url('../fonts/icomoon.woff?t4mtht') format('woff'),
+		url('../fonts/icomoon.ttf?t4mtht') format('truetype'),
+		url('../fonts/icomoon.svg?t4mtht#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
 
-@media (min-width: 768px) {
-	.dashboard-profile-pic-view {
-		margin-left: -10px;
-		height: 694px;
-		border: solid;
-		border-width: 1px;
-		border-color: #b9c1c5;
-		background-color: #c5cdd1;
-	}
+.sg-icon {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	/*line-height: 1;*/
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
-.dashboard-profile-form-view {
-
-	background-color: #ffffff;
-	padding-top: 50px;
-	height: 694px;
-
+.icon-dashboard-gearrentals:before {
+	content: "\e600";
 }
 
-.dashboard-profile-form-label {
-
-	text-align:right;
-	font-weight: 430;
-	color: gray;
-	padding-right: 0;
-
+.icon-dashboard-profile:before {
+	content: "\e601";
 }
 
-.help-block {
-	padding-left: 15px;
+.icon-dashboard-reservations:before {
+	content: "\e602";
 }
 
-.dashboard-profile-form-bio {
-
-	height: 120px !important;
-	resize: none;
-
+.icon-dashboard-settings:before {
+	content: "\e603";
 }
 
-.dashboard-profile-pic {
-
-	width: 150px;
-	height: 150px;
-	margin-left: 30px;
-	border: solid;
-	border-width: 2px;
-	border-color: #01adff;
-
+.icon-dashboard-techhires:before {
+	content: "\e604";
 }
 
-@media (min-width: 768px) {
-	.dashboard-profile-pic {
-
-		background-size: 600px 600px;
-
-		margin-top: 190px;
-		margin-left: 10%;
-		width: 80%;
-		height: 0;
-		padding-bottom: 80%;
-
-	}
+.icon-dashboard-vanrentals:before {
+	content: "\e605";
 }
 
-.dashboard-profile-pic-upload-btn {
-
-
+.icon-dashboard-yourgear:before {
+	content: "\e606";
 }
 
-@media (min-width: 768px) {
-	.dashboard-profile-pic-upload-btn {
-		display: block;
-		width: 110px;
-		margin-top: 15px;
-		margin-left: auto;
-		margin-right: auto;
-	}
+.icon-dashboard-yourtechprofile:before {
+	content: "\e607";
+}
+
+.icon-dashboard-yourvans:before {
+	content: "\e608";
 }
