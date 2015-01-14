@@ -69,14 +69,14 @@ define(
             });
 
             $.when(this.profileImgLoaded).then(function() {
-                var $profilePic = $('#prof-pic-div', view.$element),
+                var $profilePic = $('#dashboard-profile-pic', view.$element),
                     img = view.profileImg;
                 $profilePic.css('background-image', 'url("' + img.src + '")');
                 if(img.width < img.height) {
-                    $profilePic.css('background-size', '200px auto');
+                    $profilePic.css('background-size', '150px auto');
                 }
                 else{
-                    $profilePic.css('background-size', 'auto 200px');
+                    $profilePic.css('background-size', 'auto 150px');
                 }
             });
 
