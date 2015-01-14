@@ -42,6 +42,7 @@ define(
 			if(this.searchFormVC === null) {
 				require(['viewcontrollers/gearsearchform', 'text!../templates/gearsearchform.html'], function(gearSearchVC, gearSearchVT) {
 					view.searchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('.searchform-container', view.$element), template: gearSearchVT});
+					view.searchFormVC.initialize();
 					view.searchFormVC.render();
 					searchParameters = view.searchFormVC.getSearchParameters();
 					view.performSearch(searchParameters.gearString, searchParameters.locationString, searchParameters.dateRangeString);

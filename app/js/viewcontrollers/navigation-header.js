@@ -14,11 +14,13 @@ define(
 			didRender,
 			didResize,
 			populateMainMenu,
+			//clearSelections,
 			renderProfilePicture,
 			handleNavbarToggle,
 			handleLogin,
 			setTitle,
-			_updateTitle;
+			_updateTitle,
+			changeActiveState;
 
 		/* Static variables */
 		defaultTitle = '<a href="#home"><img src="images/old_logotop.png" alt="Sharingear logo"></a>';
@@ -34,6 +36,7 @@ define(
 
             this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
 			this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+			this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
 		};
 
 		didResize = function(event) {
@@ -57,8 +60,8 @@ define(
 				if($dropdownMenu.hasClass('hidden') === false) {
 					$dropdownMenu.addClass('hidden');
 				}
-				$menuList = $('ul', $slideMenu);
-				html += '<li><a href="#home">Sharingear</a></li>';
+				$menuList = $('.list-group', $slideMenu);
+				html += '<a href="#home" class="list-group-item"><img src="images/old_logotop.png" alt="Sharingear logo"></a>';
 			}
 			else {
 				this.isMobile = false;
@@ -66,30 +69,34 @@ define(
 				if($slideMenu.hasClass('hidden') === false) {
 					$slideMenu.addClass('hidden');
 				}
-				$menuList = $('ul', $dropdownMenu);
+				$menuList = $('.list-group', $dropdownMenu);
 			}
 
-			html += '<li><a href="#search">Search</a></li>';
+			html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
 
 			if(App.user.data.id === null) {
-				html += '<li><a href="javascript:;" id="navigation-header-login">Login</a></li>';
+				html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
             }
 			else {
-                html += '<li><a href="#dashboard/profile">Your profile</a></li>';
-                html += '<li><a href="#dashboard/yourgear">Your gear</a></li>';
-                html += '<li>Your tech profile</a></li>';
-                html += '<li>Your vans</li>';
-                html += '<li><a href="#dashboard/yourrentals">Gear rentals</a></li>';
-                html += '<li>Tech hires</li>';
-                html += '<li>Van rentals</li>';
-                html += '<li><a href="#dashboard/yourrentals">Gear reservations</a></li>';
-                html += '<li>Tech reservations</li>';
-                html += '<li>Van reservations</li>';
-                html += '<li>Settings</li>';
+                html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
+                html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
+                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profile</div></a>';
+                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
+                html += '<a href="#dashboard/yourrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
+                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
+                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
+                html += '<a href="#dashboard/yourrentals" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
+                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
+                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
+                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
 			}
 
 			$menuList.html(html);
 		};
+
+		/*clearSelections = function() {
+			$('.list-group-item', this.$element).removeClass('list-group-item-selected');
+		};*/
 
 		renderProfilePicture = function() {
             var view = this,
@@ -112,33 +119,43 @@ define(
                     'background-size': backgroundSize
                 });
             };
-            console.log(App.user.data.image_url);
             img.src = App.user.data.image_url;
         };
 
 		handleNavbarToggle = function(event) {
 			var view = event.data,
+				$this = $(this),
 				$viewContainer = $('.view-container'),
-				handleTransition;
+				$navbar, handleTransition;
 
 			handleTransition = function() {
-				var $this = $(this);
 				$this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
 				$this.removeClass('sliding-right');
 			};
-			view.$element.addClass('sliding-right');
-			view.$element.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+
+			$navbar = $('.sg-navbar', view.$element);
+
+			$navbar.addClass('sliding-right');
+			$navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
 			$viewContainer.addClass('sliding-right');
 			$viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
 
-			if(view.$element.hasClass('slide-right') === true) {
-				view.$element.removeClass('slide-right');
+			if($navbar.hasClass('slide-right') === true) {
+				$navbar.removeClass('slide-right');
 				$viewContainer.removeClass('slide-right');
 			}
 			else {
-				view.$element.addClass('slide-right');
+				$navbar.addClass('slide-right');
 				$viewContainer.addClass('slide-right');
 			}
+
+			//Handle selection display
+			if($this.hasClass('list-group-item') === true) {
+				view.changeActiveState($this);
+				//view.clearSelections();
+				//$this.addClass('list-group-item-selected');
+			}
+
 		};
 
 		handleLogin = function(event, callback) {
@@ -175,18 +192,25 @@ define(
 			else {
 				$('.sg-navbar-brand', this.$element).html(defaultTitle);
 			}
-		}
+		};
+
+		changeActiveState = function($menuItem){
+        	$('.list-group-item', this.$element).removeClass('list-group-item-selected');
+			$menuItem.addClass('list-group-item-selected');
+        };
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 			didResize: didResize,
 			populateMainMenu: populateMainMenu,
+			//clearSelections: clearSelections,
 			renderProfilePicture: renderProfilePicture,
 			handleNavbarToggle: handleNavbarToggle,
 			handleLogin: handleLogin,
 			setTitle: setTitle,
-			_updateTitle: _updateTitle
+			_updateTitle: _updateTitle,
+			changeActiveState: changeActiveState
 		});
 	}
 );

@@ -3,59 +3,68 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 define(
-	['viewcontroller', 'app'],
-	function(ViewController, App) {
-		var Dashboard = ViewController.inherit({
-			subViewContainerID: 'dashboard-subview-container',
-			$subViewContainer: $(''),
-			subPath: '',
-			currentSubViewController: null,
+	['jquery', 'viewcontroller', 'app'],
+	function($, ViewController, App) {
+		var subViewContainerID,
 
-			didInitialize: didInitialize,
-			didRender: didRender,
-			didRenderSubview: didRenderSubview,
-            changeActiveState: changeActiveState
-		});
+			didInitialize,
+			didRender,
+			didRenderSubview,
 
-		return Dashboard;
+			handleSelection,
 
-		function didInitialize() {
+			changeActiveState;
+
+		/* Static variables */
+		subViewContainerID = 'dashboard-subview-container';
+
+		didInitialize = function() {
 			if(App.user.data.id === null) {
 				this.ready = false;
 				App.router.navigateTo('home');
 				return;
 			}
+
+			this.$subViewContainer = $('');
 			
 			if(this.path === 'dashboard') {
 				this.ready = false; //We abort loading the view
 				App.router.navigateTo('dashboard/profile');
 			}
-		}
+		};
 
-		function didRender(callback) {
-			this.$subViewContainer = $('#' + this.subViewContainerID);
-		}
+		didRender = function() {
+			this.$subViewContainer = $('#' + subViewContainerID);
+			this.setupEvent('click', '.dashboard-menu .list-group-item', this, this.handleSelection);
+		};
 
-		function didRenderSubview() {
-			this.changeActiveState();
-		}
+		didRenderSubview = function() {
+			var $menuItem;
+			$menuItem = $('a[href="#' + this.path + '"]');
+			this.changeActiveState($menuItem);
+		};
 
-        function changeActiveState(){
-        	var state = this.path;
-            if (state !== '') {
-                var selectedA = $('a[href$="'+state+'"]');
-                var selectedLi = selectedA.parent();
-                var ulList = selectedLi.parent();
+		handleSelection = function(event) {
+			var view = event.data;
+			view.changeActiveState($(this));
+		};
 
+        changeActiveState = function($menuItem){
+        	$('.list-group-item', this.$element).removeClass('list-group-item-selected');
+			$menuItem.addClass('list-group-item-selected');
+        };
 
-                ulList.children().each(function () {
-                    var currentLi = $(this);
-                    currentLi.removeClass('list-group-item-selected');
-                });
+        return ViewController.inherit({
+        	didInitialize: didInitialize,
+			didRender: didRender,
+			didRenderSubview: didRenderSubview,
 
-                selectedLi.addClass('list-group-item-selected');
-            }
-        }
+			handleSelection: handleSelection,
+
+            changeActiveState: changeActiveState
+		});
 	}
 );

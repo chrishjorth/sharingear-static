@@ -32,7 +32,7 @@
 /**
  * These are modifications to default Bootstrap look. Please do not modify the way Bootstrap does layout, only the looks.
  */
-.body {
+body {
 	height: 100%;
 }
 
@@ -55,14 +55,18 @@
 	z-index: 200;
 	position: absolute;
 	top: 0;
-	margin-top: 48px;
 	margin-left: 0;
 	width: 100%;
 	height: 100%;
 	background-color: #ffffff;
 }
 .view-container .view {
-	height: 100%;
+	padding-top: 48px;
+}
+@media (min-width: 768px) {
+	.view-container .view {
+		padding-top: 60px;
+	}
 }
 .view-container .scroll {
 	height: auto;
@@ -92,6 +96,9 @@
 		height: 60px;
 	}
 }
+.sg-navbar .container-fluid {
+	width: 100%;
+}
 .sg-navbar-brand {
 	text-align: center;
 }
@@ -118,11 +125,13 @@
 }
 
 .sg-navbar-slidemenu {
-	z-index: 100;
-	position: fixed;
+	z-index: 200;
+	position: absolute;
 	top: 0;
 	width: 80%;
 	height: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	background-color: #ffffff;
 }
 
@@ -137,6 +146,10 @@
 .sg-navbar-dropdownmenu {
 	position: relative;
 	height: 60px;
+	border-radius: 0;
+	margin-top: 0;
+	border: none;
+	min-width: 40px;
 }
 .sg-navbar-dropdownmenu .dropdown .btn {
 	height: 60px;
@@ -177,13 +190,6 @@
 	display: block;
 	float: right;
 }
-.sg-navbar-dropdownmenu .dropdown-menu {
-	border-radius: 0;
-	margin-top: 0;
-	border: none;
-	min-width: 40px;
-	width: 100%;
-}
 
 .sg-tabbar {
 	z-index: 300;
@@ -214,6 +220,7 @@
 
 .dashboard-menu {
 	display: none;
+	
 }
 @media (min-width: 768px) {
 	.dashboard-menu {
@@ -221,51 +228,94 @@
 	}
 }
 .dashboard-menu .list-group {
-	box-sizing: content-box;
+	background-color: #ffffff;
 }
-.dashboard-menu .list-group-item {
+.sg-navbar-dropdownmenu .dropdown-menu {
+	border-radius: 0;
+}
+.sg-navbar-dropdownmenu a.list-group-item,
+.sg-navbar-dropdownmenu a.list-group-item:link,
+.sg-navbar-slidemenu a.list-group-item,
+.sg-navbar-slidemenu a.list-group-item:link,
+.dashboard-menu a.list-group-item,
+.dashboard-menu a.list-group-item:link {
 	border-width: 0;
 	border-top-width: 1px;
 	border-style: solid;
 	border-color: #e9edf0;
 	height: 64px;
-	color: #e9edf0;
+	width: 100%;
 	font-size: 12px;
 	font-weight: bold;
+	line-height: 64px;
 	padding: 0;
+	margin: 0;
+	color: #384146;
 	clear: both;
 }
-.dashboard-menu .list-group-item:first-child {
+.sg-navbar-dropdownmenu a.list-group-item,
+.sg-navbar-dropdownmenu a.list-group-item:link {
+	height: 44px;
+	line-height: 44px;
+}
+.sg-navbar-dropdownmenu a.list-group-item:first-child,
+.sg-navbar-slidemenu a.list-group-item:first-child,
+.dashboard-menu a.list-group-item:first-child {
 	border-radius: 0;
 	border-top-width: 0;
 }
-.dashboard-menu .list-group-item:last-child {
+.sg-navbar-dropdownmenu a.list-group-item:last-child,
+.sg-navbar-slidemenu a.list-group-item:last-child,
+.dashboard-menu a.list-group-item:last-child {
 	border-radius: 0;
 }
-.dashboard-menu .list-group-item a {
-	color: #384146;
-	display: inline-block;
-	width: 100%;
-	height: 100%;
-}
-.dashboard-menu .list-group-item a:hover {
+.sg-navbar-dropdownmenu a.list-group-item:hover,
+.sg-navbar-slidemenu a.list-group-item:hover,
+.dashboard-menu a.list-group-item:hover {
 	text-decoration: none;
+	background-color: inherit;
 }
-.dashboard-menu .list-group-item-selected {
+.sg-navbar-dropdownmenu a.disabled:link,
+.sg-navbar-dropdownmenu a.disabled:hover,
+.sg-navbar-slidemenu a.disabled:link,
+.sg-navbar-slidemenu a.disabled:hover,
+.dashboard-menu a.disabled:link,
+.dashboard-menu a.disabled:hover {
+	color: #e9edf0;
+	background-color: inherit;
+}
+.sg-navbar-slidemenu a.list-group-item-selected,
+.sg-navbar-slidemenu a.list-group-item-selected:hover,
+.dashboard-menu a.list-group-item-selected,
+.dashboard-menu a.list-group-item-selected:hover {
 	background-color: #0397dc;
-}
-.dashboard-menu .list-group-item-selected a {
 	color: #ffffff;
 }
-.dashboard-menu .list-group-item .sg-icon {
+.sg-navbar-slidemenu a.list-group-item .sg-icon,
+.dashboard-menu a.list-group-item .sg-icon {
 	font-size: 36px;
-	line-height: 64px;
 	float: left;
 	padding: 0 4% 0 4%;
 }
-.dashboard-menu .list-group-item .list-group-item-text {
+.sg-navbar-dropdownmenu a.list-group-item .sg-icon {
+	font-size: 26px;
+	float: left;
+	padding: 0 4% 0 4%;
+}
+.sg-navbar-slidemenu a.list-group-item .list-group-item-text,
+.dashboard-menu a.list-group-item .list-group-item-text {
 	float: left;
 	margin-top: 24px;
+}
+.sg-navbar-dropdownmenu a.list-group-item .list-group-item-text {
+	float: left;
+	margin-top: 14px;
+}
+.sg-navbar-dropdownmenu a.list-group-item img,
+.sg-navbar-slidemenu a.list-group-item img,
+.dashboard-menu a.list-group-item img {
+	padding-left: 4%;
+	margin-top: 14px;
 }
 
 /*------ 2.b MODAL VIEWS ------*/
@@ -332,15 +382,16 @@
 	-webkit-transition-duration: .35s;
 	-o-transition-duration: .35s;
 	transition-duration: .35s;
-	-moz-transition-property: margin-left;
-	-webkit-transition-property: margin-left;
-	-o-transition-property: margin-left;
-	transition-property: margin-left;
+	-moz-transition-property: left;
+	-webkit-transition-property: left;
+	-o-transition-property: left;
+	transition-property: left;
 }
 
 /*------ 2.a TRANSITION POSITIONS ------*/
 .slide-right {
-	margin-left: 80%;
+	left: 80%;
+	position: fixed;
 }
 
 /******* 4. GENERAL VIEW ELEMENTS *******/
@@ -615,7 +666,11 @@
 /*----- 7.b DASHBOARD ------*/
 .dashboard {
 	background-color: #f7f7f7;
-	padding: 2%;
+	padding-left: 2%;
+	padding-right: 2%;
+}
+.dashboard .row {
+	padding-top: 2%;
 }
 
 /******* 8. ICONS *******/
