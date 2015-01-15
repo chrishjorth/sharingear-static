@@ -677,15 +677,18 @@ body {
 	padding-left: 2%;
 	padding-right: 2%;
 }
-.dashboard > .row {
-	padding-top: 2%;
-	padding-bottom: 2%;
+@media (min-width: 768px) {
+	.dashboard > .row {
+		padding-top: 2%;
+		padding-bottom: 2%;
+	}
 }
 
 /*----- 8.c DASHBOARD-PROFILE ------*/
 
 .dashboard-profile-pic-view {
 	height: 165px;
+	background-color: #c5cdd1;
 }
 @media (min-width: 768px) {
 	.dashboard-profile-pic-view {
@@ -694,18 +697,16 @@ body {
 		border: solid;
 		border-width: 1px;
 		border-color: #b9c1c5;
-		background-color: #c5cdd1;
 	}
 }
 
 .dashboard-profile-form-view {
 	background-color: #ffffff;
-	/*height: 694px;*/
 	min-height: 713px;
 }
 
 .dashboard-profile-form-view form {
-	margin-top: 50px;
+	padding-top: 50px;
 }
 
 .dashboard-profile-form-label {
