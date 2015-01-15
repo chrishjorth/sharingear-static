@@ -164,6 +164,7 @@ define(
 
 			user.login(function(error) {
 				if(!error) {
+					console.log('Navigate to dashboard');
 				    App.router.navigateTo('dashboard');
 				    view.render();
                 }

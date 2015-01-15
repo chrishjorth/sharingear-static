@@ -232,8 +232,11 @@ body {
 		display: block;
 	}
 }
+.sg-navbar-dropdownmenu .list-group,
+.sg-navbar-slidemenu .list-group,
 .dashboard-menu .list-group {
 	background-color: #ffffff;
+	margin: 0;
 }
 .sg-navbar-dropdownmenu .dropdown-menu {
 	border-radius: 0;
@@ -674,21 +677,20 @@ body {
 	padding-left: 2%;
 	padding-right: 2%;
 }
-.dashboard .row {
+.dashboard > .row {
 	padding-top: 2%;
+	padding-bottom: 2%;
 }
 
 /*----- 8.c DASHBOARD-PROFILE ------*/
 
 .dashboard-profile-pic-view {
-
 	height: 165px;
 }
-
 @media (min-width: 768px) {
 	.dashboard-profile-pic-view {
 		margin-left: -10px;
-		height: 694px;
+		min-height: 713px;
 		border: solid;
 		border-width: 1px;
 		border-color: #b9c1c5;
@@ -697,20 +699,20 @@ body {
 }
 
 .dashboard-profile-form-view {
-
 	background-color: #ffffff;
-	padding-top: 50px;
-	height: 694px;
+	/*height: 694px;*/
+	min-height: 713px;
+}
 
+.dashboard-profile-form-view form {
+	margin-top: 50px;
 }
 
 .dashboard-profile-form-label {
-
 	text-align:right;
 	font-weight: 430;
 	color: gray;
 	padding-right: 0;
-
 }
 
 .help-block {
@@ -718,45 +720,34 @@ body {
 }
 
 .dashboard-profile-form-bio {
-
 	height: 120px !important;
 	resize: none;
-
 }
 
 .dashboard-profile-pic {
-
 	width: 150px;
 	height: 150px;
 	margin-left: 30px;
 	border: solid;
 	border-width: 2px;
 	border-color: #01adff;
-
 }
-
 @media (min-width: 768px) {
 	.dashboard-profile-pic {
-
 		background-size: 600px 600px;
-
 		margin-top: 190px;
 		margin-left: 10%;
 		width: 80%;
 		height: 0;
 		padding-bottom: 80%;
-
 	}
 }
 
 .dashboard-profile-pic-upload-btn {
-
-
+	display: block;
 }
-
 @media (min-width: 768px) {
 	.dashboard-profile-pic-upload-btn {
-		display: block;
 		width: 110px;
 		margin-top: 15px;
 		margin-left: auto;

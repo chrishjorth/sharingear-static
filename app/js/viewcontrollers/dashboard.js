@@ -31,7 +31,6 @@ define(
 			this.$subViewContainer = $('');
 			
 			if(this.path === 'dashboard') {
-				this.ready = false; //We abort loading the view
 				App.router.navigateTo('dashboard/profile');
 			}
 		};
