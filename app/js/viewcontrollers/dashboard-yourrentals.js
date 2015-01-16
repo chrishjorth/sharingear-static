@@ -36,6 +36,9 @@ define(
 		};
 
 		didRender = function() {
+
+			App.header.setTitle('Gear rentals');
+
 			if(this.didFetch === true) {
 				this.populateYourRentals();
 			}
@@ -46,7 +49,7 @@ define(
 			require(['text!../templates/yourrentals-item.html'], function(YourRentalsItemTemplate) {
 				var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 					yourRentals = view.gearList.data,
-					defaultGear, gear, i;
+					$gearBlock, defaultGear, gear, i, $gearItem;
 
 				if(yourRentals.length <= 0) {
 					$('#' + gearBlockID, view.$element).append('You currently do not have any rentals.');
@@ -55,6 +58,8 @@ define(
 					}
 					return;
 				}
+
+				$gearBlock = $('#' + gearBlockID, view.$element);
 
 				for(i = 0; i < yourRentals.length; i++) {
 					defaultGear = {
@@ -77,6 +82,11 @@ define(
 					if(defaultGear.images.length > 0) {
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
+					$gearItem = $(yourRentalsItemTemplate(defaultGear));
+					$('.sg-bg-image' ,$gearItem).css({
+						'background-image': 'url("' + defaultGear.img_url + '")'
+					});
+
 
                     if(gear.data.booking_status === 'pending') {
                         defaultGear.gear_status = '<button class="btn btn-warning yourrentals-status pending" data-yourgear-bookingid="' + gear.data.booking_id + '">' + 'PENDING' + '</button>';
@@ -93,7 +103,7 @@ define(
                     else {
                     	defaultGear.gear_status = 'failed';
                     }
-					$('#' + gearBlockID).append(yourRentalsItemTemplate(defaultGear));
+					$gearBlock.append($gearItem);
 				}
 
 				view.setupEvent('click', '.yourrentals-status.pending', view, view.handleGearItemPendConfirm);
@@ -130,6 +140,6 @@ define(
 			handleGearItemAvailability: handleGearItemAvailability,
             handleGearItemPendConfirm : handleGearItemPendConfirm,
             handleBooking: handleBooking
-		}); 
+		});
 	}
 );

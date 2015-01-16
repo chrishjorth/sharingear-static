@@ -107,6 +107,10 @@ body {
 }
 .sg-navbar-brand {
 	text-align: center;
+	font-size: 20px;
+	font-weight: 500;
+	padding-top: 10px;
+	height: 44px;
 }
 @media (min-width: 768px) {
 	.sg-navbar-brand {
@@ -809,6 +813,7 @@ button:active .sg-gray-bg,
 	}
 }
 .sg-list-item {
+	background-color: #ffffff;
 	height: 78px;
 	border-top-width: 1px;
 	border-top-style: solid;
@@ -1008,6 +1013,14 @@ button:active .sg-gray-bg,
 		margin-right: auto;
 	}
 }
+
+/*******/
+
+/*.yourrentals {
+
+	background-color: white;
+
+}*/
 
 
 /******* 9. HELPERS *******/
