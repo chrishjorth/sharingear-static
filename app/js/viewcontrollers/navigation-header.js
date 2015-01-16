@@ -23,7 +23,7 @@ define(
 			changeActiveState;
 
 		/* Static variables */
-		defaultTitle = '<a href="#home"><img src="images/old_logotop.png" alt="Sharingear logo"></a>';
+		defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
 
 		didInitialize = function() {
 			this.isMobile = false;
@@ -61,7 +61,7 @@ define(
 					$dropdownMenu.addClass('hidden');
 				}
 				$menuList = $('.list-group', $slideMenu);
-				html += '<a href="#home" class="list-group-item"><img src="images/old_logotop.png" alt="Sharingear logo"></a>';
+				html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
 			}
 			else {
 				this.isMobile = false;

@@ -324,7 +324,8 @@ body {
 .sg-navbar-slidemenu a.list-group-item img,
 .dashboard-menu a.list-group-item img {
 	padding-left: 4%;
-	margin-top: 14px;
+	margin-top: 4px;
+	height: 32px;
 }
 
 /*------ 2.b MODAL VIEWS ------*/
@@ -407,16 +408,17 @@ body {
 /**
  * These are the stylings for the view elements that repeat across views. They should define the general look of Sharingear views.
  */
-.navbar-brand img {
+.sg-navbar-brand img {
 	height: 34px;
 	margin-left: auto;
 	margin-right: auto;
 }
 
 .sg-banner {
-	height: 128px;
-	background-image: url("../images/mainpic.jpg");
-    background-position: center bottom;
+	height: 520px;
+	background-image: url("../images/home-stage.jpg");
+    background-position: center;
+    background-size: auto 520px;
 }
 
 .searchresults .col-sm-6 {
@@ -452,10 +454,7 @@ body {
 /**
  * These are the typography rules that repeat across views. The goal is to avoid writing custom typography rules for all elements.
  */
-.sg-banner h2 {
-	color: #ffffff;
-	font-size: 14px;
-}
+
 
 /******* 6. GENERAL COLORS *******/
 /**
@@ -1004,24 +1003,8 @@ button:active .sg-gray-bg,
 	}
 }
 
-
-
 /******* 9. HELPERS *******/
-.sg-float-center {
-	position: relative;
-	float: right;
-	left: -50%;
-}
-.sg-float-center:after {
-	clear: both;
-}
-.sg-float-center-container {
-	position: relative;
-	left: 50%;
-}
-.sg-float-center-container > div {
-	float: left;
-}
+
 
 /******* 10. ICONS *******/
 @font-face {

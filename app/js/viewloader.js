@@ -22,7 +22,7 @@ define(
 			_loadModalView;
 
 		mainViewContainer = '.view-container';
-		modalViewLightbox = '.modal-view-lightbox';
+		modalViewLightbox = '.sg-lightbox';
 		modalViewContainer = '.modal-view-container';
 
 		/**
