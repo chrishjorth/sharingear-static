@@ -36,7 +36,9 @@ define(
 		};
 
 		didRender = function() {
-			this.setupEvent('click', '.yourgear-item .btn-edit', this, this.handleEditGearItem);
+			App.header.setTitle('Your gear');
+
+			this.setupEvent('click', '.yourgear-item-edit-btn', this, this.handleEditGearItem);
 		};
 
 		populateYourGear = function(callback) {
@@ -44,7 +46,9 @@ define(
 			require(['text!../templates/yourgear-item.html'], function(YourGearItemTemplate) {
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
 					yourGear = view.gearList.data,
-					defaultGear, gear, i;
+					$gearBlock, defaultGear, gear, i, $gearItem;
+
+				$gearBlock = $('#' + gearBlockID, view.$element);
 
 				for(i = 0; i < yourGear.length; i++) {
 					defaultGear = {
@@ -67,8 +71,11 @@ define(
 					if(defaultGear.images.length > 0) {
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
-
-					$('#' + gearBlockID).append(yourGearItemTemplate(defaultGear));
+					$gearItem = $(yourGearItemTemplate(defaultGear));
+					$('.sg-bg-image' ,$gearItem).css({
+						'background-image': 'url("' + defaultGear.img_url + '")'
+					});
+					$gearBlock.append($gearItem);
 				}
 				if(callback && typeof callback === 'function') {
 					callback();

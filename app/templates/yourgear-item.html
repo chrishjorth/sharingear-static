@@ -1,26 +1,14 @@
-<div class="row yourgear-item">
-    <div class="col-xs-12 col-md-3" style="height: 200px;">
-        <img src="{{img_url}}" alt="{{model}}" style="max-height: 100%; max-width: 100%;">
+<div class="row sg-list-item">
+    <div class="col-xs-2">
+        <div class="sg-bg-image"></div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-        <div class="clearfix">
-            <h2 style="margin-top: 0;text-transform: capitalize;">{{gear_type}}</h2>
-            <h4><span class="fa moretextyourgear icon"></span>{{brand}} {{subtype}} {{model}}</h4>
-            <div class="pull-left">
-                <ul class="list-unstyled">
-                    <li class="symbolyourgear">{{price_a}} DKK/hour</li>
-                    <li class="symbolyourgear">{{price_b}} DKK/day</li>
-                    <li class="symbolyourgear">{{price_c}} DKK/week</li>
-                </ul>
-            </div>
-            <div class="pull-right symbolyourgear">{{city}}</div>
-        </div>
-        <div>
-            <div class="clearfix"></div>
-            <div>
-                <a href="#gearprofile/{{id}}" class="pull-right btn btn-primary price-button-margin">View profile</a>
-                <button type="button" class="pull-right btn btn-primary btn-edit price-button-margin" data-yourgearid="{{id}}">Edit</button>
-            </div>
-        </div>
+    <div class="col-xs-8">
+        <div class="sg-list-item-text">{{brand}} {{subtype}} {{model}}</div>
+    </div>
+    <div class="col-xs-1">
+        <button class="sg-btn-invisible sg-white yourgear-item-edit-btn"><div class="sg-iconbg-round-40 sg-gray-bg"><div class="sg-icon icon-edit"></div></div><div class="sg-btn-text sg-gray">Edit</div></button>
+    </div>
+    <div class="col-xs-1">
+        <a href="#gearprofile/{{id}}" class="sg-btn-invisible sg-white yourgear-item-view-btn"><div class="sg-iconbg-round-40 sg-gray-bg"><div class="sg-icon icon-view"></div></div><div class="sg-btn-text sg-gray">View</div></a>
     </div>
 </div>
