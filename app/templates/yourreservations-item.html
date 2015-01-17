@@ -1,36 +1,11 @@
-<div class="row yourreservations-item">
-	<div class="row reservation-status">
-		<div class="col-xs-3 reservation-text right">
-		{{ gear_status }}
-		</div>
+<div class="row sg-list-item">
+	<div class="col-xs-2">
+		<div class="sg-bg-image"></div>
 	</div>
-	<div class="row">
-		<div class="col-xs-12 col-md-3">
-			<img src="{{img_url}}" alt="{{model}}" style="max-height: 100%; max-width: 100%;">
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-			<div class="clearfix">
-				<h2 style="margin-top: 0;text-transform: capitalize">{{gear_type}}</h2>
-				<h4><span class="moretextyourgear">{{brand}} {{subtype}} {{model}}</span></h4>
-				<div class="pull-left">
-					<span class="symbolyourgear">{{price}} DKK</span>
-				</div>
-				<div class="pull-right symbolyourgear">{{city}}</div>
-			</div>
-		</div>
-    </div>
-
-	<div class="row separate-rows">
-		<div class="fromto col-xs-8">
-			<div class="col-xs-6"><p><b>From: </b> {{start_date}}</p></div>
-			<div class="col-xs-6"><p><b>To: </b> {{end_date}}</p></div>
-			<div class="col-xs-6"><p><b>Time: </b> {{start_time}}</p></div>
-			<div class="col-xs-6"><p><b>Time: </b> {{end_time}}</p></div>
-		</div>
-		<div class="col-xs-4 right" style="padding-top: 10px">
-			<div class="clearfix"></div>
-				<a href="#gearprofile/{{id}}" class="btn btn-primary">View profile</a>
-		</div>
+	<div class="col-xs-8">
+		<div class="sg-list-item-text">{{brand}} {{subtype}} {{model}}</div>
+	</div>
+	<div class="col-xs-2">
+		<!-- Here goes the button, eventually-->
 	</div>
 </div>

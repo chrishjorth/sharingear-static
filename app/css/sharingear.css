@@ -108,6 +108,10 @@ body {
 }
 .sg-navbar-brand {
 	text-align: center;
+	font-size: 20px;
+	font-weight: 500;
+	padding-top: 10px;
+	height: 44px;
 }
 @media (min-width: 768px) {
 	.sg-navbar-brand {
@@ -291,7 +295,7 @@ body {
 
 .dashboard-menu {
 	display: none;
-	
+
 }
 @media (min-width: 768px) {
 	.dashboard-menu {
@@ -917,6 +921,7 @@ button:active .sg-gray-bg,
 	}
 }
 .sg-list-item {
+	background-color: #ffffff;
 	height: 78px;
 	border-top-width: 1px;
 	border-top-style: solid;
@@ -1054,7 +1059,7 @@ button:active .sg-gray-bg,
 /*----- 8.d DASHBOARD-PROFILE ------*/
 
 .dashboard-profile-pic-view {
-	height: 165px;
+	height: 220px;
 	background-color: #c5cdd1;
 }
 @media (min-width: 768px) {
@@ -1093,7 +1098,9 @@ button:active .sg-gray-bg,
 .dashboard-profile-pic {
 	width: 150px;
 	height: 150px;
-	margin-left: 30px;
+	margin-top:15px;
+	margin-left: auto;
+	margin-right: auto;
 	border: solid;
 	border-width: 2px;
 	border-color: #01adff;
@@ -1111,6 +1118,10 @@ button:active .sg-gray-bg,
 
 .dashboard-profile-pic-upload-btn {
 	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:10px;
+	width: 135px;
 }
 @media (min-width: 768px) {
 	.dashboard-profile-pic-upload-btn {
@@ -1120,6 +1131,15 @@ button:active .sg-gray-bg,
 		margin-right: auto;
 	}
 }
+
+/*******/
+
+/*.yourrentals {
+
+	background-color: white;
+
+}*/
+
 
 /******* 9. HELPERS *******/
 

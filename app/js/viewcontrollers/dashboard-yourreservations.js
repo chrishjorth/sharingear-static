@@ -38,6 +38,9 @@ define(
 		};
 
 		didRender = function() {
+
+			App.header.setTitle('Gear reservations');
+
 			var view = this;
 			view.setupEvent('click', '.yourgear-status.denied', view, view.handleDenied);
             view.setupEvent('click', '.yourgear-status.in-rental', view, view.handleRental);
@@ -48,7 +51,9 @@ define(
 			require(['text!../templates/yourreservations-item.html'], function(YourReservationsItemTemplate) {
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 					yourReserv = view.gearList.data,
-                    defaultReservation, reservation, i;
+					$reservationBlock, defaultReservation, reservation, i, $reservationItem;
+
+				$reservationBlock = $('#' + reservationBlockID, view.$element);
 
 				for(i = 0; i < yourReserv.length; i++) {
                     defaultReservation = {
@@ -70,9 +75,15 @@ define(
 
 					reservation = yourReserv[i];
 					_.extend(defaultReservation, reservation.data);
-                    if(defaultReservation.images.length > 0) {
-                        defaultReservation.img_url = defaultReservation.images.split(',')[0];
-                    }
+          if(defaultReservation.images.length > 0) {
+              defaultReservation.img_url = defaultReservation.images.split(',')[0];
+          }
+
+					$reservationItem = $(yourReservationsItemTemplate(defaultReservation));
+					$('.sg-bg-image' ,$reservationItem).css({
+						'background-image': 'url("' + defaultReservation.img_url + '")'
+					});
+
 					var startdate = defaultReservation.start_time.split(' ')[0];
 					var starttime = defaultReservation.start_time.split(' ')[1].slice(0,-3);
 
@@ -110,7 +121,8 @@ define(
                     	defaultReservation.gear_status = '<div style="background-color: #EE0000;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;" class="yourgear-status pending">FAILED</div>';
                     }
 
-					$('#' + reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
+				$reservationBlock.append($reservationItem);
+
 				}
 				if(callback && typeof callback === 'function') {
 					callback();
