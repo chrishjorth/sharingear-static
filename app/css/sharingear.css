@@ -16,9 +16,10 @@
  *  7.a CALENDARS
  * 	7.b BUTTONS
  * 8. SPECIFIC VIEWS
- * 	8.a SEARCH
- * 	8.b DASHBOARD
- *	8.c DASHBOARD-PROFILE
+ * 	8.a HOME
+ *	8.b SEARCH
+ * 	8.c DASHBOARD
+ *	8.d DASHBOARD-PROFILE
  * 9. HELPERS
  * 10. ICONS
  *
@@ -197,15 +198,44 @@ body {
 	float: right;
 }
 
-.sg-tabbar {
+.sg-tabbar-container {
 	z-index: 300;
 	position: fixed;
-	width: 100%;
-	height: 70px;
 	bottom: 0;
+	height: 70px;
+	width: 100%;
 	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+@media (min-width: 768px) {
+	.sg-tabbar-container {
+		position: static;
+		height: 54px;
+		width: auto;
+		background: none;
+	}
+}
+.sg-tabbar-container > .col-sm-8,
+.sg-tabbar-container > .col-sm-2 {
+	height: 100%;
+	padding: 0;
+}
+.sg-tabbar-container > .col-sm-2:first-child {
+	padding-right: 1px;
+}
+.sg-tabbar-container > .col-sm-2:last-child {
+	padding-left: 1px;
+}
+.sg-tabbar-container .col-sm-2 {
+	display: none;
+}
+@media (min-width: 768px) {
+	.sg-tabbar-container .col-sm-2 {
+		display: block;
+	}
 }
 .sg-tabbar ul {
+	margin: 0;
 	padding-left: 0;
 	list-style: none;
 }
@@ -213,15 +243,50 @@ body {
 	float: left;
 	text-align: center;
 	color: #ffffff;
+	height: 70px;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+@media (min-width: 768px) {
+	.sg-tabbar ul li {
+		height: 54px;
+	}
+}
+.sg-tabbar button {
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+@media (min-width: 768px) {
+	.sg-tabbar button {
+		background-color: #00aeff;
+		background-color: rgba(0, 174, 255, 0.5);
+	}	
+}
+.sg-tabbar .selected {
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+.sg-tabbar .sg-icon {
+	line-height: 54px;
+	font-size: 36px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.sg-tabbar .selected .sg-icon {
+	color: #00aeff;
+}
+.sg-tabbar .sg-btn-text {
+	display: none;
+}
+@media (min-width: 768px) {
+	.sg-tabbar .sg-btn-text {
+		display: inline-block;
+		margin-left: 8%;
+		font-weight: bold;
+	}
 }
 .sg-tabbar-3 li {
 	width: 33.33333333%;
-}
-@media (min-width: 768px) {
-	.sg-tabbar {
-		position: static;
-		width: 100%;
-	}
 }
 
 .dashboard-menu {
@@ -417,8 +482,10 @@ body {
 .sg-banner {
 	height: 520px;
 	background-image: url("../images/home-stage.jpg");
-    background-position: center;
-    background-size: auto 520px;
+    background-position: center bottom;
+    background-size: auto 580px;
+    padding: 0;
+    margin: 0;
 }
 
 .searchresults .col-sm-6 {
@@ -460,9 +527,29 @@ body {
 /**
  * These are color classes. The goal is to keep all color definitions here for color consistency.
  */
+.sg-opacity-50 {
+	opacity: 0.5;
+}
+
 .sg-white,
 .sg-white:hover {
 	color: #ffffff;
+}
+
+.sg-black-bg-50 {
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+.sg-blue {
+	color: #00aeff;
+}
+.sg-blue-bg {
+	background-color: #00aeff;
+}
+.sg-blue-bg-50 {
+	background-color: #00aeff;
+	background-color: rgba(0, 174, 255, 0.5);
 }
 
 .sg-action-blue {
@@ -579,6 +666,11 @@ button:active .sg-gray-bg,
 	background-size: 100% auto;
 	background-position: center;
 	background-color: #f7f7f7;
+}
+
+.sg-fill {
+	height: 100%;
+	width: 100%;
 }
 
 /*------ 7.a CALENDARS ------*/
@@ -721,6 +813,22 @@ button:active .sg-gray-bg,
 	display: inline-block;
 	text-decoration: none;
 	text-align: center;
+}
+
+.sg-btn-square,
+.sg-btn-square:link,
+.sg-btn-square:hover {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	display: inline-block;
+	text-decoration: none;
+	text-align: center;
+	opacity: 1;
 }
 
 .sg-btn-invisible-gray {
@@ -889,7 +997,17 @@ button:active .sg-gray-bg,
  * These are rules that only apply to a specific view. These types of rules should be avoided as much as possible.
  */
 
-/*------ 8.a SEARCH ------*/
+/*------ 8.a HOME ------*/
+.sg-banner h2 {
+	margin-top: 120px;
+	margin-bottom: 74px;
+}
+
+.searchform-container {
+	height: 200px;
+}
+
+/*------ 8.b SEARCH ------*/
 .search-results {
     height: 100%;
  }
@@ -909,7 +1027,7 @@ button:active .sg-gray-bg,
 	height: 100%;
 }
 
-/*----- 8.b DASHBOARD ------*/
+/*----- 8.c DASHBOARD ------*/
 .dashboard {
 	background-color: #f7f7f7;
 	padding-left: 2%;
@@ -933,7 +1051,7 @@ button:active .sg-gray-bg,
 	}
 }
 
-/*----- 8.c DASHBOARD-PROFILE ------*/
+/*----- 8.d DASHBOARD-PROFILE ------*/
 
 .dashboard-profile-pic-view {
 	height: 165px;
@@ -1032,6 +1150,18 @@ button:active .sg-gray-bg,
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-tabbar-vans:before {
+	content: "\e600";
+}
+
+.icon-tabbar-technicians:before {
+	content: "\e601";
+}
+
+.icon-tabbar-gear:before {
+	content: "\e60b";
+}
+
 .icon-edit:before {
 	content: "\e609";
 }
@@ -1041,27 +1171,27 @@ button:active .sg-gray-bg,
 }
 
 .icon-dashboard-gearrentals:before {
-	content: "\e600";
-}
-
-.icon-dashboard-profile:before {
-	content: "\e601";
-}
-
-.icon-dashboard-reservations:before {
 	content: "\e602";
 }
 
-.icon-dashboard-settings:before {
+.icon-dashboard-profile:before {
 	content: "\e603";
 }
 
-.icon-dashboard-techhires:before {
+.icon-dashboard-reservations:before {
 	content: "\e604";
 }
 
-.icon-dashboard-vanrentals:before {
+.icon-dashboard-settings:before {
 	content: "\e605";
+}
+
+.icon-dashboard-techhires:before {
+	content: "\e60c";
+}
+
+.icon-dashboard-vanrentals:before {
+	content: "\e60d";
 }
 
 .icon-dashboard-yourgear:before {
