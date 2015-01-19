@@ -1297,10 +1297,24 @@ button:active .sg-gray-bg,
 
 /*------ 8.e EDIT GEAR ------*/
 .editgear .sg-toptab-container {
-	height: 55px;
+	height: 70px;
+}
+@media (min-width: 768px) {
+	.editgear .sg-toptab-container {
+		height: 55px;
+	}
 }
 .editgear .sg-toptab {
-	font-size: 18px;
+	font-size: 12px;
+	padding-top: 12px;
+	padding-bottom: 20px;
+}
+@media (min-width: 768px) {
+	.editgear .sg-toptab {
+		font-size: 18px;
+		padding-top: 8px;
+		padding-bottom: 0;
+	}
 }
 
 
