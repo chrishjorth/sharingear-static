@@ -47,8 +47,13 @@ define(
 		};
 
 		handleSelection = function(event) {
-			var view = event.data;
-			view.changeActiveState($(this));
+			var view = event.data,	
+				$this = $(this);
+			if($this.hasClass('disabled') === true) {
+				alert('This feature will be enabled soon, please stay tuned.');
+				return;
+			}
+			view.changeActiveState($this);
 		};
 
         changeActiveState = function($menuItem){

@@ -295,6 +295,75 @@ body {
 	width: 33.33333333%;
 }
 
+.sg-toptab-container {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	border-color: #00aeff;
+	border-style: solid;
+	border-width: 0;
+	border-top-width: 1px;
+	height: 70px;
+	z-index: 410;
+	background-color: #ffffff;
+}
+@media (min-width: 768px) {
+	.sg-toptab-container {
+		position: static;
+		border-top-width: 0;
+		border-bottom-width: 1px;
+	}
+}
+.sg-toptab {
+	color: #d5dada;
+	padding-top: 8px;
+	font-size: 28px;
+	width: 20%;
+	text-align: center;
+}
+@media (min-width: 768px) {
+	.sg-toptab {
+		width: auto;
+	}
+}
+.sg-toptab-container .active,
+.sg-toptab-active {
+	border-color: #00aeff;
+	border-style: solid;
+	border-width: 1px;
+	border-bottom-width: 0;
+	border-top-width: 0;
+	color: #565a5c;
+	background-color: #ffffff;
+}
+@media (min-width: 768px) {
+	.sg-toptab-container .active,
+	.sg-toptab-active {
+		border-bottom-color: transparent;
+		border-bottom-width: 1px;
+		border-top-width: 1px;
+	}
+}
+.sg-toptab-container > li.active > a,
+.sg-toptab-container > li.active > a:hover,
+.sg-toptab > a {
+	border: none;
+}
+.sg-toptab-container > li > a,
+.sg-toptab-container > li > a:hover {
+	color: #d5dada;
+	border: none;
+	background: none;
+}
+.sg-toptab i {
+	width: 15%;
+}
+.sg-toptab div {
+	display: inline-block;
+	height: 54px;
+	width: 85%;
+}
+
 .dashboard-menu {
 	display: none;
 
@@ -778,33 +847,6 @@ button:active .sg-gray-bg,
 	color: #ffffff;
 }
 
-.sg-toptab {
-	border-color: #00aeff;
-	border-style: solid;
-	border-top-width: 0;
-	border-right-width: 0;
-	border-bottom-width: 1px;
-	border-left-width: 0;
-	color: #d5dada;
-	padding-top: 8px;
-	font-size: 28px;
-}
-.sg-toptab-active {
-	border-bottom-width: 0;
-	border-top-width: 1px;
-	border-left-width: 1px;
-	border-right-width: 1px;
-	color: #565a5c;
-}
-.sg-toptab i {
-	width: 15%;
-}
-.sg-toptab div {
-	display: inline-block;
-	height: 54px;
-	width: 85%;
-}
-
 /*------ 7.b BUTTONS ------*/
 .sg-btn-invisible,
 .sg-btn-invisible:link,
@@ -1253,13 +1295,13 @@ button:active .sg-gray-bg,
 	}
 }
 
-/*******/
-
-/*.yourrentals {
-
-	background-color: white;
-
-}*/
+/*------ 8.e EDIT GEAR ------*/
+.editgear .sg-toptab-container {
+	height: 55px;
+}
+.editgear .sg-toptab {
+	font-size: 18px;
+}
 
 
 /******* 9. HELPERS *******/
