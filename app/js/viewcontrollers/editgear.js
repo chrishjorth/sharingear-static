@@ -110,8 +110,8 @@ define(
 			this.initAccessories();
 			this.initPriceSuggestions();
 
-            this.setupEvent('click', '.btn-cancel', this, this.handleCancel);
-			this.setupEvent('click', '.btn-save', this, this.handleSave);
+            this.setupEvent('click', '#editgear-cancel-btn', this, this.handleCancel);
+			this.setupEvent('click', '#editgear-save-btn', this, this.handleSave);
             this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
             this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
