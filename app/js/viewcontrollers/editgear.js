@@ -28,33 +28,33 @@ define(
             handleDeliveryCheckbox,
 
 			initAccessories,
-            initAvailability,
+            //initAvailability,
 			initPriceSuggestions,
 			populatePriceSuggestions,
 
             renderAvailability,
             handleSubmerchantSubmit,
             handleSubmerchantAccept,
-            renderMonthCalendar,
-            setupMonthCalendar,
-            clearSelections,
-            renderSelections,
-            handleToday,
-            handlePrevious,
-            handleNextButton,
-            handleClearMonth,
-            handleAlwaysAvailable,
-            handleNeverAvailable,
-            handleDayStartSelect,
-            handleDayMoveSelect,
-            handleDayEndSelect,
+            //renderMonthCalendar,
+            //setupMonthCalendar,
+            //clearSelections,
+            //renderSelections,
+            //handleToday,
+            //handlePrevious,
+            //handleNextButton,
+            //handleClearMonth,
+            //handleAlwaysAvailable,
+            //handleNeverAvailable,
+            //handleDayStartSelect,
+            //handleDayMoveSelect,
+            //handleDayEndSelect,
 			handlePriceChange,
 
             handleCancel,
-            handleSave,
+            handleSave;
 
-            isBeforeOrSameDay,
-            isAfterOrSameDay;
+            //isBeforeOrSameDay,
+            //isAfterOrSameDay;
 
         geocoder = new GoogleMaps.Geocoder();
 
@@ -70,7 +70,6 @@ define(
 
 			this.gear = this.passedData;
 			this.templateParameters = this.gear.data;
-            this.initAvailability();
 
             this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 		};
@@ -164,7 +163,7 @@ define(
 
 		initAccessories = function () {
 			var gearClassification = App.gearClassification.data.classification,
-				html = "",
+				html = '',
 				view,gearSubtypes,i;
 
 			view = this;
@@ -189,12 +188,20 @@ define(
 		};
 
         renderAvailability = function() {
+            var view = this,
+                $calendarContainer;
             if(App.user.isSubMerchant() === true) {
-                $('#editgear-availability-calendar', this.$element).removeClass('hidden');
-                this.renderMonthCalendar($('#gearavailability-months-container'));
-                this.setupMonthCalendar();
-                this.clearSelections();
-                this.renderSelections();
+                $calendarContainer = $('#editgear-availability-calendar', this.$element);
+                $calendarContainer.removeClass('hidden');
+                require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
+                    view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.gear});
+                    view.calendarVC.initialize();
+                    view.calendarVC.render();
+                });
+               // this.renderMonthCalendar($('#gearavailability-months-container'));
+                //this.setupMonthCalendar();
+                //this.clearSelections();
+                //this.renderSelections();
             }
             else {
                 var user = App.user.data;
@@ -372,7 +379,7 @@ define(
             });
         };
 
-        initAvailability = function() {
+        /*initAvailability = function() {
             var view = this;
 
             this.shownMoment = new Moment();
@@ -405,7 +412,7 @@ define(
                 }
                 view.renderSelections();
             });
-        };
+        };*/
 
         populateLocation = function() {
             $('#editgearpricingloc-form #editgearpricing-city').val(this.gear.data.city);
@@ -487,7 +494,7 @@ define(
 
 		populateAccessories = function (event) {
             var gearClassification = App.gearClassification.data.classification,
-                html = "",
+                html = '',
                 view,gearSubtypes,i;
 			
             view = event.data;
@@ -569,7 +576,7 @@ define(
                 currentCountry = view.gear.data.country,
                 availabilityArray = [],
 				accessoriesArray = [],
-                updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
+                selections, alwaysFlag, updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
 
             if(view.isLoading === true) {
                 return;
@@ -577,9 +584,12 @@ define(
 
 			view.toggleLoading();
 
+            selections = view.calendarVC.getSelections();
+            alwaysFlag = view.calendarVC.getAlwaysFlag();
+
             //Convert selections to availability array
-            for(month in view.selections) {
-                monthSelections = view.selections[month];
+            for(month in selections) {
+                monthSelections = selections[month];
                 for(j = 0; j < monthSelections.length; j++) {
                     selection = monthSelections[j];
                     availabilityArray.push({
@@ -589,7 +599,7 @@ define(
                 }
             }
 
-            view.gear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function(error) {
+            view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
                 if(error) {
                     alert('Error saving availability.');
                     console.log(error);
@@ -724,7 +734,7 @@ define(
 			}
 		};
 
-        renderMonthCalendar = function($monthCalendarContainer) {
+        /*renderMonthCalendar = function($monthCalendarContainer) {
             var header, dayRows, i;
             header = '<div class="row calendar-header">';
             header += '<div class="col-md-1 col-md-offset-1"></div>';
@@ -750,9 +760,9 @@ define(
                 dayRows += '</div>';
             }
             $monthCalendarContainer.append(header + dayRows);
-        };
+        };*/
 
-        setupMonthCalendar = function() {
+        /*setupMonthCalendar = function() {
             var moment, today, startDay, $calendarContainer, $dayBox, row, col, date;
 
             today = new Moment();
@@ -779,15 +789,15 @@ define(
             }
 
             $('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
-        };
+        };*/
 
-        clearSelections = function() {
+        /*clearSelections = function() {
             $('#gearavailability-months-container .day-row .day').each(function() {
                 $(this).removeClass('selected');
             });
-        };
+        };*/
 
-        renderSelections = function() {
+        /*renderSelections = function() {
             var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
                 $calendarContainer = $('#gearavailability-months-container', this.$element),
                 i, startMoment, endMoment, momentIterator;
@@ -826,33 +836,33 @@ define(
                     $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
                 }
             }
-        };
+        };*/
 
-        handleToday = function(event) {
+        /*handleToday = function(event) {
             var view = event.data;
             view.shownMoment = new Moment();
             view.setupMonthCalendar();
             view.clearSelections();
             view.renderSelections();
-        };
+        };*/
 
-        handlePrevious = function(event) {
+        /*handlePrevious = function(event) {
             var view = event.data;
             view.shownMoment.subtract(1, 'month');
             view.setupMonthCalendar();
             view.clearSelections();
             view.renderSelections();
-        };
+        };*/
 
-        handleNextButton = function(event) {
+        /*handleNextButton = function(event) {
             var view = event.data;
             view.shownMoment.add(1, 'month');
             view.setupMonthCalendar();
             view.clearSelections();
             view.renderSelections();
-        };
+        };*/
 
-        handleClearMonth = function(event) {
+        /*handleClearMonth = function(event) {
             var view = event.data;
             if(view.alwaysFlag === 1) {
                 view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [{
@@ -865,9 +875,9 @@ define(
             }
             view.clearSelections();
             view.renderSelections();
-        };
+        };*/
 
-        handleAlwaysAvailable = function(event) {
+        /*handleAlwaysAvailable = function(event) {
             var view = event.data;
             view.alwaysFlag = 1;
             view.selections = {};
@@ -877,9 +887,9 @@ define(
 
             view.clearSelections();
             view.renderSelections();
-        };
+        };*/
 
-        handleNeverAvailable = function(event) {
+        /*handleNeverAvailable = function(event) {
             var view = event.data;
 
             view.alwaysFlag = 0;
@@ -891,9 +901,9 @@ define(
 
 			view.clearSelections();
             view.renderSelections();
-        };
+        };*/
 
-        handleDayStartSelect = function(event) {
+        /*handleDayStartSelect = function(event) {
             var view = event.data,
                 $this = $(this),
                 selection;
@@ -917,9 +927,9 @@ define(
 
 			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
             $('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
-        };
+        };*/
 
-        handleDayMoveSelect = function(event) {
+        /*handleDayMoveSelect = function(event) {
             //Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
             var view = event.data,
                 $calendarContainer, selectionX, selectionY;
@@ -956,9 +966,9 @@ define(
                     }
                 }
             });
-        };
+        };*/
 
-        handleDayEndSelect = function(event) {
+        /*handleDayEndSelect = function(event) {
             var view = event.data,
                 key, monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
             $('body').off('mousemove touchmove', view.handleDayMoveSelect);
@@ -1053,15 +1063,15 @@ define(
 
             view.clearSelections();
             view.renderSelections();
-        };
+        };*/
 
-        isBeforeOrSameDay = function(momentA, momentB) {
+        /*isBeforeOrSameDay = function(momentA, momentB) {
             return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
-        };
+        };*/
 
-        isAfterOrSameDay = function(momentA, momentB) {
+        /*isAfterOrSameDay = function(momentA, momentB) {
             return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
-        };
+        };*/
 
         return ViewController.inherit({
             didInitialize: didInitialize,
@@ -1083,33 +1093,33 @@ define(
 			handlePriceChange:handlePriceChange,
 
 			initAccessories:initAccessories,
-            initAvailability:initAvailability,
+            //initAvailability:initAvailability,
             renderAvailability:renderAvailability,
             handleSubmerchantSubmit: handleSubmerchantSubmit,
             handleSubmerchantAccept: handleSubmerchantAccept,
-            renderMonthCalendar:renderMonthCalendar,
-            setupMonthCalendar:setupMonthCalendar,
-            clearSelections:clearSelections,
-            renderSelections:renderSelections,
-            handleToday:handleToday,
-            handlePrevious:handlePrevious,
-            handleNextButton: handleNextButton,
-            handleClearMonth:handleClearMonth,
-            handleAlwaysAvailable:handleAlwaysAvailable,
-            handleNeverAvailable:handleNeverAvailable,
+            //renderMonthCalendar:renderMonthCalendar,
+            //setupMonthCalendar:setupMonthCalendar,
+            //clearSelections:clearSelections,
+            //renderSelections:renderSelections,
+            //handleToday:handleToday,
+            //handlePrevious:handlePrevious,
+            //handleNextButton: handleNextButton,
+            //handleClearMonth:handleClearMonth,
+            //handleAlwaysAvailable:handleAlwaysAvailable,
+            //handleNeverAvailable:handleNeverAvailable,
 
 			initPriceSuggestions:initPriceSuggestions,
 			populatePriceSuggestions:populatePriceSuggestions,
 
-            handleDayStartSelect:handleDayStartSelect,
-            handleDayMoveSelect:handleDayMoveSelect,
-            handleDayEndSelect:handleDayEndSelect,
+            //handleDayStartSelect:handleDayStartSelect,
+            //handleDayMoveSelect:handleDayMoveSelect,
+            //handleDayEndSelect:handleDayEndSelect,
 
             handleCancel: handleCancel,
-            handleSave: handleSave,
+            handleSave: handleSave
 
-            isBeforeOrSameDay:isBeforeOrSameDay,
-            isAfterOrSameDay:isAfterOrSameDay
+            //isBeforeOrSameDay:isBeforeOrSameDay,
+            //isAfterOrSameDay:isAfterOrSameDay
         });
 
 	}

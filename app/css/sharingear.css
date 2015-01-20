@@ -846,7 +846,7 @@ button:active .sg-gray-bg,
 	}
 }
 
-.pickupdeliverycalendar .navigation {
+.calendar-navigation {
 	font-size: 24px;
 	line-height: 64px;
 }
@@ -855,6 +855,7 @@ button:active .sg-gray-bg,
 	color: #565a5c;
 	font-weight: bold;
 }
+.calendar .calendar-header .col:last-child,
 .calendar .calendar-header .col {
     padding: 0;
     text-align: center;

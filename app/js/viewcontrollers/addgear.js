@@ -43,22 +43,22 @@ define(
 			handleSubmerchantSkip,
 			handleSubmerchantSubmit,
 			handleSubmerchantAccept,
-			renderMonthCalendar,
-			setupMonthCalendar,
-			clearSelections,
-			renderSelections,
-			handleToday,
-			handlePrevious,
+			//renderMonthCalendar,
+			//setupMonthCalendar,
+			//clearSelections,
+			//renderSelections,
+			//handleToday,
+			//handlePrevious,
 			handleAvailabilityNext,
-			handleClearMonth,
-			handleAlwaysAvailable,
-			handleNeverAvailable,
-			handleDayStartSelect,
-			handleDayMoveSelect,
-			handleDayEndSelect,
-			isBeforeOrSameDay,
+			//handleClearMonth,
+			//handleAlwaysAvailable,
+			//handleNeverAvailable,
+			//handleDayStartSelect,
+			//handleDayMoveSelect,
+			//handleDayEndSelect,
+			//isBeforeOrSameDay,
 			saveAvailability,
-			isAfterOrSameDay,
+			//isAfterOrSameDay,
 
 			handleCancel,
 			handleNext,
@@ -771,7 +771,7 @@ define(
 			});
 		};
 
-		renderMonthCalendar = function($monthCalendarContainer) {
+		/*renderMonthCalendar = function($monthCalendarContainer) {
 			var header, dayRows, i;
 			header = '<div class="row calendar-header">';
 			header += '<div class="col-md-1 col-md-offset-1"></div>';
@@ -797,9 +797,9 @@ define(
 				dayRows += '</div>';
 			}
 			$monthCalendarContainer.append(header + dayRows);
-		};
+		};*/
 
-		setupMonthCalendar = function() {
+		/*setupMonthCalendar = function() {
 			var moment, startDay, $calendarContainer, $dayBox, row, col, date;
 
 			moment = new Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
@@ -825,15 +825,15 @@ define(
 			}
 
 			$('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
-		};
+		};*/
 
-		clearSelections = function() {
+		/*clearSelections = function() {
 			$('#gearavailability-months-container .day-row .day').each(function() {
 				$(this).removeClass('selected');
 			});
-		};
+		};*/
 
-		renderSelections = function() {
+		/*renderSelections = function() {
 			var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
 				$calendarContainer = $('#gearavailability-months-container', this.$element),
 				i, startMoment, endMoment, momentIterator;
@@ -872,33 +872,33 @@ define(
                     $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
                 }
 			}
-		};
+		};*/
 
-		handleToday = function(event) {
+		/*handleToday = function(event) {
 			var view = event.data;
 			view.shownMoment = new Moment();
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
-		};
+		};*/
 
-		handlePrevious = function(event) {
+		/*handlePrevious = function(event) {
 			var view = event.data;
 			view.shownMoment.subtract(1, 'month');
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
-		};
+		};*/
 
-		handleAvailabilityNext = function(event) {
+		/*handleAvailabilityNext = function(event) {
 			var view = event.data;
 			view.shownMoment.add(1, 'month');
 			view.setupMonthCalendar();
 			view.clearSelections();
 			view.renderSelections();
-		};
+		};*/
 
-		handleClearMonth = function(event) {
+		/*handleClearMonth = function(event) {
 			var view = event.data;
 			if(view.alwaysFlag === 1) {
                 view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [{
@@ -911,9 +911,9 @@ define(
             }
 			view.clearSelections();
 			view.renderSelections();
-		};
+		};*/
 
-		handleAlwaysAvailable = function(event) {
+		/*handleAlwaysAvailable = function(event) {
 			var view = event.data;
 			view.alwaysFlag = 1;
 			view.selections = {};
@@ -923,9 +923,9 @@ define(
 			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
 			view.clearSelections();
 			view.renderSelections();
-		};
+		};*/
 
-		handleNeverAvailable = function(event) {
+		/*handleNeverAvailable = function(event) {
 			var view = event.data;
 
 			view.alwaysFlag = 0;
@@ -940,9 +940,9 @@ define(
 			view.clearSelections();
 			view.renderSelections();
 
-		};
+		};*/
 
-		handleDayStartSelect = function(event) {
+		/*handleDayStartSelect = function(event) {
 			var view = event.data,
 				$this = $(this);
 
@@ -965,9 +965,9 @@ define(
 
 			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
 			$('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
-		};
+		};*/
 
-		handleDayMoveSelect = function(event) {
+		/*handleDayMoveSelect = function(event) {
 			//Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
 			var view = event.data,
 				$calendarContainer, selectionX, selectionY;
@@ -1003,9 +1003,9 @@ define(
 					}
 				}
 			});
-		};
+		};*/
 
-		handleDayEndSelect = function(event) {
+		/*handleDayEndSelect = function(event) {
 			var view = event.data,
 				key, monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
 			$('body').off('mousemove touchmove', view.handleDayMoveSelect);
@@ -1083,15 +1083,15 @@ define(
 
 			view.clearSelections();
             view.renderSelections();
-		};
+		};*/
 
-		isBeforeOrSameDay = function(momentA, momentB) {
+		/*isBeforeOrSameDay = function(momentA, momentB) {
 			return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
-		};
+		};*/
 
-		isAfterOrSameDay = function(momentA, momentB) {
+		/*isAfterOrSameDay = function(momentA, momentB) {
 			return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
-		};
+		};*/
 
 		/**
 		 * @assertion: selections are not overlapping.
@@ -1200,21 +1200,21 @@ define(
 			handleSubmerchantSkip: handleSubmerchantSkip,
 			handleSubmerchantSubmit: handleSubmerchantSubmit,
 			handleSubmerchantAccept: handleSubmerchantAccept,
-			renderMonthCalendar: renderMonthCalendar,
-			setupMonthCalendar: setupMonthCalendar,
-			clearSelections: clearSelections,
-			renderSelections: renderSelections,
-			handleToday: handleToday,
-			handlePrevious: handlePrevious,
+			//renderMonthCalendar: renderMonthCalendar,
+			//setupMonthCalendar: setupMonthCalendar,
+			//clearSelections: clearSelections,
+			//renderSelections: renderSelections,
+			//handleToday: handleToday,
+			//handlePrevious: handlePrevious,
 			handleAvailabilityNext: handleAvailabilityNext,
-			handleClearMonth: handleClearMonth,
-			handleAlwaysAvailable: handleAlwaysAvailable,
-			handleNeverAvailable: handleNeverAvailable,
-			handleDayStartSelect: handleDayStartSelect,
-			handleDayMoveSelect: handleDayMoveSelect,
-			handleDayEndSelect: handleDayEndSelect,
-			isBeforeOrSameDay: isBeforeOrSameDay,
-			isAfterOrSameDay: isAfterOrSameDay,
+			//handleClearMonth: handleClearMonth,
+			//handleAlwaysAvailable: handleAlwaysAvailable,
+			//handleNeverAvailable: handleNeverAvailable,
+			//handleDayStartSelect: handleDayStartSelect,
+			//handleDayMoveSelect: handleDayMoveSelect,
+			//handleDayEndSelect: handleDayEndSelect,
+			//isBeforeOrSameDay: isBeforeOrSameDay,
+			//isAfterOrSameDay: isAfterOrSameDay,
 			saveAvailability: saveAvailability,
 			
 			handleCancel: handleCancel,
