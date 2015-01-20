@@ -13,7 +13,8 @@ define(
 			didInitialize,
 			didRender,
 			populateYourGear,
-			setupEvents,
+
+			handleAddGear,
 			handleEditGearItem;
 
 		gearBlockID = 'yourgear-gear-block';
@@ -36,8 +37,11 @@ define(
 		};
 
 		didRender = function() {
-			App.header.setTitle('Your gear');
+			if(App.header) {
+				App.header.setTitle('Your gear');
+			}
 
+			this.setupEvent('click', '#dashboard-yourgear-add-btn', this, this.handleAddGear);
 			this.setupEvent('click', '.yourgear-item-edit-btn', this, this.handleEditGearItem);
 		};
 
@@ -83,6 +87,10 @@ define(
 			});
 		};
 
+		handleAddGear = function() {
+			App.router.openModalView('addgear');
+		};
+
 		handleEditGearItem = function(event) {
 			var view = event.data,
 				gear;
@@ -94,7 +102,8 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populateYourGear: populateYourGear,
-			setupEvents: setupEvents,
+
+			handleAddGear: handleAddGear,
 			handleEditGearItem: handleEditGearItem
 		}); 
 	}

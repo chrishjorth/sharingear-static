@@ -709,6 +709,10 @@ button:active .sg-gray-bg,
 	background-color: #f7f7f7;
 }
 
+.sg-darkgray-bg {
+	background-color: #c5cdd1;
+}
+
 /******* 7. GENERAL CUSTOM ELEMENTS *******/
 /**
  * These are stylings for custom elements such as buttons and form inputs.
@@ -1121,7 +1125,7 @@ button:active .sg-gray-bg,
 
 /*------ 7.d FORMS ------*/
 .gearsearchform {
-	
+	text-align: left;
 }
 @media (min-width: 768px) {
 	.gearsearchform {
@@ -1210,6 +1214,44 @@ button:active .sg-gray-bg,
 	}
 }
 
+.custom-radio {
+    position: relative;
+    display: inline-block;
+    width: 25%;
+    height: 20%;
+}
+@media (min-width: 768px) {
+	.custom-radio {
+    	width: 50%;
+	}
+}
+.custom-radio-icon {
+    margin: 30px 0 0 0;
+    display: block;
+    font-size: 50px;
+}
+.custom-radio input[type="radio"] {
+    display: none;
+}
+.custom-radio input[type="radio"] + label {
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: normal;
+    width: 100%;
+    line-height: 36px;
+    text-align: center;
+    text-transform: capitalize;
+}
+.custom-radio input[type="radio"]:checked + label {
+    cursor: pointer;
+    color: #55636a;
+}
+
+.modal-view-container .form-group {
+	padding: 30px;
+}
+
 /******* 8. SPECIFIC VIEWS *******/
 /**
  * These are rules that only apply to a specific view. These types of rules should be avoided as much as possible.
@@ -1286,7 +1328,6 @@ button:active .sg-gray-bg,
 
 .dashboard-profile-pic-view {
 	height: 220px;
-	background-color: #c5cdd1;
 }
 @media (min-width: 768px) {
 	.dashboard-profile-pic-view {
@@ -1380,6 +1421,25 @@ button:active .sg-gray-bg,
 	}
 }
 
+/*------ 8.f ADD GEAR -----*/
+@media (min-width: 768px) {
+	.addgear {
+		height: 100%;
+	}
+	.addgear > .row:first-child {
+		height: 100%;
+	}
+	.addgear > .row:first-child form {
+		height: 100%;
+	}
+	.addgear > .row:first-child form > .col-sm-3 {
+		height: 100%;
+	}
+	.addgear .gearbuttonlist-container {
+		height: 100%;
+	}
+}
+
 
 /******* 9. HELPERS *******/
 
@@ -1410,48 +1470,68 @@ button:active .sg-gray-bg,
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-tabbar-vans:before {
-	content: "\e600";
+.icon-addgear-pa:before {
+	content: "\e617";
 }
 
-.icon-tabbar-technicians:before {
-	content: "\e601";
+.icon-addgear-studio:before {
+	content: "\e616";
 }
 
-.icon-tabbar-gear:before {
-	content: "\e60b";
+.icon-addgear-dj:before {
+	content: "\e615";
 }
 
-.icon-edit:before {
-	content: "\e609";
+.icon-addgear-classical:before {
+	content: "\e614";
 }
 
-.icon-view:before {
-	content: "\e60a";
+.icon-addgear-keyboard:before {
+	content: "\e613";
+}
+
+.icon-addgear-drums:before {
+	content: "\e612";
+}
+
+.icon-addgear-cabinet:before {
+	content: "\e611";
+}
+
+.icon-addgear-bass:before {
+	content: "\e610";
+}
+
+.icon-addgear-guitar:before {
+	content: "\e60f";
+}
+
+.icon-addgear-amp:before {
+	content: "\e60e";
 }
 
 .icon-dashboard-gearrentals:before {
-	content: "\e602";
+	content: "\e600";
 }
 
 .icon-dashboard-profile:before {
-	content: "\e603";
+	content: "\e601";
 }
 
 .icon-dashboard-reservations:before {
-	content: "\e604";
+	content: "\e602";
 }
 
 .icon-dashboard-settings:before {
-	content: "\e605";
+	content: "\e603";
 }
 
 .icon-dashboard-techhires:before {
-	content: "\e60c";
+	content: "\e604";
 }
 
 .icon-dashboard-vanrentals:before {
-	content: "\e60d";
+	content: "\e605";
 }
 
 .icon-dashboard-yourgear:before {
@@ -1464,4 +1544,24 @@ button:active .sg-gray-bg,
 
 .icon-dashboard-yourvans:before {
 	content: "\e608";
+}
+
+.icon-edit:before {
+	content: "\e609";
+}
+
+.icon-tabbar-gear:before {
+	content: "\e60a";
+}
+
+.icon-tabbar-technicians:before {
+	content: "\e60b";
+}
+
+.icon-tabbar-vans:before {
+	content: "\e60c";
+}
+
+.icon-view:before {
+	content: "\e60d";
 }

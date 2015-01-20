@@ -20,18 +20,18 @@ define(
 			toggleLoading,
 
 			addGearIcons,
+			renderAccessories,
 			prepopulateInstrument,
 			populatePriceSuggestions,
 			populateSubtypeSelect,
 			populateBrandSelect,
 			handleGearRadio,
 			handleSelectSubtype,
+			handleSelectBrand,
 			saveInstrument,
 
 			populatePhotos,
 			handleImageUpload,
-
-			populateAccessories,
 
 			populateCountries,
 			handlePriceChange,
@@ -60,7 +60,10 @@ define(
 			saveAvailability,
 			isAfterOrSameDay,
 
-			handleNext;
+			handleCancel,
+			handleNext,
+
+			showPanel;
 
 		geocoder = new GoogleMaps.Geocoder();
 
@@ -98,7 +101,9 @@ define(
 
 		didRender = function() {
 			this.addGearIcons();
+			
 			this.prepopulateInstrument();
+			
 			this.populatePhotos();
 			this.populateCountries($('#dashboard-addgearprice-country', this.$element));
 
@@ -106,11 +111,10 @@ define(
 			$('#dashboard-addgearprice-form #price_b', this.$element).val(this.newGear.data.price_b);
 			$('#dashboard-addgearprice-form #price_c', this.$element).val(this.newGear.data.price_c);
 
-
-			this.setupEvent('click', '#editgear-next-btn', this, this.handleNext);
-			this.setupEvent('change', '#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
+			this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+			this.setupEvent('click', '.next-btn', this, this.handleNext);
+			this.setupEvent('change', '#addgear-form-type .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
 			this.setupEvent('change', '#dashboard-addgearphotos-form-imageupload', this, this.handleImageUpload);
-			this.setupEvent('change', '#dashboard-addgear-form-subtype', this, this.populateAccessories);
 			this.setupEvent('change', '#dashboard-addgear-form-subtype', this, this.populatePriceSuggestions);
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
@@ -118,7 +122,14 @@ define(
 		};
 
 		getTabID = function() {
-			return $('#addgear-crumbs li.active', this.$element).attr('id');
+			var tabID = null;
+			$('.addgear > .row').each(function() {
+				var $this = $(this);
+				if($this.hasClass('hidden') === false) {
+					tabID = $this.attr('id');
+				}
+			});
+			return tabID;
 		};
 
 		populatePriceSuggestions = function (event) {
@@ -140,33 +151,13 @@ define(
 
 		toggleLoading = function() {
 			if(this.isLoading === true) {
-				$('#editgear-next-btn', this.$element).html('Next');
+				$('.next-btn', this.$element).html('Next');
 				this.isLoading = false;
 			}
 			else {
-				$('#editgear-next-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+				$('.next-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 				this.isLoading = true;
 			}
-		};
-
-		populateAccessories = function (event) {
-			var gearClassification = App.gearClassification.data.classification,
-				html = "",
-				view,gearSubtypes,i;
-
-			view = event.data;
-			var geartype = $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked',view.$element).val();
-
-			gearSubtypes = gearClassification[geartype];
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype',view.$element).val()) {
-					var j;
-					for(j=0;j<gearSubtypes[i].accessories.length;j++){
-						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
-					}
-				}
-			}
-			$('#dashboard-addgear-accessories-container',view.$element).html(html);
 		};
 
 		addGearIcons = function() {
@@ -179,13 +170,38 @@ define(
 				html += '<div class="custom-radio">';
 				html += '<input type="radio" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">';
 				html += '<label for="gear-radio-' + gearType + '">';
-				html += '<img src="images/addgear/' + gearType.toLowerCase() + '-48x48.png" width="48" height"48" class="custom-radio-image">';
+				//html += '<img src="images/addgear/' + gearType.toLowerCase() + '-48x48.png" width="48" height"48" class="custom-radio-image">';
+				html += '<div class="custom-radio-icon sg-icon icon-addgear-' + gearType.toLowerCase() + '"></div>';
 				html += gearType;
 				html += '</label>';
 				html += '</div>';
 			}
 
 			$('.gearbuttonlist-container', view.$element).append(html);
+		};
+
+		renderAccessories = function () {
+			var view = this,
+				gearClassification = App.gearClassification.data.classification,
+				html = '',
+				gearSubtypes, i, j;
+
+			gearSubtypes = gearClassification[$('#addgear-form-type input[type="radio"]').val()];
+
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].subtype === $('#addgear-form-subtype', view.$element).val()) {
+					for(j = 0; j < gearSubtypes[i].accessories.length; j++){
+						//Check the checkbox if the specific accessory was selected for this gear before
+						if(view.newGear.data.accessories !== null && view.newGear.data.accessories.indexOf(gearSubtypes[i].accessories[j]) > -1) {
+							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'" checked> '+gearSubtypes[i].accessories[j];
+						}
+						else{
+							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+						}
+					}
+				}
+			}
+			$('#addgear-accessories-container', view.$element).html(html);
 		};
 
 		/**
@@ -218,16 +234,21 @@ define(
 		populateSubtypeSelect = function(gearType) {
 			var gearClassification = App.gearClassification.data.classification,
 				html = '<option> ' + subtypeDefault + ' </option>',
-				$subtypeSelect, $brandSelectContainer, gearSubtypes, i;
+				$subtypeSelect, $brandSelectContainer, $detailsContainer, gearSubtypes, i;
 
-			$('#gear-subtype-container', this.$element).removeClass('hidden');
+			$('#addgear-form-subtype-container', this.$element).removeClass('hidden');
 
-			$subtypeSelect = $('#gear-subtype-container select', this.$element);
+			$subtypeSelect = $('#addgear-form-subtype-container select', this.$element);
 			$subtypeSelect.empty();
 			
-			$brandSelectContainer = $('#gear-brand-container', this.$element);
+			$brandSelectContainer = $('#addgear-form-brand-container', this.$element);
 			if($brandSelectContainer.hasClass('hidden') === false) {
 				$brandSelectContainer.addClass('hidden');
+			}
+
+			$detailsContainer = $('#addgear-form-geardetails-container', this.$element);
+			if($detailsContainer.hasClass('hidden') === false) {
+				$detailsContainer.addClass('hidden');
 			}
 			
 			gearSubtypes = gearClassification[gearType];
@@ -235,23 +256,29 @@ define(
 				html += '<option value="' + gearSubtypes[i].subtype + '">' + gearSubtypes[i].subtype + '</option>';
 			}
 			$subtypeSelect.append(html);
-			this.setupEvent('change', '#gear-subtype-container select', this, this.handleSelectSubtype);
+			this.setupEvent('change', '#addgear-form-subtype-container select', this, this.handleSelectSubtype);
 		};
 
 		populateBrandSelect = function() {
 			var brands = App.gearClassification.data.brands,
 				html = '<option> ' + brandDefault + ' </option>',
-				$brandSelect, i;
+				$brandSelect, $detailsContainer, i;
 
-			$('#gear-brand-container', this.$element).removeClass('hidden');
+			$('#addgear-form-brand-container', this.$element).removeClass('hidden');
 
-			$brandSelect = $('#gear-brand-container select', this.$element);
+			$brandSelect = $('#addgear-form-brand-container select', this.$element);
 			$brandSelect.empty();
+
+			$detailsContainer = $('#addgear-form-geardetails-container', this.$element);
+			if($detailsContainer.hasClass('hidden') === false) {
+				$detailsContainer.addClass('hidden');
+			}
 
 			for(i = 0; i < brands.length; i++) {
 				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
 			}
 			$brandSelect.append(html);
+			this.setupEvent('change', '#addgear-form-brand-container select', this, this.handleSelectBrand);
 		};
 
 		/**
@@ -265,6 +292,12 @@ define(
 		handleSelectSubtype = function(event) {
 			var view = event.data;
 			view.populateBrandSelect();
+			view.renderAccessories();
+		};
+
+		handleSelectBrand = function(event) {
+			var view = event.data;
+			$('#addgear-form-geardetails-container', view.$element).removeClass('hidden');
 		};
 
 		saveInstrument = function() {
@@ -277,16 +310,18 @@ define(
 			}
 
 			//Push the checked checkboxes to an array
-			Array.prototype.push.apply(accessoriesArray, $('#dashboard-addgear-accessories-container input:checked',view.$element).map(function(){return this.name;}));
+			Array.prototype.push.apply(accessoriesArray, $('#addgear-accessories-container input:checked', view.$element).map(function(){
+				return this.name;
+			}));
 
 			//Create new gear model object from form data
 			newData = {
-				gear_type: $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked').val(),
-				subtype: $('#dashboard-addgear-form-subtype option:selected').val(),
-				brand: $('#dashboard-addgear-form-brand option:selected').val(),
-				model: $('#dashboard-addgear-form-model').val(),
+				gear_type: $('#addgear-form-type .gearbuttonlist-container input[type="radio"]:checked').val(),
+				subtype: $('#addgear-form-subtype option:selected').val(),
+				brand: $('#addgear-form-brand option:selected').val(),
+				model: $('#addgear-form-model').val(),
 				accessories: accessoriesArray,
-				description: $('#dashboard-addgear-form-description').val()
+				description: $('#addgear-form-description').val()
 			};
 
 			//Validate
@@ -317,8 +352,8 @@ define(
 					return;
 				}
 
-				$('#addgear-photos-li', view.$element).html('<a href="#addgear-photos" role="tab" data-toggle="tab">Photos</a>');
-				$('#addgear-crumbs a[href="#addgear-photos"]', view.$element).tab('show');
+				view.showPanel('#addgear-panel-photos');
+
 				view.toggleLoading();
 			};
 
@@ -501,8 +536,7 @@ define(
 						view.toggleLoading();
 						return;
 					}
-					$('#addgear-availability-li', view.$element).html('<a href="#addgear-availability" role="tab" data-toggle="tab">Availability</a>');
-					$('#addgear-crumbs a[href="#addgear-availability"]', view.$element).tab('show');
+					view.showPanel('#addgear-panel-availability');
 					if(App.user.isSubMerchant() === false) {
 						view.renderSubmerchantForm();
 					}
@@ -910,8 +944,7 @@ define(
 
 		handleDayStartSelect = function(event) {
 			var view = event.data,
-				$this = $(this),
-				selection;
+				$this = $(this);
 
 			//Do not allow selecting outside of the month
 			if($this.data('month') !== view.shownMoment.month()) {
@@ -954,7 +987,7 @@ define(
 			$calendarContainer = $('#gearavailability-months-container', view.$element);
 			$('.day-row .day', $calendarContainer).each(function() {
 				var $this = $(this),
-					dayBoxOffset, selection;
+					dayBoxOffset;
 
 				dayBoxOffset = $this.offset();
 				if($this.data('month') === view.shownMoment.month()) {
@@ -1095,26 +1128,44 @@ define(
       		});
         };
 
-		handleNext = function(event) {
-			var view = event.data;
+        handleCancel = function() {
+        	App.router.closeModalView();
+        };
 
-			switch(view.getTabID()) {
-				case 'addgear-instrument-li':
+		handleNext = function(event) {
+			var view = event.data,
+				currentTabID;
+
+			currentTabID = view.getTabID();
+
+			switch(currentTabID) {
+				case 'addgear-panel-type':
 					view.saveInstrument();
 					break;
-				case 'addgear-photos-li':
+				case 'addgear-panel-photos':
 					if(view.isLoading === false) {
-						$('#addgear-pricelocation-li', view.$element).html('<a href="#addgear-pricelocation" role="tab" data-toggle="tab">Price &amp; Location</a>');
-						$('#addgear-crumbs a[href="#addgear-pricelocation"]', view.$element).tab('show');
+						view.showPanel('#addgear-panel-pricelocation');
 					}
 					break;
-				case 'addgear-pricelocation-li':
+				case 'addgear-panel-pricelocation':
 					view.savePriceLocation();
 					break;
-				case 'addgear-availability-li':
+				case 'addgear-panel-availability':
 					view.saveAvailability();
 					break;
+				default:
+					console.log('Something went wrong.');
 			}
+		};
+
+		showPanel = function(panelID) {
+			$('.addgear > .row', this.$element).each(function() {
+				var $this = $(this);
+				if($this.hasClass('hidden') === false) {
+					$this.addClass('hidden');
+				}
+			});
+			$(panelID, this.$element).removeClass('hidden');
 		};
 
 		return ViewController.inherit({
@@ -1125,17 +1176,18 @@ define(
 			toggleLoading: toggleLoading,
 
 			addGearIcons: addGearIcons,
+			renderAccessories: renderAccessories,
 			prepopulateInstrument: prepopulateInstrument,
 			populateSubtypeSelect: populateSubtypeSelect,
 			populateBrandSelect: populateBrandSelect,
 			handleGearRadio: handleGearRadio,
 			handleSelectSubtype: handleSelectSubtype,
+			handleSelectBrand: handleSelectBrand,
 			saveInstrument: saveInstrument,
 
 			populatePhotos: populatePhotos,
 			handleImageUpload: handleImageUpload,
 
-			populateAccessories:populateAccessories,
 			populatePriceSuggestions:populatePriceSuggestions,
 
 			populateCountries: populateCountries,
@@ -1165,7 +1217,10 @@ define(
 			isAfterOrSameDay: isAfterOrSameDay,
 			saveAvailability: saveAvailability,
 			
-			handleNext: handleNext
+			handleCancel: handleCancel,
+			handleNext: handleNext,
+
+			showPanel: showPanel
 		});
 	}
 );

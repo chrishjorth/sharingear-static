@@ -66,15 +66,15 @@ define(
 			});
 
 			it('Can load a subview', function(done) {
-				ViewLoader.currentViewController.path = 'dashboard/addgear';
-				ViewLoader.currentViewController.subPath = 'addgear';
+				ViewLoader.currentViewController.path = 'dashboard/yourgear';
+				ViewLoader.currentViewController.subPath = 'yourgear';
 				ViewLoader.loadSubview({test: 'test2'}, function(error, currentSubViewController) {
 					expect(ViewLoader.currentViewController.name).to.equal('dashboard');
-					expect(ViewLoader.currentViewController.path).to.equal('dashboard/addgear');
+					expect(ViewLoader.currentViewController.path).to.equal('dashboard/yourgear');
 					expect(ViewLoader.currentViewController.passedData.test).to.equal('test');
 
-					expect(currentSubViewController.name).to.equal('dashboard-addgear');
-					expect(currentSubViewController.path).to.equal('dashboard/addgear');
+					expect(currentSubViewController.name).to.equal('dashboard-yourgear');
+					expect(currentSubViewController.path).to.equal('dashboard/yourgear');
 					expect(currentSubViewController.passedData.test).to.equal('test2');
 					done();
 				});
