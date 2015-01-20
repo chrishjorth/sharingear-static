@@ -568,9 +568,17 @@ define(
 		};
 
 		renderAvailability = function() {
-			$('#addgear-availability-calendar', this.$element).removeClass('hidden');
+			var view = this,
+				$calendarContainer;
+			$calendarContainer = $('#addgear-availability-calendar', this.$element);
+			$calendarContainer.removeClass('hidden');
+			require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
+				view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.newGear});
+				view.calendarVC.initialize();
+				view.calendarVC.render();
+			});
 
-			this.renderMonthCalendar($('#gearavailability-months-container'));
+			/*this.renderMonthCalendar($('#gearavailability-months-container'));
 			this.setupMonthCalendar();
 			this.clearSelections();
 			this.renderSelections();
@@ -582,7 +590,7 @@ define(
 			this.setupEvent('click', '#gearavailability-clearmonth-btn', this, this.handleClearMonth);
 			this.setupEvent('click', '#gearavailability-always-btn', this, this.handleAlwaysAvailable);
 			this.setupEvent('click', '#gearavailability-never-btn', this, this.handleNeverAvailable);
-			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
+			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);*/
 		};
 
 		renderSubmerchantForm = function() {
@@ -1099,7 +1107,7 @@ define(
 		saveAvailability = function() {
 			var view = this,
 				availabilityArray = [],
-				month, monthSelections, selection, j;
+				selections, alwaysFlag, month, monthSelections, selection, j;
 
 			if(view.isLoading === true) {
 				return;
@@ -1107,8 +1115,11 @@ define(
 
 			view.toggleLoading();
 
-			for(month in view.selections) {
-				monthSelections = view.selections[month];
+			selections = view.calendarVC.getSelections();
+			alwaysFlag = view.calendarVC.getAlwaysFlag();
+
+			for(month in selections) {
+				monthSelections = selections[month];
 				for(j = 0; j < monthSelections.length; j++) {
 					selection = monthSelections[j];
 					availabilityArray.push({
@@ -1118,13 +1129,14 @@ define(
 				}
 			}
 
-      		view.newGear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function(error) {
+      		view.newGear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
       			if(error) {
+      				alert('Error saving gear availability.');
       				console.log(error);
-      				view.toggleLoading();
       				return;
       			}
-      			App.router.navigateTo('dashboard/addgearend', view.newGear);
+      			view.toggleLoading();
+      			view.showPanel('#addgear-panel-final');
       		});
         };
 

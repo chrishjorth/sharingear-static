@@ -198,10 +198,6 @@ define(
                     view.calendarVC.initialize();
                     view.calendarVC.render();
                 });
-               // this.renderMonthCalendar($('#gearavailability-months-container'));
-                //this.setupMonthCalendar();
-                //this.clearSelections();
-                //this.renderSelections();
             }
             else {
                 var user = App.user.data;
