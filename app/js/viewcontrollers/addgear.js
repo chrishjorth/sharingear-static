@@ -43,25 +43,13 @@ define(
 			handleSubmerchantSkip,
 			handleSubmerchantSubmit,
 			handleSubmerchantAccept,
-			//renderMonthCalendar,
-			//setupMonthCalendar,
-			//clearSelections,
-			//renderSelections,
-			//handleToday,
-			//handlePrevious,
 			handleAvailabilityNext,
-			//handleClearMonth,
-			//handleAlwaysAvailable,
-			//handleNeverAvailable,
-			//handleDayStartSelect,
-			//handleDayMoveSelect,
-			//handleDayEndSelect,
-			//isBeforeOrSameDay,
 			saveAvailability,
-			//isAfterOrSameDay,
 
 			handleCancel,
 			handleNext,
+			handleViewGearProfile,
+			handleAddMoreGear,
 
 			showPanel;
 
@@ -170,7 +158,6 @@ define(
 				html += '<div class="custom-radio">';
 				html += '<input type="radio" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">';
 				html += '<label for="gear-radio-' + gearType + '">';
-				//html += '<img src="images/addgear/' + gearType.toLowerCase() + '-48x48.png" width="48" height"48" class="custom-radio-image">';
 				html += '<div class="custom-radio-icon sg-icon icon-addgear-' + gearType.toLowerCase() + '"></div>';
 				html += gearType;
 				html += '</label>';
@@ -577,20 +564,6 @@ define(
 				view.calendarVC.initialize();
 				view.calendarVC.render();
 			});
-
-			/*this.renderMonthCalendar($('#gearavailability-months-container'));
-			this.setupMonthCalendar();
-			this.clearSelections();
-			this.renderSelections();
-
-			this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
-			this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
-			this.setupEvent('click', '#gearavailability-next-btn', this, this.handleAvailabilityNext);
-
-			this.setupEvent('click', '#gearavailability-clearmonth-btn', this, this.handleClearMonth);
-			this.setupEvent('click', '#gearavailability-always-btn', this, this.handleAlwaysAvailable);
-			this.setupEvent('click', '#gearavailability-never-btn', this, this.handleNeverAvailable);
-			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);*/
 		};
 
 		renderSubmerchantForm = function() {
@@ -779,331 +752,6 @@ define(
 			});
 		};
 
-		/*renderMonthCalendar = function($monthCalendarContainer) {
-			var header, dayRows, i;
-			header = '<div class="row calendar-header">';
-			header += '<div class="col-md-1 col-md-offset-1"></div>';
-			header += '<div class="col-md-1">M</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">W</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">F</div>';
-			header += '<div class="col-md-1">S</div>';
-			header += '<div class="col-md-1">S</div>';
-			header += '</div>';
-			dayRows = '';
-			for(i = 0; i < 6; i++) {
-				dayRows += '<div class="row day-row">';
-				dayRows += '<div class="col-md-1 col-md-offset-1"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '</div>';
-			}
-			$monthCalendarContainer.append(header + dayRows);
-		};*/
-
-		/*setupMonthCalendar = function() {
-			var moment, startDay, $calendarContainer, $dayBox, row, col, date;
-
-			moment = new Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
-			startDay = moment.date(1).weekday();
-			$calendarContainer = $('#gearavailability-months-container', this.$element);
-
-			//Set date to first box
-			moment.subtract(startDay, 'days');
-			for(row = 1; row <= 6; row++) { //6 possible week pieces
-				for(col = 1; col <= 7; col++) { //7 days
-					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-					date = moment.date();
-					$dayBox.html(date);
-					$dayBox.data('date', date);
-					$dayBox.data('month', moment.month());
-					$dayBox.attr('id', 'gearavailability-day-' + moment.month() + '-' + date);
-					$dayBox.removeClass('disabled');
-					if(moment.month() !== this.shownMoment.month()) {
-						$dayBox.addClass('disabled');
-					}
-					moment.add(1, 'days');
-				}
-			}
-
-			$('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
-		};*/
-
-		/*clearSelections = function() {
-			$('#gearavailability-months-container .day-row .day').each(function() {
-				$(this).removeClass('selected');
-			});
-		};*/
-
-		/*renderSelections = function() {
-			var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
-				$calendarContainer = $('#gearavailability-months-container', this.$element),
-				i, startMoment, endMoment, momentIterator;
-
-			if(this.alwaysFlag === 1) { //We do not need the case of 0 since by assertion the cells have been cleared
-                $('.day', $calendarContainer).each(function() {
-                    var $this = $(this);
-                    if($this.hasClass('disabled') === false) {
-                        $this.addClass('selected');
-                    }
-                });
-            }
-
-            if(Array.isArray(selections) === false) {
-                return;
-            }
-
-			for(i = 0; i < selections.length; i++) {
-				startMoment = selections[i].startMoment;
-				$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
-				endMoment = selections[i].endMoment;
-				momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
-				while(momentIterator.isBefore(endMoment, 'day') === true) {
-					if(this.alwaysFlag === 0) {
-                        $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');    
-                    }
-                    else {
-                        $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
-                    }
-					momentIterator.add(1, 'days');
-				}
-				if(this.alwaysFlag === 0) {
-					$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');    
-                }
-                else {
-                    $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
-                }
-			}
-		};*/
-
-		/*handleToday = function(event) {
-			var view = event.data;
-			view.shownMoment = new Moment();
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
-		};*/
-
-		/*handlePrevious = function(event) {
-			var view = event.data;
-			view.shownMoment.subtract(1, 'month');
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
-		};*/
-
-		/*handleAvailabilityNext = function(event) {
-			var view = event.data;
-			view.shownMoment.add(1, 'month');
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
-		};*/
-
-		/*handleClearMonth = function(event) {
-			var view = event.data;
-			if(view.alwaysFlag === 1) {
-                view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [{
-                    startMoment: new Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: 1}),
-                    endMoment: new Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: view.shownMoment.daysInMonth()})
-                }];
-            }
-            else {
-                view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
-            }
-			view.clearSelections();
-			view.renderSelections();
-		};*/
-
-		/*handleAlwaysAvailable = function(event) {
-			var view = event.data;
-			view.alwaysFlag = 1;
-			view.selections = {};
-
-
-			$('#gearavailability-always-btn',view.$element).addClass('button-selected-state');
-			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
-			view.clearSelections();
-			view.renderSelections();
-		};*/
-
-		/*handleNeverAvailable = function(event) {
-			var view = event.data;
-
-			view.alwaysFlag = 0;
-
-			view.selections = {};
-			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
-
-			$('#gearavailability-never-btn',view.$element).addClass('button-selected-state');
-			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
-
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
-
-		};*/
-
-		/*handleDayStartSelect = function(event) {
-			var view = event.data,
-				$this = $(this);
-
-			//Do not allow selecting outside of the month
-			if($this.data('month') !== view.shownMoment.month()) {
-				return;
-			}
-
-			if($this.hasClass('selected') === true) {
-                $this.removeClass('selected');
-                view.dragMakeAvailable = false;
-            }
-            else {
-                $this.addClass('selected');
-                view.dragMakeAvailable = true;
-            }
-
-			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
-			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
-
-			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
-			$('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
-		};*/
-
-		/*handleDayMoveSelect = function(event) {
-			//Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
-			var view = event.data,
-				$calendarContainer, selectionX, selectionY;
-			if(event.type === 'mousemove') {
-				selectionX = event.pageX;
-				selectionY = event.pageY;
-			}
-			else if(event.originalEvent.touches && event.originalEvent.touches.length == 1) {
-				selectionX = event.originalEvent.targetTouches[0].pageX;
-				selectionY = event.originalEvent.targetTouches[0].pageY;
-			}
-			else {
-				//Something wrong happened and we ignore
-				return;
-			}
-
-			$calendarContainer = $('#gearavailability-months-container', view.$element);
-			$('.day-row .day', $calendarContainer).each(function() {
-				var $this = $(this),
-					dayBoxOffset;
-
-				dayBoxOffset = $this.offset();
-				if($this.data('month') === view.shownMoment.month()) {
-					if(selectionX >= dayBoxOffset.left && selectionX <= dayBoxOffset.left + $this.width() && selectionY >= dayBoxOffset.top && selectionY <= dayBoxOffset.top + $this.height()) {
-						if(view.dragMakeAvailable === false) {
-                            $this.removeClass('selected');
-                        }
-                        else {
-                            if($this.hasClass('selected') === false) {
-                                $this.addClass('selected');
-                            }
-                        }
-					}
-				}
-			});
-		};*/
-
-		/*handleDayEndSelect = function(event) {
-			var view = event.data,
-				key, monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
-			$('body').off('mousemove touchmove', view.handleDayMoveSelect);
-			$('body').off('mouseup touchend', view.handleDayEndSelect);
-
-			//Add days to selections
-            key = view.shownMoment.year() + '-' + (view.shownMoment.month() + 1);
-            view.selections[key] = [];
-            $('#gearavailability-months-container .day-row .day', view.$element).each(function() {
-                var $this = $(this),
-                    addSelection;
-                addSelection = function() {
-                    var selection;
-                    selection = {
-                        startMoment: new Moment({year: $this.data('year'), month: $this.data('month'), day: $this.data('date')}),
-                        endMoment: new Moment({year: $this.data('year'), month: $this.data('month'), day: $this.data('date')})
-                    };
-                    view.selections[key].push(selection);
-                };
-
-                if($this.hasClass('disabled') === false) {
-                    if(view.alwaysFlag === 1) {
-                        if($this.hasClass('selected') === false) {
-                            addSelection();
-                        }
-                    }
-                    else {
-                        if($this.hasClass('selected') === true) {
-                            addSelection();
-                        }
-                    }
-                }
-            });
-
-			//Scan selections for this month and cleanup overlaps
-			monthSelections = view.selections[key];
-			i = 0;
-			while(i < monthSelections.length) {
-				currentSelection = monthSelections[i];
-				j = i + 1;
-				didSplice = false;
-				while(j < monthSelections.length) {
-					startMomentA = currentSelection.startMoment;
-					endMomentA = currentSelection.endMoment;
-					startMomentB = monthSelections[j].startMoment;
-					endMomentB = monthSelections[j].endMoment;
-					if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(startMomentA, endMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
-						currentSelection.startMoment = startMomentB;
-						monthSelections.splice(j, 1);
-						didSplice = true;
-					}
-					else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
-						currentSelection.endMoment = endMomentB;
-						monthSelections.splice(j, 1);
-						didSplice = true;
-					}
-					else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
-						monthSelections.splice(j, 1);
-						didSplice = true;
-					}
-					else if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
-						currentSelection.startMoment = startMomentB;
-						currentSelection.endMoment = endMomentB;
-						monthSelections.splice(j, 1);
-						didSplice = true;
-					}
-					else {
-						j++;
-					}
-				}
-				if(didSplice === false) {
-					i++;
-				}
-			}
-
-			view.clearSelections();
-            view.renderSelections();
-		};*/
-
-		/*isBeforeOrSameDay = function(momentA, momentB) {
-			return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
-		};*/
-
-		/*isAfterOrSameDay = function(momentA, momentB) {
-			return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
-		};*/
-
-		/**
-		 * @assertion: selections are not overlapping.
-		 */
 		saveAvailability = function() {
 			var view = this,
 				availabilityArray = [],
@@ -1137,6 +785,8 @@ define(
       			}
       			view.toggleLoading();
       			view.showPanel('#addgear-panel-final');
+      			view.setupEvent('click', '.profile-btn', view, view.handleViewGearProfile);
+      			view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreGear);
       		});
         };
 
@@ -1168,6 +818,17 @@ define(
 				default:
 					console.log('Something went wrong.');
 			}
+		};
+
+		handleViewGearProfile = function(event) {
+			var view = event.data;
+			App.router.closeModalView();
+			App.router.navigateTo('gearprofile/' + view.newGear.data.id);
+		};
+
+		handleAddMoreGear = function() {
+			App.router.closeModalView();
+			App.router.openModalView('addgear');
 		};
 
 		showPanel = function(panelID) {
@@ -1212,25 +873,13 @@ define(
 			handleSubmerchantSkip: handleSubmerchantSkip,
 			handleSubmerchantSubmit: handleSubmerchantSubmit,
 			handleSubmerchantAccept: handleSubmerchantAccept,
-			//renderMonthCalendar: renderMonthCalendar,
-			//setupMonthCalendar: setupMonthCalendar,
-			//clearSelections: clearSelections,
-			//renderSelections: renderSelections,
-			//handleToday: handleToday,
-			//handlePrevious: handlePrevious,
 			handleAvailabilityNext: handleAvailabilityNext,
-			//handleClearMonth: handleClearMonth,
-			//handleAlwaysAvailable: handleAlwaysAvailable,
-			//handleNeverAvailable: handleNeverAvailable,
-			//handleDayStartSelect: handleDayStartSelect,
-			//handleDayMoveSelect: handleDayMoveSelect,
-			//handleDayEndSelect: handleDayEndSelect,
-			//isBeforeOrSameDay: isBeforeOrSameDay,
-			//isAfterOrSameDay: isAfterOrSameDay,
 			saveAvailability: saveAvailability,
 			
 			handleCancel: handleCancel,
 			handleNext: handleNext,
+			handleViewGearProfile: handleViewGearProfile,
+			handleAddMoreGear: handleAddMoreGear,
 
 			showPanel: showPanel
 		});
