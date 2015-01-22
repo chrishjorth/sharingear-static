@@ -55,6 +55,11 @@ body {
 	border: none;
 }
 
+.bs-reset {
+	margin: 0;
+	padding: 0;
+}
+
 /******* 2. VIEW STRUCTURE *******/
 /**
  * These are rules that define the positioning of views and hence the appearance of navigation on the site.
@@ -71,6 +76,7 @@ body {
 }
 .view-container .view {
 	padding-top: 48px;
+	min-height: 100%;
 }
 @media (min-width: 768px) {
 	.view-container .view {
@@ -675,6 +681,9 @@ body {
 .sg-white:hover {
 	color: #ffffff;
 }
+.sg-white-bg {
+	background-color: #ffffff;
+}
 
 .sg-black-bg-50 {
 	background-color: #000000;
@@ -696,23 +705,36 @@ body {
 	background-color: #0397dc;
 }
 
+.sg-lightgray-bg {
+	background-color: #f7f7f7;
+}
+
 .sg-gray {
 	color: #c5cdd0;
 }
 button:active .sg-gray,
-.sg-gray:active {
+button.sg-gray:active  {
 	color: #f7f7f7;
 }
 .sg-gray-bg {
 	background-color: #c5cdd0;
 }
-button:active .sg-gray-bg,
-.sg-gray-bg:active {
+button:active .sg-gray-bg {
 	background-color: #f7f7f7;
 }
 
+.sg-darkgray {
+	color: #55636a;
+}
 .sg-darkgray-bg {
-	background-color: #c5cdd1;
+	background-color: #55636a;
+}
+
+.sg-darkergray {
+	color: #03344b;
+}
+.sg-darkergray-bg {
+	background-color: #03344b;
 }
 
 /******* 7. GENERAL CUSTOM ELEMENTS *******/
@@ -1443,9 +1465,246 @@ button:active .sg-gray-bg,
 	}
 }
 
+/*------ 8.g GEAR PROFILE ------*/
+.view-container .gearprofile {
+	padding: 48px 0 0 0;
+}
+@media (min-width: 768px) {
+	.view-container .gearprofile {
+		padding: 90px 5% 0 5%;
+	}
+}
+
+.sg-card {
+	margin: 2px 2px 4px 2px;
+	padding: 0;
+}
+@media (min-width: 768px) {
+	.sg-card {
+		margin: 3px 3px 6px 3px;
+	}
+}
+.sg-card-follower {
+	margin-top: 0;
+}
+.sg-card-sibling {
+	margin-top: 0;
+}
+@media (min-width: 768px) {
+	.sg-card-sibling {
+		margin-top: 3px;
+	}
+}
+
+.gearprofile .sg-gray {
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.gearprofile .sg-gray .sg-icon {
+	font-size: 24px;
+	margin-right: 6px;
+}
+
+.gearprofile .sg-darkergray {
+	font-size: 12px;
+	font-weight: bold;
+}
+.gearprofile .sg-darkergray .sg-icon {
+	font-size: 35px;
+	margin-right: 12px;
+}
+@media (min-width: 768px) {
+	.gearprofile .sg-darkergray {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.gearprofile .sg-darkergray .sg-icon {
+		font-size: 68px;
+		margin-right: 20px;
+	}
+}
+
+.gearprofile .gear-title {
+	display: inline-block;
+	max-width: 50%;
+}
+
+.gearprofile .social {
+	display: block;
+	font-size: 22px;
+	font-weight: 100;
+	padding-top: 6px;
+	float: right;
+}
+.gearprofile .social .sg-btn-invisible {
+	font-size: 18px;
+}
+@media (min-width: 768px) {
+	.gearprofile .social {
+		font-size: 44px;
+		padding-top: 12px;
+	}
+	.gearprofile .social .sg-btn-invisible {
+		font-size: 32px;
+	}
+}
+
+.gearprofile .profile-pic-container {
+	height: 50px;
+}
+.gearprofile .profile-pic {
+	border-radius: 25px;
+	height: 50px;
+	width: 50px;
+	background-color: #ffffff;
+	display: inline-block;
+}
+
+.gearprofile .pricing > div {
+	padding: 0;
+	padding-left: 4px;
+}
+@media (min-width: 768px) {
+	.gearprofile .pricing > div {
+		padding: 0;
+		padding-left: 6px;
+	}
+}
+.gearprofile .pricing > div:first-child {
+	padding-left: 0;
+}
+.gearprofile .pricing .sg-darkergray {
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 20px;
+	padding-top: 8px;
+}
+@media (min-width: 768px) {
+	.gearprofile .pricing .sg-darkergray {
+		line-height: 24px;
+		padding-top: 8px;
+	}
+}
+.gearprofile .pricing .sg-white {
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 20px;
+	padding-bottom: 8px;
+}
+@media (min-width: 768px) {
+	.gearprofile .pricing .sg-white {
+		line-height: 26px;
+		padding-bottom: 8px;
+	}
+}
+.gearprofile .pricing .sg-white span {
+	font-size: 10px;
+	vertical-align: super;
+}
+
+.gearprofile .pricing .button-container {
+	padding: 0 0 0 4px;
+}
+@media (min-width: 768px) {
+	.gearprofile .pricing .button-container {
+		padding: 6px 0 0 0;
+	}
+}
+.gearprofile .button-container .sg-white {
+	height: 60px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0;
+}
+@media (min-width: 768px) {
+	.gearprofile .button-container .sg-white {
+		height: 60px;
+		font-size: 18px;
+		font-weight: bold;
+	}
+}
+
+.gearprofile .owl-carousel {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.gearprofile .owl-wrapper-outer {
+	margin-top: 15px;
+}
+.gearprofile .owl-wrapper-outer .item {
+	text-align: center;
+}
+.gearprofile .owl-wrapper-outer .item img {
+	max-height: 380px;
+	max-width: 100%;
+}
+
+.gearprofile .map-container {
+	padding-bottom: 15px;
+}
+.gearprofile .map-container .fa {
+	font-size: 24px;
+	line-height: 36px;
+}
+.gearprofile .map-container .sg-darkergray {
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 36px;
+}
+.gearprofile .map-container .map {
+	height: 300px;
+}
+
+.gearprofile .profile-container {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+.gearprofile .profile-container .sg-lightgray-bg {
+	padding: 10px;
+}
+.gearprofile .profile-container .profile-pic {
+	height: 100px;
+	width: 100px;
+	border-radius: 50px;
+}
+
+.gearprofile .profile-container .name {
+	font-weight: normal;
+	text-transform: uppercase;
+	font-size: 16px;
+	line-height: 32px;
+	padding-top: 4px;
+}
+.gearprofile .profile-container .tagline {
+	font-weight: normal;
+	text-transform: none;
+}
+.gearprofile .profile-container button .sg-darkergray {
+	font-size: 40px;
+	margin-left: 4px;
+	margin-right: 4px;
+}
 
 /******* 9. HELPERS *******/
+.sg-no-mobile {
+	display: none;
+}
+@media (min-width: 768px) {
+	.sg-no-mobile {
+		display: block;
+	}
+}
 
+.sg-no-desktop {
+	display: block;
+}
+@media (min-width: 768px) {
+	.sg-no-desktop {
+		display: none;
+	}
+}
 
 /******* 10. ICONS *******/
 @font-face {
@@ -1466,105 +1725,110 @@ button:active .sg-gray-bg,
 	font-weight: normal;
 	font-variant: normal;
 	text-transform: none;
-	/*line-height: 1;*/
+	display: inline-block;
+	vertical-align: middle;
 
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-addgear-pa:before {
-	content: "\e617";
-}
-
-.icon-addgear-studio:before {
-	content: "\e616";
-}
-
-.icon-addgear-dj:before {
-	content: "\e615";
-}
-
-.icon-addgear-classical:before {
-	content: "\e614";
-}
-
-.icon-addgear-keyboard:before {
-	content: "\e613";
-}
-
-.icon-addgear-drums:before {
-	content: "\e612";
-}
-
-.icon-addgear-cabinet:before {
-	content: "\e611";
-}
-
-.icon-addgear-bass:before {
-	content: "\e610";
-}
-
-.icon-addgear-guitar:before {
-	content: "\e60f";
-}
-
 .icon-addgear-amp:before {
-	content: "\e60e";
-}
-
-.icon-dashboard-gearrentals:before {
 	content: "\e600";
 }
 
-.icon-dashboard-profile:before {
+.icon-addgear-bass:before {
 	content: "\e601";
 }
 
-.icon-dashboard-reservations:before {
+.icon-addgear-cabinet:before {
 	content: "\e602";
 }
 
-.icon-dashboard-settings:before {
+.icon-addgear-classical:before {
 	content: "\e603";
 }
 
-.icon-dashboard-techhires:before {
+.icon-addgear-dj:before {
 	content: "\e604";
 }
 
-.icon-dashboard-vanrentals:before {
+.icon-addgear-drums:before {
 	content: "\e605";
 }
 
-.icon-dashboard-yourgear:before {
+.icon-addgear-guitar:before {
 	content: "\e606";
 }
 
-.icon-dashboard-yourtechprofile:before {
+.icon-addgear-keyboard:before {
 	content: "\e607";
 }
 
-.icon-dashboard-yourvans:before {
+.icon-addgear-pa:before {
 	content: "\e608";
 }
 
-.icon-edit:before {
+.icon-addgear-studio:before {
 	content: "\e609";
 }
 
-.icon-tabbar-gear:before {
+.icon-dashboard-gearrentals:before {
 	content: "\e60a";
 }
 
-.icon-tabbar-technicians:before {
+.icon-dashboard-profile:before {
 	content: "\e60b";
 }
 
-.icon-tabbar-vans:before {
+.icon-dashboard-reservations:before {
 	content: "\e60c";
 }
 
-.icon-view:before {
+.icon-dashboard-settings:before {
 	content: "\e60d";
+}
+
+.icon-dashboard-techhires:before {
+	content: "\e60e";
+}
+
+.icon-dashboard-vanrentals:before {
+	content: "\e60f";
+}
+
+.icon-dashboard-yourgear:before {
+	content: "\e610";
+}
+
+.icon-dashboard-yourtechprofile:before {
+	content: "\e611";
+}
+
+.icon-dashboard-yourvans:before {
+	content: "\e612";
+}
+
+.icon-edit:before {
+	content: "\e613";
+}
+
+.icon-info:before {
+	content: "\e614";
+}
+
+.icon-tabbar-gear:before {
+	content: "\e615";
+}
+
+.icon-tabbar-technicians:before {
+	content: "\e616";
+}
+
+.icon-tabbar-vans:before {
+	content: "\e617";
+}
+
+.icon-view:before {
+	content: "\e618";
 }

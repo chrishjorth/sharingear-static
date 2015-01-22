@@ -1,4 +1,128 @@
-<div class="row-fluid">
+<div class="container-fluid view gearprofile sg-lightgray-bg">
+	<div class="row bs-reset">
+		<div class="col-sm-8 bs-reset">
+			<div class="row sg-card sg-no-mobile">
+				<div class="col-sm-12 sg-white-bg sg-gray"><div class="sg-icon icon-dashboard-yourgear"></div>{{gear_type}}</div>
+			</div>
+			<div class="row sg-card">
+				<div class="col-xs-10 col-sm-12 sg-white-bg sg-darkergray"><div class="sg-icon icon-addgear-{{gear_type}} sg-darkgray"></div><span class="gear-title">{{brand}} {{subtype}} {{model}}</span> <div class="social sg-gray"><button class="sg-btn-invisible sg-gray" id="gearprofile-fb-btn"><i class="fa fa-facebook"></i></button> | <button class="sg-btn-invisible sg-gray" id="gearprofile-tw-btn"><i class="fa fa-twitter"></i></button></div></div>
+				<div class="col-xs-2 sg-no-desktop text-center profile-pic-container"><div class="profile-pic"></div></div>
+			</div>
+		</div>
+		<div class="col-sm-4 bs-reset">
+			<div class="row pricing sg-card sg-card-sibling">
+				<div class="col-xs-3 col-sm-4">
+					<div class="sg-blue-bg">
+						<div class="text-center sg-darkergray">Day</div>
+						<div class="text-center sg-white">{{price_a}} <span>DKK</span></div>
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-4">
+					<div class="sg-blue-bg">
+						<div class="text-center sg-darkergray">Week</div>
+						<div class="text-center sg-white">{{price_b}} <span>DKK</span></div>
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-4">
+					<div class="sg-blue-bg">
+						<div class="text-center sg-darkergray">Month</div>
+						<div class="text-center sg-white">{{price_c}} <span>DKK</span></div>
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-12 button-container">
+					<button class="sg-btn-square sg-darkergray-bg sg-white disabled" id="gearprofile-action-unavailable">UNAVAILABLE</button>
+					<button class="sg-btn-square sg-darkergray-bg sg-white hidden" id="gearprofile-action-book">BOOK</button>
+					<button class="sg-btn-square sg-darkergray-bg sg-white hidden" id="gearprofile-action-edit">EDIT</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row bs-reset">
+		<div class="col-sm-8 bs-reset">
+			<div class="row sg-card sg-card-follower sg-white-bg">
+				<div class="col-sm-12 bs-reset">
+					<div class="row bs-reset owl-carousel owl-theme"></div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<hr>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<h3>Description</h3>
+							<p>
+								{{description}}
+							</p>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<hr>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<h3>Accessories</h3>
+							<div id="accesories-holder" class="col-xs-12"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4 bs-reset">
+			<div class="row sg-card sg-card-follower sg-white-bg map-container">
+				<div class="col-sm-12 bs-reset">
+					<div class="row bs-reset">
+						<div class="col-xs-2 sg-gray">
+							<i class="fa fa-home"></i>
+						</div>
+						<div class="col-xs-10 sg-darkergray">
+							{{location}}
+						</div>
+					</div>
+					<div class=" row bs-reset">
+						<div class="col-xs-12">
+							<div class="map" id="gearprofile-map"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row sg-card sg-card-follower sg-white-bg profile-container">
+				<div class="col-sm-12 bs-reset">
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<div class="sg-lightgray-bg text-center">
+								<div class="profile-pic"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12 text-center">
+							<div class="sg-darkergray name">{{name}}</div>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12 text-center">
+							<div class="sg-gray tagline">Sharingear first-mover</div>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<hr>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12 text-center">
+							<button class="sg-btn-invisible"><div class="sg-icon icon-info sg-darkergray"></div></button><button class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourgear sg-darkergray"></div></button><button class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourtechprofile sg-darkergray"></div></button><button class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourvans sg-darkergray"></div></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--<div class="row-fluid">
 	<div class="share_banner">
 		<div class="banner_wrapper">
 			<div class="text-center">
@@ -69,4 +193,4 @@
 			</div>
  		</div>
 	</div>
-</div>
+</div>-->
