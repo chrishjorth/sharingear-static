@@ -17,7 +17,7 @@ define(
 
 			handlePickupDate,
 			handleDeliveryDate,
-			handlePickupDeliveryCalendarSelection,
+			handlePickupDeliverySelection,
 
 			handleSearch,
 			showGearSuggestions,
@@ -81,12 +81,6 @@ define(
             	previousSearchDateRange = previousSearchDateRange.split('-');
             	$('#search-gear', this.$element).val(previousSearchGear);
             	$('search-location', this.$element).val(previousSearchLocation);
-            	//$searchPickup.data('daterangepicker').setStartDate(new Moment(previousSearchDateRange[0], 'YYYYMMDD'));
-            	//$searchReturn.data('daterangepicker').setStartDate(new Moment(previousSearchDateRange[1], 'YYYYMMDD'));
-			}
-			else {
-				//$searchPickup.data('daterangepicker').updateInputText();
-            	//$searchReturn.data('daterangepicker').updateInputText();
 			}
 		};
 
@@ -103,15 +97,11 @@ define(
 					pickupActive: true
 				};
 			}
-
-			$calendarContainer = $('#gearsearchform-pickupdeliverycalendar', view.$element);
+			passedData.parent = view;
 			
-			require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
-				view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
-				view.calendarVC.initialize();
-				view.calendarVC.render();
-				view.calendarVC.on('close', view.handlePickupDeliveryCalendarSelection);
-			});
+			$calendarContainer = $('.pickupdeliverycalendar-container', view.$element);
+			
+			App.router.openModalView('pickupdeliverycalendar', passedData);
 		};
 
 		handleDeliveryDate = function(event) {
@@ -127,20 +117,17 @@ define(
 					pickupActive: false
 				};
 			}
+			passedData.parent = view;
 			
 			$calendarContainer = $('#gearsearchform-pickupdeliverycalendar', view.$element);
 			
-			require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
-				view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
-				view.calendarVC.initialize();
-				view.calendarVC.render();
-				view.calendarVC.on('close', view.handlePickupDeliveryCalendarSelection);
-			});
+			App.router.openModalView('pickupdeliverycalendar', passedData);
 		};
 
-		handlePickupDeliveryCalendarSelection = function(vc) {
+		handlePickupDeliverySelection = function(vc) {
 			$('#search-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
 			$('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
+			App.router.closeModalView();
 		};
 
 		/**
@@ -359,7 +346,7 @@ define(
 
 			handlePickupDate: handlePickupDate,
 			handleDeliveryDate: handleDeliveryDate,
-			handlePickupDeliveryCalendarSelection: handlePickupDeliveryCalendarSelection,
+			handlePickupDeliverySelection: handlePickupDeliverySelection,
 
 			handleSearch: handleSearch,
 			showGearSuggestions: showGearSuggestions,

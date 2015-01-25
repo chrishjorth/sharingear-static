@@ -60,6 +60,10 @@ body {
 	padding: 0;
 }
 
+.table {
+	margin-bottom: 0;
+}
+
 /******* 2. VIEW STRUCTURE *******/
 /**
  * These are rules that define the positioning of views and hence the appearance of navigation on the site.
@@ -94,6 +98,23 @@ body {
 	}
 }
 
+.sg-footerbar {
+	z-index: 300;
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+}
+@media (min-width: 768px) {
+	.modal-view-container .sg-footerbar {
+		width: auto;
+		margin-bottom: 6%;
+		margin-left: 10%;
+		margin-right: 10%;
+		left: 0;
+		right: 0;
+	}
+}
+
 /*------ 2.a MENUS ------*/
 .sg-navbar {
 	z-index: 300;
@@ -104,6 +125,7 @@ body {
 	border-style: solid;
 	border-color: transparent;
 	background-color: #ffffff;
+	top: 0;
 	height: 48px;
 }
 @media (min-width: 768px) {
@@ -114,6 +136,46 @@ body {
 .sg-navbar .container-fluid {
 	width: 100%;
 }
+/* Hides the menu buttons when not in mobile environment */
+@media (min-width: 768px) {
+	.sg-navbar .col-xs-2 {
+		display: none;
+	}
+}
+.modal-view-container .sg-navbar {
+	width: 100%;
+	border: none;
+	height: 47px;
+}
+@media (min-width: 768px) {
+	.modal-view-container .sg-navbar {
+		top: 0;
+		margin-top: 6%;
+		margin-left: 10%;
+		margin-right: 10%;
+		width: auto;
+		left: 0;
+		right: 0;
+	}
+}
+.modal-view-container .sg-navbar {
+	font-size: 24px;
+	line-height: 47px;
+}
+.modal-view-container .sg-navbar .col-xs-1 {
+	display: block;
+	font-size: 24px;
+	line-height: 47px;
+}
+.modal-view-container .sg-navbar .sg-btn-round {
+	height: 24px;
+	width: 24px;
+	border-radius: 12px;
+	line-height: 20px;
+	font-size: 20px;
+	padding: 0;
+}
+
 .sg-navbar-brand {
 	text-align: center;
 	font-size: 20px;
@@ -133,13 +195,6 @@ body {
 @media (min-width: 768px) {
 	.sg-navbar-brand a {
 		padding-top: 8px;
-	}
-}
-
-/* Hides the menu buttons when not in mobile environment */
-@media (min-width: 768px) {
-	.sg-navbar .col-xs-2 {
-		display: none;
 	}
 }
 
@@ -667,7 +722,10 @@ body {
 /**
  * These are the typography rules that repeat across views. The goal is to avoid writing custom typography rules for all elements.
  */
-
+.sg-super {
+	vertical-align: super;
+	font-size: 75%;
+}
 
 /******* 6. GENERAL COLORS *******/
 /**
@@ -685,6 +743,9 @@ body {
 	background-color: #ffffff;
 }
 
+.sg-black {
+	color: #000000;
+}
 .sg-black-bg-50 {
 	background-color: #000000;
 	background-color: rgba(0, 0, 0, 0.8);
@@ -840,7 +901,7 @@ button:active .sg-gray-bg {
 }
 
 /*------ 7.a CALENDARS ------*/
-.pickupdeliverycalendar-container {
+/*.pickupdeliverycalendar-container {
 	z-index: 401;
 	position: absolute;
     background-color: #ffffff;
@@ -866,6 +927,16 @@ button:active .sg-gray-bg {
 		-moz-box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
 		box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
 	}
+}*/
+
+.pickupdeliverycalendar .sg-toptab {
+	border-bottom-style: solid;
+	border-bottom-color: #00aeff;
+	border-bottom-width: 1px;
+}
+.pickupdeliverycalendar .sg-toptab-active {
+	border-bottom-width: 0;
+	border-top-width: 1px;
 }
 
 .calendar-navigation {
@@ -984,6 +1055,20 @@ button:active .sg-gray-bg {
 	text-align: center;
 	opacity: 1;
 	font-weight: bold;
+}
+
+.sg-btn-round {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	border: none;
+	cursor: pointer;
+	width: 36px;
+	height: 36px;
+	border-radius: 18px;
+	line-height: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align:center
 }
 
 .sg-btn-invisible-gray {
@@ -1687,6 +1772,42 @@ button:active .sg-gray-bg {
 	margin-right: 4px;
 }
 
+/*------ 8.h GEAR BOOKING ------*/
+.gearbooking .total {
+	bottom: 0;
+	top: 0;
+	font-size: 32px;
+	padding-top: 17px;
+	padding-bottom: 16px;
+}
+.gearbooking .total div:first-child {
+	font-size: 24px;
+}
+.gearbooking .gear {
+	text-transform: capitalize;
+	font-size: 22px;
+	font-weight: bold;
+	line-height: 44px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.gearbooking .pickupdeliverycalendar-container {
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+.gearbooking .sg-footerbar button {
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 36px;
+}
+
+.gearbooking .sg-footerbar button .fa {
+	font-size: 24px;
+	line-height: 36px;
+}
+
 /******* 9. HELPERS *******/
 .sg-no-mobile {
 	display: none;
@@ -1731,6 +1852,10 @@ button:active .sg-gray-bg {
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-sg-logo:before {
+	content: "\e619";
 }
 
 .icon-addgear-amp:before {

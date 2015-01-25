@@ -72,7 +72,8 @@ define(
                 'submerchantregistration',
                 'closedbeta',
                 'search',
-                'user'
+                'user',
+                'pickupdeliverycalendar'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.
