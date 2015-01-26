@@ -1893,6 +1893,19 @@ button:active .sg-gray-bg {
 	display: inline-block;
 }
 
+/*------ 8.j PAYMENT SUCCESSFUL ------*/
+.modal-view-container .paymentsuccessful {
+	padding-top: 47px;
+}
+
+.modal-view-container .paymentsuccessful .sg-footerbar button .fa {
+	height: 20px;
+	width: 20px;
+	border-radius: 10px;
+	line-height: 20px;
+	font-size: 14px;
+}
+
 /******* 9. HELPERS *******/
 .sg-no-mobile {
 	display: none;

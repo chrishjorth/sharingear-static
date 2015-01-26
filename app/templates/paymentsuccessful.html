@@ -1,4 +1,14 @@
-<div class="container-fluid">
+<div class="container-fluid paymentsuccessful">
+	<div class="row sg-blue-bg sg-white sg-navbar">
+		<div class="col-xs-offset-1 col-xs-10">Booking step 3</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12 text-center sg-darkergray gear">
+			<h3 class="sg-h3">{{brand}} {{subtype}} {{model}}</h3>
+		</div>
+	</div>
+
 	<div class="payment-success hidden">
 		<div class="row">
 			<div class="col-md-12 booking-confirm-header text-center">
@@ -17,19 +27,35 @@
 		</div>
 
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2 col-xs-12 booking-confirm-table">
-				<div class="col-xs-12 col-md-6 text-center form-left">
-					<h3><strong>Booked from: </strong>{{start_time}}</h3>
-				</div>
-				<div class="col-xs-12 col-md-6 text-center">
-					<h3><strong>Return date: </strong>{{end_time}}</h3>
-				</div>
+			<div class="col-sm-12">
+				<table class="table">
+					<tbody>
+						<tr>
+							<td class="sg-lightgray-bg"><strong>Booked from:</strong> {{start_date}}</td>
+							<td class="sg-lightgray-bg"></td>
+						</tr>
+						<tr>
+							<td class="sg-lightgray-bg"><strong>Booked to:</strong> {{end_date}}</td>
+							<td class="sg-lightgray-bg"></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td>Price: {{price}} <span class="sg-super">{{currency}}</span></td>
+							<td>Price VAT({{vat}}%): {{price_vat}} <span class="sg-super">{{currency}}</span>
+						</tr>
+						<tr>
+							<td>Sharingear fee: {{fee}} <span class="sg-super">{{currency}}</span></td>
+							<td>Fee VAT({{vat}}%): {{fee_vat}} <span class="sg-super">{{currency}}</span></td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2 col-xs-12 text-center booking-confirm-table">
-				<h3><strong>Total:</strong> {{price}} {{currency}}</h3>
+				<h3><strong>Total:</strong> {{total}} {{currency}}</h3>
 			</div>
 		</div>
 
@@ -39,6 +65,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="payment-failure hidden">
 		<div class="row">
 			<div class="col-md-12 booking-confirm-header text-center">
@@ -55,7 +82,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="row text-center booking-confirm-button">
-		<button class="btn btn-default editgear-save-button btn-primary" id="paymentsuccess-close-btn">Close</button>
+
+	<div class="row sg-footerbar sg-blue-bg sg-white">
+		<div class="col-sm-12">
+			<button class="sg-btn-square sg-blue-bg sg-white" id="paymentsuccessful-close-btn">close <i class="fa fa-times sg-white-bg sg-blue"></i></button>
+		</div>
 	</div>
 </div>
