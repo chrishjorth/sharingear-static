@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment'],
-	function($, ViewController, App, Card, Booking, Moment) {
+	['jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment', 'models/localization'],
+	function($, ViewController, App, Card, Booking, Moment, Localization) {
 		var didInitialize,
 			didRender,
 			renderMissingDataInputs,
@@ -21,13 +21,14 @@ define(
 			resetPayButton;
 
 		didInitialize = function () {
-			var startMoment, endMoment, duration, months, weeks, days, price;
+			var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
 
 			this.booking = this.passedData.booking;
 			this.gear = this.passedData.gear;
 
-			startMoment = new Moment(this.booking.start_time, 'YYYY-MM-DD HH:mm:ss');
-			endMoment = new Moment(this.booking.end_time, 'YYYY-MM-DD HH:mm:ss');
+			startMoment = new Moment(this.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
+			endMoment = new Moment(this.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+
 
 			duration = Moment.duration(endMoment.diff(startMoment));
 			months = parseInt(duration.months(), 10);
@@ -38,9 +39,25 @@ define(
 			duration = Moment.duration(endMoment.diff(startMoment));
 			days = parseInt(duration.days(), 10);
 
-			//price = months * this.gear.data.price_c + weeks * this.gear.data.price_b + days * this.gear.data.price_a;
+			price = months * this.gear.data.price_c + weeks * this.gear.data.price_b + days * this.gear.data.price_a;
+			VAT = Localization.getVAT(App.user.data.country);
+			priceVAT = price / 100 * VAT;
+			fee = price / 100 * App.user.data.buyer_fee;
+			feeVAT = fee / 100 * VAT;
 
 			this.templateParameters = {
+				brand: this.gear.data.brand,
+				subtype: this.gear.data.subtype,
+				model: this.gear.data.model,
+				start_date: startMoment.format('DD/MM/YYYY'),
+				end_date: endMoment.format('DD/MM/YYYY'),
+				currency: 'DKK',
+				vat: VAT,
+				price: price,
+				price_vat: priceVAT,
+				fee: fee,
+				fee_vat: feeVAT,
+				total: price + priceVAT + fee + feeVAT
 				/*price: price,
 				currency: 'DKK',
 				price_a: this.gear.price_a,

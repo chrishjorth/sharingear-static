@@ -22,6 +22,11 @@
  *	8.b SEARCH
  * 	8.c DASHBOARD
  *	8.d DASHBOARD-PROFILE
+ *	8.e EDIT GEAR
+ *	8.f ADD GEAR
+ *	8.g GEAR PROFILE
+ *	8.h GEAR BOOKING
+ *	8.i PAYMENT
  * 9. HELPERS
  * 10. ICONS
  *
@@ -725,6 +730,16 @@ body {
 .sg-super {
 	vertical-align: super;
 	font-size: 75%;
+}
+
+.sg-h3 {
+	text-transform: capitalize;
+	font-size: 22px;
+	font-weight: bold;
+	line-height: 44px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin: 0;
 }
 
 /******* 6. GENERAL COLORS *******/
@@ -1773,6 +1788,9 @@ button:active .sg-gray-bg {
 }
 
 /*------ 8.h GEAR BOOKING ------*/
+.modal-view-container .gearbooking {
+	padding-top: 47px;
+}
 .gearbooking .total {
 	bottom: 0;
 	top: 0;
@@ -1782,14 +1800,6 @@ button:active .sg-gray-bg {
 }
 .gearbooking .total div:first-child {
 	font-size: 24px;
-}
-.gearbooking .gear {
-	text-transform: capitalize;
-	font-size: 22px;
-	font-weight: bold;
-	line-height: 44px;
-	padding-top: 4px;
-	padding-bottom: 4px;
 }
 
 .gearbooking .pickupdeliverycalendar-container {
@@ -1806,6 +1816,39 @@ button:active .sg-gray-bg {
 .gearbooking .sg-footerbar button .fa {
 	font-size: 24px;
 	line-height: 36px;
+}
+
+/*------ 8.i PAYMENT ------*/
+.modal-view-container .payment {
+	padding-top: 47px;
+}
+
+.payment .table td {
+	border:none;
+	border-bottom-width: 4px;
+	border-bottom-style: solid;
+	border-bottom-color: #ffffff;
+	padding-left: 24px;
+}
+.payment .table tfoot td {
+	border-style: solid;
+	border-color: #f7f7f7;
+	border-width: 0;
+	border-top-width: 1px;
+	border-left-width: 1px;
+}
+.payment .table tfoot td:last-child {
+	border-right-width: 1px;
+}
+.payment .table tfoot tr:last-child td {
+	border-bottom-width: 1px;
+}
+
+.payment .total {
+	padding-top: 8px;
+	padding-bottom: 8px;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 /******* 9. HELPERS *******/
