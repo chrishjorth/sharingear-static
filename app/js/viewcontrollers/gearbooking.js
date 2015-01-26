@@ -14,12 +14,13 @@ define(
 			renderPrice,
 			
 			handleCancel,
-			handlePickupDeliverySelection,
-			handleNext,
+			handlePickupSelection,
+			handleDeliverySelection,
+			handleNext;
 
-			enableBooking,
-			setStartMoment,
-			setEndMoment;
+			//enableBooking,
+			//setStartMoment,
+			//setEndMoment;
 
 		didInitialize = function() {
 			var view = this;
@@ -31,7 +32,7 @@ define(
 				}
 			});
 
-			this.gear = this.passedData;
+			this.gear = this.passedData.gear;
 
 			this.bookingBtnEnabled = false;
 
@@ -45,13 +46,20 @@ define(
 				price_c: this.gear.data.price_c
 			};
 
-			this.newBooking = new Booking.constructor({
-				rootURL: App.API_URL
-			});
-			this.newBooking.initialize();
+			if(this.passedData.booking) {
+				this.newBooking = this.passedData.booking;
+			}
+			else {
+				this.newBooking = new Booking.constructor({
+					rootURL: App.API_URL
+				});
+				this.newBooking.initialize();
+				this.newBooking.data.gear_id = this.gear.data.id;
+			}
 		};
 
 		didRender = function() {
+			this.renderPrice();
 			this.renderCalendar();
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#gearbooking-next', this, this.handleNext);
@@ -73,6 +81,13 @@ define(
 					alwaysFlag: result.alwaysFlag,
 					parent: view
 				};
+				if(view.newBooking.data.start_time && view.newBooking.data.start_time !== null) {
+					passedData.pickupDate = new Moment(view.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
+				}
+				if(view.newBooking.data.end_time && view.newBooking.data.end_time !== null) {
+					passedData.deliveryDate = new Moment(view.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+					passedData.pickupActive = false;
+				}
 				require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
 					view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
 					view.calendarVC.initialize();
@@ -83,8 +98,8 @@ define(
 
 		renderPrice = function() {
 			var price = 0,
-				startMoment = new Moment(this.startMoment),
-				endMoment = new Moment(this.endMoment),
+				startMoment = new Moment(this.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss'),
+				endMoment = new Moment(this.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss'),
 				duration, months, weeks, days;
 
 			/*console.log('START DATE:');
@@ -115,32 +130,36 @@ define(
 			App.router.closeModalView();
 		};
 
-		handlePickupDeliverySelection = function(calendarVC) {
-			this.startMoment = calendarVC.pickupDate;
-			this.endMoment = calendarVC.deliveryDate;
+		handlePickupSelection = function(calendarVC) {
+			this.newBooking.data.start_time = calendarVC.pickupDate.format('YYYY-MM-DD HH:mm:ss');
+			this.newBooking.data.end_time = null;
+			this.renderPrice();
+		}
+
+		handleDeliverySelection = function(calendarVC) {
+			this.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');
 			this.renderPrice();
 		};
 
 		handleNext = function(event) {
 			var view = event.data,
-				bookingData;
+				passedData;
 
 			// check if time was selected
-			if(!view.startMoment || !view.endMoment) {
+			if(view.newBooking.data.start_time === null || view.newBooking.data.end_time === null) {
 				alert('No dates selected.');
 				return;
 			}
 
-			bookingData = {
-				gear_id: view.gear.data.id,
-				start_time: view.startMoment.format('YYYY-MM-DD HH:mm:ss'),
-				end_time: view.endMoment.format('YYYY-MM-DD HH:mm:ss')
+			passedData = {
+				booking: view.newBooking,
+				gear: view.gear
 			};
 
-			App.router.openModalSiblingView('payment', bookingData);
+			App.router.openModalSiblingView('payment', passedData);
 		};
 
-		enableBooking = function() {
+		/*enableBooking = function() {
 			if(this.bookingBtnEnabled === false) {
 				$('#gearbooking-book-btn', this.$element).prop('disabled', false);
 				this.setupEvent('click', '#gearbooking-book-btn', this, this.handleBook);
@@ -168,7 +187,7 @@ define(
 				this.endMoment.month(month - 1);
 				this.endMoment.year(year);
 			}
-		};
+		};*/
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,
@@ -177,12 +196,13 @@ define(
 			renderPrice: renderPrice,
 
 			handleCancel: handleCancel,
-			handlePickupDeliverySelection: handlePickupDeliverySelection,
-			handleNext: handleNext,
+			handlePickupSelection: handlePickupSelection,
+			handleDeliverySelection: handleDeliverySelection,
+			handleNext: handleNext//,
 
-			enableBooking: enableBooking,
-			setStartMoment: setStartMoment,
-			setEndMoment: setEndMoment
+			//enableBooking: enableBooking,
+			//setStartMoment: setStartMoment,
+			//setEndMoment: setEndMoment
 		});
 	}
 );

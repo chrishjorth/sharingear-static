@@ -14,43 +14,55 @@ define(
 			populateCountries,
 
 			handleCancel,
+			handleBack,
 			handlePay,
 			initExpiration,
 			processPayment,
 			resetPayButton;
 
 		didInitialize = function () {
-			this.booking = new Booking.constructor({
-				rootURL: App.API_URL
-			});
-			this.booking.initialize();
+			var startMoment, endMoment, duration, months, weeks, days, price;
 
-			this.booking.data.gear_id = this.passedData.gear_id;
-			this.booking.data.start_time = this.passedData.start_time;
-			this.booking.data.end_time = this.passedData.end_time;
-			this.booking.data.price = this.passedData.price;
+			this.booking = this.passedData.booking;
+			this.gear = this.passedData.gear;
+
+			startMoment = new Moment(this.booking.start_time, 'YYYY-MM-DD HH:mm:ss');
+			endMoment = new Moment(this.booking.end_time, 'YYYY-MM-DD HH:mm:ss');
+
+			duration = Moment.duration(endMoment.diff(startMoment));
+			months = parseInt(duration.months(), 10);
+			endMoment.subtract(months, 'months');
+			duration = Moment.duration(endMoment.diff(startMoment));
+			weeks = parseInt(duration.weeks(), 10);
+			endMoment.subtract(weeks, 'weeks');
+			duration = Moment.duration(endMoment.diff(startMoment));
+			days = parseInt(duration.days(), 10);
+
+			//price = months * this.gear.data.price_c + weeks * this.gear.data.price_b + days * this.gear.data.price_a;
 
 			this.templateParameters = {
-				price: this.booking.data.price,
+				/*price: price,
 				currency: 'DKK',
-				price_a: this.passedData.price_a,
-				price_b: this.passedData.price_b,
-				price_c: this.passedData.price_c,
-				hours: this.passedData.hours,
-				days: this.passedData.days,
-				weeks: this.passedData.weeks,
+				price_a: this.gear.price_a,
+				price_b: this.gear.price_b,
+				price_c: this.gear.price_c,
+				days: days,
+				weeks: weeks,
+				months: months,
 				startdate: this.booking.data.start_time,
 				enddate: this.booking.data.end_time,
-				gear: this.passedData.gearInfo
+				gear: this.passedData.gearInfo*/
 			};
 			this.isPaying = false;
 		};
 
 		didRender = function () {
-			this.renderMissingDataInputs();
-			this.initExpiration($('#expiration-month',this.$element),$('#expiration-year',this.$element));
+			//this.renderMissingDataInputs();
+			//this.initExpiration($('#expiration-month',this.$element),$('#expiration-year',this.$element));
+
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
-			this.setupEvent('submit', '#payment-form', this, this.handlePay);
+			this.setupEvent('click', '#payment-back-btn', this, this.handleBack);
+			//this.setupEvent('submit', '#payment-form', this, this.handlePay);
 		};
 
 		initExpiration = function ($select1,$select2) {
@@ -114,6 +126,16 @@ define(
 
 		handleCancel = function() {
 			App.router.closeModalView();
+		};
+
+		handleBack = function(event) {
+			var view = event.data,
+				passedData;
+			passedData = {
+				gear: view.gear,
+				booking: view.booking
+			};
+			App.router.openModalSiblingView('gearbooking', passedData);
 		};
 
 		handlePay = function(event) {
@@ -297,6 +319,7 @@ define(
 			renderMissingDataInputs: renderMissingDataInputs,
 
 			handleCancel: handleCancel,
+			handleBack: handleBack,
 			handlePay: handlePay,
 			initExpiration:initExpiration,
 

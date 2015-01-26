@@ -209,7 +209,8 @@ define(
 
 		handleBooking = function(event) {
 			var view = event.data,
-				user = App.user;
+				user = App.user,
+				passedData;
 			if(user.data.id === null) {
 				user.login(function(error) {
 					if(!error) {
@@ -221,7 +222,10 @@ define(
 				});
 			}
 			else {
-				App.router.openModalView('gearbooking', view.gear);
+				passedData = {
+					gear: view.gear
+				}
+				App.router.openModalView('gearbooking', passedData);
 			}
 		};
 

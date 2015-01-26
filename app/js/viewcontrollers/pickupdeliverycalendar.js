@@ -33,13 +33,14 @@ define(
 			});
 
 			this.displayedMoment = new Moment();
+			
 			this.pickupDate = null;
-			if(this.passedData.pickupDate && this.passedData.pickupDate !== null) {
-				this.pickupDate = new Moment(this.passedData.pickupDate, 'DD/MM/YYYY');
+			if(this.passedData.pickupDate && Moment.isMoment(this.passedData.pickupDate) === true) {
+				this.pickupDate = this.passedData.pickupDate;
 			}
 			this.deliveryDate = null;
-			if(this.passedData.deliveryDate && this.passedData.deliveryDate !== null) {
-				this.deliveryDate = new Moment(this.passedData.deliveryDate, 'DD/MM/YYYY');
+			if(this.passedData.deliveryDate && Moment.isMoment(this.passedData.deliveryDate) === true) {
+				this.deliveryDate = this.passedData.deliveryDate;
 			}
 
 			this.pickupActive = true;
@@ -220,22 +221,31 @@ define(
 		handleDaySelection = function(event) {
 			var view = event.data,
 				$dayBox = $(this),
-				$tab;
+				$pickupTab, $deliveryTab;
+
+			$pickupTab = $('#pickupdeliverycalendar-pickupdate', view.$element);
+			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
+
 			if(view.pickupActive === true) {
 				view.pickupDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
-				$tab = $('#pickupdeliverycalendar-pickupdate', view.$element);
-				$tab.removeClass('sg-toptab-active');
-				$('div', $tab).html(view.pickupDate.format('DD/MM/YYYY'));
-				$tab.next().addClass('sg-toptab-active');
+				$pickupTab.removeClass('sg-toptab-active');
+				$('div', $pickupTab).html(view.pickupDate.format('DD/MM/YYYY'));
+				$deliveryTab.addClass('sg-toptab-active');
+				view.deliveryDate = null;
+				$('div', $deliveryTab).html('-');
 				view.pickupActive = false;
+				if(_.isFunction(view.passedData.parent.handlePickupSelection) === true) {
+					view.passedData.parent.handlePickupSelection(view);
+				}
 			}
 			else {
 				view.deliveryDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
 				//Check if the delivery date ends an acceptable interval: if not alert error
 				if(view.isIntervalAvailable(view.pickupDate, view.deliveryDate) === true) {
-					$tab = $('#pickupdeliverycalendar-deliverydate', view.$element);
-					$('div', $tab).html(view.deliveryDate.format('DD/MM/YYYY'));
-					view.passedData.parent.handlePickupDeliverySelection(view);
+					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
+					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
+						view.passedData.parent.handleDeliverySelection(view);
+					}
 				}
 				else {
 					view.deliveryDate = null;
