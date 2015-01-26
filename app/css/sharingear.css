@@ -1549,6 +1549,22 @@ button:active .sg-gray-bg {
 	}
 }
 
+
+.references-row {
+
+	margin-left: 60px;
+	margin-right: 60px;
+	padding-bottom: 60px;
+}
+
+.references-image {
+
+	width: 100%;
+	vertical-align: middle;
+
+}
+
+
 /*------ 8.b SEARCH ------*/
 .search-results {
     height: 100%;
