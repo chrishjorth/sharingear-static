@@ -122,7 +122,7 @@ define(
 				App.router.openModalView('paymentsuccessful', {
 					preAuthorizationID: preAuthorizationID,
 					bookingID: bookingID,
-					gear_id: this.gear.data.id
+					gear: this.gear
 				});
 				paymentSuccessModalOpen = true;
 			}
