@@ -39,4 +39,48 @@
 		<div class="col-sm-6">TOTAL:</div>
 		<div class="col-sm-6">{{total}}<span class="sg-super">{{currency}}</span></div>
 	</div>
+	<div class="row">
+		<div class="col-sm-12 bs-reset">
+			<ul class="sg-tabs sg-tabs-3">
+				<li class="active sg-lightgray-bg sg-darker-gray active"><button>VISA</button></li>
+				<li class="sg-lightgray-bg sg-darker-gray disabled"><button>MasterCard</button></li>
+				<li class="sg-lightgray-bg sg-darker-gray disabled"><button>PayPal</button></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div id="payment-visa-block">
+		<div class="row">
+			<div class="col-sm-12">
+				<form id="payment-form-visa" onsubmit="return false;">
+					<div class="form-group">
+						<label for="payment-form-visa-cardholder">Cardholder name:</label>
+						<input type="text" class="form-control" id="payment-form-visa-cardholder">
+					</div>
+					<div class="form-group">
+						<label for="payment-form-visa-cardnumber">Card number:</label>
+						<input type="text" class="form-control" id="payment-form-visa-cardnumber">
+					</div>
+					<div class="form-group">
+						<label for="payment-form-visa-month">Expiration date:</label>
+						<select class="form-control" id="payment-form-visa-month"></select>/<select class="form-control" id="payment-form-visa-year"></select>
+					</div>
+					<div class="form-group">
+						<label>Security code:</label>
+						<input type="text" id="payment-form-visa-csc">
+					</div>
+					<p>
+						We will only withdraw the money once the owner of the gear has accepted your booking.
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="row sg-footerbar sg-blue-bg sg-white">
+		<div class="col-sm-12">
+			<button class="sg-btn-square sg-blue-bg sg-white" id="payment-next-btn">next <i class="fa fa-arrow-circle-o-right"></i></button>
+		</div>
+	</div>
+
 </div>

@@ -11,12 +11,13 @@ define(
 		var didInitialize,
 			didRender,
 			renderMissingDataInputs,
+			initExpiration,
 			populateCountries,
 
 			handleCancel,
 			handleBack,
-			handlePay,
-			initExpiration,
+			handleNext,
+
 			processPayment,
 			resetPayButton;
 
@@ -58,46 +59,36 @@ define(
 				fee: fee,
 				fee_vat: feeVAT,
 				total: price + priceVAT + fee + feeVAT
-				/*price: price,
-				currency: 'DKK',
-				price_a: this.gear.price_a,
-				price_b: this.gear.price_b,
-				price_c: this.gear.price_c,
-				days: days,
-				weeks: weeks,
-				months: months,
-				startdate: this.booking.data.start_time,
-				enddate: this.booking.data.end_time,
-				gear: this.passedData.gearInfo*/
 			};
 			this.isPaying = false;
 		};
 
 		didRender = function () {
-			//this.renderMissingDataInputs();
-			//this.initExpiration($('#expiration-month',this.$element),$('#expiration-year',this.$element));
+			this.renderMissingDataInputs();
+			this.initExpiration();
 
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#payment-back-btn', this, this.handleBack);
-			//this.setupEvent('submit', '#payment-form', this, this.handlePay);
+			this.setupEvent('click', '#payment-next-btn', this, this.handleNext);
 		};
 
-		initExpiration = function ($select1,$select2) {
-			var monthsArray = ['January','February','March','April','May','June','July','August','September','October','November','December'],
-				html = $('option', $select1).first()[0].outerHTML,
+		initExpiration = function () {
+			var monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+				startYear = parseInt((new Moment()).year(), 10),
+				html,
 				i;
+
+			html = '<option value="-">-</option>';
 			for(i = 0; i < monthsArray.length; i++) {
 				html += '<option value="' + monthsArray[i] + '">' + monthsArray[i] + '</option>';
 			}
-			$select1.html(html);
+			$('#payment-form-visa-month', this.$element).html(html);
 
-			html=$('option', $select2).first()[0].outerHTML;
-			for(i = 2014; i < 2051; i++) {
+			html = '<option value="-">-</option>';
+			for(i = startYear; i < startYear + 30; i++) {
 				html += '<option value="' + i + '">' + i + '</option>';
 			}
-			$select2.html(html);
-
-
+			$('#payment-form-visa-year', this.$element).html(html);
 		};
 
 		renderMissingDataInputs = function() {
@@ -155,7 +146,7 @@ define(
 			App.router.openModalSiblingView('gearbooking', passedData);
 		};
 
-		handlePay = function(event) {
+		handleNext = function(event) {
 			var view = event.data,
 				userData = App.user.data,
 				needToUpdateUser = false,
@@ -223,13 +214,13 @@ define(
 				needToUpdateUser = true;
 			}
 
-			cardNumber = $('#payment-cardnumber', view.$element).val();
+			cardNumber = $('#payment-form-visa-cardnumber', view.$element).val();
 			if(cardNumber === '') {
 				alert('Missing card number.');
 				return;
 			}
-			expirationDateMonth = $('#expiration-month', view.$element).val();
-			expirationDateYear = $('#expiration-year', view.$element).val();
+			expirationDateMonth = $('#payment-form-visa-month', view.$element).val();
+			expirationDateYear = $('#payment-form-visa-year', view.$element).val();
 
 			if(expirationDateMonth === 'Select month'||expirationDateMonth==='') {
 				alert('Missing expiration month.');
@@ -241,7 +232,7 @@ define(
 				return;
 			}
 
-			CSC = $('#payment-csc', view.$element).val();
+			CSC = $('#payment-form-visa-csc', view.$element).val();
 			if(CSC === '') {
 				alert('Missing security code.');
 				return;
@@ -254,9 +245,9 @@ define(
 
 			view.isPaying = true;
 
-			$('#payment-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+			$('#payment-next-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
-			var expmonth = $('select[name="expiration-month"] option:selected').index();
+			var expmonth = $('#payment-form-visa-month option:selected').index();
 
 			expirationDate = '';
 			if (expmonth >= 1 && expmonth <= 9) {
@@ -334,11 +325,12 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			renderMissingDataInputs: renderMissingDataInputs,
+			initExpiration:initExpiration,
+			populateCountries: populateCountries,
 
 			handleCancel: handleCancel,
 			handleBack: handleBack,
-			handlePay: handlePay,
-			initExpiration:initExpiration,
+			handleNext: handleNext,
 
 			processPayment: processPayment,
 			resetPayButton: resetPayButton
