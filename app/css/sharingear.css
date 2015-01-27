@@ -544,6 +544,7 @@ body {
 .sg-tabs {
 	list-style: none;
 	padding: 0;
+	margin: 0;
 }
 .sg-tabs li {
 	float: left;
@@ -571,7 +572,9 @@ body {
 }
 .sg-tabs .active {
 	background-color: inherit;
+	color: inherit;
 }
+.sg-tabs .disabled,
 .sg-tabs .disabled button {
 	opacity: 0.5;
 }
@@ -737,12 +740,17 @@ body {
 }
 
 .sg-banner {
-	height: 520px;
+	height: 470px;
 	background-image: url("../images/home-stage.jpg");
     background-position: center bottom;
     background-size: auto 580px;
     padding: 0;
     margin: 0;
+}
+@media (min-width: 768px) {
+	.sg-banner {
+		height: 520px;
+	}
 }
 
 .searchresults .col-sm-6 {
@@ -828,7 +836,7 @@ body {
 	background-color: rgba(0, 174, 255, 0.5);
 }
 
-.sg-action-blue {
+.sg-action-blue-bg {
 	background-color: #0397dc;
 }
 
@@ -1312,6 +1320,7 @@ button:active .sg-gray-bg {
 .gearsearchform .form-group {
 	text-align: left;
 	margin: 0;
+	padding: 0;
 	vertical-align: bottom;
 	display: inline-block;
 	width: 100%;
@@ -1441,11 +1450,11 @@ button:active .sg-gray-bg {
 	}
 }
 
-.searchform-container {
+.home .searchform-container {
 	padding: 0;
 }
 @media (min-width: 768px) {
-	.searchform-container {
+	.home .searchform-container {
 		height: 200px;
 		padding-left: 15;
 		padding-right: 15;
@@ -1453,9 +1462,38 @@ button:active .sg-gray-bg {
 }
 
 /*------ 8.b SEARCH ------*/
+.search .jumbotron {
+	padding: 0;
+	margin: 0;
+}
+.search .searchform-container .gearsearchform {
+	padding-top: 0;
+}
+.search .searchform-container .gearsearchform .form-group {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+@media (min-width: 768px) {
+	.search .searchform-container .gearsearchform .form-group {
+		padding-top: 8px;
+		padding-bottom: 8px;
+	}
+}
+.search .searchform-container .gearsearchform label {
+	display: none;
+}
+
 .search-results {
-    height: 100%;
+    position: absolute;
+    top: 304px;
+    bottom: 0;
+    width: 100%;
  }
+@media (min-width: 768px) {
+	.search-results {
+		top: 116px;
+	}
+}
 .search-results .map-row {
 	height: 100%;
 }
@@ -1466,10 +1504,62 @@ button:active .sg-gray-bg {
 	.search-results .map-row .map-col {
 		display: block;
 		height: 100%;
+		padding: 0;
 	}
 }
-.searchmap {
+.search-results .map-row .search-results-col {
 	height: 100%;
+}
+.search-results .sg-tabs {
+	position: fixed;
+	bottom: 0;
+	height: 80px;
+	width: 100%;
+	z-index: 310;
+}
+@media (min-width: 768px) {
+	.search-results .sg-tabs {
+		position: static;
+		bottom: auto;
+	}
+}
+.search-results .sg-tabs li {
+	border: none;
+}
+.search-results .sg-tabs .sg-icon {
+	font-size: 44px;
+	line-height: 50px;
+	padding-top: 8px;
+}
+.search-results .sg-tabs .sg-btn-text {
+	font-size: 10px;
+	padding-bottom: 8px;
+}
+
+.search-results .searchmap {
+	height: 100%;
+	background-color: #000000 !important;
+}
+
+.search-results .currentlocation-container {
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.search-results .searchresults {
+	position: absolute;
+	overflow-y: scroll;
+	top: 25px;
+	bottom: 0;
+	padding-bottom: 80px;
+}
+@media (min-width: 768px) {
+	.search-results .searchresults {
+		top: 105px;
+	}
+
 }
 
 /*----- 8.c DASHBOARD ------*/
@@ -1907,6 +1997,7 @@ button:active .sg-gray-bg {
 }
 
 /******* 9. HELPERS *******/
+.gearsearchform .sg-no-mobile,
 .sg-no-mobile {
 	display: none;
 }

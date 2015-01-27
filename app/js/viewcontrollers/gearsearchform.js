@@ -17,7 +17,8 @@ define(
 
 			handlePickupDate,
 			handleDeliveryDate,
-			handlePickupDeliverySelection,
+			handlePickupSelection,
+			handleDeliverySelection,
 
 			handleSearch,
 			showGearSuggestions,
@@ -124,8 +125,11 @@ define(
 			App.router.openModalView('pickupdeliverycalendar', passedData);
 		};
 
-		handlePickupDeliverySelection = function(vc) {
+		handlePickupSelection = function(vc) {
 			$('#search-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
+		};
+
+		handleDeliverySelection = function(vc) {
 			$('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
 			App.router.closeModalView();
 		};
@@ -346,7 +350,8 @@ define(
 
 			handlePickupDate: handlePickupDate,
 			handleDeliveryDate: handleDeliveryDate,
-			handlePickupDeliverySelection: handlePickupDeliverySelection,
+			handlePickupSelection: handlePickupSelection,
+			handleDeliverySelection: handleDeliverySelection,
 
 			handleSearch: handleSearch,
 			showGearSuggestions: showGearSuggestions,

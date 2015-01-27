@@ -85,7 +85,7 @@ define(
 				searchResults[i].marker = new GoogleMaps.Marker({
 					position: latlong,
 					map: this.map,
-					icon: 'images/shagicon_003.png'
+					icon: 'images/map_pin.png'
 				});
 			}
 		};
