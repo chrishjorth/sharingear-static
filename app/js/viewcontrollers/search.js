@@ -36,7 +36,6 @@ define(
 
 		didRender = function() {
 			var view = this,
-				$searchformContainer = $('.searchform-container', this.$element),
 				searchParameters;
 
 			if(this.searchFormVC === null) {
@@ -78,7 +77,6 @@ define(
 			this.map = new GoogleMaps.Map(document.getElementById('search-map'), mapOptions);
 
 			//add markers based on search results
-			console.log(searchResults);
 			for(i = 0; i < searchResults.length; i++) {
 				gear = searchResults[i].data;
 				latlong = new GoogleMaps.LatLng(gear.latitude, gear.longitude);
@@ -124,7 +122,7 @@ define(
 						console.log('Error geocoding: ' + status);
 						alert('Couldn\'t find this location. You can use the keyword all, to get locationless results.');
 						view.populateSearchBlock([]);
-						view.renderMap(searchResults);
+						view.renderMap([]);
 						view.setCurrentLocation(location);
 					}
 				});
@@ -151,7 +149,8 @@ define(
 		 */
 		populateSearchBlock = function(searchResults, callback) {
             var view = this,
-            	$searchBlock = $('#' + searchBlockID, this.$element);
+            	$searchBlock = $('#' + searchBlockID, this.$element),
+            	$noResultsBlock;
 
             //Remove promo block and billboard
 			$('#home-promo-block', view.$element).css({
@@ -162,18 +161,22 @@ define(
 			});
 
 			$searchBlock.empty();
+			console.log(this);
+			$noResultsBlock = $('.no-results-block', this.$element);
 
             if (searchResults.length <= 0) {
-				$('#home-search-block #testRow', view.$element).empty();
-            	$('#home-search-block .no-results-block', view.$element).show();
+            	console.log($noResultsBlock);
+            	$noResultsBlock.removeClass('hidden');
 				return;
 			}
 
-            $('#home-search-block .no-results-block', view.$element).hide();
+			if($noResultsBlock.hasClass('hidden') === false) {
+				$noResultsBlock.addClass('hidden');
+			}
 
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
-					defaultSearchResults, searchResult, imagesTest, i, img;
+					defaultSearchResults, handleImageLoad, html, searchResult, i, img;
 
 				defaultSearchResults = {
 					id: 0,
@@ -193,33 +196,38 @@ define(
 					owner_id: null
 				};
 
+				handleImageLoad = function() {
+					var $result = $('#search-results-' + this.resultNum, $searchBlock);
+					if(this.width < this.height) {
+						$result.addClass('search-result-gear-vertical');
+					}
+					else {
+						$result.addClass('search-result-gear-horizontal');
+					}
+					$result.css('background-image', 'url("' + this.src + '")');
+				};
+
+				html = '';
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i].data;
-					imagesTest = searchResult.images.split(',');
-                    searchResult.image = imagesTest[0];
+                    searchResult.image = searchResult.images.split(',')[0];
 
                     if (searchResult.image === '') {
                         searchResult.image = 'images/placeholder_grey.png';
                     }
                     view.price = searchResults[i].price_a;
+                    searchResult.resultNum = i;
 
 					_.extend(defaultSearchResults, searchResult);
-					$searchBlock.append(searchResultTemplate(defaultSearchResults));
-
-                    //Set background-image with jQuery
-                    $searchBlock.children().eq(i).children(':first').css('background-image', 'url("' + searchResult.image + '")');
+					html += searchResultTemplate(defaultSearchResults);
 
 					img = new Image();
+					img.resultNum = i;
+					img.onload = handleImageLoad;
 					img.src = searchResult.image;
-
-					if(img.width < img.height) {
-						$searchBlock.children().eq(i).children(':first').addClass('search-result-gear-vertical');
-					}
-					else {
-						$searchBlock.children().eq(i).children(':first').addClass('search-result-gear-horizontal');
-					}
-
 				}
+				$searchBlock.append(html);
+
 				if(callback && typeof callback === 'function') {
 					callback();
 				}

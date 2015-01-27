@@ -753,10 +753,6 @@ body {
 	}
 }
 
-.searchresults .col-sm-6 {
-	height: 260px;
-}
-
 .subview > .row {
 	margin-left: 0;
 	margin-right: 0;
@@ -823,6 +819,10 @@ body {
 .sg-black-bg-50 {
 	background-color: #000000;
 	background-color: rgba(0, 0, 0, 0.8);
+}
+.sg-black-bg-25 {
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.70);
 }
 
 .sg-blue {
@@ -1487,13 +1487,11 @@ button:active .sg-gray-bg {
 }
 
 .testimonials-video iframe {
-
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 95%;
 	height: 100%;
-
 }
 
 .testimonials-name {
@@ -1504,13 +1502,11 @@ button:active .sg-gray-bg {
 }
 
 .testimonials-big-name-container {
-
 	display: none;
 	color: #00aeff;
 }
 
 @media (min-width: 768px) {
-
 	.testimonials-row {
 		background-size: 100% auto;
 	}
@@ -1531,13 +1527,11 @@ button:active .sg-gray-bg {
 	}
 
 	.testimonials-video iframe {
-
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 95%;
 		height: 100%;
-
 	}
 
 	.testimonials-name {
@@ -1552,25 +1546,20 @@ button:active .sg-gray-bg {
 	}
 
 	.testimonials-big-name {
-
 		padding-left: 75px;
-
 	}
 }
 
 
 .references-row {
-
 	margin-left: 60px;
 	margin-right: 60px;
 	padding-bottom: 60px;
 }
 
 .references-image {
-
 	width: 100%;
 	vertical-align: middle;
-
 }
 
 
@@ -1672,7 +1661,57 @@ button:active .sg-gray-bg {
 	.search-results .searchresults {
 		top: 105px;
 	}
+}
 
+.searchresults .search-results-gear {
+	height: 260px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: #000000;
+	font-weight: bold;
+}
+.searchresults .search-result-gear-vertical {
+	background-size: 100% auto;
+	/*background-size: auto 100%;*/
+}
+.searchresults .search-result-gear-horizontal {
+	/*background-size: auto 100%;*/
+	background-size: 100% auto;
+}
+.searchresults .search-results-gear .title {
+	font-size: 14px;
+	line-height: 40px;
+	height: 40px;
+	padding-left: 15px;
+}
+.searchresults .search-results-gear .info {
+	font-size: 14px;
+	line-height: 40px;
+	height: 40px;
+	margin-left: 2%;
+	margin-right: 2%;
+	position: absolute;
+	bottom: 15px;
+	width: 96%;
+}
+.searchresults .search-results-gear .location {
+	padding-left: 90px;
+}
+.searchresults .search-results-gear .price {
+	position: absolute;
+	top: -10px;
+	height: 60px;
+	width: 80px;
+	text-align: center;
+}
+.searchresults .search-results-gear .price div {
+	margin-top: 8px;
+	line-height: 20px;
+}
+
+.search-results .no-results-block {
+	padding: 15px;
+	text-align: center;
 }
 
 /*----- 8.c DASHBOARD ------*/
