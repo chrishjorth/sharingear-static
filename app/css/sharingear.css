@@ -337,7 +337,7 @@ body {
 	.sg-tabbar button {
 		background-color: #00aeff;
 		background-color: rgba(0, 174, 255, 0.5);
-	}	
+	}
 }
 .sg-tabbar .selected {
 	background-color: #000000;
@@ -1460,6 +1460,119 @@ button:active .sg-gray-bg {
 		padding-right: 15;
 	}
 }
+
+.testimonials-title {
+	color: #00aeff;
+	padding-top: 5px;
+	padding-bottom: 15px;
+}
+
+.testimonials-row {
+	padding-top: 30px;
+	padding-left: 30px;
+	padding-bottom: 30px;
+	background-image: url("../images/landing_blue_bg.png");
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+}
+
+.testimonials-video {
+	position: relative;
+	padding-bottom: 50.25%; /*tweek this number if black bars appear*/
+	padding-top: 25px;
+	padding-left: 15px;
+	padding-right: 15px;
+	height: 0;
+	margin-top: 15px;
+}
+
+.testimonials-video iframe {
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 95%;
+	height: 100%;
+
+}
+
+.testimonials-name {
+	display: block;
+	color: #ffffff;
+	margin-top: 10px;
+	margin-bottom: 12px;
+}
+
+.testimonials-big-name-container {
+
+	display: none;
+	color: #00aeff;
+}
+
+@media (min-width: 768px) {
+
+	.testimonials-row {
+		background-size: 100% auto;
+	}
+
+	.testimonials-title {
+
+		padding-top: 7px;
+		padding-bottom: 15px;
+
+	}
+
+	.testimonials-video {
+		position: relative;
+		padding-bottom: 18.25%; /* 16:9 */
+		padding-top: 0px;
+		height: 0;
+		margin-top: 0px;
+	}
+
+	.testimonials-video iframe {
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 95%;
+		height: 100%;
+
+	}
+
+	.testimonials-name {
+		display: none;
+	}
+
+	.testimonials-big-name-container {
+		display:block;
+		padding-top: 25px;
+		padding-bottom: 25px;
+		border-bottom: 2px solid #00aeff;
+	}
+
+	.testimonials-big-name {
+
+		padding-left: 75px;
+
+	}
+}
+
+
+.references-row {
+
+	margin-left: 60px;
+	margin-right: 60px;
+	padding-bottom: 60px;
+}
+
+.references-image {
+
+	width: 100%;
+	vertical-align: middle;
+
+}
+
 
 /*------ 8.b SEARCH ------*/
 .search .jumbotron {
