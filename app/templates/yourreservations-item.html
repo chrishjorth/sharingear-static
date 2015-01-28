@@ -6,6 +6,17 @@
 		<div class="sg-list-item-text">{{brand}} {{subtype}} {{model}}</div>
 	</div>
 	<div class="col-xs-2">
-		<!-- Here goes the button, eventually-->
+		<button class="sg-btn-invisible-square request sg-blue hidden" data-bookingid="{{booking_id}}">
+    	<div class="sg-icon icon-booking-request"></div>
+    	<div class="sg-btn-text">Booking request</div>
+    </button>
+    <button class="sg-btn-invisible-square accepted sg-green hidden" data-bookingid="{{booking_id}}">
+    	<div class="sg-icon icon-booking-accepted"></div>
+    	<div class="sg-btn-text">Booking accepted</div>
+    </button>
+    <button class="sg-btn-invisible-square denied sg-red hidden" data-bookingid="{{booking_id}}">
+    	<div class="sg-icon icon-booking-denied"></div>
+    	<div class="sg-btn-text">Booking denied</div>
+    </button>
 	</div>
 </div>

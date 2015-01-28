@@ -2247,6 +2247,15 @@ button:active .sg-gray-bg {
 	line-height: 14px;
 }
 
+/*------ 8.m DASHBOARD GEAR RESERVATIONS ------*/
+.yourreservations .sg-list-item button {
+	padding-top: 18px;
+}
+.yourreservations .sg-list-item button .sg-btn-text {
+	font-size: 12px;
+	line-height: 14px;
+}
+
 /******* 9. HELPERS *******/
 .gearsearchform .sg-no-mobile,
 .sg-no-mobile {

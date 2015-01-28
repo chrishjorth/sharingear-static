@@ -87,7 +87,7 @@ define(
 					});
 
 					status = gear.data.booking_status;
-					if(status === 'pending') {
+					if(status === 'pending' || status === 'waiting') {
 						$('.request', $gearItem).removeClass('hidden');
 					}
 					if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
