@@ -36,7 +36,6 @@ define(
 		};
 
 		didRender = function() {
-
 			App.header.setTitle('Gear rentals');
 
 			if(this.didFetch === true) {
@@ -49,7 +48,7 @@ define(
 			require(['text!../templates/yourrentals-item.html'], function(YourRentalsItemTemplate) {
 				var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 					yourRentals = view.gearList.data,
-					$gearBlock, defaultGear, gear, i, $gearItem;
+					$gearBlock, defaultGear, gear, i, $gearItem, status;
 
 				if(yourRentals.length <= 0) {
 					$('#' + gearBlockID, view.$element).append('You currently do not have any rentals.');
@@ -83,26 +82,21 @@ define(
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
 					$gearItem = $(yourRentalsItemTemplate(defaultGear));
-					$('.sg-bg-image' ,$gearItem).css({
+					$('.sg-bg-image', $gearItem).css({
 						'background-image': 'url("' + defaultGear.img_url + '")'
 					});
 
-
-                    if(gear.data.booking_status === 'pending') {
-                        defaultGear.gear_status = '<button class="btn btn-warning yourrentals-status pending" data-yourgear-bookingid="' + gear.data.booking_id + '">' + 'PENDING' + '</button>';
-                    }
-                    else if(gear.data.gear_status === 'rented-out' || gear.data.booking_status === 'renter-returned' || gear.data.booking_status === 'owner-returned') {
-                    	defaultGear.gear_status = '<button class="btn btn-default yourrentals-status booking-btn" data-yourgear-bookingid="' + gear.data.booking_id + '">' + 'RENTED OUT' + '</button>';
-                    }
-                    else if(gear.data.booking_status === 'accepted') {
-                    	defaultGear.gear_status = '<button class="btn btn-default yourrentals-status booking-btn" data-yourgear-bookingid="' + gear.data.booking_id + '">' + 'ACCEPTED' + '</button>';
-                    }
-                    else if(gear.data.booking_status === 'ended') {
-                    	defaultGear.gear_status = 'ended';
-                    }
-                    else {
-                    	defaultGear.gear_status = 'failed';
-                    }
+					status = gear.data.booking_status;
+					if(status === 'pending') {
+						$('.request', $gearItem).removeClass('hidden');
+					}
+					if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
+						$('.accepted', $gearItem).removeClass('hidden');
+					}
+					if(status === 'denied') {
+						$('.denied', $gearItem).removeClass('hidden');
+					}
+                    
 					$gearBlock.append($gearItem);
 				}
 
