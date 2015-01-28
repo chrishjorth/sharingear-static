@@ -86,7 +86,6 @@ define(
 					});
 
 					status = reservation.data.booking_status;
-					console.log('status: ' + status);
 					if(status === 'pending' || status === 'waiting') {
 						$('.request', $reservationItem).removeClass('hidden');
 					}
@@ -98,7 +97,6 @@ define(
 					}
 
 					$reservationBlock.append($reservationItem);
-
 				}
 
 				if(callback && typeof callback === 'function') {
