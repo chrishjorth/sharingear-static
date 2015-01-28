@@ -558,6 +558,9 @@ body {
 .sg-tabs-3 li {
 	width: 33.3333333%;
 }
+.sg-tabs-4 li {
+	width: 25%;
+}
 .sg-tabs li button {
 	-moz-appearance: none;
 	-webkit-appearance: none;
@@ -2070,7 +2073,7 @@ button:active .sg-gray-bg {
 	font-weight: normal;
 	text-transform: none;
 }
-.gearprofile .profile-container button .sg-darkergray {
+.gearprofile .profile-container .sg-btn-invisible .sg-darkergray {
 	font-size: 40px;
 	margin-left: 4px;
 	margin-right: 4px;
@@ -2146,6 +2149,65 @@ button:active .sg-gray-bg {
 	border-radius: 10px;
 	line-height: 20px;
 	font-size: 14px;
+}
+
+/*------ 8.k USER ------*/
+.view-container .user {
+	padding: 48px 0 0 0;
+}
+@media (min-width: 768px) {
+	.view-container .user {
+		padding: 90px 5% 0 5%;
+	}
+}
+
+.user .view-descriptor {
+	font-size: 14px;
+	font-weight: bold;
+}
+.user .view-descriptor .sg-icon {
+	font-size: 24px;
+}
+
+.user .profile-pic-container {
+	height: 120px;
+	text-align: center;
+	margin: 10px;
+}
+.user .profile-pic {
+	margin-top: 10px;
+	border-radius: 50px;
+	height: 100px;
+	width: 100px;
+	background-color: #ffffff;
+	display: inline-block;
+}
+
+.user .name {
+	font-size: 24px;
+	text-transform: uppercase;
+}
+
+.user .tagline {
+	font-size: 16px;
+	margin-bottom: 20px;
+}
+
+.user .sg-tabs {
+	height: 90px;
+	border-bottom-style: solid;
+	border-bottom-color: #f7f7f7;
+	border-bottom-width: 2px;
+}
+.user .sg-tabs li {
+	border: none;
+}
+.user .sg-tabs button {
+	font-size: 54px;
+}
+
+.user .info .bio {
+	padding-bottom: 20px;
 }
 
 /******* 9. HELPERS *******/

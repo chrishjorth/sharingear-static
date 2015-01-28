@@ -38,7 +38,8 @@ define(
 				price_c: '',
 				name: '',
 				bio: '',
-				location: ''
+				location: '',
+				owner_id: ''
 			};
 
 			view.owner = new User.constructor({
@@ -88,7 +89,8 @@ define(
 							price_c: gearData.price_c,
 							name: ownerData.name + ' ' + ownerData.surname.substring(0, 1) + '.',
 							bio: ownerData.bio,
-							location: gearData.city + ', ' + gearData.country
+							location: gearData.city + ', ' + gearData.country,
+							owner_id: gearData.owner_id
 						};
 						view.render();
 					});
@@ -224,7 +226,7 @@ define(
 			else {
 				passedData = {
 					gear: view.gear
-				}
+				};
 				App.router.openModalView('gearbooking', passedData);
 			}
 		};
