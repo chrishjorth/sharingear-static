@@ -6,17 +6,21 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/user'],
-	function(_, $, ViewController, App, User) {
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/user', 'models/gearlist'],
+	function(_, $, ViewController, App, User, GearList) {
 		var didInitialize,
 			didRender,
 
 			renderProfilePic,
+			populateGear,
+			renderTabs,
 
 			handleTab;
 
 		didInitialize = function() {
 			var view = this;
+
+			this.currentTab = 'info';
 
 			this.user = new User.constructor({
 				rootURL: App.API_URL,
@@ -24,6 +28,7 @@ define(
 					id: this.subPath
 				}
 			});
+			this.user.initialize();
 			
 			this.subPath = ''; //To avoid rendering a subview based on the gear id
 
@@ -43,10 +48,21 @@ define(
 				};
 				view.render();
 			});
+
+			this.userGear = new GearList.constructor({
+				rootURL: App.API_URL
+			});
+			this.userGear.initialize();
+			console.log(this.userGear.data);
+			this.userGear.getUserGear(this.user.data.id, function(gear) {
+				view.render();
+			});
 		};
 
 		didRender = function() {
 			this.renderProfilePic();
+			this.renderTabs();
+			this.populateGear();
 
 			this.setupEvent('click', '.sg-tabs button', this, this.handleTab);
 		};
@@ -75,13 +91,44 @@ define(
         	img.src = this.user.data.image_url;
 		};
 
-		handleTab = function(event) {
-			var view = event.data,
-				tab = $(this).data('tab');
+		populateGear = function() {
+			var view = this;
+			require(['text!../templates/user-gear-item.html'], function(GearItemTemplate) {
+				var gearItemTemplate = _.template(GearItemTemplate),
+					gearList = view.userGear.data,
+					$gearBlock, defaultGear, gear, i, $gearItem;
 
+				$gearBlock = $('#user-gear-container', view.$element);
+
+				for(i = 0; i < gearList.length; i++) {
+					defaultGear = {
+						id: null,
+						gear_type: '',
+						subtype: '',
+						brand: '',
+						model: '',
+						img_url: 'images/placeholder_grey.png'
+					};
+
+					gear = gearList[i];
+					_.extend(defaultGear, gear.data);
+					if(defaultGear.images.length > 0) {
+						defaultGear.img_url = defaultGear.images.split(',')[0];
+					}
+					$gearItem = $(gearItemTemplate(defaultGear));
+					$('.sg-bg-image' ,$gearItem).css({
+						'background-image': 'url("' + defaultGear.img_url + '")'
+					});
+					$gearBlock.append($gearItem);
+				}
+			});
+		};
+
+		renderTabs = function() {
+			var view = this;
 			$('.sg-tab-panel', view.$element).each(function() {
 				var $this = $(this);
-				if($this.hasClass(tab) === true) {
+				if($this.hasClass(view.currentTab) === true) {
 					$this.removeClass('hidden');
 				}
 				else {
@@ -92,11 +139,19 @@ define(
 			});
 		};
 
+		handleTab = function(event) {
+			var view = event.data;
+			view.currentTab = $(this).data('tab');
+			view.renderTabs();
+		};
+
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 
 			renderProfilePic: renderProfilePic,
+			populateGear: populateGear,
+			renderTabs: renderTabs,
 
 			handleTab: handleTab
 		});
