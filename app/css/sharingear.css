@@ -752,7 +752,7 @@ body {
 }
 
 .sg-banner {
-	height: 470px;
+	height: 410px;
 	background-image: url("../images/home-stage.jpg");
     background-position: center bottom;
     background-size: auto 580px;
@@ -1435,6 +1435,15 @@ button:active .sg-gray-bg {
 		width: 130px;
 	}
 }
+.gearsearchform .search-pickup-container input[type="text"] {
+	border-right-width: 0;
+	border-bottom-width: 2px;
+}
+@media (min-width: 768px) {
+	.gearsearchform .search-pickup-container input[type="text"] {
+		border-right-width: 2px;
+	}
+}
 .gearsearchform .search-return-container {
 	width: 50%;
 }
@@ -1442,6 +1451,9 @@ button:active .sg-gray-bg {
 	.gearsearchform .search-return-container {
 		width: 130px;
 	}
+}
+.gearsearchform .search-return-container input[type="text"] {
+	border-bottom-width: 2px;
 }
 .gearsearchform input[type="submit"] {
 	height: 64px;
@@ -1453,6 +1465,19 @@ button:active .sg-gray-bg {
 		width: 128px;
 		border-top-right-radius: 2px;
 		border-bottom-right-radius: 2px;
+	}
+}
+
+.gearsearchform .submit-container {
+	position: absolute;
+	top: 0;
+	visibility: hidden;
+	z-index: 0;
+}
+@media (min-width: 768px) {
+	.gearsearchform .submit-container {
+		position: static;
+		visibility: visible;
 	}
 }
 
@@ -1644,7 +1669,7 @@ button:active .sg-gray-bg {
 
 .search-results {
     position: absolute;
-    top: 304px;
+    top: 240px;
     bottom: 0;
     width: 100%;
  }
