@@ -1492,7 +1492,7 @@ button:active .sg-gray-bg {
     	width: 50%;
 	}
 }
-.custom-radio-icon {
+.custom-radio .custom-radio-icon {
     margin: 30px 0 0 0;
     display: block;
     font-size: 50px;
@@ -1511,8 +1511,8 @@ button:active .sg-gray-bg {
     text-transform: capitalize;
 }
 .custom-radio input[type="radio"]:checked + label {
-    cursor: pointer;
-    color: #55636a;
+    cursor: default;
+    color: #00aeff;
 }
 
 /******* 8. SPECIFIC VIEWS *******/
@@ -1937,6 +1937,13 @@ button:active .sg-gray-bg {
 	.addgear .gearbuttonlist-container {
 		height: 100%;
 	}
+}
+
+.addgear .hint1 {
+	font-size: 16px;
+	line-height: 32px;
+	margin-top: 30px;
+	margin-bottom: 10px;
 }
 
 /*------ 8.g GEAR PROFILE ------*/

@@ -171,9 +171,11 @@ define(
 			var view = this,
 				gearClassification = App.gearClassification.data.classification,
 				html = '',
-				gearSubtypes, i, j;
+				gearType, gearSubtypes, i, j;
 
-			gearSubtypes = gearClassification[$('#addgear-form-type input[type="radio"]').val()];
+			gearType = $('#addgear-form-type input[type="radio"]:checked').val();
+
+			gearSubtypes = gearClassification[gearType];
 
 			for(i = 0; i < gearSubtypes.length; i++) {
 				if (gearSubtypes[i].subtype === $('#addgear-form-subtype', view.$element).val()) {
@@ -182,7 +184,7 @@ define(
 						if(view.newGear.data.accessories !== null && view.newGear.data.accessories.indexOf(gearSubtypes[i].accessories[j]) > -1) {
 							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'" checked> '+gearSubtypes[i].accessories[j];
 						}
-						else{
+						else {
 							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
 						}
 					}
@@ -273,6 +275,7 @@ define(
 		 */
 		handleGearRadio = function(event) {
 			var view = event.data;
+			$('.hint1', view.$element).addClass('hidden');
 			view.populateSubtypeSelect($(this).val());
 		};
 
