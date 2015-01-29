@@ -53,12 +53,18 @@ define(
 			if(App.user.isLoggedIn() === false) {
 				view.handleLogin();
 			}
+			else {
+				alert('This feature will be enabled soon, please stay tuned.');
+			}
 		};
 
 		handVansTab = function() {
 			var view = event.data;
 			if(App.user.isLoggedIn() === false) {
 				view.handleLogin();
+			}
+			else {
+				alert('This feature will be enabled soon, please stay tuned.');
 			}
 		};
 
