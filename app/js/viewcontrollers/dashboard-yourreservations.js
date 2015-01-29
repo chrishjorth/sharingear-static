@@ -15,8 +15,9 @@ define(
 
 			populateYourReservations,
 
-			handleDenied,
-			handleRental;
+			//handleDenied,
+			//handleRental,
+			handleBooking;
 
 		reservationBlockID = 'yourreservations-gear-block';
 
@@ -38,12 +39,11 @@ define(
 		};
 
 		didRender = function() {
-
 			App.header.setTitle('Gear reservations');
 
-			var view = this;
-			view.setupEvent('click', '.yourgear-status.denied', view, view.handleDenied);
-            view.setupEvent('click', '.yourgear-status.in-rental', view, view.handleRental);
+			this.setupEvent('click', '#yourreservations-gear-block .sg-list-item button', this, this.handleBooking);
+			//view.setupEvent('click', '.yourgear-status.denied', view, view.handleDenied);
+            //view.setupEvent('click', '.yourgear-status.in-rental', view, view.handleRental);
 		};
 
 		populateYourReservations = function(callback) {
@@ -105,7 +105,7 @@ define(
 			});
 		};
 
-		handleDenied = function(event) {
+		/*handleDenied = function(event) {
 			var view = event.data,
 				gear;
 			gear = view.gearList.getGearItem('booking_id', $(this).data('bookingid'));
@@ -117,14 +117,27 @@ define(
 				gear;
 			gear = view.gearList.getGearItem('booking_id', $(this).data('bookingid'));
 			App.router.openModalView('booking', gear);
+		};*/
+
+		handleBooking = function(event) {
+			var view = event.data,
+				bookingID = $(this).data('bookingid'),
+				passedData;
+			passedData = {
+				gear: view.gearList.getGearItem('booking_id', bookingID),
+				mode: 'renter',
+				booking_id: bookingID
+			};
+			App.router.openModalView('booking', passedData);
 		};
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populateYourReservations: populateYourReservations,
-			handleDenied: handleDenied,
-			handleRental: handleRental
+			//handleDenied: handleDenied,
+			//handleRental: handleRental
+			handleBooking: handleBooking
 		});
 	}
 );

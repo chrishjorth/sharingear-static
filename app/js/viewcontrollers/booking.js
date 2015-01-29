@@ -1,34 +1,29 @@
 /**
  * Controller for the Sharingear Gear booking confirm page view.
  * We use the booking status and gear status to determine the state of this view
- * @author: Chris Hjorth, Gediminas Bivainis
+ * @author: Chris Hjorth
  */
 
 'use strict';
 
 define(
-    ['underscore', 'jquery', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
-	function(_, $, ViewController, Moment, App, Gear, User, Booking) {
-		var gear = null,
-            booking = null,
-            isViewerOwner = true,
-            gearUser = null, //Can be the owner or the renter, depending on the viewer
-
-			didInitialize,
+    ['underscore', 'jquery', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking', 'models/localization'],
+	function(_, $, ViewController, Moment, App, Gear, User, Booking, Localization) {
+		var didInitialize,
 			didRender,
+
+			renderPeerPic,
+
 			toggleLoading,
-			renderMonthCalendar,
-			setupMonthCalendar,
-			renderBooking,
-			handleCancel,
+			
 			handleDeny,
 			handleConfirm,
-			handleEnd;
+			handleEnd,
+			handleClose;
 
 		didInitialize = function() {
 			var view = this,
-				title = '',
-				handleFetchBooking;
+				title = '';
 
 			this.isLoading = false;
 
@@ -39,14 +34,12 @@ define(
 				}
 			});
 
-			gear = view.passedData;
-			isViewerOwner = (App.user.data.id === gear.data.owner_id);
+			this.gear = view.passedData.gear;
 
-
-			if(gear.data.booking_status === 'denied') {
+			if(this.gear.data.booking_status === 'denied') {
 				title = 'Booking denied';
 			}
-			else if(gear.data.booking_status === 'pending') {
+			else if(this.gear.data.booking_status === 'pending') {
 				title = 'Confirm order';
 			}
 			else {
@@ -54,42 +47,71 @@ define(
 			}
 			
             view.templateParameters = {
-            	title: title,
+            	brand: this.gear.data.brand,
+            	subtype: this.gear.data.subtype,
+            	model: this.gear.data.model,
+            	start_time: '',
+            	end_time: '',
+            	peer_role: (this.passedData.mode === 'owner' ? 'Requested by' : 'Owned by'),
+            	name: '',
+            	surname: '',
+            	tagline: '',
+            	email: '',
+            	price: '',
+            	currency: ''
+            	/*title: title,
                 image_url : '',
                 name : '',
                 surname : '',
-                bio : ''
+                bio : ''*/
             };
 
-            booking = new Booking.constructor({
+            this.booking = new Booking.constructor({
                 rootURL: App.API_URL
             });
-            booking.initialize();
-            booking.data.id = gear.data.booking_id;
-            booking.data.gear_id = gear.data.id;
+            this.booking.initialize();
+            this.booking.data.id = this.passedData.booking_id;
 
-            booking.getBookingInfo(App.user.data.id, function(error) {
+            this.booking.getBookingInfo(App.user.data.id, function(error) {
+                var start_time, end_time, price, VAT, priceVAT, fee, feeVAT;
                 if(error){
-                    console.log('Error retrieving latest booking: ' + error);
+                    console.log('Error retrieving booking: ' + error);
                     return;
                 }
-                gearUser = new User.constructor({
+
+                start_time = new Moment(view.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
+                end_time = new Moment(view.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+
+                price = view.booking.data.price;
+				VAT = Localization.getVAT(App.user.data.country);
+				priceVAT = price / 100 * VAT;
+				fee = price / 100 * App.user.data.buyer_fee;
+				feeVAT = fee / 100 * VAT;
+
+                _.extend(view.templateParameters, {
+                	start_time: start_time.format('DD/MM/YYYY'),
+                	end_time: end_time.format('DD/MM/YYYY'),
+                	price: price + priceVAT + fee + feeVAT,
+                	currency: view.booking.data.currency
+                });
+
+                view.peerUser = new User.constructor({
                 	rootURL: App.API_URL
            		});
-           		gearUser.initialize();
-           		gearUser.data.id = (isViewerOwner === true ? booking.data.renter_id : gear.data.owner_id); //Depends on who is viewing the booking
+           		view.peerUser.initialize();
+           		view.peerUser.data.id = (view.passedData.mode === 'owner' ? view.booking.data.renter_id : view.gear.data.owner_id); //Depends on who is viewing the booking
 
-           		gearUser.getPublicInfo(function(error) {
-                	var gearUserData = gearUser.data;
+           		view.peerUser.getPublicInfo(function(error) {
+                	var userData = view.peerUser.data;
                 	if(error) {
                 		console.log('Error retrieving user info: ' + error);
                 		return;
                 	}
                 	_.extend(view.templateParameters, {
-                    	name: gearUserData.name,
-                    	surname: gearUserData.surname,
-                    	image_url : gearUserData.image_url,
-                    	bio : gearUserData.bio
+                    	name: userData.name,
+                    	surname: userData.surname,
+                    	tagline: 'Sharingear first-mover',
+                    	email: userData.email
                 	});
                 	view.render();
             	});
@@ -97,66 +119,53 @@ define(
 		};
 
 		didRender = function() {
-			var orderDateList = '',
-                dayDiff = 0,
-                startMoment, endMoment;
+			if(this.booking.data.booking_status === 'pending' && this.passedData.mode === 'owner') {
+				$('.accept-deny', this.$element).removeClass('hidden');
+			}
+			else if(this.booking.data.booking_status === 'rented-out') {
+				$('.end', this.$element).removeClass('hidden');
+			}
+			else if(this.booking.data.booking_status === 'renter-returned' && this.passedData.mode === 'owner') {
+				$('.end', this.$element).removeClass('hidden');
+			}
+			else if(this.booking.data.booking_status === 'owner-returned' && this.passedData.mode === 'renter') {
+				$('.end', this.$element).removeClass('hidden');
+			}
+			else {
+				$('.sg-close', this.$element).removeClass('hidden');
+			}
 
-            if(gear.data.booking_status === 'denied') {
-            	$('#renterview-confirm', this.$element).removeClass('hidden');
-            }
-            if(gear.data.booking_status === 'accepted' || gear.data.booking_status === 'renter-returned' || gear.data.booking_status === 'owner-returned') {
-            	$('#endbooking-confirm', this.$element).removeClass('hidden');
-            	this.setupEvent('click', '#booking-end-btn', this, this.handleEnd);
-            }
-            else {
-            	$('#owneraccept-confirm', this.$element).removeClass('hidden');
-				this.setupEvent('click', '#booking-deny-btn', this, this.handleDeny);
-				this.setupEvent('click', '#booking-confirm-btn', this, this.handleConfirm);
-            }
-            this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+			this.renderPeerPic();
 
-            $('[data-totalorderprice]').text(booking.data.price);
-
-            startMoment = new Moment(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
-			endMoment = new Moment(booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
-            orderDateList += '<li>' + startMoment.format('YYYY-MM-DD') + ' - ' + endMoment.format('YYYY-MM-DD') + '</li>';
-            dayDiff += endMoment.diff(startMoment, 'days') + 1;
-
-			this.renderMonthCalendar($('#gearavailability-months-container'));
-			this.setupMonthCalendar();
-			this.renderBooking();
-
-			// append start and end date intervals to pending order confirmation modal
-            $('[data-orderdates]').html(orderDateList);
-            $('[data-datediff]').text(dayDiff);
+			this.setupEvent('click', '#booking-cancel-btn', this, this.handleClose);
+			this.setupEvent('click', '#booking-deny-btn', this, this.handleDeny);
+			this.setupEvent('click', '#booking-confirm-btn', this, this.handleConfirm);
+			this.setupEvent('click', '#booking-close-btn', this, this.handleClose);
+			this.setupEvent('click', '#booking-end-btn', this, this.handleEnd);
 		};
 
-		renderMonthCalendar = function($monthCalendarContainer) {
-			var header, dayRows, i;
-			header = '<div class="row calendar-header">';
-			header += '<div class="col-md-1 col-md-offset-1"></div>';
-			header += '<div class="col-md-1">M</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">W</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">F</div>';
-			header += '<div class="col-md-1">S</div>';
-			header += '<div class="col-md-1">S</div>';
-			header += '</div>';
-			dayRows = '';
-			for(i = 0; i < 6; i++) {
-				dayRows += '<div class="row day-row">';
-				dayRows += '<div class="col-md-1 col-md-offset-1"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '</div>';
-			}
-			$monthCalendarContainer.append(header + dayRows);
+		renderPeerPic = function() {
+			var view = this,
+				img;
+
+			if(!this.peerUser.data.image_url) {
+        		return;
+        	}
+
+        	img = new Image();
+        	img.onload = function() {
+        		var backgroundSize;
+        		if(img.width < img.height) {
+        			backgroundSize = '100% auto';
+        		} else {
+        			backgroundSize = 'auto 100%';
+        		}
+        		$('.profile-pic', view.$element).css({
+        			'background-image': 'url(' + img.src + ')',
+        			'background-size': backgroundSize
+        		});
+        	};
+        	img.src = this.peerUser.data.image_url;
 		};
 
 		toggleLoading = function($selector,initstring) {
@@ -170,67 +179,11 @@ define(
 			}
 		};
 
-		setupMonthCalendar = function() {
-			var shownMoment = new Moment(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss'),
-				moment, startDay, $calendarContainer, $dayBox, row, col, date;
+        handleDeny = function(event){
+        	var view = event.data;
 
-			moment = new Moment({year: shownMoment.year(), month: shownMoment.month(), date: shownMoment.date()});
-			startDay = moment.date(1).weekday();
-			$calendarContainer = $('#gearavailability-months-container', this.$element);
-
-			//Set date to first box
-			moment.subtract(startDay, 'days');
-			for(row = 1; row <= 6; row++) { //6 possible week pieces
-				for(col = 1; col <= 7; col++) { //7 days
-					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-					date = moment.date();
-					$dayBox.html(date);
-					$dayBox.data('date', date);
-					$dayBox.data('month', moment.month());
-					$dayBox.attr('id', 'gearavailability-day-' + moment.month() + '-' + date);
-					$dayBox.removeClass('disabled');
-					if(moment.month() !== shownMoment.month()) {
-						$dayBox.addClass('disabled');
-					}
-					moment.add(1, 'days');
-				}
-			}
-
-			$('#gearavailability-monthtitle').html(shownMoment.format('MMMM YYYY'));
-		};
-
-		renderBooking = function() {
-			var $calendarContainer = $('#gearavailability-months-container', this.$element),
-				bookingData = booking.data,
-				startMoment, endMoment, momentIterator;
-
-			startMoment = new Moment(bookingData.start_time, 'YYYY-MM-DD HH:mm:ss');
-			$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
-			endMoment = new Moment(bookingData.end_time, 'YYYY-MM-DD HH:mm:ss');
-			momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
-			while(momentIterator.isBefore(endMoment, 'day') === true) {
-				$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
-				momentIterator.add(1, 'days');
-			}
-			$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');
-		};
-
-		handleCancel = function() {
-			App.router.closeModalView();
-
-			if(isViewerOwner === false && gear.data.booking_status === 'denied') {
-				booking.data.booking_status = 'ended-denied';
-				booking.update(App.user.data.id, function(error) {
-					if(error) {
-						console.log('Error updating booking status: ' + error);
-					}
-				});
-			}
-		};
-
-        handleDeny = function(){
-            booking.data.booking_status = 'denied';
-            booking.update(App.user.data.id, function(error) {
+            view.booking.data.booking_status = 'denied';
+            view.booking.update(App.user.data.id, function(error) {
             	if(error) {
             		console.log(error);
             		alert('Error updating booking.');
@@ -242,9 +195,6 @@ define(
             });
         };
 
-		/**
-		 * @assertion: selections are not overlapping.
-		 */
 		handleConfirm = function(event) {
             var view = event.data;
 
@@ -253,8 +203,8 @@ define(
 			}
 			view.toggleLoading($('#booking-confirm-btn',view.$element),'Confirm');
 
-			booking.data.booking_status = 'accepted';
-            booking.update(App.user.data.id, function(error) {
+			view.booking.data.booking_status = 'accepted';
+            view.booking.update(App.user.data.id, function(error) {
             	if(error) {
             		console.log(error);
             		alert('Error updating booking.');
@@ -275,8 +225,8 @@ define(
 			}
 
 			view.toggleLoading($('#booking-end-btn',view.$element),'End booking');
-			booking.data.booking_status = (isViewerOwner === true ? 'owner-returned' : 'renter-returned');
-			booking.update(App.user.data.id, function(error) {
+			view.booking.data.booking_status = (view.passedData.mode === 'owner' ? 'owner-returned' : 'renter-returned');
+			view.booking.update(App.user.data.id, function(error) {
             	if(error) {
             		console.log(error);
             		alert('Error updating booking.');
@@ -290,20 +240,33 @@ define(
             });
 		};
 
+		handleClose = function(event) {
+			var view = event.data;
+
+			App.router.closeModalView();
+
+			if(view.passedData.mode === 'renter' && view.booking.data.booking_status === 'denied') {
+				view.booking.data.booking_status = 'ended-denied';
+				view.booking.update(App.user.data.id, function(error) {
+					if(error) {
+						console.log('Error updating booking status: ' + error);
+					}
+				});
+			}
+		};
+
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 
-			renderMonthCalendar: renderMonthCalendar,
-			setupMonthCalendar: setupMonthCalendar,
+			renderPeerPic: renderPeerPic,
 
-			renderBooking: renderBooking,
 			toggleLoading:toggleLoading,
 
-			handleCancel: handleCancel,
             handleDeny : handleDeny,
 			handleConfirm: handleConfirm,
-			handleEnd: handleEnd
+			handleEnd: handleEnd,
+			handleClose: handleClose
 		});
 	}
 );

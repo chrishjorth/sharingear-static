@@ -27,6 +27,11 @@
  *	8.g GEAR PROFILE
  *	8.h GEAR BOOKING
  *	8.i PAYMENT
+ *	8.j	PAYMENT SUCCESSFUL
+ *	8.k USER
+ *	8.l DASHBOARD GEAR RENTALS
+ *	8.m DASHBOARD GEAR RESERVATIONS
+ * 	8.n BOOKING
  * 9. HELPERS
  * 10. ICONS
  *
@@ -800,6 +805,14 @@ body {
 	margin: 0;
 }
 
+.sg-h5 {
+	text-transform: capitalize;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 24px;
+	margin: 0;
+}
+
 /******* 6. GENERAL COLORS *******/
 /**
  * These are color classes. The goal is to keep all color definitions here for color consistency.
@@ -878,9 +891,15 @@ button:active .sg-gray-bg {
 .sg-green {
 	color: #009640;
 }
+.sg-green-bg {
+	background-color: #009640;
+}
 
 .sg-red {
 	color: #be1522;
+}
+.sg-red-bg {
+	background-color: #be1522;
 }
 
 /******* 7. GENERAL CUSTOM ELEMENTS *******/
@@ -2254,6 +2273,56 @@ button:active .sg-gray-bg {
 .yourreservations .sg-list-item button .sg-btn-text {
 	font-size: 12px;
 	line-height: 14px;
+}
+
+/*------ 8.n BOOKING ------*/
+.modal-view-container .booking {
+	padding-top: 47px;
+	padding-bottom: 50px;
+}
+
+.booking .from-to > div {
+	margin-bottom: 15px;
+	font-size: 14px;
+	line-height: 28px;
+	padding-left: 15px;
+}
+
+.booking .profile-pic-container {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: 80px;
+}
+.booking .profile-pic {
+	height: 60px;
+	width: 60px;
+	margin-top: 10px;
+	border-radius: 30px;
+	background-color: #ffffff;
+	display: inline-block;
+}
+
+.booking .name {
+	font-size: 24px;
+	text-transform: uppercase;
+}
+
+.booking .tagline {
+	font-size: 16px;
+	margin-bottom: 4px;
+}
+
+.booking .total {
+	margin-top: 15px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.booking .cancelled {
+	margin-top: 40px;
+	font-size: 18px;
 }
 
 /******* 9. HELPERS *******/

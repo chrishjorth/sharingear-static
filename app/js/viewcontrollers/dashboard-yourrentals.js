@@ -14,9 +14,9 @@ define(
 			didRender,
 			populateYourRentals,
 
-			handleGearItemPendConfirm,
-			handleEditGearItem,
-			handleGearItemAvailability,
+			//handleGearItemPendConfirm,
+			//handleEditGearItem,
+			//handleGearItemAvailability,
 			handleBooking;
 
 		gearBlockID = 'yourrentals-gear-block';
@@ -41,6 +41,8 @@ define(
 			if(this.didFetch === true) {
 				this.populateYourRentals();
 			}
+
+			this.setupEvent('click', '#yourrentals-gear-block .sg-list-item button', this, this.handleBooking);
 		};
 
 		populateYourRentals = function(callback) {
@@ -109,20 +111,24 @@ define(
 			});
 		};
 
-        handleGearItemPendConfirm = function(event){
+        /*handleGearItemPendConfirm = function(event){
             var view = event.data,
             	bookingID = $(this).data('yourgearBookingid'),
                 gear;
             gear = view.gearList.getGearItem('booking_id', bookingID);
             App.router.openModalView('booking', gear);
-        };
+        };*/
 
 		handleBooking = function(event) {
 			var view = event.data,
-				bookingID = $(this).data('yourgearBookingid'),
-				gear;
-			gear = view.gearList.getGearItem('booking_id', bookingID);
-			App.router.openModalView('booking', gear);
+				bookingID = $(this).data('bookingid'),
+				passedData;
+			passedData = {
+				gear: view.gearList.getGearItem('booking_id', bookingID),
+				mode: 'owner',
+				booking_id: bookingID
+			}
+			App.router.openModalView('booking', passedData);
 		};
 
 		return ViewController.inherit({
@@ -130,9 +136,9 @@ define(
 			didRender: didRender,
 			populateYourRentals: populateYourRentals,
 
-			handleEditGearItem: handleEditGearItem,
-			handleGearItemAvailability: handleGearItemAvailability,
-            handleGearItemPendConfirm : handleGearItemPendConfirm,
+			//handleEditGearItem: handleEditGearItem,
+			//handleGearItemAvailability: handleGearItemAvailability,
+            //handleGearItemPendConfirm : handleGearItemPendConfirm,
             handleBooking: handleBooking
 		});
 	}

@@ -1,60 +1,63 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12"><h2>{{title}}</h2></div>
+<div class="container-fluid view booking">
+  <div class="row sg-blue-bg sg-white sg-navbar">
+    <div class="col-xs-1"><div class="sg-icon icon-sg-logo"></div></div>
+      <div class="col-xs-10 text-center">Booking</div>
+    <div class="col-xs-1 text-right"><button class="sg-btn-round sg-white-bg sg-blue" id="booking-cancel-btn"><i class="fa fa-times"></i></button></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 text-center sg-darkergray gear">
+      <h3 class="sg-h3">{{brand}} {{subtype}} {{model}}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 from-to">
+      <div class="text-center"><h5 class="sg-h5">Rental period</h5></div>
+      <div class="sg-lightgray-bg"><strong>From:</strong> {{start_time}}</div>
+      <div class="sg-lightgray-bg"><strong>To:</strong> {{end_time}}</div>
+    </div>
+    <div class="col-sm-6">
+      <div class="text-center"><h5 class="sg-h5">{{peer_role}}</h5></div>
+      <div class="profile-pic-container sg-lightgray-bg text-center">
+        <div class="profile-pic"></div>
+      </div>
+      <div class="name sg-darkergray text-center">{{name}} {{surname}}</div>
+      <div class="tagline sg-gray text-center">{{tagline}}</div>
+      <div class="email text-center"><a href="mailto:{{email}}">{{email}}</a></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="sg-darkergray-bg sg-white total text-center">TOTAL: {{price}} <span class="sg-super">{{currency}}</span></div>
+    </div>
+  </div>
+
+  <div class="row cancelled">
+    <div class="col-sm-12">
+      <div class="sg-red text-center">Your booking request was cancelled by the owner.</div>
+    </div>
+  </div>
+
+  <div class="row sg-footerbar">
+    <div class="accept-deny hidden">
+      <div class="col-xs-6 bs-reset">
+        <button class="sg-btn-square sg-red-bg sg-white" id="booking-deny-btn">deny</button>
+      </div>
+      <div class="col-xs-6 bs-reset">
+        <button class="sg-btn-square sg-green-bg sg-white" id="booking-confirm-btn">confirm</button>
+      </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="row">
-                <div class="col-xs-4">
-                    <img class="img-responsive" src="{{ image_url }}" alt="Renter profile image"/>
-                </div>
-                <div class="col-xs-8">
-                    <h3>{{ name }} {{ surname }}</h3>
-                    <p>{{ bio }}</p>
-                    <p>
-                        other user details:
-                        <br/>
-                        trust level, etc
-                    </p>
-                </div>
-            </div>
-            <hr/>
-            <h4>Order: <span data-datediff></span> day(-s)</h4>
-            <ul data-orderdates></ul>
-            <hr/>
-            <h4><strong>Total: <span data-totalorderprice>00.00</span> DKK</strong></h4>
-        </div>
-        <div class="col-md-8">
-
-            <div class="row">
-                <div class="col-md-10 col-md-offset-2">
-                    <div class="btn-group">
-                        <button class="btn btn-default" id="gearavailability-today-btn">Today</button>
-                        <button class="btn btn-default" id="gearavailability-previous-btn">Previous</button>
-                        <button class="btn btn-default" id="gearavailability-next-btn">Next</button>
-                    </div>
-                </div>
-                <div class="col-md-10 col-md-offset-2" id="gearavailability-monthtitle"></div>
-                <div class="col-md-12">
-                    <div class="calendar month calendar" id="gearavailability-months-container"></div>
-                </div>
-            </div>
-        </div>
+    <div class="sg-close hidden">
+      <div class="col-sm-12 bs-reset">
+        <button class="sg-btn-square sg-blue-bg sg-white" id="booking-close-btn">close</button>
+      </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12 hidden" id="owneraccept-confirm">
-            <button class="btn btn-default cancel-btn">Cancel</button>
-            <button class="btn btn-danger" id="booking-deny-btn">Deny</button>
-            <button class="btn btn-primary" id="booking-confirm-btn">Confirm</button>
-        </div>
-        <div class="col-md-12 hidden" id="renterview-confirm">
-            <button class="btn btn-default cancel-btn">Close</button>
-        </div>
-        <div class="col-md-12 hidden" id="endbooking-confirm">
-            <button class="btn btn-default cancel-btn">Close</button>
-            <button class="btn btn-default yellow-button" id="booking-end-btn">End booking</button>
-        </div>
+    <div class="end hidden">
+      <div class="col-sm-12 bs-reset">
+        <button class="sg-btn-square sg-green-bg sg-white" id="booking-close-btn">end booking</button>
+      </div>
     </div>
+
+  </div>
 </div>
