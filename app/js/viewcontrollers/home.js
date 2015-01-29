@@ -26,13 +26,6 @@ define(
 			this.loadSearchBar();
 			this.loadFooter();
 
-            /*$('#feedbacks', this.$element).owlCarousel({
-                navigation: false,
-                slideSpeed: 800,
-                paginationSpeed: 400,
-                autoPlay: 7000,
-                singleItem: true
-            });*/
 			this.setupEvent('click', '#home-tab-technicians', this, this.handleTechniciansTab);
 			this.setupEvent('click', '#home-tab-vans', this, this.handVansTab);
         };
@@ -57,12 +50,16 @@ define(
 
 		handleTechniciansTab = function(event) {
 			var view = event.data;
-			view.handleLogin();
+			if(App.user.isLoggedIn() === false) {
+				view.handleLogin();
+			}
 		};
 
 		handVansTab = function() {
 			var view = event.data;
-			view.handleLogin();
+			if(App.user.isLoggedIn() === false) {
+				view.handleLogin();
+			}
 		};
 
 		handleLogin = function() {

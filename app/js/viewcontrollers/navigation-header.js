@@ -126,7 +126,7 @@ define(
 			var view = event.data,
 				$this = $(this),
 				$viewContainer = $('.view-container'),
-				$navbar, handleTransition;
+				$navbar, $tabbar, handleTransition;
 
 			handleTransition = function() {
 				$this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
@@ -134,28 +134,36 @@ define(
 			};
 
 			$navbar = $('.sg-navbar', view.$element);
+			$tabbar = $('.sg-tabbar-container', $viewContainer);
+			if($tabbar.css('position') !== 'fixed') {
+				//We are not in a mobile situation
+				$tabbar = $('');
+			}
+
+			console.log($tabbar);
 
 			$navbar.addClass('sliding-right');
 			$navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
 			$viewContainer.addClass('sliding-right');
 			$viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-
+			$tabbar.addClass('sliding-right');
+			$tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+			
 			if($navbar.hasClass('slide-right') === true) {
 				$navbar.removeClass('slide-right');
 				$viewContainer.removeClass('slide-right');
+				$tabbar.removeClass('slide-right');
 			}
 			else {
 				$navbar.addClass('slide-right');
 				$viewContainer.addClass('slide-right');
+				$tabbar.addClass('slide-right');
 			}
 
 			//Handle selection display
 			if($this.hasClass('list-group-item') === true) {
 				view.changeActiveState($this);
-				//view.clearSelections();
-				//$this.addClass('list-group-item-selected');
 			}
-
 		};
 
 		handleLogin = function(event, callback) {

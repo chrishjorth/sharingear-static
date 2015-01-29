@@ -19,7 +19,9 @@ define(
 			updateBankDetails,
 			setSearchInterval,
 			getIntervalStart,
-			getIntervalEnd;
+			getIntervalEnd,
+
+			isLoggedIn;
 
 		FB.init({
 			appId: '522375581240221'
@@ -218,6 +220,10 @@ define(
         	return date;
         };
 
+        isLoggedIn = function() {
+        	return this.data.id !== null;
+        };
+
         return Model.inherit({
 			fbStatus: '',
 
@@ -233,7 +239,8 @@ define(
             updateBankDetails: updateBankDetails,
             setSearchInterval: setSearchInterval,
             getIntervalStart: getIntervalStart,
-            getIntervalEnd: getIntervalEnd
+            getIntervalEnd: getIntervalEnd,
+            isLoggedIn: isLoggedIn
 		});
 	}
 );
