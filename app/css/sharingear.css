@@ -1745,6 +1745,9 @@ button:active .sg-gray-bg {
 	}
 }
 
+.searchresults {
+	width: 100%;
+}
 .searchresults .search-results-gear {
 	height: 260px;
 	background-position: center;
