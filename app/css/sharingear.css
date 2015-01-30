@@ -1898,6 +1898,10 @@ button:active .sg-gray-bg {
 }
 
 /*------ 8.e EDIT GEAR ------*/
+.editgear {
+	padding-bottom: 80px;
+}
+
 .editgear .sg-toptab-container {
 	height: 70px;
 }
