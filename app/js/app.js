@@ -73,7 +73,8 @@ define(
                 'closedbeta',
                 'search',
                 'user',
-                'pickupdeliverycalendar'
+                'pickupdeliverycalendar',
+                'insurance'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.

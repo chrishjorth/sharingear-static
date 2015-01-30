@@ -34,6 +34,7 @@
  * 	8.n BOOKING
  *	8.o ABOUT US
  *	8.p FOOTER
+ *	8.q INSURANCE
  * 9. HELPERS
  * 10. ICONS
  *
@@ -929,8 +930,17 @@ button:active .sg-gray-bg {
 	background-color: #be1522;
 }
 
+.sg-yellow {
+	color: #ffd802;
+}
+
 .sg-crowd-bg {
 	background-image: url("../images/crowd.jpg");
+	background-size: 100% 100%;
+}
+
+.sg-rehearsal-bg {
+	background-image: url("../images/rehearsal.jpg");
 	background-size: 100% 100%;
 }
 
@@ -2498,7 +2508,7 @@ button:active .sg-gray-bg {
 	margin-bottom: 30px;
 }
 
-/*------ FOOTER ------*/
+/*------ 8.p FOOTER ------*/
 .footer .links {
 	margin-top: 30px;
 }
@@ -2523,6 +2533,47 @@ button:active .sg-gray-bg {
 .footer .copyright {
 	margin-top: 30px;
 	margin-bottom: 60px;
+}
+
+/*------ 8.q INSURANCE ------*/
+.insurance {
+	padding-top: 48px;
+}
+@media (min-width: 768px) {
+	.insurance {
+		padding-top: 48px;
+	}
+}
+
+.insurance .sg-rehearsal-bg {
+	height: 330px;
+}
+.insurance .sg-rehearsal-bg .insurance-stamp {
+	margin-top: 30px;
+}
+.insurance .sg-rehearsal-bg p {
+	font-size: 28px;
+	line-height: 42px;
+	margin-top: 80px;
+}
+
+.insurance .message {
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 32px;
+	margin-top: 60px;
+}
+
+.insurance .title {
+	font-size: 22px;
+	margin-top: 15px;
+}
+.insurance .title .sg-icon {
+	font-size: 50px;
+}
+
+.insurance footer {
+	margin-top: 60px;
 }
 
 /******* 9. HELPERS *******/
