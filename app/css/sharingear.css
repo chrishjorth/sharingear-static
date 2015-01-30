@@ -1012,34 +1012,6 @@ button:active .sg-gray-bg {
 }
 
 /*------ 7.a CALENDARS ------*/
-/*.pickupdeliverycalendar-container {
-	z-index: 401;
-	position: absolute;
-    background-color: #ffffff;
-    border-style: solid;
-    border-width: 0;
-    border-color: #dddddd;
-    color: #333333;
-    overflow-y: auto;
-    overflow-x: hidden;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: 0;
-    -webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none;
-}
-@media (min-width: 768px) {
-	.pickupdeliverycalendar-container {
-		margin: 6% 10%;
-		-webkit-box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
-		-moz-box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
-		box-shadow: 0 11px 35px 2px rgba(0, 0, 0, 0.75);
-	}
-}*/
-
 .pickupdeliverycalendar .sg-toptab {
 	border-bottom-style: solid;
 	border-bottom-color: #00aeff;
@@ -1119,6 +1091,23 @@ button:active .sg-gray-bg {
 .calendar .selected {
 	background-color: #416d80;
 	color: #ffffff;
+}
+
+.availability-legend-box {
+	padding: 4px 10px 4px 10px;
+	margin-bottom: 10px; 
+	border-style: solid;
+	border-width: 1px;
+	border-color: #d5dada;
+}
+.availabilitycalendar .always-never button {
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 32px;
+	margin-top: 10px;
+}
+.availabilitycalendar .always-never .disabled {
+	opacity: 0.5;
 }
 
 /*------ 7.b BUTTONS ------*/
@@ -1939,11 +1928,27 @@ button:active .sg-gray-bg {
 	}
 }
 
+.addgear {
+	padding-bottom: 40px;
+}
+@media (min-width: 768px) {
+	.addgear {
+		padding-bottom: 0;
+	}
+}
+
 .addgear .hint1 {
 	font-size: 16px;
 	line-height: 32px;
 	margin-top: 30px;
 	margin-bottom: 10px;
+}
+
+.addgear .actions button {
+	font-weight: bold;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin-top: 40px;
 }
 
 /*------ 8.g GEAR PROFILE ------*/

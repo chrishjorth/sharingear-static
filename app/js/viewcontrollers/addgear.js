@@ -22,7 +22,6 @@ define(
 			addGearIcons,
 			renderAccessories,
 			prepopulateInstrument,
-			populatePriceSuggestions,
 			populateSubtypeSelect,
 			populateBrandSelect,
 			handleGearRadio,
@@ -34,6 +33,7 @@ define(
 			handleImageUpload,
 
 			populateCountries,
+			populatePriceSuggestions,
 			handlePriceChange,
 			handleDeliveryCheckbox,
 			savePriceLocation,
@@ -83,8 +83,8 @@ define(
 			this.alwaysFlag = 1; //New gear is always available by default
 			this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 
-			$('#gearavailability-always-btn', this.$element).removeClass('disabled');
-			$('#gearavailability-never-btn', this.$element).removeClass('disabled');
+			//$('#gearavailability-always-btn', this.$element).removeClass('disabled');
+			//$('#gearavailability-never-btn', this.$element).removeClass('disabled');
 		};
 
 		didRender = function() {
@@ -103,7 +103,6 @@ define(
 			this.setupEvent('click', '.next-btn', this, this.handleNext);
 			this.setupEvent('change', '#addgear-form-type .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
 			this.setupEvent('change', '#dashboard-addgearphotos-form-imageupload', this, this.handleImageUpload);
-			this.setupEvent('change', '#dashboard-addgear-form-subtype', this, this.populatePriceSuggestions);
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
@@ -120,19 +119,19 @@ define(
 			return tabID;
 		};
 
-		populatePriceSuggestions = function (event) {
+		populatePriceSuggestions = function () {
 			var gearClassification = App.gearClassification.data.classification,
-				view,gearSubtypes,i;
+				view = this,
+				gearType, gearSubtypes, i;
 
-			view = event.data;
-			var geartype = $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked',view.$element).val();
+			gearType = view.newGear.data.gear_type;
 
-			gearSubtypes = gearClassification[geartype];
+			gearSubtypes = gearClassification[gearType];
 			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype', view.$element).val()) {
-					$('#addgear-price_a-suggestion').html(gearSubtypes[i].price_a_suggestion);
-					$('#addgear-price_b-suggestion').html(gearSubtypes[i].price_b_suggestion);
-					$('#addgear-price_c-suggestion').html(gearSubtypes[i].price_c_suggestion);
+				if (gearSubtypes[i].subtype === view.newGear.data.subtype) {
+					$('#addgear-price_a-suggestion', view.$element).html(gearSubtypes[i].price_a_suggestion);
+					$('#addgear-price_b-suggestion', view.$element).html(gearSubtypes[i].price_b_suggestion);
+					$('#addgear-price_c-suggestion', view.$element).html(gearSubtypes[i].price_c_suggestion);
 				}
 			}
 		};
@@ -354,6 +353,8 @@ define(
 				//Case of the user tabbing back
 				this.newGear.save(App.user.data.id, callback);
 			}
+
+			this.populatePriceSuggestions();
 		};
 
 		populatePhotos = function() {

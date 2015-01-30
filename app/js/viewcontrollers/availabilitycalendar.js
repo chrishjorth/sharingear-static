@@ -227,6 +227,8 @@ define(
 			view.shownMoment.subtract(1, 'months');
 			view.populateCalendar(view.shownMoment, $calendarContainer);
 			view.renderSelections();
+
+            return false;
 		};
 
 		handleNext = function (event) {
@@ -239,6 +241,8 @@ define(
 			view.shownMoment.add(1, 'months');
 			view.populateCalendar(view.shownMoment, $calendarContainer);
 			view.renderSelections();
+
+            return false;
 		};
 
 		handleAlwaysAvailable = function(event) {
@@ -248,6 +252,8 @@ define(
 
             view.clearSelections();
             view.renderSelections();
+
+            return false;
         };
 
         handleNeverAvailable = function(event) {
@@ -257,6 +263,8 @@ define(
 
 			view.clearSelections();
             view.renderSelections();
+
+            return false;
         };
 
         handleDayStartSelect = function(event) {
