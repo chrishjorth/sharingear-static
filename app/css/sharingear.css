@@ -2448,9 +2448,28 @@ button:active .sg-gray-bg {
 	margin-top: 60px;
 }
 
-.aboutus p {
+.aboutus p:first-child {
 	padding-top: 20px;
+}
+.aboutus p:last-child {
 	padding-bottom: 20px;
+}
+
+.aboutus ul {
+	list-style: none;
+	padding-left: 0;
+}
+.aboutus ul li .sg-icon {
+	font-size: 48px;
+	line-height: 48px;
+	width: 40px;
+	float: left;
+	margin-right: 20px;
+}
+.aboutus ul li {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	clear: both;
 }
 
 .aboutus .sg-h2 {
@@ -2468,6 +2487,7 @@ button:active .sg-gray-bg {
 	border-width: 2px;
 	border-style: solid;
 	border-color: #00aeff;
+	margin-bottom: 30px;
 }
 
 /******* 9. HELPERS *******/
