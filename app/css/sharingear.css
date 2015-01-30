@@ -1353,6 +1353,16 @@ button:active .sg-gray-bg {
 	}
 }
 
+.thumb-list-container {
+	margin-top: 30px;
+}
+
+.thumb-list-container img {
+	height: 50px;
+	width: auto;
+	margin-bottom: 15px;
+}
+
 /*------ 7.d FORMS ------*/
 .gearsearchform {
 	text-align: left;
