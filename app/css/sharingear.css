@@ -32,6 +32,7 @@
  *	8.l DASHBOARD GEAR RENTALS
  *	8.m DASHBOARD GEAR RESERVATIONS
  * 	8.n BOOKING
+ *	8.o ABOUT US
  * 9. HELPERS
  * 10. ICONS
  *
@@ -802,6 +803,18 @@ body {
 	font-size: 75%;
 }
 
+.sg-h1 {
+	font-size: 32px;
+	line-height: 48px;
+	margin: 0;
+}
+
+.sg-h2 {
+	font-size: 24px;
+	line-height: 36px;
+	margin: 0;
+}
+
 .sg-h3 {
 	text-transform: capitalize;
 	font-size: 22px;
@@ -909,6 +922,11 @@ button:active .sg-gray-bg {
 	background-color: #be1522;
 }
 
+.sg-crowd-bg {
+	background-image: url("../images/crowd.jpg");
+	background-size: 100% 100%;
+}
+
 /******* 7. GENERAL CUSTOM ELEMENTS *******/
 /**
  * These are stylings for custom elements such as buttons and form inputs.
@@ -1009,6 +1027,35 @@ button:active .sg-gray-bg {
 .sg-fill {
 	height: 100%;
 	width: 100%;
+}
+
+.testimonial hr {
+	width: 14%;
+}
+.testimonial .profile-pic {
+	height: 100px;
+	width: 100px;
+	border-radius: 50px;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #ffffff;
+	background-size: 100% 100%;
+	background-position: center;
+	display: inline-block;
+}
+.aboutus .testimonial p {
+	padding-bottom: 0;
+}
+.testimonial .name {
+	text-transform: capitalize;
+}
+.testimonial .role {
+	text-transform: capitalize;
+	font-size: 24px;
+}
+.testimonial .band {
+	text-transform: uppercase;
+	font-size: 24px;
 }
 
 /*------ 7.a CALENDARS ------*/
@@ -2384,6 +2431,43 @@ button:active .sg-gray-bg {
 .booking .cancelled {
 	margin-top: 40px;
 	font-size: 18px;
+}
+
+/*------ 8.0 ABOUT US ------*/
+.aboutus {
+	padding-top: 48px;
+	padding-bottom: 60px;
+}
+@media (min-width: 768px) {
+	.aboutus {
+		padding-top: 48px;
+	}
+}
+
+.aboutus .row:first-child {
+	margin-top: 60px;
+}
+
+.aboutus p {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.aboutus .sg-h2 {
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+
+.aboutus .sg-crowd-bg {
+	height: 500px;
+}
+
+.aboutus .map {
+	height: 300px;
+	width: 500px;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #00aeff;
 }
 
 /******* 9. HELPERS *******/
