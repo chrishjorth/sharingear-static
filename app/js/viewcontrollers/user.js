@@ -18,19 +18,26 @@ define(
 			handleTab;
 
 		didInitialize = function() {
-			var view = this;
+			var view = this,
+				pathSections, gearID;
 
-			this.currentTab = 'info';
+			pathSections = this.subPath.split('/');
+			gearID = pathSections[0];
+			if(pathSections.length > 1) {
+				this.currentTab = pathSections[1];	
+			}
+			else {
+				this.currentTab = 'info';
+			}
+			this.subPath = ''; //To avoid rendering a subview based on the gear id
 
 			this.user = new User.constructor({
 				rootURL: App.API_URL,
 				data: {
-					id: this.subPath
+					id: gearID
 				}
 			});
 			this.user.initialize();
-			
-			this.subPath = ''; //To avoid rendering a subview based on the gear id
 
 			this.templateParameters = {
 				name: '',
@@ -53,7 +60,6 @@ define(
 				rootURL: App.API_URL
 			});
 			this.userGear.initialize();
-			console.log(this.userGear.data);
 			this.userGear.getUserGear(this.user.data.id, function(gear) {
 				view.render();
 			});
@@ -127,21 +133,33 @@ define(
 		renderTabs = function() {
 			var view = this;
 			$('.sg-tab-panel', view.$element).each(function() {
-				var $this = $(this);
+				var $this = $(this),
+					$listItem;
+				$listItem = $this.parent().parent();
+
 				if($this.hasClass(view.currentTab) === true) {
 					$this.removeClass('hidden');
+					if($listItem.hasClass('active') === false) {
+						$listItem.addClass('active');
+					}
 				}
 				else {
 					if($this.hasClass('hidden') === false) {
 						$this.addClass('hidden');
 					}
+					$listItem.removeClass('active');
 				}
 			});
 		};
 
 		handleTab = function(event) {
-			var view = event.data;
-			view.currentTab = $(this).data('tab');
+			var view = event.data,
+				$button = $(this);
+
+			$('.sg-tabs li', view.$element).removeClass('active');
+			$button.parent().addClass('active');
+
+			view.currentTab = $button.data('tab');
 			view.renderTabs();
 		};
 
