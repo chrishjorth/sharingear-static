@@ -33,6 +33,7 @@
  *	8.m DASHBOARD GEAR RESERVATIONS
  * 	8.n BOOKING
  *	8.o ABOUT US
+ *	8.p FOOTER
  * 9. HELPERS
  * 10. ICONS
  *
@@ -852,6 +853,9 @@ body {
 .sg-black {
 	color: #000000;
 }
+.sg-black-bg {
+	background-color: #000000;
+}
 .sg-black-bg-50 {
 	background-color: #000000;
 	background-color: rgba(0, 0, 0, 0.8);
@@ -861,7 +865,10 @@ body {
 	background-color: rgba(0, 0, 0, 0.70);
 }
 
-.sg-blue {
+.sg-blue,
+.sg-blue a,
+.sg-blue a:link,
+.sg-blue a:hover {
 	color: #00aeff;
 }
 .sg-blue-bg {
@@ -1589,13 +1596,13 @@ button:active .sg-gray-bg {
 	}
 }
 
-.testimonials-title {
+.home .testimonials-title {
 	color: #00aeff;
 	padding-top: 5px;
 	padding-bottom: 15px;
 }
 
-.testimonials-row {
+.home .testimonials-row {
 	padding-top: 30px;
 	padding-left: 30px;
 	padding-bottom: 30px;
@@ -1604,7 +1611,7 @@ button:active .sg-gray-bg {
 	background-repeat: no-repeat;
 }
 
-.testimonials-video {
+.home .testimonials-video {
 	position: relative;
 	padding-bottom: 50.25%; /*tweek this number if black bars appear*/
 	padding-top: 25px;
@@ -1614,7 +1621,7 @@ button:active .sg-gray-bg {
 	margin-top: 15px;
 }
 
-.testimonials-video iframe {
+.home .testimonials-video iframe {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1622,31 +1629,29 @@ button:active .sg-gray-bg {
 	height: 100%;
 }
 
-.testimonials-name {
+.home .testimonials-name {
 	display: block;
 	color: #ffffff;
 	margin-top: 10px;
 	margin-bottom: 12px;
 }
 
-.testimonials-big-name-container {
+.home .testimonials-big-name-container {
 	display: none;
 	color: #00aeff;
 }
 
 @media (min-width: 768px) {
-	.testimonials-row {
+	.home .testimonials-row {
 		background-size: 100% auto;
 	}
 
-	.testimonials-title {
-
+	.home .testimonials-title {
 		padding-top: 7px;
 		padding-bottom: 15px;
-
 	}
 
-	.testimonials-video {
+	.home .testimonials-video {
 		position: relative;
 		padding-bottom: 18.25%; /* 16:9 */
 		padding-top: 0px;
@@ -1654,7 +1659,7 @@ button:active .sg-gray-bg {
 		margin-top: 0px;
 	}
 
-	.testimonials-video iframe {
+	.home .testimonials-video iframe {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -1662,32 +1667,36 @@ button:active .sg-gray-bg {
 		height: 100%;
 	}
 
-	.testimonials-name {
+	.home .testimonials-name {
 		display: none;
 	}
 
-	.testimonials-big-name-container {
+	.home .testimonials-big-name-container {
 		display:block;
 		padding-top: 25px;
 		padding-bottom: 25px;
 		border-bottom: 2px solid #00aeff;
 	}
 
-	.testimonials-big-name {
+	.home .testimonials-big-name {
 		padding-left: 75px;
 	}
 }
 
 
 .references-row {
-	margin-left: 60px;
-	margin-right: 60px;
+	padding-top: 20px;
 	padding-bottom: 60px;
+}
+.references-row h6 {
+	font-size: 16px;
+	line-height: 24px;
 }
 
 .references-image {
 	width: 100%;
 	vertical-align: middle;
+	margin-bottom: 20px;
 }
 
 
@@ -2488,6 +2497,33 @@ button:active .sg-gray-bg {
 	border-style: solid;
 	border-color: #00aeff;
 	margin-bottom: 30px;
+}
+
+/*------ FOOTER ------*/
+.footer .links {
+	margin-top: 30px;
+}
+.footer .links a,
+.footer .links a:hover {
+	text-transform: capitalize;
+	text-decoration: none;
+}
+.footer .follow{
+	margin-top: 30px
+}
+.footer .social {
+	margin-top: 15px;
+}
+.footer .social img {
+	margin-left: 4px;
+	margin-right: 4px;
+}
+.footer .logo {
+	margin-top: 30px;
+}
+.footer .copyright {
+	margin-top: 30px;
+	margin-bottom: 60px;
 }
 
 /******* 9. HELPERS *******/
