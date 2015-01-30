@@ -14,7 +14,8 @@ define(
 			didRender,
 
 			renderTestimonials,
-			renderMap;
+			renderMap,
+			loadFooter;
 
 		testimonials = [{
 			image_file: 'images/testimonials/3.jpg',
@@ -29,7 +30,7 @@ define(
 			role: 'vocalist',
 			band: 'ex-the haunted/iamfire'
 		}, {
-			image_file: '../images/testimonials/2.jpg',
+			image_file: 'images/testimonials/2.jpg',
 			citation: 'If you are in a band, flying into some place in Europe, sometimes instead of having to get the whole backline, maybe if you just need to fly in and play one show, there are musicians in other towns, possibliy in your town, that have gear just laying around you can rent.',
 			name: 'ryan knight',
 			role: 'guitarist',
@@ -61,6 +62,7 @@ define(
 		didRender = function () {
 			this.renderTestimonials();
 			this.renderMap();
+			this.loadFooter();
 		};
 
 		renderTestimonials = function() {
@@ -104,13 +106,22 @@ define(
 			});
 		};
 
-	return ViewController.inherit({
-		didInitialize: didInitialize,
-		didRender: didRender,
+		loadFooter = function() {
+			var view = this;
+			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
+				view.footer = new FooterController.constructor({name: 'footer', $element: $('footer', view.$element), template: FooterTemplate});
+				view.footer.initialize();
+				view.footer.render();
+			});
+		};
 
-		renderTestimonials: renderTestimonials,
-		renderMap: renderMap
-	});
+		return ViewController.inherit({
+			didInitialize: didInitialize,
+			didRender: didRender,
 
+			renderTestimonials: renderTestimonials,
+			renderMap: renderMap,
+			loadFooter: loadFooter
+		});
 	}
 );
