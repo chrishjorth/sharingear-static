@@ -1,5 +1,5 @@
 /**
- * Controller for the Sharingear footer view.
+ * Controller for the Sharingear Insurance view.
  * @author: Chris Hjorth
  */
 
