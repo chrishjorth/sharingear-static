@@ -1427,6 +1427,14 @@ button:active .sg-gray-bg {
 	margin-bottom: 15px;
 }
 
+.sg-romanlist {
+	list-style-type: lower-roman;
+}
+
+.sg-alphalist {
+	list-style-type: lower-alpha;
+}
+
 /*------ 7.d FORMS ------*/
 .gearsearchform {
 	text-align: left;

@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['viewcontroller'],
-	function(ViewController) {
+	['jquery', 'viewcontroller'],
+	function($, ViewController) {
 		var didRender,
 			loadFooter;
 
