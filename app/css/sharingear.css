@@ -620,7 +620,7 @@ body {
     border-width: 0;
     border-color: #dddddd;
     color: #333333;
-    overflow-y: auto;
+    overflow-y: scroll;
     /*-webkit-overflow-scrolling: touch;*/
     overflow-x: hidden;
     top: 0;
