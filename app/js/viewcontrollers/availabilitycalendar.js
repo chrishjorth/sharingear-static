@@ -274,6 +274,10 @@ define(
 
             console.log('TOUCH START');
 
+            if(event.type !== 'mousedown' && !(event.originalEvent.touches && event.originalEvent.touches.length == 1)) {
+                return;
+            }
+
             //Do not allow selecting outside of the month
             if($this.data('month') !== view.shownMoment.month() + 1) {
                 return;
