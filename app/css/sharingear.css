@@ -758,7 +758,7 @@ body {
 }
 
 .sg-banner {
-	height: 410px;
+	height: 326px;
 	background-image: url("../images/home-stage.jpg");
     background-position: center bottom;
     background-size: auto 580px;
@@ -809,9 +809,15 @@ body {
 }
 
 .sg-h1 {
-	font-size: 32px;
-	line-height: 48px;
+	font-size: 24px;
+	line-height: 36px;
 	margin: 0;
+}
+@media (min-width: 768px) {
+	.sg-h1 {
+		font-size: 32px;
+		line-height: 48px;
+	}
 }
 
 .sg-h2 {
@@ -1481,7 +1487,7 @@ button:active .sg-gray-bg {
 	border-color: #00aeff;
 	display: block;
 	margin: 0;
-	height: 64px;
+	height: 44px;
 }
 @media (min-width: 768px) {
 	.gearsearchform input[type="text"] {
@@ -1530,7 +1536,7 @@ button:active .sg-gray-bg {
 	border-bottom-width: 2px;
 }
 .gearsearchform input[type="submit"] {
-	height: 64px;
+	height: 32px;
 	width: 100%;
 }
 @media (min-width: 768px) {
@@ -1596,8 +1602,8 @@ button:active .sg-gray-bg {
 
 /*------ 8.a HOME ------*/
 .sg-banner h2 {
-	margin-top: 60px;
-	margin-bottom: 70px;
+	margin-top: 30px;
+	margin-bottom: 34px;
 }
 @media (min-width: 768px) {
 	.sg-banner h2 {
@@ -2540,6 +2546,10 @@ button:active .sg-gray-bg {
 }
 .footer .logo {
 	margin-top: 30px;
+}
+.footer .logo img {
+	width: 100%;
+	height: auto;
 }
 .footer .copyright {
 	margin-top: 30px;
