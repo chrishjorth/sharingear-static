@@ -298,6 +298,8 @@ define(
 
 			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
             $('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
+
+            return false;
         };
 
         handleDayMoveSelect = function(event) {
