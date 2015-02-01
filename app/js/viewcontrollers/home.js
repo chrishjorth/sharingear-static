@@ -23,6 +23,10 @@ define(
 		};
 
 		didRender = function() {
+			if(App.header) {
+                App.header.setTitle();
+            }
+
 			this.loadSearchBar();
 			this.loadFooter();
 
