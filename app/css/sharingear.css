@@ -605,6 +605,7 @@ body {
     border-color: #dddddd;
     color: #333333;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
     top: 0;
     right: 0;
