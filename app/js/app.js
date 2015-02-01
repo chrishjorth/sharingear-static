@@ -93,10 +93,13 @@ define(
 			$(document).ready(function() {
 				documentReadyDeferred.resolve();
 
-				$('body').on('focus', 'select, input', null, function() {
+				/*$('body').on('focus', 'select, input', null, function() {
 					console.log('BOOM!');
 					window.scrollTo(0, 0);
         			document.body.scrollTop = 0;
+				});*/
+				$('body').on('touchmove', function(event) {
+					event.preventDefault();
 				});
 			});
 
