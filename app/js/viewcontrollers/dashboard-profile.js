@@ -75,10 +75,14 @@ define(
                     img = view.profileImg;
                 $profilePic.css('background-image', 'url("' + img.src + '")');
                 if(img.width < img.height) {
-                    $profilePic.css('background-size', '150px auto');
+                    $profilePic.css({
+                        'background-size': '100% auto'
+                    });
                 }
                 else{
-                    $profilePic.css('background-size', 'auto 150px');
+                    $profilePic.css({
+                        'background-size': 'auto 100%'
+                    });
                 }
             });
 
