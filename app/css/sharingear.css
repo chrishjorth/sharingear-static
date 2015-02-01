@@ -232,7 +232,7 @@ body {
 	width: 80%;
 	height: 100%;
 	overflow-y: scroll;
-	/*-webkit-overflow-scrolling: touch;*/
+	-webkit-overflow-scrolling: touch;
 	overflow-x: hidden;
 	background-color: #ffffff;
 }
@@ -1888,7 +1888,7 @@ button:active .sg-gray-bg {
 .search-results .searchresults {
 	position: absolute;
 	overflow-y: scroll;
-	/*-webkit-overflow-scrolling: touch;*/
+	-webkit-overflow-scrolling: touch;
 	top: 25px;
 	bottom: 0;
 	padding-bottom: 80px;
