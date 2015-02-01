@@ -199,6 +199,7 @@ body {
 
 .sg-navbar-brand {
 	text-align: center;
+	text-transform: capitalize;
 	font-size: 20px;
 	font-weight: 500;
 	height: 44px;
@@ -2114,9 +2115,36 @@ button:active .sg-gray-bg {
 	}
 }
 
+.gearprofile .gear {
+	padding-left: 4px;
+}
+@media (min-width: 768px) {
+	.gearprofile .gear {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+.gearprofile .gear .sg-icon {
+	vertical-align: top;
+}
+
 .gearprofile .gear-title {
-	display: inline-block;
-	max-width: 50%;
+	display: block;
+	max-width: 40%;
+	position: absolute;
+	margin-left: 40px;
+    top: 50%;
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+@media (min-width: 768px) {
+	.gearprofile .gear-title {
+		margin-left: 80px;
+	}
 }
 
 .gearprofile .social {
@@ -2227,6 +2255,10 @@ button:active .sg-gray-bg {
 .gearprofile .owl-wrapper-outer .item img {
 	max-height: 380px;
 	max-width: 100%;
+}
+
+.gearprofile .accessories {
+	padding-bottom: 30px;
 }
 
 .gearprofile .map-container {

@@ -111,7 +111,7 @@ define(
 
         toggleLoading = function() {
             if(this.isLoading === true) {
-                $('#editgear-save-btn', this.$element).html('Next');
+                $('#editgear-save-btn', this.$element).html('Save');
                 this.isLoading = false;
             }
             else {

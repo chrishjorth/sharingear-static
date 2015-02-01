@@ -38,6 +38,10 @@ define(
 			var view = this,
 				searchParameters;
 
+			if(App.header) {
+                App.header.setTitle('Search gear');
+            }
+
 			if(this.searchFormVC === null) {
 				require(['viewcontrollers/gearsearchform', 'text!../templates/gearsearchform.html'], function(gearSearchVC, gearSearchVT) {
 					view.searchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('.searchform-container', view.$element), template: gearSearchVT});

@@ -5,8 +5,10 @@
 				<div class="col-sm-12 sg-white-bg sg-gray"><div class="sg-icon icon-dashboard-yourgear"></div>{{gear_type}}</div>
 			</div>
 			<div class="row sg-card">
-				<div class="col-xs-10 col-sm-12 sg-white-bg sg-darkergray"><div class="sg-icon icon-addgear-{{gear_type}} sg-darkgray"></div><span class="gear-title">{{brand}} {{subtype}} {{model}}</span> <div class="social sg-gray"><button class="sg-btn-invisible sg-gray" id="gearprofile-fb-btn"><i class="fa fa-facebook"></i></button> | <button class="sg-btn-invisible sg-gray" id="gearprofile-tw-btn"><i class="fa fa-twitter"></i></button></div></div>
-				<div class="col-xs-2 sg-no-desktop text-center profile-pic-container"><div class="profile-pic"></div></div>
+				<div class="col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset gear">
+					<div class="sg-icon icon-addgear-{{gear_type}} sg-darkgray"></div><span class="gear-title">{{brand}} {{subtype}} {{model}}</span> <div class="social sg-gray"><button class="sg-btn-invisible sg-gray" id="gearprofile-fb-btn"><i class="fa fa-facebook"></i></button> | <button class="sg-btn-invisible sg-gray" id="gearprofile-tw-btn"><i class="fa fa-twitter"></i></button></div>
+				</div>
+				<div class="col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container"><div class="profile-pic"></div></div>
 			</div>
 		</div>
 		<div class="col-sm-4 bs-reset">
@@ -62,9 +64,9 @@
 						</div>
 					</div>
 					<div class="row bs-reset">
-						<div class="col-sm-12">
+						<div class="col-sm-12 accessories">
 							<h3>Accessories</h3>
-							<div id="accesories-holder" class="col-xs-12"></div>
+							<div id="accessories-holder"></div>
 						</div>
 					</div>
 				</div>

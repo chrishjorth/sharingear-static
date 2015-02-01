@@ -134,8 +134,8 @@ define(
 			var accessories = this.gear.data.accessories, i,html='';
 
 			if (accessories===null||accessories.length===0) {
-				html='This gear doesn\'t have any accessories.';
-				$('#accesories-holder',this.$element).html(html);
+				html = 'This gear doesn\'t have any accessories.';
+				$('#accessories-holder', this.$element).html(html);
 				return;
 			}
 
@@ -144,7 +144,7 @@ define(
 				html+='<li>'+accessories[i]+'</li>';
 			}
 			html+='</ul>';
-			$('#accesories-holder',this.$element).html(html);
+			$('#accessories-holder',this.$element).html(html);
 		};
 
         renderOwnerPicture = function() {
