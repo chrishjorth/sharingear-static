@@ -90,6 +90,7 @@ body {
 	overflow: hidden;
 	-webkit-overflow-scrolling: auto;
 	position: relative;
+	height: 100%;
 }
 
 /******* 2. VIEW STRUCTURE *******/
