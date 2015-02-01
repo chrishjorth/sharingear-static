@@ -399,14 +399,6 @@ body {
 	font-size: 28px;
 	text-align: center;
 }
-.editgear .sg-toptab {
-	width: 20%;
-}
-@media (min-width: 768px) {
-	.editgear .sg-toptab {
-		width: auto;
-	}
-}
 .sg-toptab-container .active,
 .sg-toptab-active {
 	border-color: #00aeff;
@@ -435,6 +427,8 @@ body {
 	color: #d5dada;
 	border: none;
 	background: none;
+	padding-left: 0;
+	padding-right: 0;
 }
 .sg-toptab i {
 	width: 15%;
@@ -663,7 +657,8 @@ body {
 	}
 }
 .sg-modal-header h2 {
-	margin: 4px 0 0 0;
+	margin: 12px 0 0 0;
+	font-size: 18px;
 }
 .sg-modal-header .col-xs-8 {
 	display: block;
@@ -2044,16 +2039,19 @@ button:active .sg-gray-bg {
 		height: 55px;
 	}
 }
+
 .editgear .sg-toptab {
-	font-size: 12px;
+	font-size: 10px;
 	padding-top: 12px;
 	padding-bottom: 20px;
+	width: 20%;
 }
 @media (min-width: 768px) {
 	.editgear .sg-toptab {
 		font-size: 18px;
 		padding-top: 8px;
 		padding-bottom: 0;
+		width: auto;
 	}
 }
 
