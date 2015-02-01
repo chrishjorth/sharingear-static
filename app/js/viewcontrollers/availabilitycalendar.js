@@ -78,6 +78,7 @@ define(
 		};
 
 		didRender = function() {
+            console.log('RENDER');
 			var $calendarContainer = $('.calendar', this.$element);
 			this.renderCalendar($calendarContainer);
 			this.populateCalendar(this.shownMoment, $calendarContainer);
