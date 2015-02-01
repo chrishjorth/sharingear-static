@@ -94,6 +94,7 @@ body {
 	margin-left: 0;
 	width: 100%;
 	height: 100%;
+	overflow-x: hidden;
 	background-color: #ffffff;
 }
 .view-container .view {
@@ -1753,7 +1754,7 @@ button:active .sg-gray-bg {
 
 .search-results {
     position: absolute;
-    top: 240px;
+    top: 180px;
     bottom: 0;
     width: 100%;
  }
