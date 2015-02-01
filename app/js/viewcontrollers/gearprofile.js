@@ -216,7 +216,8 @@ define(
 			if(user.data.id === null) {
 				user.login(function(error) {
 					if(!error) {
-						App.router.openModalView('gearbooking', view.gear);
+						view.render();
+						App.header.render();
 					}
 					else {
 						alert('You need to be logged in, in order to book an instrument.');
@@ -267,24 +268,30 @@ define(
 
 		renderActionButton = function() {
 			var view = this;
-			// if user is logged in AND is owner, add edit button
-			if(App.user.data.id == view.gear.data.owner_id) {
+
+			if(App.user.data.id === null) {
+                $('#gearprofile-action-unavailable', view.$element).addClass('hidden');
+				$('#gearprofile-action-book', view.$element).removeClass('hidden');
+				return;    	
+            }
+
+            if(App.user.data.id == view.gear.data.owner_id) {
 				$('#gearprofile-action-unavailable', view.$element).addClass('hidden');
 				$('#gearprofile-action-edit', view.$element).removeClass('hidden');
+				return;
 			}
-			else {
-				view.gear.getAvailability(App.user.data.id, function(error, result) {
-            		if(error) {
-            			console.log('Error getting gear availability: ' + error);
-            			return;
-            		}
-                	
-                	if(result.alwaysFlag === 1 || result.availabilityArray.length > 0) {
-                    	$('#gearprofile-action-unavailable', view.$element).addClass('hidden');
-						$('#gearprofile-action-book', view.$element).removeClass('hidden');
-                	}
-            	});
-			}
+
+			view.gear.getAvailability(App.user.data.id, function(error, result) {
+            	if(error) {
+            		console.log('Error getting gear availability: ' + error);
+            		return;
+            	}
+
+                if(result.alwaysFlag === 1 || result.availabilityArray.length > 0) {
+                	$('#gearprofile-action-unavailable', view.$element).addClass('hidden');
+					$('#gearprofile-action-book', view.$element).removeClass('hidden');
+                }
+            });
 		};
 
 		return ViewController.inherit({

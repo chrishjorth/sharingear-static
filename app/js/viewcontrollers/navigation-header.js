@@ -136,8 +136,6 @@ define(
 				$tabbar = $('');
 			}
 
-			console.log($tabbar);
-
 			$navbar.addClass('sliding-right');
 			$navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
 			$viewContainer.addClass('sliding-right');
@@ -191,8 +189,6 @@ define(
 
 		_updateTitle = function() {
 			if(Utilities.isMobile() === true) {
-				console.log('is mobile');
-				console.log(this.title);
 				$('.sg-navbar-brand', this.$element).html(this.title);
 			}
 			else {

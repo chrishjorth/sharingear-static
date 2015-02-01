@@ -76,6 +76,7 @@ define(
 			App.user.login(function(error) {
 				if(!error) {
 				    App.router.navigateTo('dashboard');
+				    App.header.render();
                 }
 			});
 		};
