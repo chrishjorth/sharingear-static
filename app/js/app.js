@@ -98,9 +98,9 @@ define(
 					window.scrollTo(0, 0);
         			document.body.scrollTop = 0;
 				});*/
-				$('body').on('touchmove', function(event) {
+				/*$('body').on('touchmove', function(event) {
 					event.preventDefault();
-				});
+				});*/
 			});
 
 			App.gearClassification = new GearClassification.constructor({
