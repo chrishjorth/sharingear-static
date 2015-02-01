@@ -269,14 +269,19 @@ define(
 		renderActionButton = function() {
 			var view = this;
 
+			$('.button-container button', view.$element).each(function() {
+				var $this = $(this);
+				if($this.hasClass('hidden') === false) {
+					$this.addClass('hidden');
+				}
+			});
+
 			if(App.user.data.id === null) {
-                $('#gearprofile-action-unavailable', view.$element).addClass('hidden');
 				$('#gearprofile-action-book', view.$element).removeClass('hidden');
 				return;    	
             }
 
             if(App.user.data.id == view.gear.data.owner_id) {
-				$('#gearprofile-action-unavailable', view.$element).addClass('hidden');
 				$('#gearprofile-action-edit', view.$element).removeClass('hidden');
 				return;
 			}
@@ -288,7 +293,6 @@ define(
             	}
 
                 if(result.alwaysFlag === 1 || result.availabilityArray.length > 0) {
-                	$('#gearprofile-action-unavailable', view.$element).addClass('hidden');
 					$('#gearprofile-action-book', view.$element).removeClass('hidden');
                 }
             });
