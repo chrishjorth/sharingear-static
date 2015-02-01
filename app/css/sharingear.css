@@ -430,6 +430,13 @@ body {
 	padding-left: 0;
 	padding-right: 0;
 }
+@media (min-width: 768px) {
+	.sg-toptab-container > li > a,
+	.sg-toptab-container > li > a:hover {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
 .sg-toptab i {
 	width: 15%;
 }
