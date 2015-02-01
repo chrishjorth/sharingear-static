@@ -78,7 +78,6 @@ define(
 		};
 
 		didRender = function() {
-            console.log('RENDER');
 			var $calendarContainer = $('.calendar', this.$element);
 			this.renderCalendar($calendarContainer);
 			this.populateCalendar(this.shownMoment, $calendarContainer);
@@ -272,8 +271,6 @@ define(
             var view = event.data,
                 $this = $(this);
 
-            console.log('TOUCH START');
-
             if(event.type !== 'mousedown' && !(event.originalEvent.touches && event.originalEvent.touches.length == 1)) {
                 return;
             }
@@ -306,8 +303,6 @@ define(
             //Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
             var view = event.data,
                 $calendarContainer, selectionX, selectionY;
-
-            console.log('TOUCH MOVE');
             
             if(event.type === 'mousemove') {
                 selectionX = event.pageX;
@@ -346,8 +341,6 @@ define(
         handleDayEndSelect = function(event) {
             var view = event.data,
                 key, monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
-
-            console.log('TOUCH END');
 
             $('body').off('mousemove touchmove', view.handleDayMoveSelect);
             $('body').off('mouseup touchend', view.handleDayEndSelect);
