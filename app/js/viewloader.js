@@ -113,6 +113,7 @@ define(
 				if($modalViewLightbox.hasClass('hidden') === true) {
 					$modalViewLightbox.removeClass('hidden');
 					$('body').addClass('modal-open');
+					$('.view-container').addClass('modal-open');
 				}
 
 				viewLoader.currentModalViewController = new ViewController.constructor({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path, passedData: data});
@@ -169,6 +170,7 @@ define(
 			if($modalViewLightbox.hasClass('hidden') === false) {
 				$modalViewLightbox.addClass('hidden');
 				$('body').removeClass('modal-open');
+				$('.view-container').removeClass('modal-open');
 			}
 
 			//TODO: remove once out of closed beta
