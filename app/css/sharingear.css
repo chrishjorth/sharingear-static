@@ -201,24 +201,17 @@ body {
 	text-align: center;
 	text-transform: capitalize;
 	font-size: 20px;
+	line-height: 44px;
 	font-weight: 500;
 	height: 44px;
-	margin-top: 2px;
 }
 @media (min-width: 768px) {
 	.sg-navbar-brand {
 		text-align: left;
-		margin-top: 6px;
 	}
 }
 .sg-navbar-brand a {
 	display: inline-block;
-	padding-top: 4px;
-}
-@media (min-width: 768px) {
-	.sg-navbar-brand a {
-		padding-top: 8px;
-	}
 }
 
 .sg-navbar-slidemenu {
