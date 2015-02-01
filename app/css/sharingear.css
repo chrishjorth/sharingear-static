@@ -1399,7 +1399,6 @@ button:active .sg-gray-bg {
 	}
 }
 .sg-list-item-text {
-	/*margin-top: 32px;*/
 	font-size: 12px;
 	font-weight: bold;
 	color: #005881;
@@ -1446,8 +1445,27 @@ button:active .sg-gray-bg {
 .sg-list-item button,
 .sg-list-item button:hover {
 	margin-top: 0;
-	font-size: 40px;
+	font-size: 30px;
 	display: block;
+}
+@media (min-width: 768px) {
+	.sg-list-item a,
+	.sg-list-item a:link,
+	.sg-list-item a:hover,
+	.sg-list-item button,
+	.sg-list-item button:hover {
+		margin-top: 0;
+		font-size: 40px;
+		display: block;
+	}
+}
+.sg-list-item .sg-iconbg-round-40 {
+	margin-top: 24px;
+}
+@media (min-width: 768px) {
+	.sg-list-item .sg-iconbg-round-40 {
+		margin-top: 0;
+	}
 }
 .sg-list-item a .sg-btn-text,
 .sg-list-item button .sg-btn-text {
@@ -2466,18 +2484,23 @@ button:active .sg-gray-bg {
 }
 
 /*------ 8.l DASHBOARD GEAR RENTALS ------*/
-.yourrentals .sg-list-item button {
-	padding-top: 18px;
+/*.yourrentals .sg-list-item button {
+	padding-top: 0;
 }
+@media (min-width: 768px) {
+	.yourrentals .sg-list-item button {
+		padding-top: 18px;
+	}
+}*/
 .yourrentals .sg-list-item button .sg-btn-text {
 	font-size: 12px;
 	line-height: 14px;
 }
 
 /*------ 8.m DASHBOARD GEAR RESERVATIONS ------*/
-.yourreservations .sg-list-item button {
+/*.yourreservations .sg-list-item button {
 	padding-top: 18px;
-}
+}*/
 .yourreservations .sg-list-item button .sg-btn-text {
 	font-size: 12px;
 	line-height: 14px;
