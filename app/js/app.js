@@ -101,6 +101,9 @@ define(
 				/*$('body').on('touchmove', function(event) {
 					event.preventDefault();
 				});*/
+				$('.modal-view-container').on('touchmove', function(event) {
+					event.stopPropagation();
+				});
 			});
 
 			App.gearClassification = new GearClassification.constructor({
