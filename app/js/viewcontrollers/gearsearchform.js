@@ -65,7 +65,7 @@ define(
 		prefillForm = function() {
 			var view = this,
 				$searchPickup, $searchReturn,
-				queryString, previousSearchGear, previousSearchLocation, previousSearchDateRange;
+				queryString, previousSearchGear, previousSearchLocation, previousSearchDateRange, startDate, endDate;
 
 			$searchPickup = $('#search-pickup', view.$element);
             $searchReturn = $('#search-return', view.$element);
@@ -74,14 +74,18 @@ define(
                 $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
             }
 
-			queryString = window.location.href.split('?')[1];
+			queryString = Utilities.getQueryString();
 			if(queryString) {
             	previousSearchGear = Utilities.getQueryStringParameterValue(queryString, 'gear');
             	previousSearchLocation = Utilities.getQueryStringParameterValue(queryString, 'location');
             	previousSearchDateRange = Utilities.getQueryStringParameterValue(queryString, 'daterange');
             	previousSearchDateRange = previousSearchDateRange.split('-');
             	$('#search-gear', this.$element).val(previousSearchGear);
-            	$('search-location', this.$element).val(previousSearchLocation);
+            	$('#search-location', this.$element).val(previousSearchLocation);
+            	startDate = new Moment(previousSearchDateRange[0], 'YYYYMMDD');
+            	endDate = new Moment(previousSearchDateRange[1], 'YYYYMMDD');
+            	$searchPickup.val(startDate.format('DD/MM/YYYY'));
+            	$searchReturn.val(endDate.format('DD/MM/YYYY'));
 			}
 		};
 
@@ -150,10 +154,14 @@ define(
 		 */
 		handleSearch = function(event) {
 			var view = event.data,
-				searchParams;
+				searchParams, queryString;
+
+			console.log('HANDLE SEARCH!');
 
 			searchParams = view.getSearchParameters();
-            App.router.setQueryString('location=' + encodeURIComponent(searchParams.locationString) + '&gear=' + encodeURIComponent(searchParams.gearString) + '&daterange=' + searchParams.dateRangeString);
+			queryString = 'location=' + encodeURIComponent(searchParams.locationString) + '&gear=' + encodeURIComponent(searchParams.gearString) + '&daterange=' + searchParams.dateRangeString;
+            console.log('queryString: ' + queryString);
+            App.router.setQueryString(queryString);
             if(App.router.currentViewController.name === 'search') {
             	App.router.currentViewController.performSearch(searchParams.gearString, searchParams.locationString, searchParams.dateRangeString);
             }
@@ -326,7 +334,7 @@ define(
 		getSearchParameters = function() {
 			var view = this,
 				$locationContainer,
-				location, searchString, dateRange, pickupDate, returnDate;
+				location, searchString, dateRange, pickupDate, returnDate, searchParameters;
 
             // remove gear suggestion dropdown when submitting
             $('#gear-suggestions-box', view.$element).hide();
@@ -344,11 +352,12 @@ define(
             dateRange = pickupDate.format('YYYYMMDD') + '-' + returnDate.format('YYYYMMDD');
             searchString = $('#home-search-form #search-gear', this.$element).val();
 
-			return {
+			searchParameters =  {
 				gearString: searchString,
 				locationString: location,
 				dateRangeString: dateRange
 			};
+			return searchParameters;
 		};
 
 		return ViewController.inherit({

@@ -190,7 +190,6 @@ define(
 		};
 
 		_updateTitle = function() {
-			console.log('UPDATE TITLE');
 			if(Utilities.isMobile() === true) {
 				console.log('is mobile');
 				console.log(this.title);

@@ -161,7 +161,6 @@ define(
 			});
 
 			$searchBlock.empty();
-			console.log(this);
 			$noResultsBlock = $('.no-results-block', this.$element);
 
             if (searchResults.length <= 0) {
