@@ -14,7 +14,6 @@ define(
 			didRender,
 			didResize,
 			populateMainMenu,
-			//clearSelections,
 			renderProfilePicture,
 			handleNavbarToggle,
 			handleLogin,
@@ -27,6 +26,7 @@ define(
 
 		didInitialize = function() {
 			this.isMobile = false;
+			this.title = defaultTitle;
 		};
 
 		didRender = function() {
@@ -93,10 +93,6 @@ define(
 
 			$menuList.html(html);
 		};
-
-		/*clearSelections = function() {
-			$('.list-group-item', this.$element).removeClass('list-group-item-selected');
-		};*/
 
 		renderProfilePicture = function() {
             var view = this,
@@ -186,7 +182,7 @@ define(
 		 * @param title: the text to display as title, if null title is set to default
 		 */
 		setTitle = function(title) {
-			if(title === null) {
+			if(!title || title === null) {
 				title = defaultTitle;
 			}
 			this.title = title;
@@ -194,7 +190,10 @@ define(
 		};
 
 		_updateTitle = function() {
+			console.log('UPDATE TITLE');
 			if(Utilities.isMobile() === true) {
+				console.log('is mobile');
+				console.log(this.title);
 				$('.sg-navbar-brand', this.$element).html(this.title);
 			}
 			else {
@@ -212,7 +211,6 @@ define(
 			didRender: didRender,
 			didResize: didResize,
 			populateMainMenu: populateMainMenu,
-			//clearSelections: clearSelections,
 			renderProfilePicture: renderProfilePicture,
 			handleNavbarToggle: handleNavbarToggle,
 			handleLogin: handleLogin,

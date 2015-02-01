@@ -198,12 +198,13 @@ body {
 	text-align: center;
 	font-size: 20px;
 	font-weight: 500;
-	padding-top: 10px;
 	height: 44px;
+	margin-top: 2px;
 }
 @media (min-width: 768px) {
 	.sg-navbar-brand {
 		text-align: left;
+		margin-top: 6px;
 	}
 }
 .sg-navbar-brand a {
