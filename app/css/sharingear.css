@@ -594,7 +594,7 @@ body {
 /*------ 2.b MODAL VIEWS ------*/
 .sg-lightbox {
     z-index: 400;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
