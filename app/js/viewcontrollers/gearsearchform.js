@@ -90,8 +90,9 @@ define(
 				passedData = {},
 				$calendarContainer, pickupInputString;
 
+			$(this).blur();
+
 			pickupInputString = $('#search-pickup', view.$element).val();
-			
 			if(pickupInputString !== '') {
 				passedData = {
 					pickupDate: pickupInputString,
@@ -109,6 +110,8 @@ define(
 			var view = event.data,
 				passedData = {},
 				$calendarContainer, deliveryInputString;
+
+			$(this).blur();
 
 			deliveryInputString = $('#search-return', view.$element).val();
 			if(deliveryInputString !== '') {
@@ -132,6 +135,11 @@ define(
 		handleDeliverySelection = function(vc) {
 			$('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
 			App.router.closeModalView();
+			if(Utilities.isMobile() === true) {
+				this.handleSearch({
+					data: this
+				});
+			}
 		};
 
 		/**
