@@ -20,20 +20,20 @@ define(
 			toggleLoading,
 
 			addGearIcons,
+			renderAccessories,
 			prepopulateInstrument,
-			populatePriceSuggestions,
 			populateSubtypeSelect,
 			populateBrandSelect,
 			handleGearRadio,
 			handleSelectSubtype,
+			handleSelectBrand,
 			saveInstrument,
 
 			populatePhotos,
 			handleImageUpload,
 
-			populateAccessories,
-
 			populateCountries,
+			populatePriceSuggestions,
 			handlePriceChange,
 			handleDeliveryCheckbox,
 			savePriceLocation,
@@ -43,24 +43,15 @@ define(
 			handleSubmerchantSkip,
 			handleSubmerchantSubmit,
 			handleSubmerchantAccept,
-			renderMonthCalendar,
-			setupMonthCalendar,
-			clearSelections,
-			renderSelections,
-			handleToday,
-			handlePrevious,
 			handleAvailabilityNext,
-			handleClearMonth,
-			handleAlwaysAvailable,
-			handleNeverAvailable,
-			handleDayStartSelect,
-			handleDayMoveSelect,
-			handleDayEndSelect,
-			isBeforeOrSameDay,
 			saveAvailability,
-			isAfterOrSameDay,
 
-			handleNext;
+			handleCancel,
+			handleNext,
+			handleViewGearProfile,
+			handleAddMoreGear,
+
+			showPanel;
 
 		geocoder = new GoogleMaps.Geocoder();
 
@@ -92,13 +83,15 @@ define(
 			this.alwaysFlag = 1; //New gear is always available by default
 			this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 
-			$('#gearavailability-always-btn', this.$element).removeClass('disabled');
-			$('#gearavailability-never-btn', this.$element).removeClass('disabled');
+			//$('#gearavailability-always-btn', this.$element).removeClass('disabled');
+			//$('#gearavailability-never-btn', this.$element).removeClass('disabled');
 		};
 
 		didRender = function() {
 			this.addGearIcons();
+			
 			this.prepopulateInstrument();
+			
 			this.populatePhotos();
 			this.populateCountries($('#dashboard-addgearprice-country', this.$element));
 
@@ -106,67 +99,52 @@ define(
 			$('#dashboard-addgearprice-form #price_b', this.$element).val(this.newGear.data.price_b);
 			$('#dashboard-addgearprice-form #price_c', this.$element).val(this.newGear.data.price_c);
 
-
-			this.setupEvent('click', '#editgear-next-btn', this, this.handleNext);
-			this.setupEvent('change', '#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
+			this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+			this.setupEvent('click', '.next-btn', this, this.handleNext);
+			this.setupEvent('change', '#addgear-form-type .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
 			this.setupEvent('change', '#dashboard-addgearphotos-form-imageupload', this, this.handleImageUpload);
-			this.setupEvent('change', '#dashboard-addgear-form-subtype', this, this.populateAccessories);
-			this.setupEvent('change', '#dashboard-addgear-form-subtype', this, this.populatePriceSuggestions);
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 		};
 
 		getTabID = function() {
-			return $('#addgear-crumbs li.active', this.$element).attr('id');
+			var tabID = null;
+			$('.addgear > .row').each(function() {
+				var $this = $(this);
+				if($this.hasClass('hidden') === false) {
+					tabID = $this.attr('id');
+				}
+			});
+			return tabID;
 		};
 
-		populatePriceSuggestions = function (event) {
+		populatePriceSuggestions = function () {
 			var gearClassification = App.gearClassification.data.classification,
-				view,gearSubtypes,i;
+				view = this,
+				gearType, gearSubtypes, i;
 
-			view = event.data;
-			var geartype = $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked',view.$element).val();
+			gearType = view.newGear.data.gear_type;
 
-			gearSubtypes = gearClassification[geartype];
+			gearSubtypes = gearClassification[gearType];
 			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype', view.$element).val()) {
-					$('#addgear-price_a-suggestion').html(gearSubtypes[i].price_a_suggestion);
-					$('#addgear-price_b-suggestion').html(gearSubtypes[i].price_b_suggestion);
-					$('#addgear-price_c-suggestion').html(gearSubtypes[i].price_c_suggestion);
+				if (gearSubtypes[i].subtype === view.newGear.data.subtype) {
+					$('#addgear-price_a-suggestion', view.$element).html(gearSubtypes[i].price_a_suggestion);
+					$('#addgear-price_b-suggestion', view.$element).html(gearSubtypes[i].price_b_suggestion);
+					$('#addgear-price_c-suggestion', view.$element).html(gearSubtypes[i].price_c_suggestion);
 				}
 			}
 		};
 
 		toggleLoading = function() {
 			if(this.isLoading === true) {
-				$('#editgear-next-btn', this.$element).html('Next');
+				$('.next-btn', this.$element).html('Next');
 				this.isLoading = false;
 			}
 			else {
-				$('#editgear-next-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+				$('.next-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 				this.isLoading = true;
 			}
-		};
-
-		populateAccessories = function (event) {
-			var gearClassification = App.gearClassification.data.classification,
-				html = "",
-				view,gearSubtypes,i;
-
-			view = event.data;
-			var geartype = $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked',view.$element).val();
-
-			gearSubtypes = gearClassification[geartype];
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#dashboard-addgear-form-subtype',view.$element).val()) {
-					var j;
-					for(j=0;j<gearSubtypes[i].accessories.length;j++){
-						html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
-					}
-				}
-			}
-			$('#dashboard-addgear-accessories-container',view.$element).html(html);
 		};
 
 		addGearIcons = function() {
@@ -179,13 +157,39 @@ define(
 				html += '<div class="custom-radio">';
 				html += '<input type="radio" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">';
 				html += '<label for="gear-radio-' + gearType + '">';
-				html += '<img src="images/addgear/' + gearType.toLowerCase() + '-48x48.png" width="48" height"48" class="custom-radio-image">';
+				html += '<div class="custom-radio-icon sg-icon icon-addgear-' + gearType.toLowerCase() + '"></div>';
 				html += gearType;
 				html += '</label>';
 				html += '</div>';
 			}
 
 			$('.gearbuttonlist-container', view.$element).append(html);
+		};
+
+		renderAccessories = function () {
+			var view = this,
+				gearClassification = App.gearClassification.data.classification,
+				html = '',
+				gearType, gearSubtypes, i, j;
+
+			gearType = $('#addgear-form-type input[type="radio"]:checked').val();
+
+			gearSubtypes = gearClassification[gearType];
+
+			for(i = 0; i < gearSubtypes.length; i++) {
+				if (gearSubtypes[i].subtype === $('#addgear-form-subtype', view.$element).val()) {
+					for(j = 0; j < gearSubtypes[i].accessories.length; j++){
+						//Check the checkbox if the specific accessory was selected for this gear before
+						if(view.newGear.data.accessories !== null && view.newGear.data.accessories.indexOf(gearSubtypes[i].accessories[j]) > -1) {
+							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'" checked> '+gearSubtypes[i].accessories[j];
+						}
+						else {
+							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
+						}
+					}
+				}
+			}
+			$('#addgear-accessories-container', view.$element).html(html);
 		};
 
 		/**
@@ -218,16 +222,21 @@ define(
 		populateSubtypeSelect = function(gearType) {
 			var gearClassification = App.gearClassification.data.classification,
 				html = '<option> ' + subtypeDefault + ' </option>',
-				$subtypeSelect, $brandSelectContainer, gearSubtypes, i;
+				$subtypeSelect, $brandSelectContainer, $detailsContainer, gearSubtypes, i;
 
-			$('#gear-subtype-container', this.$element).removeClass('hidden');
+			$('#addgear-form-subtype-container', this.$element).removeClass('hidden');
 
-			$subtypeSelect = $('#gear-subtype-container select', this.$element);
+			$subtypeSelect = $('#addgear-form-subtype-container select', this.$element);
 			$subtypeSelect.empty();
 			
-			$brandSelectContainer = $('#gear-brand-container', this.$element);
+			$brandSelectContainer = $('#addgear-form-brand-container', this.$element);
 			if($brandSelectContainer.hasClass('hidden') === false) {
 				$brandSelectContainer.addClass('hidden');
+			}
+
+			$detailsContainer = $('#addgear-form-geardetails-container', this.$element);
+			if($detailsContainer.hasClass('hidden') === false) {
+				$detailsContainer.addClass('hidden');
 			}
 			
 			gearSubtypes = gearClassification[gearType];
@@ -235,23 +244,29 @@ define(
 				html += '<option value="' + gearSubtypes[i].subtype + '">' + gearSubtypes[i].subtype + '</option>';
 			}
 			$subtypeSelect.append(html);
-			this.setupEvent('change', '#gear-subtype-container select', this, this.handleSelectSubtype);
+			this.setupEvent('change', '#addgear-form-subtype-container select', this, this.handleSelectSubtype);
 		};
 
 		populateBrandSelect = function() {
 			var brands = App.gearClassification.data.brands,
 				html = '<option> ' + brandDefault + ' </option>',
-				$brandSelect, i;
+				$brandSelect, $detailsContainer, i;
 
-			$('#gear-brand-container', this.$element).removeClass('hidden');
+			$('#addgear-form-brand-container', this.$element).removeClass('hidden');
 
-			$brandSelect = $('#gear-brand-container select', this.$element);
+			$brandSelect = $('#addgear-form-brand-container select', this.$element);
 			$brandSelect.empty();
+
+			$detailsContainer = $('#addgear-form-geardetails-container', this.$element);
+			if($detailsContainer.hasClass('hidden') === false) {
+				$detailsContainer.addClass('hidden');
+			}
 
 			for(i = 0; i < brands.length; i++) {
 				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
 			}
 			$brandSelect.append(html);
+			this.setupEvent('change', '#addgear-form-brand-container select', this, this.handleSelectBrand);
 		};
 
 		/**
@@ -259,12 +274,19 @@ define(
 		 */
 		handleGearRadio = function(event) {
 			var view = event.data;
+			$('.hint1', view.$element).addClass('hidden');
 			view.populateSubtypeSelect($(this).val());
 		};
 
 		handleSelectSubtype = function(event) {
 			var view = event.data;
 			view.populateBrandSelect();
+			view.renderAccessories();
+		};
+
+		handleSelectBrand = function(event) {
+			var view = event.data;
+			$('#addgear-form-geardetails-container', view.$element).removeClass('hidden');
 		};
 
 		saveInstrument = function() {
@@ -277,16 +299,18 @@ define(
 			}
 
 			//Push the checked checkboxes to an array
-			Array.prototype.push.apply(accessoriesArray, $('#dashboard-addgear-accessories-container input:checked',view.$element).map(function(){return this.name;}));
+			Array.prototype.push.apply(accessoriesArray, $('#addgear-accessories-container input:checked', view.$element).map(function(){
+				return this.name;
+			}));
 
 			//Create new gear model object from form data
 			newData = {
-				gear_type: $('#dashboard-addgear-form .gearbuttonlist-container input[type="radio"]:checked').val(),
-				subtype: $('#dashboard-addgear-form-subtype option:selected').val(),
-				brand: $('#dashboard-addgear-form-brand option:selected').val(),
-				model: $('#dashboard-addgear-form-model').val(),
+				gear_type: $('#addgear-form-type .gearbuttonlist-container input[type="radio"]:checked').val(),
+				subtype: $('#addgear-form-subtype option:selected').val(),
+				brand: $('#addgear-form-brand option:selected').val(),
+				model: $('#addgear-form-model').val(),
 				accessories: accessoriesArray,
-				description: $('#dashboard-addgear-form-description').val()
+				description: $('#addgear-form-description').val()
 			};
 
 			//Validate
@@ -317,8 +341,8 @@ define(
 					return;
 				}
 
-				$('#addgear-photos-li', view.$element).html('<a href="#addgear-photos" role="tab" data-toggle="tab">Photos</a>');
-				$('#addgear-crumbs a[href="#addgear-photos"]', view.$element).tab('show');
+				view.showPanel('#addgear-panel-photos');
+
 				view.toggleLoading();
 			};
 
@@ -329,6 +353,8 @@ define(
 				//Case of the user tabbing back
 				this.newGear.save(App.user.data.id, callback);
 			}
+
+			this.populatePriceSuggestions();
 		};
 
 		populatePhotos = function() {
@@ -501,8 +527,7 @@ define(
 						view.toggleLoading();
 						return;
 					}
-					$('#addgear-availability-li', view.$element).html('<a href="#addgear-availability" role="tab" data-toggle="tab">Availability</a>');
-					$('#addgear-crumbs a[href="#addgear-availability"]', view.$element).tab('show');
+					view.showPanel('#addgear-panel-availability');
 					if(App.user.isSubMerchant() === false) {
 						view.renderSubmerchantForm();
 					}
@@ -534,21 +559,15 @@ define(
 		};
 
 		renderAvailability = function() {
-			$('#addgear-availability-calendar', this.$element).removeClass('hidden');
-
-			this.renderMonthCalendar($('#gearavailability-months-container'));
-			this.setupMonthCalendar();
-			this.clearSelections();
-			this.renderSelections();
-
-			this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
-			this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
-			this.setupEvent('click', '#gearavailability-next-btn', this, this.handleAvailabilityNext);
-
-			this.setupEvent('click', '#gearavailability-clearmonth-btn', this, this.handleClearMonth);
-			this.setupEvent('click', '#gearavailability-always-btn', this, this.handleAlwaysAvailable);
-			this.setupEvent('click', '#gearavailability-never-btn', this, this.handleNeverAvailable);
-			this.setupEvent('mousedown touchstart', '#gearavailability-months-container .day-row .day', this, this.handleDayStartSelect);
+			var view = this,
+				$calendarContainer;
+			$calendarContainer = $('#addgear-availability-calendar', this.$element);
+			$calendarContainer.removeClass('hidden');
+			require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
+				view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.newGear});
+				view.calendarVC.initialize();
+				view.calendarVC.render();
+			});
 		};
 
 		renderSubmerchantForm = function() {
@@ -737,336 +756,10 @@ define(
 			});
 		};
 
-		renderMonthCalendar = function($monthCalendarContainer) {
-			var header, dayRows, i;
-			header = '<div class="row calendar-header">';
-			header += '<div class="col-md-1 col-md-offset-1"></div>';
-			header += '<div class="col-md-1">M</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">W</div>';
-			header += '<div class="col-md-1">T</div>';
-			header += '<div class="col-md-1">F</div>';
-			header += '<div class="col-md-1">S</div>';
-			header += '<div class="col-md-1">S</div>';
-			header += '</div>';
-			dayRows = '';
-			for(i = 0; i < 6; i++) {
-				dayRows += '<div class="row day-row">';
-				dayRows += '<div class="col-md-1 col-md-offset-1"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '<div class="col-md-1 day"></div>';
-				dayRows += '</div>';
-			}
-			$monthCalendarContainer.append(header + dayRows);
-		};
-
-		setupMonthCalendar = function() {
-			var moment, startDay, $calendarContainer, $dayBox, row, col, date;
-
-			moment = new Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
-			startDay = moment.date(1).weekday();
-			$calendarContainer = $('#gearavailability-months-container', this.$element);
-
-			//Set date to first box
-			moment.subtract(startDay, 'days');
-			for(row = 1; row <= 6; row++) { //6 possible week pieces
-				for(col = 1; col <= 7; col++) { //7 days
-					$dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-					date = moment.date();
-					$dayBox.html(date);
-					$dayBox.data('date', date);
-					$dayBox.data('month', moment.month());
-					$dayBox.attr('id', 'gearavailability-day-' + moment.month() + '-' + date);
-					$dayBox.removeClass('disabled');
-					if(moment.month() !== this.shownMoment.month()) {
-						$dayBox.addClass('disabled');
-					}
-					moment.add(1, 'days');
-				}
-			}
-
-			$('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
-		};
-
-		clearSelections = function() {
-			$('#gearavailability-months-container .day-row .day').each(function() {
-				$(this).removeClass('selected');
-			});
-		};
-
-		renderSelections = function() {
-			var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
-				$calendarContainer = $('#gearavailability-months-container', this.$element),
-				i, startMoment, endMoment, momentIterator;
-
-			if(this.alwaysFlag === 1) { //We do not need the case of 0 since by assertion the cells have been cleared
-                $('.day', $calendarContainer).each(function() {
-                    var $this = $(this);
-                    if($this.hasClass('disabled') === false) {
-                        $this.addClass('selected');
-                    }
-                });
-            }
-
-            if(Array.isArray(selections) === false) {
-                return;
-            }
-
-			for(i = 0; i < selections.length; i++) {
-				startMoment = selections[i].startMoment;
-				$('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
-				endMoment = selections[i].endMoment;
-				momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
-				while(momentIterator.isBefore(endMoment, 'day') === true) {
-					if(this.alwaysFlag === 0) {
-                        $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');    
-                    }
-                    else {
-                        $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
-                    }
-					momentIterator.add(1, 'days');
-				}
-				if(this.alwaysFlag === 0) {
-					$('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');    
-                }
-                else {
-                    $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
-                }
-			}
-		};
-
-		handleToday = function(event) {
-			var view = event.data;
-			view.shownMoment = new Moment();
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
-		};
-
-		handlePrevious = function(event) {
-			var view = event.data;
-			view.shownMoment.subtract(1, 'month');
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
-		};
-
-		handleAvailabilityNext = function(event) {
-			var view = event.data;
-			view.shownMoment.add(1, 'month');
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
-		};
-
-		handleClearMonth = function(event) {
-			var view = event.data;
-			if(view.alwaysFlag === 1) {
-                view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [{
-                    startMoment: new Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: 1}),
-                    endMoment: new Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: view.shownMoment.daysInMonth()})
-                }];
-            }
-            else {
-                view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
-            }
-			view.clearSelections();
-			view.renderSelections();
-		};
-
-		handleAlwaysAvailable = function(event) {
-			var view = event.data;
-			view.alwaysFlag = 1;
-			view.selections = {};
-
-
-			$('#gearavailability-always-btn',view.$element).addClass('button-selected-state');
-			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
-			view.clearSelections();
-			view.renderSelections();
-		};
-
-		handleNeverAvailable = function(event) {
-			var view = event.data;
-
-			view.alwaysFlag = 0;
-
-			view.selections = {};
-			view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
-
-			$('#gearavailability-never-btn',view.$element).addClass('button-selected-state');
-			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
-
-			view.setupMonthCalendar();
-			view.clearSelections();
-			view.renderSelections();
-
-		};
-
-		handleDayStartSelect = function(event) {
-			var view = event.data,
-				$this = $(this),
-				selection;
-
-			//Do not allow selecting outside of the month
-			if($this.data('month') !== view.shownMoment.month()) {
-				return;
-			}
-
-			if($this.hasClass('selected') === true) {
-                $this.removeClass('selected');
-                view.dragMakeAvailable = false;
-            }
-            else {
-                $this.addClass('selected');
-                view.dragMakeAvailable = true;
-            }
-
-			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
-			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
-
-			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
-			$('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
-		};
-
-		handleDayMoveSelect = function(event) {
-			//Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
-			var view = event.data,
-				$calendarContainer, selectionX, selectionY;
-			if(event.type === 'mousemove') {
-				selectionX = event.pageX;
-				selectionY = event.pageY;
-			}
-			else if(event.originalEvent.touches && event.originalEvent.touches.length == 1) {
-				selectionX = event.originalEvent.targetTouches[0].pageX;
-				selectionY = event.originalEvent.targetTouches[0].pageY;
-			}
-			else {
-				//Something wrong happened and we ignore
-				return;
-			}
-
-			$calendarContainer = $('#gearavailability-months-container', view.$element);
-			$('.day-row .day', $calendarContainer).each(function() {
-				var $this = $(this),
-					dayBoxOffset, selection;
-
-				dayBoxOffset = $this.offset();
-				if($this.data('month') === view.shownMoment.month()) {
-					if(selectionX >= dayBoxOffset.left && selectionX <= dayBoxOffset.left + $this.width() && selectionY >= dayBoxOffset.top && selectionY <= dayBoxOffset.top + $this.height()) {
-						if(view.dragMakeAvailable === false) {
-                            $this.removeClass('selected');
-                        }
-                        else {
-                            if($this.hasClass('selected') === false) {
-                                $this.addClass('selected');
-                            }
-                        }
-					}
-				}
-			});
-		};
-
-		handleDayEndSelect = function(event) {
-			var view = event.data,
-				key, monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
-			$('body').off('mousemove touchmove', view.handleDayMoveSelect);
-			$('body').off('mouseup touchend', view.handleDayEndSelect);
-
-			//Add days to selections
-            key = view.shownMoment.year() + '-' + (view.shownMoment.month() + 1);
-            view.selections[key] = [];
-            $('#gearavailability-months-container .day-row .day', view.$element).each(function() {
-                var $this = $(this),
-                    addSelection;
-                addSelection = function() {
-                    var selection;
-                    selection = {
-                        startMoment: new Moment({year: $this.data('year'), month: $this.data('month'), day: $this.data('date')}),
-                        endMoment: new Moment({year: $this.data('year'), month: $this.data('month'), day: $this.data('date')})
-                    };
-                    view.selections[key].push(selection);
-                };
-
-                if($this.hasClass('disabled') === false) {
-                    if(view.alwaysFlag === 1) {
-                        if($this.hasClass('selected') === false) {
-                            addSelection();
-                        }
-                    }
-                    else {
-                        if($this.hasClass('selected') === true) {
-                            addSelection();
-                        }
-                    }
-                }
-            });
-
-			//Scan selections for this month and cleanup overlaps
-			monthSelections = view.selections[key];
-			i = 0;
-			while(i < monthSelections.length) {
-				currentSelection = monthSelections[i];
-				j = i + 1;
-				didSplice = false;
-				while(j < monthSelections.length) {
-					startMomentA = currentSelection.startMoment;
-					endMomentA = currentSelection.endMoment;
-					startMomentB = monthSelections[j].startMoment;
-					endMomentB = monthSelections[j].endMoment;
-					if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(startMomentA, endMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
-						currentSelection.startMoment = startMomentB;
-						monthSelections.splice(j, 1);
-						didSplice = true;
-					}
-					else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
-						currentSelection.endMoment = endMomentB;
-						monthSelections.splice(j, 1);
-						didSplice = true;
-					}
-					else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
-						monthSelections.splice(j, 1);
-						didSplice = true;
-					}
-					else if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
-						currentSelection.startMoment = startMomentB;
-						currentSelection.endMoment = endMomentB;
-						monthSelections.splice(j, 1);
-						didSplice = true;
-					}
-					else {
-						j++;
-					}
-				}
-				if(didSplice === false) {
-					i++;
-				}
-			}
-
-			view.clearSelections();
-            view.renderSelections();
-		};
-
-		isBeforeOrSameDay = function(momentA, momentB) {
-			return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
-		};
-
-		isAfterOrSameDay = function(momentA, momentB) {
-			return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
-		};
-
-		/**
-		 * @assertion: selections are not overlapping.
-		 */
 		saveAvailability = function() {
 			var view = this,
 				availabilityArray = [],
-				month, monthSelections, selection, j;
+				selections, alwaysFlag, month, monthSelections, selection, j;
 
 			if(view.isLoading === true) {
 				return;
@@ -1074,8 +767,11 @@ define(
 
 			view.toggleLoading();
 
-			for(month in view.selections) {
-				monthSelections = view.selections[month];
+			selections = view.calendarVC.getSelections();
+			alwaysFlag = view.calendarVC.getAlwaysFlag();
+
+			for(month in selections) {
+				monthSelections = selections[month];
 				for(j = 0; j < monthSelections.length; j++) {
 					selection = monthSelections[j];
 					availabilityArray.push({
@@ -1085,36 +781,68 @@ define(
 				}
 			}
 
-      		view.newGear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function(error) {
+      		view.newGear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
       			if(error) {
+      				alert('Error saving gear availability.');
       				console.log(error);
-      				view.toggleLoading();
       				return;
       			}
-      			App.router.navigateTo('dashboard/addgearend', view.newGear);
+      			view.toggleLoading();
+      			view.showPanel('#addgear-panel-final');
+      			view.setupEvent('click', '.profile-btn', view, view.handleViewGearProfile);
+      			view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreGear);
       		});
         };
 
-		handleNext = function(event) {
-			var view = event.data;
+        handleCancel = function() {
+        	App.router.closeModalView();
+        };
 
-			switch(view.getTabID()) {
-				case 'addgear-instrument-li':
+		handleNext = function(event) {
+			var view = event.data,
+				currentTabID;
+
+			currentTabID = view.getTabID();
+
+			switch(currentTabID) {
+				case 'addgear-panel-type':
 					view.saveInstrument();
 					break;
-				case 'addgear-photos-li':
+				case 'addgear-panel-photos':
 					if(view.isLoading === false) {
-						$('#addgear-pricelocation-li', view.$element).html('<a href="#addgear-pricelocation" role="tab" data-toggle="tab">Price &amp; Location</a>');
-						$('#addgear-crumbs a[href="#addgear-pricelocation"]', view.$element).tab('show');
+						view.showPanel('#addgear-panel-pricelocation');
 					}
 					break;
-				case 'addgear-pricelocation-li':
+				case 'addgear-panel-pricelocation':
 					view.savePriceLocation();
 					break;
-				case 'addgear-availability-li':
+				case 'addgear-panel-availability':
 					view.saveAvailability();
 					break;
+				default:
+					console.log('Something went wrong.');
 			}
+		};
+
+		handleViewGearProfile = function(event) {
+			var view = event.data;
+			App.router.closeModalView();
+			App.router.navigateTo('gearprofile/' + view.newGear.data.id);
+		};
+
+		handleAddMoreGear = function() {
+			App.router.closeModalView();
+			App.router.openModalView('addgear');
+		};
+
+		showPanel = function(panelID) {
+			$('.addgear > .row', this.$element).each(function() {
+				var $this = $(this);
+				if($this.hasClass('hidden') === false) {
+					$this.addClass('hidden');
+				}
+			});
+			$(panelID, this.$element).removeClass('hidden');
 		};
 
 		return ViewController.inherit({
@@ -1125,17 +853,18 @@ define(
 			toggleLoading: toggleLoading,
 
 			addGearIcons: addGearIcons,
+			renderAccessories: renderAccessories,
 			prepopulateInstrument: prepopulateInstrument,
 			populateSubtypeSelect: populateSubtypeSelect,
 			populateBrandSelect: populateBrandSelect,
 			handleGearRadio: handleGearRadio,
 			handleSelectSubtype: handleSelectSubtype,
+			handleSelectBrand: handleSelectBrand,
 			saveInstrument: saveInstrument,
 
 			populatePhotos: populatePhotos,
 			handleImageUpload: handleImageUpload,
 
-			populateAccessories:populateAccessories,
 			populatePriceSuggestions:populatePriceSuggestions,
 
 			populateCountries: populateCountries,
@@ -1148,24 +877,15 @@ define(
 			handleSubmerchantSkip: handleSubmerchantSkip,
 			handleSubmerchantSubmit: handleSubmerchantSubmit,
 			handleSubmerchantAccept: handleSubmerchantAccept,
-			renderMonthCalendar: renderMonthCalendar,
-			setupMonthCalendar: setupMonthCalendar,
-			clearSelections: clearSelections,
-			renderSelections: renderSelections,
-			handleToday: handleToday,
-			handlePrevious: handlePrevious,
 			handleAvailabilityNext: handleAvailabilityNext,
-			handleClearMonth: handleClearMonth,
-			handleAlwaysAvailable: handleAlwaysAvailable,
-			handleNeverAvailable: handleNeverAvailable,
-			handleDayStartSelect: handleDayStartSelect,
-			handleDayMoveSelect: handleDayMoveSelect,
-			handleDayEndSelect: handleDayEndSelect,
-			isBeforeOrSameDay: isBeforeOrSameDay,
-			isAfterOrSameDay: isAfterOrSameDay,
 			saveAvailability: saveAvailability,
 			
-			handleNext: handleNext
+			handleCancel: handleCancel,
+			handleNext: handleNext,
+			handleViewGearProfile: handleViewGearProfile,
+			handleAddMoreGear: handleAddMoreGear,
+
+			showPanel: showPanel
 		});
 	}
 );

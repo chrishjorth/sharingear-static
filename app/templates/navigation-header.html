@@ -1,18 +1,20 @@
-<nav class="navbar navbar-default" role="navigation">
-	<div class="container-fluid"> 
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#sg-example-navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#home"><img class="image image-1" src="images/logotop@2x.png" alt="Sharingear home link"></a>
+<nav class="sg-navbar" role="navigation">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-2">
+				<button type="button" class="sg-navbar-toggle sg-btn-invisible-blue" data-target="#navigation-header-menu-left"><i class="fa fa-bars"></i></button>
+			</div>
+			<div class="col-xs-8 col-sm-8 sg-blue sg-navbar-brand"></div>
+			<div class="col-sm-3 col-sm-offset-1 sg-navbar-dropdownmenu sg-navbar-dropdownmenu-left hidden" id="navigation-header-dropdownmenu-left">
+				<div class="dropdown pull-right sg-no-mobile">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"><div src="" class="profile-pic"></div><div class="menu-text">MENU</div><!--<span class="caret"></span>--></button>
+					<div class="dropdown-menu list-group" role="menu"></div>
+				</div>
+			</div>
 		</div>
-		<div class="collapse navbar-collapse" id="sg-example-navbar-collapse">
-			<ul class="nav nav-pills navbar-right" id="navigationheader-buttonsright">
-			</ul>
-		</div>
-		<div class="bluelineheader"></div>
 	</div>
 </nav>
+
+<div class="sg-navbar-slidemenu sg-navbar-slidemenu-left" id="navigation-header-slidemenu-left">
+	<div class="list-group" role="menu"></div>
+</div>

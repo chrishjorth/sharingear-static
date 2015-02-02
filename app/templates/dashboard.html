@@ -1,18 +1,21 @@
-<div class="dashboard container-fluid">
+<div class="view dashboard container-fluid">
 	<div class="row">
-		<div id="dashboard-menu" class="col-md-3">
-			<ul class="menu list-group" style="text-transform: capitalize;">
-				<li class="list-group-item dashboardtitle dashboard-icon">Dashboard</li>
-				<li class="list-group-item list-group-item-selected"><a href="#dashboard/profile"><img src="images/icon_profile.png" alt="Profile icon">Profile</a></li>
-				<li class="list-group-item"><a href="#dashboard/addgear"><img src="images/icon_add.png" alt="Add gear icon">Add Gear</a></li>
-				<li class="list-group-item"><a href="#dashboard/yourgear"><img src="images/icon_gear.png" alt="Your gear icon">Your gear</a></li>
-				<li class="list-group-item"><a href="#dashboard/yourrentals"><img src="images/icon_yourgear.png" alt="Your rentals icon">Your rentals</a></li>
-				<li class="list-group-item"><a href="#dashboard/yourreservations"><img src="images/icon_yourgear.png" alt="Your reservations icon">Your reservations</a></li>
-				<!--<li class="list-group-item"><a href="#dashboard/calendar"><img src="images/icon_calendar.png" alt="Calendar icon">Calendar</a></li>
-				<li class="list-group-item"><a href="#dashboard/settings"><img src="images/icon_settings.png" alt="Settings icon">Settings</a></li>-->
-			</ul>
+		<div id="dashboard-menu" class="col-sm-3 dashboard-menu">
+			<div class="list-group">
+				<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>
+				<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>
+				<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profile</div></a>
+				<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans &amp; buses</div></a>
+				<a href="#dashboard/yourrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>
+				<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>
+				<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>
+				<a href="#dashboard/yourreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>
+				<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>
+				<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>
+				<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>
+			</div>
 		</div>
-		<div id="dashboard-subview-container" class="col-md-9"></div>
+		<div id="dashboard-subview-container" class="col-xs-12 col-sm-9 dashboard-subview-container bs-reset"></div>
 	</div>
 </div>
 

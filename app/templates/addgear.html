@@ -1,0 +1,301 @@
+<div class="container-fluid view addgear">
+
+  <div class="row" id="addgear-panel-type">
+    <form id="addgear-form-type" onsubmit="return false;">
+      <div class="col-sm-3 sg-darkgray-bg">
+        <div class="gearbuttonlist-container"></div>
+      </div>
+      <div class="col-sm-9">
+        <div class="row">
+          <div class="col-sm-12 hint1 text-center">
+            Please select the gear type.
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group hidden" id="addgear-form-subtype-container">
+            <div class="col-sm-3">
+              <label for="addgear-form-subtype">Subtype:</label>
+            </div>
+            <div class="col-sm-9">
+              <select class="form-control" id="addgear-form-subtype">
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group hidden" id="addgear-form-brand-container">
+            <div class="col-sm-3">
+              <label for="addgear-form-brand">Brand:</label>
+            </div>
+            <div class="col-sm-9">
+              <select class="form-control" id="addgear-form-brand">
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden" id="addgear-form-geardetails-container">
+          <div class="row">
+            <div class="form-group">
+              <div class="col-sm-3">
+                <label for="addgear-form-model">Model:</label>
+              </div>
+              <div class="col-sm-9">
+                <input type="text" id="addgear-form-model" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <div class="col-sm-3">
+                <label for="addgear-form-description">Description:</label>
+              </div>
+              <div class="col-sm-9">
+                <textarea class="form-control" id="addgear-form-description"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <div class="col-sm-3">
+                <label for="addgear-form-accessories">Accessories:</label>
+              </div>
+              <div class="col-sm-9">
+                <div id="addgear-accessories-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row sg-modal-header">
+          <div class="col-xs-offset-0 col-xs-2 col-sm-offset-6 col-sm-3 bs-reset text-center">
+            <button class="sg-btn-square cancel-btn">Cancel</button>
+          </div>
+          <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
+          <div class="col-xs-2 col-sm-3 bs-reset text-center">
+            <button class="sg-btn-square next-btn">Next</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row hidden" id="addgear-panel-photos">
+    <form id="dashboard-addgearphotos-form" onsubmit="return false;">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="dashboard-addgearphotos-form-imageupload">Upload image:</label>
+              <input type="file" id="dashboard-addgearphotos-form-imageupload" name="gearpic">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="thumb-list-container">
+              <ul>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row sg-modal-header">
+          <div class="col-xs-offset-0 col-xs-2 col-sm-offset-6 col-sm-3 bs-reset text-center">
+            <button class="cancel-btn">Cancel</button>
+          </div>
+          <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
+          <div class="col-xs-2 col-sm-3 bs-reset text-center">
+            <button class="next-btn">Next</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row hidden" id="addgear-panel-pricelocation">
+    <form id="dashboard-addgearprice-form" onsubmit="return false;">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-4 form-left">
+            <div class="form-group">
+              <label for="price_a">Hourly rental price:</label>
+              <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
+              <label for="price_b">Daily rental price:</label>
+              <div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control price"></div>
+              <label for="price_c">Weekly rental price:</label>
+              <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
+            </div>
+            <!--<div id="addDeliveryPriceContainer">
+              <div class="checkbox">
+                <label><input type="checkbox" id="gear-delivery-available-checkbox"> Gear available for delivery</label>
+              </div>
+              <fieldset disabled>
+                <div class="form-group">
+                  <label>Delivery price:</label>
+                  <input type="text" placeholder="Price" class="form-control price" name="delivery_price"/>
+                  <label>Max distance:</label>
+                  <input type="text" placeholder="Distance in km" class="form-control" name="delivery_distance"/>
+                </div>
+              </fieldset>
+            </div>-->
+          </div>
+
+          <div class="col-sm-4 form-left bulp-background">
+            <h3>Setting the price:</h3>
+            <p>For the following type of instrument we recommend the following prices.</p>
+            <div class="row">
+              <div class="col-xs-4 yellow-text-left">Hourly:</div>
+              <div id="addgear-price_a-suggestion" class="col-xs-8 right yellow-text"></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-4 yellow-text-left">Daily:</div>
+              <div id="addgear-price_b-suggestion" class="col-xs-8 right yellow-text"></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-4 yellow-text-left">Weekly:</div>
+              <div id="addgear-price_c-suggestion" class="col-xs-8 right yellow-text"></div>
+            </div>
+          </div>
+
+          <div class="col-sm-4 form-right">
+            <div class="form-group">
+              <label for="dashboard-addgearprice-address">Street</label>
+              <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
+              <label for="dashboard-addgearprice-postalcode">Postal code</label>
+              <input type="text" name="postalcode" id="dashboard-addgearprice-postalcode" class="form-control">
+              <label for="dashboard-addgearprice-city">City</label>
+              <input type="text" name="city" id="dashboard-addgearprice-city" class="form-control">
+              <!--<label for="dashboard-addgearprice-region">Region</label>
+              <input type="text" name="region" id="dashboard-addgearprice-region" class="form-control">-->
+              <label for="dashboard-addgearprice-country">Country</label>
+              <select name="country" id="dashboard-addgearprice-country" class="form-control">
+                <option value="">Select country</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row sg-modal-header">
+          <div class="col-xs-offset-0 col-xs-2 col-sm-offset-6 col-sm-3 bs-reset text-center">
+            <button class="cancel-btn">Cancel</button>
+          </div>
+          <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
+          <div class="col-xs-2 col-sm-3 bs-reset text-center">
+            <button class="next-btn">Next</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row hidden" id="addgear-panel-availability">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12"><h2>Availability</h2></div>
+      </div>
+
+      <div class="hidden" id="addgear-availability-submerchantform">  
+        <div class="row">
+          <div class="col-sm-12">In order to put your gear up for rent we need some extra information about you so that we can pay you.</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <form id="addgear-submerchantform" onsubmit="return false;">
+              <div class="form-group">
+                <label for="submerchantregistration-birthdate">Date of birth (DD/MM/YYYY):*</label>
+                <input type="text" class="form-control" name="address" id="submerchantregistration-birthdate">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-address">Address:*</label>
+                <input type="text" name="address" class="form-control" id="submerchantregistration-address">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-postalcode">Postal code:*</label>
+                <input type="text" class="form-control" name="postal_code" id="submerchantregistration-postalcode">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-city">City:*</label>
+                <input type="text" name="city" class="form-control" id="submerchantregistration-city">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-region">Region:</label>
+                <input type="text" name="region" class="form-control" id="submerchantregistration-region">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-region">Country:</label>
+                <select name="country" id="submerchantregistration-country">
+                  <option value="">Select your country</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-region">Nationality:</label>
+                <select name="nationality" id="submerchantregistration-nationality">
+                  <option value="">Select your nationality</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-phone">Phone:*</label>
+                <input type="text" name="phone" class="form-control" id="submerchantregistration-phone">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-iban">IBAN:*</label>
+                <input type="text" name="iban" class="form-control" id="submerchantregistration-iban">
+              </div>
+              <div class="form-group">
+                <label for="submerchantregistration-swift">BIC/SWIFT:*</label>
+                <input type="text" name="swift" class="form-control" id="submerchantregistration-swift">
+              </div>
+              <button type="button" class="btn btn-default btn-skip">Skip</button>
+              <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden" id="addgear-availability-terms">
+        <div class="row">
+          <div class="col-sm-12">
+            <p>
+              By pressing accept you confirm that you have read and accepted the Sharingear Terms and Conditions.
+              If you press cancel your gear will be saved, but it will not be possible to rent it.
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <button class="btn btn-default btn-skip">Cancel</button>
+            <button class="btn btn-info yellow-button" id="submerchantregistration-accept">Accept</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="addgear-availability-calendar" class="hidden"></div>
+
+      <div class="row sg-modal-header">
+        <div class="col-xs-offset-0 col-xs-2 col-sm-offset-6 col-sm-3 bs-reset text-center">
+          <button class="cancel-btn">Cancel</button>
+        </div>
+        <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
+        <div class="col-xs-2 col-sm-3 bs-reset text-center">
+          <button class="next-btn">Next</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row hidden" id="addgear-panel-final">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12"><h3 class="text-center">Gear added!</h3></div>
+      </div>
+      <div class="row actions">
+        <div class="col-sm-6"><button class="sg-btn-square sg-blue-bg sg-white profile-btn">View gear profile</button></div>
+        <div class="col-sm-6 right"><button class="sg-btn-square sg-blue-bg sg-white addmore-btn">Add more gear</button></div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -28,33 +28,16 @@ define(
             handleDeliveryCheckbox,
 
 			initAccessories,
-            initAvailability,
 			initPriceSuggestions,
 			populatePriceSuggestions,
 
             renderAvailability,
             handleSubmerchantSubmit,
             handleSubmerchantAccept,
-            renderMonthCalendar,
-            setupMonthCalendar,
-            clearSelections,
-            renderSelections,
-            handleToday,
-            handlePrevious,
-            handleNextButton,
-            handleClearMonth,
-            handleAlwaysAvailable,
-            handleNeverAvailable,
-            handleDayStartSelect,
-            handleDayMoveSelect,
-            handleDayEndSelect,
 			handlePriceChange,
 
             handleCancel,
-            handleSave,
-
-            isBeforeOrSameDay,
-            isAfterOrSameDay;
+            handleSave;
 
         geocoder = new GoogleMaps.Geocoder();
 
@@ -70,7 +53,6 @@ define(
 
 			this.gear = this.passedData;
 			this.templateParameters = this.gear.data;
-            this.initAvailability();
 
             this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 		};
@@ -110,8 +92,8 @@ define(
 			this.initAccessories();
 			this.initPriceSuggestions();
 
-            this.setupEvent('click', '.btn-cancel', this, this.handleCancel);
-			this.setupEvent('click', '.btn-save', this, this.handleSave);
+            this.setupEvent('click', '#editgear-cancel-btn', this, this.handleCancel);
+			this.setupEvent('click', '#editgear-save-btn', this, this.handleSave);
             this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
             this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
@@ -129,7 +111,7 @@ define(
 
         toggleLoading = function() {
             if(this.isLoading === true) {
-                $('#editgear-save-btn', this.$element).html('Next');
+                $('#editgear-save-btn', this.$element).html('Save');
                 this.isLoading = false;
             }
             else {
@@ -164,7 +146,7 @@ define(
 
 		initAccessories = function () {
 			var gearClassification = App.gearClassification.data.classification,
-				html = "",
+				html = '',
 				view,gearSubtypes,i;
 
 			view = this;
@@ -189,12 +171,16 @@ define(
 		};
 
         renderAvailability = function() {
+            var view = this,
+                $calendarContainer;
             if(App.user.isSubMerchant() === true) {
-                $('#editgear-availability-calendar', this.$element).removeClass('hidden');
-                this.renderMonthCalendar($('#gearavailability-months-container'));
-                this.setupMonthCalendar();
-                this.clearSelections();
-                this.renderSelections();
+                $calendarContainer = $('#editgear-availability-calendar', this.$element);
+                $calendarContainer.removeClass('hidden');
+                require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
+                    view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.gear});
+                    view.calendarVC.initialize();
+                    view.calendarVC.render();
+                });
             }
             else {
                 var user = App.user.data;
@@ -372,41 +358,6 @@ define(
             });
         };
 
-        initAvailability = function() {
-            var view = this;
-
-            this.shownMoment = new Moment();
-
-            this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
-            this.alwaysFlag = 0;
-
-            this.gear.getAvailability(App.user.data.id, function(error, result) {
-                var availabilityArray = result.availabilityArray,
-                    i, startMoment, endMoment;
-
-                view.alwaysFlag = result.alwaysFlag; // here the flag is set from the DB !!!!
-
-                $('#gearavailability-always-btn').removeClass('disabled');
-                $('#gearavailability-never-btn').removeClass('disabled');
-
-                if(error) {
-                    return;
-                }
-                for(i = 0; i < availabilityArray.length; i++) {
-                    startMoment = new Moment(availabilityArray[i].start);
-                    endMoment = new Moment(availabilityArray[i].end);
-                    if(Array.isArray(view.selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
-                        view.selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
-                    }
-                    view.selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
-                        startMoment: startMoment,
-                        endMoment: endMoment
-                    });
-                }
-                view.renderSelections();
-            });
-        };
-
         populateLocation = function() {
             $('#editgearpricingloc-form #editgearpricing-city').val(this.gear.data.city);
             $('#editgearpricingloc-form #editgearpricing-address').val(this.gear.data.address);
@@ -487,7 +438,7 @@ define(
 
 		populateAccessories = function (event) {
             var gearClassification = App.gearClassification.data.classification,
-                html = "",
+                html = '',
                 view,gearSubtypes,i;
 			
             view = event.data;
@@ -569,7 +520,7 @@ define(
                 currentCountry = view.gear.data.country,
                 availabilityArray = [],
 				accessoriesArray = [],
-                updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
+                selections, alwaysFlag, updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
 
             if(view.isLoading === true) {
                 return;
@@ -577,25 +528,31 @@ define(
 
 			view.toggleLoading();
 
-            //Convert selections to availability array
-            for(month in view.selections) {
-                monthSelections = view.selections[month];
-                for(j = 0; j < monthSelections.length; j++) {
-                    selection = monthSelections[j];
-                    availabilityArray.push({
-                        start_time: selection.startMoment.format('YYYY-MM-DD') + ' 00:00:00',
-                        end_time: selection.endMoment.format('YYYY-MM-DD') + ' 23:59:59'
-                    });
-                }
-            }
+            //If user has not registered as submerchant, the calendar view is not loaded
+            if(view.calendarVC && view.calendarVC !== null) {
+                selections = view.calendarVC.getSelections();
+                alwaysFlag = view.calendarVC.getAlwaysFlag();
 
-            view.gear.setAvailability(App.user.data.id, availabilityArray, view.alwaysFlag, function(error) {
-                if(error) {
-                    alert('Error saving availability.');
-                    console.log(error);
-                    view.toggleLoading();
+                //Convert selections to availability array
+                for(month in selections) {
+                    monthSelections = selections[month];
+                    for(j = 0; j < monthSelections.length; j++) {
+                        selection = monthSelections[j];
+                        availabilityArray.push({
+                            start_time: selection.startMoment.format('YYYY-MM-DD') + ' 00:00:00',
+                            end_time: selection.endMoment.format('YYYY-MM-DD') + ' 23:59:59'
+                        });
+                    }
                 }
-            });
+
+                view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
+                    if(error) {
+                        alert('Error saving availability.');
+                        console.log(error);
+                        view.toggleLoading();
+                    }
+                });
+            }
 
 			//Push the checked checkboxes to the array
             $('#editgear-accessories-container input:checked', view.$element).each(function() {
@@ -724,345 +681,6 @@ define(
 			}
 		};
 
-        renderMonthCalendar = function($monthCalendarContainer) {
-            var header, dayRows, i;
-            header = '<div class="row calendar-header">';
-            header += '<div class="col-md-1 col-md-offset-1"></div>';
-            header += '<div class="col-md-1">M</div>';
-            header += '<div class="col-md-1">T</div>';
-            header += '<div class="col-md-1">W</div>';
-            header += '<div class="col-md-1">T</div>';
-            header += '<div class="col-md-1">F</div>';
-            header += '<div class="col-md-1">S</div>';
-            header += '<div class="col-md-1">S</div>';
-            header += '</div>';
-            dayRows = '';
-            for(i = 0; i < 6; i++) {
-                dayRows += '<div class="row day-row">';
-                dayRows += '<div class="col-md-1 col-md-offset-1"></div>';
-                dayRows += '<div class="col-md-1 day"></div>';
-                dayRows += '<div class="col-md-1 day"></div>';
-                dayRows += '<div class="col-md-1 day"></div>';
-                dayRows += '<div class="col-md-1 day"></div>';
-                dayRows += '<div class="col-md-1 day"></div>';
-                dayRows += '<div class="col-md-1 day"></div>';
-                dayRows += '<div class="col-md-1 day"></div>';
-                dayRows += '</div>';
-            }
-            $monthCalendarContainer.append(header + dayRows);
-        };
-
-        setupMonthCalendar = function() {
-            var moment, today, startDay, $calendarContainer, $dayBox, row, col, date;
-
-            today = new Moment();
-            moment = new Moment({year: this.shownMoment.year(), month: this.shownMoment.month(), date: this.shownMoment.date()});
-            startDay = moment.date(1).weekday();
-            $calendarContainer = $('#gearavailability-months-container', this.$element);
-
-            //Set date to first box
-            moment.subtract(startDay, 'days');
-            for(row = 1; row <= 6; row++) { //6 possible week pieces
-                for(col = 1; col <= 7; col++) { //7 days
-                    $dayBox = $('.day-row:nth-child(0n+' + (1 + row) + ') .col-md-1:nth-child(0n+' + (1 + col) + ')', $calendarContainer);
-                    date = moment.date();
-                    $dayBox.html(date);
-                    $dayBox.data('date', date);
-                    $dayBox.data('month', moment.month());
-                    $dayBox.attr('id', 'gearavailability-day-' + moment.month() + '-' + date);
-                    $dayBox.removeClass('disabled');
-                    if(moment.month() !== this.shownMoment.month() || moment.isBefore(today)) {
-                        $dayBox.addClass('disabled');
-                    }
-                    moment.add(1, 'days');
-                }
-            }
-
-            $('#gearavailability-monthtitle').html(this.shownMoment.format('MMMM YYYY'));
-        };
-
-        clearSelections = function() {
-            $('#gearavailability-months-container .day-row .day').each(function() {
-                $(this).removeClass('selected');
-            });
-        };
-
-        renderSelections = function() {
-            var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
-                $calendarContainer = $('#gearavailability-months-container', this.$element),
-                i, startMoment, endMoment, momentIterator;
-
-            if(this.alwaysFlag === 1) { //We do not need the case of 0 since by assertion the cells have been cleared
-                $('.day', $calendarContainer).each(function() {
-                    var $this = $(this);
-                    if($this.hasClass('disabled') === false) {
-                        $this.addClass('selected');
-                    }
-                });
-            }
-
-            if(Array.isArray(selections) === false) {
-                return;
-            }
-
-            for(i = 0; i < selections.length; i++) {
-                startMoment = selections[i].startMoment;
-                $('#gearavailability-day-' + startMoment.month() + '-' + startMoment.date(), $calendarContainer).addClass('selected');
-                endMoment = selections[i].endMoment;
-                momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
-                while(momentIterator.isBefore(endMoment, 'day') === true) {
-                    if(this.alwaysFlag === 0) {
-                        $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');    
-                    }
-                    else {
-                        $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
-                    }
-                    momentIterator.add(1, 'days');
-                }
-                if(this.alwaysFlag === 0) {
-                    $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).addClass('selected');    
-                }
-                else {
-                    $('#gearavailability-day-' + momentIterator.month() + '-' + momentIterator.date(), $calendarContainer).removeClass('selected');
-                }
-            }
-        };
-
-        handleToday = function(event) {
-            var view = event.data;
-            view.shownMoment = new Moment();
-            view.setupMonthCalendar();
-            view.clearSelections();
-            view.renderSelections();
-        };
-
-        handlePrevious = function(event) {
-            var view = event.data;
-            view.shownMoment.subtract(1, 'month');
-            view.setupMonthCalendar();
-            view.clearSelections();
-            view.renderSelections();
-        };
-
-        handleNextButton = function(event) {
-            var view = event.data;
-            view.shownMoment.add(1, 'month');
-            view.setupMonthCalendar();
-            view.clearSelections();
-            view.renderSelections();
-        };
-
-        handleClearMonth = function(event) {
-            var view = event.data;
-            if(view.alwaysFlag === 1) {
-                view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [{
-                    startMoment: new Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: 1}),
-                    endMoment: new Moment({year: view.shownMoment.year(), month: view.shownMoment.month(), day: view.shownMoment.daysInMonth()})
-                }];
-            }
-            else {
-                view.selections[view.shownMoment.year() + '-' + (view.shownMoment.month() + 1)] = [];
-            }
-            view.clearSelections();
-            view.renderSelections();
-        };
-
-        handleAlwaysAvailable = function(event) {
-            var view = event.data;
-            view.alwaysFlag = 1;
-            view.selections = {};
-
-			$('#gearavailability-always-btn',view.$element).addClass('button-selected-state');
-			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
-
-            view.clearSelections();
-            view.renderSelections();
-        };
-
-        handleNeverAvailable = function(event) {
-            var view = event.data;
-
-            view.alwaysFlag = 0;
-
-            view.selections = {};
-
-			$('#gearavailability-never-btn',view.$element).addClass('button-selected-state');
-			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
-
-			view.clearSelections();
-            view.renderSelections();
-        };
-
-        handleDayStartSelect = function(event) {
-            var view = event.data,
-                $this = $(this),
-                selection;
-
-            //Do not allow selecting outside of the month
-            if($this.data('month') !== view.shownMoment.month()) {
-                return;
-            }
-
-            if($this.hasClass('selected') === true) {
-                $this.removeClass('selected');
-                view.dragMakeAvailable = false;
-            }
-            else {
-                $this.addClass('selected');
-                view.dragMakeAvailable = true;
-            }
-
-			$('#gearavailability-never-btn',view.$element).removeClass('button-selected-state');
-			$('#gearavailability-always-btn',view.$element).removeClass('button-selected-state');
-
-			$('body').on('mousemove touchmove', null, view, view.handleDayMoveSelect);
-            $('body').on('mouseup touchend', null, view, view.handleDayEndSelect);
-        };
-
-        handleDayMoveSelect = function(event) {
-            //Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
-            var view = event.data,
-                $calendarContainer, selectionX, selectionY;
-            
-            if(event.type === 'mousemove') {
-                selectionX = event.pageX;
-                selectionY = event.pageY;
-            }
-            else if(event.originalEvent.touches && event.originalEvent.touches.length == 1) {
-                selectionX = event.originalEvent.targetTouches[0].pageX;
-                selectionY = event.originalEvent.targetTouches[0].pageY;
-            }
-            else {
-                //Something wrong happened and we ignore
-                return;
-            }
-
-            $calendarContainer = $('#gearavailability-months-container', view.$element);
-            $('.day-row .day', $calendarContainer).each(function() {
-                var $this = $(this),
-                    dayBoxOffset, selection;
-
-                dayBoxOffset = $this.offset();
-                if($this.data('month') === view.shownMoment.month()) {
-                    if(selectionX >= dayBoxOffset.left && selectionX <= dayBoxOffset.left + $this.width() && selectionY >= dayBoxOffset.top && selectionY <= dayBoxOffset.top + $this.height()) {
-                        if(view.dragMakeAvailable === false) {
-                            $this.removeClass('selected');
-                        }
-                        else {
-                            if($this.hasClass('selected') === false) {
-                                $this.addClass('selected');
-                            }
-                        }
-                    }
-                }
-            });
-        };
-
-        handleDayEndSelect = function(event) {
-            var view = event.data,
-                key, monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
-            $('body').off('mousemove touchmove', view.handleDayMoveSelect);
-            $('body').off('mouseup touchend', view.handleDayEndSelect);
-
-            //Add days to selections
-            key = view.shownMoment.year() + '-' + (view.shownMoment.month() + 1);
-            view.selections[key] = [];
-            $('#gearavailability-months-container .day-row .day', view.$element).each(function() {
-                var $this = $(this),
-                    addSelection;
-                addSelection = function() {
-                    var selection;
-                    selection = {
-                        startMoment: new Moment({year: $this.data('year'), month: $this.data('month'), day: $this.data('date')}),
-                        endMoment: new Moment({year: $this.data('year'), month: $this.data('month'), day: $this.data('date')})
-                    };
-                    view.selections[key].push(selection);
-                };
-
-                if($this.hasClass('disabled') === false) {
-                    if(view.alwaysFlag === 1) {
-                        if($this.hasClass('selected') === false) {
-                            addSelection();
-                        }
-                    }
-                    else {
-                        if($this.hasClass('selected') === true) {
-                            addSelection();
-                        }
-                    }
-                }
-            });
-
-            //Scan selections for this month and cleanup overlaps and merge adiacent days
-            monthSelections = view.selections[key];
-            i = 0;
-            while(i < monthSelections.length) {
-                currentSelection = monthSelections[i];
-                j = i + 1;
-                didSplice = false;
-                //Match a selection against all the following selections
-                while(j < monthSelections.length) {
-                    startMomentA = currentSelection.startMoment;
-                    endMomentA = currentSelection.endMoment;
-                    startMomentB = monthSelections[j].startMoment;
-                    endMomentB = monthSelections[j].endMoment;
-                    if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(startMomentA, endMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
-                        //startA is between B and endA is after endB: startA becomes startB so that B is included in A, then remove B
-                        currentSelection.startMoment = startMomentB;
-                        monthSelections.splice(j, 1);
-                        didSplice = true;
-                    }
-                    else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
-                        //startB is between A and endB is after endA: endA becomes endB so that B is included in A, then remove B
-                        currentSelection.endMoment = endMomentB;
-                        monthSelections.splice(j, 1);
-                        didSplice = true;
-                    }
-                    else if(view.isBeforeOrSameDay(startMomentA, startMomentB) && view.isAfterOrSameDay(endMomentA, endMomentB)) {
-                        //B is included in A: remove B
-                        monthSelections.splice(j, 1);
-                        didSplice = true;
-                    }
-                    else if(view.isAfterOrSameDay(startMomentA, startMomentB) && view.isBeforeOrSameDay(endMomentA, endMomentB)) {
-                        //A is included in B: A becomes B, then remove B
-                        currentSelection.startMoment = startMomentB;
-                        currentSelection.endMoment = endMomentB;
-                        monthSelections.splice(j, 1);
-                        didSplice = true;
-                    }
-                    else if(endMomentB.date() + 1 === startMomentA.date() && endMomentB.month() === startMomentA.month() && endMomentB.year() === startMomentA.year()) {
-                        //B is left adjacent to A: startA becomes startB so that they are joined, remove B
-                        currentSelection.startMoment = startMomentB;
-                        monthSelections.splice(j, 1);
-                        didSplice = true;
-                    }
-                    else if(endMomentA.date() + 1 === startMomentB.date() && endMomentA.month() === startMomentB.month() && endMomentA.year() === startMomentB.year()) {
-                        //B is right adjacent to A: endA becomes endB so that they are joined, remove A
-                        currentSelection.endMoment = endMomentB;
-                        monthSelections.splice(j, 1);
-                        didSplice = true;
-                    }
-                    else {
-                        j++;
-                    }
-                }
-                if(didSplice === false) {
-                    i++;
-                }
-            }
-
-            view.clearSelections();
-            view.renderSelections();
-        };
-
-        isBeforeOrSameDay = function(momentA, momentB) {
-            return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
-        };
-
-        isAfterOrSameDay = function(momentA, momentB) {
-            return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
-        };
-
         return ViewController.inherit({
             didInitialize: didInitialize,
             didRender: didRender,
@@ -1083,33 +701,15 @@ define(
 			handlePriceChange:handlePriceChange,
 
 			initAccessories:initAccessories,
-            initAvailability:initAvailability,
             renderAvailability:renderAvailability,
             handleSubmerchantSubmit: handleSubmerchantSubmit,
             handleSubmerchantAccept: handleSubmerchantAccept,
-            renderMonthCalendar:renderMonthCalendar,
-            setupMonthCalendar:setupMonthCalendar,
-            clearSelections:clearSelections,
-            renderSelections:renderSelections,
-            handleToday:handleToday,
-            handlePrevious:handlePrevious,
-            handleNextButton: handleNextButton,
-            handleClearMonth:handleClearMonth,
-            handleAlwaysAvailable:handleAlwaysAvailable,
-            handleNeverAvailable:handleNeverAvailable,
 
 			initPriceSuggestions:initPriceSuggestions,
 			populatePriceSuggestions:populatePriceSuggestions,
 
-            handleDayStartSelect:handleDayStartSelect,
-            handleDayMoveSelect:handleDayMoveSelect,
-            handleDayEndSelect:handleDayEndSelect,
-
             handleCancel: handleCancel,
-            handleSave: handleSave,
-
-            isBeforeOrSameDay:isBeforeOrSameDay,
-            isAfterOrSameDay:isAfterOrSameDay
+            handleSave: handleSave
         });
 
 	}

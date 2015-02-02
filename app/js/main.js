@@ -15,7 +15,6 @@ requirejs.config({
 		facebook: 'https://connect.facebook.net/en_US/all',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
 		daterangepicker: 'libraries/daterangepicker/daterangepicker',
-		magnificpopup: 'libraries/magnificpopup/magnificpopup',
 		//braintree: 'https://assets.braintreegateway.com/v2/braintree',
 		mangopay: 'libraries/mangopay-kit'
 	},
@@ -38,10 +37,6 @@ requirejs.config({
 		},
 		'daterangepicker': {
 			deps: ['jquery', 'bootstrap', 'moment']
-		},
-		'magnificpopup': {
-			deps: ['jquery'],
-			exports: 'MagnificPopup'
 		},
 		'mangopay': {
 			exports: 'MangoPay'

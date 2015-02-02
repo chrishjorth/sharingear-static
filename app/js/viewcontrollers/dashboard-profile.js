@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear Profile dashboard page view.
- * @author: Chris Hjorth, Horatiu Roman
+ * @author: Chris Hjorth
  */
 
 'use strict';
@@ -50,6 +50,10 @@ define(
             var view = this,
                 userData = this.user.data;
 
+            if(App.header) {
+                App.header.setTitle('Your profile');
+            }
+
             $('#dashboard-profile-form #name', this.$element).val(userData.name);
             $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
             $('#dashboard-profile-form #email', this.$element).val(userData.email);
@@ -67,14 +71,18 @@ define(
             });
 
             $.when(this.profileImgLoaded).then(function() {
-                var $profilePic = $('#prof-pic-div', view.$element),
+                var $profilePic = $('#dashboard-profile-pic', view.$element),
                     img = view.profileImg;
                 $profilePic.css('background-image', 'url("' + img.src + '")');
                 if(img.width < img.height) {
-                    $profilePic.css('background-size', '200px auto');
+                    $profilePic.css({
+                        'background-size': '100% auto'
+                    });
                 }
                 else{
-                    $profilePic.css('background-size', 'auto 200px');
+                    $profilePic.css({
+                        'background-size': 'auto 100%'
+                    });
                 }
             });
 

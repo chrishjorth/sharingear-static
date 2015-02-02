@@ -14,9 +14,9 @@ define(
 			didRender,
 			populateYourRentals,
 
-			handleGearItemPendConfirm,
-			handleEditGearItem,
-			handleGearItemAvailability,
+			//handleGearItemPendConfirm,
+			//handleEditGearItem,
+			//handleGearItemAvailability,
 			handleBooking;
 
 		gearBlockID = 'yourrentals-gear-block';
@@ -36,9 +36,13 @@ define(
 		};
 
 		didRender = function() {
+			App.header.setTitle('Gear rentals');
+
 			if(this.didFetch === true) {
 				this.populateYourRentals();
 			}
+
+			this.setupEvent('click', '#yourrentals-gear-block .sg-list-item button', this, this.handleBooking);
 		};
 
 		populateYourRentals = function(callback) {
@@ -46,7 +50,7 @@ define(
 			require(['text!../templates/yourrentals-item.html'], function(YourRentalsItemTemplate) {
 				var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 					yourRentals = view.gearList.data,
-					defaultGear, gear, i;
+					$gearBlock, defaultGear, gear, i, $gearItem, status;
 
 				if(yourRentals.length <= 0) {
 					$('#' + gearBlockID, view.$element).append('You currently do not have any rentals.');
@@ -55,6 +59,8 @@ define(
 					}
 					return;
 				}
+
+				$gearBlock = $('#' + gearBlockID, view.$element);
 
 				for(i = 0; i < yourRentals.length; i++) {
 					defaultGear = {
@@ -77,23 +83,23 @@ define(
 					if(defaultGear.images.length > 0) {
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
+					$gearItem = $(yourRentalsItemTemplate(defaultGear));
+					$('.sg-bg-image', $gearItem).css({
+						'background-image': 'url("' + defaultGear.img_url + '")'
+					});
 
-                    if(gear.data.booking_status === 'pending') {
-                        defaultGear.gear_status = '<button class="btn btn-warning yourrentals-status pending" data-yourgear-bookingid="' + gear.data.booking_id + '">' + 'PENDING' + '</button>';
-                    }
-                    else if(gear.data.gear_status === 'rented-out' || gear.data.booking_status === 'renter-returned' || gear.data.booking_status === 'owner-returned') {
-                    	defaultGear.gear_status = '<button class="btn btn-default yourrentals-status booking-btn" data-yourgear-bookingid="' + gear.data.booking_id + '">' + 'RENTED OUT' + '</button>';
-                    }
-                    else if(gear.data.booking_status === 'accepted') {
-                    	defaultGear.gear_status = '<button class="btn btn-default yourrentals-status booking-btn" data-yourgear-bookingid="' + gear.data.booking_id + '">' + 'ACCEPTED' + '</button>';
-                    }
-                    else if(gear.data.booking_status === 'ended') {
-                    	defaultGear.gear_status = 'ended';
-                    }
-                    else {
-                    	defaultGear.gear_status = 'failed';
-                    }
-					$('#' + gearBlockID).append(yourRentalsItemTemplate(defaultGear));
+					status = gear.data.booking_status;
+					if(status === 'pending' || status === 'waiting') {
+						$('.request', $gearItem).removeClass('hidden');
+					}
+					if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
+						$('.accepted', $gearItem).removeClass('hidden');
+					}
+					if(status === 'denied') {
+						$('.denied', $gearItem).removeClass('hidden');
+					}
+                    
+					$gearBlock.append($gearItem);
 				}
 
 				view.setupEvent('click', '.yourrentals-status.pending', view, view.handleGearItemPendConfirm);
@@ -105,20 +111,24 @@ define(
 			});
 		};
 
-        handleGearItemPendConfirm = function(event){
+        /*handleGearItemPendConfirm = function(event){
             var view = event.data,
             	bookingID = $(this).data('yourgearBookingid'),
                 gear;
             gear = view.gearList.getGearItem('booking_id', bookingID);
             App.router.openModalView('booking', gear);
-        };
+        };*/
 
 		handleBooking = function(event) {
 			var view = event.data,
-				bookingID = $(this).data('yourgearBookingid'),
-				gear;
-			gear = view.gearList.getGearItem('booking_id', bookingID);
-			App.router.openModalView('booking', gear);
+				bookingID = $(this).data('bookingid'),
+				passedData;
+			passedData = {
+				gear: view.gearList.getGearItem('booking_id', bookingID),
+				mode: 'owner',
+				booking_id: bookingID
+			}
+			App.router.openModalView('booking', passedData);
 		};
 
 		return ViewController.inherit({
@@ -126,10 +136,10 @@ define(
 			didRender: didRender,
 			populateYourRentals: populateYourRentals,
 
-			handleEditGearItem: handleEditGearItem,
-			handleGearItemAvailability: handleGearItemAvailability,
-            handleGearItemPendConfirm : handleGearItemPendConfirm,
+			//handleEditGearItem: handleEditGearItem,
+			//handleGearItemAvailability: handleGearItemAvailability,
+            //handleGearItemPendConfirm : handleGearItemPendConfirm,
             handleBooking: handleBooking
-		}); 
+		});
 	}
 );

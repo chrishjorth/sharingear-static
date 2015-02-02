@@ -1,127 +1,86 @@
-<div class="container-fluid">
-	<form id="payment-form" action="" onsubmit="return false;">
-		<div class="col-md-6 form-left">
-		<h2 style="color: #00aeff">Payment information:</h2>
-		<div class="form-group missing-userdata">
-			<label for="payment-birthdate">Date of birth (DD/MM/YYYY):</label>
-			<input type="text" name="address" id="payment-birthdate" class="form-control">
+<div class="container-fluid view payment">
+	<div class="row sg-blue-bg sg-white sg-navbar">
+		<div class="col-xs-2"><button class="sg-btn-invisible sg-white" id="payment-back-btn"><i class="fa fa-arrow-circle-o-left"></i></button></div>
+		<div class="col-xs-8">Booking step 2</div>
+		<div class="col-xs-2 text-right"><button class="sg-btn-round sg-white-bg sg-blue" id="payment-cancel-btn"><i class="fa fa-times"></i></button></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 text-center sg-darkergray gear">
+			<h3 class="sg-h3">{{brand}} {{subtype}} {{model}}</h3>
 		</div>
-		<div class="form-group missing-userdata">
-			<label for="payment-address">Address:</label>
-			<input type="text" name="address" id="payment-address" class="form-control">
+	</div>
+	<div class="row">
+		<div class="col-sm-12 bs-reset">
+			<table class="table">
+				<tbody>
+					<tr>
+						<td class="sg-lightgray-bg"><strong>From:</strong> {{start_date}}</td>
+						<td class="sg-lightgray-bg"></td>
+					</tr>
+					<tr>
+						<td class="sg-lightgray-bg"><strong>To:</strong> {{end_date}}</td>
+						<td class="sg-lightgray-bg"></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>Price: {{price}} <span class="sg-super">{{currency}}</span></td>
+						<td>VAT({{vat}}%): {{price_vat}} <span class="sg-super">{{currency}}</span>
+					</tr>
+					<tr>
+						<td>Fee: {{fee}} <span class="sg-super">{{currency}}</span></td>
+						<td>VAT({{vat}}%): {{fee_vat}} <span class="sg-super">{{currency}}</span></td>
+					</tr>
+				</tfoot>
+			</table>
 		</div>
-		<div class="form-group missing-userdata">
-			<label for="payment-postalcode">Postal code:</label>
-			<input type="text" name="postal_code" id="payment-postalcode" class="form-control">
+	</div>
+	<div class="row sg-darkergray-bg sg-white total">
+		<div class="col-xs-6">TOTAL:</div>
+		<div class="col-xs-6">{{total}}<span class="sg-super">{{currency}}</span></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 bs-reset">
+			<ul class="sg-tabs sg-tabs-3">
+				<li class="sg-lightgray-bg sg-darker-gray active"><button>VISA</button></li>
+				<li class="sg-lightgray-bg sg-darker-gray disabled"><button>MasterCard</button></li>
+				<li class="sg-lightgray-bg sg-darker-gray disabled"><button>PayPal</button></li>
+			</ul>
 		</div>
-		<div class="form-group missing-userdata">
-			<label for="payment-city">City:</label>
-			<input type="text" name="city" id="payment-city" class="form-control">
-		</div>
-		<div class="form-group missing-userdata">
-			<select name="country" id="payment-country" class="form-control">
-				<option value="">Select your country</option>
-			</select>
-		</div>
-		<div class="form-group missing-userdata">
-			<select name="nationality" id="payment-nationality" class="form-control">
-				<option value="">Select your nationality</option>
-			</select>
-		</div>
-		<div class="form-group missing-userdata">
-			<label for="payment-phone">Phone:</label>
-			<input type="text" name="phone" id="payment-phone" class="form-control">
-		</div>
-		<div class="form-group">
-		<label>Card type:</label>
-		<br>
-		<input type="radio" name="cardtype" value="visa" checked>
-		VISA
-		<input type="radio" name="cardtype" value="mastercard">
-		MasterCard
-		</div>
-		<div class="form-group">
-			<label for="payment-cardnumber">Card number:</label>
-			<input type="text" name="cardnumber" id="payment-cardnumber" class="form-control">
-		</div>
-		<div class="form-group">
-			<label for="payment-expirationdate">Expiration date (MM/YY):</label>
-			<div class="row">
-				<div class="col-xs-6">
-					<select name="expiration-month" id="expiration-month" class="form-control">
-						<option value="">Select month</option>
-					</select>
-				</div>
-				<div class="col-xs-6">
-					<select name="expiration-year" id="expiration-year" class="form-control">
-						<option value="">Select year</option>
-					</select>
-				</div>
+	</div>
+	
+	<div id="payment-visa-block">
+		<div class="row">
+			<div class="col-sm-12">
+				<form id="payment-form-visa" onsubmit="return false;">
+					<div class="form-group">
+						<label for="payment-form-visa-cardholder">Cardholder name:</label>
+						<input type="text" class="form-control" id="payment-form-visa-cardholder">
+					</div>
+					<div class="form-group">
+						<label for="payment-form-visa-cardnumber">Card number:</label>
+						<input type="text" class="form-control" id="payment-form-visa-cardnumber">
+					</div>
+					<div class="form-group">
+						<label for="payment-form-visa-month">Expiration date:</label>
+						<select class="form-control" id="payment-form-visa-month"></select>/<select class="form-control" id="payment-form-visa-year"></select>
+					</div>
+					<div class="form-group">
+						<label>Security code:</label>
+						<input type="text" id="payment-form-visa-csc">
+					</div>
+					<p>
+						We will only withdraw the money once the owner of the gear has accepted your booking.
+					</p>
+				</form>
 			</div>
 		</div>
-		<div class="form-group">
-			<label for="payment-csc">Security code:</label>
-			<input type="text" name="csc" id="payment-csc" class="form-control">
-		</div>
-		</div>
-		<div class="col-md-6 form-right">
-			<h2 style="color: #00aeff">Booking information:</h2>
-			<div id="payment-gear-info" class="form-group">
+	</div>
 
-			</div>
-			<div class="payment-dates">
-				<div class="row bottom-line">
-					<div class="col-xs-3">
-						From:
-					</div>
-					<div id="payment-gear-datesfrom" class="col-xs-9 right">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-3">
-						To:
-					</div>
-					<div id="payment-gear-datesto" class="col-xs-9 right">
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-6 form-group price-container-payment">
-				<div class="row payment-row-padding">
-					<div class="col-xs-8 payment-small-box-fix">Price per hour:</div>
-					<div id="payment-price-of-hour" class="col-xs-4 payment-small-box-fix2 right">{{price_a}}</div>
-				</div>
-				<div class="row payment-row-padding">
-					<div class="col-xs-8 payment-small-box-fix">Price per day:</div>
-					<div id="payment-price-of-day" class="col-xs-4 payment-small-box-fix2 right">{{price_b}}</div>
-				</div>
-				<div class="row payment-row-padding">
-					<div class="col-xs-8 payment-small-box-fix">Price per week:</div>
-					<div id="payment-price-of-week" class="col-xs-4 payment-small-box-fix2 right">{{price_c}}</div>
-				</div>
-			</div>
-			<div class="col-xs-6 price-container-payment price-container-payment-right">
-				<div class="row payment-row-padding">
-					<div class="col-xs-10 payment-small-box-fix">Number of hours:</div>
-					<div id="payment-number-of-hours" class="col-xs-2 payment-small-box-fix2 right">{{hours}}</div>
-				</div>
-				<div class="row payment-row-padding">
-					<div class="col-xs-10 payment-small-box-fix">Number of days:</div>
-					<div id="payment-number-of-days" class="col-xs-2 payment-small-box-fix2 right">{{days}}</div>
-				</div>
-				<div class="row payment-row-padding">
-					<div class="col-xs-10 payment-small-box-fix">Number of weeks:</div>
-					<div id="payment-number-of-weeks" class="col-xs-2 payment-small-box-fix2 right">{{weeks}}</div>
-				</div>
-			</div>
-			<div class="col-xs-12 form-group total-price-payment-container"><span class="total-price">Total price is: {{price}}</span></div>
-			<div class="form-group right">
-				<button class="btn editgear-cancel-button btn-default" id="payment-cancel-btn">Cancel</button>
-				<button type="submit" class="btn editgear-save-button btn-default" id="payment-btn">Pay {{price}} {{currency}}</button>
-			</div>
-			<div class="row bottom-line"></div>
-			<div class="row center">
-				<div class="small">We will only withdraw the money once the owner of the gear has accepted your booking.</div>
-			</div>
+	<div class="row sg-footerbar sg-blue-bg sg-white">
+		<div class="col-sm-12">
+			<button class="sg-btn-square sg-blue-bg sg-white" id="payment-next-btn">next <i class="fa fa-arrow-circle-o-right"></i></button>
 		</div>
-	</form>
+	</div>
+
 </div>

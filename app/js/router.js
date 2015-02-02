@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewloader'],
-	function(_, $, ViewLoader) {
+	['underscore', 'jquery', 'viewloader', 'utilities'],
+	function(_, $, ViewLoader, Utilities) {
 		var Router,
 			
 			hashUpdated,
@@ -73,12 +73,18 @@ define(
 
 		navigateTo = function(route, data, callback) {
             var router = this,
-            	queryIndex;
+            	queryIndex, newLocation, queryString;
 			if(hashUpdated === false) {
 				//Hash change event not fired
 				//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
 				if(window.location.hash !== '#' + route) {
-					history.replaceState({}, '', window.location.pathname + '#' + route); //This is to avoid calling handleHashChange by setting window.location.hash directly
+					newLocation = window.location.pathname;
+					queryString = Utilities.getQueryString();
+					if(queryString) {
+						newLocation += '?' + queryString;
+					}
+					newLocation += '#' + route;
+					history.replaceState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
 				}
 			}
 			else {

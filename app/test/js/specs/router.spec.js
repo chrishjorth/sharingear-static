@@ -73,9 +73,12 @@ define(
 				expect(Router.getRoute('')).to.equal('error');
 			});
 
-			it('Can navigate to route', function(done) {
+			it('Can navigate to route and preserve querystring', function(done) {
+				var oldHREF = window.location.href;
+				history.replaceState({}, '', window.location.pathname + '?test=1');
 				Router.navigateTo('home', null, function() {
 					expect(Router.currentViewController.name).to.equal('home');
+					expect(window.location.href).to.equal(oldHREF + '?test=1#home');
 					done();
 				});
 			});

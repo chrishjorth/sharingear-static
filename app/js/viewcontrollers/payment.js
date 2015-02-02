@@ -6,69 +6,89 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment'],
-	function($, ViewController, App, Card, Booking, Moment) {
+	['jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment', 'models/localization'],
+	function($, ViewController, App, Card, Booking, Moment, Localization) {
 		var didInitialize,
 			didRender,
 			renderMissingDataInputs,
+			initExpiration,
 			populateCountries,
 
 			handleCancel,
-			handlePay,
-			initExpiration,
+			handleBack,
+			handleNext,
+
 			processPayment,
 			resetPayButton;
 
 		didInitialize = function () {
-			this.booking = new Booking.constructor({
-				rootURL: App.API_URL
-			});
-			this.booking.initialize();
+			var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
 
-			this.booking.data.gear_id = this.passedData.gear_id;
-			this.booking.data.start_time = this.passedData.start_time;
-			this.booking.data.end_time = this.passedData.end_time;
-			this.booking.data.price = this.passedData.price;
+			this.booking = this.passedData.booking;
+			this.gear = this.passedData.gear;
+
+			startMoment = new Moment(this.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
+			endMoment = new Moment(this.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+
+
+			duration = Moment.duration(endMoment.diff(startMoment));
+			months = parseInt(duration.months(), 10);
+			endMoment.subtract(months, 'months');
+			duration = Moment.duration(endMoment.diff(startMoment));
+			weeks = parseInt(duration.weeks(), 10);
+			endMoment.subtract(weeks, 'weeks');
+			duration = Moment.duration(endMoment.diff(startMoment));
+			days = parseInt(duration.days(), 10);
+
+			price = months * this.gear.data.price_c + weeks * this.gear.data.price_b + days * this.gear.data.price_a;
+			VAT = Localization.getVAT(App.user.data.country);
+			priceVAT = parseFloat(price / 100 * VAT);
+			fee = parseFloat(price / 100 * App.user.data.buyer_fee);
+			feeVAT = parseFloat(fee / 100 * VAT);
 
 			this.templateParameters = {
-				price: this.booking.data.price,
+				brand: this.gear.data.brand,
+				subtype: this.gear.data.subtype,
+				model: this.gear.data.model,
+				start_date: startMoment.format('DD/MM/YYYY'),
+				end_date: endMoment.format('DD/MM/YYYY'),
 				currency: 'DKK',
-				price_a: this.passedData.price_a,
-				price_b: this.passedData.price_b,
-				price_c: this.passedData.price_c,
-				hours: this.passedData.hours,
-				days: this.passedData.days,
-				weeks: this.passedData.weeks,
-				startdate: this.booking.data.start_time,
-				enddate: this.booking.data.end_time,
-				gear: this.passedData.gearInfo
+				vat: VAT,
+				price: price.toFixed(2),
+				price_vat: priceVAT.toFixed(2),
+				fee: fee.toFixed(2),
+				fee_vat: feeVAT.toFixed(2),
+				total: (price + priceVAT + fee + feeVAT).toFixed(2)
 			};
 			this.isPaying = false;
 		};
 
 		didRender = function () {
 			this.renderMissingDataInputs();
-			this.initExpiration($('#expiration-month',this.$element),$('#expiration-year',this.$element));
+			this.initExpiration();
+
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
-			this.setupEvent('submit', '#payment-form', this, this.handlePay);
+			this.setupEvent('click', '#payment-back-btn', this, this.handleBack);
+			this.setupEvent('click', '#payment-next-btn', this, this.handleNext);
 		};
 
-		initExpiration = function ($select1,$select2) {
-			var monthsArray = ['January','February','March','April','May','June','July','August','September','October','November','December'],
-				html = $('option', $select1).first()[0].outerHTML,
+		initExpiration = function () {
+			var monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+				startYear = parseInt((new Moment()).year(), 10),
+				html,
 				i;
+
+			html = '<option value="-">-</option>';
 			for(i = 0; i < monthsArray.length; i++) {
 				html += '<option value="' + monthsArray[i] + '">' + monthsArray[i] + '</option>';
 			}
-			$select1.html(html);
+			$('#payment-form-visa-month', this.$element).html(html);
 
-			html=$('option', $select2).first()[0].outerHTML;
-			for(i = 2014; i < 2051; i++) {
+			html = '<option value="-">-</option>';
+			for(i = startYear; i < startYear + 30; i++) {
 				html += '<option value="' + i + '">' + i + '</option>';
 			}
-			$select2.html(html);
-
-
+			$('#payment-form-visa-year', this.$element).html(html);
 		};
 
 		renderMissingDataInputs = function() {
@@ -116,7 +136,17 @@ define(
 			App.router.closeModalView();
 		};
 
-		handlePay = function(event) {
+		handleBack = function(event) {
+			var view = event.data,
+				passedData;
+			passedData = {
+				gear: view.gear,
+				booking: view.booking
+			};
+			App.router.openModalSiblingView('gearbooking', passedData);
+		};
+
+		handleNext = function(event) {
 			var view = event.data,
 				userData = App.user.data,
 				needToUpdateUser = false,
@@ -184,13 +214,13 @@ define(
 				needToUpdateUser = true;
 			}
 
-			cardNumber = $('#payment-cardnumber', view.$element).val();
+			cardNumber = $('#payment-form-visa-cardnumber', view.$element).val();
 			if(cardNumber === '') {
 				alert('Missing card number.');
 				return;
 			}
-			expirationDateMonth = $('#expiration-month', view.$element).val();
-			expirationDateYear = $('#expiration-year', view.$element).val();
+			expirationDateMonth = $('#payment-form-visa-month', view.$element).val();
+			expirationDateYear = $('#payment-form-visa-year', view.$element).val();
 
 			if(expirationDateMonth === 'Select month'||expirationDateMonth==='') {
 				alert('Missing expiration month.');
@@ -202,7 +232,7 @@ define(
 				return;
 			}
 
-			CSC = $('#payment-csc', view.$element).val();
+			CSC = $('#payment-form-visa-csc', view.$element).val();
 			if(CSC === '') {
 				alert('Missing security code.');
 				return;
@@ -215,9 +245,9 @@ define(
 
 			view.isPaying = true;
 
-			$('#payment-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+			$('#payment-next-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
-			var expmonth = $('select[name="expiration-month"] option:selected').index();
+			var expmonth = $('#payment-form-visa-month option:selected').index();
 
 			expirationDate = '';
 			if (expmonth >= 1 && expmonth <= 9) {
@@ -295,10 +325,12 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			renderMissingDataInputs: renderMissingDataInputs,
+			initExpiration:initExpiration,
+			populateCountries: populateCountries,
 
 			handleCancel: handleCancel,
-			handlePay: handlePay,
-			initExpiration:initExpiration,
+			handleBack: handleBack,
+			handleNext: handleNext,
 
 			processPayment: processPayment,
 			resetPayButton: resetPayButton

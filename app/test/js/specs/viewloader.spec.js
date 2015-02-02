@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-	['jquery', 'chai', 'sinon', 'viewloader', 'router', 'app'],
-	function($, chai, Sinon, ViewLoader, Router, App) {
+	['jquery', 'chai', 'sinon', 'viewloader', 'router', 'app', 'googlemaps'],
+	function($, chai, Sinon, ViewLoader, Router, App, GoogleMaps) {
 		var expect = chai.expect;
 
 		describe('ViewLoader', function() {
@@ -22,12 +22,15 @@ define(
 						classification: {}
 					}
 				};
+				//The search form in home view tries to run Google Maps Places Autocomplete
+				sinon.stub(GoogleMaps.places, 'Autocomplete', function() {});
 			});
 
 			after(function() {
 				this.$fixtures.empty();
 				Router.navigateTo.restore();
 				App.user.data = null;
+				GoogleMaps.places.Autocomplete.restore();
 			});
 
 			it('Provides the ViewLoader object', function() {
@@ -40,9 +43,9 @@ define(
 			});
 
 			it('Can load a view', function(done) {
-				ViewLoader.loadView('home', 'home', {test: 'test'}, function(error, loadedViewController) {
-					expect(loadedViewController.name).to.equal('home');
-					expect(loadedViewController.path).to.equal('home');
+				ViewLoader.loadView('error', 'error', {test: 'test'}, function(error, loadedViewController) {
+					expect(loadedViewController.name).to.equal('error');
+					expect(loadedViewController.path).to.equal('error');
 					expect(loadedViewController.passedData.test).to.equal('test');
 					done();
 				});
@@ -63,15 +66,15 @@ define(
 			});
 
 			it('Can load a subview', function(done) {
-				ViewLoader.currentViewController.path = 'dashboard/addgear';
-				ViewLoader.currentViewController.subPath = 'addgear';
+				ViewLoader.currentViewController.path = 'dashboard/yourgear';
+				ViewLoader.currentViewController.subPath = 'yourgear';
 				ViewLoader.loadSubview({test: 'test2'}, function(error, currentSubViewController) {
 					expect(ViewLoader.currentViewController.name).to.equal('dashboard');
-					expect(ViewLoader.currentViewController.path).to.equal('dashboard/addgear');
+					expect(ViewLoader.currentViewController.path).to.equal('dashboard/yourgear');
 					expect(ViewLoader.currentViewController.passedData.test).to.equal('test');
 
-					expect(currentSubViewController.name).to.equal('dashboard-addgear');
-					expect(currentSubViewController.path).to.equal('dashboard/addgear');
+					expect(currentSubViewController.name).to.equal('dashboard-yourgear');
+					expect(currentSubViewController.path).to.equal('dashboard/yourgear');
 					expect(currentSubViewController.passedData.test).to.equal('test2');
 					done();
 				});

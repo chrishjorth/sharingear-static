@@ -1,455 +1,96 @@
 /**
  * Controller for the Sharingear home/landing page view.
- * @author: Chris Hjorth, Horatiu Roman
+ * @author: Chris Hjorth
  */
 
 'use strict';
 
 define(
-	['underscore', 'jquery', 'utilities', 'viewcontroller', 'models/gearlist', 'app', 'googlemaps', 'facebook', 'moment', 'daterangepicker', 'owlcarousel'],
-	function(_, $, Utilities, ViewController, GearList, App, GoogleMaps, FB, Moment) { //daterangepicker and owlcarousel do not support AMD
-		var searchBlockID = 'home-search-row',
-			numberOfGearSuggestions = 5,
-			geocoder,
-
-			didInitialize,
+	['underscore', 'jquery', 'utilities', 'app', 'viewcontroller', 'owlcarousel'],
+	function(_, $, Utilities, App, ViewController) { //owlcarousel do not support AMD
+		var didInitialize,
 			didRender,
 
-			setupEvents,
+			loadSearchBar,
+			loadFooter,
 
-			handleSearch,
-			populateSearchBlock,
-
-			showGearSuggestions,
-			drawGearSuggestions,
-			setGearSuggestion,
-			gearInputArrowKeypress,
-			searchGearLoseFocus,
-			searchGearGainFocus,
-
-			performSearch;
-
-		//Static variables
-		geocoder = new GoogleMaps.Geocoder();
+			handleTechniciansTab,
+			handVansTab,
+			handleLogin;
 
 		didInitialize = function() {
-			this.gearList = new GearList.constructor({
-				rootURL: App.API_URL
-			});
-			this.gearList.initialize();
-			this.gearSelectionIndex = 0;
-			this.gearInputString = '';
-			this.gearSuggestionsArray = null; // array of strings
-            this.didSearchBefore = false;
+			this.searchFormVC = null;
 		};
 
 		didRender = function() {
-            //Loading the daterangepicker with available days from today
-            var view = this,
-            	startDate = new Moment(),
-            	$searchPickup, $searchReturn, previousSearchLocation, previousSearchGear, previousSearchDate;
-
-            if(App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
-                $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
+			if(App.header) {
+                App.header.setTitle();
             }
 
-            $searchPickup = $('#search-pickup', view.$element);
-            $searchReturn = $('#search-return', view.$element);
-            $searchPickup.daterangepicker({
-                singleDatePicker: true,
-                format: 'DD/MM/YYYY',
-				locale: {
-					firstDay: 1
-				},
-                startDate: startDate.format('DD/MM/YYYY'),
-                endDate: startDate.format('DD/MM/YYYY'),
-                showDropdowns: true,
-                minDate: startDate.format('DD/MM/YYYY'),
-                parentEl: view.$element
-            }, function(start) {
-            	start.add(1, 'days');
-            	$searchReturn.data('daterangepicker').setStartDate(start);
-            	$searchReturn.data('daterangepicker').setEndDate(start);
-            });
+			this.loadSearchBar();
+			this.loadFooter();
 
-            startDate.add(1, 'days');
-            $searchReturn.daterangepicker({
-                singleDatePicker: true,
-                format: 'DD/MM/YYYY',
-				locale: {
-					firstDay: 1
-				},
-				startDate: startDate.format('DD/MM/YYYY'),
-                endDate: startDate.format('DD/MM/YYYY'),
-                showDropdowns: true,
-                minDate: startDate.format('DD/MM/YYYY'),
-                opens: 'right',
-                parentEl: view.$element
-            });
-
-            $searchPickup.data('daterangepicker').updateInputText();
-            $searchReturn.data('daterangepicker').updateInputText();
-
-            //Testimonials init
-            $('#feedbacks', view.$element).owlCarousel({
-                navigation: false, // Show next and prev buttons
-                slideSpeed: 800,
-                paginationSpeed: 400,
-                autoPlay: 7000,
-                singleItem: true
-            });
-
-			new GoogleMaps.places.Autocomplete($('#search-location', view.$element)[0], {types: ['geocode']});
-
-			var queryString = window.location.href.split('?')[1];
-			if(queryString) {
-            	previousSearchGear = Utilities.getQueryStringParameterValue(queryString, 'gear');
-            	previousSearchLocation = Utilities.getQueryStringParameterValue(queryString, 'location');
-            	previousSearchDate = Utilities.getQueryStringParameterValue(queryString, 'daterange');
-            	$('#search-gear', this.$element).val(previousSearchGear);
-            	$('search-location', this.$element).val(previousSearchLocation);
-            	view.performSearch(previousSearchGear, previousSearchLocation, previousSearchDate);
-			}
-
-            this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
-			this.setupEvent('input', '#search-gear', this, view.showGearSuggestions);
-			this.setupEvent('keydown', '#search-gear', this, view.gearInputArrowKeypress);
-			this.setupEvent('focusout', '#search-gear', this, view.searchGearLoseFocus);
-			this.setupEvent('focusin', '#search-gear', this, view.searchGearGainFocus);
-            this.setupEvent('mousedown touchstart', '.gear-suggestion', this, view.setGearSuggestion);
+			this.setupEvent('click', '#home-tab-technicians', this, this.handleTechniciansTab);
+			this.setupEvent('click', '#home-tab-vans', this, this.handVansTab);
         };
 
-		/**
-		 * Displays search results from the model.
-		 * @param event: jQuery event object
-		 * @param callback: callback function
-		 * @return Always false to avoid triggering HTML form
-		 */
-		handleSearch = function(event) {
-			var view = event.data,
-				$locationContainer,
-				location, searchString, dateRange, pickupDate, returnDate;
-
-            // remove gear suggestion dropdown when submitting
-            $('#gear-suggestions-box', view.$element).hide();
-
-			$locationContainer = $('#home-search-form #search-location', view.$element);
-			location = $locationContainer.val();
-			if(location === '') {
-				location = $locationContainer.attr('placeholder');
-			}
-
-            //URI playground
-            //dateRange = '20140828-20140901';
-            pickupDate = new Moment($('#search-pickup', view.$element).val(), 'DD/MM/YYYY');
-            returnDate = new Moment($('#search-return', view.$element).val(), 'DD/MM/YYYY');
-            dateRange = pickupDate.format('YYYYMMDD') + '-' + returnDate.format('YYYYMMDD');
-            searchString = $('#home-search-form #search-gear', this.$element).val();
-            App.router.setQueryString('location=' + encodeURIComponent(location) + '&gear=' + encodeURIComponent(searchString) + '&daterange=' + dateRange);
-
-        	view.performSearch(searchString, location, dateRange);
-
-			return false;
-		};
-
-		/**
-		 * Generate the search results HTML and insert it into the search results block.
-		 * @param searchResults: an array of objects.
-		 */
-		populateSearchBlock = function(searchResults, callback) {
-            var view = this,
-            	$searchBlock = $('#' + searchBlockID, this.$element);
-
-            //Remove promo block and billboard
-			$('#home-promo-block', view.$element).css({
-				display: 'none'
+        loadSearchBar = function() {
+			var view = this;
+        	require(['viewcontrollers/gearsearchform', 'text!../templates/gearsearchform.html'], function(gearSearchVC, gearSearchVT) {
+				view.searchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('.searchform-container', view.$element), template: gearSearchVT});
+				view.searchFormVC.initialize();
+				view.searchFormVC.render();
 			});
-			$('.billboard-how-it-works', view.$element).css({
-				display: 'none'
-			});
+        };
 
-			$searchBlock.empty();
-
-            if (searchResults.length <= 0) {
-				$('#home-search-block #testRow', view.$element).empty();
-            	$('#home-search-block .no-results-block', view.$element).show();
-				return;
-			}
-
-            $('#home-search-block .no-results-block', view.$element).hide();
-
-			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
-				var searchResultTemplate = _.template(SearchResultTemplate),
-					defaultSearchResults, searchResult, imagesTest, i, img, handleImageLoad;
-
-				defaultSearchResults = {
-					id: 0,
-					gear_type: 0,
-					subtype: 0,
-					brand: 0,
-					model: '',
-					description: '',
-					images: '',
-                    image: '',
-					price: 0,
-					city: '',
-					address: '',
-					price_a: 0,
-					price_b: 0,
-					price_c: 0,
-					owner_id: null
-				};
-
-				for(i = 0; i < searchResults.length; i++) {
-					searchResult = searchResults[i].data;
-					imagesTest = searchResult.images.split(',');
-                    searchResult.image = imagesTest[0];
-
-                    if (searchResult.image === '') {
-                        searchResult.image = 'images/placeholder_grey.png';
-                    }
-                    view.price = searchResults[i].price_a;
-
-					_.extend(defaultSearchResults, searchResult);
-					$searchBlock.append(searchResultTemplate(defaultSearchResults));
-
-                    //Set background-image with jQuery
-                    $searchBlock.children().eq(i).children(':first').css('background-image', 'url("' + searchResult.image + '")');
-
-					img = new Image();
-					img.src = searchResult.image;
-
-					if(img.width < img.height) {
-						$searchBlock.children().eq(i).children(':first').addClass('image-blocks-vertical');
-					}
-					else {
-						$searchBlock.children().eq(i).children(':first').addClass('image-blocks-horizontal');
-					}
-
-				}
-				if(callback && typeof callback === 'function') {
-					callback();
-				}
+		loadFooter = function() {
+			var view = this;
+			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
+				view.footer = new FooterController.constructor({name: 'footer', $element: $('footer', view.$element), template: FooterTemplate});
+				view.footer.initialize();
+				view.footer.render();
 			});
 		};
 
-		showGearSuggestions = function(event) {
-			var view = event.data,
-				$searchGear = $('#search-gear', view.$element),
-				searchString, gList, brandsSuggestions, classificationSuggestions;
-
-			searchString = $searchGear.val();
-			if (view.gearSelectionIndex === 0) {
-				view.gearInputString = searchString; // save the input string when nothing is selected
-			}
-			// reset selection if new input was added since we saved the gearinputstring
-			if (view.gearInputString !== searchString) { 
-				view.gearSelectionIndex = 0; 
-				view.gearInputString = searchString;
-			}
-
-			searchString = searchString.toLowerCase().trim();
-
-			gList = App.gearClassification.data;
-			classificationSuggestions = _.map(gList.classification, function(value) {
-				var gear;
-				gear = _.filter(value, function(subtype) {
-					var subtypeName = subtype.subtype.toLowerCase(),
-						searchIndex;
-					searchIndex = subtypeName.indexOf(searchString);
-					return searchIndex >= 0;
-				});
-				return _.map(gear, function(value) {
-					return value.subtype;
-				});
-			});
-			classificationSuggestions = _.flatten(classificationSuggestions);
-
-			brandsSuggestions = _.filter(gList.brands, function(brand) {
-				var searchIndex = brand.toLowerCase().indexOf(searchString);
-				return searchIndex >= 0;
-			});
-			
-			view.gearSuggestionsArray = classificationSuggestions.concat(brandsSuggestions);
-			view.gearSuggestionsArray = _.first(view.gearSuggestionsArray, numberOfGearSuggestions)
-			view.drawGearSuggestions();
-		};
-
-		drawGearSuggestions = function() {
-			var view = this,
-				$gearSuggestionBox = $('#gear-suggestions-box', view.$element),
-				$searchField, suggestions, i, html, j;
-
-			$gearSuggestionBox.html('');
-			// hides or styles box
-			if(view.gearInputString.length === 0) {
-				$gearSuggestionBox.css('display', 'none');
-				return;
-			}
-
-			$searchField = $('#search-gear', view.$element);
-			$gearSuggestionBox.css({
-				'display': '',
-				'position': 'absolute',
-				'width': $searchField.outerWidth(),
-				'left': $searchField.offset().left,
-				'top': $searchField.offset().top + $searchField.outerHeight()
-			});
-
-			suggestions = view.gearSuggestionsArray;
-
-			for (i = 0; i < numberOfGearSuggestions; i++) {
-				if(suggestions.length > i) {
-					html = '<div class="gear-suggestion">';
-					html += '<span class="gear-suggestion-icon"></span>';
-					// parse string and check if any substring is equal to any part of view.gearInputString separated by " "
-					// if so, write it in bold, else write characters 
-					j = 0;
-					while (j < suggestions[i].length) {
-						// if view.gearInputString is here at suggestions[i][j]
-						if (suggestions[i].toLowerCase().indexOf(view.gearInputString) == j	&& (j < 1 || suggestions[i][j - 1] == ' ')) {
-							html += '<span class="gear-suggestion-bold">';
-							html += suggestions[i].substring(j, j + view.gearInputString.length);
-							html += '</span>';
-							j += view.gearInputString.length;
-						}
-						else {
-							html += suggestions[i][j];
-							j++;
-						}
-					}
-					html += '</div>';
-					$gearSuggestionBox.append(html);
-				}
-			}
-		};
-
-		setGearSuggestion = function(event) {
+		handleTechniciansTab = function(event) {
 			var view = event.data;
-			$('#search-gear', view.$element).val($(event.target).text());
-			$('#gear-suggestions-box', view.$element).hide();
-		};
-
-		gearInputArrowKeypress = function(event) {
-			var view = event.data,
-				$searchGear,
-				possibleSelections, i;
-
-			$searchGear = $('#search-gear', view.$element);
-			
-			if(event.which !== 38 && event.which !== 40) {
-				return;
-			}
-
-			possibleSelections = $('#gear-suggestions-box > div');
-				
-			// arrow keys codes: right, up, left, down  =  39 38 37 40
-			if(event.which == 38) { // up
-				view.gearSelectionIndex--;
-			}
-			else if(event.which == 40) {
-				view.gearSelectionIndex++;
-			}
-				
-			if(view.gearSelectionIndex > possibleSelections.length) { // clamp
-				view.gearSelectionIndex = 0;
-			}
-			else if(view.gearSelectionIndex < 0) {
-				view.gearSelectionIndex = possibleSelections.length;
-			}
-			// set classes for selected.
-			for (i = 0; i < possibleSelections.length; i++) {
-				$(possibleSelections[i]).removeClass('gear-suggestion-selected');
-				if (i + 1 == view.gearSelectionIndex) { // gearSelectionIndex is 0 when not selected.
-					$(possibleSelections[i]).addClass('gear-suggestion-selected');
-				}
-			}
-
-			if (view.gearSelectionIndex !== 0) {
-				// set input text to the value of the selection
-				$searchGear.val($('.gear-suggestion-selected').text());
+			if(App.user.isLoggedIn() === false) {
+				view.handleLogin();
 			}
 			else {
-				// set input text back to old input value
-				$searchGear.val(view.gearInputString);
+				alert('This feature will be enabled soon, please stay tuned.');
 			}
-
-			$searchGear.focus();
-			$searchGear.val($searchGear.val());
-
-			// prevents input field to set caret to start position.
-			return false;
 		};
 
-		searchGearLoseFocus = function(event) {
+		handVansTab = function() {
 			var view = event.data;
-			// clears suggestion box when losing focus
-			$('#gear-suggestions-box', view.$element).hide();
-		};
-
-		searchGearGainFocus = function(event) {
-			var view = event.data;
-			$('#gear-suggestions-box', view.$element).show();
-		};
-
-		performSearch = function(gear, location, dateRange) {
-			var view = this;
-			
-			App.user.setSearchInterval(dateRange);
-			if (location === '' || location === 'all' || location === null) {
-				location = 'all';
-				view.gearList.search(location, gear, dateRange, function(searchResults) {
-					view.populateSearchBlock(searchResults);
-				});
-
-			}else{
-
-				geocoder.geocode({address: location}, function(results, status) {
-					var locationData;
-					if(status === GoogleMaps.GeocoderStatus.OK) {
-						locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
-						view.gearList.search(locationData, gear, dateRange, function(searchResults) {
-							view.populateSearchBlock(searchResults);
-						});
-					}
-					else {
-						console.log('Error geocoding: ' + status);
-						alert('Couldn\'t find this location. You can use the keyword all, to get locationless results.');
-						view.populateSearchBlock([]);
-					}
-				});
+			if(App.user.isLoggedIn() === false) {
+				view.handleLogin();
 			}
+			else {
+				alert('This feature will be enabled soon, please stay tuned.');
+			}
+		};
 
-			view.setupEvent('click', '#fb-share-btn', view, function() {
-				var instrument, description;
-
-				instrument = $('#home-search-form #search-gear', view.$element).val();
-				description = 'Hey, I am looking for a ' + instrument + ' near ' + location + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
-
-				FB.ui({
-					method: 'feed',
-					caption: 'Request an instrument on Sharingear!',
-					link: 'sharingear.com',
-					description: description
-				}, function() {});
+		handleLogin = function() {
+			App.user.login(function(error) {
+				if(!error) {
+				    App.router.navigateTo('dashboard');
+				    App.header.render();
+                }
 			});
 		};
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
-			setupEvents: setupEvents,
-			handleSearch: handleSearch,
-			populateSearchBlock: populateSearchBlock,
 
-			showGearSuggestions: showGearSuggestions,
-			drawGearSuggestions: drawGearSuggestions,
-			setGearSuggestion: setGearSuggestion,
-			gearInputArrowKeypress: gearInputArrowKeypress,
-			searchGearLoseFocus: searchGearLoseFocus,
-			searchGearGainFocus: searchGearGainFocus,
+			loadSearchBar: loadSearchBar,
+			loadFooter: loadFooter,
 
-			performSearch: performSearch
+			handleTechniciansTab: handleTechniciansTab,
+			handVansTab: handVansTab,
+			handleLogin: handleLogin
 		});
 	}
 );

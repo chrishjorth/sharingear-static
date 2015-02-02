@@ -13,7 +13,8 @@ define(
 			didInitialize,
 			didRender,
 			populateYourGear,
-			setupEvents,
+
+			handleAddGear,
 			handleEditGearItem;
 
 		gearBlockID = 'yourgear-gear-block';
@@ -36,7 +37,12 @@ define(
 		};
 
 		didRender = function() {
-			this.setupEvent('click', '.yourgear-item .btn-edit', this, this.handleEditGearItem);
+			if(App.header) {
+				App.header.setTitle('Your gear');
+			}
+
+			this.setupEvent('click', '#dashboard-yourgear-add-btn', this, this.handleAddGear);
+			this.setupEvent('click', '.yourgear-item-edit-btn', this, this.handleEditGearItem);
 		};
 
 		populateYourGear = function(callback) {
@@ -44,7 +50,9 @@ define(
 			require(['text!../templates/yourgear-item.html'], function(YourGearItemTemplate) {
 				var yourGearItemTemplate = _.template(YourGearItemTemplate),
 					yourGear = view.gearList.data,
-					defaultGear, gear, i;
+					$gearBlock, defaultGear, gear, i, $gearItem;
+
+				$gearBlock = $('#' + gearBlockID, view.$element);
 
 				for(i = 0; i < yourGear.length; i++) {
 					defaultGear = {
@@ -67,13 +75,20 @@ define(
 					if(defaultGear.images.length > 0) {
 						defaultGear.img_url = defaultGear.images.split(',')[0];
 					}
-
-					$('#' + gearBlockID).append(yourGearItemTemplate(defaultGear));
+					$gearItem = $(yourGearItemTemplate(defaultGear));
+					$('.sg-bg-image' ,$gearItem).css({
+						'background-image': 'url("' + defaultGear.img_url + '")'
+					});
+					$gearBlock.append($gearItem);
 				}
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
 			});
+		};
+
+		handleAddGear = function() {
+			App.router.openModalView('addgear');
 		};
 
 		handleEditGearItem = function(event) {
@@ -87,7 +102,8 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populateYourGear: populateYourGear,
-			setupEvents: setupEvents,
+
+			handleAddGear: handleAddGear,
 			handleEditGearItem: handleEditGearItem
 		}); 
 	}

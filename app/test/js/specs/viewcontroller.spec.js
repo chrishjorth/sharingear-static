@@ -20,7 +20,8 @@ define(
 
 					didInitialize: function() {},
 					didRender: function() {},
-					didClose: function() {}
+					didClose: function() {},
+					didResize: function() {}
 				});
 			});
 
@@ -38,13 +39,13 @@ define(
 				expect(this.vc.name).to.equal('testVC');
 				expect(this.vc.$element).to.equal(this.$fixtures);
 				expect(this.vc.template.toString()).to.equal(_.template('<div>Test Template</div>').toString());
-				expect(this.vc.userEvents).to.be.an('array');
 			});
 
 			it('Can initialize', function() {
 				var setSubPathSpy = sinon.spy(this.vc, 'setSubPath'),
 					didInitializeSpy = sinon.spy(this.vc, 'didInitialize');
 				this.vc.initialize();
+				expect(this.vc.userEvents).to.be.an('array');
 				sinon.assert.calledOnce(setSubPathSpy);
 				sinon.assert.calledOnce(didInitializeSpy);
 				this.vc.setSubPath.restore();
@@ -60,6 +61,16 @@ define(
 				sinon.assert.calledOnce(didRenderSpy);
 				this.vc.unbindEvents.restore();
 				this.vc.didRender.restore();
+			});
+
+			it('Can handle window resize event', function(done) {
+				var spec = this;
+				sinon.stub(this.vc, 'didResize', function() {
+					spec.vc.didResize.restore();
+					done();
+				});
+				this.vc.render();
+				$(window).resize();
 			});
 
 			it('Can set sub-path', function() {
@@ -104,6 +115,30 @@ define(
 				this.vc.didClose.restore();
 			});
 
+			it('Can register viewcontroller events', function(done) {
+				var testVC = new ViewController.constructor({
+					name: 'testVC2',
+					$element: this.$fixtures,
+					labels: {},
+					template: '<div>Test Template 2</div>',
+
+					didInitialize: function() {},
+					didRender: function() {},
+					didClose: function() {},
+					didResize: function() {}
+				});
+				testVC.initialize();
+				expect(testVC.events).to.be.an('object');
+				expect(testVC.events).to.have.property('close');
+				expect(testVC.events.close).to.be.an('array');
+				expect(testVC.events.close.length).to.equal(0);
+				expect(testVC.on).to.be.a('function');
+				testVC.on('close', function(vc) {
+					done();
+				});
+				expect(testVC.events.close.length).to.equal(1);
+				testVC.close();
+			});
 		});
 	}
 );

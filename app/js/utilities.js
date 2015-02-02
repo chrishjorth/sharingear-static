@@ -13,9 +13,11 @@ define(
     		getBaseURL,
     		ajajFileUpload,
     		getCityFromCoordinates,
+    		getQueryString,
     		getQueryStringParameterValue,
     		capitalizeString,
-    		isMomentBetween;
+    		isMomentBetween,
+    		isMobile;
 
     	geocoder = new GoogleMaps.Geocoder();
 
@@ -100,6 +102,14 @@ define(
         	});
     	};
 
+    	getQueryString = function() {
+    		var queryString = window.location.href.split('?')[1];
+    		if(queryString) {
+    			queryString = queryString.split('#')[0];
+    		}
+    		return queryString;
+    	};
+
     	/**
 		 * Receives a query string and returns the value for the specified key.
 		 * Inspired by http://stackoverflow.com/a/1099670
@@ -128,14 +138,25 @@ define(
 			return ((moment.isAfter(intervalStart, 'day') === true || moment.isSame(intervalStart, 'day') === true) && (moment.isBefore(intervalEnd, 'day') === true || moment.isSame(intervalEnd, 'day') === true));
 		};
 
+		/**
+		 * Breakpoints are Bootstrap compatible.
+		 */
+		isMobile = function() {
+			var breakpoints = [768, 992, 1200],
+				viewWidth = $(document).width();
+			return (viewWidth < breakpoints[0]);
+		};
+
 		return {
         	inherit: inherit,
         	getBaseURL: getBaseURL,
         	ajajFileUpload: ajajFileUpload,
         	getCityFromCoordinates: getCityFromCoordinates,
+        	getQueryString: getQueryString,
         	getQueryStringParameterValue: getQueryStringParameterValue,
         	capitalizeString: capitalizeString,
-        	isMomentBetween: isMomentBetween
+        	isMomentBetween: isMomentBetween,
+        	isMobile: isMobile
     	};
 	}
 );

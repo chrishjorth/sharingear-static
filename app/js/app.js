@@ -16,7 +16,6 @@ define(
 			run,
 			setUserLocation,
 			loadHeader,
-			loadFooter,
 			getCookie,
 
 			$headerContainer, $footerContainer;
@@ -56,8 +55,8 @@ define(
 				'dashboard/yourgear',
 				'dashboard/yourrentals',
 				'dashboard/yourreservations',
-				'dashboard/calendar',
 				'dashboard/settings',
+				'addgear',
 				'gearprofile',
 				'aboutus',
 				'contactus',
@@ -71,7 +70,11 @@ define(
                 'payment',
                 'paymentsuccessful',
                 'submerchantregistration',
-                'closedbeta'
+                'closedbeta',
+                'search',
+                'user',
+                'pickupdeliverycalendar',
+                'insurance'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.
@@ -89,6 +92,10 @@ define(
 
 			$(document).ready(function() {
 				documentReadyDeferred.resolve();
+
+				/*$('.modal-view-container').on('touchmove', function(event) {
+					event.stopPropagation();
+				});*/
 			});
 
 			App.gearClassification = new GearClassification.constructor({
@@ -107,7 +114,7 @@ define(
 				//Load header and footer
 				App.loadHeader($headerContainer);
 
-				App.loadFooter($footerContainer);
+				//App.loadFooter($footerContainer);
 
 				//Load page based on hash
 				hash = window.location.hash;
@@ -118,7 +125,7 @@ define(
 					route = 'home';
 				}
 				router.navigateTo(route, null, function() {
-					router.openModalView('closedbeta');
+					//router.openModalView('closedbeta');
 				});
 
 				if(getCookie('cookie-consent') != '1') {
@@ -165,21 +172,8 @@ define(
 			var app = this;
 			require(['viewcontrollers/navigation-header', 'text!../templates/navigation-header.html'], function(HeaderController, HeaderTemplate) {
 				app.header = new HeaderController.constructor({name: 'header', $element: $headerContainer, labels: {}, template: HeaderTemplate});
+				app.header.initialize();
 				app.header.render();
-				if(_.isFunction(callback)) {
-					callback();
-				}
-			});
-		};
-
-		/**
-		 * Load the footer portion of the site.
-		 */
-		loadFooter = function($footerContainer, callback) {
-			var app = this;
-			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
-				app.footer = new FooterController.constructor({name: 'footer', $element: $footerContainer, labels: {}, template: FooterTemplate});
-				app.footer.render();
 				if(_.isFunction(callback)) {
 					callback();
 				}
@@ -217,7 +211,6 @@ define(
 			run: run,
 			setUserLocation: setUserLocation,
 			loadHeader: loadHeader,
-			loadFooter: loadFooter,
 			getCookie: getCookie
 		};
 

@@ -15,8 +15,9 @@ define(
 
 			populateYourReservations,
 
-			handleDenied,
-			handleRental;
+			//handleDenied,
+			//handleRental,
+			handleBooking;
 
 		reservationBlockID = 'yourreservations-gear-block';
 
@@ -27,20 +28,21 @@ define(
 			});
 			view.gearList.initialize();
 			view.gearList.getUserReservations(App.user.data.id, function (data) {
-				if(data.length !== 0){
-					view.populateYourReservations();
-				}
-				else {
-					$('#yourreservations-gear-block').append('You don\'t have any reservations!');
-				}
+				view.didFetch = true;
 				view.render();
 			});
 		};
 
 		didRender = function() {
-			var view = this;
-			view.setupEvent('click', '.yourgear-status.denied', view, view.handleDenied);
-            view.setupEvent('click', '.yourgear-status.in-rental', view, view.handleRental);
+			App.header.setTitle('Gear reservations');
+
+			if(this.didFetch === true) {
+				this.populateYourReservations();
+			}
+
+			this.setupEvent('click', '#yourreservations-gear-block .sg-list-item button', this, this.handleBooking);
+			//view.setupEvent('click', '.yourgear-status.denied', view, view.handleDenied);
+            //view.setupEvent('click', '.yourgear-status.in-rental', view, view.handleRental);
 		};
 
 		populateYourReservations = function(callback) {
@@ -48,7 +50,17 @@ define(
 			require(['text!../templates/yourreservations-item.html'], function(YourReservationsItemTemplate) {
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 					yourReserv = view.gearList.data,
-                    defaultReservation, reservation, i;
+					$reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
+
+				if(yourReserv.length <= 0) {
+					$('#' + reservationBlockID, view.$element).append('You currently do not have any reservations.');
+					if(callback && typeof callback === 'function') {
+						callback();
+					}
+					return;
+				}
+
+				$reservationBlock = $('#' + reservationBlockID, view.$element);
 
 				for(i = 0; i < yourReserv.length; i++) {
                     defaultReservation = {
@@ -70,55 +82,37 @@ define(
 
 					reservation = yourReserv[i];
 					_.extend(defaultReservation, reservation.data);
-                    if(defaultReservation.images.length > 0) {
-                        defaultReservation.img_url = defaultReservation.images.split(',')[0];
-                    }
-					var startdate = defaultReservation.start_time.split(' ')[0];
-					var starttime = defaultReservation.start_time.split(' ')[1].slice(0,-3);
 
-					var enddate = defaultReservation.end_time.split(' ')[0];
-					var endtime = defaultReservation.end_time.split(' ')[1].slice(0,-3);
+					if(defaultReservation.images.length > 0) {
+						defaultReservation.img_url = defaultReservation.images.split(',')[0];
+					}
 
-					defaultReservation.start_time=starttime;
-					defaultReservation.start_date=startdate;
+					$reservationItem = $(yourReservationsItemTemplate(defaultReservation));
+					$('.sg-bg-image', $reservationItem).css({
+						'background-image': 'url("' + defaultReservation.img_url + '")'
+					});
 
-					defaultReservation.end_time=endtime;
-					defaultReservation.end_date=enddate;
+					status = reservation.data.booking_status;
+					if(status === 'pending' || status === 'waiting') {
+						$('.request', $reservationItem).removeClass('hidden');
+					}
+					if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
+						$('.accepted', $reservationItem).removeClass('hidden');
+					}
+					if(status === 'denied') {
+						$('.denied', $reservationItem).removeClass('hidden');
+					}
 
-                    if(defaultReservation.booking_status === 'pending') {
-                    	defaultReservation.gear_status = '<div class="yourgear-status pending" style="background-color: #EE0000;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;">PENDING</div>';
-                    }
-                    else if(defaultReservation.booking_status === 'denied') {
-                    	defaultReservation.gear_status = '<button style="background-color: #EE0000;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-warning yourgear-status denied" data-bookingid="' + reservation.data.booking_id + '">DENIED</button>';
-                    }
-                    else if(defaultReservation.gear_status === 'rented-out') {
-                    	defaultReservation.gear_status = '<button style="background-color: #fcd700;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">IN RENTAL</button>';
-                    }
-                    else if(defaultReservation.booking_status === 'accepted') {
-                    	defaultReservation.gear_status = '<button style="background-color: #71d800;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">ACCEPTED</button>';
-                    }
-                    else if(defaultReservation.booking_status === 'renter-returned') {
-                    	defaultReservation.gear_status = '<button style="background-color: #00aeff;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">AWAIT OWNER</button>';
-                    }
-                    else if(defaultReservation.booking_status === 'owner-returned') {
-                    	defaultReservation.gear_status = '<button style="background-color: #00aeff;border: 0;width: 100%;margin: 0px;padding: 0px;height: 30px;color: white;font-weight: bold;" class="btn btn-default yourgear-status in-rental" data-bookingid="' + reservation.data.booking_id + '">AWAIT RENTER</button>';
-                    }
-                    else if(defaultReservation.booking_status === 'ended') {
-                    	defaultReservation.gear_status = '<div class="yourgear-status pending" style="background-color: #EE0000;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;">ENDED</div>';
-                    }
-                    else {
-                    	defaultReservation.gear_status = '<div style="background-color: #EE0000;border: 0;height: 100%;width: 100%;margin: 0px;padding: 0px;" class="yourgear-status pending">FAILED</div>';
-                    }
-
-					$('#' + reservationBlockID).append(yourReservationsItemTemplate(defaultReservation));
+					$reservationBlock.append($reservationItem);
 				}
+
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
 			});
 		};
 
-		handleDenied = function(event) {
+		/*handleDenied = function(event) {
 			var view = event.data,
 				gear;
 			gear = view.gearList.getGearItem('booking_id', $(this).data('bookingid'));
@@ -130,14 +124,27 @@ define(
 				gear;
 			gear = view.gearList.getGearItem('booking_id', $(this).data('bookingid'));
 			App.router.openModalView('booking', gear);
+		};*/
+
+		handleBooking = function(event) {
+			var view = event.data,
+				bookingID = $(this).data('bookingid'),
+				passedData;
+			passedData = {
+				gear: view.gearList.getGearItem('booking_id', bookingID),
+				mode: 'renter',
+				booking_id: bookingID
+			};
+			App.router.openModalView('booking', passedData);
 		};
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populateYourReservations: populateYourReservations,
-			handleDenied: handleDenied,
-			handleRental: handleRental
+			//handleDenied: handleDenied,
+			//handleRental: handleRental
+			handleBooking: handleBooking
 		});
 	}
 );

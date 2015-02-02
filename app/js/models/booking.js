@@ -14,7 +14,13 @@ define(
 
         didInitialize = function() {
             if(this.data === null) {
-                this.data = {};
+                this.data = {
+                    gear_id: null,
+                    start_time: null,
+                    end_time: null,
+                    cardId: null,
+                    returnURL: null
+                };
             }
         };
 

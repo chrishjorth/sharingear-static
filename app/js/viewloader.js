@@ -22,7 +22,7 @@ define(
 			_loadModalView;
 
 		mainViewContainer = '.view-container';
-		modalViewLightbox = '.modal-view-lightbox';
+		modalViewLightbox = '.sg-lightbox';
 		modalViewContainer = '.modal-view-container';
 
 		/**
@@ -105,11 +105,6 @@ define(
                 var $modalViewLightbox = $(modalViewLightbox),
                     $modalViewContainer = $(modalViewContainer);
 
-                //TODO: remove this once out of closed beta
-                if (view === 'closedbeta') {
-                    $modalViewContainer.addClass('closed-beta-modal');
-                }
-
 				if(viewLoader.currentModalViewController !== null) {
 					viewLoader.currentModalViewController.close();
 					viewLoader.openModalViews.pop();
@@ -118,6 +113,7 @@ define(
 				if($modalViewLightbox.hasClass('hidden') === true) {
 					$modalViewLightbox.removeClass('hidden');
 					$('body').addClass('modal-open');
+					$('.view-container').addClass('modal-open');
 				}
 
 				viewLoader.currentModalViewController = new ViewController.constructor({name: view, $element: $modalViewContainer, labels: {}, template: ViewTemplate, path: path, passedData: data});
@@ -174,6 +170,7 @@ define(
 			if($modalViewLightbox.hasClass('hidden') === false) {
 				$modalViewLightbox.addClass('hidden');
 				$('body').removeClass('modal-open');
+				$('.view-container').removeClass('modal-open');
 			}
 
 			//TODO: remove once out of closed beta

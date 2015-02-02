@@ -1,0 +1,48 @@
+<div class="view search">
+  <div class="jumbotron">
+    <div class="searchform-container sg-darkergray-bg"></div>
+  </div>
+
+  <div class="container-fluid search-results">
+    <div class="row map-row">
+		  <div class="col-sm-6 map-col">
+        <div class="searchmap" id="search-map"></div>  
+      </div>
+		  <div class="col-xs-12 col-sm-6 search-results-col bs-reset">
+        <ul class="sg-tabs sg-tabs-3 sg-darkergray-bg sg-white">
+    		  <li class="sg-action-blue-bg sg-white active">
+            <button class="sg-btn-invisible">
+              <div class="sg-icon icon-tabbar-gear"></div>
+              <div class="sg-btn-text">GEAR</div>
+            </button>
+          </li>
+    		  <li class="sg-action-blue-bg sg-white disabled">
+            <button class="sg-btn-invisible">
+              <div class="sg-icon icon-tabbar-technicians"></div>
+              <div class="sg-btn-text">TECHNICIANS</div>
+            </button>
+          </li>
+    		  <li class="sg-action-blue-bg sg-white disabled">
+            <button class="sg-btn-invisible">
+              <div class="sg-icon icon-tabbar-vans"></div>
+              <div class="sg-btn-text">VANS &amp; BUSES</div>
+            </button>
+          </li>
+        </ul>
+        <div class="row bs-reset sg-darkergray-bg sg-white currentlocation-container">
+				  <div class="col-sm-12" id="search-currentlocation"></div>
+        </div>
+        <div class="row searchresults bs-reset" id="home-search-row"></div>
+        <div class="no-results-block hidden">
+          <div class="row sorry-section bs-reset">
+            <h1>Sorry, no instruments matching your search were found.</h1>
+          </div>
+          <div class="row request-section bs-reset">
+            <h2>Request an instrument: </h2>
+            <a href="javascript:;" id="fb-share-btn"><img src="images/fb_share_noitems.png" class="responsive-img"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

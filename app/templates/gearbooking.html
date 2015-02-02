@@ -1,146 +1,45 @@
-<div class="container-fluid">
-	<form class="form-inline" style="margin-right: 11px;" onsubmit="return false;">
-		<div class="row">
-			<div class="col-xs-11 bluetop">
-				<img src="images/sgmark@2x.png" alt="Sharingear"/>
-				<h2>Booking request</h2>
-				</div>
-			<div class="col-xs-1 bluetop">
-					<a id="gearbooking-cancel-btn" class="close-booking-button"><img src="images/close@2x.png" alt="close" class="close-booking"/></a>
-			</div>
+<div class="container-fluid view gearbooking">
+	<div class="row sg-blue-bg sg-white sg-navbar">
+		<div class="col-xs-2"><div class="sg-icon icon-sg-logo"></div></div>
+		<div class="col-xs-8">Booking step 1</div>
+		<div class="col-xs-2 text-right"><button class="sg-btn-round sg-white-bg sg-blue" id="gearbooking-cancel-btn"><i class="fa fa-times"></i></button></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 text-center sg-darkergray">
+			<h3 class="sg-h3">{{brand}} {{subtype}} {{model}}</h3>
 		</div>
-		<div class="row">
-			<div class="col-md-4">
-				<div class="col-md-offset-1 col-md-11">
-				<p>Pickup date</p>
-				<h3 style="color: #00aeff" id="gearbooking-lefttitle" class="bottom-line"></h3>
-				<div class="btn-group booking-buttons">
-					<button class="btn btn-default" id="gearbooking-lefttoday-btn">Today</button>
-					<button class="btn btn-default" id="gearbooking-leftprevious-btn">Previous</button>
-					<button class="btn btn-default" id="gearbooking-leftnext-btn">Next</button>
-				</div>
-				<div class="calendar month calendar" id="gearbooking-leftmonths-container"></div>
-
-				<label for="gearbooking-starttime">Start time:</label>
-				<select class="form-control" id="gearbooking-starttime">
-					<option>00:00</option>
-					<option>01:00</option>
-					<option>02:00</option>
-					<option>03:00</option>
-					<option>04:00</option>
-					<option>05:00</option>
-					<option>06:00</option>
-					<option>07:00</option>
-					<option>08:00</option>
-					<option>09:00</option>
-					<option>10:00</option>
-					<option>11:00</option>
-					<option selected="selected">12:00</option>
-					<option>13:00</option>
-					<option>14:00</option>
-					<option>15:00</option>
-					<option>16:00</option>
-					<option>17:00</option>
-					<option>18:00</option>
-					<option>19:00</option>
-					<option>20:00</option>
-					<option>21:00</option>
-					<option>22:00</option>
-					<option>23:00</option>
-				</select>
-			</div>
-			</div>
-			<div class="col-md-4">
-				<p>Return date</p>
-				<h3 id="gearbooking-righttitle" class="bottom-line"></h3>
-				<div class="btn-group booking-buttons">
-					<button class="btn btn-default" id="gearbooking-righttoday-btn">Today</button>
-					<button class="btn btn-default" id="gearbooking-rightprevious-btn">Previous</button>
-					<button class="btn btn-default" id="gearbooking-rightnext-btn">Next</button>
-				</div>
-				<div class="calendar month calendar" id="gearbooking-rightmonths-container"></div>
-
-				<label for="gearbooking-endtime">End time:</label>
-				<select class="form-control" id="gearbooking-endtime">
-					<option>00:00</option>
-					<option>01:00</option>
-					<option>02:00</option>
-					<option>03:00</option>
-					<option>04:00</option>
-					<option>05:00</option>
-					<option>06:00</option>
-					<option>07:00</option>
-					<option>08:00</option>
-					<option>09:00</option>
-					<option>10:00</option>
-					<option>11:00</option>
-					<option selected="selected">12:00</option>
-					<option>13:00</option>
-					<option>14:00</option>
-					<option>15:00</option>
-					<option>16:00</option>
-					<option>17:00</option>
-					<option>18:00</option>
-					<option>19:00</option>
-					<option>20:00</option>
-					<option>21:00</option>
-					<option>22:00</option>
-					<option>23:00</option>
-				</select>
-			</div>
-			<div class="col-md-4">
-				<div class="col-md-10 col-md-offset-1">
-					<div class="row rental-period">
-						<p>Rental period</p>
-					</div>
-					<div class="row booking-results">
-						<table class="col-xs-12 booking-margin">
-							<tr>
-								<td class="booking-table-left">Hours</td>
-								<td id="booking-hours">0</td>
-							</tr>
-							<tr>
-								<td class="booking-table-left">Days</td>
-								<td id="booking-days">0</td>
-							</tr>
-							<tr>
-								<td class="booking-table-left">Weeks</td>
-								<td id="booking-weeks">0</td>
-							</tr>
-						</table>
-					</div>
-
-					<div class="row booking-results booking-margin">
-						<table class="col-xs-12">
-							<tr>
-								<td class="booking-table-left">Hourly price</td>
-								<td id="booking-hourly-price"></td>
-							</tr>
-							<tr>
-								<td class="booking-table-left">Daily price</td>
-								<td id="booking-daily-price"></td>
-							</tr>
-							<tr>
-								<td class="booking-table-left">Weekly price</td>
-								<td id="booking-weekly-price"></td>
-							</tr>
-						</table>
-					</div>
-
-					<div class="row table-bordered booking-margin">
-					<div class="col-xs-6">
-						<span class="total-price-info">TOTAL</span>
-					</div>
-					<div class="col-xs-6 right">
-						<span id="totalprice" class="total-price">0</span>
-					</div>
-					</div>
-				</div>
-				<div class="row">
-						<button class="col-md-10 col-md-offset-1 btn btn-info editgear-save-button" id="gearbooking-book-btn" disabled="disabled">Book</button>
-				</div>
-
-			</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-8">
+			<table class="table table-bordered">
+				<tbody>
+					<tr>
+						<td>Days ({{price_a}} <span class="sg-super">DKK</span>)</td>
+						<td id="gearbooking-days">0</td>
+					</tr>
+					<tr>
+						<td>Weeks ({{price_b}} <span class="sg-super">DKK</span>)</td>
+						<td id="gearbooking-weeks">0</td>
+					</tr>
+					<tr>
+						<td>Months ({{price_c}} <span class="sg-super">DKK</span>)</td>
+						<td id="gearbooking-months">0</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-	</form>
+		<div class="col-xs-4 bs-reset sg-darkergray-bg total">
+			<div class="text-center sg-white">Total</div>
+			<div class="text-center sg-white"><span id="gearbooking-price">0</span> <span class="sg-super">DKK</span></div>
+		</div>
+	</div>
+	
+	<div class="pickupdeliverycalendar-container"></div>
+
+	<div class="row sg-footerbar sg-blue-bg sg-white">
+		<div class="col-sm-12">
+			<button class="sg-btn-square sg-blue-bg sg-white" id="gearbooking-next">next <i class="fa fa-arrow-circle-o-right"></i></button>
+		</div>
+	</div>
+
 </div>
