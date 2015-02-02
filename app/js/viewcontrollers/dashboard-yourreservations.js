@@ -28,18 +28,17 @@ define(
 			});
 			view.gearList.initialize();
 			view.gearList.getUserReservations(App.user.data.id, function (data) {
-				if(data.length !== 0){
-					view.populateYourReservations();
-				}
-				else {
-					$('#yourreservations-gear-block').append('You don\'t have any reservations!');
-				}
+				view.didFetch = true;
 				view.render();
 			});
 		};
 
 		didRender = function() {
 			App.header.setTitle('Gear reservations');
+
+			if(this.didFetch === true) {
+				this.populateYourReservations();
+			}
 
 			this.setupEvent('click', '#yourreservations-gear-block .sg-list-item button', this, this.handleBooking);
 			//view.setupEvent('click', '.yourgear-status.denied', view, view.handleDenied);
@@ -52,6 +51,14 @@ define(
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 					yourReserv = view.gearList.data,
 					$reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
+
+				if(yourReserv.length <= 0) {
+					$('#' + reservationBlockID, view.$element).append('You currently do not have any reservations.');
+					if(callback && typeof callback === 'function') {
+						callback();
+					}
+					return;
+				}
 
 				$reservationBlock = $('#' + reservationBlockID, view.$element);
 
