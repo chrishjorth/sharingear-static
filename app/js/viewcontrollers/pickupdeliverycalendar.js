@@ -14,6 +14,7 @@ define(
 			renderMonthCalendar,
 			populateMonthCalendar,
 			clearSelections,
+			preselectDay,
 
 			handlePrev,
 			handleNext,
@@ -33,6 +34,8 @@ define(
 			});
 
 			this.displayedMoment = new Moment();
+
+			this.preselectedDate = null;
 			
 			this.pickupDate = null;
 			if(this.passedData.pickupDate && Moment.isMoment(this.passedData.pickupDate) === true) {
@@ -186,7 +189,11 @@ define(
 						}
 					}
 
-					$dayBox.attr('id', 'calendar-day-' + iteratorMoment.year() + '-' + (iteratorMoment.month() + 1) + '-' + date);
+					if(iteratorMoment.isSame(this.preselectedDate, 'day') === true) {
+						$dayBox.addClass('selected');
+					}
+
+					$dayBox.attr('id', 'calendar-day-' + iteratorMoment.format('YYYY-MM-DD'));
 					iteratorMoment.add(1, 'days');
 				}
 			}
@@ -194,6 +201,14 @@ define(
 
 		clearSelections = function() {
 			$('.day', this.$element).removeClass('selected');
+		};
+
+		preselectDay = function(moment) {
+			var $day = $('#calendar-day-' + moment.format('YYYY-MM-DD'), this.$element);
+			this.preselectedDate = new Moment(moment);
+			if($day.hasClass('selected') === false) {
+				$day.addClass('selected');
+			}
 		};
 
 		handlePrev = function(event) {
@@ -241,6 +256,7 @@ define(
 				if(_.isFunction(view.passedData.parent.handlePickupSelection) === true) {
 					view.passedData.parent.handlePickupSelection(view);
 				}
+				view.preselectDay((new Moment(view.pickupDate)).add(1, 'days'));
 			}
 			else {
 				view.deliveryDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
@@ -251,6 +267,7 @@ define(
 
 				//Check if the delivery date ends an acceptable interval: if not alert error
 				if(view.isIntervalAvailable(view.pickupDate, view.deliveryDate) === true) {
+					view.preselectedDate = null;
 					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
 					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
 						view.passedData.parent.handleDeliverySelection(view);
@@ -340,7 +357,6 @@ define(
 				}
 				i++;
 			}
-			console.log();
 			if(this.alwaysFlag === 0) {
 				return foundInterval;
 			}
@@ -356,6 +372,7 @@ define(
 			renderMonthCalendar: renderMonthCalendar,
 			populateMonthCalendar: populateMonthCalendar,
 			clearSelections: clearSelections,
+			preselectDay: preselectDay,
 
 			handlePrev: handlePrev,
 			handleNext: handleNext,
