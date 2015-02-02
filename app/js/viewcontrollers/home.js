@@ -15,7 +15,7 @@ define(
 			loadFooter,
 
 			handleTechniciansTab,
-			handVansTab,
+			handleVansTab,
 			handleLogin;
 
 		didInitialize = function() {
@@ -31,7 +31,7 @@ define(
 			this.loadFooter();
 
 			this.setupEvent('click', '#home-tab-technicians', this, this.handleTechniciansTab);
-			this.setupEvent('click', '#home-tab-vans', this, this.handVansTab);
+			this.setupEvent('click', '#home-tab-vans', this, this.handleVansTab);
         };
 
         loadSearchBar = function() {
@@ -62,7 +62,7 @@ define(
 			}
 		};
 
-		handVansTab = function() {
+		handleVansTab = function(event) {
 			var view = event.data;
 			if(App.user.isLoggedIn() === false) {
 				view.handleLogin();
@@ -89,7 +89,7 @@ define(
 			loadFooter: loadFooter,
 
 			handleTechniciansTab: handleTechniciansTab,
-			handVansTab: handVansTab,
+			handleVansTab: handleVansTab,
 			handleLogin: handleLogin
 		});
 	}
