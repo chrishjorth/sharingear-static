@@ -12,6 +12,8 @@ define(
 		var didInitialize,
 			handleImageUpload,
 			didRender,
+
+            handleUploadPicButton,
 			handleSave,
 			enableSaveButton;
 
@@ -86,26 +88,35 @@ define(
                 }
             });
 
+            this.setupEvent('click', '.dashboard-profile-pic-upload-btn', this, this.handleUploadPicButton);
             this.setupEvent('change', '#profile-pic', this, this.handleImageUpload);
             this.setupEvent('submit', '#dashboard-profile-form', this, this.handleSave);
+        };
+
+        handleUploadPicButton = function(event) {
+            var view = event.data;
+            $('#profile-pic', view.$element).click();
         };
 
         handleImageUpload = function(event) {
             var view = event.data;
             var $file = $(this);
 
-            $('#profile_image_loading', view.$element).show();
-            $('#saveButton', view.$element).hide();
+            //$('#profile_image_loading', view.$element).show();
+            //$('#saveButton', view.$element).hide();
+            $('.dashboard-profile-pic-upload-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
             view.user.uploadProfilePicture($file.get(0).files[0], $file.val().split('\\').pop(),App.user.data.id, function (error,url) {
 
-                $('#profile_image_loading', view.$element).hide();
-                $('#saveButton', view.$element).show();
+                //$('#profile_image_loading', view.$element).hide();
+                //$('#saveButton', view.$element).show();
+                $('.dashboard-profile-pic-upload-btn', view.$element).html('Upload photo');
 
                 if(error) {
                     alert('Error uploading file.');
                     console.log(error);
-                }else{
+                }
+                else {
                     var $profilePic = $('#prof-pic-div', view.$element);
                     $profilePic.css('background-image', 'url("' + url + '")');
                 }
@@ -178,6 +189,8 @@ define(
 			didInitialize: didInitialize,
 			handleImageUpload: handleImageUpload,
 			didRender: didRender,
+
+            handleUploadPicButton: handleUploadPicButton,
 			handleSave:handleSave,
 			enableSaveButton:enableSaveButton
 		});

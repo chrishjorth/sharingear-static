@@ -1,65 +1,60 @@
 <div class="profile subview">
 	<div class="row dashboard-profile-row">
+		<div class="col-sm-3 dashboard-profile-pic-view sg-darkgray-bg">
+			<div class="row">
+				<div class="col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0">
+					<div class="dashboard-profile-pic" id="dashboard-profile-pic"></div>
+				</div>
+				<div class="col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0 dashboard-profile-pic-upload">
+					<button class="btn btn-primary dashboard-profile-pic-upload-btn">Upload photo</button>
+					<div id="profileImageSuccessDiv"></div>
+				</div>
+				<input type="file" name="profile-pic" id="profile-pic" style="visibility: hidden;">
+			</div>
+		</div>
 
-				<div class="col-sm-3 dashboard-profile-pic-view sg-darkgray-bg">
+		<div class="col-sm-9 dashboard-profile-form-view">
+			<form id="dashboard-profile-form" class="form-horizontal" onsubmit="return false;">
+				<div class="form-group">
+					<label for="name" class="col-sm-3 dashboard-profile-form-label control-label">First Name</label>
+					<div class="col-sm-8">
+						<input type="text" name="name" id="name" class="form-control">
+					</div>
+				</div>
 
-						<div class="row">
-							<div class="col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0">
-								<div class="dashboard-profile-pic" id="dashboard-profile-pic">
-								</div>
-							</div>
-							<div class="col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0 dashboard-profile-pic-upload">
-								<div id="saveButton" class="btn btn-primary dashboard-profile-pic-upload-btn">Upload photo</div>
-								<div class="profile pull-right" id="saveSuccessDiv"></div>
-							</div>
-							<input type="file" name="profile-pic" id="profile-pic" style="visibility: hidden;">
-						</div>
+				<div class="form-group">
+					<label for="surname" class="col-sm-3 dashboard-profile-form-label control-label">Last Name</label>
+					<div class="col-sm-8">
+						<input type="text" name="surname" id="surname" class="form-control">
+						<p class="help-block"><small>This is only shared after you have confirmed a booking with another Sharingear user.</small></p>
 					</div>
 
+				</div>
 
-			<div class="col-sm-9 dashboard-profile-form-view">
-
-				<form id="dashboard-profile-form" class="form-horizontal" onsubmit="return false;">
-
-					<div class="form-group">
-						<label for="name" class="col-sm-3 dashboard-profile-form-label control-label">First Name</label>
-						<div class="col-sm-8">
-							<input type="text" name="name" id="name" class="form-control">
-						</div>
+				<div class="form-group">
+					<label for="email" class="col-sm-3 dashboard-profile-form-label control-label">Email Address</label>
+					<div class="col-sm-8">
+						<input type="text" name="email" id="email" class="form-control">
 					</div>
+				</div>
 
-					<div class="form-group">
-						<label for="surname" class="col-sm-3 dashboard-profile-form-label control-label">Last Name</label>
-						<div class="col-sm-8">
-							<input type="text" name="surname" id="surname" class="form-control">
-							<p class="help-block"><small>This is only shared after you have confirmed a booking with another Sharingear user.</small></p>
-						</div>
-
+				<div class="form-group">
+					<label for="hometown" class="col-sm-3 dashboard-profile-form-label control-label">Hometown</label>
+					<div class="col-sm-8">
+						<input type="text" name="hometown" id="hometown" class="form-control">
 					</div>
-
-					<div class="form-group">
-						<label for="email" class="col-sm-3 dashboard-profile-form-label control-label">Email Address</label>
-						<div class="col-sm-8">
-							<input type="text" name="email" id="email" class="form-control">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="hometown" class="col-sm-3 dashboard-profile-form-label control-label">Hometown</label>
-						<div class="col-sm-8">
-							<input type="text" name="hometown" id="hometown" class="form-control">
-						</div>
-					</div>
+				</div>
 
 
 				<div class="form-group">
 					<label for="bio" class="col-sm-3 dashboard-profile-form-label control-label">Describe Yourself</label>
 					<div class="col-sm-8">
 						<textarea name="bio" id="bio" class="dashboard-profile-form-bio form-control">{{bio}}</textarea>
-
-						<p class="help-block"><small>Sharingear is built on relationshops. Help others to get to know you.</small></p>
+						<button type="submit" id="saveButton" class="sg-btn sg-blue-bg sg-white sg-btn-save">Save</button>
+						<div id="saveSuccessDiv"></div>
+						<p class="help-block"><small>Sharingear is built on relationships. Help others to get to know you.</small></p>
 						<p class="help-block"><small>Tell them about your achievements, and in what part of the industry you come from. If you are a musician, tell them about the tours you have done, your favourite instruments and how many records you have recorded.</small></p>
-						<p class="help-block"><small>If you are a technician, tell them about how many tours you have done, What bands have you worked with and what you would like to work more on.</small></p>
+						<p class="help-block"><small>If you are a technician, tell them about how many tours you have done, what bands have you worked with and what you would like to work more on.</small></p>
 						<p class="help-block"><small>If you have a van or a bus, tell them about which bands you have been on the road with, and what other tours or bands you would like to work with.</small></p>
 						<p class="help-block"><small>Tell them about you.</small></p>
 					</div>
