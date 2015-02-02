@@ -240,6 +240,11 @@ define(
 			}
 			else {
 				view.deliveryDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
+				//Check that delivery date is after pickup date
+				if(view.deliveryDate.isBefore(view.pickupDate) === true || view.deliveryDate.isSame(view.pickupDate) === true) {
+					return;
+				}
+
 				//Check if the delivery date ends an acceptable interval: if not alert error
 				if(view.isIntervalAvailable(view.pickupDate, view.deliveryDate) === true) {
 					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
