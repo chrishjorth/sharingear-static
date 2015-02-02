@@ -5,7 +5,7 @@
  */
 require_once 'autoload.php';
 
-define('IS_PRODUCTION', false);
+define('IS_PRODUCTION', true);
 define('FILENAME', 'uploadedfile');
 define('SHARINGEAR_SECRET', '95b95a4a2e59ddc98136ce54b8a0f8d2');
 define('SG_MAX_FILE_SIZE', 4000000); //4MB
