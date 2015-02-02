@@ -528,28 +528,31 @@ define(
 
 			view.toggleLoading();
 
-            selections = view.calendarVC.getSelections();
-            alwaysFlag = view.calendarVC.getAlwaysFlag();
+            //If user has not registered as submerchant, the calendar view is not loaded
+            if(view.calendarVC && view.calendarVC !== null) {
+                selections = view.calendarVC.getSelections();
+                alwaysFlag = view.calendarVC.getAlwaysFlag();
 
-            //Convert selections to availability array
-            for(month in selections) {
-                monthSelections = selections[month];
-                for(j = 0; j < monthSelections.length; j++) {
-                    selection = monthSelections[j];
-                    availabilityArray.push({
-                        start_time: selection.startMoment.format('YYYY-MM-DD') + ' 00:00:00',
-                        end_time: selection.endMoment.format('YYYY-MM-DD') + ' 23:59:59'
-                    });
+                //Convert selections to availability array
+                for(month in selections) {
+                    monthSelections = selections[month];
+                    for(j = 0; j < monthSelections.length; j++) {
+                        selection = monthSelections[j];
+                        availabilityArray.push({
+                            start_time: selection.startMoment.format('YYYY-MM-DD') + ' 00:00:00',
+                            end_time: selection.endMoment.format('YYYY-MM-DD') + ' 23:59:59'
+                        });
+                    }
                 }
+
+                view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
+                    if(error) {
+                        alert('Error saving availability.');
+                        console.log(error);
+                        view.toggleLoading();
+                    }
+                });
             }
-
-            view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
-                if(error) {
-                    alert('Error saving availability.');
-                    console.log(error);
-                    view.toggleLoading();
-                }
-            });
 
 			//Push the checked checkboxes to the array
             $('#editgear-accessories-container input:checked', view.$element).each(function() {
