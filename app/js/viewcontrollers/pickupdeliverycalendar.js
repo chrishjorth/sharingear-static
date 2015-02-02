@@ -97,7 +97,7 @@ define(
 
         renderMonthCalendar = function($monthCalendarContainer) {
 			var header, dayRows, i;
-			header = '<div class="row calendar-header">';
+			header = '<div class="row bs-reset calendar-header">';
 			header += '<div class="col">Mo</div>';
 			header += '<div class="col">Tu</div>';
 			header += '<div class="col">We</div>';
@@ -108,7 +108,7 @@ define(
 			header += '</div>';
 			dayRows = '';
 			for(i = 0; i < 6; i++) {
-				dayRows += '<div class="row day-row">';
+				dayRows += '<div class="row bs-reset day-row">';
 				dayRows += '<div class="col day"></div>';
 				dayRows += '<div class="col day"></div>';
 				dayRows += '<div class="col day"></div>';
