@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'viewcontroller', 'app'],
-	function(_, ViewController, App) {
+	['underscore', 'jquery', 'viewcontroller', 'app'],
+	function(_, $, ViewController, App) {
 
 		var didInitialize,
 			handleImageUpload,
@@ -18,12 +18,8 @@ define(
 			enableSaveButton;
 
         didInitialize= function() {
-            var view = this,
-				user = null,
-				profileImg = null,
-				profileImgLoaded = $.Deferred(),
-				renderResolve = $.Deferred(),
-                userData;
+            var profileImgLoaded = $.Deferred(),
+				userData;
 
             if(App.user.data.id === null) {
                 this.ready = false;
@@ -68,7 +64,7 @@ define(
                 view.enableSaveButton(true);
             });
             //Enable on image change
-            $("#prof-pic").on('change',function(){
+            $('#prof-pic').on('change', function() {
                 view.enableSaveButton(true);
             });
 
@@ -117,7 +113,7 @@ define(
                     console.log(error);
                 }
                 else {
-                    var $profilePic = $('#prof-pic-div', view.$element);
+                    var $profilePic = $('#dashboard-profile-pic', view.$element);
                     $profilePic.css('background-image', 'url("' + url + '")');
                 }
             });
@@ -143,17 +139,17 @@ define(
             };
 
             if ($('#dashboard-profile-form #name', view.$element).val()==='') {
-                alert("The name field is required.");
+                alert('The name field is required.');
                 return;
             }
 
             if ($('#dashboard-profile-form #surname', view.$element).val()==='') {
-                alert("The surname field is required.");
+                alert('The surname field is required.');
                 return;
             }
 
             if ($('#dashboard-profile-form #email', view.$element).val()==='') {
-                alert("The email field is required.");
+                alert('The email field is required.');
                 return;
             }
 
@@ -170,18 +166,18 @@ define(
                     console.log(error);
                     return;
                 }
-                $('#saveSuccessDiv', view.$element).html("Your profile has been updated.");
+                $('#saveSuccessDiv', view.$element).html('Your profile has been updated.');
                 view.enableSaveButton(false);
             });
         };
 
         enableSaveButton = function(active) {
             if (active === false) {
-                $('#saveButton', this.$element).attr({disabled: "disabled"});
+                $('#saveButton', this.$element).attr({disabled: 'disabled'});
             }
             else {
-                $('#saveButton', this.$element).removeAttr("disabled");
-                $('#saveSuccessDiv', this.$element).html("");
+                $('#saveButton', this.$element).removeAttr('disabled');
+                $('#saveSuccessDiv', this.$element).html('');
             }
         };
 
