@@ -235,8 +235,8 @@ define(
 				//$pickupTab.removeClass('sg-toptab-active');
 				$('div', $pickupTab).html(view.pickupDate.format('DD/MM/YYYY'));
 				//$deliveryTab.addClass('sg-toptab-active');
-				//view.deliveryDate = null;
-				//$('div', $deliveryTab).html('-');
+				view.deliveryDate = null;
+				$('div', $deliveryTab).html('-');
 				//view.pickupActive = false;
 				if(_.isFunction(view.passedData.parent.handlePickupSelection) === true) {
 					view.passedData.parent.handlePickupSelection(view);
@@ -299,6 +299,9 @@ define(
 					view.deliveryDate = new Moment(view.pickupDate);
 					view.deliveryDate.add(1, 'days');
 					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
+					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
+						view.passedData.parent.handleDeliverySelection(view);
+					}
 				}
 
 				view.pickupActive = false;
