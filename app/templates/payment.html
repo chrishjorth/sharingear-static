@@ -1,8 +1,8 @@
 <div class="container-fluid view payment">
 	<div class="row sg-blue-bg sg-white sg-navbar">
-		<div class="col-xs-1"><button class="sg-btn-invisible sg-white" id="payment-back-btn"><i class="fa fa-arrow-circle-o-left"></i></button></div>
-		<div class="col-xs-10">Booking step 2</div>
-		<div class="col-xs-1 text-right"><button class="sg-btn-round sg-white-bg sg-blue" id="payment-cancel-btn"><i class="fa fa-times"></i></button></div>
+		<div class="col-xs-2"><button class="sg-btn-invisible sg-white" id="payment-back-btn"><i class="fa fa-arrow-circle-o-left"></i></button></div>
+		<div class="col-xs-8">Booking step 2</div>
+		<div class="col-xs-2 text-right"><button class="sg-btn-round sg-white-bg sg-blue" id="payment-cancel-btn"><i class="fa fa-times"></i></button></div>
 	</div>
 	<div class="row">
 		<div class="col-sm-12 text-center sg-darkergray gear">
@@ -25,19 +25,19 @@
 				<tfoot>
 					<tr>
 						<td>Price: {{price}} <span class="sg-super">{{currency}}</span></td>
-						<td>Price VAT({{vat}}%): {{price_vat}} <span class="sg-super">{{currency}}</span>
+						<td>VAT({{vat}}%): {{price_vat}} <span class="sg-super">{{currency}}</span>
 					</tr>
 					<tr>
-						<td>Sharingear fee: {{fee}} <span class="sg-super">{{currency}}</span></td>
-						<td>Fee VAT({{vat}}%): {{fee_vat}} <span class="sg-super">{{currency}}</span></td>
+						<td>Fee: {{fee}} <span class="sg-super">{{currency}}</span></td>
+						<td>VAT({{vat}}%): {{fee_vat}} <span class="sg-super">{{currency}}</span></td>
 					</tr>
 				</tfoot>
 			</table>
 		</div>
 	</div>
 	<div class="row sg-darkergray-bg sg-white total">
-		<div class="col-sm-6">TOTAL:</div>
-		<div class="col-sm-6">{{total}}<span class="sg-super">{{currency}}</span></div>
+		<div class="col-xs-6">TOTAL:</div>
+		<div class="col-xs-6">{{total}}<span class="sg-super">{{currency}}</span></div>
 	</div>
 	<div class="row">
 		<div class="col-sm-12 bs-reset">

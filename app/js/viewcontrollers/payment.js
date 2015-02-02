@@ -42,9 +42,9 @@ define(
 
 			price = months * this.gear.data.price_c + weeks * this.gear.data.price_b + days * this.gear.data.price_a;
 			VAT = Localization.getVAT(App.user.data.country);
-			priceVAT = price / 100 * VAT;
-			fee = price / 100 * App.user.data.buyer_fee;
-			feeVAT = fee / 100 * VAT;
+			priceVAT = parseFloat(price / 100 * VAT);
+			fee = parseFloat(price / 100 * App.user.data.buyer_fee);
+			feeVAT = parseFloat(fee / 100 * VAT);
 
 			this.templateParameters = {
 				brand: this.gear.data.brand,
@@ -54,11 +54,11 @@ define(
 				end_date: endMoment.format('DD/MM/YYYY'),
 				currency: 'DKK',
 				vat: VAT,
-				price: price,
-				price_vat: priceVAT,
-				fee: fee,
-				fee_vat: feeVAT,
-				total: price + priceVAT + fee + feeVAT
+				price: price.toFixed(2),
+				price_vat: priceVAT.toFixed(2),
+				fee: fee.toFixed(2),
+				fee_vat: feeVAT.toFixed(2),
+				total: (price + priceVAT + fee + feeVAT).toFixed(2)
 			};
 			this.isPaying = false;
 		};

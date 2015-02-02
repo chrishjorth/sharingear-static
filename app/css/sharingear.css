@@ -2431,7 +2431,8 @@ button:active .sg-gray-bg {
 	border-bottom-width: 4px;
 	border-bottom-style: solid;
 	border-bottom-color: #ffffff;
-	padding-left: 24px;
+	/*padding-left: 24px;*/
+	width: 50%;
 }
 .payment .table tfoot td {
 	border-style: solid;
