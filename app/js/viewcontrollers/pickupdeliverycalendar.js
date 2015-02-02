@@ -223,6 +223,10 @@ define(
 				$dayBox = $(this),
 				$pickupTab, $deliveryTab;
 
+			if($(this).hasClass('disabled') === true) {
+				return;
+			}
+
 			$pickupTab = $('#pickupdeliverycalendar-pickupdate', view.$element);
 			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 
