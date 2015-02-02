@@ -232,17 +232,15 @@ define(
 
 			if(view.pickupActive === true) {
 				view.pickupDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
-				$pickupTab.removeClass('sg-toptab-active');
+				//$pickupTab.removeClass('sg-toptab-active');
 				$('div', $pickupTab).html(view.pickupDate.format('DD/MM/YYYY'));
-				$deliveryTab.addClass('sg-toptab-active');
-				view.deliveryDate = null;
-				$('div', $deliveryTab).html('-');
-				view.pickupActive = false;
+				//$deliveryTab.addClass('sg-toptab-active');
+				//view.deliveryDate = null;
+				//$('div', $deliveryTab).html('-');
+				//view.pickupActive = false;
 				if(_.isFunction(view.passedData.parent.handlePickupSelection) === true) {
 					view.passedData.parent.handlePickupSelection(view);
 				}
-				view.deliveryDate = new Moment(view.pickupDate);
-				view.deliveryDate.add(1, 'days');
 			}
 			else {
 				view.deliveryDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
@@ -296,6 +294,13 @@ define(
 				$deliveryTab.addClass('sg-toptab-active');
 				$pickupTab = $('#pickupdeliverycalendar-pickupdate', view.$element);
 				$pickupTab.removeClass('sg-toptab-active');
+
+				if(view.deliveryDate === null) {
+					view.deliveryDate = new Moment(view.pickupDate);
+					view.deliveryDate.add(1, 'days');
+					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
+				}
+
 				view.pickupActive = false;
 				view.clearSelections();
 				view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));
