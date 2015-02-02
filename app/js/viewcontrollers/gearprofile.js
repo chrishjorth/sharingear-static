@@ -295,6 +295,9 @@ define(
                 if(result.alwaysFlag === 1 || result.availabilityArray.length > 0) {
 					$('#gearprofile-action-book', view.$element).removeClass('hidden');
                 }
+                else {
+                	$('#gearprofile-action-unavailable', view.$element).removeClass('hidden');
+                }
             });
 		};
 
