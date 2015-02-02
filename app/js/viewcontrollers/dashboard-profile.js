@@ -6,22 +6,20 @@
 'use strict';
 
 define(
-	['underscore', 'viewcontroller', 'app'],
-	function(_, ViewController, App) {
+	['underscore', 'jquery', 'viewcontroller', 'app'],
+	function(_, $, ViewController, App) {
 
 		var didInitialize,
 			handleImageUpload,
 			didRender,
+
+            handleUploadPicButton,
 			handleSave,
 			enableSaveButton;
 
         didInitialize= function() {
-            var view = this,
-				user = null,
-				profileImg = null,
-				profileImgLoaded = $.Deferred(),
-				renderResolve = $.Deferred(),
-                userData;
+            var profileImgLoaded = $.Deferred(),
+				userData;
 
             if(App.user.data.id === null) {
                 this.ready = false;
@@ -66,7 +64,7 @@ define(
                 view.enableSaveButton(true);
             });
             //Enable on image change
-            $("#prof-pic").on('change',function(){
+            $('#prof-pic').on('change', function() {
                 view.enableSaveButton(true);
             });
 
@@ -86,27 +84,36 @@ define(
                 }
             });
 
+            this.setupEvent('click', '.dashboard-profile-pic-upload-btn', this, this.handleUploadPicButton);
             this.setupEvent('change', '#profile-pic', this, this.handleImageUpload);
             this.setupEvent('submit', '#dashboard-profile-form', this, this.handleSave);
+        };
+
+        handleUploadPicButton = function(event) {
+            var view = event.data;
+            $('#profile-pic', view.$element).click();
         };
 
         handleImageUpload = function(event) {
             var view = event.data;
             var $file = $(this);
 
-            $('#profile_image_loading', view.$element).show();
-            $('#saveButton', view.$element).hide();
+            //$('#profile_image_loading', view.$element).show();
+            //$('#saveButton', view.$element).hide();
+            $('.dashboard-profile-pic-upload-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
             view.user.uploadProfilePicture($file.get(0).files[0], $file.val().split('\\').pop(),App.user.data.id, function (error,url) {
 
-                $('#profile_image_loading', view.$element).hide();
-                $('#saveButton', view.$element).show();
+                //$('#profile_image_loading', view.$element).hide();
+                //$('#saveButton', view.$element).show();
+                $('.dashboard-profile-pic-upload-btn', view.$element).html('Upload photo');
 
                 if(error) {
                     alert('Error uploading file.');
                     console.log(error);
-                }else{
-                    var $profilePic = $('#prof-pic-div', view.$element);
+                }
+                else {
+                    var $profilePic = $('#dashboard-profile-pic', view.$element);
                     $profilePic.css('background-image', 'url("' + url + '")');
                 }
             });
@@ -132,17 +139,17 @@ define(
             };
 
             if ($('#dashboard-profile-form #name', view.$element).val()==='') {
-                alert("The name field is required.");
+                alert('The name field is required.');
                 return;
             }
 
             if ($('#dashboard-profile-form #surname', view.$element).val()==='') {
-                alert("The surname field is required.");
+                alert('The surname field is required.');
                 return;
             }
 
             if ($('#dashboard-profile-form #email', view.$element).val()==='') {
-                alert("The email field is required.");
+                alert('The email field is required.');
                 return;
             }
 
@@ -159,18 +166,18 @@ define(
                     console.log(error);
                     return;
                 }
-                $('#saveSuccessDiv', view.$element).html("Your profile has been updated.");
+                $('#saveSuccessDiv', view.$element).html('Your profile has been updated.');
                 view.enableSaveButton(false);
             });
         };
 
         enableSaveButton = function(active) {
             if (active === false) {
-                $('#saveButton', this.$element).attr({disabled: "disabled"});
+                $('#saveButton', this.$element).attr({disabled: 'disabled'});
             }
             else {
-                $('#saveButton', this.$element).removeAttr("disabled");
-                $('#saveSuccessDiv', this.$element).html("");
+                $('#saveButton', this.$element).removeAttr('disabled');
+                $('#saveSuccessDiv', this.$element).html('');
             }
         };
 
@@ -178,6 +185,8 @@ define(
 			didInitialize: didInitialize,
 			handleImageUpload: handleImageUpload,
 			didRender: didRender,
+
+            handleUploadPicButton: handleUploadPicButton,
 			handleSave:handleSave,
 			enableSaveButton:enableSaveButton
 		});
