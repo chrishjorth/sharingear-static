@@ -157,7 +157,8 @@ define(
 		};
 
         renderOwnerPicture = function() {
-        	var img, isVertical, backgroundSize;
+        	var view = this,
+        		img, isVertical, backgroundSize;
         	if(!this.owner.data.image_url) {
         		return;
         	}
@@ -170,7 +171,7 @@ define(
         		else {
         			backgroundSize = 'auto 100%';
         		}
-        		$('.profile-pic').css({
+        		$('.profile-pic', view.$element).css({
         			'background-image': 'url(' + img.src + ')',
         			'background-size': backgroundSize
         		});
@@ -291,7 +292,6 @@ define(
             }
 
             if(App.user.data.id == view.gear.data.owner_id) {
-            	console.log('user id: ' + App.user.data.id + ' owner id: ' + view.gear.data.owner_id);
 				$('#gearprofile-action-edit', view.$element).removeClass('hidden');
 				return;
 			}
