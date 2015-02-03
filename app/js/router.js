@@ -84,7 +84,6 @@ define(
 						newLocation += '?' + queryString;
 					}
 					newLocation += '#' + route;
-					console.log('route debug: ' + newLocation);
 					history.replaceState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
 				}
 			}
