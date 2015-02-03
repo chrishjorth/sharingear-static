@@ -150,6 +150,12 @@ body {
 }
 
 /*------ 2.a MENUS ------*/
+.navigation-header .sg-navbar {
+	border-bottom-color: #00aeff;
+	border-left-width: 0;
+	border-right-width: 0;
+	border-bottom-width: 2px;
+}
 .sg-navbar {
 	z-index: 300;
 	position: fixed;
@@ -366,8 +372,8 @@ body {
 	}
 }
 .sg-tabbar .selected {
-	background-color: #000000;
-	background-color: rgba(0, 0, 0, 0.8);
+	background-color: #014666;
+	background-color: rgba(1, 70, 102, 0.8);
 }
 .sg-tabbar .sg-icon {
 	line-height: 54px;
@@ -673,21 +679,19 @@ body {
 	border-style: solid;
 	border-width: 0;
 	border-bottom-width: 1px;
-	background-color: #ffffff;
 }
 @media (min-width: 768px) {
 	.sg-modal-header {
 		position: static;
-		width: auto;
-		height: auto;
-		padding-top: 15px;
-		padding-bottom: 15px;
 		border-bottom-width: 0;
 	}
 }
 .sg-modal-header h2 {
 	margin: 12px 0 0 0;
 	font-size: 18px;
+}
+.sg-modal-header > .col-xs-2 {
+	padding: 0;
 }
 .sg-modal-header .col-xs-8 {
 	display: block;
@@ -705,15 +709,16 @@ body {
 	cursor: pointer;
 	min-height: 36px;
 	min-width: 44px;
-	color: #c5cdd0;
+	color: #00aeff;
 	font-weight: bold;
 	margin-top: 4px;
 }
+.sg-modal-header button .fa {
+	display: none;
+}
 @media (min-width: 768px) {
-	.sg-modal-header button {
-		background-color: #c5cdd0;
-		color: #ffffff;
-		width: 100%;
+	.sg-modal-header button .fa {
+		display: inline-block;
 	}
 }
 
@@ -779,20 +784,44 @@ body {
 
 .sg-banner {
 	height: 326px;
+	height: 100vh;
 	background-image: url("../images/home-stage.jpg");
-    background-position: center bottom;
-    background-size: auto 580px;
+    background-position: center center;
+    background-size: cover;
     padding: 0;
     margin: 0;
 }
 @media (min-width: 768px) {
 	.sg-banner {
 		height: 520px;
+		height: 100vh;
 	}
 	.sg-banner .container-fluid {
 		padding: 0;
 	}
 }
+.sg-banner .container-fluid .row:first-child {
+	margin-top: 50px;
+}
+@media (min-width: 768px) {
+	.sg-banner .container-fluid .row:first-child {
+		margin-top: 0;
+	}
+}
+.sg-banner .container-fluid .row:last-child {
+	position: absolute;
+	top: 81vh;
+	width: 100%;
+}
+@media (min-width: 768px) {
+	.sg-banner .container-fluid .row:last-child {
+		top: 97vh;
+	}
+}
+.sg-banner .container-fluid .row:last-child .fa {
+	font-size: 18px;
+}
+
 
 .subview > .row {
 	margin-left: 0;
@@ -913,6 +942,11 @@ body {
 .sg-blue-bg-50 {
 	background-color: #00aeff;
 	background-color: rgba(0, 174, 255, 0.5);
+}
+
+.sg-darkblue-bg-transparent {
+	background-color: #014666;
+	background-color: rgba(1, 70, 102, 0.8);
 }
 
 .sg-action-blue-bg {
@@ -1263,7 +1297,7 @@ button:active .sg-gray-bg {
 	padding: 0;
 	display: inline-block;
 	text-decoration: none;
-	text-align: center;
+	/*text-align: center;*/
 	opacity: 1;
 }
 
@@ -1572,6 +1606,7 @@ button:active .sg-gray-bg {
 		display: block;
 	}
 }
+.gearsearchform input[type="search"],
 .gearsearchform input[type="text"] {
 	border-radius: 0;
 	border-width: 1px;
@@ -1584,6 +1619,7 @@ button:active .sg-gray-bg {
 	height: 44px;
 }
 @media (min-width: 768px) {
+	.gearsearchform input[type="search"],
 	.gearsearchform input[type="text"] {
 		border-top-width: 2px;
 		border-bottom-width: 2px;
@@ -1591,10 +1627,12 @@ button:active .sg-gray-bg {
 		width: 100%;
 	}
 }
+.gearsearchform .form-group:first-child input[type="search"],
 .gearsearchform .form-group:first-child input[type="text"] {
 	border-top-width: 2px;
 }
 @media (min-width: 768px) {
+	.gearsearchform .form-group:first-child input[type="search"],
 	.gearsearchform .form-group:first-child input[type="text"] {
 		border-top-left-radius: 2px;
 		border-bottom-left-radius: 2px;
@@ -1609,11 +1647,13 @@ button:active .sg-gray-bg {
 		width: 130px;
 	}
 }
+.gearsearchform .search-pickup-container input[type="search"],
 .gearsearchform .search-pickup-container input[type="text"] {
 	border-right-width: 0;
 	border-bottom-width: 2px;
 }
 @media (min-width: 768px) {
+	.gearsearchform .search-pickup-container input[type="search"],
 	.gearsearchform .search-pickup-container input[type="text"] {
 		border-right-width: 2px;
 	}
@@ -1626,6 +1666,7 @@ button:active .sg-gray-bg {
 		width: 130px;
 	}
 }
+.gearsearchform .search-return-container input[type="search"],
 .gearsearchform .search-return-container input[type="text"] {
 	border-bottom-width: 2px;
 }
@@ -1695,6 +1736,10 @@ button:active .sg-gray-bg {
  */
 
 /*------ 8.a HOME ------*/
+.view-container .home {
+	padding-top: 0;
+}
+
 .sg-banner h2 {
 	margin-top: 30px;
 	margin-bottom: 34px;
@@ -2105,7 +2150,7 @@ button:active .sg-gray-bg {
 
 /*------ 8.f ADD GEAR -----*/
 @media (min-width: 768px) {
-	.addgear {
+	/*.addgear {
 		height: 100%;
 	}
 	.addgear > .row:first-child {
@@ -2116,11 +2161,23 @@ button:active .sg-gray-bg {
 	}
 	.addgear > .row:first-child form > .col-sm-3 {
 		height: 100%;
-	}
+	}*/
+	.addgear,
+	.addgear > .row,
+	.addgear > .row > form,
+	.addgear > .row > form > .col-sm-3,
 	.addgear .gearbuttonlist-container {
 		height: 100%;
 	}
+	.addgear .footer {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 44px;
+	}
 }
+
+
 
 .addgear {
 	padding-bottom: 40px;
@@ -2143,6 +2200,10 @@ button:active .sg-gray-bg {
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin-top: 40px;
+}
+
+.addgear .availabilitycalendar {
+	padding-bottom: 70px;
 }
 
 /*------ 8.g GEAR PROFILE ------*/

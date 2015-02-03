@@ -47,6 +47,8 @@ define(
 			});
 			view.owner.initialize();
 
+			view.availability = null;
+
 			if(view.passedData) {
 				//No need to fetch gear from backend
 				view.gear = this.passedData;
@@ -296,11 +298,13 @@ define(
 				return;
 			}
 
-			if(view.availability.alwaysFlag === 1 || view.availability.availabilityArray.length > 0) {
-				$('#gearprofile-action-book', view.$element).removeClass('hidden');
-			}
-			else {
-				$('#gearprofile-action-unavailable', view.$element).removeClass('hidden');
+			if(view.availability !== null) {
+				if(view.availability.alwaysFlag === 1 || view.availability.availabilityArray.length > 0) {
+					$('#gearprofile-action-book', view.$element).removeClass('hidden');
+				}
+				else {
+					$('#gearprofile-action-unavailable', view.$element).removeClass('hidden');
+				}
 			}
 		};
 
