@@ -7,7 +7,7 @@
 
 require_once 'autoload.php';
 
-define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/Sharingear-a60392948890.p12');
+define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/google_api.p12');
 define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
 
 //Get filename from URL scheme fx: /uploads/gearimages/filename.ext
