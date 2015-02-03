@@ -9,7 +9,7 @@ define('IS_PRODUCTION', true);
 define('FILENAME', 'uploadedfile');
 define('SHARINGEAR_SECRET', '95b95a4a2e59ddc98136ce54b8a0f8d2');
 define('SG_MAX_FILE_SIZE', 4000000); //4MB
-define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/Sharingear-a60392948890.p12');
+define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/google_api.p12');
 define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
 
 $bucket = 'gearimages';
