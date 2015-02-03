@@ -16,7 +16,8 @@ define(
 
 			handleTechniciansTab,
 			handleVansTab,
-			handleLogin;
+			handleLogin,
+			handleScrollDown;
 
 		didInitialize = function() {
 			this.searchFormVC = null;
@@ -32,6 +33,7 @@ define(
 
 			this.setupEvent('click', '#home-tab-technicians', this, this.handleTechniciansTab);
 			this.setupEvent('click', '#home-tab-vans', this, this.handleVansTab);
+			this.setupEvent('click', '#home-scroll-btn', this, this.handleScrollDown);
         };
 
         loadSearchBar = function() {
@@ -81,6 +83,14 @@ define(
 			});
 		};
 
+		handleScrollDown = function(event) {
+			var view = event.data;
+
+			$('html,body').animate({
+          		scrollTop: $('#home-whatsay', view.$element).offset().top - 60
+        	}, 1000);
+		};
+
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
@@ -90,7 +100,8 @@ define(
 
 			handleTechniciansTab: handleTechniciansTab,
 			handleVansTab: handleVansTab,
-			handleLogin: handleLogin
+			handleLogin: handleLogin,
+			handleScrollDown: handleScrollDown
 		});
 	}
 );

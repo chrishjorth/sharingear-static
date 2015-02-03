@@ -150,6 +150,12 @@ body {
 }
 
 /*------ 2.a MENUS ------*/
+.navigation-header .sg-navbar {
+	border-bottom-color: #00aeff;
+	border-left-width: 0;
+	border-right-width: 0;
+	border-bottom-width: 2px;
+}
 .sg-navbar {
 	z-index: 300;
 	position: fixed;
@@ -366,8 +372,8 @@ body {
 	}
 }
 .sg-tabbar .selected {
-	background-color: #000000;
-	background-color: rgba(0, 0, 0, 0.8);
+	background-color: #014666;
+	background-color: rgba(1, 70, 102, 0.8);
 }
 .sg-tabbar .sg-icon {
 	line-height: 54px;
@@ -779,20 +785,44 @@ body {
 
 .sg-banner {
 	height: 326px;
+	height: 100vh;
 	background-image: url("../images/home-stage.jpg");
-    background-position: center bottom;
-    background-size: auto 580px;
+    background-position: center center;
+    background-size: cover;
     padding: 0;
     margin: 0;
 }
 @media (min-width: 768px) {
 	.sg-banner {
 		height: 520px;
+		height: 100vh;
 	}
 	.sg-banner .container-fluid {
 		padding: 0;
 	}
 }
+.sg-banner .container-fluid .row:first-child {
+	margin-top: 50px;
+}
+@media (min-width: 768px) {
+	.sg-banner .container-fluid .row:first-child {
+		margin-top: 0;
+	}
+}
+.sg-banner .container-fluid .row:last-child {
+	position: absolute;
+	top: 85vh;
+	width: 100%;
+}
+@media (min-width: 768px) {
+	.sg-banner .container-fluid .row:last-child {
+		top: 97vh;
+	}
+}
+.sg-banner .container-fluid .row:last-child .fa {
+	font-size: 18px;
+}
+
 
 .subview > .row {
 	margin-left: 0;
@@ -913,6 +943,11 @@ body {
 .sg-blue-bg-50 {
 	background-color: #00aeff;
 	background-color: rgba(0, 174, 255, 0.5);
+}
+
+.sg-darkblue-bg-transparent {
+	background-color: #014666;
+	background-color: rgba(1, 70, 102, 0.8);
 }
 
 .sg-action-blue-bg {
@@ -1695,6 +1730,10 @@ button:active .sg-gray-bg {
  */
 
 /*------ 8.a HOME ------*/
+.view-container .home {
+	padding-top: 0;
+}
+
 .sg-banner h2 {
 	margin-top: 30px;
 	margin-bottom: 34px;
