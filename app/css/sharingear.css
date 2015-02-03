@@ -714,7 +714,7 @@ body {
 	margin-top: 4px;
 }
 .sg-modal-header button .fa {
-	/*display: none;*/
+	display: none;
 }
 @media (min-width: 768px) {
 	.sg-modal-header button .fa {
@@ -1297,7 +1297,7 @@ button:active .sg-gray-bg {
 	padding: 0;
 	display: inline-block;
 	text-decoration: none;
-	text-align: center;
+	/*text-align: center;*/
 	opacity: 1;
 }
 
