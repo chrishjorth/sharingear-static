@@ -94,6 +94,15 @@ define(
 						};
 						view.render();
 					});
+
+					view.gear.getAvailability(App.user.data.id, function(error, result) {
+            			if(error) {
+            				console.log('Error getting gear availability: ' + error);
+            				return;
+            			}
+            			view.availability = result;
+            			view.render();
+            		});
 				});
 			}
 		};
@@ -282,23 +291,17 @@ define(
             }
 
             if(App.user.data.id == view.gear.data.owner_id) {
+            	console.log('user id: ' + App.user.data.id + ' owner id: ' + view.gear.data.owner_id);
 				$('#gearprofile-action-edit', view.$element).removeClass('hidden');
 				return;
 			}
 
-			view.gear.getAvailability(App.user.data.id, function(error, result) {
-            	if(error) {
-            		console.log('Error getting gear availability: ' + error);
-            		return;
-            	}
-
-                if(result.alwaysFlag === 1 || result.availabilityArray.length > 0) {
-					$('#gearprofile-action-book', view.$element).removeClass('hidden');
-                }
-                else {
-                	$('#gearprofile-action-unavailable', view.$element).removeClass('hidden');
-                }
-            });
+			if(view.availability.alwaysFlag === 1 || view.availability.availabilityArray.length > 0) {
+				$('#gearprofile-action-book', view.$element).removeClass('hidden');
+			}
+			else {
+				$('#gearprofile-action-unavailable', view.$element).removeClass('hidden');
+			}
 		};
 
 		return ViewController.inherit({
