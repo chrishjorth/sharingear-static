@@ -156,11 +156,8 @@ define(
 			var view = event.data,
 				searchParams, queryString;
 
-			console.log('HANDLE SEARCH!');
-
 			searchParams = view.getSearchParameters();
 			queryString = 'location=' + encodeURIComponent(searchParams.locationString) + '&gear=' + encodeURIComponent(searchParams.gearString) + '&daterange=' + searchParams.dateRangeString;
-            console.log('queryString: ' + queryString);
             App.router.setQueryString(queryString);
             if(App.router.currentViewController.name === 'search') {
             	App.router.currentViewController.performSearch(searchParams.gearString, searchParams.locationString, searchParams.dateRangeString);
