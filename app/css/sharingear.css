@@ -679,21 +679,19 @@ body {
 	border-style: solid;
 	border-width: 0;
 	border-bottom-width: 1px;
-	background-color: #ffffff;
 }
 @media (min-width: 768px) {
 	.sg-modal-header {
 		position: static;
-		width: auto;
-		height: auto;
-		padding-top: 15px;
-		padding-bottom: 15px;
 		border-bottom-width: 0;
 	}
 }
 .sg-modal-header h2 {
 	margin: 12px 0 0 0;
 	font-size: 18px;
+}
+.sg-modal-header > .col-xs-2 {
+	padding: 0;
 }
 .sg-modal-header .col-xs-8 {
 	display: block;
@@ -711,15 +709,16 @@ body {
 	cursor: pointer;
 	min-height: 36px;
 	min-width: 44px;
-	color: #c5cdd0;
+	color: #00aeff;
 	font-weight: bold;
 	margin-top: 4px;
 }
+.sg-modal-header button .fa {
+	/*display: none;*/
+}
 @media (min-width: 768px) {
-	.sg-modal-header button {
-		background-color: #c5cdd0;
-		color: #ffffff;
-		width: 100%;
+	.sg-modal-header button .fa {
+		display: inline-block;
 	}
 }
 
@@ -2144,7 +2143,7 @@ button:active .sg-gray-bg {
 
 /*------ 8.f ADD GEAR -----*/
 @media (min-width: 768px) {
-	.addgear {
+	/*.addgear {
 		height: 100%;
 	}
 	.addgear > .row:first-child {
@@ -2155,11 +2154,23 @@ button:active .sg-gray-bg {
 	}
 	.addgear > .row:first-child form > .col-sm-3 {
 		height: 100%;
-	}
+	}*/
+	.addgear,
+	.addgear > .row,
+	.addgear > .row > form,
+	.addgear > .row > form > .col-sm-3,
 	.addgear .gearbuttonlist-container {
 		height: 100%;
 	}
+	.addgear .footer {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 44px;
+	}
 }
+
+
 
 .addgear {
 	padding-bottom: 40px;
@@ -2182,6 +2193,10 @@ button:active .sg-gray-bg {
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin-top: 40px;
+}
+
+.addgear .availabilitycalendar {
+	padding-bottom: 70px;
 }
 
 /*------ 8.g GEAR PROFILE ------*/

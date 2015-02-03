@@ -1,6 +1,6 @@
 <div class="container-fluid view addgear">
 
-  <div class="row" id="addgear-panel-type">
+  <div class="row addgear-panel" id="addgear-panel-type">
     <form id="addgear-form-type" onsubmit="return false;">
       <div class="col-sm-3 sg-darkgray-bg">
         <div class="gearbuttonlist-container"></div>
@@ -68,21 +68,11 @@
             </div>
           </div>
         </div>
-
-        <div class="row sg-modal-header">
-          <div class="col-xs-offset-0 col-xs-2 col-sm-offset-6 col-sm-3 bs-reset text-center">
-            <button class="sg-btn-square cancel-btn">Cancel</button>
-          </div>
-          <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
-          <div class="col-xs-2 col-sm-3 bs-reset text-center">
-            <button class="sg-btn-square next-btn">Next</button>
-          </div>
-        </div>
       </div>
     </form>
   </div>
 
-  <div class="row hidden" id="addgear-panel-photos">
+  <div class="row addgear-panel hidden" id="addgear-panel-photos">
     <form id="dashboard-addgearphotos-form" onsubmit="return false;">
       <div class="col-sm-12">
         <div class="row">
@@ -101,20 +91,11 @@
             </div>
           </div>
         </div>
-        <div class="row sg-modal-header">
-          <div class="col-xs-offset-0 col-xs-2 col-sm-offset-6 col-sm-3 bs-reset text-center">
-            <button class="cancel-btn">Cancel</button>
-          </div>
-          <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
-          <div class="col-xs-2 col-sm-3 bs-reset text-center">
-            <button class="next-btn">Next</button>
-          </div>
-        </div>
       </div>
     </form>
   </div>
 
-  <div class="row hidden" id="addgear-panel-pricelocation">
+  <div class="row addgear-panel hidden" id="addgear-panel-pricelocation">
     <form id="dashboard-addgearprice-form" onsubmit="return false;">
       <div class="col-sm-12">
         <div class="row">
@@ -127,19 +108,6 @@
               <label for="price_c">Weekly rental price:</label>
               <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
             </div>
-            <!--<div id="addDeliveryPriceContainer">
-              <div class="checkbox">
-                <label><input type="checkbox" id="gear-delivery-available-checkbox"> Gear available for delivery</label>
-              </div>
-              <fieldset disabled>
-                <div class="form-group">
-                  <label>Delivery price:</label>
-                  <input type="text" placeholder="Price" class="form-control price" name="delivery_price"/>
-                  <label>Max distance:</label>
-                  <input type="text" placeholder="Distance in km" class="form-control" name="delivery_distance"/>
-                </div>
-              </fieldset>
-            </div>-->
           </div>
 
           <div class="col-sm-4 form-left bulp-background">
@@ -177,20 +145,11 @@
           </div>
         </div>
 
-        <div class="row sg-modal-header">
-          <div class="col-xs-offset-0 col-xs-2 col-sm-offset-6 col-sm-3 bs-reset text-center">
-            <button class="cancel-btn">Cancel</button>
-          </div>
-          <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
-          <div class="col-xs-2 col-sm-3 bs-reset text-center">
-            <button class="next-btn">Next</button>
-          </div>
-        </div>
       </div>
     </form>
   </div>
 
-  <div class="row hidden" id="addgear-panel-availability">
+  <div class="row addgear-panel hidden" id="addgear-panel-availability">
     <div class="col-sm-12">
       <div class="row">
         <div class="col-sm-12"><h2>Availability</h2></div>
@@ -273,20 +232,10 @@
 
       <div id="addgear-availability-calendar" class="hidden"></div>
 
-      <div class="row sg-modal-header">
-        <div class="col-xs-offset-0 col-xs-2 col-sm-offset-6 col-sm-3 bs-reset text-center">
-          <button class="cancel-btn">Cancel</button>
-        </div>
-        <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
-        <div class="col-xs-2 col-sm-3 bs-reset text-center">
-          <button class="next-btn">Next</button>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <div class="row hidden" id="addgear-panel-final">
+  <div class="row addgear-panel hidden" id="addgear-panel-final">
     <div class="col-sm-12">
       <div class="row">
         <div class="col-sm-12"><h3 class="text-center">Gear added!</h3></div>
@@ -294,6 +243,22 @@
       <div class="row actions">
         <div class="col-sm-6"><button class="sg-btn-square sg-blue-bg sg-white profile-btn">View gear profile</button></div>
         <div class="col-sm-6 right"><button class="sg-btn-square sg-blue-bg sg-white addmore-btn">Add more gear</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row footer bs-reset">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-9 bs-reset">
+      <div class="row sg-modal-header">
+        <div class="col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center">
+          <button class="sg-btn-square cancel-btn">Cancel <i class="fa fa-times-circle"></i></button>
+        </div>
+        <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
+        <div class="col-xs-2 col-sm-2 text-center">
+          <button class="sg-btn-square next-btn">Next <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
       </div>
     </div>
   </div>

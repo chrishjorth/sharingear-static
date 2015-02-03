@@ -110,7 +110,7 @@ define(
 
 		getTabID = function() {
 			var tabID = null;
-			$('.addgear > .row').each(function() {
+			$('.addgear-panel').each(function() {
 				var $this = $(this);
 				if($this.hasClass('hidden') === false) {
 					tabID = $this.attr('id');
@@ -138,7 +138,7 @@ define(
 
 		toggleLoading = function() {
 			if(this.isLoading === true) {
-				$('.next-btn', this.$element).html('Next');
+				$('.next-btn', this.$element).html('Next <i class="fa fa-arrow-circle-right"></i>');
 				this.isLoading = false;
 			}
 			else {
@@ -788,6 +788,7 @@ define(
       				return;
       			}
       			view.toggleLoading();
+      			$('.footer', view.$element).addClass('hidden');
       			view.showPanel('#addgear-panel-final');
       			view.setupEvent('click', '.profile-btn', view, view.handleViewGearProfile);
       			view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreGear);
@@ -836,7 +837,7 @@ define(
 		};
 
 		showPanel = function(panelID) {
-			$('.addgear > .row', this.$element).each(function() {
+			$('.addgear-panel', this.$element).each(function() {
 				var $this = $(this);
 				if($this.hasClass('hidden') === false) {
 					$this.addClass('hidden');
