@@ -16,7 +16,7 @@ $bucket = 'gearimages';
 $accepted_host = 'dev.sharingear.com';
 if(IS_PRODUCTION) {
     $bucket = 'sg-prod-images';
-    $accepted_host = 'prod-static.sharingear.com';
+    $accepted_host = 'www.sharingear.com';
 }
 
 header('Content-Type: application/json');
@@ -25,7 +25,7 @@ header('Content-Type: application/json');
 if(strcmp($_SERVER['HTTP_HOST'], $accepted_host) !== 0) {
 	echo json_encode([
         'status' => 'error',
-        'message' => 'Not on server.',
+        'message' => 'Wrong host: ' . $_SERVER['HTTP_HOST'],
         'code' => '401'
     ]);
     exit;
