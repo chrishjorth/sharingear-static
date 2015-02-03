@@ -84,9 +84,14 @@ define(
             	$('#search-location', this.$element).val(previousSearchLocation);
             	startDate = new Moment(previousSearchDateRange[0], 'YYYYMMDD');
             	endDate = new Moment(previousSearchDateRange[1], 'YYYYMMDD');
-            	$searchPickup.val(startDate.format('DD/MM/YYYY'));
-            	$searchReturn.val(endDate.format('DD/MM/YYYY'));
 			}
+			else {
+				startDate = new Moment();
+				endDate = new Moment(startDate);
+				endDate.add(1, 'days');
+			}
+			$searchPickup.val(startDate.format('DD/MM/YYYY'));
+            $searchReturn.val(endDate.format('DD/MM/YYYY'));
 		};
 
 		handlePickupDate = function(event) {
@@ -134,11 +139,16 @@ define(
 
 		handlePickupSelection = function(vc) {
 			$('#search-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
+			this.deliveryDateConfirmed = false;
 		};
 
 		handleDeliverySelection = function(vc) {
 			$('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
-			App.router.closeModalView();
+			if(this.deliveryDateConfirmed === true) {
+				App.router.closeModalView();
+			}
+			this.deliveryDateConfirmed = true; //next time the user selects delivery we close the calendar
+			
 			if(Utilities.isMobile() === true) {
 				this.handleSearch({
 					data: this
