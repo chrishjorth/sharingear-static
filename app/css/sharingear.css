@@ -811,7 +811,7 @@ body {
 }
 .sg-banner .container-fluid .row:last-child {
 	position: absolute;
-	top: 85vh;
+	top: 81vh;
 	width: 100%;
 }
 @media (min-width: 768px) {
