@@ -107,6 +107,12 @@ define(
 					user.data = {};
 				}
 				_.extend(user.data, data);
+
+				//Enable Google Analytics user tracking
+				if(_.isFunction(window.ga) === true) {
+					window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
+				}
+
 				if(callback && typeof callback === 'function') {
 					callback(null, data);
 				}

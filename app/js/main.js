@@ -3,6 +3,8 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 requirejs.config({
 	baseUrl: 'js',
 	paths: {
@@ -52,7 +54,6 @@ define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyB
 		
     return window.google.maps;
 });
-
 
 require(
 	['underscore', 'bootstrap', 'app'],
