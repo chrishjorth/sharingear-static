@@ -228,6 +228,7 @@ define(
 			if(user.data.id === null) {
 				user.login(function(error) {
 					if(!error) {
+						view.initialize();
 						view.render();
 						App.header.render();
 					}
