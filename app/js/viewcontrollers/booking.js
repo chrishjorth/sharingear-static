@@ -59,12 +59,9 @@ define(
             	email: '',
             	price: '',
             	currency: ''
-            	/*title: title,
-                image_url : '',
-                name : '',
-                surname : '',
-                bio : ''*/
             };
+
+            this.peerUser = null;
 
             this.booking = new Booking.constructor({
                 rootURL: App.API_URL
@@ -119,6 +116,7 @@ define(
 		};
 
 		didRender = function() {
+			console.log('status: ' + this.booking.data.booking_status);
 			if(this.booking.data.booking_status === 'pending' && this.passedData.mode === 'owner') {
 				$('.accept-deny', this.$element).removeClass('hidden');
 			}
@@ -135,6 +133,19 @@ define(
 				$('.sg-close', this.$element).removeClass('hidden');
 			}
 
+			if(this.booking.data.booking_status === 'denied' || this.booking.data.booking_status === 'ended-denied')  {
+				if(this.passedData.mode === 'owner') {
+					$('.cancelled-owner', this.$element).removeClass('hidden');
+				}
+				else {
+					$('.cancelled-renter', this.$element).removeClass('hidden');
+				}
+			}
+
+			if(this.booking.data.booking_status === 'waiting' && this.passedData.mode === 'renter') {
+				$('.error', this.$element).removeClass('hidden');
+			}
+
 			this.renderPeerPic();
 
 			this.setupEvent('click', '#booking-cancel-btn', this, this.handleClose);
@@ -148,7 +159,7 @@ define(
 			var view = this,
 				img;
 
-			if(!this.peerUser.data.image_url) {
+			if(view.peerUser === null) {
         		return;
         	}
 
@@ -165,7 +176,7 @@ define(
         			'background-size': backgroundSize
         		});
         	};
-        	img.src = this.peerUser.data.image_url;
+        	img.src = view.peerUser.data.image_url;
 		};
 
 		toggleLoading = function($selector,initstring) {
