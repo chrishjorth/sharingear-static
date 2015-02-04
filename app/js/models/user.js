@@ -45,6 +45,7 @@ define(
 		getLoginStatus = function(callback) {
 			var user = this;
 			FB.getLoginStatus(function(response) {
+				//console.log(response);
 				user.fbStatus = response.status;
 				if(callback && typeof callback === 'function') {
 					callback(response);
@@ -60,6 +61,7 @@ define(
 				if(user.fbStatus !== 'connected') {
 					FB.login(function(response) {
 						var error;
+						//console.log(response);
 						if(response.status === 'connected') {
 							error = null;
 							user.loginToBackend(response, callback);
