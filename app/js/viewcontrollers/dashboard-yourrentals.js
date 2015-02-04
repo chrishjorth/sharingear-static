@@ -14,9 +14,6 @@ define(
 			didRender,
 			populateYourRentals,
 
-			//handleGearItemPendConfirm,
-			//handleEditGearItem,
-			//handleGearItemAvailability,
 			handleBooking;
 
 		gearBlockID = 'yourrentals-gear-block';
@@ -50,15 +47,8 @@ define(
 			require(['text!../templates/yourrentals-item.html'], function(YourRentalsItemTemplate) {
 				var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 					yourRentals = view.gearList.data,
+					displayedRentals = 0, //We do not display rentals with status waiting
 					$gearBlock, defaultGear, gear, i, $gearItem, status;
-
-				if(yourRentals.length <= 0) {
-					$('#' + gearBlockID, view.$element).append('You currently do not have any rentals.');
-					if(callback && typeof callback === 'function') {
-						callback();
-					}
-					return;
-				}
 
 				$gearBlock = $('#' + gearBlockID, view.$element);
 
@@ -88,36 +78,37 @@ define(
 						'background-image': 'url("' + defaultGear.img_url + '")'
 					});
 
+
 					status = gear.data.booking_status;
-					if(status === 'pending' || status === 'waiting') {
-						$('.request', $gearItem).removeClass('hidden');
-					}
-					if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
-						$('.accepted', $gearItem).removeClass('hidden');
-					}
-					if(status === 'denied') {
-						$('.denied', $gearItem).removeClass('hidden');
-					}
+					if(status !== 'waiting') {
+						if(status === 'pending') {
+							$('.request', $gearItem).removeClass('hidden');
+						}
+						if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
+							$('.accepted', $gearItem).removeClass('hidden');
+						}
+						if(status === 'denied') {
+							$('.denied', $gearItem).removeClass('hidden');
+						}
                     
-					$gearBlock.append($gearItem);
+						$gearBlock.append($gearItem);
+						displayedRentals++;
+					}
 				}
 
-				view.setupEvent('click', '.yourrentals-status.pending', view, view.handleGearItemPendConfirm);
-				view.setupEvent('click', '.booking-btn', view, view.handleBooking);
+				if(displayedRentals <= 0) {
+					$('#' + gearBlockID, view.$element).append('You currently do not have any rentals.');
+				}
+				else {
+					view.setupEvent('click', '.yourrentals-status.pending', view, view.handleGearItemPendConfirm);
+					view.setupEvent('click', '.booking-btn', view, view.handleBooking);
+				}
 
 				if(callback && typeof callback === 'function') {
 					callback();
 				}
 			});
 		};
-
-        /*handleGearItemPendConfirm = function(event){
-            var view = event.data,
-            	bookingID = $(this).data('yourgearBookingid'),
-                gear;
-            gear = view.gearList.getGearItem('booking_id', bookingID);
-            App.router.openModalView('booking', gear);
-        };*/
 
 		handleBooking = function(event) {
 			var view = event.data,
@@ -127,7 +118,7 @@ define(
 				gear: view.gearList.getGearItem('booking_id', bookingID),
 				mode: 'owner',
 				booking_id: bookingID
-			}
+			};
 			App.router.openModalView('booking', passedData);
 		};
 
@@ -136,9 +127,6 @@ define(
 			didRender: didRender,
 			populateYourRentals: populateYourRentals,
 
-			//handleEditGearItem: handleEditGearItem,
-			//handleGearItemAvailability: handleGearItemAvailability,
-            //handleGearItemPendConfirm : handleGearItemPendConfirm,
             handleBooking: handleBooking
 		});
 	}

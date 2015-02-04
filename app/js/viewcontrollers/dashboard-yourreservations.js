@@ -15,8 +15,6 @@ define(
 
 			populateYourReservations,
 
-			//handleDenied,
-			//handleRental,
 			handleBooking;
 
 		reservationBlockID = 'yourreservations-gear-block';
@@ -27,7 +25,7 @@ define(
 				rootURL: App.API_URL
 			});
 			view.gearList.initialize();
-			view.gearList.getUserReservations(App.user.data.id, function (data) {
+			view.gearList.getUserReservations(App.user.data.id, function () {
 				view.didFetch = true;
 				view.render();
 			});
@@ -41,8 +39,6 @@ define(
 			}
 
 			this.setupEvent('click', '#yourreservations-gear-block .sg-list-item button', this, this.handleBooking);
-			//view.setupEvent('click', '.yourgear-status.denied', view, view.handleDenied);
-            //view.setupEvent('click', '.yourgear-status.in-rental', view, view.handleRental);
 		};
 
 		populateYourReservations = function(callback) {
@@ -112,20 +108,6 @@ define(
 			});
 		};
 
-		/*handleDenied = function(event) {
-			var view = event.data,
-				gear;
-			gear = view.gearList.getGearItem('booking_id', $(this).data('bookingid'));
-			App.router.openModalView('booking', gear);
-		};
-
-		handleRental = function(event) {
-			var view = event.data,
-				gear;
-			gear = view.gearList.getGearItem('booking_id', $(this).data('bookingid'));
-			App.router.openModalView('booking', gear);
-		};*/
-
 		handleBooking = function(event) {
 			var view = event.data,
 				bookingID = $(this).data('bookingid'),
@@ -142,8 +124,6 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			populateYourReservations: populateYourReservations,
-			//handleDenied: handleDenied,
-			//handleRental: handleRental
 			handleBooking: handleBooking
 		});
 	}
