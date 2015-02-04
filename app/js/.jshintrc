@@ -2,6 +2,7 @@
 	"devel": true,
 	"globals": {
 		"define": false,
-		"require": false
+		"require": false,
+		"requirejs": false
 	}
 }
