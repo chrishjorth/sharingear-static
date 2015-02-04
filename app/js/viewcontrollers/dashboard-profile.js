@@ -111,6 +111,7 @@ define(
                     return;
                 }
                 App.user.data.image_url = url;
+                App.header.render();
                 
                 $profilePic = $('#dashboard-profile-pic', view.$element);
                 $profilePic.css('background-image', 'url("' + url + '")');
