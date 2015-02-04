@@ -98,24 +98,22 @@ define(
             var view = event.data;
             var $file = $(this);
 
-            //$('#profile_image_loading', view.$element).show();
-            //$('#saveButton', view.$element).hide();
             $('.dashboard-profile-pic-upload-btn', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
             view.user.uploadProfilePicture($file.get(0).files[0], $file.val().split('\\').pop(),App.user.data.id, function (error,url) {
+                var $profilePic;
 
-                //$('#profile_image_loading', view.$element).hide();
-                //$('#saveButton', view.$element).show();
                 $('.dashboard-profile-pic-upload-btn', view.$element).html('Upload photo');
 
                 if(error) {
                     alert('Error uploading file.');
                     console.log(error);
+                    return;
                 }
-                else {
-                    var $profilePic = $('#dashboard-profile-pic', view.$element);
-                    $profilePic.css('background-image', 'url("' + url + '")');
-                }
+                App.user.data.image_url = url;
+                
+                $profilePic = $('#dashboard-profile-pic', view.$element);
+                $profilePic.css('background-image', 'url("' + url + '")');
             });
         };
 

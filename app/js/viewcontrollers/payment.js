@@ -126,6 +126,7 @@ define(
 			var countriesArray = App.localization.getCountries(),
 				html = $('option', $select).first()[0].outerHTML,
 				i;
+				
 			for(i = 0; i < countriesArray.length; i++) {
 				html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
 			}

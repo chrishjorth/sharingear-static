@@ -79,7 +79,9 @@ define(
 				if(!error) {
 				    App.router.navigateTo('dashboard');
 				    App.header.render();
+				    return;
                 }
+                console.log(error);
 			});
 		};
 
