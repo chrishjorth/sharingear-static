@@ -22,8 +22,7 @@ define(
 			handleClose;
 
 		didInitialize = function() {
-			var view = this,
-				title = '';
+			var view = this;
 
 			this.isLoading = false;
 
@@ -35,16 +34,6 @@ define(
 			});
 
 			this.gear = view.passedData.gear;
-
-			if(this.gear.data.booking_status === 'denied') {
-				title = 'Booking denied';
-			}
-			else if(this.gear.data.booking_status === 'pending') {
-				title = 'Confirm order';
-			}
-			else {
-				title = 'End booking';
-			}
 			
             view.templateParameters = {
             	brand: this.gear.data.brand,
@@ -116,11 +105,11 @@ define(
 		};
 
 		didRender = function() {
-			console.log('status: ' + this.booking.data.booking_status);
+			console.log(this.booking.data.booking_status);
 			if(this.booking.data.booking_status === 'pending' && this.passedData.mode === 'owner') {
 				$('.accept-deny', this.$element).removeClass('hidden');
 			}
-			else if(this.booking.data.booking_status === 'rented-out') {
+			else if(this.booking.data.booking_status === 'accepted' || this.booking.data.booking_status === 'rented-out') {
 				$('.end', this.$element).removeClass('hidden');
 			}
 			else if(this.booking.data.booking_status === 'renter-returned' && this.passedData.mode === 'owner') {
@@ -140,6 +129,17 @@ define(
 				else {
 					$('.cancelled-renter', this.$element).removeClass('hidden');
 				}
+			}
+
+			if(this.booking.data.booking_status === 'owner-returned' && this.passedData.mode === 'owner') {
+				$('.owner-returned', this.$element).removeClass('hidden');
+			}
+			if(this.booking.data.booking_status === 'renter-returned' && this.passedData.mode === 'renter') {
+				$('.renter-returned', this.$element).removeClass('hidden');
+			}
+
+			if(this.booking.data.booking_status === 'ended') {
+				$('.ended', this.$element).removeClass('hidden');
 			}
 
 			if(this.booking.data.booking_status === 'waiting' && this.passedData.mode === 'renter') {
