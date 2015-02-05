@@ -43,6 +43,24 @@
     </div>
   </div>
 
+  <div class="row owner-returned hidden">
+    <div class="col-sm-12">
+      <div class="text-center">Waiting for the renter to end this booking.</div>
+    </div>
+  </div>
+
+  <div class="row renter-returned hidden">
+    <div class="col-sm-12">
+      <div class="text-center">Waiting for the owner to end this booking.</div>
+    </div>
+  </div>
+
+  <div class="row ended hidden">
+    <div class="col-sm-12">
+      <div class="text-center">This booking has ended successfully.</div>
+    </div>
+  </div>
+
   <div class="row error hidden">
     <div class="col-sm-12">
       <div class="sg-red text-center">Something went wrong with this booking request. Please try to book the instrument again or contact support at <a href="mailto:support@sharingear">support@sharingear.com</a>.</div>
@@ -67,7 +85,7 @@
 
     <div class="end hidden">
       <div class="col-sm-12 bs-reset">
-        <button class="sg-btn-square sg-green-bg sg-white" id="booking-close-btn">end booking</button>
+        <button class="sg-btn-square sg-green-bg sg-white" id="booking-end-btn">end booking</button>
       </div>
     </div>
 

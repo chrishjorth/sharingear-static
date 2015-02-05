@@ -28,6 +28,8 @@ define(
                 App.header.setTitle();
             }
 
+            console.log('Cache no store working');
+
 			this.loadSearchBar();
 			this.loadFooter();
 
