@@ -96,7 +96,29 @@ if(strcmp($secretproof, $hmac) !== 0) {
 
 //Strip EXIF data from image, this is to avoid confusing desktop browsers with images uploaded from iPhone
 $img = new Imagick($tmpPath);
-$img->stripImage();
+
+$orientation = $img->getImageOrientation();
+switch($orientation) {
+    case imagick::ORIENTATION_BOTTOMRIGHT:
+        $img->rotateimage("#000", 180); //rotate 180 degrees
+        break;
+    case imagick::ORIENTATION_RIGHTTOP:
+        $img->rotateimage("#000", 90); //rotate 90 CW
+        break;
+    case imagick::ORIENTATION_LEFTBOTTOM:
+        $img->rotateimage("#000", -90); //rotate 90 degrees CCW
+        break;
+}
+$img->setImageOrientation(imagick::ORIENTATION_TOPLEFT);
+
+/*@unlink($tmpPath);
+echo json_encode([
+    'status' => 'error',
+    'message' => 'Someone tampered with things.',
+    'code' => '401'
+]);*/
+
+//$img->stripImage();
 $img->writeImage($tmpPath);
 $img->clear();
 $img->destroy();
