@@ -97,7 +97,7 @@ if(strcmp($secretproof, $hmac) !== 0) {
 //Strip EXIF data from image, this is to avoid confusing desktop browsers with images uploaded from iPhone
 $img = new Imagick($tmpPath);
 $img->stripImage();
-$img->writeImage($image);
+$img->writeImage($tmpPath);
 $img->clear();
 $img->destroy();
 
