@@ -94,6 +94,13 @@ if(strcmp($secretproof, $hmac) !== 0) {
     exit;
 }
 
+//Strip EXIF data from image, this is to avoid confusing desktop browsers with images uploaded from iPhone
+$img = new Imagick($tmpPath);
+$img->stripImage();
+$img->writeImage($image);
+$img->clear();
+$img->destroy();
+
 //Get Google authorization for service accounts
 $client = new Google_Client();
 $client->setApplicationName('Sharingear');
