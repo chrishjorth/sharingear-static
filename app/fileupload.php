@@ -94,6 +94,25 @@ if(strcmp($secretproof, $hmac) !== 0) {
     exit;
 }
 
+//Strip EXIF data from image, this is to avoid confusing desktop browsers with images uploaded from iPhone
+$img = new Imagick($tmpPath);
+$orientation = $img->getImageOrientation();
+switch($orientation) {
+    case imagick::ORIENTATION_BOTTOMRIGHT:
+        $img->rotateimage("#000", 180); //rotate 180 degrees
+        break;
+    case imagick::ORIENTATION_RIGHTTOP:
+        $img->rotateimage("#000", 90); //rotate 90 CW
+        break;
+    case imagick::ORIENTATION_LEFTBOTTOM:
+        $img->rotateimage("#000", -90); //rotate 90 degrees CCW
+        break;
+}
+$img->setImageOrientation(imagick::ORIENTATION_TOPLEFT);
+$img->writeImage($tmpPath);
+$img->clear();
+$img->destroy();
+
 //Get Google authorization for service accounts
 $client = new Google_Client();
 $client->setApplicationName('Sharingear');
