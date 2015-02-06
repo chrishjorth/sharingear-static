@@ -2,22 +2,20 @@
  * Defines a gear item.
  * @author: Chris Hjorth
  */
+'use strict';
+
 define(
-	['utilities', 'model'],
-	function(Utilities, Model) {
-		var Gear = Model.inherit({
-			didInitialize: didInitialize,
-			createGear: createGear,
-			uploadImage: uploadImage,
-			save: save,
-			update: update,
-            getAvailability: getAvailability,
-            setAvailability: setAvailability
-		});
+	['underscore', 'utilities', 'model'],
+	function(_, Utilities, Model) {
+		var didInitialize,
+			createGear,
+			uploadImage,
+			save,
+			update,
+			getAvailability,
+			setAvailability; 
 
-		return Gear;
-
-		function didInitialize() {
+		didInitialize = function didInitialize() {
 			if(this.data === null) {
 				this.data = {
 					id: null,
@@ -44,9 +42,9 @@ define(
 					owner_id: null
 				};
 			}
-		}
+		};
 
-		function createGear(user, callback) {
+		createGear = function createGear(user, callback) {
 			var model = this,
 				newGear = this.data,
 				postData;
@@ -86,13 +84,13 @@ define(
 					callback(null);
 				}
 			});
-		}
+		};
 
 		/**
 		 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
 		 * @param filename: The name of the file
 		 */
-		function uploadImage(file, filename, userID, callback) {
+		uploadImage = function(file, filename, userID, callback) {
 			var model = this;
 			//Get filename and secret from backend
 			console.log('Get filename from backend');
@@ -136,9 +134,9 @@ define(
 					});
 				});
 			});
-		}
+		};
 
-		function save(userID, callback) {
+		save = function(userID, callback) {
 			var saveData = {
 				subtype: this.data.subtype,
 				brand: this.data.brand,
@@ -172,9 +170,9 @@ define(
 					callback(null, data);
 				}
 			});
-		}
+		};
 
-		function update(userID, callback) {
+		update = function(userID, callback) {
 			var model = this;
 			this.get('/gear/' + this.data.id, function(error, gear) {
 				if(error) {
@@ -185,9 +183,16 @@ define(
 				_.extend(model.data, gear);
 				callback(null);
 			});
-		}
+		};
 
-		function getAvailability(userID, callback) {
+		getAvailability = function(userID, callback) {
+			if(userID === null) {
+				callback(null, {
+					alwaysFlag: 0,
+					availabilityArray: []
+				});
+				return;
+			}
 			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
 				if(error) {
 					console.log(error);
@@ -196,18 +201,18 @@ define(
 				}
 				callback(null, result);
 			});
-		}
+		};
 
 		/**
 		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
 		 */
-		function setAvailability(userID, availabilityArray, alwaysFlag, callback) {
+		setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
 			var postData;
 			postData = {
 				availability: JSON.stringify(availabilityArray),
 				alwaysFlag: alwaysFlag
 			};
-			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error, data) {
+			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error) {
 				if(error) {
 					console.log(error);
 					callback(error);
@@ -215,6 +220,16 @@ define(
 				}
 				callback(null);
 			});
-		}
+		};
+
+		return Model.inherit({
+			didInitialize: didInitialize,
+			createGear: createGear,
+			uploadImage: uploadImage,
+			save: save,
+			update: update,
+            getAvailability: getAvailability,
+            setAvailability: setAvailability
+		});
 	}
 );
