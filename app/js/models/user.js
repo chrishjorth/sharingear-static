@@ -92,6 +92,10 @@ define(
 				authData = FBResponse.authResponse,
 				postData;
 
+			if(_.isFunction(window.ga) === true) {
+				window.ga('send', 'event', 'user action', 'login', 'fb login', 1);
+			}
+
 			postData = {
 				fbid: authData.userID,
 				accesstoken: authData.accessToken

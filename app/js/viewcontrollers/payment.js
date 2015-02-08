@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment', 'models/localization'],
-	function($, ViewController, App, Card, Booking, Moment, Localization) {
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment', 'models/localization'],
+	function(_, $, ViewController, App, Card, Booking, Moment, Localization) {
 		var didInitialize,
 			didRender,
 			renderMissingDataInputs,
@@ -312,6 +312,11 @@ define(
                     	view.resetPayButton();
                     	return;
                 	}
+
+                	if(_.isFunction(window.ga) === true) {
+						window.ga('send', 'event', 'user action', 'booking', 'book gear', 1);
+					}
+
                 	window.location.href = view.booking.data.verificationURL;
             	});
 			});
