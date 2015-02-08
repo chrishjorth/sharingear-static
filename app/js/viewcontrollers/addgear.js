@@ -767,8 +767,15 @@ define(
 
 			view.toggleLoading();
 
-			selections = view.calendarVC.getSelections();
-			alwaysFlag = view.calendarVC.getAlwaysFlag();
+			if(view.calendarVC !== null) {
+				selections = view.calendarVC.getSelections();
+				alwaysFlag = view.calendarVC.getAlwaysFlag();
+			}
+			else {
+				//For some reason the availability calendar did not load, so we set to never available as default.
+				selections = {};
+				alwaysFlag = 0;
+			}
 
 			for(month in selections) {
 				monthSelections = selections[month];
