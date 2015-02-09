@@ -679,6 +679,7 @@ body {
 	border-style: solid;
 	border-width: 0;
 	border-bottom-width: 1px;
+	background-color: white;
 }
 @media (min-width: 768px) {
 	.sg-modal-header {
