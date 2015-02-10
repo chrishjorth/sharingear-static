@@ -57,7 +57,7 @@ define(
 				if(view.gear === null) {
 					//In this case the view is loaded the first time, and not returning from a modal fx
 					view.gear = new Gear.constructor({
-						rootURL: App.API_URL
+						rootURL: Config.API_URL
 					});
 					view.gear.initialize();
 
