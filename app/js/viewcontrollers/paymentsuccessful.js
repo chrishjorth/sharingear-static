@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'models/booking', 'moment', 'models/localization'],
-	function($, ViewController, App, Booking, Moment, Localization) {
+	['jquery', 'viewcontroller', 'app', 'models/booking', 'moment'],
+	function($, ViewController, App, Booking, Moment) {
 		var didInitialize,
 			didRender,
 
@@ -54,7 +54,8 @@ define(
 				}
 
 				booking.getBookingInfo(App.user.data.id, function(error){
-					var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
+					//var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
+					var startMoment, endMoment, duration, months, weeks, days, price, fee;
 					if(error) {
 						console.log('Error getting booking info: ' + error);
 						return;
@@ -73,10 +74,10 @@ define(
 					days = parseInt(duration.days(), 10);
 
 					price = booking.data.price;
-					VAT = Localization.getVAT(App.user.data.country);
-					priceVAT = price / 100 * VAT;
+					//VAT = Localization.getVAT(App.user.data.country);
+					//priceVAT = price / 100 * VAT;
 					fee = price / 100 * App.user.data.buyer_fee;
-					feeVAT = fee / 100 * VAT;
+					//feeVAT = fee / 100 * VAT;
 
 					view.templateParameters = {
 						brand: view.gear.data.brand,
@@ -85,12 +86,16 @@ define(
 						start_date: startMoment.format('DD/MM/YYYY'),
 						end_date: endMoment.format('DD/MM/YYYY'),
 						currency: 'DKK',
-						vat: VAT,
+						//vat: VAT,
+						vat: '',
 						price: price,
-						price_vat: priceVAT,
+						//price_vat: priceVAT,
+						price_vat: '',
 						fee: fee,
-						fee_vat: feeVAT,
-						total: price + priceVAT + fee + feeVAT
+						//fee_vat: feeVAT,
+						fee_vat: '',
+						//total: price + priceVAT + fee + feeVAT
+						total: (price + fee).toFixed(2)
 					};
 
 					view.paymentSuccessful = true;

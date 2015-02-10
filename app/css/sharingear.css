@@ -291,9 +291,11 @@ body {
     border-color: #00aeff;
     border-width: 2px;
     border-style: solid;
+    float: left;
 }
 .sg-navbar-dropdownmenu .dropdown:hover .profile-pic {
 	border-color: #0397dc;
+	float: left;
 }
 .sg-navbar-dropdownmenu .dropdown .menu-text {
 	font-weight: bold;
@@ -679,6 +681,7 @@ body {
 	border-style: solid;
 	border-width: 0;
 	border-bottom-width: 1px;
+	background-color: white;
 }
 @media (min-width: 768px) {
 	.sg-modal-header {

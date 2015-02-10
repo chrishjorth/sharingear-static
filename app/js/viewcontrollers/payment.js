@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment', 'models/localization'],
-	function(_, $, ViewController, App, Card, Booking, Moment, Localization) {
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment'],
+	function(_, $, ViewController, App, Card, Booking, Moment) {
 		var didInitialize,
 			didRender,
 			renderMissingDataInputs,
@@ -22,7 +22,8 @@ define(
 			resetPayButton;
 
 		didInitialize = function () {
-			var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
+			//var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
+			var startMoment, endMoment, duration, months, weeks, days, price, fee;
 
 			this.booking = this.passedData.booking;
 			this.gear = this.passedData.gear;
@@ -41,10 +42,10 @@ define(
 			days = parseInt(duration.days(), 10);
 
 			price = months * this.gear.data.price_c + weeks * this.gear.data.price_b + days * this.gear.data.price_a;
-			VAT = Localization.getVAT(App.user.data.country);
-			priceVAT = parseFloat(price / 100 * VAT);
+			//VAT = Localization.getVAT(App.user.data.country);
+			//priceVAT = parseFloat(price / 100 * VAT);
 			fee = parseFloat(price / 100 * App.user.data.buyer_fee);
-			feeVAT = parseFloat(fee / 100 * VAT);
+			//feeVAT = parseFloat(fee / 100 * VAT);
 
 			this.templateParameters = {
 				brand: this.gear.data.brand,
@@ -53,12 +54,16 @@ define(
 				start_date: startMoment.format('DD/MM/YYYY'),
 				end_date: endMoment.format('DD/MM/YYYY'),
 				currency: 'DKK',
-				vat: VAT,
+				//vat: VAT,
+				vat: '',
 				price: price.toFixed(2),
-				price_vat: priceVAT.toFixed(2),
+				//price_vat: priceVAT.toFixed(2),
+				price_vat: '',
 				fee: fee.toFixed(2),
-				fee_vat: feeVAT.toFixed(2),
-				total: (price + priceVAT + fee + feeVAT).toFixed(2)
+				//fee_vat: feeVAT.toFixed(2),
+				fee_vat: '',
+				//total: (price + priceVAT + fee + feeVAT).toFixed(2)
+				total: (price + fee).toFixed(2)
 			};
 			this.isPaying = false;
 		};
