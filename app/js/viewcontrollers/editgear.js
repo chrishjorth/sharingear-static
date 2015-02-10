@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'googlemaps','utilities', 'moment'],
-	function(_, $, ViewController, App, Gear, GoogleMaps, Utilities, Moment) {
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'models/localization', 'googlemaps','utilities', 'moment'],
+	function(_, $, ViewController, App, Gear, Localization, GoogleMaps, Utilities, Moment) {
 		var geocoder,
 
             didInitialize,
@@ -366,11 +366,11 @@ define(
         };
 
         populateCountries = function($select) {
-            var countriesArray = App.localization.getCountries(),
+            var countriesArray = Localization.getCountries(),
                 html = $('option', $select).first()[0].outerHTML,
                 i;
             for(i = 0; i < countriesArray.length; i++) {
-                html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
+                html += '<option value="' + countriesArray[i].code + '">' + countriesArray[i].name + '</option>';
             }
             $select.html(html);
         };

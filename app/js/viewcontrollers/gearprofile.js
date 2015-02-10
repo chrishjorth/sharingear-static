@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'utilities', 'models/gear', 'models/user', 'googlemaps','owlcarousel', 'facebook'],
-	function($, ViewController, App, Utilities, Gear, User, GoogleMaps, owlcarousel, FB) {
+	['jquery', 'config', 'viewcontroller', 'app', 'utilities', 'models/gear', 'models/user', 'googlemaps','owlcarousel', 'facebook'],
+	function($, Config, ViewController, App, Utilities, Gear, User, GoogleMaps, owlcarousel, FB) {
 
 		var paymentSuccessModalOpen = false,
 
@@ -43,7 +43,7 @@ define(
 			};
 
 			view.owner = new User.constructor({
-				rootURL: App.API_URL
+				rootURL: Config.API_URL
 			});
 			view.owner.initialize();
 

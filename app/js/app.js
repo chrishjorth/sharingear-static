@@ -6,13 +6,10 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'router', 'utilities', 'models/user', 'models/gearclassification', 'models/localization'],
-	function(_, $, Router, Utilities, User, GearClassification, Localization) {
-		var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
-			API_URL,
-			App,
+	['underscore', 'jquery', 'config', 'router', 'utilities', 'models/user', 'models/gearclassification', 'models/localization'],
+	function(_, $, Config, Router, Utilities, User, GearClassification) {
+		var App,
 
-			isProduction,
 			run,
 			setUserLocation,
 			loadHeader,
@@ -20,21 +17,8 @@ define(
 
 			$headerContainer, $footerContainer;
 
-		if(IS_PRODUCTION === true) {
-			API_URL = 'https://prod-api.sharingear.com';
-		}
-		else {
-			API_URL = 'https://api.sharingear.com';
-		}
-
-		//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
-
 		$headerContainer = $('.navigation-header');
 		$footerContainer = $('.footer');
-
-		isProduction = function() {
-			return (IS_PRODUCTION === true);
-		};
 
 		/**
 		 * Initializes the app, that is:
@@ -92,19 +76,13 @@ define(
 
 			$(document).ready(function() {
 				documentReadyDeferred.resolve();
-
-				/*$('.modal-view-container').on('touchmove', function(event) {
-					event.stopPropagation();
-				});*/
 			});
 
 			App.gearClassification = new GearClassification.constructor({
-				rootURL: App.API_URL
+				rootURL: Config.API_URL
 			});
 			App.gearClassification.initialize();
 
-			App.localization = new Localization.constructor();
-			App.localization.initialize();
 			App.setUserLocation();
 
 			$.when(loginDeferred, documentReadyDeferred).then(function() {
@@ -114,8 +92,6 @@ define(
 				//Load header and footer
 				App.loadHeader($headerContainer);
 
-				//App.loadFooter($footerContainer);
-
 				//Load page based on hash
 				hash = window.location.hash;
 				if(hash.length > 0) {
@@ -124,9 +100,7 @@ define(
 				else {
 					route = 'home';
 				}
-				router.navigateTo(route, null, function() {
-					//router.openModalView('closedbeta');
-				});
+				router.navigateTo(route);
 
 				if(getCookie('cookie-consent') != '1') {
 					$('.cookie-opt-in').removeClass('hidden');
@@ -156,6 +130,9 @@ define(
 						}
                     });
                 });
+			}
+			else if(!location || location === null) {
+				App.user.data.currentCity = null;
 			}
 			else {
 				App.user.data.currentCity = location;
@@ -197,7 +174,6 @@ define(
 		};
 
 		App = {
-			API_URL: API_URL,
 			$headerContainer: $headerContainer,
 			$footerContainer: $footerContainer,
 			router: Router,
@@ -205,9 +181,7 @@ define(
 			header: null,
 			footer: null,
 			gearClassification: null,
-			localization: null,
 
-			isProduction: isProduction,
 			run: run,
 			setUserLocation: setUserLocation,
 			loadHeader: loadHeader,
@@ -215,7 +189,7 @@ define(
 		};
 
 		App.user = new User.constructor({
-			rootURL: API_URL
+			rootURL: Config.API_URL
 		});
 		App.user.initialize();
 

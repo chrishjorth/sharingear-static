@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/user', 'models/gearlist'],
-	function(_, $, ViewController, App, User, GearList) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/user', 'models/gearlist'],
+	function(_, $, Config, ViewController, App, User, GearList) {
 		var didInitialize,
 			didRender,
 
@@ -32,7 +32,7 @@ define(
 			this.subPath = ''; //To avoid rendering a subview based on the gear id
 
 			this.user = new User.constructor({
-				rootURL: App.API_URL,
+				rootURL: Config.API_URL,
 				data: {
 					id: gearID
 				}
@@ -57,10 +57,10 @@ define(
 			});
 
 			this.userGear = new GearList.constructor({
-				rootURL: App.API_URL
+				rootURL: Config.API_URL
 			});
 			this.userGear.initialize();
-			this.userGear.getUserGear(this.user.data.id, function(gear) {
+			this.userGear.getUserGear(this.user.data.id, function() {
 				view.render();
 			});
 		};

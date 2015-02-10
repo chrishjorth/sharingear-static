@@ -7,8 +7,8 @@
 'use strict';
 
 define(
-    ['underscore', 'jquery', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
-	function(_, $, ViewController, Moment, App, Gear, User, Booking) {
+    ['underscore', 'jquery', 'config', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
+	function(_, $, Config, ViewController, Moment, App, Gear, User, Booking) {
 		var didInitialize,
 			didRender,
 
@@ -53,7 +53,7 @@ define(
             this.peerUser = null;
 
             this.booking = new Booking.constructor({
-                rootURL: App.API_URL
+                rootURL: Config.API_URL
             });
             this.booking.initialize();
             this.booking.data.id = this.passedData.booking_id;
@@ -93,7 +93,7 @@ define(
                 });
 
                 view.peerUser = new User.constructor({
-                	rootURL: App.API_URL
+                	rootURL: Config.API_URL
            		});
            		view.peerUser.initialize();
            		view.peerUser.data.id = (view.passedData.mode === 'owner' ? view.booking.data.renter_id : view.gear.data.owner_id); //Depends on who is viewing the booking

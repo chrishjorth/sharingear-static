@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gearlist'],
-	function(_, $, ViewController, App, GearList) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/gearlist'],
+	function(_, $, Config, ViewController, App, GearList) {
 		var gearBlockID,
 
 			didInitialize,
@@ -23,7 +23,7 @@ define(
 
 			this.didFetch = false;
 			this.gearList = new GearList.constructor({
-				rootURL: App.API_URL
+				rootURL: Config.API_URL
 			});
 			this.gearList.initialize();
 			this.gearList.getUserRentals(App.user.data.id, function() {
