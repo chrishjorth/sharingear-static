@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'utilities', 'app', 'models/gear', 'models/booking', 'moment'],
-	function(_, $, ViewController, Utilities, App, Gear, Booking, Moment) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'utilities', 'app', 'models/gear', 'models/booking', 'moment'],
+	function(_, $, Config, ViewController, Utilities, App, Gear, Booking, Moment) {
 		var didInitialize,
 			didRender,
 			renderCalendar,
@@ -51,7 +51,7 @@ define(
 			}
 			else {
 				this.newBooking = new Booking.constructor({
-					rootURL: App.API_URL
+					rootURL: Config.API_URL
 				});
 				this.newBooking.initialize();
 				this.newBooking.data.gear_id = this.gear.data.id;
@@ -134,7 +134,7 @@ define(
 			this.newBooking.data.start_time = calendarVC.pickupDate.format('YYYY-MM-DD HH:mm:ss');
 			this.newBooking.data.end_time = null;
 			this.renderPrice();
-		}
+		};
 
 		handleDeliverySelection = function(calendarVC) {
 			this.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');

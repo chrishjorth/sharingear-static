@@ -5,14 +5,14 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'model', 'app', 'mangopay'],
-	function(_, Utilities, Model, App) { //MangoPay does not support AMD so we need to use global object mangoPay
+	['underscore', 'config', 'utilities', 'model', 'mangopay'],
+	function(_, Config, Utilities, Model) { //MangoPay does not support AMD so we need to use global object mangoPay
 		var mangoPay = window.mangoPay,
 			didInitialize,
 			registerCard;
 
 		didInitialize = function() {
-			if(App.isProduction() === true) {
+			if(Config.isProduction() === true) {
 				mangoPay.cardRegistration.baseURL = 'https://api.mangopay.com'; //Production
 			}
 			else {

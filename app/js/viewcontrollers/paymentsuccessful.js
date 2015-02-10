@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'models/booking', 'moment'],
-	function($, ViewController, App, Booking, Moment) {
+	['jquery', 'config', 'viewcontroller', 'app', 'models/booking', 'moment'],
+	function($, Config, ViewController, App, Booking, Moment) {
 		var didInitialize,
 			didRender,
 
@@ -37,7 +37,7 @@ define(
 			this.gear = this.passedData.gear;
 
 			booking = new Booking.constructor({
-				rootURL: App.API_URL
+				rootURL: Config.API_URL
 			});
 			booking.initialize();
 			booking.data.id = this.passedData.bookingID;

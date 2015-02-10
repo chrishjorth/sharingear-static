@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/card', 'models/booking', 'moment'],
-	function(_, $, ViewController, App, Card, Booking, Moment) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/card', 'models/booking', 'models/localization', 'moment'],
+	function(_, $, Config, ViewController, App, Card, Booking, Localization, Moment) {
 		var didInitialize,
 			didRender,
 			renderMissingDataInputs,
@@ -128,12 +128,12 @@ define(
 		};
 
 		populateCountries = function($select) {
-			var countriesArray = App.localization.getCountries(),
+			var countriesArray = Localization.getCountries(),
 				html = $('option', $select).first()[0].outerHTML,
 				i;
 				
 			for(i = 0; i < countriesArray.length; i++) {
-				html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
+				html += '<option value="' + countriesArray[i].code + '">' + countriesArray[i].name + '</option>';
 			}
 			$select.html(html);
 		};
@@ -293,7 +293,7 @@ define(
 
 			//Get card registration object
 			card = new Card.constructor({
-				rootURL: App.API_URL
+				rootURL: Config.API_URL
 			});
 			card.initialize();
 			cardData = {

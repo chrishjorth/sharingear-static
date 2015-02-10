@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'googlemaps', 'moment'],
-	function(_, $, ViewController, App, Gear, GoogleMaps, Moment) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/gear', 'models/localization', 'googlemaps', 'moment'],
+	function(_, $, Config, ViewController, App, Gear, Localization, GoogleMaps, Moment) {
 		var subtypeDefault = 'Choose subtype:',
 			brandDefault = 'Choose brand:',
 			countryDefault = 'Select country:',
@@ -72,7 +72,7 @@ define(
 			this.isLoading = false;
 
 			this.newGear = new Gear.constructor({
-				rootURL: App.API_URL
+				rootURL: Config.API_URL
 			});
 			this.newGear.initialize();
 
@@ -396,12 +396,9 @@ define(
 		populateCountries = function($select) {
             var html = $('option', $select).first()[0].outerHTML,
             	countriesArray, i;
-            if(!App.localization) {
-            	return;
-            }
-			countriesArray = App.localization.getCountries();
+			countriesArray = Localization.getCountries();
 			for(i = 0; i < countriesArray.length; i++) {
-				html += '<option value="' + countriesArray[i].alpha2 + '">' + countriesArray[i].name + '</option>';
+				html += '<option value="' + countriesArray[i].code + '">' + countriesArray[i].name + '</option>';
 			}
 			$select.html(html);
 		};

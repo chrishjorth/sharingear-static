@@ -35,18 +35,7 @@ define(
 
 			it('Provides the app object', function() {
 				expect(App).to.be.an('object');
-				expect(App.isProduction).to.be.a('function');
-				expect(App.API_URL).to.be.a('string');
 				expect(App.run).to.be.a('function');
-			});
-
-			it('Has correct API URL', function() {
-				if(App.isProduction() === true) {
-					expect(App.API_URL).to.equal('https://prod-api.sharingear.com');
-				}
-				else {
-					expect(App.API_URL).to.equal('https://api.sharingear.com');
-				}
 			});
 
 			it('Can initialize Sharingear', function(done) {
@@ -57,7 +46,6 @@ define(
 					expect(App.user).to.be.an('object');
 					sinon.assert.calledOnce(spec.loginStatusSpy);
 					expect(App.gearClassification).to.be.an('object');
-					expect(App.localization).to.be.an('object');
 					sinon.assert.calledOnce(spec.setUserLocationSpy);
 					sinon.assert.calledOnce(spec.loadHeaderSpy);
 					sinon.assert.calledWith(spec.loadHeaderSpy, App.$headerContainer);

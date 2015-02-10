@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'underscore', 'viewcontroller', 'app', 'googlemaps', 'models/gearlist', 'facebook'],
-	function($, _, ViewController, App, GoogleMaps, GearList, FB) {
+	['jquery', 'underscore', 'config', 'viewcontroller', 'app', 'googlemaps', 'models/gearlist', 'facebook'],
+	function($, _, Config, ViewController, App, GoogleMaps, GearList, FB) {
 		var searchBlockID = 'home-search-row',
 			geocoder,
 			
@@ -26,7 +26,7 @@ define(
 			this.searchFormVC = null;
 
 			this.gearList = new GearList.constructor({
-				rootURL: App.API_URL
+				rootURL: Config.API_URL
 			});
 			this.gearList.initialize();
 

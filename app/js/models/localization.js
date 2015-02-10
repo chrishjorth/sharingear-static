@@ -5,68 +5,57 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'model'],
-	function(_, Utilities, Model) {
+	['underscore', 'utilities', 'config', 'model'],
+	function(_, Utilities, Config, Model) {
 		var Localization,
 
-            alpha2Countries,
-            vat,
-
+            fetch,
 			getCountries,
             getVAT;
 
-		alpha2Countries = {
-    		//'AD': 'andorra',
-    		//'AT': 'austria',
-    		//'BE': 'belgium',
-    		'DK': 'denmark',
-    		//'EE': 'estonia',
-    		//'FI': 'finland',
-    		//'FR': 'france',
-    		//'DE': 'germany',
-    		//'GR': 'greece',
-    		//'IE': 'ireland',
-    		//'IT': 'italy',
-    		//'LV': 'latvia',
-    		//'LU': 'luxembourg',
-    		//'MT': 'malta',
-    		//'MC': 'monaco',
-    		//'NL': 'netherlands',
-    		//'NO': 'norway',
-    		//'PT': 'portugal',
-    		//'SM': 'san marino',
-    		//'SK': 'slovakia',
-    		//'SI': 'slovenia',
-    		//'ES': 'spain',
-    		//'SE': 'sweden',
-    		//'GB': 'united kingdom'
-		};
-
-        vat = {
-            'DK': 25.0
+		fetch = function() {
+            var model = this;
+            this.get('/localization', function(error, data) {
+                if(error) {
+                    console.log('Error retrieving localization data.');
+                    return;
+                }
+                model.data = data;
+            });
         };
 
 		getCountries = function() {
 			var countriesArray = [],
-				key;
-			for(key in alpha2Countries) {
-				countriesArray.push({
-					alpha2: key,
-					name: Utilities.capitalizeString(alpha2Countries[key])
-				});
-			}
+                i;
+			for(i = 0; i < this.data.length; i++) {
+                countriesArray.push({
+                    name: this.data[i].name,
+                    code: this.data[i].code
+                });
+            }
 			return countriesArray;
 		};
 
         getVAT = function(countryCode) {
-            return vat[countryCode];
+            var i;
+            for(i = 0; i < this.data.length; i++) {
+                if(this.data[i].code === countryCode) {
+                    return this.data[i].vat;
+                }
+            }
+            return null;
         };
 
         Localization = Model.inherit({
+            fetch: fetch,
             getCountries: getCountries,
             getVAT: getVAT
         });
+        Localization = new Localization.constructor({
+            rootURL: Config.API_URL
+        });
+        Localization.fetch();
 
-		return new Localization.constructor();
+		return Localization;
 	}
 );

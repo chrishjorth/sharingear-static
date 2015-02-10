@@ -75,6 +75,7 @@ require(
 		$(document).ready(function() {
 			require([
 				'../test/js/specs/app.spec',
+				'../test/js/specs/config.spec',
 				'../test/js/specs/router.spec',
 				'../test/js/specs/viewloader.spec',
 				'../test/js/specs/viewcontroller.spec',
