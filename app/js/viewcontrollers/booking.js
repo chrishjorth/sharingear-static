@@ -7,8 +7,8 @@
 'use strict';
 
 define(
-    ['underscore', 'jquery', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking', 'models/localization'],
-	function(_, $, ViewController, Moment, App, Gear, User, Booking, Localization) {
+    ['underscore', 'jquery', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
+	function(_, $, ViewController, Moment, App, Gear, User, Booking) {
 		var didInitialize,
 			didRender,
 
@@ -46,7 +46,7 @@ define(
             	surname: '',
             	tagline: '',
             	email: '',
-            	price: '',
+            	total: '',
             	currency: ''
             };
 
@@ -59,7 +59,9 @@ define(
             this.booking.data.id = this.passedData.booking_id;
 
             this.booking.getBookingInfo(App.user.data.id, function(error) {
-                var start_time, end_time, price, VAT, priceVAT, fee, feeVAT;
+                //var start_time, end_time, price, VAT, priceVAT, fee, feeVAT;
+                var start_time, end_time, price, fee, total;
+
                 if(error){
                     console.log('Error retrieving booking: ' + error);
                     return;
@@ -69,15 +71,24 @@ define(
                 end_time = new Moment(view.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
 
                 price = view.booking.data.price;
-				VAT = Localization.getVAT(App.user.data.country);
-				priceVAT = price / 100 * VAT;
-				fee = price / 100 * App.user.data.buyer_fee;
-				feeVAT = fee / 100 * VAT;
+				//VAT = Localization.getVAT(App.user.data.country);
+				//priceVAT = price / 100 * VAT;
+				
+				//feeVAT = fee / 100 * VAT;
+				if(view.passedData.mode === 'owner') {
+					fee = price / 100 * App.user.data.seller_fee;
+					total = price - fee;
+				}
+				else {
+					fee = price / 100 * App.user.data.buyer_fee;
+					total = price + fee;
+				}
 
                 _.extend(view.templateParameters, {
                 	start_time: start_time.format('DD/MM/YYYY'),
                 	end_time: end_time.format('DD/MM/YYYY'),
-                	price: price + priceVAT + fee + feeVAT,
+                	//price: price + priceVAT + fee + feeVAT,
+                	total: (total).toFixed(2),
                 	currency: view.booking.data.currency
                 });
 
@@ -105,6 +116,7 @@ define(
 		};
 
 		didRender = function() {
+			console.log(this.booking.data.booking_status);
 			if(this.booking.data.booking_status === 'pending' && this.passedData.mode === 'owner') {
 				$('.accept-deny', this.$element).removeClass('hidden');
 			}
