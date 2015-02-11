@@ -71,6 +71,10 @@ define(
 
 			this.isLoading = false;
 
+			this.templateParameters = {
+				currency: App.user.data.currency
+			};
+
 			this.newGear = new Gear.constructor({
 				rootURL: Config.API_URL
 			});
@@ -82,9 +86,6 @@ define(
 			this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
 			this.alwaysFlag = 1; //New gear is always available by default
 			this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
-
-			//$('#gearavailability-always-btn', this.$element).removeClass('disabled');
-			//$('#gearavailability-never-btn', this.$element).removeClass('disabled');
 		};
 
 		didRender = function() {
@@ -121,19 +122,40 @@ define(
 
 		populatePriceSuggestions = function () {
 			var gearClassification = App.gearClassification.data.classification,
-				view = this,
-				gearType, gearSubtypes, i;
+                view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
 
-			gearType = view.newGear.data.gear_type;
+            view = this;
 
-			gearSubtypes = gearClassification[gearType];
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === view.newGear.data.subtype) {
-					$('#addgear-price_a-suggestion', view.$element).html(gearSubtypes[i].price_a_suggestion);
-					$('#addgear-price_b-suggestion', view.$element).html(gearSubtypes[i].price_b_suggestion);
-					$('#addgear-price_c-suggestion', view.$element).html(gearSubtypes[i].price_c_suggestion);
-				}
-			}
+            gearSubtypes = gearClassification[view.newGear.data.gear_type];
+            for(i = 0; i < gearSubtypes.length; i++) {
+                if (gearSubtypes[i].subtype === view.newGear.data.subtype) {
+                    suggestionA = gearSubtypes[i].price_a_suggestion;
+                    suggestionB = gearSubtypes[i].price_b_suggestion;
+                    suggestionC = gearSubtypes[i].price_c_suggestion;
+                    i = gearSubtypes.length;
+                }
+            }
+            Localization.convertPrice(suggestionA, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#addgear-price_a-suggestion', view.$element).html(Math.ceil(convertedPrice));
+            });
+            Localization.convertPrice(suggestionB, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#addgear-price_b-suggestion', view.$element).html(Math.ceil(convertedPrice));
+            });
+            Localization.convertPrice(suggestionC, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#addgear-price_c-suggestion', view.$element).html(Math.ceil(convertedPrice));
+            });
 		};
 
 		toggleLoading = function() {
@@ -464,7 +486,7 @@ define(
 				alert('Price is missing.');
 				return;
 			}
-			if(newGearData.price_a%1!==0) {
+			if(newGearData.price_a % 1 !==0) {
 				alert('Hourly price is invalid.');
 				return;
 			}
@@ -472,7 +494,7 @@ define(
 				alert('Price is missing.');
 				return;
 			}
-			if(newGearData.price_b%1!==0) {
+			if(newGearData.price_b % 1 !==0) {
 				alert('Daily is invalid.');
 				return;
 			}
@@ -480,7 +502,7 @@ define(
 				alert('Price is missing.');
 				return;
 			}
-			if(newGearData.price_c%1!==0) {
+			if(newGearData.price_c % 1 !==0) {
 				alert('Weekly is invalid.');
 				return;
 			}
@@ -518,20 +540,29 @@ define(
 			view.toggleLoading();
 
 			saveCall = function() {
-				view.newGear.save(App.user.data.id, function(error) {
+				Localization.convertPrices([newGearData.price_a, newGearData.price_b, newGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
 					if(error) {
-						alert('Error saving data');
-						view.toggleLoading();
+						console.log('Error converting prices: ' + error);
 						return;
 					}
-					view.showPanel('#addgear-panel-availability');
-					if(App.user.isSubMerchant() === false) {
-						view.renderSubmerchantForm();
-					}
-					else {
-						view.renderAvailability();
-					}
-					view.toggleLoading();
+					view.newGear.data.price_a = convertedPrices[0];
+					view.newGear.data.price_b = convertedPrices[1];
+					view.newGear.data.price_c = convertedPrices[2];
+					view.newGear.save(App.user.data.id, function(error) {
+						if(error) {
+							alert('Error saving data');
+							view.toggleLoading();
+							return;
+						}
+						view.showPanel('#addgear-panel-availability');
+						if(App.user.isSubMerchant() === false) {
+							view.renderSubmerchantForm();
+						}
+						else {
+							view.renderAvailability();
+						}
+						view.toggleLoading();
+					});
 				});
 			};
 

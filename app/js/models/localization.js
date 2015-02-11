@@ -12,7 +12,8 @@ define(
             fetch,
 			getCountries,
             getVAT,
-            convertPrice;
+            convertPrice,
+            convertPrices;
 
 		fetch = function() {
             var model = this;
@@ -52,7 +53,7 @@ define(
          * @param currency: the currency to convert to.
          */
         convertPrice = function(price, currency, callback) {
-            XChangeRates.getRate(currency, function(error, rate) {
+            XChangeRates.getRate('EUR', currency, function(error, rate) {
                 if(error) {
                     callback('Error getting rate: ' + error);
                     return;
@@ -61,11 +62,27 @@ define(
             });
         };
 
+        convertPrices = function(prices, fromCurrency, toCurrency, callback) {
+            XChangeRates.getRate(fromCurrency, toCurrency, function(error, rate) {
+                var i = 0,
+                    convertedPrices = [];
+                if(error) {
+                    callback('Error getting rate: ' + error);
+                    return;
+                }
+                for(i = 0; i < prices.length; i++) {
+                    convertedPrices.push(prices[i] * rate);
+                }
+                callback(null, convertedPrices);
+            });
+        };
+
         Localization = Model.inherit({
             fetch: fetch,
             getCountries: getCountries,
             getVAT: getVAT,
-            convertPrice: convertPrice
+            convertPrice: convertPrice,
+            convertPrices: convertPrices
         });
         Localization = new Localization.constructor({
             rootURL: Config.API_URL

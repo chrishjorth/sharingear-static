@@ -16,16 +16,17 @@ define(
 
 			getRate;
 
-		getRate = function(currency, callback) {
-			var key, query;
+		getRate = function(fromCurrency, toCurrency, callback) {
+			var key, query, code;
+			code = fromCurrency + toCurrency;
 			for(key in currencies) {
-				if(key === currency) {
+				if(key === code) {
 					callback(null, currencies[key]);
 					return;
 				}
 			}
-			query = 'select * from yahoo.finance.xchange where pair in ("EUR';
-			query += currency;
+			query = 'select * from yahoo.finance.xchange where pair in ("';
+			query += code;
 			query += '")&format=json&env=store://datatables.org/alltableswithkeys&callback=';
 			this.get(query, function(error, data) {
 				var rate;
@@ -34,7 +35,7 @@ define(
 					return;
 				}
 				rate = parseFloat(data.query.results.rate.Rate);
-				currencies[currency] = rate;
+				currencies[code] = rate;
 				callback(null, rate);
 			});
 		};
