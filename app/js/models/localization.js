@@ -5,13 +5,14 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'config', 'model'],
-	function(_, Utilities, Config, Model) {
+	['underscore', 'utilities', 'config', 'model', 'models/xchangerates'],
+	function(_, Utilities, Config, Model, XChangeRates) {
 		var Localization,
 
             fetch,
 			getCountries,
-            getVAT;
+            getVAT,
+            convertPrice;
 
 		fetch = function() {
             var model = this;
@@ -46,10 +47,25 @@ define(
             return null;
         };
 
+        /**
+         * @param price: the price in EURO to convert.
+         * @param currency: the currency to convert to.
+         */
+        convertPrice = function(price, currency, callback) {
+            XChangeRates.getRate(currency, function(error, rate) {
+                if(error) {
+                    callback('Error getting rate: ' + error);
+                    return;
+                }
+                callback(null, price * rate);
+            });
+        };
+
         Localization = Model.inherit({
             fetch: fetch,
             getCountries: getCountries,
-            getVAT: getVAT
+            getVAT: getVAT,
+            convertPrice: convertPrice
         });
         Localization = new Localization.constructor({
             rootURL: Config.API_URL
