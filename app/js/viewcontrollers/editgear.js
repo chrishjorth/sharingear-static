@@ -18,6 +18,7 @@ define(
             populateBrandSelect,
             populateSubtypeSelect,
 			populateAccessories,
+            handleSubtypeChange,
 
             populateImages,
             handleImageUpload,
@@ -28,7 +29,7 @@ define(
             handleDeliveryCheckbox,
 
 			initAccessories,
-			initPriceSuggestions,
+            populatePricing,
 			populatePriceSuggestions,
 
             renderAvailability,
@@ -53,6 +54,7 @@ define(
 
 			this.gear = this.passedData;
 			this.templateParameters = this.gear.data;
+            this.templateParameters.currency = App.user.data.currency;
 
             this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 		};
@@ -60,7 +62,6 @@ define(
 		didRender = function() {
 			this.populateBrandSelect();
 			this.populateSubtypeSelect();
-
 
 			this.populateImages();
             this.populateCountries($('#editgearpricing-country', this.$element));
@@ -90,15 +91,15 @@ define(
             }
 
 			this.initAccessories();
-			this.initPriceSuggestions();
+            this.populatePricing();
+			this.populatePriceSuggestions();
 
             this.setupEvent('click', '#editgear-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#editgear-save-btn', this, this.handleSave);
             this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
             this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
-			this.setupEvent('change', '#editgear-subtype', this, this.populateAccessories);
-			this.setupEvent('change', '#editgear-subtype', this, this.populatePriceSuggestions);
+			this.setupEvent('change', '#editgear-subtype', this, this.handleSubtypeChange);
 
             this.setupEvent('click', '#gearavailability-today-btn', this, this.handleToday);
             this.setupEvent('click', '#gearavailability-previous-btn', this, this.handlePrevious);
@@ -127,22 +128,6 @@ define(
             $('#editgearpricingloc-form #delivery_price').val(price);
             $('#editgearpricingloc-form #delivery_distance').val(distance);
         };
-
-		initPriceSuggestions = function () {
-			var gearClassification = App.gearClassification.data.classification,
-				view,gearSubtypes,i;
-
-			view = this;
-
-			gearSubtypes = gearClassification[view.gear.data.gear_type];
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#editgear-subtype', view.$element).val()) {
-					$('#editgear-price_a-suggestion').html(gearSubtypes[i].price_a_suggestion);
-					$('#editgear-price_b-suggestion').html(gearSubtypes[i].price_b_suggestion);
-					$('#editgear-price_c-suggestion').html(gearSubtypes[i].price_c_suggestion);
-				}
-			}
-		};
 
 		initAccessories = function () {
 			var gearClassification = App.gearClassification.data.classification,
@@ -407,6 +392,12 @@ define(
 			$subtypeSelect.append(html);
 		};
 
+        handleSubtypeChange = function(event) {
+            var view = event.data;
+            view.populateAccessories();
+            view.populatePriceSuggestions();
+        };
+
 		populateImages = function() {
 			var images = this.gear.data.images.split(','),
 				html = '',
@@ -420,20 +411,67 @@ define(
 			$('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
 		};
 
-		populatePriceSuggestions = function (event) {
+        populatePricing = function() {
+            var view = this;
+            Localization.convertPrice(this.gear.data.price_a, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#price_a', view.$element).val(Math.ceil(convertedPrice));
+            });
+            Localization.convertPrice(this.gear.data.price_b, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#price_b', view.$element).val(Math.ceil(convertedPrice));
+            });
+            Localization.convertPrice(this.gear.data.price_c, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#price_c', view.$element).val(Math.ceil(convertedPrice));
+            });
+        };
+
+		populatePriceSuggestions = function () {
 			var gearClassification = App.gearClassification.data.classification,
-				view,gearSubtypes,i;
+                view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
 
-			view = event.data;
+            view = this;
 
-			gearSubtypes = gearClassification[view.gear.data.gear_type];
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#editgear-subtype', view.$element).val()) {
-					$('#editgear-price_a-suggestion').html(gearSubtypes[i].price_a_suggestion);
-					$('#editgear-price_b-suggestion').html(gearSubtypes[i].price_b_suggestion);
-					$('#editgear-price_c-suggestion').html(gearSubtypes[i].price_c_suggestion);
-				}
-			}
+            gearSubtypes = gearClassification[view.gear.data.gear_type];
+            for(i = 0; i < gearSubtypes.length; i++) {
+                if (gearSubtypes[i].subtype === $('#editgear-subtype', view.$element).val()) {
+                    suggestionA = gearSubtypes[i].price_a_suggestion;
+                    suggestionB = gearSubtypes[i].price_b_suggestion;
+                    suggestionC = gearSubtypes[i].price_c_suggestion;
+                    i = gearSubtypes.length;
+                }
+            }
+            Localization.convertPrice(suggestionA, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#editgear-price_a-suggestion').html(Math.ceil(convertedPrice));
+            });
+            Localization.convertPrice(suggestionB, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#editgear-price_b-suggestion').html(Math.ceil(convertedPrice));
+            });
+            Localization.convertPrice(suggestionC, App.user.data.currency, function(error, convertedPrice) {
+                if(error) {
+                    console.log('Could not convert price: ' + error);
+                    return;
+                }
+                $('#editgear-price_c-suggestion').html(Math.ceil(convertedPrice));
+            });
 		};
 
 		populateAccessories = function (event) {
@@ -690,6 +728,7 @@ define(
             populateBrandSelect: populateBrandSelect,
             populateSubtypeSelect: populateSubtypeSelect,
 			populateAccessories:populateAccessories,
+            handleSubtypeChange: handleSubtypeChange,
 
             populateImages: populateImages,
             handleImageUpload: handleImageUpload,
@@ -705,7 +744,7 @@ define(
             handleSubmerchantSubmit: handleSubmerchantSubmit,
             handleSubmerchantAccept: handleSubmerchantAccept,
 
-			initPriceSuggestions:initPriceSuggestions,
+            populatePricing: populatePricing,
 			populatePriceSuggestions:populatePriceSuggestions,
 
             handleCancel: handleCancel,

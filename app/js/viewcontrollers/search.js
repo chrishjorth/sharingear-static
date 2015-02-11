@@ -233,10 +233,6 @@ define(
                     
                     searchResult.resultNum = i;
 
-                    /*searchResult.price_a = Localization.convertPrice(searchResult.price_a, defaultSearchResults.currency);
-                    searchResult.price_b = Localization.convertPrice(searchResult.price_b, defaultSearchResults.currency);
-                    searchResult.price_c = Localization.convertPrice(searchResult.price_c, defaultSearchResults.currency);*/
-
 					_.extend(defaultSearchResults, searchResult);
 					html += searchResultTemplate(defaultSearchResults);
 
