@@ -6,21 +6,18 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'utilities', 'app', 'models/gear', 'models/booking', 'moment'],
-	function(_, $, Config, ViewController, Utilities, App, Gear, Booking, Moment) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'utilities', 'app', 'models/gear', 'models/booking', 'models/localization', 'moment'],
+	function(_, $, Config, ViewController, Utilities, App, Gear, Booking, Localization, Moment) {
 		var didInitialize,
 			didRender,
 			renderCalendar,
-			renderPrice,
+			renderPricing,
+			calculatePrice,
 			
 			handleCancel,
 			handlePickupSelection,
 			handleDeliverySelection,
 			handleNext;
-
-			//enableBooking,
-			//setStartMoment,
-			//setEndMoment;
 
 		didInitialize = function() {
 			var view = this;
@@ -41,9 +38,7 @@ define(
 				gear_type: this.gear.data.gear_type,
 				subtype: this.gear.data.subtype,
 				model: this.gear.data.model,
-				price_a: this.gear.data.price_a,
-				price_b: this.gear.data.price_b,
-				price_c: this.gear.data.price_c
+				currency: App.user.data.currency
 			};
 
 			if(this.passedData.booking) {
@@ -59,7 +54,8 @@ define(
 		};
 
 		didRender = function() {
-			this.renderPrice();
+			this.renderPricing();
+			this.calculatePrice();
 			this.renderCalendar();
 			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#gearbooking-next', this, this.handleNext);
@@ -96,16 +92,24 @@ define(
 			});
 		};
 
-		renderPrice = function() {
-			var price = 0,
+		renderPricing = function() {
+			var view = this;
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], 'EUR', App.user.data.currency, function(error, convertedPrices) {
+				if(error) {
+					console.log('Error converting prices: ' + error);
+					return;
+				}
+				$('.price_a', view.$element).html(Math.ceil(convertedPrices[0]));
+				$('.price_b', view.$element).html(Math.ceil(convertedPrices[1]));
+				$('.price_c', view.$element).html(Math.ceil(convertedPrices[2]));
+			});
+		};
+
+		calculatePrice = function() {
+			var view = this,
 				startMoment = new Moment(this.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss'),
 				endMoment = new Moment(this.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss'),
 				duration, months, weeks, days;
-
-			/*console.log('START DATE:');
-			console.log(this.startMoment);
-			console.log('END DATE:');
-			console.log(this.endMoment);*/
 
 			//Get number of months, get number of weeks from remainder, get number of days from remainder
 			duration = Moment.duration(endMoment.diff(startMoment));
@@ -121,9 +125,15 @@ define(
 			$('#gearbooking-weeks', this.$element).html(weeks);
 			$('#gearbooking-months', this.$element).html(months);
 
-			price = months * this.gear.data.price_c + weeks * this.gear.data.price_b + days * this.gear.data.price_a;
-
-			$('#gearbooking-price', this.$element).html(price);
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], 'EUR', App.user.data.currency, function(error, convertedPrices) {
+				var price;
+				if(error) {
+					console.log('Error converting prices: ' + error);
+					return;
+				}
+				price = months * Math.ceil(convertedPrices[2]) + weeks * Math.ceil(convertedPrices[1]) + days * Math.ceil(convertedPrices[0]);
+				$('#gearbooking-price', view.$element).html(price);
+			});
 		};
 
 		handleCancel = function() {
@@ -133,12 +143,12 @@ define(
 		handlePickupSelection = function(calendarVC) {
 			this.newBooking.data.start_time = calendarVC.pickupDate.format('YYYY-MM-DD HH:mm:ss');
 			this.newBooking.data.end_time = null;
-			this.renderPrice();
+			this.calculatePrice();
 		};
 
 		handleDeliverySelection = function(calendarVC) {
 			this.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');
-			this.renderPrice();
+			this.calculatePrice();
 		};
 
 		handleNext = function(event) {
@@ -159,50 +169,17 @@ define(
 			App.router.openModalSiblingView('payment', passedData);
 		};
 
-		/*enableBooking = function() {
-			if(this.bookingBtnEnabled === false) {
-				$('#gearbooking-book-btn', this.$element).prop('disabled', false);
-				this.setupEvent('click', '#gearbooking-book-btn', this, this.handleBook);
-				this.bookingBtnEnabled = true;
-			}
-		};
-
-		setStartMoment = function(year, month, date) {
-			if(this.startMoment === null) {
-				this.startMoment = new Moment(year + '-' + month + '-' + date, 'YYYY-MM-DD');
-			}
-			else {
-				this.startMoment.date(date);
-				this.startMoment.month(month - 1);
-				this.startMoment.year(year);
-			}
-		};
-
-		setEndMoment = function(year, month, date) {
-			if(this.endMoment === null) {
-				this.endMoment = new Moment(year + '-' + month + '-' + date, 'YYYY-MM-DD');
-			}
-			else {
-				this.endMoment.date(date);
-				this.endMoment.month(month - 1);
-				this.endMoment.year(year);
-			}
-		};*/
-
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			didRender: didRender,
 			renderCalendar: renderCalendar,
-			renderPrice: renderPrice,
+			renderPricing: renderPricing,
+			calculatePrice: calculatePrice,
 
 			handleCancel: handleCancel,
 			handlePickupSelection: handlePickupSelection,
 			handleDeliverySelection: handleDeliverySelection,
-			handleNext: handleNext//,
-
-			//enableBooking: enableBooking,
-			//setStartMoment: setStartMoment,
-			//setEndMoment: setEndMoment
+			handleNext: handleNext
 		});
 	}
 );
