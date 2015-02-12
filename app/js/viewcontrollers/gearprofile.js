@@ -91,7 +91,6 @@ define(
 							owner_id: gearData.owner_id
 						};
 						view.render();
-						view.renderPricing();
 					});
 
 					view.gear.getAvailability(App.user.data.id, function(error, result) {
@@ -114,6 +113,7 @@ define(
 			}
 			
 			this.renderGearPictures();
+			this.renderPricing();
 			this.renderOwnerPicture();
 			this.renderAccessories();
 			this.renderMap();
@@ -201,27 +201,33 @@ define(
 
 		renderPricing = function() {
 			var view = this;
-			Localization.convertPrice(this.gear.data.price_a, App.user.data.currency, function(error, convertedPrice) {
-				if(error) {
-					console.log('Could not convert price: ' + error);
-					return;
-				}
-				$('#gearprofile-price_a', view.$element).html(Math.ceil(convertedPrice));
-			});
-			Localization.convertPrice(this.gear.data.price_b, App.user.data.currency, function(error, convertedPrice) {
-				if(error) {
-					console.log('Could not convert price: ' + error);
-					return;
-				}
-				$('#gearprofile-price_b', view.$element).html(Math.ceil(convertedPrice));
-			});
-			Localization.convertPrice(this.gear.data.price_c, App.user.data.currency, function(error, convertedPrice) {
-				if(error) {
-					console.log('Could not convert price: ' + error);
-					return;
-				}
-				$('#gearprofile-price_c', view.$element).html(Math.ceil(convertedPrice));
-			});
+			if(this.gear.data.price_a > 0) {
+				Localization.convertPrice(this.gear.data.price_a, App.user.data.currency, function(error, convertedPrice) {
+					if(error) {
+						console.log('Could not convert price: ' + error);
+						return;
+					}
+					$('#gearprofile-price_a', view.$element).html(Math.ceil(convertedPrice));
+				});
+			}
+			if(this.gear.data.price_b > 0) {
+				Localization.convertPrice(this.gear.data.price_b, App.user.data.currency, function(error, convertedPrice) {
+					if(error) {
+						console.log('Could not convert price: ' + error);
+						return;
+					}
+					$('#gearprofile-price_b', view.$element).html(Math.ceil(convertedPrice));
+				});
+			}
+			if(this.gear.data.price_c > 0) {
+				Localization.convertPrice(this.gear.data.price_c, App.user.data.currency, function(error, convertedPrice) {
+					if(error) {
+						console.log('Could not convert price: ' + error);
+						return;
+					}
+					$('#gearprofile-price_c', view.$element).html(Math.ceil(convertedPrice));
+				});
+			}
 		};
 
 		renderMap = function() {
