@@ -2371,7 +2371,7 @@ button:active .sg-gray-bg {
 		padding-bottom: 8px;
 	}
 }
-.gearprofile .pricing .sg-white span {
+.gearprofile .pricing .sg-white .currency {
 	font-size: 10px;
 	vertical-align: super;
 }

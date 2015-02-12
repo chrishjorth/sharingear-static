@@ -70,7 +70,7 @@ define(
                 start_time = new Moment(view.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
                 end_time = new Moment(view.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
 
-                price = view.booking.data.price;
+                price = (view.passedData.mode === 'owner' ? view.booking.data.owner_price : view.booking.data.renter_price);
 				//VAT = Localization.getVAT(App.user.data.country);
 				//priceVAT = price / 100 * VAT;
 				
@@ -89,7 +89,7 @@ define(
                 	end_time: end_time.format('DD/MM/YYYY'),
                 	//price: price + priceVAT + fee + feeVAT,
                 	total: (total).toFixed(2),
-                	currency: view.booking.data.currency
+                	currency: (view.passedData.mode === 'owner' ? view.booking.data.owner_currency : view.booking.data.renter_currency)
                 });
 
                 view.peerUser = new User.constructor({

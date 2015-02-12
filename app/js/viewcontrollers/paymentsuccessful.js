@@ -73,7 +73,7 @@ define(
 					duration = Moment.duration(endMoment.diff(startMoment));
 					days = parseInt(duration.days(), 10);
 
-					price = booking.data.price;
+					price = booking.data.renter_price;
 					//VAT = Localization.getVAT(App.user.data.country);
 					//priceVAT = price / 100 * VAT;
 					fee = price / 100 * App.user.data.buyer_fee;
@@ -85,7 +85,7 @@ define(
 						model: view.gear.data.model,
 						start_date: startMoment.format('DD/MM/YYYY'),
 						end_date: endMoment.format('DD/MM/YYYY'),
-						currency: 'DKK',
+						currency: booking.data.renter_currency,
 						//vat: VAT,
 						vat: '',
 						price: price,

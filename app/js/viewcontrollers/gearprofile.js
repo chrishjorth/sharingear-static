@@ -6,15 +6,15 @@
 'use strict';
 
 define(
-	['jquery', 'config', 'viewcontroller', 'app', 'utilities', 'models/gear', 'models/user', 'googlemaps','owlcarousel', 'facebook'],
-	function($, Config, ViewController, App, Utilities, Gear, User, GoogleMaps, owlcarousel, FB) {
-
+	['jquery', 'config', 'viewcontroller', 'app', 'utilities', 'models/gear', 'models/user', 'models/localization', 'googlemaps','owlcarousel', 'facebook'],
+	function($, Config, ViewController, App, Utilities, Gear, User, Localization, GoogleMaps, owlcarousel, FB) {
 		var paymentSuccessModalOpen = false,
 
 			didInitialize,
 			didRender,
 			renderOwnerPicture,
 			renderGearPictures,
+			renderPricing,
 			renderMap,
 			renderAccessories,
 			renderActionButton,
@@ -33,9 +33,7 @@ define(
 				model: '',
 				description: '',
 				accessories:null,
-				price_a: '',
-				price_b: '',
-				price_c: '',
+				currency: App.user.data.currency,
 				name: '',
 				bio: '',
 				location: '',
@@ -86,9 +84,7 @@ define(
 							model: gearData.model,
 							description: gearData.description,
 							accessories: gearData.accessories,
-							price_a: gearData.price_a,
-							price_b: gearData.price_b,
-							price_c: gearData.price_c,
+							currency: App.user.data.currency,
 							name: ownerData.name + ' ' + ownerData.surname.substring(0, 1) + '.',
 							bio: ownerData.bio,
 							location: gearData.city + ', ' + gearData.country,
@@ -120,6 +116,7 @@ define(
 			this.renderOwnerPicture();
 			this.renderAccessories();
 			this.renderMap();
+			this.renderPricing();
 
             this.renderActionButton();
 
@@ -200,6 +197,31 @@ define(
                 paginationSpeed: 400,
                 singleItem: true
             });
+		};
+
+		renderPricing = function() {
+			var view = this;
+			Localization.convertPrice(this.gear.data.price_a, App.user.data.currency, function(error, convertedPrice) {
+				if(error) {
+					console.log('Could not convert price: ' + error);
+					return;
+				}
+				$('#gearprofile-price_a', view.$element).html(Math.ceil(convertedPrice));
+			});
+			Localization.convertPrice(this.gear.data.price_b, App.user.data.currency, function(error, convertedPrice) {
+				if(error) {
+					console.log('Could not convert price: ' + error);
+					return;
+				}
+				$('#gearprofile-price_b', view.$element).html(Math.ceil(convertedPrice));
+			});
+			Localization.convertPrice(this.gear.data.price_c, App.user.data.currency, function(error, convertedPrice) {
+				if(error) {
+					console.log('Could not convert price: ' + error);
+					return;
+				}
+				$('#gearprofile-price_c', view.$element).html(Math.ceil(convertedPrice));
+			});
 		};
 
 		renderMap = function() {
@@ -318,6 +340,7 @@ define(
 			didInitialize: didInitialize,
 			didRender: didRender,
 			renderGearPictures: renderGearPictures,
+			renderPricing: renderPricing,
 			renderMap: renderMap,
 			renderAccessories: renderAccessories,
             renderOwnerPicture: renderOwnerPicture,

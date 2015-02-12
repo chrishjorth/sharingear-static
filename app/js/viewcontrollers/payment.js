@@ -23,7 +23,8 @@ define(
 
 		didInitialize = function () {
 			//var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
-			var startMoment, endMoment, duration, months, weeks, days, price, fee;
+			var view = this,
+				startMoment, endMoment, duration, months, weeks, days, fee;
 
 			this.booking = this.passedData.booking;
 			this.gear = this.passedData.gear;
@@ -41,31 +42,46 @@ define(
 			duration = Moment.duration(endMoment.diff(startMoment));
 			days = parseInt(duration.days(), 10);
 
-			price = months * this.gear.data.price_c + weeks * this.gear.data.price_b + days * this.gear.data.price_a;
-			//VAT = Localization.getVAT(App.user.data.country);
-			//priceVAT = parseFloat(price / 100 * VAT);
-			fee = parseFloat(price / 100 * App.user.data.buyer_fee);
-			//feeVAT = parseFloat(fee / 100 * VAT);
-
-			this.templateParameters = {
+			view.templateParameters = {
 				brand: this.gear.data.brand,
 				subtype: this.gear.data.subtype,
 				model: this.gear.data.model,
 				start_date: startMoment.format('DD/MM/YYYY'),
 				end_date: endMoment.format('DD/MM/YYYY'),
-				currency: 'DKK',
+				currency: App.user.data.currency,
 				//vat: VAT,
 				vat: '',
-				price: price.toFixed(2),
+				price: '',
 				//price_vat: priceVAT.toFixed(2),
 				price_vat: '',
-				fee: fee.toFixed(2),
+				fee: '',
 				//fee_vat: feeVAT.toFixed(2),
 				fee_vat: '',
 				//total: (price + priceVAT + fee + feeVAT).toFixed(2)
-				total: (price + fee).toFixed(2)
+				total: ''
 			};
+
 			this.isPaying = false;
+
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], 'EUR', App.user.data.currency, function(error, convertedPrices) {
+				var price;
+				if(error) {
+					console.log('Error converting prices: ' + error);
+					return;
+				}
+				price = months * Math.ceil(convertedPrices[2]) + weeks * Math.ceil(convertedPrices[1]) + days * Math.ceil(convertedPrices[0]);
+				//VAT = Localization.getVAT(App.user.data.country);
+				//priceVAT = parseFloat(price / 100 * VAT);
+				fee = parseFloat(price / 100 * App.user.data.buyer_fee);
+				//feeVAT = parseFloat(fee / 100 * VAT);
+
+				_.extend(view.templateParameters, {
+					price: price,
+					fee: fee.toFixed(2),
+					total: (price + fee).toFixed(2)
+				});
+				view.render();
+			});
 		};
 
 		didRender = function () {

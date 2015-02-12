@@ -37,7 +37,9 @@ define(
                 	city: '',
                 	image_url: '',
                 	bio: '',
-                	submerchant: false
+                	submerchant: false,
+                	country: '',
+                	currency: 'EUR'
 				};
 			}
 		};

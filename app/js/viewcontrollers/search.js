@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'underscore', 'config', 'viewcontroller', 'app', 'googlemaps', 'models/gearlist', 'facebook'],
-	function($, _, Config, ViewController, App, GoogleMaps, GearList, FB) {
+	['jquery', 'underscore', 'config', 'viewcontroller', 'app', 'googlemaps', 'models/gearlist', 'models/localization', 'facebook'],
+	function($, _, Config, ViewController, App, GoogleMaps, GearList, Localization, FB) {
 		var searchBlockID = 'home-search-row',
 			geocoder,
 			
@@ -179,7 +179,7 @@ define(
 
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
-					defaultSearchResults, handleImageLoad, html, searchResult, i, img;
+					defaultSearchResults, handleImageLoad, handlePrices, html, searchResult, i, img;
 
 				defaultSearchResults = {
 					id: 0,
@@ -191,6 +191,7 @@ define(
 					images: '',
                     image: '',
 					price: 0,
+					currency: App.user.data.currency,
 					city: '',
 					address: '',
 					price_a: 0,
@@ -210,6 +211,17 @@ define(
 					$result.css('background-image', 'url("' + this.src + '")');
 				};
 
+				handlePrices = function(resultNum) {
+					var $price = $('#search-results-' + resultNum + ' .price_a', $searchBlock);
+					Localization.convertPrice(searchResults[resultNum].data.price_a, App.user.data.currency, function(error, convertedPrice) {
+						if(error) {
+							console.log('Could not convert price: ' + error);
+							return;
+						}
+						$price.html(Math.ceil(convertedPrice));
+					});
+				};
+
 				html = '';
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i].data;
@@ -218,7 +230,7 @@ define(
                     if (searchResult.image === '') {
                         searchResult.image = 'images/placeholder_grey.png';
                     }
-                    view.price = searchResults[i].price_a;
+                    
                     searchResult.resultNum = i;
 
 					_.extend(defaultSearchResults, searchResult);
@@ -230,6 +242,11 @@ define(
 					img.src = searchResult.image;
 				}
 				$searchBlock.append(html);
+
+				//TODO: Optimize this to be included in previous loop, ie build search results in memory during loop.
+				for(i = 0; i < searchResults.length; i++) {
+					handlePrices(i);
+				}
 
 				if(callback && typeof callback === 'function') {
 					callback();
