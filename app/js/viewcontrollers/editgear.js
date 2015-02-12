@@ -683,15 +683,24 @@ define(
             _.extend(view.gear.data, updatedGearData);
 
 			updateCall = function() {
-				view.gear.save(App.user.data.id, function(error) {
+                Localization.convertPrices([updatedGearData.price_a, updatedGearData.price_b, updatedGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
                     if(error) {
-                        alert('Error updating gear.');
-						console.log(error);
-                        view.toggleLoading();
-						return;
-					}
-					App.router.closeModalView();
-				});
+                        console.log('Error converting prices: ' + error);
+                        return;
+                    }
+                    view.gear.data.price_a = convertedPrices[0];
+                    view.gear.data.price_b = convertedPrices[1];
+                    view.gear.data.price_c = convertedPrices[2];
+				    view.gear.save(App.user.data.id, function(error) {
+                        if(error) {
+                            alert('Error updating gear.');
+						  console.log(error);
+                            view.toggleLoading();
+						  return;
+					   }
+					   App.router.closeModalView();
+				    });
+                });
 			};
 
 			isLocationSame = (currentAddress === updatedGearData.address &&
