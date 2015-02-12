@@ -289,7 +289,7 @@ define(
 			var view = event.data,
 				$pickupTab, $deliveryTab;
 			
-			if(view.pickupActive === true) {
+			if(view.pickupActive === true && view.pickupDate !== null) {
 				$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 				$deliveryTab.addClass('sg-toptab-active');
 				$pickupTab = $('#pickupdeliverycalendar-pickupdate', view.$element);

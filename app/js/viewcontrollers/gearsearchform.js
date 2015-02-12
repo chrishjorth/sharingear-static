@@ -74,21 +74,22 @@ define(
                 $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
             }
 
+            startDate = new Moment();
+			endDate = new Moment(startDate);
+			endDate.add(1, 'days');
+
 			queryString = Utilities.getQueryString();
 			if(queryString) {
             	previousSearchGear = Utilities.getQueryStringParameterValue(queryString, 'gear');
             	previousSearchLocation = Utilities.getQueryStringParameterValue(queryString, 'location');
             	previousSearchDateRange = Utilities.getQueryStringParameterValue(queryString, 'daterange');
-            	previousSearchDateRange = previousSearchDateRange.split('-');
-            	$('#search-gear', this.$element).val(previousSearchGear);
-            	$('#search-location', this.$element).val(previousSearchLocation);
-            	startDate = new Moment(previousSearchDateRange[0], 'YYYYMMDD');
-            	endDate = new Moment(previousSearchDateRange[1], 'YYYYMMDD');
-			}
-			else {
-				startDate = new Moment();
-				endDate = new Moment(startDate);
-				endDate.add(1, 'days');
+            	if(!previousSearchDateRange) {
+            		previousSearchDateRange = previousSearchDateRange.split('-');
+            		$('#search-gear', this.$element).val(previousSearchGear);
+            		$('#search-location', this.$element).val(previousSearchLocation);
+            		startDate = new Moment(previousSearchDateRange[0], 'YYYYMMDD');
+            		endDate = new Moment(previousSearchDateRange[1], 'YYYYMMDD');
+            	}
 			}
 			$searchPickup.val(startDate.format('DD/MM/YYYY'));
             $searchReturn.val(endDate.format('DD/MM/YYYY'));
