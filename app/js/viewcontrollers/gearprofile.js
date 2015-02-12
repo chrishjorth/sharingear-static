@@ -91,6 +91,7 @@ define(
 							owner_id: gearData.owner_id
 						};
 						view.render();
+						view.renderPricing();
 					});
 
 					view.gear.getAvailability(App.user.data.id, function(error, result) {
@@ -116,7 +117,6 @@ define(
 			this.renderOwnerPicture();
 			this.renderAccessories();
 			this.renderMap();
-			this.renderPricing();
 
             this.renderActionButton();
 
