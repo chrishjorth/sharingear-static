@@ -83,7 +83,7 @@ define(
             	previousSearchGear = Utilities.getQueryStringParameterValue(queryString, 'gear');
             	previousSearchLocation = Utilities.getQueryStringParameterValue(queryString, 'location');
             	previousSearchDateRange = Utilities.getQueryStringParameterValue(queryString, 'daterange');
-            	if(!previousSearchDateRange) {
+            	if(previousSearchDateRange && previousSearchDateRange !== null) {
             		previousSearchDateRange = previousSearchDateRange.split('-');
             		$('#search-gear', this.$element).val(previousSearchGear);
             		$('#search-location', this.$element).val(previousSearchLocation);
