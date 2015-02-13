@@ -13,10 +13,12 @@ define(
 			renderMissingDataInputs,
 			initExpiration,
 			populateCountries,
+			populateBirthdateInput,
 
 			handleCancel,
 			handleBack,
 			handleNext,
+			handleBirthdateChange,
 
 			processPayment,
 			resetPayButton;
@@ -91,6 +93,7 @@ define(
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#payment-back-btn', this, this.handleBack);
 			this.setupEvent('click', '#payment-next-btn', this, this.handleNext);
+			this.setupEvent('change', '#payment-birthdate-year, #payment-birthdate-month', this, this.handleBirthdateChange);
 		};
 
 		initExpiration = function () {
@@ -115,7 +118,10 @@ define(
 		renderMissingDataInputs = function() {
 			var user = App.user.data;
 			if(user.birthdate && user.birthdate !== '') {
-				$('#payment-birthdate', this.$element).parent().addClass('hidden');
+				$('#payment-birthdate', this.$element).addClass('hidden');
+			}
+			else {
+				this.populateBirthdateInput();
 			}
 			if(user.address && user.address !== '') {
 				$('#payment-address', this.$element).parent().addClass('hidden');
@@ -154,6 +160,49 @@ define(
 			$select.html(html);
 		};
 
+		populateBirthdateInput = function() {
+			var $inputContainer = $('.birthday-select', this.$element),
+				$selectDay = $('#payment-birthdate-day', $inputContainer),
+				$selectMonth = $('#payment-birthdate-month', $inputContainer),
+				$selectYear = $('#payment-birthdate-year', $inputContainer),
+				html = '',
+				today = new Moment(),
+				selectedYear, selectedMonth, maxYear, monthDays, i;
+
+			selectedYear = $selectYear.val();
+			maxYear = today.year() - Config.MIN_USER_AGE;
+			for(i = 1914; i <= maxYear; i++) {
+				html += '<option>' + i + '</option>';
+			}
+			$selectYear.html(html);
+			if(selectedYear === null) {
+				selectedYear = today.year() - Config.AVG_USER_AGE;
+			}
+			$selectYear.val(selectedYear);
+
+			selectedMonth = $selectMonth.val();
+			html = '';
+			for(i = 1; i <= 12; i++) {
+				html += '<option>' + i + '</option>';
+			}
+			$selectMonth.html(html);
+			if(selectedMonth === null) {
+				selectedMonth = 1;
+			}
+			$selectMonth.val(selectedMonth);
+
+			monthDays = new Moment(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD');
+			monthDays = monthDays.endOf('month').date();
+			html = '';
+			for(i = 1; i <= monthDays; i++) {
+				html += '<option>' + i + '</option>';
+			}
+			$selectDay.html(html);
+			
+			html = '';
+			
+		};
+
 		handleCancel = function() {
 			App.router.closeModalView();
 		};
@@ -172,10 +221,14 @@ define(
 			var view = event.data,
 				userData = App.user.data,
 				needToUpdateUser = false,
+				day, month, year,
 				cardNumber, expirationDateMonth,expirationDateYear,expirationDate, CSC;
 
 			if(userData.birthdate === null || userData.birthdate === '') {
-				userData.birthdate = new Moment($('#payment-birthdate', view.$element).val(), 'DD/MM/YYYY');
+				day = $('#payment-birthdate-day', view.$element).val();
+				month = $('#payment-birthdate-month', view.$element).val();
+				year = $('#payment-birthdate-year', view.$element).val();
+				userData.birthdate = new Moment(day + '/' + month + '/' + year, 'DD/MM/YYYY');
 				if(userData.birthdate.isValid() === false) {
 					userData.birthdate = null;
 					alert('Date of birth is invalid.');
@@ -301,6 +354,11 @@ define(
 			}
 		};
 
+		handleBirthdateChange = function(event) {
+			var view = event.data;
+			view.populateBirthdateInput();
+		};
+
 		processPayment = function(cardNumber, expirationDate, CSC) {
 			var view = this,
 				card, cardData;
@@ -354,10 +412,12 @@ define(
 			renderMissingDataInputs: renderMissingDataInputs,
 			initExpiration:initExpiration,
 			populateCountries: populateCountries,
+			populateBirthdateInput: populateBirthdateInput,
 
 			handleCancel: handleCancel,
 			handleBack: handleBack,
 			handleNext: handleNext,
+			handleBirthdateChange: handleBirthdateChange,
 
 			processPayment: processPayment,
 			resetPayButton: resetPayButton
