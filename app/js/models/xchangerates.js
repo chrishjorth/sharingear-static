@@ -34,6 +34,10 @@ define(
 					callback('Error retrieving exchange rate: ' + error);
 					return;
 				}
+				if(!data.query.results || data.query.results === null) {
+					callback('No rate returned.');
+					return;
+				}
 				rate = parseFloat(data.query.results.rate.Rate);
 				currencies[code] = rate;
 				callback(null, rate);
