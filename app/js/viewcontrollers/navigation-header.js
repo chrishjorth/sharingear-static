@@ -88,7 +88,7 @@ define(
                 html += '<a href="#dashboard/yourreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
                 html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
                 html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
-                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
+                html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
 			}
 
 			$menuList.html(html);
