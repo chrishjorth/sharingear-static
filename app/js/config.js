@@ -7,7 +7,7 @@
 define(
 	[],
 	function() {
-		var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
+		var IS_PRODUCTION = true, //This variable should be set and saved according to the git branch: true for master and false for develop
 			MIN_USER_AGE = 13,
 			AVG_USER_AGE = 27,
 			API_URL,
