@@ -50,7 +50,7 @@ define(
 					sinon.assert.calledOnce(spec.loadHeaderSpy);
 					sinon.assert.calledWith(spec.loadHeaderSpy, App.$headerContainer);
 					sinon.assert.calledOnce(spec.navigateToSpy);
-					sinon.assert.calledWith(spec.navigateToSpy, 'home');
+					sinon.assert.calledWith(spec.navigateToSpy, 'hdasjk');
 					done();
 				});
 			});
