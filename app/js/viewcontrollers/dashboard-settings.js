@@ -25,10 +25,7 @@ define(
 			}
 			$timezonesSelect.html(html);
 
-			
 			defaultTimezone = App.user.data.time_zone;
-			
-			console.log(defaultTimezone);
 			$timezonesSelect.val(defaultTimezone);
 		};
 		
