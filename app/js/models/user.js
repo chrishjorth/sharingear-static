@@ -39,7 +39,8 @@ define(
                 	bio: '',
                 	submerchant: false,
                 	country: '',
-                	currency: 'EUR'
+                	currency: 'EUR',
+                	time_zone: 'UTC'
 				};
 			}
 		};

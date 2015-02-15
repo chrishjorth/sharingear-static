@@ -5,15 +5,21 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'config', 'model', 'models/xchangerates'],
-	function(_, Utilities, Config, Model, XChangeRates) {
+	['underscore', 'utilities', 'config', 'model', 'models/xchangerates', 'moment', 'momenttz'],
+	function(_, Utilities, Config, Model, XChangeRates, Moment) {
 		var Localization,
 
+            didInitialize,
             fetch,
 			getCountries,
             getVAT,
             convertPrice,
-            convertPrices;
+            convertPrices,
+            getTimeZones;
+
+        didInitialize = function() {
+            Moment.tz.setDefault('UTC');
+        };
 
 		fetch = function() {
             var model = this;
@@ -77,12 +83,43 @@ define(
             });
         };
 
+        getTimeZones = function() {
+            var timezones = Moment.tz.names(),
+                i, offset, j, temp;
+            for(i = 0; i < timezones.length; i++) {
+                offset = Moment.tz.zone(timezones[i]).offset(Moment.utc().valueOf()) * -1; //for some reason the offset is flipped
+                offset /= 60; // convert to hours
+                timezones[i] = {
+                    name: timezones[i],
+                    UTCOffset: offset
+                };
+                for(j = i; j > 0; j--) {
+                    if(timezones[j].UTCOffset < timezones[j - 1].UTCOffset) {
+                        temp = timezones[j];
+                        timezones[j] = timezones[j - 1];
+                        timezones[j - 1] = temp;
+                    }
+                    else if(timezones[j].UTCOffset === timezones[j - 1].UTCOffset && timezones[j].name < timezones[j - 1].name) {
+                        temp = timezones[j];
+                        timezones[j] = timezones[j - 1];
+                        timezones[j - 1] = temp;
+                    }
+                    else {
+                        j = 0;
+                    }
+                }
+            }
+            return timezones;
+        };
+
         Localization = Model.inherit({
+            didInitialize: didInitialize,
             fetch: fetch,
             getCountries: getCountries,
             getVAT: getVAT,
             convertPrice: convertPrice,
-            convertPrices: convertPrices
+            convertPrices: convertPrices,
+            getTimeZones: getTimeZones
         });
         Localization = new Localization.constructor({
             rootURL: Config.API_URL
