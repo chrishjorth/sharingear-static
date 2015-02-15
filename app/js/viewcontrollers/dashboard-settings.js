@@ -16,6 +16,10 @@ define(
 				html = '',
 				i, defaultTimezone;
 
+			if(App.header) {
+                App.header.setTitle('Settings');
+            }
+
 			for(i = 0; i < timezones.length; i ++) {
 				html += '<option value="' + timezones[i].name + '">' + timezones[i].name + ' (' + (timezones[i].UTCOffset > 0 ? '+' : '') + timezones[i].UTCOffset + ' UTC)</option>';
 			}

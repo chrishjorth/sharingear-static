@@ -35,6 +35,7 @@
  *	8.o ABOUT US
  *	8.p FOOTER
  *	8.q INSURANCE
+ *	8.r DASHBOARD-SETTINGS
  * 9. HELPERS
  * 10. ICONS
  *
@@ -2804,6 +2805,11 @@ button:active .sg-gray-bg {
 
 .insurance footer {
 	margin-top: 60px;
+}
+
+/*------ 8.r DASHBOARD-SETTINGS ------*/
+.dashboard-settings > .row .col-sm-12 {
+	padding: 15px;
 }
 
 /******* 9. HELPERS *******/
