@@ -38,6 +38,7 @@ define(
                 	image_url: '',
                 	bio: '',
                 	submerchant: false,
+                	birthdate: null,
                 	country: '',
                 	currency: 'EUR',
                 	time_zone: 'UTC'

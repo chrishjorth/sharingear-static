@@ -200,7 +200,6 @@ define(
 			$selectDay.html(html);
 			
 			html = '';
-			
 		};
 
 		handleCancel = function() {

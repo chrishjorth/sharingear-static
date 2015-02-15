@@ -6,17 +6,18 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app'],
-	function(_, $, ViewController, App) {
+	['underscore', 'jquery', 'viewcontroller', 'app', 'config', 'moment'],
+	function(_, $, ViewController, App, Config, Moment) {
 
 		var didInitialize,
 			handleImageUpload,
 			didRender,
+            populateBirthdateInput,
 
             handleUploadPicButton,
-			handleSave,
-			enableSaveButton;
-
+            handleBirthdateChange,
+			handleSave;
+            
         didInitialize= function() {
             var profileImgLoaded = $.Deferred(),
 				userData;
@@ -46,7 +47,8 @@ define(
 
         didRender=function() {
             var view = this,
-                userData = this.user.data;
+                userData = this.user.data,
+                birthdate;
 
             if(App.header) {
                 App.header.setTitle('Your profile');
@@ -57,16 +59,13 @@ define(
             $('#dashboard-profile-form #email', this.$element).val(userData.email);
             $('#dashboard-profile-form #hometown', this.$element).val(userData.city);
 
-            // when page loads, save is disabled
-            view.enableSaveButton(false);
-            // enable save when something changes in one of the input fields
-            $('input, textarea', view.$element).on('input', function() {
-                view.enableSaveButton(true);
-            });
-            //Enable on image change
-            $('#prof-pic').on('change', function() {
-                view.enableSaveButton(true);
-            });
+            this.populateBirthdateInput();
+            if(userData.birthdate !== null) {
+                birthdate = new Moment(userData.birthdate, 'YYYY-MM-DD');
+                $('#dashboard-profile-birthdate-year', view.$element).val(birthdate.year());
+                $('#dashboard-profile-birthdate-month', view.$element).val(birthdate.month() + 1);
+                $('#dashboard-profile-birthdate-date', view.$element).val(birthdate.date());
+            }
 
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#dashboard-profile-pic', view.$element),
@@ -87,6 +86,50 @@ define(
             this.setupEvent('click', '.dashboard-profile-pic-upload-btn', this, this.handleUploadPicButton);
             this.setupEvent('change', '#profile-pic', this, this.handleImageUpload);
             this.setupEvent('submit', '#dashboard-profile-form', this, this.handleSave);
+            this.setupEvent('change', '#dashboard-profile-birthdate-year, #dashboard-profile-birthdate-month', this, this.handleBirthdateChange);
+        };
+
+        populateBirthdateInput = function() {
+            var $inputContainer = $('.birthday-select', this.$element),
+                $selectDay = $('#dashboard-profile-birthdate-date', $inputContainer),
+                $selectMonth = $('#dashboard-profile-birthdate-month', $inputContainer),
+                $selectYear = $('#dashboard-profile-birthdate-year', $inputContainer),
+                html = '<option> - </option>',
+                today = new Moment(),
+                selectedYear = null,
+                selectedMonth = null,
+                maxYear, monthDays, i;
+
+            selectedYear = $selectYear.val();
+            maxYear = today.year() - Config.MIN_USER_AGE;
+            for(i = 1914; i <= maxYear; i++) {
+                html += '<option value="' + i + '">' + i + '</option>';
+            }
+            $selectYear.html(html);
+            if(selectedYear !== null) {
+                $selectYear.val(selectedYear);
+            }
+
+            selectedMonth = $selectMonth.val();
+            html = '<option> - </option>';
+            for(i = 1; i <= 12; i++) {
+                html += '<option value="' + i + '">' + i + '</option>';
+            }
+            $selectMonth.html(html);
+            if(selectedMonth !== null) {
+                $selectMonth.val(selectedMonth);
+            }
+            
+
+            monthDays = new Moment(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD');
+            monthDays = monthDays.endOf('month').date();
+            html = '<option> - </option>';
+            for(i = 1; i <= monthDays; i++) {
+                html += '<option value="' + i + '">' + i + '</option>';
+            }
+            $selectDay.html(html);
+            
+            html = '';
         };
 
         handleUploadPicButton = function(event) {
@@ -118,6 +161,11 @@ define(
             });
         };
 
+        handleBirthdateChange = function(event) {
+            var view = event.data;
+            view.populateBirthdateInput();
+        };
+
         handleSave = function(event) {
             var view = event.data,
                 saveData;
@@ -134,7 +182,8 @@ define(
                 surname: $('#dashboard-profile-form #surname', view.$element).val(),
                 email: $('#dashboard-profile-form #email', view.$element).val(),
                 city: $('#dashboard-profile-form #hometown', view.$element).val(),
-                bio: $('#dashboard-profile-form #bio', view.$element).val()
+                bio: $('#dashboard-profile-form #bio', view.$element).val(),
+                birthdate: $('#dashboard-profile-birthdate-year', view.$element).val() + '-' + $('#dashboard-profile-birthdate-month', view.$element).val() + '-' + $('#dashboard-profile-birthdate-date', view.$element).val()
             };
 
             if ($('#dashboard-profile-form #name', view.$element).val()==='') {
@@ -166,28 +215,18 @@ define(
                     return;
                 }
                 $('#saveSuccessDiv', view.$element).html('Your profile has been updated.');
-                view.enableSaveButton(false);
             });
-        };
-
-        enableSaveButton = function(active) {
-            if (active === false) {
-                $('#saveButton', this.$element).attr({disabled: 'disabled'});
-            }
-            else {
-                $('#saveButton', this.$element).removeAttr('disabled');
-                $('#saveSuccessDiv', this.$element).html('');
-            }
         };
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,
 			handleImageUpload: handleImageUpload,
 			didRender: didRender,
+            populateBirthdateInput: populateBirthdateInput,
 
             handleUploadPicButton: handleUploadPicButton,
-			handleSave:handleSave,
-			enableSaveButton:enableSaveButton
+            handleBirthdateChange: handleBirthdateChange,
+			handleSave:handleSave
 		});
 
 	}
