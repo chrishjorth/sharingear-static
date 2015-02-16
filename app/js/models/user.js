@@ -39,6 +39,7 @@ define(
                 	bio: '',
                 	submerchant: false,
                 	birthdate: null,
+                	address: null,
                 	country: '',
                 	currency: 'EUR',
                 	time_zone: 'UTC'
