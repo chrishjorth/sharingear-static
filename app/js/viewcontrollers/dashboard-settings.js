@@ -15,7 +15,7 @@ define(
 			handleSave;
 
 		didInitialize = function() {
-			this.selectedTimeZone = App.user.data.time_zone;
+			this.selectedTimeZone = Localization.getCurrentTimeZone();
 		};
 
 		didRender = function() {
@@ -40,9 +40,6 @@ define(
 			$timezonesSelect.html(html);
 
 			defaultTimezone = this.selectedTimeZone;
-			if(defaultTimezone === null) {
-				defaultTimezone = 'UTC';
-			}
 			$timezonesSelect.val(defaultTimezone);
 		};
 
@@ -51,7 +48,7 @@ define(
 				selectedTimeZone, $successMessage, $saveBtn;
 			
 			selectedTimeZone = $('#dashboard-settings-timezone', view.$element).val();
-			$successMessage = $('#dashboard-settings-savesuccess', view.$element),
+			$successMessage = $('#dashboard-settings-savesuccess', view.$element);
 			$saveBtn = $('#dashboard-settings-savebtn', view.$element);
 
 			$successMessage.addClass('hidden');

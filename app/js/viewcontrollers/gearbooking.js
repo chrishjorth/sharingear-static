@@ -41,16 +41,16 @@ define(
 				currency: App.user.data.currency
 			};
 
-			if(this.passedData.booking) {
+			/*if(this.passedData.booking) {
 				this.newBooking = this.passedData.booking;
 			}
-			else {
+			else {*/
 				this.newBooking = new Booking.constructor({
 					rootURL: Config.API_URL
 				});
 				this.newBooking.initialize();
 				this.newBooking.data.gear_id = this.gear.data.id;
-			}
+			//}
 		};
 
 		didRender = function() {
@@ -77,13 +77,13 @@ define(
 					alwaysFlag: result.alwaysFlag,
 					parent: view
 				};
-				if(view.newBooking.data.start_time && view.newBooking.data.start_time !== null) {
+				/*if(view.newBooking.data.start_time && view.newBooking.data.start_time !== null) {
 					passedData.pickupDate = new Moment.tz(view.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 				}
 				if(view.newBooking.data.end_time && view.newBooking.data.end_time !== null) {
 					passedData.deliveryDate = new Moment.tz(view.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 					passedData.pickupActive = false;
-				}
+				}*/
 				require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
 					view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
 					view.calendarVC.initialize();
@@ -107,8 +107,8 @@ define(
 
 		calculatePrice = function() {
 			var view = this,
-				startMoment = new Moment.tz(this.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone()),
-				endMoment = new Moment.tz(this.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone()),
+				startMoment = new Moment.tz(this.newBooking.data.start_time, Localization.getCurrentTimeZone()),
+				endMoment = new Moment.tz(this.newBooking.data.end_time, Localization.getCurrentTimeZone()),
 				duration, months, weeks, days;
 
 			//Get number of months, get number of weeks from remainder, get number of days from remainder
@@ -150,7 +150,7 @@ define(
 				var time = popup.getSelectedTime();
 				calendarVC.pickupDate.hour(time.hours);
 				calendarVC.pickupDate.minute(time.minutes);
-				view.newBooking.data.start_time = calendarVC.pickupDate.format('YYYY-MM-DD HH:mm:ss');
+				view.newBooking.data.start_time = new Moment.tz(calendarVC.pickupDate, Localization.getCurrentTimeZone());
 				view.newBooking.data.end_time = null;
 				view.calculatePrice();
 			});
@@ -160,7 +160,7 @@ define(
 			var view = this,
 				selectTimePopup;
 			if(isTimeSelected === true) {
-				view.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');
+				view.newBooking.data.end_time = new Moment.tz(calendarVC.deliveryDate, Localization.getCurrentTimeZone());
 				view.calculatePrice();
 				return;
 			}
@@ -172,7 +172,7 @@ define(
 				var time = popup.getSelectedTime();
 				calendarVC.deliveryDate.hour(time.hours);
 				calendarVC.deliveryDate.minute(time.minutes);
-				view.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');
+				view.newBooking.data.end_time = new Moment.tz(calendarVC.deliveryDate, Localization.getCurrentTimeZone());
 				view.calculatePrice();
 			});
 		};

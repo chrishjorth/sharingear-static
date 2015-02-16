@@ -16,10 +16,13 @@ define(
             convertPrice,
             convertPrices,
             getTimeZones,
-            getCurrentTimeZone;
+            getLocalTimeZone,
+            getCurrentTimeZone,
+            setCurrentTimeZone;
 
         didInitialize = function() {
-            Moment.tz.setDefault('UTC');
+            this.defaultTimeZone = this.getLocalTimeZone();
+            this.currenTimezone = this.defaultTimeZone;
             if(this.data === null) {
                 this.data = [];
             }
@@ -116,8 +119,57 @@ define(
             return timezones;
         };
 
+        /**
+         * Moment.js is missing a way to get the local timezone name.
+         * See following links for problem info:
+         * https://github.com/moment/moment-timezone/issues/138
+         * http://codeofmatt.com/2013/06/07/javascript-date-type-is-horribly-broken/
+         * This approach is based on https://github.com/Canop/tzdetect.js and optimized for speed since the version in the link is quite slow.
+         * We use a naive approach and return the first match, since it is currently not possible to narrow down the results to one timezone anyhow.
+         */
+        getLocalTimeZone = function() {
+            var now = Date.now(),
+                makekey, localkey, names, i;
+
+            //The key identifies a timezone by specific time points in a year. Note that this might become wrong when the timezones change for some reason as they sometimes do.
+            makekey = function(id){
+                //return [0, 4, 8, -5 * 12, 4 - 5 * 12, 8 - 5 * 12, 4 - 2 * 12, 8 - 2 * 12].map(function(months) {
+                return [0, 4, 8, -60, -56, -52, -20, -16].map(function(months) {
+                    //var m = new Moment(now + months * 30 * 24 * 60 * 60 * 1000);
+                    var m = new Moment(now + months * 2592000000);
+                    if(id) {
+                        m.tz(id);
+                    }
+                    return m.format('DDHHmm');
+                }).join(' ');
+            };
+
+            localkey = makekey();
+
+            names = Moment.tz.names();
+
+            i = 0;
+            while(i < names.length) {
+                if(makekey(names[i]) === localkey) {
+                    return names[i];
+                }
+                i++;
+            }
+
+            return null;
+        };
+
         getCurrentTimeZone = function() {
-            return Moment.defaultZone.name;
+            return this.currenTimezone;
+        };
+
+        setCurrentTimeZone = function(timezone) {
+            if(timezone !== null) {
+                this.currenTimezone = timezone;
+            }
+            else {
+                this.currenTimezone = this.defaultTimeZone;
+            }
         };
 
         Localization = Model.inherit({
@@ -128,7 +180,9 @@ define(
             convertPrice: convertPrice,
             convertPrices: convertPrices,
             getTimeZones: getTimeZones,
-            getCurrentTimeZone: getCurrentTimeZone
+            getLocalTimeZone: getLocalTimeZone,
+            getCurrentTimeZone: getCurrentTimeZone,
+            setCurrentTimeZone: setCurrentTimeZone
         });
         Localization = new Localization.constructor({
             rootURL: Config.API_URL

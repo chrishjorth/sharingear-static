@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-	['underscore', 'model', 'facebook','utilities'],
-	function(_, Model, FB, Utilities) {
+	['underscore', 'model', 'facebook','utilities', 'models/localization'],
+	function(_, Model, FB, Utilities, Localization) {
 		var didInitialize,
 			getLoginStatus,
 			login,
@@ -125,6 +125,8 @@ define(
 					window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
 				}
 
+				Localization.setCurrentTimeZone(user.data.time_zone);
+
 				if(callback && typeof callback === 'function') {
 					callback(null, data);
 				}
@@ -139,6 +141,7 @@ define(
 					return;
 				}
 				_.extend(user.data, data);
+				Localization.setCurrentTimeZone(user.data.time_zone);
 				callback(null);
 			});
 		};
@@ -151,6 +154,7 @@ define(
             		return;
             	}
             	_.extend(user.data, data);
+            	Localization.setCurrentTimeZone(user.data.time_zone);
             	callback(null);
             });
         };

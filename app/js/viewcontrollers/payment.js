@@ -31,8 +31,8 @@ define(
 			this.booking = this.passedData.booking;
 			this.gear = this.passedData.gear;
 
-			startMoment = new Moment.tz(this.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
-			endMoment = new Moment.tz(this.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+			startMoment = new Moment.tz(this.booking.data.start_time, Localization.getCurrentTimeZone());
+			endMoment = new Moment.tz(this.booking.data.end_time, Localization.getCurrentTimeZone());
 
 
 			duration = Moment.duration(endMoment.diff(startMoment));
