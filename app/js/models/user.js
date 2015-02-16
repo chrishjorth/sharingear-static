@@ -43,6 +43,7 @@ define(
                 	postal_code: null,
                 	country: null,
                 	phone: null,
+                	nationality: null,
                 	currency: 'EUR',
                 	time_zone: 'UTC'
 				};

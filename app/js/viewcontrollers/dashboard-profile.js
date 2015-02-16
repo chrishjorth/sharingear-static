@@ -49,7 +49,7 @@ define(
         didRender=function() {
             var view = this,
                 userData = this.user.data,
-                birthdate, $countriesSelect;
+                birthdate, $countriesSelect, $nationalitiesSelect;
 
             if(App.header) {
                 App.header.setTitle('Your profile');
@@ -76,6 +76,10 @@ define(
             $countriesSelect.val(userData.country);
 
             $('#dashboard-profile-phone', view.$element).val(userData.phone);
+
+            $nationalitiesSelect = $('#dashboard-profile-nationalities', this.$element);
+            this.populateCountries($nationalitiesSelect);
+            $nationalitiesSelect.val(userData.nationality);
 
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#dashboard-profile-pic', view.$element),
@@ -208,8 +212,11 @@ define(
                 address: $('#dashboard-profile-address', view.$element).val(),
                 postal_code: $('#dashboard-profile-postalcode', view.$element).val(),
                 country: $('#dashboard-profile-country', view.$element).val(),
-                phone: $('#dashboard-profile-phone', view.$element).val()
+                phone: $('#dashboard-profile-phone', view.$element).val(),
+                nationality: $('#dashboard-profile-nationalities', view.$element).val()
             };
+
+            console.log($('#dashboard-profile-nationalities', view.$element).val());
 
             if ($('#dashboard-profile-form #name', view.$element).val()==='') {
                 alert('The name field is required.');
