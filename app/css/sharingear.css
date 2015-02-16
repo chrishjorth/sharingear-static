@@ -269,7 +269,7 @@ body {
 	min-width: 40px;
 }
 .sg-navbar-dropdownmenu .dropdown .btn {
-	height: 60px;
+	height: 57px;
 	border: none;
 	color: #00aeff;
 	background-color: inherit;
@@ -548,7 +548,7 @@ body {
 .dashboard-menu a.list-group-item-selected,
 .dashboard-menu a.list-group-item-selected:hover {
 	background-color: #0397dc;
-	color: #ffffff;
+	color: #ffffff !important;
 }
 .sg-navbar-slidemenu a.list-group-item .sg-icon,
 .dashboard-menu a.list-group-item .sg-icon {
@@ -1919,6 +1919,10 @@ button:active .sg-gray-bg {
 }
 .search .searchform-container .gearsearchform label {
 	display: none;
+}
+
+.searchiefix{
+	overflow: hidden;
 }
 
 .search-results {
