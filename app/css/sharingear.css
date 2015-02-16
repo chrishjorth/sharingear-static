@@ -1252,6 +1252,8 @@ button:active .sg-gray-bg {
 	font-weight: bold;
 	line-height: 32px;
 	margin-top: 10px;
+	position: relative;
+	z-index: 20;
 }
 .availabilitycalendar .always-never .disabled {
 	opacity: 0.5;
