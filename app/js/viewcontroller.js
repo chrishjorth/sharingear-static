@@ -86,11 +86,11 @@ define([
 
 	close = function() {
 		var i;
-		this.unbindEvents();
-		this.$element.empty();
 		for(i = 0; i < this.events.close.length; i++) {
 			this.events.close[i](this);
 		}
+		this.unbindEvents();
+		this.$element.empty();
 		if(_.isFunction(this.didClose) === true) {
 			this.didClose();
 		}

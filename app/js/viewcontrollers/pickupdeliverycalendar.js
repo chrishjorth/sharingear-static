@@ -298,9 +298,10 @@ define(
 				if(view.deliveryDate === null) {
 					view.deliveryDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
 					view.deliveryDate.add(1, 'days');
+					view.deliveryDate.hours(12);
 					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
 					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
-						view.passedData.parent.handleDeliverySelection(view);
+						view.passedData.parent.handleDeliverySelection(view, true);
 					}
 				}
 

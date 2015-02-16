@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'utilities', 'app', 'models/gear', 'models/booking', 'models/localization', 'moment'],
-	function(_, $, Config, ViewController, Utilities, App, Gear, Booking, Localization, Moment) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'utilities', 'app', 'models/gear', 'models/booking', 'models/localization', 'moment', 'popups/selecttime'],
+	function(_, $, Config, ViewController, Utilities, App, Gear, Booking, Localization, Moment, SelectTimePopup) {
 		var didInitialize,
 			didRender,
 			renderCalendar,
@@ -141,15 +141,35 @@ define(
 		};
 
 		handlePickupSelection = function(calendarVC) {
-			this.newBooking.data.start_time = calendarVC.pickupDate.format('YYYY-MM-DD HH:mm:ss');
-			this.newBooking.data.end_time = null;
-			this.calculatePrice();
-			//alert('BOOM!');
+			var view = this;
+			SelectTimePopup.setTitle('Select pickup time');
+			SelectTimePopup.show();
+			SelectTimePopup.on('close', function(popup) {
+				var time = popup.getSelectedTime();
+				calendarVC.pickupDate.hour(time.hours);
+				calendarVC.pickupDate.minute(time.minutes);
+				view.newBooking.data.start_time = calendarVC.pickupDate.format('YYYY-MM-DD HH:mm:ss');
+				view.newBooking.data.end_time = null;
+				view.calculatePrice();
+			});
 		};
 
-		handleDeliverySelection = function(calendarVC) {
-			this.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');
-			this.calculatePrice();
+		handleDeliverySelection = function(calendarVC, isTimeSelected) {
+			var view = this;
+			if(isTimeSelected === true) {
+				view.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');
+				view.calculatePrice();
+				return;
+			}
+			SelectTimePopup.setTitle('Select delivery time');
+			SelectTimePopup.show();
+			SelectTimePopup.on('close', function(popup) {
+				var time = popup.getSelectedTime();
+				calendarVC.deliveryDate.hour(time.hours);
+				calendarVC.deliveryDate.minute(time.minutes);
+				view.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');
+				view.calculatePrice();
+			});
 		};
 
 		handleNext = function(event) {
