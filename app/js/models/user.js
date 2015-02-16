@@ -42,6 +42,7 @@ define(
                 	address: null,
                 	postal_code: null,
                 	country: null,
+                	phone: null,
                 	currency: 'EUR',
                 	time_zone: 'UTC'
 				};

@@ -75,6 +75,8 @@ define(
             this.populateCountries($countriesSelect);
             $countriesSelect.val(userData.country);
 
+            $('#dashboard-profile-phone', view.$element).val(userData.phone);
+
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#dashboard-profile-pic', view.$element),
                     img = view.profileImg;
@@ -205,7 +207,8 @@ define(
                 birthdate: $('#dashboard-profile-birthdate-year', view.$element).val() + '-' + $('#dashboard-profile-birthdate-month', view.$element).val() + '-' + $('#dashboard-profile-birthdate-date', view.$element).val(),
                 address: $('#dashboard-profile-address', view.$element).val(),
                 postal_code: $('#dashboard-profile-postalcode', view.$element).val(),
-                country: $('#dashboard-profile-country', this.$element).val()
+                country: $('#dashboard-profile-country', view.$element).val(),
+                phone: $('#dashboard-profile-phone', view.$element).val()
             };
 
             if ($('#dashboard-profile-form #name', view.$element).val()==='') {
