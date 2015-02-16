@@ -41,7 +41,7 @@ define(
                 	birthdate: null,
                 	address: null,
                 	postal_code: null,
-                	country: '',
+                	country: null,
                 	currency: 'EUR',
                 	time_zone: 'UTC'
 				};

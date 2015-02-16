@@ -6,13 +6,14 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'config', 'moment'],
-	function(_, $, ViewController, App, Config, Moment) {
+	['underscore', 'jquery', 'viewcontroller', 'app', 'config', 'models/localization', 'moment'],
+	function(_, $, ViewController, App, Config, Localization, Moment) {
 
 		var didInitialize,
 			handleImageUpload,
 			didRender,
             populateBirthdateInput,
+            populateCountries,
 
             handleUploadPicButton,
             handleBirthdateChange,
@@ -48,7 +49,7 @@ define(
         didRender=function() {
             var view = this,
                 userData = this.user.data,
-                birthdate;
+                birthdate, $countriesSelect;
 
             if(App.header) {
                 App.header.setTitle('Your profile');
@@ -69,6 +70,10 @@ define(
 
             $('#dashboard-profile-address', this.$element).val(userData.address);
             $('#dashboard-profile-postalcode', view.$element).val(userData.postal_code);
+
+            $countriesSelect = $('#dashboard-profile-country', this.$element);
+            this.populateCountries($countriesSelect);
+            $countriesSelect.val(userData.country);
 
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#dashboard-profile-pic', view.$element),
@@ -135,6 +140,17 @@ define(
             html = '';
         };
 
+        populateCountries = function($select) {
+            var countriesArray = Localization.getCountries(),
+                html = $('option', $select).first()[0].outerHTML,
+                i;
+                
+            for(i = 0; i < countriesArray.length; i++) {
+                html += '<option value="' + countriesArray[i].code + '">' + countriesArray[i].name + '</option>';
+            }
+            $select.html(html);
+        };
+
         handleUploadPicButton = function(event) {
             var view = event.data;
             $('#profile-pic', view.$element).click();
@@ -188,7 +204,8 @@ define(
                 bio: $('#dashboard-profile-form #bio', view.$element).val(),
                 birthdate: $('#dashboard-profile-birthdate-year', view.$element).val() + '-' + $('#dashboard-profile-birthdate-month', view.$element).val() + '-' + $('#dashboard-profile-birthdate-date', view.$element).val(),
                 address: $('#dashboard-profile-address', view.$element).val(),
-                postal_code: $('#dashboard-profile-postalcode', view.$element).val()
+                postal_code: $('#dashboard-profile-postalcode', view.$element).val(),
+                country: $('#dashboard-profile-country', this.$element).val()
             };
 
             if ($('#dashboard-profile-form #name', view.$element).val()==='') {
@@ -228,6 +245,7 @@ define(
 			handleImageUpload: handleImageUpload,
 			didRender: didRender,
             populateBirthdateInput: populateBirthdateInput,
+            populateCountries: populateCountries,
 
             handleUploadPicButton: handleUploadPicButton,
             handleBirthdateChange: handleBirthdateChange,

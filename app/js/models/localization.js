@@ -19,6 +19,9 @@ define(
 
         didInitialize = function() {
             Moment.tz.setDefault('UTC');
+            if(this.data === null) {
+                this.data = [];
+            }
         };
 
 		fetch = function() {
@@ -124,6 +127,7 @@ define(
         Localization = new Localization.constructor({
             rootURL: Config.API_URL
         });
+        Localization.initialize();
         Localization.fetch();
 
 		return Localization;
