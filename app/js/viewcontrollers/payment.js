@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear payment page view.
- * @author: Chris Hjorth, Horatiu Roman
+ * @author: Chris Hjorth
  */
 
 'use strict';
@@ -48,8 +48,8 @@ define(
 				brand: this.gear.data.brand,
 				subtype: this.gear.data.subtype,
 				model: this.gear.data.model,
-				start_date: startMoment.format('DD/MM/YYYY'),
-				end_date: endMoment.format('DD/MM/YYYY'),
+				start_date: startMoment.format('DD/MM/YYYY HH:mm'),
+				end_date: endMoment.format('DD/MM/YYYY HH:mm'),
 				currency: App.user.data.currency,
 				//vat: VAT,
 				vat: '',

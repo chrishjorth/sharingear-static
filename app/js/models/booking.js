@@ -1,6 +1,6 @@
 /**
  * Defines a booking item.
- * @author: Horatiu Roman, Gediminas Bivainis, Chris Hjorth
+ * @author: Chris Hjorth
  */
 'use strict';
 

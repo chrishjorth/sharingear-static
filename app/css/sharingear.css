@@ -774,6 +774,10 @@ body {
 	line-height: 28px;
 }
 
+.selecttime-popup > form > .row {
+	padding-top: 20px;
+}
+
 /******* 3. TRANSITIONS *******/
 /**
  * These are element transitions. Please keep them as generic and reusable as possible.

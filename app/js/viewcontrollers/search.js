@@ -59,7 +59,6 @@ define(
 
 		renderMap = function(searchResults, latitude, longitude) {
 			var mapOptions, latlong, i, gear;
-			console.log("IN YOUR FACE!");
 
 			if(!latitude || !longitude) {
 				latlong = new GoogleMaps.LatLng(40.746227, 14.656527);

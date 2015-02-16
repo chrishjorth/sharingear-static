@@ -85,8 +85,8 @@ define(
 				}
 
                 _.extend(view.templateParameters, {
-                	start_time: start_time.format('DD/MM/YYYY'),
-                	end_time: end_time.format('DD/MM/YYYY'),
+                	start_time: start_time.format('DD/MM/YYYY HH:mm'),
+                	end_time: end_time.format('DD/MM/YYYY HH:mm'),
                 	//price: price + priceVAT + fee + feeVAT,
                 	total: (total).toFixed(2),
                 	currency: (view.passedData.mode === 'owner' ? view.booking.data.owner_currency : view.booking.data.renter_currency)
