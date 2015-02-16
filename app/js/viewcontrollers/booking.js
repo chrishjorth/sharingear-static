@@ -116,7 +116,6 @@ define(
 		};
 
 		didRender = function() {
-			console.log(this.booking.data.booking_status);
 			if(this.booking.data.booking_status === 'pending' && this.passedData.mode === 'owner') {
 				$('.accept-deny', this.$element).removeClass('hidden');
 			}

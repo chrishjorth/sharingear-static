@@ -33,7 +33,6 @@ define(
 
 		didRender = function() {
 			App.header.setTitle('Gear reservations');
-
 			if(this.didFetch === true) {
 				this.populateYourReservations();
 			}
@@ -75,7 +74,6 @@ define(
                         city: '',
                         gear_status: 'status'
                     };
-
 					reservation = yourReserv[i];
 					_.extend(defaultReservation, reservation.data);
 
@@ -87,15 +85,17 @@ define(
 					$('.sg-bg-image', $reservationItem).css({
 						'background-image': 'url("' + defaultReservation.img_url + '")'
 					});
+					
 
 					status = reservation.data.booking_status;
+
 					if(status === 'pending' || status === 'waiting') {
 						$('.request', $reservationItem).removeClass('hidden');
 					}
 					if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
 						$('.accepted', $reservationItem).removeClass('hidden');
 					}
-					if(status === 'denied') {
+					if(status === 'denied' || status==='ended-denied') {
 						$('.denied', $reservationItem).removeClass('hidden');
 					}
 
