@@ -40,6 +40,7 @@ define(
                 	submerchant: false,
                 	birthdate: null,
                 	address: null,
+                	postal_code: null,
                 	country: '',
                 	currency: 'EUR',
                 	time_zone: 'UTC'

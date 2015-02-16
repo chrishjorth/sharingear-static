@@ -68,6 +68,7 @@ define(
             }
 
             $('#dashboard-profile-address', this.$element).val(userData.address);
+            $('#dashboard-profile-postalcode', view.$element).val(userData.postal_code);
 
             $.when(this.profileImgLoaded).then(function() {
                 var $profilePic = $('#dashboard-profile-pic', view.$element),
@@ -186,7 +187,8 @@ define(
                 city: $('#dashboard-profile-form #hometown', view.$element).val(),
                 bio: $('#dashboard-profile-form #bio', view.$element).val(),
                 birthdate: $('#dashboard-profile-birthdate-year', view.$element).val() + '-' + $('#dashboard-profile-birthdate-month', view.$element).val() + '-' + $('#dashboard-profile-birthdate-date', view.$element).val(),
-                address: $('#dashboard-profile-address', view.$element).val()
+                address: $('#dashboard-profile-address', view.$element).val(),
+                postal_code: $('#dashboard-profile-postalcode', view.$element).val()
             };
 
             if ($('#dashboard-profile-form #name', view.$element).val()==='') {
