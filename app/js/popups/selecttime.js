@@ -40,8 +40,7 @@ define([
 		view.hide();
 	};
 
-	SelectTimePopup = PopupController.inherit();
-	SelectTimePopup =  new SelectTimePopup.constructor({
+	SelectTimePopup = PopupController.inherit({
 		template: SelectTimePopupTemplate,
 
 		didRender: didRender,
@@ -50,6 +49,5 @@ define([
 		handleHours: handleHours,
 		handleMinutes: handleMinutes
 	});
-	SelectTimePopup.initialize();
 	return SelectTimePopup;
 });

@@ -141,10 +141,12 @@ define(
 		};
 
 		handlePickupSelection = function(calendarVC) {
-			var view = this;
-			SelectTimePopup.setTitle('Select pickup time');
-			SelectTimePopup.show();
-			SelectTimePopup.on('close', function(popup) {
+			var view = this,
+				selectTimePopup = new SelectTimePopup.constructor();
+			selectTimePopup.initialize();
+			selectTimePopup.setTitle('Select pickup time');
+			selectTimePopup.show();
+			selectTimePopup.on('close', function(popup) {
 				var time = popup.getSelectedTime();
 				calendarVC.pickupDate.hour(time.hours);
 				calendarVC.pickupDate.minute(time.minutes);
@@ -155,15 +157,18 @@ define(
 		};
 
 		handleDeliverySelection = function(calendarVC, isTimeSelected) {
-			var view = this;
+			var view = this,
+				selectTimePopup;
 			if(isTimeSelected === true) {
 				view.newBooking.data.end_time = calendarVC.deliveryDate.format('YYYY-MM-DD HH:mm:ss');
 				view.calculatePrice();
 				return;
 			}
-			SelectTimePopup.setTitle('Select delivery time');
-			SelectTimePopup.show();
-			SelectTimePopup.on('close', function(popup) {
+			selectTimePopup = new SelectTimePopup.constructor();
+			selectTimePopup.initialize();
+			selectTimePopup.setTitle('Select delivery time');
+			selectTimePopup.show();
+			selectTimePopup.on('close', function(popup) {
 				var time = popup.getSelectedTime();
 				calendarVC.deliveryDate.hour(time.hours);
 				calendarVC.deliveryDate.minute(time.minutes);
