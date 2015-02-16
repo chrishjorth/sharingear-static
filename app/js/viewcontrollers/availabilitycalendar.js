@@ -60,9 +60,8 @@ define(
                 }
 
                 for(i = 0; i < availabilityArray.length; i++) {
-                    console.log('FIXME: add string format to moment constructor: ' + availabilityArray[i].start);
-                    startMoment = new Moment.tz(availabilityArray[i].start, Localization.getCurrentTimeZone());
-                    endMoment = new Moment.tz(availabilityArray[i].end, Localization.getCurrentTimeZone());
+                    startMoment = new Moment.tz(availabilityArray[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+                    endMoment = new Moment.tz(availabilityArray[i].end, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
                     if(Array.isArray(view.selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
                         view.selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
                     }
@@ -139,8 +138,7 @@ define(
 
             for(i = 0; i < selections.length; i++) {
                 startMoment = selections[i].startMoment;
-                console.log('FIXME: moment constructor string format');
-                momentIterator = new Moment.tz({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()}, Localization.getCurrentTimeZone());
+                momentIterator = new Moment.tz(startMoment, Localization.getCurrentTimeZone());
                 dayIDString = '#calendar-day-' + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date();
                 $(dayIDString, $calendarContainer).addClass('selected');
                 endMoment = selections[i].endMoment;
@@ -356,10 +354,9 @@ define(
 
                 addSelection = function() {
                     var selection;
-                    console.log('FIXME: moment constructor string format');
                     selection = {
-                        startMoment: new Moment.tz({year: $this.data('year'), month: parseInt($this.data('month'), 10) - 1, day: $this.data('date')}, Localization.getCurrentTimeZone()),
-                        endMoment: new Moment.tz({year: $this.data('year'), month: parseInt($this.data('month'), 10) - 1, day: $this.data('date')}, Localization.getCurrentTimeZone())
+                        startMoment: new Moment.tz($this.data('year') + '-' + $this.data('month') + '-' + $this.data('date'), 'YYYY-MM-DD', Localization.getCurrentTimeZone()),
+                        endMoment: new Moment.tz($this.data('year') + '-' + $this.data('month') + '-' + $this.data('date'), 'YYYY-MM-DD', Localization.getCurrentTimeZone())
                     };
                     view.selections[key].push(selection);
                 };
