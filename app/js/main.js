@@ -55,9 +55,12 @@ define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyB
     return window.google.maps;
 });
 
+require(['moment', 'momenttz'], function() {
+	//Loaded moment with timezone support.
+});
+
 require(
-	//We load moment and moment timezones here to make sure all moments are timezone synched
-	['underscore', 'bootstrap', 'app', 'moment', 'momenttz'],
+	['underscore', 'bootstrap', 'app'],
 	function(_, bootstrap, App) {
 		//Configure underscore templates to use Handlebars style
 		_.templateSettings = {
