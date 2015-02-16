@@ -546,7 +546,7 @@ body {
 .dashboard-menu a.list-group-item-selected,
 .dashboard-menu a.list-group-item-selected:hover {
 	background-color: #0397dc;
-	color: #ffffff;
+	color: #ffffff !important;
 }
 .sg-navbar-slidemenu a.list-group-item .sg-icon,
 .dashboard-menu a.list-group-item .sg-icon {
