@@ -82,7 +82,7 @@ define(
 
 			this.hasDelivery = false;
 
-			this.shownMoment = new Moment();
+			this.shownMoment = new Moment.tz(Localization.getCurrentTimeZone());
 			this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
 			this.alwaysFlag = 1; //New gear is always available by default
 			this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
@@ -656,7 +656,7 @@ define(
 			if(user.birthdate === null) {
 				tempUser.birthdate = $('#submerchantregistration-birthdate', view.$element).val();
 				if(tempUser.birthdate !== '') {
-					tempUser.birthdate = (new Moment(tempUser.birthdate, 'DD/MM/YYYY')).format('YYYY-MM-DD');
+					tempUser.birthdate = (new Moment.tz(tempUser.birthdate, 'DD/MM/YYYY', Localization.getCurrentTimeZone())).format('YYYY-MM-DD');
 				}
 			}
 			if(user.address === null) {

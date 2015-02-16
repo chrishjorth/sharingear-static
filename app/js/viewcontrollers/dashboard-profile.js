@@ -62,7 +62,7 @@ define(
 
             this.populateBirthdateInput();
             if(userData.birthdate !== null) {
-                birthdate = new Moment(userData.birthdate, 'YYYY-MM-DD');
+                birthdate = new Moment.tz(userData.birthdate, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
                 $('#dashboard-profile-birthdate-year', view.$element).val(birthdate.year());
                 $('#dashboard-profile-birthdate-month', view.$element).val(birthdate.month() + 1);
                 $('#dashboard-profile-birthdate-date', view.$element).val(birthdate.date());
@@ -109,7 +109,7 @@ define(
                 $selectMonth = $('#dashboard-profile-birthdate-month', $inputContainer),
                 $selectYear = $('#dashboard-profile-birthdate-year', $inputContainer),
                 html = '<option> - </option>',
-                today = new Moment(),
+                today = new Moment.tz(Localization.getCurrentTimeZone()),
                 selectedYear = null,
                 selectedMonth = null,
                 maxYear, monthDays, i;
@@ -135,7 +135,7 @@ define(
             }
             
 
-            monthDays = new Moment(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD');
+            monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
             monthDays = monthDays.endOf('month').date();
             html = '<option> - </option>';
             for(i = 1; i <= monthDays; i++) {

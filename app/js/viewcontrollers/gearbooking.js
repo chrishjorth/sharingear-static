@@ -78,10 +78,10 @@ define(
 					parent: view
 				};
 				if(view.newBooking.data.start_time && view.newBooking.data.start_time !== null) {
-					passedData.pickupDate = new Moment(view.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
+					passedData.pickupDate = new Moment.tz(view.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 				}
 				if(view.newBooking.data.end_time && view.newBooking.data.end_time !== null) {
-					passedData.deliveryDate = new Moment(view.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+					passedData.deliveryDate = new Moment.tz(view.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 					passedData.pickupActive = false;
 				}
 				require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
@@ -107,8 +107,8 @@ define(
 
 		calculatePrice = function() {
 			var view = this,
-				startMoment = new Moment(this.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss'),
-				endMoment = new Moment(this.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss'),
+				startMoment = new Moment.tz(this.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone()),
+				endMoment = new Moment.tz(this.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone()),
 				duration, months, weeks, days;
 
 			//Get number of months, get number of weeks from remainder, get number of days from remainder
@@ -144,6 +144,7 @@ define(
 			this.newBooking.data.start_time = calendarVC.pickupDate.format('YYYY-MM-DD HH:mm:ss');
 			this.newBooking.data.end_time = null;
 			this.calculatePrice();
+			//alert('BOOM!');
 		};
 
 		handleDeliverySelection = function(calendarVC) {

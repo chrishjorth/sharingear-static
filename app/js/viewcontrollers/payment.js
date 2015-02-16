@@ -31,8 +31,8 @@ define(
 			this.booking = this.passedData.booking;
 			this.gear = this.passedData.gear;
 
-			startMoment = new Moment(this.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
-			endMoment = new Moment(this.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+			startMoment = new Moment.tz(this.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+			endMoment = new Moment.tz(this.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 
 
 			duration = Moment.duration(endMoment.diff(startMoment));
@@ -98,7 +98,7 @@ define(
 
 		initExpiration = function () {
 			var monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-				startYear = parseInt((new Moment()).year(), 10),
+				startYear = parseInt((new Moment.tz(Localization.getCurrentTimeZone())).year(), 10),
 				html,
 				i;
 
@@ -166,7 +166,7 @@ define(
 				$selectMonth = $('#payment-birthdate-month', $inputContainer),
 				$selectYear = $('#payment-birthdate-year', $inputContainer),
 				html = '',
-				today = new Moment(),
+				today = new Moment.tz(Localization.getCurrentTimeZone()),
 				selectedYear, selectedMonth, maxYear, monthDays, i;
 
 			selectedYear = $selectYear.val();
@@ -191,7 +191,7 @@ define(
 			}
 			$selectMonth.val(selectedMonth);
 
-			monthDays = new Moment(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD');
+			monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
 			monthDays = monthDays.endOf('month').date();
 			html = '';
 			for(i = 1; i <= monthDays; i++) {
@@ -227,7 +227,7 @@ define(
 				day = $('#payment-birthdate-day', view.$element).val();
 				month = $('#payment-birthdate-month', view.$element).val();
 				year = $('#payment-birthdate-year', view.$element).val();
-				userData.birthdate = new Moment(day + '/' + month + '/' + year, 'DD/MM/YYYY');
+				userData.birthdate = new Moment.tz(day + '/' + month + '/' + year, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 				if(userData.birthdate.isValid() === false) {
 					userData.birthdate = null;
 					alert('Date of birth is invalid.');

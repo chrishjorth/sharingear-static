@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'config', 'viewcontroller', 'app', 'models/booking', 'moment'],
-	function($, Config, ViewController, App, Booking, Moment) {
+	['jquery', 'config', 'viewcontroller', 'app', 'models/booking', 'moment', 'models/localization'],
+	function($, Config, ViewController, App, Booking, Moment, Localization) {
 		var didInitialize,
 			didRender,
 
@@ -61,8 +61,8 @@ define(
 						return;
 					}
 
-					startMoment = new Moment(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
-					endMoment = new Moment(booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+					startMoment = new Moment.tz(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+					endMoment = new Moment.tz(booking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 
 					duration = Moment.duration(endMoment.diff(startMoment));
 					months = parseInt(duration.months(), 10);

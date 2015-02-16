@@ -5,7 +5,7 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'config', 'model', 'models/xchangerates', 'moment', 'momenttz'],
+	['underscore', 'utilities', 'config', 'model', 'models/xchangerates', 'moment'],
 	function(_, Utilities, Config, Model, XChangeRates, Moment) {
 		var Localization,
 
@@ -15,7 +15,8 @@ define(
             getVAT,
             convertPrice,
             convertPrices,
-            getTimeZones;
+            getTimeZones,
+            getCurrentTimeZone;
 
         didInitialize = function() {
             Moment.tz.setDefault('UTC');
@@ -115,6 +116,10 @@ define(
             return timezones;
         };
 
+        getCurrentTimeZone = function() {
+            return Moment.defaultZone.name;
+        };
+
         Localization = Model.inherit({
             didInitialize: didInitialize,
             fetch: fetch,
@@ -122,7 +127,8 @@ define(
             getVAT: getVAT,
             convertPrice: convertPrice,
             convertPrices: convertPrices,
-            getTimeZones: getTimeZones
+            getTimeZones: getTimeZones,
+            getCurrentTimeZone: getCurrentTimeZone
         });
         Localization = new Localization.constructor({
             rootURL: Config.API_URL

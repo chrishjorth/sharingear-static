@@ -3,6 +3,8 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 requirejs.config({
 	baseUrl: '../js',
 	paths: {
@@ -56,7 +58,7 @@ define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyB
 });
 
 require(
-	['underscore', 'mocha', 'jquery'],
+	['underscore', 'mocha', 'jquery', 'moment', 'momenttz'],
 	function(_, Mocha, $) {
 		//Configure underscore templates to use Handlebars style
 		_.templateSettings = {
@@ -65,7 +67,7 @@ require(
 			escape: /\{\{-(.+?)\}\}/g
 		};
 
-		mocha.setup('bdd');
+		window.mocha.setup('bdd');
 
 		$(document).ready(function() {
 			require([
@@ -96,10 +98,10 @@ require(
 				//'../test/js/specs/models/user.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
-					mochaPhantomJS.run();
+					window.mochaPhantomJS.run();
 				}
 				else { 
-					mocha.run();
+					window.mocha.run();
 				}
 			});
 		});

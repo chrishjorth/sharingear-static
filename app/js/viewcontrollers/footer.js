@@ -6,12 +6,12 @@
 'use strict';
 
 define(
-	['viewcontroller', 'moment'],
-	function(ViewController, Moment) {
+	['viewcontroller', 'moment', 'models/localization'],
+	function(ViewController, Moment, Localization) {
 		var didInitialize;
 
 		didInitialize = function() {
-			var today = new Moment();
+			var today = new Moment.tz(Localization.getCurrentTimeZone());
 			
 			this.templateParameters = {
 				year: today.format('YYYY')

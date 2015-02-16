@@ -26,6 +26,8 @@ define(
 		didInitialize = function() {
             var view = this;
 
+            Localization.getCurrentTimeZone();
+
 			view.templateParameters = {
 				brand: '',
 				gear_type: '',

@@ -219,7 +219,7 @@ define(
             if(user.birthdate === null) {
                 tempUser.birthdate = $('#submerchantregistration-birthdate', view.$element).val();
                 if(tempUser.birthdate !== '') {
-                    tempUser.birthdate = (new Moment(tempUser.birthdate, 'DD/MM/YYYY')).format('YYYY-MM-DD');
+                    tempUser.birthdate = (new Moment.tz(tempUser.birthdate, 'DD/MM/YYYY', Localization.getCurrentTimeZone())).format('YYYY-MM-DD');
                 }
             }
             if(user.address === null) {

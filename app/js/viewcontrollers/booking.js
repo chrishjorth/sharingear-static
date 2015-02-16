@@ -7,8 +7,8 @@
 'use strict';
 
 define(
-    ['underscore', 'jquery', 'config', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking'],
-	function(_, $, Config, ViewController, Moment, App, Gear, User, Booking) {
+    ['underscore', 'jquery', 'config', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking', 'models/localization'],
+	function(_, $, Config, ViewController, Moment, App, Gear, User, Booking, Localization) {
 		var didInitialize,
 			didRender,
 
@@ -67,8 +67,8 @@ define(
                     return;
                 }
 
-                start_time = new Moment(view.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
-                end_time = new Moment(view.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+                start_time = new Moment.tz(view.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+                end_time = new Moment.tz(view.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 
                 price = (view.passedData.mode === 'owner' ? view.booking.data.owner_price : view.booking.data.renter_price);
 				//VAT = Localization.getVAT(App.user.data.country);

@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'viewcontroller', 'app', 'moment'],
-	function($, ViewController, App, Moment) {
+	['jquery', 'viewcontroller', 'app', 'models/localization', 'moment'],
+	function($, ViewController, App, Localization, Moment) {
 		var didInitialize,
 			didRender,
 
@@ -44,7 +44,7 @@ define(
 			});
 
 			this.gear = this.passedData;
-			this.shownMoment = new Moment();
+			this.shownMoment = new Moment.tz(Localization.getCurrentTimeZone());
 			this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
             this.alwaysFlag = 0;
 
@@ -60,8 +60,9 @@ define(
                 }
 
                 for(i = 0; i < availabilityArray.length; i++) {
-                    startMoment = new Moment(availabilityArray[i].start);
-                    endMoment = new Moment(availabilityArray[i].end);
+                    console.log('FIXME: add string format to moment constructor: ' + availabilityArray[i].start);
+                    startMoment = new Moment.tz(availabilityArray[i].start, Localization.getCurrentTimeZone());
+                    endMoment = new Moment.tz(availabilityArray[i].end, Localization.getCurrentTimeZone());
                     if(Array.isArray(view.selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
                         view.selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
                     }
@@ -138,7 +139,8 @@ define(
 
             for(i = 0; i < selections.length; i++) {
                 startMoment = selections[i].startMoment;
-                momentIterator = new Moment({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()});
+                console.log('FIXME: moment constructor string format');
+                momentIterator = new Moment.tz({year: startMoment.year(), month: startMoment.month(), day: startMoment.date()}, Localization.getCurrentTimeZone());
                 dayIDString = '#calendar-day-' + momentIterator.year() + '-' + (momentIterator.month() + 1) + '-' + momentIterator.date();
                 $(dayIDString, $calendarContainer).addClass('selected');
                 endMoment = selections[i].endMoment;
@@ -167,7 +169,7 @@ define(
 			var startDay = moment.date(1).weekday(),
 				iteratorMoment, $dayBox, row, col, date;
 
-			iteratorMoment = new Moment(moment);
+			iteratorMoment = new Moment.tz(moment, Localization.getCurrentTimeZone());
 
 			$('.currentmonth', this.$element).html(moment.format('MMMM YYYY'));
 
@@ -189,7 +191,7 @@ define(
 					else {
 						$dayBox.html(date);
 					}
-					if(iteratorMoment.isBefore(new Moment()) === true){
+					if(iteratorMoment.isBefore(new Moment.tz(Localization.getCurrentTimeZone())) === true){
 						$dayBox.addClass('disabled');
 					}
 					if(this.pickupDate !== null && (iteratorMoment.isBefore(this.pickupDate, 'day') === true || iteratorMoment.isSame(this.pickupDate, 'day') === true)) {
@@ -354,9 +356,10 @@ define(
 
                 addSelection = function() {
                     var selection;
+                    console.log('FIXME: moment constructor string format');
                     selection = {
-                        startMoment: new Moment({year: $this.data('year'), month: parseInt($this.data('month'), 10) - 1, day: $this.data('date')}),
-                        endMoment: new Moment({year: $this.data('year'), month: parseInt($this.data('month'), 10) - 1, day: $this.data('date')})
+                        startMoment: new Moment.tz({year: $this.data('year'), month: parseInt($this.data('month'), 10) - 1, day: $this.data('date')}, Localization.getCurrentTimeZone()),
+                        endMoment: new Moment.tz({year: $this.data('year'), month: parseInt($this.data('month'), 10) - 1, day: $this.data('date')}, Localization.getCurrentTimeZone())
                     };
                     view.selections[key].push(selection);
                 };
@@ -468,7 +471,7 @@ define(
 
         getAlwaysFlag = function() {
         	return this.alwaysFlag;
-        }
+        };
 
 		return ViewController.inherit({
 			didInitialize: didInitialize,

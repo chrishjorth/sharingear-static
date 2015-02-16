@@ -56,7 +56,8 @@ define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyB
 });
 
 require(
-	['underscore', 'bootstrap', 'app'],
+	//We load moment and moment timezones here to make sure all moments are timezone synched
+	['underscore', 'bootstrap', 'app', 'moment', 'momenttz'],
 	function(_, bootstrap, App) {
 		//Configure underscore templates to use Handlebars style
 		_.templateSettings = {

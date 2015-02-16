@@ -3,6 +3,7 @@
 	"globals": {
 		"define": false,
 		"require": false,
+		"requirejs": false,
 		"describe": false,
 		"before": false,
 		"beforeEach": false,
