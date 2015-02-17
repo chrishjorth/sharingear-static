@@ -554,11 +554,13 @@ define(
 							view.toggleLoading();
 							return;
 						}
-						view.showPanel('#addgear-panel-availability');
+						
 						if(App.user.isSubMerchant() === false) {
+							view.showPanel('#addgear-panel-submerchantForm');
 							view.renderSubmerchantForm();
 						}
 						else {
+							view.showPanel('#addgear-panel-availability');
 							view.renderAvailability();
 						}
 						view.toggleLoading();
@@ -602,7 +604,6 @@ define(
 			var user = App.user.data;
 
 			$('#addgear-availability-submerchantform', this.$element).removeClass('hidden');
-			$('.sg-btn-square .next-btn', this.$element).addClass('hidden');
 
 			if(user.birthdate && user.birthdate !== '') {
 				$('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
@@ -636,8 +637,6 @@ define(
 			}
 
 			this.setupEvent('click', '#addgear-availability .btn-skip', this, this.handleSubmerchantSkip);
-			// this.setupEvent('submit', '#addgear-submerchantform', this, this.handleSubmerchantSubmit);
-			this.setupEvent('click', '.sg-btn-square .next-btn', this, this.handleSubmerchantSubmit);
 			this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
 		};
 
@@ -742,8 +741,7 @@ define(
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
                 if(status === GoogleMaps.GeocoderStatus.OK) {
                 	_.extend(user, tempUser);
-                    $('#addgear-availability-submerchantform', view.$element).addClass('hidden');
-					$('#addgear-availability-terms', view.$element).removeClass('hidden');
+                	view.showPanel('#addgear-panel-submerchantTerms');
                 }
                 else {
                     alert('The address is not valid!');
@@ -757,7 +755,10 @@ define(
 
             view.isLoading = true;
 
+            this.toggleLoading();
+
             currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
+
 			App.user.update(function(error) {
 				if(error) {
 					console.log(error);
@@ -775,6 +776,7 @@ define(
 					$('#addgear-availability-terms', view.$element).addClass('hidden');
 					$('#addgear-availability-calendar', view.$element).removeClass('hidden');
 					$('#editgear-next-btn', view.$element).removeClass('hidden');
+					view.showPanel('#addgear-panel-availability');
 					view.renderAvailability();
 					App.user.fetch(function(error) {
 						if(error) {
@@ -852,6 +854,12 @@ define(
 					break;
 				case 'addgear-panel-pricelocation':
 					view.savePriceLocation();
+					break;
+				case 'addgear-panel-submerchantForm':
+					view.handleSubmerchantSubmit(event);
+					break;
+				case 'addgear-panel-submerchantTerms':
+					view.handleSubmerchantAccept(event);
 					break;
 				case 'addgear-panel-availability':
 					view.saveAvailability();
