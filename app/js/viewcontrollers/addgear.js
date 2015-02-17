@@ -602,7 +602,7 @@ define(
 			var user = App.user.data;
 
 			$('#addgear-availability-submerchantform', this.$element).removeClass('hidden');
-			$('#editgear-next-btn', this.$element).addClass('hidden');
+			$('.sg-btn-square .next-btn', this.$element).addClass('hidden');
 
 			if(user.birthdate && user.birthdate !== '') {
 				$('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
@@ -636,7 +636,8 @@ define(
 			}
 
 			this.setupEvent('click', '#addgear-availability .btn-skip', this, this.handleSubmerchantSkip);
-			this.setupEvent('submit', '#addgear-submerchantform', this, this.handleSubmerchantSubmit);
+			// this.setupEvent('submit', '#addgear-submerchantform', this, this.handleSubmerchantSubmit);
+			this.setupEvent('click', '.sg-btn-square .next-btn', this, this.handleSubmerchantSubmit);
 			this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
 		};
 
