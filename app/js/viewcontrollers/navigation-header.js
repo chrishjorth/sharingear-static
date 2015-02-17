@@ -81,7 +81,7 @@ define(
                 html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
                 html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
                 html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profile</div></a>';
-                html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
+                html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
                 html += '<a href="#dashboard/yourrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
                 html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
                 html += '<a href="javascript:;" class="list-group-item disabled"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';

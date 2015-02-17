@@ -1,22 +1,22 @@
 /**
- * Defines a list of gear.
+ * Defines a list of vans.
  * @author: Chris Hjorth
  */
 
 'use strict';
 
 define(
-	['underscore', 'model', 'models/gear'],
-	function(_, Model, Gear) {
+	['underscore', 'model', 'models/van'],
+	function(_, Model, Van) {
 		var didInitialize,
 
 			search,
-			getUserGear,
-			getUserRentals,
-			getUserReservations,
+			getUserVans,
+			getUserVanRentals,
+			getUserVanReservations,
 			getGearItem,
 			isEmpty,
-			updateGearItem,
+			updateVanItem,
 			loadFromArray;
 
 		didInitialize = function() {
@@ -41,11 +41,11 @@ define(
 					callback(view.data);
 				}
 			});
-		}
+		};
 
-		getUserGear = function(userID, callback) {
+		getUserVans = function(userID, callback) {
 			var view = this;
-			this.get('/users/' + userID + '/gear', function(error, userGear) {
+			this.get('/users/' + userID + '/vans', function(error, userGear) {
 				if(error) {
 					console.log(error);
 					callback([]);
@@ -57,9 +57,9 @@ define(
 			});
 		};
 
-		getUserRentals = function(userID, callback) {
+		getUserVanRentals = function(userID, callback) {
 			var view = this;
-			this.get('/users/' + userID + '/rentals', function(error, userRentals) {
+			this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
 				if(error) {
 					console.log(error);
 					callback([]);
@@ -71,10 +71,10 @@ define(
 			});
 		};
 
-		getUserReservations = function(userID, callback) {
+		getUserVanReservations = function(userID, callback) {
 			var view = this;
             
-            view.get('/users/' + userID + '/reservations', function (error, userReservations) {
+            view.get('/users/' + userID + '/vanreservations', function (error, userReservations) {
             	if (error) {
             		callback([]);
             	}
@@ -99,7 +99,7 @@ define(
 			return this.data.length <= 0;
 		};
 
-		updateGearItem = function(gearItem) {
+		updateVanItem = function(gearItem) {
 			var i;
 			for(i = 0; i < this.data.length; i++) {
 				if(this.data[i].id === gearItem.data.id) {
@@ -115,7 +115,7 @@ define(
             this.data = [];
 
 			for(i = 0; i < gearArray.length; i++) {
-                gearItem = new Gear.constructor({
+                gearItem = new Van.constructor({
                     rootURL: this.rootURL
                 });
                 gearItem.initialize();
@@ -128,12 +128,12 @@ define(
 			didInitialize: didInitialize,
 
 			search: search,
-			getUserGear: getUserGear,
-			getUserRentals: getUserRentals,
-			getUserReservations: getUserReservations,
+			getUserVans: getUserVans,
+			getUserVanRentals: getUserVanRentals,
+			getUserVanReservations: getUserVanReservations,
 			getGearItem: getGearItem,
 			isEmpty: isEmpty,
-			updateGearItem: updateGearItem,
+			updateVanItem: updateVanItem,
 			loadFromArray: loadFromArray
 		});
 	}

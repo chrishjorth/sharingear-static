@@ -25,13 +25,7 @@ define(
 				rootURL: Config.API_URL
 			});
 			view.gearList.initialize();
-			view.gearList.getUserGear(App.user.data.id, function(userGear) {
-				if(userGear.length > 0) {
-					view.populateYourGear();
-				}
-				else {
-					$('#yourgear-gear-block').append('You haven\'t listed any gear yet!');
-				}
+			view.gearList.getUserGear(App.user.data.id, function() {
 				view.render();
 			});
 		};
@@ -39,6 +33,13 @@ define(
 		didRender = function() {
 			if(App.header) {
 				App.header.setTitle('Your gear');
+			}
+
+			if(this.gearList.data.length > 0) {
+				this.populateYourGear();
+			}
+			else {
+				$('#' + gearBlockID, this.$element).append('You haven\'t listed any gear yet!');
 			}
 
 			this.setupEvent('click', '#dashboard-yourgear-add-btn', this, this.handleAddGear);
