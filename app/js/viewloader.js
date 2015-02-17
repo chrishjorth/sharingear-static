@@ -10,7 +10,7 @@ define(
 	function(_, $) {
 		var ViewLoader,
 			mainViewContainer,
-			modalViewLightbox,
+			$modalViewLightbox,
 			modalViewContainer,
 
 			loadView,
@@ -22,7 +22,8 @@ define(
 			_loadModalView;
 
 		mainViewContainer = '.view-container';
-		modalViewLightbox = '.sg-lightbox';
+		$modalViewLightbox = $('#modal-view-lightbox');
+		console.log();
 		modalViewContainer = '.modal-view-container';
 
 		/**
@@ -102,8 +103,7 @@ define(
 		_loadModalView = function(view, path, data, callback) {
 			var viewLoader = ViewLoader;
 			require(['viewcontrollers/' + view, 'text!../templates/' + view + '.html'], function(ViewController, ViewTemplate) {
-                var $modalViewLightbox = $(modalViewLightbox),
-                    $modalViewContainer = $(modalViewContainer);
+                var $modalViewContainer = $(modalViewContainer);
 
 				if(viewLoader.currentModalViewController !== null) {
 					viewLoader.currentModalViewController.close();
@@ -160,7 +160,6 @@ define(
 
 		closeModalView = function(callback) {
 			var viewLoader = this,
-				$modalViewLightbox = $(modalViewLightbox),
 				previousModal = null;
 
 			if(this.currentModalViewController !== null) {

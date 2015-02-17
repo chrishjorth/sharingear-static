@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'moment', 'utilities'],
-	function(_, $, ViewController, Moment, Utilities) {
+	['underscore', 'jquery', 'viewcontroller', 'moment', 'utilities', 'models/localization'],
+	function(_, $, ViewController, Moment, Utilities, Localization) {
 		var didInitialize,
 			didRender,
 
@@ -32,7 +32,7 @@ define(
 				}
 			});
 
-			this.displayedMoment = new Moment();
+			this.displayedMoment = new Moment.tz(Localization.getCurrentTimeZone());
 			
 			this.pickupDate = null;
 			if(this.passedData.pickupDate && Moment.isMoment(this.passedData.pickupDate) === true) {
@@ -125,7 +125,7 @@ define(
 			var startDay = moment.date(1).weekday(),
 				iteratorMoment, disable, isInInterval, $dayBox, row, col, date;
 
-			iteratorMoment = new Moment(moment);
+			iteratorMoment = new Moment.tz(moment, Localization.getCurrentTimeZone());
 
 			$('#pickupdeliverycalendar-currentmonth', this.$element).html(moment.format('MMMM YYYY'));
 
@@ -151,7 +151,7 @@ define(
 					else {
 						$dayBox.html(date);
 					}
-					if(iteratorMoment.isBefore(new Moment()) === true){
+					if(iteratorMoment.isBefore(new Moment.tz(Localization.getCurrentTimeZone())) === true){
 						disable = true;
 						//$dayBox.addClass('disabled');
 					}
@@ -231,7 +231,7 @@ define(
 			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 
 			if(view.pickupActive === true) {
-				view.pickupDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
+				view.pickupDate = new Moment.tz($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 				//$pickupTab.removeClass('sg-toptab-active');
 				$('div', $pickupTab).html(view.pickupDate.format('DD/MM/YYYY'));
 				//$deliveryTab.addClass('sg-toptab-active');
@@ -243,7 +243,7 @@ define(
 				}
 			}
 			else {
-				view.deliveryDate = new Moment($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY');
+				view.deliveryDate = new Moment.tz($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 				//Check that delivery date is after pickup date
 				if(view.deliveryDate.isBefore(view.pickupDate) === true || view.deliveryDate.isSame(view.pickupDate) === true) {
 					return;
@@ -296,11 +296,12 @@ define(
 				$pickupTab.removeClass('sg-toptab-active');
 
 				if(view.deliveryDate === null) {
-					view.deliveryDate = new Moment(view.pickupDate);
+					view.deliveryDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
 					view.deliveryDate.add(1, 'days');
+					view.deliveryDate.hours(12);
 					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
 					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
-						view.passedData.parent.handleDeliverySelection(view);
+						view.passedData.parent.handleDeliverySelection(view, true);
 					}
 				}
 
@@ -313,8 +314,8 @@ define(
 		isDayInAvailability = function(moment) {
 			var i, startMoment, endMoment;
 			for(i = 0; i < this.availability.length; i++) {
-				startMoment = new Moment(this.availability[i].start, 'YYYY-MM-DD HH:mm:ss');
-				endMoment = new Moment(this.availability[i].end, 'YYYY-MM-DD HH:mm:ss');
+				startMoment = new Moment.tz(this.availability[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+				endMoment = new Moment.tz(this.availability[i].end, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 				if(Utilities.isMomentBetween(moment, startMoment, endMoment) === true) {
 					return true;
 				}
@@ -332,8 +333,8 @@ define(
 				i = 0,
 				intervalStartMoment, intervalEndMoment;
 			while(i < this.availability.length && foundInterval === false) {
-				intervalStartMoment = new Moment(this.availability[i].start, 'YYYY-MM-DD HH:mm:ss');
-				intervalEndMoment = new Moment(this.availability[i].end, 'YYYY-MM-DD HH:mm:ss');
+				intervalStartMoment = new Moment.tz(this.availability[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+				intervalEndMoment = new Moment.tz(this.availability[i].end, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 				if(Utilities.isMomentBetween(startMoment, intervalStartMoment, intervalEndMoment) === true && Utilities.isMomentBetween(endMoment, intervalStartMoment, intervalEndMoment) === true) {
 					//The two moments are in an interval
 					foundInterval = true;

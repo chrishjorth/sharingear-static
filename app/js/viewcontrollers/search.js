@@ -61,10 +61,10 @@ define(
 			var mapOptions, latlong, i, gear;
 
 			if(!latitude || !longitude) {
-				latlong = new GoogleMaps.LatLng(0, 0);
+				latlong = new GoogleMaps.LatLng(40.746227, 14.656527);
 				mapOptions = {
 					center: latlong,
-					zoom: 1,
+					zoom: 3,
 					maxZoom: 17
 				};
 			}

@@ -14,9 +14,9 @@ requirejs.config({
 		jquery: 'libraries/jquery-2.1.1.min',
 		bootstrap: 'libraries/bootstrap.min',
 		moment: 'libraries/moment.min',
+		momenttz: 'libraries/moment-timezone-with-data.min',
 		facebook: 'https://connect.facebook.net/en_US/all',
 		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
-		daterangepicker: 'libraries/daterangepicker/daterangepicker',
 		//braintree: 'https://assets.braintreegateway.com/v2/braintree',
 		mangopay: 'libraries/mangopay-kit'
 	},
@@ -37,11 +37,11 @@ requirejs.config({
 			deps: ['jquery'],
 			exports: 'OwlCarousel'
 		},
-		'daterangepicker': {
-			deps: ['jquery', 'bootstrap', 'moment']
-		},
 		'mangopay': {
 			exports: 'MangoPay'
+		},
+		'momenttz': {
+			deps: ['moment']
 		}
 	}
 });
@@ -53,6 +53,10 @@ define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyB
     // return the googlemaps namespace for brevity
 		
     return window.google.maps;
+});
+
+require(['moment', 'momenttz'], function() {
+	//Loaded moment with timezone support.
 });
 
 require(

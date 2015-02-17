@@ -81,9 +81,9 @@ define(
 			});
 
 			it('Can load a modal view', function(done) {
-				ViewLoader.loadModalView('home', 'home', {test: 'test3'}, function(error, loadedViewController) {
-					expect(loadedViewController.name).to.equal('home');
-					expect(loadedViewController.path).to.equal('home');
+				ViewLoader.loadModalView('footer', 'footer', {test: 'test3'}, function(error, loadedViewController) {
+					expect(loadedViewController.name).to.equal('footer');
+					expect(loadedViewController.path).to.equal('footer');
 					expect(loadedViewController.passedData.test).to.equal('test3');
 
 					expect(ViewLoader.openModalViews.length).to.equal(1);
@@ -107,7 +107,7 @@ define(
 
 			it('Can queue a modal view', function(done) {
 				var passed = false;
-				ViewLoader.loadModalView('home', 'home', {test: 'test5'}, function(error, loadedViewController) {
+				ViewLoader.loadModalView('footer', 'footer', {test: 'test5'}, function(error, loadedViewController) {
 					var queuedView;
 					if(passed === false) {
 						//Avoid running this again when the previous modal is closed
@@ -120,8 +120,8 @@ define(
 						expect(ViewLoader.openModalViews.length).to.equal(2);
 
 						queuedView = ViewLoader.openModalViews[0];
-						expect(queuedView.view).to.equal('home');
-						expect(queuedView.path).to.equal('home');
+						expect(queuedView.view).to.equal('footer');
+						expect(queuedView.path).to.equal('footer');
 						expect(queuedView.data.test).to.equal('test5');
 
 						done();
@@ -132,8 +132,8 @@ define(
 			it('Can close a modal view', function(done) {
 				ViewLoader.closeModalView(function() {
 					expect(ViewLoader.openModalViews.length).to.equal(1);
-					expect(ViewLoader.currentModalViewController.name).to.equal('home');
-					expect(ViewLoader.currentModalViewController.path).to.equal('home');
+					expect(ViewLoader.currentModalViewController.name).to.equal('footer');
+					expect(ViewLoader.currentModalViewController.path).to.equal('footer');
 					expect(ViewLoader.currentModalViewController.passedData.test).to.equal('test5');
 					done();
 				});
