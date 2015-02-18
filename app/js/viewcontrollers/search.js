@@ -64,8 +64,8 @@ define(
 				latlong = new GoogleMaps.LatLng(40.746227, 14.656527);
 				mapOptions = {
 					center: latlong,
-					zoom: 3,
-					maxZoom: 17
+					zoom: 2,
+					maxZoom: 14
 				};
 			}
 			else {
@@ -73,7 +73,7 @@ define(
 				mapOptions = {
 					center: latlong,
 					zoom: 12,
-					maxZoom: 17
+					maxZoom: 14
 				};
 			}
 
