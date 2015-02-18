@@ -40,6 +40,8 @@ define(
 
 			renderAvailability,
 			renderSubmerchantForm,
+			populateBirthdateInput,
+			handleBirthdateChange,
 			handleSubmerchantSkip,
 			handleSubmerchantSubmit,
 			handleSubmerchantAccept,
@@ -107,6 +109,7 @@ define(
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
+			this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
 		};
 
 		getTabID = function() {
@@ -604,9 +607,11 @@ define(
 			var user = App.user.data;
 
 			$('#addgear-availability-submerchantform', this.$element).removeClass('hidden');
-
 			if(user.birthdate && user.birthdate !== '') {
 				$('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
+			}
+			else {
+				this.populateBirthdateInput();
 			}
 			if(user.address && user.address !== '') {
 				$('#submerchantregistration-address', this.$element).parent().addClass('hidden');
@@ -640,6 +645,54 @@ define(
 			this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
 		};
 
+		populateBirthdateInput = function() {
+			var $inputContainer = $('.birthday-select', this.$element),
+                $selectDay = $('#submerchantregistration-birthdate-date', $inputContainer),
+                $selectMonth = $('#submerchantregistration-birthdate-month', $inputContainer),
+                $selectYear = $('#submerchantregistration-birthdate-year', $inputContainer),
+                html = '<option> - </option>',
+                today = new Moment.tz(Localization.getCurrentTimeZone()),
+                selectedYear = null,
+                selectedMonth = null,
+                maxYear, monthDays, i;
+
+            selectedYear = $selectYear.val();
+            maxYear = today.year() - Config.MIN_USER_AGE;
+            for(i = 1914; i <= maxYear; i++) {
+                html += '<option value="' + i + '">' + i + '</option>';
+            }
+            $selectYear.html(html);
+            if(selectedYear !== null) {
+                $selectYear.val(selectedYear);
+            }
+
+            selectedMonth = $selectMonth.val();
+            html = '<option> - </option>';
+            for(i = 1; i <= 12; i++) {
+                html += '<option value="' + i + '">' + i + '</option>';
+            }
+            $selectMonth.html(html);
+            if(selectedMonth !== null) {
+                $selectMonth.val(selectedMonth);
+            }
+            
+
+            monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
+            monthDays = monthDays.endOf('month').date();
+            html = '<option> - </option>';
+            for(i = 1; i <= monthDays; i++) {
+                html += '<option value="' + i + '">' + i + '</option>';
+            }
+            $selectDay.html(html);
+            
+            html = '';
+		};
+
+		handleBirthdateChange = function(event) {
+			var view = event.data;
+			view.populateBirthdateInput();
+		};
+
 		handleSubmerchantSkip = function(event) {
 			var view = event.data;
 			App.router.navigateTo('dashboard/addgearend', view.newGear);
@@ -649,15 +702,15 @@ define(
 			var view = event.data,
 				user = App.user.data,
 				tempUser = {},
-				addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx;
+				day, month, year, addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx;
 
 			_.extend(tempUser, user);
 
 			if(user.birthdate === null) {
-				tempUser.birthdate = $('#submerchantregistration-birthdate', view.$element).val();
-				if(tempUser.birthdate !== '') {
-					tempUser.birthdate = (new Moment.tz(tempUser.birthdate, 'DD/MM/YYYY', Localization.getCurrentTimeZone())).format('YYYY-MM-DD');
-				}
+				day = $('#submerchantregistration-birthdate-date', view.$element).val();
+				month = $('#submerchantregistration-birthdate-month', view.$element).val();
+				year = $('#submerchantregistration-birthdate-year', view.$element).val();
+				tempUser.birthdate = (new Moment.tz(day + '/' + month + '/' + year, 'DD/MM/YYYY', Localization.getCurrentTimeZone())).format('YYYY-MM-DD');
 			}
 			if(user.address === null) {
 				tempUser.address = $('#submerchantregistration-address', view.$element).val();
@@ -698,7 +751,7 @@ define(
 			}
 
 			//Validate
-			if(tempUser.birthdate === '') {
+			if(tempUser.birthdate === '' || tempUser.birthdate === 'Invalid date') {
                 alert('The birthday field is required.');
                 return;
             }
@@ -750,24 +803,19 @@ define(
 		};
 
 		handleSubmerchantAccept = function(event) {
-			var view = event.data,
-                currentBtn = $(this);
+			var view = event.data;
 
-            view.isLoading = true;
-
-            this.toggleLoading();
-
-            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
+            view.toggleLoading();
 
 			App.user.update(function(error) {
 				if(error) {
 					console.log(error);
 					alert('Error saving user data.');
-					view.isLoading = false;
+					view.toggleLoading();
 					return;
 				}
 				App.user.updateBankDetails(function(error) {
-					view.isLoading = false;
+					view.toggleLoading();
 					if(error) {
 						console.log(error);
 						alert('Error registering bank data.');
@@ -919,6 +967,8 @@ define(
 
 			renderAvailability: renderAvailability,
 			renderSubmerchantForm: renderSubmerchantForm,
+			populateBirthdateInput: populateBirthdateInput,
+			handleBirthdateChange: handleBirthdateChange,
 			handleSubmerchantSkip: handleSubmerchantSkip,
 			handleSubmerchantSubmit: handleSubmerchantSubmit,
 			handleSubmerchantAccept: handleSubmerchantAccept,

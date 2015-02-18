@@ -163,8 +163,10 @@
           <div class="col-sm-12">
             <form id="addgear-submerchantform" onsubmit="return false;">
               <div class="form-group col-sm-6">
-                <label for="submerchantregistration-birthdate">Date of birth (DD/MM/YYYY):*</label>
-                <input type="text" class="form-control" name="address" id="submerchantregistration-birthdate">
+                <label for="submerchantregistration-birthdate">Date of birth:*</label>
+                <div class="birthday-select" id="submerchantregistration-birthdate">
+                  <select id="submerchantregistration-birthdate-date" name="birthdate-day"></select>/<select id="submerchantregistration-birthdate-month" name="birthdate-month"></select>/<select id="submerchantregistration-birthdate-year" name="birthdate-year"></select>
+                </div>
               </div>
               <div class="form-group col-sm-6">
                 <label for="submerchantregistration-phone">Phone:*</label>

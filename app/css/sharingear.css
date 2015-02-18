@@ -689,6 +689,7 @@ body {
 	.sg-modal-header {
 		position: static;
 		border-bottom-width: 0;
+		background: none;
 	}
 }
 .sg-modal-header h2 {
