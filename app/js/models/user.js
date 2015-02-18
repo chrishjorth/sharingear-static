@@ -37,7 +37,6 @@ define(
                 	city: '',
                 	image_url: '',
                 	bio: '',
-                	submerchant: false,
                 	birthdate: null,
                 	address: null,
                 	postal_code: null,

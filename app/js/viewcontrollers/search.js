@@ -168,7 +168,6 @@ define(
 			$noResultsBlock = $('.no-results-block', this.$element);
 
             if (searchResults.length <= 0) {
-            	console.log($noResultsBlock);
             	$noResultsBlock.removeClass('hidden');
 				return;
 			}

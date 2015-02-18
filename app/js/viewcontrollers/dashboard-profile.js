@@ -216,8 +216,6 @@ define(
                 nationality: $('#dashboard-profile-nationalities', view.$element).val()
             };
 
-            console.log($('#dashboard-profile-nationalities', view.$element).val());
-
             if ($('#dashboard-profile-form #name', view.$element).val()==='') {
                 alert('The name field is required.');
                 return;
