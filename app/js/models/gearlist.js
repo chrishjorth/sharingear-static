@@ -59,7 +59,7 @@ define(
 
 		getUserRentals = function(userID, callback) {
 			var view = this;
-			this.get('/users/' + userID + '/rentals', function(error, userRentals) {
+			this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
 				if(error) {
 					console.log(error);
 					callback([]);
@@ -74,7 +74,7 @@ define(
 		getUserReservations = function(userID, callback) {
 			var view = this;
             
-            view.get('/users/' + userID + '/reservations', function (error, userReservations) {
+            view.get('/users/' + userID + '/gearreservations', function (error, userReservations) {
             	if (error) {
             		callback([]);
             	}

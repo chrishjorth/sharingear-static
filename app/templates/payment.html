@@ -39,6 +39,9 @@
 		<div class="col-xs-6">TOTAL:</div>
 		<div class="col-xs-6">{{total}}<span class="sg-super">{{currency}}</span></div>
 	</div>
+	<div class="row xchange-rate">
+		<div class="col-xs-12 text-center sg-mediumblue-bg sg-yellow">The exchange rate for the booking in this listing is 1 {{currency}} to {{xchange}} {{owner_currency}} (your owner's listing currency).</div>
+	</div>
 	<div class="row">
 		<div class="col-sm-12 bs-reset">
 			<ul class="sg-tabs sg-tabs-3">
@@ -54,7 +57,7 @@
 			<div class="col-sm-12">
 				<form id="payment-form-visa" onsubmit="return false;">
 					<div class="form-group missing-userdata" id="payment-birthdate">
-						<label for="payment-birthdate">Day of birth:</label>
+						<label for="payment-birthdate-day">Date of birth:</label>
 						<div class="birthday-select">
 							<select id="payment-birthdate-day" name="birthdate-day"></select>/<select id="payment-birthdate-month" name="birthdate-month"></select>/<select id="payment-birthdate-year" name="birthdate-year"></select>
 						</div>

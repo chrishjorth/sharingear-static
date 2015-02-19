@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['jquery', 'underscore', 'viewcontroller', 'googlemaps', 'app', 'moment', 'utilities'],
-	function($, _, ViewController, GoogleMaps, App, Moment, Utilities) { //daterangepicker do not support AMD
+	['jquery', 'underscore', 'viewcontroller', 'googlemaps', 'app', 'moment', 'utilities', 'models/localization'],
+	function($, _, ViewController, GoogleMaps, App, Moment, Utilities, Localization) {
 		var numberOfGearSuggestions = 5,
 			geocoder,
 
@@ -74,8 +74,8 @@ define(
                 $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
             }
 
-            startDate = new Moment();
-			endDate = new Moment(startDate);
+            startDate = new Moment.tz(Localization.getCurrentTimeZone());
+			endDate = new Moment.tz(startDate, Localization.getCurrentTimeZone());
 			endDate.add(1, 'days');
 
 			queryString = Utilities.getQueryString();
@@ -87,8 +87,8 @@ define(
             		previousSearchDateRange = previousSearchDateRange.split('-');
             		$('#search-gear', this.$element).val(previousSearchGear);
             		$('#search-location', this.$element).val(previousSearchLocation);
-            		startDate = new Moment(previousSearchDateRange[0], 'YYYYMMDD');
-            		endDate = new Moment(previousSearchDateRange[1], 'YYYYMMDD');
+            		startDate = new Moment.tz(previousSearchDateRange[0], 'YYYYMMDD', Localization.getCurrentTimeZone());
+            		endDate = new Moment.tz(previousSearchDateRange[1], 'YYYYMMDD', Localization.getCurrentTimeZone());
             	}
 			}
 			$searchPickup.val(startDate.format('DD/MM/YYYY'));
@@ -355,8 +355,8 @@ define(
 
             //URI playground
             //dateRange = '20140828-20140901';
-            pickupDate = new Moment($('#search-pickup', view.$element).val(), 'DD/MM/YYYY');
-            returnDate = new Moment($('#search-return', view.$element).val(), 'DD/MM/YYYY');
+            pickupDate = new Moment.tz($('#search-pickup', view.$element).val(), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
+            returnDate = new Moment.tz($('#search-return', view.$element).val(), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
             dateRange = pickupDate.format('YYYYMMDD') + '-' + returnDate.format('YYYYMMDD');
             searchString = $('#home-search-form #search-gear', this.$element).val();
 

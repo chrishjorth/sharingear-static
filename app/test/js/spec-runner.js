@@ -3,6 +3,8 @@
  * @author: Chris Hjorth
  */
 
+'use strict';
+
 requirejs.config({
 	baseUrl: '../js',
 	paths: {
@@ -12,6 +14,7 @@ requirejs.config({
 		jquery: 'libraries/jquery-2.1.1.min',
 		bootstrap: 'libraries/bootstrap.min',
 		moment: 'libraries/moment.min',
+		momenttz: 'libraries/moment-timezone-with-data.min',
 		mocha: '../test/js/libraries/mocha/mocha',
 		chai: '../test/js/libraries/chai',
 		sinon: '../test/js/libraries/sinon-1.10.3',
@@ -19,9 +22,7 @@ requirejs.config({
 		facebook: '../test/js/mocks/facebook', //We use a mock to avoid having to connect to the Facebook server
 		//googlemaps: '../test/js/mocks/googlemaps', //We use a mock to avoid having to connect to the Google Maps server
 		
-		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
-		daterangepicker: 'libraries/daterangepicker/daterangepicker',
-		magnificpopup: 'libraries/magnificpopup/magnificpopup'
+		owlcarousel: 'libraries/owl-carousel/owl.carousel.min'
 	},
 	shim: {
 		underscore: {
@@ -43,12 +44,8 @@ requirejs.config({
 			deps: ['jquery'],
 			exports: 'OwlCarousel'
 		},
-		'daterangepicker': {
-			deps: ['jquery', 'bootstrap', 'moment']
-		},
-		'magnificpopup': {
-			deps: ['jquery'],
-			exports: 'MagnificPopup'
+		'momenttz': {
+			deps: ['moment']
 		}
 	}
 });
@@ -61,7 +58,7 @@ define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyB
 });
 
 require(
-	['underscore', 'mocha', 'jquery'],
+	['underscore', 'mocha', 'jquery', 'moment', 'momenttz'],
 	function(_, Mocha, $) {
 		//Configure underscore templates to use Handlebars style
 		_.templateSettings = {
@@ -70,7 +67,7 @@ require(
 			escape: /\{\{-(.+?)\}\}/g
 		};
 
-		mocha.setup('bdd');
+		window.mocha.setup('bdd');
 
 		$(document).ready(function() {
 			require([
@@ -101,10 +98,10 @@ require(
 				//'../test/js/specs/models/user.spec'
 			], function() {
 				if(window.mochaPhantomJS) {
-					mochaPhantomJS.run();
+					window.mochaPhantomJS.run();
 				}
 				else { 
-					mocha.run();
+					window.mocha.run();
 				}
 			});
 		});

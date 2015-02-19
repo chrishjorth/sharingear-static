@@ -1,12 +1,12 @@
 /**
  * Defines a booking item.
- * @author: Horatiu Roman, Gediminas Bivainis, Chris Hjorth
+ * @author: Chris Hjorth
  */
 'use strict';
 
 define(
-	['underscore', 'utilities', 'model', 'app'],
-	function(_, Utilities, Model, App) {
+	['underscore', 'utilities', 'model', 'app', 'models/localization', 'moment'],
+	function(_, Utilities, Model, App, Localization, Moment) {
 		var didInitialize,
             createBooking,
             getBookingInfo,
@@ -35,8 +35,8 @@ define(
 
 			postData = {
 				gear_id: newBooking.gear_id,
-				start_time: newBooking.start_time,
-				end_time: newBooking.end_time,
+				start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+				end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
                 cardId: cardId,
                 returnURL: window.location.href
 			};
@@ -63,6 +63,10 @@ define(
                     return;
                 }
                 _.extend(model.data, booking);
+
+                model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+                model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+
                 callback(null);
             });
         };
@@ -70,9 +74,15 @@ define(
         // PUT: /users/:user_id/gear/:gear_id/bookings/:booking_id
         update = function(userID, callback) {
             var model = this,
-                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id,
+                updateData;
 
-            this.put(url, model.data, function(error, booking) {
+            updateData = {
+                booking_status: model.data.booking_status,
+                preauth_id: model.data.preauth_id
+            };
+
+            this.put(url, updateData, function(error, booking) {
                 if(error) {
                     console.log(error);
                     callback(error);

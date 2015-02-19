@@ -7,6 +7,7 @@
  *	2.a MENUS
  *	2.b MODAL VIEWS
  *	2.c BOTTOM NOTIFICATIONS
+ *	2.d POPUPS
  * 3. TRANSITIONS
  *	3.a TRANSITION POSITIONS
  * 4. GENERAL VIEW ELEMENTS
@@ -35,6 +36,7 @@
  *	8.o ABOUT US
  *	8.p FOOTER
  *	8.q INSURANCE
+ *	8.r DASHBOARD-SETTINGS
  * 9. HELPERS
  * 10. ICONS
  *
@@ -267,7 +269,7 @@ body {
 	min-width: 40px;
 }
 .sg-navbar-dropdownmenu .dropdown .btn {
-	height: 60px;
+	height: 57px;
 	border: none;
 	color: #00aeff;
 	background-color: inherit;
@@ -546,7 +548,7 @@ body {
 .dashboard-menu a.list-group-item-selected,
 .dashboard-menu a.list-group-item-selected:hover {
 	background-color: #0397dc;
-	color: #ffffff;
+	color: #ffffff !important;
 }
 .sg-navbar-slidemenu a.list-group-item .sg-icon,
 .dashboard-menu a.list-group-item .sg-icon {
@@ -687,6 +689,7 @@ body {
 	.sg-modal-header {
 		position: static;
 		border-bottom-width: 0;
+		background: none;
 	}
 }
 .sg-modal-header h2 {
@@ -745,6 +748,35 @@ body {
     text-align: center;
     color: black;
     background-color: rgb(255, 210, 0);
+}
+
+/*------ 2.d POPUPS ------*/
+.popup-container {
+	z-index: 410;
+	width: 100%;
+	height: 100%;
+}
+
+.selecttime-popup {
+	background-color: #ffffff;
+	width: 300px;
+	height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 30vh;
+	border-style: solid;
+	border-width: 2px;
+	border-color: #00aeff;
+}
+
+.selecttime-popup h2 {
+	margin: 0;
+	font-size: 18px;
+	line-height: 28px;
+}
+
+.selecttime-popup > form > .row {
+	padding-top: 20px;
 }
 
 /******* 3. TRANSITIONS *******/
@@ -945,6 +977,10 @@ body {
 .sg-blue-bg-50 {
 	background-color: #00aeff;
 	background-color: rgba(0, 174, 255, 0.5);
+}
+
+.sg-mediumblue-bg {
+	background-color: #00547d;
 }
 
 .sg-darkblue-bg-transparent {
@@ -1251,6 +1287,8 @@ button:active .sg-gray-bg {
 	font-weight: bold;
 	line-height: 32px;
 	margin-top: 10px;
+	position: relative;
+	z-index: 20;
 }
 .availabilitycalendar .always-never .disabled {
 	opacity: 0.5;
@@ -1890,6 +1928,10 @@ button:active .sg-gray-bg {
 }
 .search .searchform-container .gearsearchform label {
 	display: none;
+}
+
+.searchiefix{
+	overflow: hidden;
 }
 
 .search-results {
@@ -2533,6 +2575,11 @@ button:active .sg-gray-bg {
 	display: inline-block;
 }
 
+.payment .xchange-rate {
+	font-size: 10px;
+	line-height: 20px;
+}
+
 /*------ 8.j PAYMENT SUCCESSFUL ------*/
 .modal-view-container .paymentsuccessful {
 	padding-top: 47px;
@@ -2804,6 +2851,11 @@ button:active .sg-gray-bg {
 
 .insurance footer {
 	margin-top: 60px;
+}
+
+/*------ 8.r DASHBOARD-SETTINGS ------*/
+.dashboard-settings > .row .col-sm-12 {
+	padding: 15px;
 }
 
 /******* 9. HELPERS *******/

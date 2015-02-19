@@ -1,6 +1,6 @@
 /**
  * Controller for the Sharingear payment page view.
- * @author: Chris Hjorth, Horatiu Roman
+ * @author: Chris Hjorth
  */
 
 'use strict';
@@ -30,9 +30,10 @@ define(
 
 			this.booking = this.passedData.booking;
 			this.gear = this.passedData.gear;
+			this.owner = this.passedData.owner;
 
-			startMoment = new Moment(this.booking.data.start_time, 'YYYY-MM-DD HH:mm:ss');
-			endMoment = new Moment(this.booking.data.end_time, 'YYYY-MM-DD HH:mm:ss');
+			startMoment = new Moment.tz(this.booking.data.start_time, Localization.getCurrentTimeZone());
+			endMoment = new Moment.tz(this.booking.data.end_time, Localization.getCurrentTimeZone());
 
 
 			duration = Moment.duration(endMoment.diff(startMoment));
@@ -48,8 +49,8 @@ define(
 				brand: this.gear.data.brand,
 				subtype: this.gear.data.subtype,
 				model: this.gear.data.model,
-				start_date: startMoment.format('DD/MM/YYYY'),
-				end_date: endMoment.format('DD/MM/YYYY'),
+				start_date: startMoment.format('DD/MM/YYYY HH:mm'),
+				end_date: endMoment.format('DD/MM/YYYY HH:mm'),
 				currency: App.user.data.currency,
 				//vat: VAT,
 				vat: '',
@@ -60,12 +61,14 @@ define(
 				//fee_vat: feeVAT.toFixed(2),
 				fee_vat: '',
 				//total: (price + priceVAT + fee + feeVAT).toFixed(2)
-				total: ''
+				total: '',
+				xchange: '',
+				owner_currency: this.owner.data.currency
 			};
 
 			this.isPaying = false;
 
-			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], 'EUR', App.user.data.currency, function(error, convertedPrices) {
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.owner.data.currency, App.user.data.currency, function(error, convertedPrices, rate) {
 				var price;
 				if(error) {
 					console.log('Error converting prices: ' + error);
@@ -80,7 +83,8 @@ define(
 				_.extend(view.templateParameters, {
 					price: price,
 					fee: fee.toFixed(2),
-					total: (price + fee).toFixed(2)
+					total: (price + fee).toFixed(2),
+					xchange: (1 / rate).toFixed(2)
 				});
 				view.render();
 			});
@@ -90,6 +94,10 @@ define(
 			this.renderMissingDataInputs();
 			this.initExpiration();
 
+			if(App.user.data.currency === this.owner.data.currency) {
+				$('.xchange-rate', this.$element).addClass('hidden');
+			}
+
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#payment-back-btn', this, this.handleBack);
 			this.setupEvent('click', '#payment-next-btn', this, this.handleNext);
@@ -98,7 +106,7 @@ define(
 
 		initExpiration = function () {
 			var monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-				startYear = parseInt((new Moment()).year(), 10),
+				startYear = parseInt((new Moment.tz(Localization.getCurrentTimeZone())).year(), 10),
 				html,
 				i;
 
@@ -166,7 +174,7 @@ define(
 				$selectMonth = $('#payment-birthdate-month', $inputContainer),
 				$selectYear = $('#payment-birthdate-year', $inputContainer),
 				html = '',
-				today = new Moment(),
+				today = new Moment.tz(Localization.getCurrentTimeZone()),
 				selectedYear, selectedMonth, maxYear, monthDays, i;
 
 			selectedYear = $selectYear.val();
@@ -191,7 +199,7 @@ define(
 			}
 			$selectMonth.val(selectedMonth);
 
-			monthDays = new Moment(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD');
+			monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
 			monthDays = monthDays.endOf('month').date();
 			html = '';
 			for(i = 1; i <= monthDays; i++) {
@@ -200,7 +208,6 @@ define(
 			$selectDay.html(html);
 			
 			html = '';
-			
 		};
 
 		handleCancel = function() {
@@ -212,7 +219,8 @@ define(
 				passedData;
 			passedData = {
 				gear: view.gear,
-				booking: view.booking
+				booking: view.booking,
+				owner: view.owner
 			};
 			App.router.openModalSiblingView('gearbooking', passedData);
 		};
@@ -228,7 +236,7 @@ define(
 				day = $('#payment-birthdate-day', view.$element).val();
 				month = $('#payment-birthdate-month', view.$element).val();
 				year = $('#payment-birthdate-year', view.$element).val();
-				userData.birthdate = new Moment(day + '/' + month + '/' + year, 'DD/MM/YYYY');
+				userData.birthdate = new Moment.tz(day + '/' + month + '/' + year, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 				if(userData.birthdate.isValid() === false) {
 					userData.birthdate = null;
 					alert('Date of birth is invalid.');
