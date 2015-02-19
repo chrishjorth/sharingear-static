@@ -28,6 +28,7 @@ define(
 					price_a: '',
 					price_b: '',
 					price_c: '',
+					currency: 'EUR',
                     delivery_price: '',
                     delivery_distance: '',
 					accessories: null,
@@ -38,7 +39,6 @@ define(
 					country: '',
 					latitude: null,
 					longitude: null,
-					gear_status: 'unavailable',
 					owner_id: null
 				};
 			}
@@ -60,6 +60,7 @@ define(
 				price_a: newGear.price_a,
 				price_b: newGear.price_b,
 				price_c: newGear.price_c,
+				currency: newGear.currency,
                 delivery_price: newGear.delivery_price,
                 delivery_distance: newGear.delivery_distance,
 				address: newGear.address,
@@ -146,6 +147,7 @@ define(
 				price_a: this.data.price_a,
 				price_b: this.data.price_b,
 				price_c: this.data.price_c,
+				currency: this.data.currency,
                 delivery_price: this.data.delivery_price,
                 delivery_distance: this.data.delivery_distance,
 				address: this.data.address,

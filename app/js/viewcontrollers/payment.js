@@ -30,6 +30,7 @@ define(
 
 			this.booking = this.passedData.booking;
 			this.gear = this.passedData.gear;
+			this.owner = this.passedData.owner;
 
 			startMoment = new Moment.tz(this.booking.data.start_time, Localization.getCurrentTimeZone());
 			endMoment = new Moment.tz(this.booking.data.end_time, Localization.getCurrentTimeZone());
@@ -60,12 +61,14 @@ define(
 				//fee_vat: feeVAT.toFixed(2),
 				fee_vat: '',
 				//total: (price + priceVAT + fee + feeVAT).toFixed(2)
-				total: ''
+				total: '',
+				xchange: '',
+				owner_currency: this.owner.data.currency
 			};
 
 			this.isPaying = false;
 
-			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], 'EUR', App.user.data.currency, function(error, convertedPrices) {
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.owner.data.currency, App.user.data.currency, function(error, convertedPrices, rate) {
 				var price;
 				if(error) {
 					console.log('Error converting prices: ' + error);
@@ -80,7 +83,8 @@ define(
 				_.extend(view.templateParameters, {
 					price: price,
 					fee: fee.toFixed(2),
-					total: (price + fee).toFixed(2)
+					total: (price + fee).toFixed(2),
+					xchange: (1 / rate).toFixed(2)
 				});
 				view.render();
 			});
@@ -89,6 +93,10 @@ define(
 		didRender = function () {
 			this.renderMissingDataInputs();
 			this.initExpiration();
+
+			if(App.user.data.currency === this.owner.data.currency) {
+				$('.xchange-rate', this.$element).addClass('hidden');
+			}
 
 			this.setupEvent('click', '#payment-cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '#payment-back-btn', this, this.handleBack);
@@ -211,7 +219,8 @@ define(
 				passedData;
 			passedData = {
 				gear: view.gear,
-				booking: view.booking
+				booking: view.booking,
+				owner: view.owner
 			};
 			App.router.openModalSiblingView('gearbooking', passedData);
 		};

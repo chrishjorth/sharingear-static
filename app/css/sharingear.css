@@ -689,6 +689,7 @@ body {
 	.sg-modal-header {
 		position: static;
 		border-bottom-width: 0;
+		background: none;
 	}
 }
 .sg-modal-header h2 {
@@ -976,6 +977,10 @@ body {
 .sg-blue-bg-50 {
 	background-color: #00aeff;
 	background-color: rgba(0, 174, 255, 0.5);
+}
+
+.sg-mediumblue-bg {
+	background-color: #00547d;
 }
 
 .sg-darkblue-bg-transparent {
@@ -2568,6 +2573,11 @@ button:active .sg-gray-bg {
 .payment select {
 	width: 25%;
 	display: inline-block;
+}
+
+.payment .xchange-rate {
+	font-size: 10px;
+	line-height: 20px;
 }
 
 /*------ 8.j PAYMENT SUCCESSFUL ------*/

@@ -64,8 +64,8 @@ define(
 				latlong = new GoogleMaps.LatLng(40.746227, 14.656527);
 				mapOptions = {
 					center: latlong,
-					zoom: 3,
-					maxZoom: 17
+					zoom: 2,
+					maxZoom: 14
 				};
 			}
 			else {
@@ -73,7 +73,7 @@ define(
 				mapOptions = {
 					center: latlong,
 					zoom: 12,
-					maxZoom: 17
+					maxZoom: 14
 				};
 			}
 
@@ -168,7 +168,6 @@ define(
 			$noResultsBlock = $('.no-results-block', this.$element);
 
             if (searchResults.length <= 0) {
-            	console.log($noResultsBlock);
             	$noResultsBlock.removeClass('hidden');
 				return;
 			}
@@ -213,7 +212,7 @@ define(
 
 				handlePrices = function(resultNum) {
 					var $price = $('#search-results-' + resultNum + ' .price_a', $searchBlock);
-					Localization.convertPrice(searchResults[resultNum].data.price_a, App.user.data.currency, function(error, convertedPrice) {
+					Localization.convertPrices([searchResults[resultNum].data.price_a], searchResults[resultNum].data.currency, App.user.data.currency, function(error, convertedPrice) {
 						if(error) {
 							console.log('Could not convert price: ' + error);
 							return;

@@ -86,7 +86,7 @@ define(
                 for(i = 0; i < prices.length; i++) {
                     convertedPrices.push(prices[i] * rate);
                 }
-                callback(null, convertedPrices);
+                callback(null, convertedPrices, rate);
             });
         };
 

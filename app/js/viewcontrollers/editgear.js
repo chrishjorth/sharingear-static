@@ -413,26 +413,14 @@ define(
 
         populatePricing = function() {
             var view = this;
-            Localization.convertPrice(this.gear.data.price_a, App.user.data.currency, function(error, convertedPrice) {
+            Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
                 if(error) {
-                    console.log('Could not convert price: ' + error);
+                    console.log('Could not convert prices: ' + error);
                     return;
                 }
-                $('#price_a', view.$element).val(Math.ceil(convertedPrice));
-            });
-            Localization.convertPrice(this.gear.data.price_b, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#price_b', view.$element).val(Math.ceil(convertedPrice));
-            });
-            Localization.convertPrice(this.gear.data.price_c, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#price_c', view.$element).val(Math.ceil(convertedPrice));
+                $('#price_a', view.$element).val(Math.ceil(convertedPrices[0]));
+                $('#price_b', view.$element).val(Math.ceil(convertedPrices[1]));
+                $('#price_c', view.$element).val(Math.ceil(convertedPrices[2]));
             });
         };
 
@@ -605,6 +593,7 @@ define(
 				price_a: $('#editgearpricing-form #price_a', this.$element).val(),
 				price_b: $('#editgearpricing-form #price_b', this.$element).val(),
 				price_c: $('#editgearpricing-form #price_c', this.$element).val(),
+                currency: App.user.data.currency,
                 delivery_price: '',
                 delivery_distance: '',
 				accessories: accessoriesArray,
@@ -683,14 +672,14 @@ define(
             _.extend(view.gear.data, updatedGearData);
 
 			updateCall = function() {
-                Localization.convertPrices([updatedGearData.price_a, updatedGearData.price_b, updatedGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
+                /*Localization.convertPrices([updatedGearData.price_a, updatedGearData.price_b, updatedGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
                     if(error) {
                         console.log('Error converting prices: ' + error);
                         return;
                     }
                     view.gear.data.price_a = convertedPrices[0];
                     view.gear.data.price_b = convertedPrices[1];
-                    view.gear.data.price_c = convertedPrices[2];
+                    view.gear.data.price_c = convertedPrices[2];*/
 				    view.gear.save(App.user.data.id, function(error) {
                         if(error) {
                             alert('Error updating gear.');
@@ -700,7 +689,7 @@ define(
 					   }
 					   App.router.closeModalView();
 				    });
-                });
+                //});
 			};
 
 			isLocationSame = (currentAddress === updatedGearData.address &&

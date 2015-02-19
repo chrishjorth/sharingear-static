@@ -30,6 +30,7 @@ define(
 			});
 
 			this.gear = this.passedData.gear;
+			this.owner = this.passedData.owner;
 
 			this.bookingBtnEnabled = false;
 
@@ -77,13 +78,6 @@ define(
 					alwaysFlag: result.alwaysFlag,
 					parent: view
 				};
-				/*if(view.newBooking.data.start_time && view.newBooking.data.start_time !== null) {
-					passedData.pickupDate = new Moment.tz(view.newBooking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
-				}
-				if(view.newBooking.data.end_time && view.newBooking.data.end_time !== null) {
-					passedData.deliveryDate = new Moment.tz(view.newBooking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
-					passedData.pickupActive = false;
-				}*/
 				require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
 					view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
 					view.calendarVC.initialize();
@@ -94,7 +88,7 @@ define(
 
 		renderPricing = function() {
 			var view = this;
-			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], 'EUR', App.user.data.currency, function(error, convertedPrices) {
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
 				if(error) {
 					console.log('Error converting prices: ' + error);
 					return;
@@ -125,13 +119,14 @@ define(
 			$('#gearbooking-weeks', this.$element).html(weeks);
 			$('#gearbooking-months', this.$element).html(months);
 
-			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], 'EUR', App.user.data.currency, function(error, convertedPrices) {
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
 				var price;
 				if(error) {
 					console.log('Error converting prices: ' + error);
 					return;
 				}
 				price = months * Math.ceil(convertedPrices[2]) + weeks * Math.ceil(convertedPrices[1]) + days * Math.ceil(convertedPrices[0]);
+
 				$('#gearbooking-price', view.$element).html(price);
 			});
 		};
@@ -189,7 +184,8 @@ define(
 
 			passedData = {
 				booking: view.newBooking,
-				gear: view.gear
+				gear: view.gear,
+				owner: view.owner
 			};
 
 			App.router.openModalSiblingView('payment', passedData);

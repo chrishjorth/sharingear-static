@@ -203,33 +203,15 @@ define(
 
 		renderPricing = function() {
 			var view = this;
-			if(this.gear.data.price_a > 0) {
-				Localization.convertPrice(this.gear.data.price_a, App.user.data.currency, function(error, convertedPrice) {
-					if(error) {
-						console.log('Could not convert price: ' + error);
-						return;
-					}
-					$('#gearprofile-price_a', view.$element).html(Math.ceil(convertedPrice));
-				});
-			}
-			if(this.gear.data.price_b > 0) {
-				Localization.convertPrice(this.gear.data.price_b, App.user.data.currency, function(error, convertedPrice) {
-					if(error) {
-						console.log('Could not convert price: ' + error);
-						return;
-					}
-					$('#gearprofile-price_b', view.$element).html(Math.ceil(convertedPrice));
-				});
-			}
-			if(this.gear.data.price_c > 0) {
-				Localization.convertPrice(this.gear.data.price_c, App.user.data.currency, function(error, convertedPrice) {
-					if(error) {
-						console.log('Could not convert price: ' + error);
-						return;
-					}
-					$('#gearprofile-price_c', view.$element).html(Math.ceil(convertedPrice));
-				});
-			}
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
+				if(error) {
+					console.log('Could not convert prices: ' + error);
+					return;
+				}
+				$('#gearprofile-price_a', view.$element).html(Math.ceil(convertedPrices[0]));
+				$('#gearprofile-price_b', view.$element).html(Math.ceil(convertedPrices[1]));
+				$('#gearprofile-price_c', view.$element).html(Math.ceil(convertedPrices[2]));
+			});
 		};
 
 		renderMap = function() {
@@ -269,7 +251,8 @@ define(
 			}
 			else {
 				passedData = {
-					gear: view.gear
+					gear: view.gear,
+					owner: view.owner
 				};
 				App.router.openModalView('gearbooking', passedData);
 			}
