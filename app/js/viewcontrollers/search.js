@@ -212,7 +212,7 @@ define(
 
 				handlePrices = function(resultNum) {
 					var $price = $('#search-results-' + resultNum + ' .price_a', $searchBlock);
-					Localization.convertPrice(searchResults[resultNum].data.price_a, App.user.data.currency, function(error, convertedPrice) {
+					Localization.convertPrices([searchResults[resultNum].data.price_a], searchResults[resultNum].data.currency, App.user.data.currency, function(error, convertedPrice) {
 						if(error) {
 							console.log('Could not convert price: ' + error);
 							return;

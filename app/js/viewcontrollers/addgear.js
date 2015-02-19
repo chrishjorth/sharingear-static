@@ -335,7 +335,8 @@ define(
 				brand: $('#addgear-form-brand option:selected').val(),
 				model: $('#addgear-form-model').val(),
 				accessories: accessoriesArray,
-				description: $('#addgear-form-description').val()
+				description: $('#addgear-form-description').val(),
+				currency: App.user.data.currency
 			};
 
 			//Validate
@@ -470,6 +471,7 @@ define(
 				price_a: $('#dashboard-addgearprice-form #price_a', this.$element).val(),
 				price_b: $('#dashboard-addgearprice-form #price_b', this.$element).val(),
 				price_c: $('#dashboard-addgearprice-form #price_c', this.$element).val(),
+				currency: App.user.data.currency,
                 address: $('#dashboard-addgearprice-form #dashboard-addgearprice-address', this.$element).val(),
 				postal_code: $('#dashboard-addgearprice-form #dashboard-addgearprice-postalcode', this.$element).val(),
 				city: $('#dashboard-addgearprice-form #dashboard-addgearprice-city', this.$element).val(),
@@ -543,14 +545,14 @@ define(
 			view.toggleLoading();
 
 			saveCall = function() {
-				Localization.convertPrices([newGearData.price_a, newGearData.price_b, newGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
+				/*Localization.convertPrices([newGearData.price_a, newGearData.price_b, newGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
 					if(error) {
 						console.log('Error converting prices: ' + error);
 						return;
 					}
 					view.newGear.data.price_a = convertedPrices[0];
 					view.newGear.data.price_b = convertedPrices[1];
-					view.newGear.data.price_c = convertedPrices[2];
+					view.newGear.data.price_c = convertedPrices[2];*/
 					view.newGear.save(App.user.data.id, function(error) {
 						if(error) {
 							alert('Error saving data');
@@ -568,7 +570,7 @@ define(
 						}
 						view.toggleLoading();
 					});
-				});
+				//});
 			};
 
 			if(isLocationSame === false) {

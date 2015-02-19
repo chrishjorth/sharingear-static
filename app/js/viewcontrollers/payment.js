@@ -68,7 +68,7 @@ define(
 
 			this.isPaying = false;
 
-			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], 'EUR', App.user.data.currency, function(error, convertedPrices, rate) {
+			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.owner.data.currency, App.user.data.currency, function(error, convertedPrices, rate) {
 				var price;
 				if(error) {
 					console.log('Error converting prices: ' + error);
@@ -219,7 +219,8 @@ define(
 				passedData;
 			passedData = {
 				gear: view.gear,
-				booking: view.booking
+				booking: view.booking,
+				owner: view.owner
 			};
 			App.router.openModalSiblingView('gearbooking', passedData);
 		};

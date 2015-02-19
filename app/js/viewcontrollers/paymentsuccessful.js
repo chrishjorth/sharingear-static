@@ -91,7 +91,7 @@ define(
 						price: price,
 						//price_vat: priceVAT,
 						price_vat: '',
-						fee: fee,
+						fee: fee.toFixed(2),
 						//fee_vat: feeVAT,
 						fee_vat: '',
 						//total: price + priceVAT + fee + feeVAT
