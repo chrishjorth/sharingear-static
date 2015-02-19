@@ -979,6 +979,10 @@ body {
 	background-color: rgba(0, 174, 255, 0.5);
 }
 
+.sg-mediumblue-bg {
+	background-color: #00547d;
+}
+
 .sg-darkblue-bg-transparent {
 	background-color: #014666;
 	background-color: rgba(1, 70, 102, 0.8);
@@ -2569,6 +2573,11 @@ button:active .sg-gray-bg {
 .payment select {
 	width: 25%;
 	display: inline-block;
+}
+
+.payment .xchange-rate {
+	font-size: 10px;
+	line-height: 20px;
 }
 
 /*------ 8.j PAYMENT SUCCESSFUL ------*/

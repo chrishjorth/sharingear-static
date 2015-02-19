@@ -269,7 +269,8 @@ define(
 			}
 			else {
 				passedData = {
-					gear: view.gear
+					gear: view.gear,
+					owner: view.owner
 				};
 				App.router.openModalView('gearbooking', passedData);
 			}

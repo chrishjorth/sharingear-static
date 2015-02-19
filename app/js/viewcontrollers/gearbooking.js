@@ -30,6 +30,7 @@ define(
 			});
 
 			this.gear = this.passedData.gear;
+			this.owner = this.passedData.owner;
 
 			this.bookingBtnEnabled = false;
 
@@ -189,7 +190,8 @@ define(
 
 			passedData = {
 				booking: view.newBooking,
-				gear: view.gear
+				gear: view.gear,
+				owner: view.owner
 			};
 
 			App.router.openModalSiblingView('payment', passedData);

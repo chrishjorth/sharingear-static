@@ -55,19 +55,19 @@ define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyB
     return window.google.maps;
 });
 
-require(['moment', 'momenttz'], function() {
+require(['underscore', 'bootstrap', 'moment', 'momenttz'], function(_) {
 	//Loaded moment with timezone support.
-});
+	
+	//Configure underscore templates to use Handlebars style
+	_.templateSettings = {
+		evaluate: /\{\{=(.+?)\}\}/g,
+		interpolate: /\{\{(.+?)\}\}/g,
+		escape: /\{\{-(.+?)\}\}/g
+	};
 
-require(
-	['underscore', 'bootstrap', 'app'],
-	function(_, bootstrap, App) {
-		//Configure underscore templates to use Handlebars style
-		_.templateSettings = {
-			evaluate: /\{\{=(.+?)\}\}/g,
-			interpolate: /\{\{(.+?)\}\}/g,
-			escape: /\{\{-(.+?)\}\}/g
-		};
+	console.log('Loaded core libraries.');
+
+	require(['app'], function(App) {
 		App.run();
-	}
-);
+	});
+});

@@ -65,16 +65,19 @@ define(
 			App.user.getLoginStatus(function(response) {
 				// if login was unsuccessful
 				if (response.status !== 'connected') {
+					console.log('User not logged in.');
 					loginDeferred.resolve();
 				}
 				else {
 					App.user.loginToBackend(response, function() {
+						console.log('User logged in.');
 						loginDeferred.resolve();
 					});
 				}
 			});
 
 			$(document).ready(function() {
+				console.log('DOM ready');
 				documentReadyDeferred.resolve();
 			});
 
@@ -110,6 +113,8 @@ define(
 					document.cookie = 'cookie-consent=1';
 					$('.cookie-opt-in').addClass('hidden');
 				});
+
+				console.log('Sharingear loaded and ready.');
 
 				if(_.isFunction(callback)) {
 					callback();
