@@ -424,8 +424,9 @@ define(
             	countriesArray, i;
 			countriesArray = Localization.getCountries();
 			for(i = 0; i < countriesArray.length; i++) {
-				html += '<option value="' + countriesArray[i].code + '">' + countriesArray[i].name + '</option>';
+				html += '<option value="' + countriesArray[i].code + '">' + countriesArray[i].name.replace(/\b./g, function(m){ return m.toUpperCase(); }) + '</option>';
 			}
+
 			$select.html(html);
 		};
 
