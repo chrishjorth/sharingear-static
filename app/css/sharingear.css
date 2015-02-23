@@ -2583,6 +2583,7 @@ button:active .sg-gray-bg {
 /*------ 8.j PAYMENT SUCCESSFUL ------*/
 .modal-view-container .paymentsuccessful {
 	padding-top: 47px;
+	padding-bottom: 47px;
 }
 
 .modal-view-container .paymentsuccessful .sg-footerbar button .fa {
