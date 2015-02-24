@@ -124,39 +124,25 @@ define(
 
 		populatePriceSuggestions = function () {
 			var vanClassification = App.contentClassification.data.vanClassification,
-                view, vanSubtypes, i, suggestionA, suggestionB, suggestionC;
+				view = this,
+                i, suggestionA, suggestionB, suggestionC;
 
-            view = this;
-
-            vanSubtypes = vanClassification[view.newVan.data.van_type];
-            for(i = 0; i < vanSubtypes.length; i++) {
-                if (vanSubtypes[i].subtype === view.newVan.data.subtype) {
-                    suggestionA = vanSubtypes[i].price_a_suggestion;
-                    suggestionB = vanSubtypes[i].price_b_suggestion;
-                    suggestionC = vanSubtypes[i].price_c_suggestion;
-                    i = vanSubtypes.length;
+            for(i = 0; i < vanClassification.length; i++) {
+                if(vanClassification[i].vanType === view.newVan.data.van_type) {
+                    suggestionA = vanClassification[i].price_a_suggestion;
+                    suggestionB = vanClassification[i].price_b_suggestion;
+                    suggestionC = vanClassification[i].price_c_suggestion;
+                    i = vanClassification.length;
                 }
             }
-            Localization.convertPrice(suggestionA, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#addvan-price_a-suggestion', view.$element).html(Math.ceil(convertedPrice));
-            });
-            Localization.convertPrice(suggestionB, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#addvan-price_b-suggestion', view.$element).html(Math.ceil(convertedPrice));
-            });
-            Localization.convertPrice(suggestionC, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#addvan-price_c-suggestion', view.$element).html(Math.ceil(convertedPrice));
+            Localization.convertPrices([suggestionA, suggestionB, suggestionC], 'EUR', App.user.data.currency, function(error, convertedPrices) {
+            	if(error) {
+            		console.log('Could not convert price suggestions: ' + error);
+            		return;
+            	}
+            	$('#addvan-price_a-suggestion', view.$element).html(Math.ceil(convertedPrices[0]));
+            	$('#addvan-price_b-suggestion', view.$element).html(Math.ceil(convertedPrices[1]));
+            	$('#addvan-price_c-suggestion', view.$element).html(Math.ceil(convertedPrices[2]));
             });
 		};
 
@@ -300,7 +286,7 @@ define(
 				}
 
 				view.showPanel('#addvan-panel-photos');
-				this.populatePriceSuggestions();
+				view.populatePriceSuggestions();
 
 				view.toggleLoading();
 			});
@@ -470,7 +456,7 @@ define(
 			view.toggleLoading();
 
 			saveCall = function() {
-				view.newVan.save(App.user.data.id, function(error) {
+				view.newVan.save(function(error) {
 					if(error) {
 						alert('Error saving data');
 						view.toggleLoading();

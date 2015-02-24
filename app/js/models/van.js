@@ -62,8 +62,6 @@ define(
 				longitude: newVan.longitude,
 				owner_id: App.user.data.id
 			};
-
-			console.log(postData);
 			
 			this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
 				if(error) {
@@ -127,7 +125,7 @@ define(
 			});
 		};
 
-		save = function(userID, callback) {
+		save = function(callback) {
 			var saveData = {
 				subtype: this.data.subtype,
 				brand: this.data.brand,
@@ -149,7 +147,7 @@ define(
 				accessories: JSON.stringify(this.data.accessories)
 			};
 
-			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
+			this.put('/users/' + App.user.data.id + '/vans/' + this.data.id, saveData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback('Error saving gear: ' + error);
