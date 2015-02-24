@@ -846,6 +846,7 @@ body {
 	.sg-banner {
 		height: 520px;
 		height: 100vh;
+		min-height: 525px;
 	}
 	.sg-banner .container-fluid {
 		padding: 0;
@@ -864,6 +865,15 @@ body {
 	top: 81vh;
 	width: 100%;
 }
+
+@media (max-height: 522px) and (min-width: 768px) {
+
+	.sg-banner .container-fluid .row:last-child {
+		display: none;
+	}
+
+}
+
 @media (min-width: 768px) {
 	.sg-banner .container-fluid .row:last-child {
 		top: 97vh;
@@ -2574,6 +2584,7 @@ button:active .sg-gray-bg {
 /*------ 8.j PAYMENT SUCCESSFUL ------*/
 .modal-view-container .paymentsuccessful {
 	padding-top: 47px;
+	padding-bottom: 47px;
 }
 
 .modal-view-container .paymentsuccessful .sg-footerbar button .fa {
