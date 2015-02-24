@@ -178,7 +178,7 @@ define(
 
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
-					defaultSearchResults, handleImageLoad, handlePrices, html, searchResult, i, img;
+					defaultSearchResults, workingSearchResults, handleImageLoad, handlePrices, html, searchResult, i, img;
 
 				defaultSearchResults = {
 					id: 0,
@@ -218,6 +218,7 @@ define(
 							return;
 						}
 						$price.html(Math.ceil(convertedPrice));
+						$('.currency', $searchBlock).html(App.user.data.currency);
 					});
 				};
 
@@ -232,8 +233,9 @@ define(
                     
                     searchResult.resultNum = i;
 
-					_.extend(defaultSearchResults, searchResult);
-					html += searchResultTemplate(defaultSearchResults);
+                    workingSearchResults = {};
+					_.extend(workingSearchResults, defaultSearchResults, searchResult);
+					html += searchResultTemplate(workingSearchResults);
 
 					img = new Image();
 					img.resultNum = i;
