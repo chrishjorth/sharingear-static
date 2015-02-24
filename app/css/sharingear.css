@@ -739,6 +739,22 @@ body {
 	line-height: 36px;
 }
 
+@media (min-width: 768px) {
+	.sidebarpanel-container,
+	.sidebarpanel-container > .row,
+	.sidebarpanel-container > .row > form,
+	.sidebarpanel-container > .row > form > .col-sm-3,
+	.sidebarpanel-container .gearbuttonlist-container {
+		height: 100%;
+	}
+	.sidebarpanel-container .footer {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 44px;
+	}
+}
+
 /*------ 2.c BOTTOM NOTIFICATIONS ------*/
 .cookie-opt-in {
 	z-index: 500;
@@ -1760,15 +1776,20 @@ button:active .sg-gray-bg {
     cursor: pointer;
     color: #ffffff;
     font-size: 14px;
+    line-height: 20px;
     font-weight: normal;
     width: 100%;
-    line-height: 36px;
     text-align: center;
     text-transform: capitalize;
+    vertical-align: top;
 }
 .custom-radio input[type="radio"]:checked + label {
     cursor: default;
     color: #00aeff;
+}
+.custom-radio input[type="radio"] + label > span {
+	display: inline-block;
+	padding-top: 18px;
 }
 
 /******* 8. SPECIFIC VIEWS *******/
@@ -2195,36 +2216,6 @@ button:active .sg-gray-bg {
 }
 
 /*------ 8.f ADD GEAR -----*/
-@media (min-width: 768px) {
-	/*.addgear {
-		height: 100%;
-	}
-	.addgear > .row:first-child {
-		height: 100%;
-	}
-	.addgear > .row:first-child form {
-		height: 100%;
-	}
-	.addgear > .row:first-child form > .col-sm-3 {
-		height: 100%;
-	}*/
-	.addgear,
-	.addgear > .row,
-	.addgear > .row > form,
-	.addgear > .row > form > .col-sm-3,
-	.addgear .gearbuttonlist-container {
-		height: 100%;
-	}
-	.addgear .footer {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		height: 44px;
-	}
-}
-
-
-
 .addgear {
 	padding-bottom: 40px;
 }
@@ -2234,7 +2225,7 @@ button:active .sg-gray-bg {
 	}
 }
 
-.addgear .hint1 {
+.modal-view-container .hint1 {
 	font-size: 16px;
 	line-height: 32px;
 	margin-top: 30px;
@@ -2903,6 +2894,30 @@ button:active .sg-gray-bg {
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-addvan-trailer:before {
+	content: "\e622";
+}
+
+.icon-addvan-nightlinerdoubledecker:before {
+	content: "\e621";
+}
+
+.icon-addvan-nightlinersingledecker:before {
+	content: "\e620";
+}
+
+.icon-addvan-sleeper:before {
+	content: "\e61f";
+}
+
+.icon-addvan-splitter:before {
+	content: "\e61e";
+}
+
+.icon-addvan-van:before {
+	content: "\e61d";
 }
 
 .icon-info:before {

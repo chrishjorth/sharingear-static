@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'model'],
-	function(_, Utilities, Model) {
+	['underscore', 'utilities', 'model', 'app'],
+	function(_, Utilities, Model, App) {
 		var didInitialize,
 			createVan,
 			uploadImage,
@@ -39,13 +39,13 @@ define(
 			}
 		};
 
-		createVan = function createGear(user, callback) {
+		createVan = function createGear(callback) {
 			var model = this,
 				newVan = this.data,
 				postData;
 
 			postData = {
-				gear_type: newVan.gear_type,
+				van_type: newVan.van_type,
 				model: newVan.model,
 				description: newVan.description,
 				images: newVan.images,
@@ -60,10 +60,12 @@ define(
 				country: newVan.country,
 				latitude: newVan.latitude,
 				longitude: newVan.longitude,
-				owner_id: user.data.id
+				owner_id: App.user.data.id
 			};
+
+			console.log(postData);
 			
-			this.post('/gear', postData, function(error, data) {
+			this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback(error);
@@ -165,13 +167,13 @@ define(
 
 		update = function(userID, callback) {
 			var model = this;
-			this.get('/gear/' + this.data.id, function(error, gear) {
+			this.get('/gear/' + this.data.id, function(error, vans) {
 				if(error) {
 					console.log(error);
 					callback(error);
 					return;
 				}
-				_.extend(model.data, gear);
+				_.extend(model.data, vans);
 				callback(null);
 			});
 		};

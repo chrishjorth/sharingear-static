@@ -42,8 +42,8 @@ define(
 				$('#' + vanBlockID, this.$element).append('You haven\'t listed any vans yet!');
 			}
 
-			this.setupEvent('click', '#dashboard-yourvans-add-btn', this, this.handleAddGear);
-			this.setupEvent('click', '.yourvans-item-edit-btn', this, this.handleEditGearItem);
+			this.setupEvent('click', '#dashboard-yourvans-add-btn', this, this.handleAddVan);
+			this.setupEvent('click', '.yourvans-item-edit-btn', this, this.handleEditVanItem);
 		};
 
 		populateYourVans = function(callback) {

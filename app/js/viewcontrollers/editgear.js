@@ -130,7 +130,7 @@ define(
         };
 
 		initAccessories = function () {
-			var gearClassification = App.gearClassification.data.classification,
+			var gearClassification = App.contentClassification.data.gearClassification,
 				html = '',
 				view,gearSubtypes,i;
 
@@ -361,7 +361,7 @@ define(
         };
 
 		populateBrandSelect = function() {
-			var brands = App.gearClassification.data.brands,
+			var brands = App.contentClassification.data.gearBrands,
 				html = '<option> Choose brand: </option>',
 				$brandSelect, i;
 			if(!brands) {
@@ -378,7 +378,7 @@ define(
 		};
 
 		populateSubtypeSelect = function() {
-			var gearClassification = App.gearClassification.data.classification,
+			var gearClassification = App.contentClassification.data.gearClassification,
 				html = '<option> Choose subtype: </option>',
 				$subtypeSelect,
 				gearSubtypes, i;
@@ -425,7 +425,7 @@ define(
         };
 
 		populatePriceSuggestions = function () {
-			var gearClassification = App.gearClassification.data.classification,
+			var gearClassification = App.contentClassification.data.gearClassification,
                 view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
 
             view = this;
@@ -463,7 +463,7 @@ define(
 		};
 
 		populateAccessories = function (event) {
-            var gearClassification = App.gearClassification.data.classification,
+            var gearClassification = App.contentClassification.data.gearClassification,
                 html = '',
                 view,gearSubtypes,i;
 			

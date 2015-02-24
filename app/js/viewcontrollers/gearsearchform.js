@@ -182,7 +182,7 @@ define(
 		showGearSuggestions = function(event) {
 			var view = event.data,
 				$searchGear = $('#search-gear', view.$element),
-				searchString, gList, brandsSuggestions, classificationSuggestions;
+				searchString, gearClassificationList, gearBrandList, brandsSuggestions, classificationSuggestions;
 
 			searchString = $searchGear.val();
 			if (view.gearSelectionIndex === 0) {
@@ -196,8 +196,8 @@ define(
 
 			searchString = searchString.toLowerCase().trim();
 
-			gList = App.gearClassification.data;
-			classificationSuggestions = _.map(gList.classification, function(value) {
+			gearClassificationList = App.contentClassification.data.gearClassification;
+			classificationSuggestions = _.map(gearClassificationList, function(value) {
 				var gear;
 				gear = _.filter(value, function(subtype) {
 					var subtypeName = subtype.subtype.toLowerCase(),
@@ -211,7 +211,8 @@ define(
 			});
 			classificationSuggestions = _.flatten(classificationSuggestions);
 
-			brandsSuggestions = _.filter(gList.brands, function(brand) {
+			gearBrandList = App.contentClassification.data.gearBrands;
+			brandsSuggestions = _.filter(gearBrandList, function(brand) {
 				var searchIndex = brand.toLowerCase().indexOf(searchString);
 				return searchIndex >= 0;
 			});

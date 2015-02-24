@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'config', 'router', 'utilities', 'models/user', 'models/gearclassification', 'models/localization'],
-	function(_, $, Config, Router, Utilities, User, GearClassification) {
+	['underscore', 'jquery', 'config', 'router', 'utilities', 'models/user', 'models/contentclassification', 'models/localization'],
+	function(_, $, Config, Router, Utilities, User, ContentClassification) {
 		var App,
 
 			run,
@@ -58,7 +58,8 @@ define(
                 'search',
                 'user',
                 'pickupdeliverycalendar',
-                'insurance'
+                'insurance',
+                'addvan'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.
@@ -81,10 +82,10 @@ define(
 				documentReadyDeferred.resolve();
 			});
 
-			App.gearClassification = new GearClassification.constructor({
+			App.contentClassification = new ContentClassification.constructor({
 				rootURL: Config.API_URL
 			});
-			App.gearClassification.initialize();
+			App.contentClassification.initialize();
 
 			App.setUserLocation();
 

@@ -45,7 +45,7 @@ define(
 					expect(App.router.routes).to.be.an('array');
 					expect(App.user).to.be.an('object');
 					sinon.assert.calledOnce(spec.loginStatusSpy);
-					expect(App.gearClassification).to.be.an('object');
+					expect(App.contentClassification).to.be.an('object');
 					sinon.assert.calledOnce(spec.setUserLocationSpy);
 					sinon.assert.calledOnce(spec.loadHeaderSpy);
 					sinon.assert.calledWith(spec.loadHeaderSpy, App.$headerContainer);
