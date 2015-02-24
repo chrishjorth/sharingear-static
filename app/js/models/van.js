@@ -83,11 +83,11 @@ define(
 		 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
 		 * @param filename: The name of the file
 		 */
-		uploadImage = function(file, filename, userID, callback) {
+		uploadImage = function(file, filename, callback) {
 			var model = this;
 			//Get filename and secret from backend
 			console.log('Get filename from backend');
-			this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
+			this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback('Error getting filename: ' + error);
@@ -106,13 +106,11 @@ define(
 					}
 					//Add image url to backend
 					postData = {
-						user_id: userID,
-						gear_id: model.data.id,
 						image_url: data.url
 					};
 					console.log('File upload success. Add url to backend:');
 					console.log(postData);
-					model.post('/gear/image', postData, function(error, images) {
+					model.post('/users/' + App.user.data.id + '/vans/' + model.data.id + '/image', postData, function(error, images) {
 						if(error) {
 							//TODO: In this case the image should be deleted from the server
 							if(callback && typeof callback === 'function') {
