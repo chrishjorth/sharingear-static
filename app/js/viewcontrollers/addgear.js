@@ -560,7 +560,6 @@ define(
 							view.toggleLoading();
 							return;
 						}
-						
 						if(App.user.isSubMerchant() === false) {
 							view.showPanel('#addgear-panel-submerchantForm');
 							view.renderSubmerchantForm();
