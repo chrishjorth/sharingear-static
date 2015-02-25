@@ -70,6 +70,7 @@ define(
 					loginDeferred.resolve();
 				}
 				else {
+					console.log('Logging into backend.');
 					App.user.loginToBackend(response, function() {
 						console.log('User logged in.');
 						loginDeferred.resolve();

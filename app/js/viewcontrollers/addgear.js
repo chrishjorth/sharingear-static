@@ -601,7 +601,31 @@ define(
 			require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
 				view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.newGear});
 				view.calendarVC.initialize();
-				view.calendarVC.render();
+				view.newGear.getAvailability(App.user.data.id, function(error, result) {
+                	var selections = {},
+                    	availabilityArray, i, startMoment, endMoment;
+
+                	if(error) {
+                		console.log('Error retrieving van availability: ' + error);
+                    	return;
+                	}
+
+                	availabilityArray = result.availabilityArray;
+                	for(i = 0; i < availabilityArray.length; i++) {
+                    	startMoment = new Moment.tz(availabilityArray[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+                    	endMoment = new Moment.tz(availabilityArray[i].end, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+                    	if(Array.isArray(selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
+                        	selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
+                    	}
+                    	selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
+                        	startMoment: startMoment,
+                        	endMoment: endMoment
+                    	});
+                	}
+                	view.calendarVC.setAlwaysState(result.alwaysFlag);
+                	view.calendarVC.setSelections(selections);
+					view.calendarVC.render();
+				});
 			});
 		};
 

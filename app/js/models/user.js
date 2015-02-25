@@ -28,7 +28,6 @@ define(
 		});
 
 		didInitialize = function() {
-			
 			if(this.data === null) {
 				this.data = {
 					id: null,
@@ -57,7 +56,7 @@ define(
 				if(callback && typeof callback === 'function') {
 					callback(response);
 				}
-			});
+			}); //Adding the true parameter forces a refresh from the FB servers, but also causes the login popup to be blocked, since it goes async and creates a new execution context
 		};
 
 		login = function(callback) {

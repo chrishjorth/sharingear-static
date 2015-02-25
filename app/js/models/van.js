@@ -163,7 +163,7 @@ define(
 
 		update = function(userID, callback) {
 			var model = this;
-			this.get('/gear/' + this.data.id, function(error, vans) {
+			this.get('/vans/' + this.data.id, function(error, vans) {
 				if(error) {
 					console.log(error);
 					callback(error);
@@ -174,15 +174,15 @@ define(
 			});
 		};
 
-		getAvailability = function(userID, callback) {
-			if(userID === null) {
+		getAvailability = function(callback) {
+			if(App.user.data.id === null) {
 				callback(null, {
 					alwaysFlag: 0,
 					availabilityArray: []
 				});
 				return;
 			}
-			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
+			this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
 				if(error) {
 					console.log(error);
 					callback(error);
@@ -195,13 +195,13 @@ define(
 		/**
 		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
 		 */
-		setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
+		setAvailability = function(availabilityArray, alwaysFlag, callback) {
 			var postData;
 			postData = {
 				availability: JSON.stringify(availabilityArray),
 				alwaysFlag: alwaysFlag
 			};
-			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error) {
+			this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
 				if(error) {
 					console.log(error);
 					callback(error);

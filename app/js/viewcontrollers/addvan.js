@@ -503,7 +503,31 @@ define(
 			require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
 				view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.newVan});
 				view.calendarVC.initialize();
-				view.calendarVC.render();
+				view.newVan.getAvailability(function(error, result) {
+                	var selections = {},
+                    	availabilityArray, i, startMoment, endMoment;
+
+                	if(error) {
+                		console.log('Error retrieving van availability: ' + error);
+                    	return;
+                	}
+
+                	availabilityArray = result.availabilityArray;
+                	for(i = 0; i < availabilityArray.length; i++) {
+                    	startMoment = new Moment.tz(availabilityArray[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+                    	endMoment = new Moment.tz(availabilityArray[i].end, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+                    	if(Array.isArray(selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
+                        	selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
+                    	}
+                    	selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
+                        	startMoment: startMoment,
+                        	endMoment: endMoment
+                    	});
+                	}
+                	view.calendarVC.setAlwaysState(result.alwaysFlag);
+                	view.calendarVC.setSelections(selections);
+					view.calendarVC.render();
+				});
 			});
 		};
 
@@ -545,8 +569,8 @@ define(
 				$('#submerchantregistration-phone', this.$element).parent().addClass('hidden');
 			}
 
-			this.setupEvent('click', '#addvan-availability .btn-skip', this, this.handleSubmerchantSkip);
-			this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
+			//this.setupEvent('click', '#addvan-availability .btn-skip', this, this.handleSubmerchantSkip);
+			//this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
 		};
 
 		populateBirthdateInput = function() {
@@ -698,7 +722,7 @@ define(
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
                 if(status === GoogleMaps.GeocoderStatus.OK) {
                 	_.extend(user, tempUser);
-                	view.showPanel('#addgear-panel-submerchantTerms');
+                	view.showPanel('#addvan-panel-submerchantTerms');
                 }
                 else {
                     alert('The address is not valid!');
@@ -771,7 +795,7 @@ define(
 				}
 			}
 
-      		view.newVan.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
+      		view.newVan.setAvailability(availabilityArray, alwaysFlag, function(error) {
       			if(error) {
       				alert('Error saving van availability.');
       				console.log(error);
@@ -781,7 +805,7 @@ define(
       			$('.footer', view.$element).addClass('hidden');
       			view.showPanel('#addvan-panel-final');
       			view.setupEvent('click', '.profile-btn', view, view.handleViewVanProfile);
-      			view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreVan);
+      			view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreVans);
       		});
         };
 
