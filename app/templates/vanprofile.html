@@ -1,0 +1,126 @@
+<div class="container-fluid view vanprofile sg-lightgray-bg">
+	<div class="row bs-reset">
+		<div class="col-sm-8 bs-reset">
+			<div class="row sg-card sg-no-mobile">
+				<div class="col-sm-12 sg-white-bg sg-gray"><div class="sg-icon icon-dashboard-yourvans"></div>{{van_type}}</div>
+			</div>
+			<div class="row sg-card">
+				<div class="col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset van">
+					<div class="sg-icon icon-addvan-{{van_type}} sg-darkgray"></div><span class="van-title">{{model}}</span> <div class="social sg-gray"><button class="sg-btn-invisible sg-gray" id="vanprofile-fb-btn"><i class="fa fa-facebook"></i></button> | <button class="sg-btn-invisible sg-gray" id="vanprofile-tw-btn"><i class="fa fa-twitter"></i></button></div>
+				</div>
+				<div class="col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container"><div class="profile-pic"></div></div>
+			</div>
+		</div>
+		<div class="col-sm-4 bs-reset">
+			<div class="row pricing sg-card sg-card-sibling">
+				<div class="col-xs-3 col-sm-4">
+					<div class="sg-blue-bg">
+						<div class="text-center sg-darkergray">Day</div>
+						<div class="text-center sg-white"><span id="vanprofile-price_a"></span> <span class="currency">{{currency}}</span></div>
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-4">
+					<div class="sg-blue-bg">
+						<div class="text-center sg-darkergray">Week</div>
+						<div class="text-center sg-white"><span id="vanprofile-price_b"></span> <span class="currency">{{currency}}</span></div>
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-4">
+					<div class="sg-blue-bg">
+						<div class="text-center sg-darkergray">Month</div>
+						<div class="text-center sg-white"><span id="vanprofile-price_c"></span> <span class="currency">{{currency}}</span></div>
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-12 button-container">
+					<button class="sg-btn-square sg-darkergray-bg sg-white disabled hidden" id="vanprofile-action-unavailable">UNAVAILABLE</button>
+					<button class="sg-btn-square sg-darkergray-bg sg-white hidden" id="vanprofile-action-book">BOOK</button>
+					<button class="sg-btn-square sg-darkergray-bg sg-white hidden" id="vanprofile-action-edit">EDIT</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row bs-reset">
+		<div class="col-sm-8 bs-reset">
+			<div class="row sg-card sg-card-follower sg-white-bg">
+				<div class="col-sm-12 bs-reset">
+					<div class="row bs-reset owl-carousel owl-theme"></div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<hr>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<h3>Description</h3>
+							<p>
+								{{description}}
+							</p>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<hr>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12 accessories">
+							<h3>Accessories</h3>
+							<div id="accessories-holder"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4 bs-reset">
+			<div class="row sg-card sg-card-follower sg-white-bg map-container">
+				<div class="col-sm-12 bs-reset">
+					<div class="row bs-reset">
+						<div class="col-xs-2 sg-gray">
+							<i class="fa fa-home"></i>
+						</div>
+						<div class="col-xs-10 sg-darkergray">
+							{{location}}
+						</div>
+					</div>
+					<div class=" row bs-reset">
+						<div class="col-xs-12">
+							<div class="map" id="vanprofile-map"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row sg-card sg-card-follower sg-white-bg profile-container">
+				<div class="col-sm-12 bs-reset">
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<div class="sg-lightgray-bg text-center">
+								<a href="#user/{{owner_id}}"><div class="profile-pic"></div></a>
+							</div>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12 text-center">
+							<div class="sg-darkergray name">{{name}}</div>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12 text-center">
+							<div class="sg-gray tagline">Sharingear first-mover</div>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12">
+							<hr>
+						</div>
+					</div>
+					<div class="row bs-reset">
+						<div class="col-sm-12 text-center">
+							<a href="#user/{{owner_id}}" class="sg-btn-invisible"><div class="sg-icon icon-info sg-darkergray"></div></a><a href="#user/{{owner_id}}/vans" class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourvans sg-darkergray"></div></a><button class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourtechprofile sg-darkergray"></div></button><button class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourvans sg-darkergray"></div></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

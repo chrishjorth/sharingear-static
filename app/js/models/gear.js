@@ -5,8 +5,8 @@
 'use strict';
 
 define(
-	['underscore', 'utilities', 'model'],
-	function(_, Utilities, Model) {
+	['underscore', 'utilities', 'model', 'app'],
+	function(_, Utilities, Model, App) {
 		var didInitialize,
 			createGear,
 			uploadImage,
@@ -28,7 +28,7 @@ define(
 					price_a: '',
 					price_b: '',
 					price_c: '',
-					currency: 'EUR',
+					currency: App.user.data.currency,
                     delivery_price: '',
                     delivery_distance: '',
 					accessories: null,
