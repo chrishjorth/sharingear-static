@@ -28,6 +28,8 @@ define(
 				return;
 			}
 
+			this.hasSubviews = true;
+
 			this.$subViewContainer = $('');
 			
 			if(this.path === 'dashboard') {
