@@ -194,14 +194,18 @@ define(
 
         handleSave = function(event) {
             var view = event.data,
-                saveData;
+                birthdate, saveData;
 
             if(view.isSaving === true) {
                 return;
             }
 
-            // add spinner to btn
-            $('#saveButton', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+            birthdate = $('#dashboard-profile-birthdate-year', view.$element).val() + '-' + $('#dashboard-profile-birthdate-month', view.$element).val() + '-' + $('#dashboard-profile-birthdate-date', view.$element).val();
+            birthdate = new Moment.tz(birthdate, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
+            if(birthdate.isValid() === false) {
+                alert('Please select a valid date of birth');
+                return;
+            }
 
             saveData = {
                 name: $('#dashboard-profile-form #name', view.$element).val(),
@@ -209,7 +213,7 @@ define(
                 email: $('#dashboard-profile-form #email', view.$element).val(),
                 city: $('#dashboard-profile-form #hometown', view.$element).val(),
                 bio: $('#dashboard-profile-form #bio', view.$element).val(),
-                birthdate: $('#dashboard-profile-birthdate-year', view.$element).val() + '-' + $('#dashboard-profile-birthdate-month', view.$element).val() + '-' + $('#dashboard-profile-birthdate-date', view.$element).val(),
+                birthdate: birthdate.format('YYYY-MM-DD'),
                 address: $('#dashboard-profile-address', view.$element).val(),
                 postal_code: $('#dashboard-profile-postalcode', view.$element).val(),
                 country: $('#dashboard-profile-country', view.$element).val(),
@@ -233,6 +237,8 @@ define(
             }
 
             view.isSaving = true;
+            // add spinner to btn
+            $('#saveButton', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
 
             _.extend(view.user.data, saveData);
 
