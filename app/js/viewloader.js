@@ -172,9 +172,6 @@ define(
 				$('.view-container').removeClass('modal-open');
 			}
 
-			//TODO: remove once out of closed beta
-			$(modalViewContainer).removeClass('closed-beta-modal');
-
 			//Remove modal from queue
 			this.openModalViews.pop();
 

@@ -19,7 +19,9 @@ define(
 			handleScrollDown;
 
 		didInitialize = function() {
-			this.searchFormVC = null;
+			this.hasSubviews = true;
+			this.gearSearchFormVC = null;
+			this.vanSearchFormVC = null;
 		};
 
 		didRender = function() {
@@ -37,9 +39,14 @@ define(
         loadSearchBar = function() {
 			var view = this;
         	require(['viewcontrollers/gearsearchform', 'text!../templates/gearsearchform.html'], function(gearSearchVC, gearSearchVT) {
-				view.searchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('#home-searchform-gear .searchform-container', view.$element), template: gearSearchVT});
-				view.searchFormVC.initialize();
-				view.searchFormVC.render();
+				view.gearSearchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('#home-searchform-gear .searchform-container', view.$element), template: gearSearchVT});
+				view.gearSearchFormVC.initialize();
+				view.gearSearchFormVC.render();
+			});
+			require(['viewcontrollers/vansearchform', 'text!../templates/vansearchform.html'], function(vanSearchVC, vanSearchVT) {
+				view.vanSearchFormVC = new vanSearchVC.constructor({name: 'vansearchform', $element: $('#home-searchform-vans .searchform-container', view.$element), template: vanSearchVT});
+				view.vanSearchFormVC.initialize();
+				view.vanSearchFormVC.render();
 			});
         };
 
