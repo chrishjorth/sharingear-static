@@ -6,16 +6,15 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'utilities', 'app', 'viewcontroller', 'owlcarousel'],
-	function(_, $, Utilities, App, ViewController) { //owlcarousel do not support AMD
+	['underscore', 'jquery', 'utilities', 'app', 'viewcontroller'],
+	function(_, $, Utilities, App, ViewController) {
 		var didInitialize,
 			didRender,
 
 			loadSearchBar,
 			loadFooter,
 
-			handleTechniciansTab,
-			handleVansTab,
+			handleTab,
 			handleLogin,
 			handleScrollDown;
 
@@ -31,15 +30,14 @@ define(
 			this.loadSearchBar();
 			this.loadFooter();
 
-			this.setupEvent('click', '#home-tab-technicians', this, this.handleTechniciansTab);
-			this.setupEvent('click', '#home-tab-vans', this, this.handleVansTab);
+			this.setupEvent('click', '.sg-tabbar li .sg-btn-square', this, this.handleTab);
 			this.setupEvent('click', '#home-scroll-btn', this, this.handleScrollDown);
         };
 
         loadSearchBar = function() {
 			var view = this;
         	require(['viewcontrollers/gearsearchform', 'text!../templates/gearsearchform.html'], function(gearSearchVC, gearSearchVT) {
-				view.searchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('.searchform-container', view.$element), template: gearSearchVT});
+				view.searchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('#home-searchform-gear .searchform-container', view.$element), template: gearSearchVT});
 				view.searchFormVC.initialize();
 				view.searchFormVC.render();
 			});
@@ -54,24 +52,33 @@ define(
 			});
 		};
 
-		handleTechniciansTab = function(event) {
-			var view = event.data;
-			if(App.user.isLoggedIn() === false) {
-				view.handleLogin();
-			}
-			else {
-				alert('This feature will be enabled soon, please stay tuned.');
-			}
-		};
+		handleTab = function(event) {
+			var $this = $(this),
+				view = event.data,
+				id;
+			id = $this.attr('id');
 
-		handleVansTab = function(event) {
-			var view = event.data;
-			if(App.user.isLoggedIn() === false) {
-				view.handleLogin();
+			//Remove this once technicians are enabled.
+			if(id === 'home-tab-technicians') {
+				if(App.user.isLoggedIn() === false) {
+					view.handleLogin();
+				}
+				else {
+					alert('This feature will be enabled soon, please stay tuned.');
+				}
+				return;
 			}
-			else {
-				alert('This feature will be enabled soon, please stay tuned.');
-			}
+
+			$('.sg-tabbar li .sg-btn-square', view.$element).removeClass('selected');
+			$this.addClass('selected');
+
+			$('.sg-tab-panel', view.$element).each(function() {
+				var $panel = $(this);
+				if($panel.hasClass('hidden') === false) {
+					$panel.addClass('hidden');
+				}
+			});
+			$('#home-searchform-' + id.substring(9), view.$element).removeClass('hidden'); //9 is the length of 'home-tab-'
 		};
 
 		handleLogin = function() {
@@ -100,8 +107,7 @@ define(
 			loadSearchBar: loadSearchBar,
 			loadFooter: loadFooter,
 
-			handleTechniciansTab: handleTechniciansTab,
-			handleVansTab: handleVansTab,
+			handleTab: handleTab,
 			handleLogin: handleLogin,
 			handleScrollDown: handleScrollDown
 		});
