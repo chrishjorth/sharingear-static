@@ -43,7 +43,7 @@ define(
 			}
 
 			this.setupEvent('click', '#dashboard-yourvans-add-btn', this, this.handleAddVan);
-			this.setupEvent('click', '.yourvans-item-edit-btn', this, this.handleEditVanItem);
+			this.setupEvent('click', '.yourvan-item-edit-btn', this, this.handleEditVanItem);
 		};
 
 		populateYourVans = function(callback) {

@@ -1,13 +1,13 @@
 /**
- * Controller for the Sharingear Edit gear page view.
+ * Controller for the Sharingear Edit vans page view.
  * @author: Chris Hjorth, Gediminas Bivainis
  */
 
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'models/localization', 'googlemaps','utilities', 'moment', 'config'],
-	function(_, $, ViewController, App, Gear, Localization, GoogleMaps, Utilities, Moment, Config) {
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/van', 'models/localization', 'googlemaps','utilities', 'moment', 'config'],
+	function(_, $, ViewController, App, Van, Localization, GoogleMaps, Utilities, Moment, Config) {
 		var geocoder,
 
             didInitialize,
@@ -54,111 +54,106 @@ define(
 
             this.isLoading = false;
 
-			this.gear = this.passedData;
-			this.templateParameters = this.gear.data;
+			this.van = this.passedData;
+			this.templateParameters = this.van.data;
             this.templateParameters.currency = App.user.data.currency;
 
             this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 		};
 
 		didRender = function() {
-			this.populateBrandSelect();
-			this.populateSubtypeSelect();
-
 			this.populateImages();
-            this.populateCountries($('#editgearpricing-country', this.$element));
+            this.populateCountries($('#editvanpricing-country', this.$element));
             this.populateLocation();
             this.populateDelivery();
             this.renderAvailability();
 
-			if(this.gear.data.subtype === '') {
-				$('#editgear-subtype').prop('selectedIndex', 0); // if no subtype is passed, 'Choose type:' by default
+			if(this.van.data.subtype === '') {
+				$('#editvan-subtype').prop('selectedIndex', 0); // if no subtype is passed, 'Choose type:' by default
 			}
 			else {
-				$('#editgear-subtype', this.$element).val(this.gear.data.subtype);
+				$('#editvan-subtype', this.$element).val(this.van.data.subtype);
 			}
 
-			if(this.gear.data.brand === '') {
-				$('#editgear-brand').prop('selectedIndex', 0); // if no brand is passed, 'Choose brand:' by default
+			if(this.van.data.brand === '') {
+				$('#editvan-brand').prop('selectedIndex', 0); // if no brand is passed, 'Choose brand:' by default
 			}
 			else {
-				$('#editgear-brand', this.$element).val(this.gear.data.brand);
+				$('#editvan-brand', this.$element).val(this.van.data.brand);
 			}
 
-            if(this.gear.data.country === '') {
-                $('#editgearpricingloc-form #editgearpricing-country').prop('selectedIndex', 0); // if no country is passed, 'Choose country:' by default
+            if(this.van.data.country === '') {
+                $('#editvanpricingloc-form #editvanpricing-country').prop('selectedIndex', 0); // if no country is passed, 'Choose country:' by default
             }
             else {
-                $('#editgearpricingloc-form #editgearpricing-country', this.$element).val(this.gear.data.country);
+                $('#editvanpricingloc-form #editvanpricing-country', this.$element).val(this.van.data.country);
             }
 
 			this.initAccessories();
             this.populatePricing();
 			this.populatePriceSuggestions();
 
-            this.setupEvent('click', '#editgear-cancel-btn', this, this.handleCancel);
-			this.setupEvent('click', '#editgear-save-btn', this, this.handleSave);
-            this.setupEvent('change', '#editgear-photos-form-imageupload', this, this.handleImageUpload);
-            this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
+            this.setupEvent('click', '#editvan-cancel-btn', this, this.handleCancel);
+			this.setupEvent('click', '#editvan-save-btn', this, this.handleSave);
+            this.setupEvent('change', '#editvan-photos-form-imageupload', this, this.handleImageUpload);
+            this.setupEvent('change', '#van-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
-			this.setupEvent('change', '#editgear-subtype', this, this.handleSubtypeChange);
+			this.setupEvent('change', '#editvan-subtype', this, this.handleSubtypeChange);
 
             this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
         };
 
         toggleLoading = function() {
             if(this.isLoading === true) {
-                $('#editgear-save-btn', this.$element).html('Save');
+                $('#editvan-save-btn', this.$element).html('Save');
                 this.isLoading = false;
             }
             else {
-                $('#editgear-save-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+                $('#editvan-save-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
                 this.isLoading = true;
             }
         };
 
         populateDelivery = function(){
-            var price = this.gear.data.delivery_price ? this.gear.data.delivery_price : '',
-                distance = this.gear.data.delivery_distance ? this.gear.data.delivery_distance : '';
+            var price = this.van.data.delivery_price ? this.van.data.delivery_price : '',
+                distance = this.van.data.delivery_distance ? this.van.data.delivery_distance : '';
 
-            $('#editgearpricingloc-form #delivery_price').val(price);
-            $('#editgearpricingloc-form #delivery_distance').val(distance);
+            $('#editvanpricingloc-form #delivery_price').val(price);
+            $('#editvanpricingloc-form #delivery_distance').val(distance);
         };
 
 		initAccessories = function () {
-			var gearClassification = App.contentClassification.data.gearClassification,
-				html = '',
-				view,gearSubtypes,i;
+			var vanClassification = App.contentClassification.data.vanClassification,
+				view = this,
+                html = '',
+				i, j;
 
-			view = this;
-
-			gearSubtypes = gearClassification[view.gear.data.gear_type];
-
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#editgear-subtype',view.$element).val()) {
-					var j;
-					for(j=0;j<gearSubtypes[i].accessories.length;j++){
-
-						//Check the checkbox if the specific accessory was selected for this gear before
-						if (view.gear.data.accessories.indexOf(gearSubtypes[i].accessories[j])>-1) {
-							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'" checked> '+gearSubtypes[i].accessories[j];
-						}else{
-							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
-						}
-					}
-				}
-			}
-			$('#editgear-accessories-container',view.$element).html(html);
+			i = 0;
+            while(i < vanClassification.length) {
+                if(vanClassification[i].vanType === view.van.data.van_type) {
+                    for(j = 0; j < vanClassification[i].accessories.length; j++) {
+                        if(view.van.data.accessories !== null && view.van.data.accessories.indexOf(vanClassification[i].accessories[j]) > -1) {
+                            html += '<input type="checkbox" name="' + vanClassification[i].accessories[j] + '" value="' + vanClassification[i].accessories[j] + '" checked> ' + vanClassification[i].accessories[j];
+                        }
+                        else {
+                            html += '<input type="checkbox" name="' + vanClassification[i].accessories[j] + '" value="' + vanClassification[i].accessories[j] + '"> ' + vanClassification[i].accessories[j];
+                        }
+                    }
+                    i = vanClassification.length;
+                }
+                i++;
+            }
+			$('#editvan-accessories-container', view.$element).html(html);
 		};
 
         renderAvailability = function() {
             var view = this,
                 $calendarContainer;
             if(App.user.isSubMerchant() === true) {
-                $calendarContainer = $('#editgear-availability-calendar', this.$element);
+                $calendarContainer = $('#editvan-availability-calendar', this.$element);
                 $calendarContainer.removeClass('hidden');
                 require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
-                    view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.gear});
+                    view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.van});
                     view.calendarVC.initialize();
                     view.calendarVC.render();
                 });
@@ -166,7 +161,7 @@ define(
             else {
                 var user = App.user.data;
 
-                $('#editgear-availability-submerchantform', this.$element).removeClass('hidden');
+                $('#editvan-availability-submerchantform', this.$element).removeClass('hidden');
 
                 if(user.birthdate && user.birthdate !== '') {
                     $('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
@@ -202,7 +197,7 @@ define(
                     $('#submerchantregistration-phone', this.$element).parent().addClass('hidden');
                 }
 
-                this.setupEvent('submit', '#editgear-submerchantform', this, this.handleSubmerchantSubmit);
+                this.setupEvent('submit', '#editvan-submerchantform', this, this.handleSubmerchantSubmit);
                 this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
             }
         };
@@ -237,7 +232,6 @@ define(
             if(selectedMonth !== null) {
                 $selectMonth.val(selectedMonth);
             }
-            
 
             monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
             monthDays = monthDays.endOf('month').date();
@@ -351,8 +345,8 @@ define(
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
                 if(status === GoogleMaps.GeocoderStatus.OK) {
                     _.extend(user, tempUser);
-                    $('#editgear-availability-submerchantform', view.$element).addClass('hidden');
-                    $('#editgear-availability-terms', view.$element).removeClass('hidden');
+                    $('#editvan-availability-submerchantform', view.$element).addClass('hidden');
+                    $('#editvan-availability-terms', view.$element).removeClass('hidden');
                 }
                 else {
                     alert('The address is not valid!');
@@ -377,8 +371,8 @@ define(
                         alert('Error registering bank data.');
                         return;
                     }
-                    $('#editgear-availability-terms', view.$element).addClass('hidden');
-                    $('#editgear-availability-calendar', view.$element).removeClass('hidden');
+                    $('#editvan-availability-terms', view.$element).addClass('hidden');
+                    $('#editvan-availability-calendar', view.$element).removeClass('hidden');
                     view.renderAvailability();
                     App.user.fetch(function(error) {
                         if(error) {
@@ -390,10 +384,10 @@ define(
         };
 
         populateLocation = function() {
-            $('#editgearpricingloc-form #editgearpricing-city').val(this.gear.data.city);
-            $('#editgearpricingloc-form #editgearpricing-address').val(this.gear.data.address);
-            $('#editgearpricingloc-form #editgearpricing-postalcode').val(this.gear.data.postal_code);
-            $('#editgearpricingloc-form #editgearpricing-region').val(this.gear.data.region);
+            $('#editvanpricing-city', this.$element).val(this.van.data.city);
+            $('#editvanpricing-address', this.$element).val(this.van.data.address);
+            $('#editvanpricing-postalcode', this.$element).val(this.van.data.postal_code);
+            $('#editvanpricing-region', this.$element).val(this.van.data.region);
         };
 
         populateCountries = function($select) {
@@ -406,46 +400,8 @@ define(
             $select.html(html);
         };
 
-		populateBrandSelect = function() {
-			var brands = App.contentClassification.data.gearBrands,
-				html = '<option> Choose brand: </option>',
-				$brandSelect, i;
-			if(!brands) {
-				brands = [];
-			}
-
-			$brandSelect = $('#editgear-brand', this.$element);
-			$brandSelect.empty();
-
-			for(i = 0; i < brands.length; i++) {
-				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
-			}
-			$brandSelect.append(html);
-		};
-
-		populateSubtypeSelect = function() {
-			var gearClassification = App.contentClassification.data.gearClassification,
-				html = '<option> Choose subtype: </option>',
-				$subtypeSelect,
-				gearSubtypes, i;
-			$subtypeSelect = $('#editgear-subtype', this.$element);
-			$subtypeSelect.empty();
-
-			gearSubtypes = gearClassification[this.gear.data.gear_type];
-			for(i = 0; i < gearSubtypes.length; i++) {
-				html += '<option value="' + gearSubtypes[i].subtype + '">' + gearSubtypes[i].subtype + '</option>';
-			}
-			$subtypeSelect.append(html);
-		};
-
-        handleSubtypeChange = function(event) {
-            var view = event.data;
-            view.populateAccessories();
-            view.populatePriceSuggestions();
-        };
-
 		populateImages = function() {
-			var images = this.gear.data.images.split(','),
+			var images = this.van.data.images.split(','),
 				html = '',
 				i;
 			for(i = 0; i < images.length; i++) {
@@ -454,12 +410,12 @@ define(
 					html += '<li><img src="' + images[i] + '" alt="Gear thumb"></li>';
 				}
 			}
-			$('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
+			$('#editvan-photos-form .thumb-list-container ul', this.$element).append(html);
 		};
 
         populatePricing = function() {
             var view = this;
-            Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
+            Localization.convertPrices([this.van.data.price_a, this.van.data.price_b, this.van.data.price_c], this.van.data.currency, App.user.data.currency, function(error, convertedPrices) {
                 if(error) {
                     console.log('Could not convert prices: ' + error);
                     return;
@@ -471,66 +427,52 @@ define(
         };
 
 		populatePriceSuggestions = function () {
-			var gearClassification = App.contentClassification.data.gearClassification,
-                view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
+			var vanClassification = App.contentClassification.data.vanClassification,
+                view = this,
+                i, suggestionA, suggestionB, suggestionC;
 
-            view = this;
-
-            gearSubtypes = gearClassification[view.gear.data.gear_type];
-            for(i = 0; i < gearSubtypes.length; i++) {
-                if (gearSubtypes[i].subtype === $('#editgear-subtype', view.$element).val()) {
-                    suggestionA = gearSubtypes[i].price_a_suggestion;
-                    suggestionB = gearSubtypes[i].price_b_suggestion;
-                    suggestionC = gearSubtypes[i].price_c_suggestion;
-                    i = gearSubtypes.length;
+            for(i = 0; i < vanClassification.length; i++) {
+                if(vanClassification[i].vanType === view.van.data.van_type) {
+                    suggestionA = vanClassification[i].price_a_suggestion;
+                    suggestionB = vanClassification[i].price_b_suggestion;
+                    suggestionC = vanClassification[i].price_c_suggestion;
+                    i = vanClassification.length;
                 }
             }
-            Localization.convertPrice(suggestionA, App.user.data.currency, function(error, convertedPrice) {
+            Localization.convertPrices([suggestionA, suggestionB, suggestionC], 'EUR', App.user.data.currency, function(error, convertedPrices) {
                 if(error) {
-                    console.log('Could not convert price: ' + error);
+                    console.log('Could not convert price suggestions: ' + error);
                     return;
                 }
-                $('#editgear-price_a-suggestion').html(Math.ceil(convertedPrice));
-            });
-            Localization.convertPrice(suggestionB, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#editgear-price_b-suggestion').html(Math.ceil(convertedPrice));
-            });
-            Localization.convertPrice(suggestionC, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#editgear-price_c-suggestion').html(Math.ceil(convertedPrice));
+                $('#editvan-price_a-suggestion', view.$element).html(Math.ceil(convertedPrices[0]));
+                $('#editvan-price_b-suggestion', view.$element).html(Math.ceil(convertedPrices[1]));
+                $('#editvan-price_c-suggestion', view.$element).html(Math.ceil(convertedPrices[2]));
             });
 		};
 
 		populateAccessories = function (event) {
-            var gearClassification = App.contentClassification.data.gearClassification,
+            var vanClassification = App.contentClassification.data.vanClassification,
+                view = event.data,
                 html = '',
-                view,gearSubtypes,i;
-			
-            view = event.data;
+                vanType, i, j;
 
-			gearSubtypes = gearClassification[view.gear.data.gear_type];
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#editgear-subtype',this.$element).val()) {
-					var j;
-					for(j = 0;j<gearSubtypes[i].accessories.length;j++){
+			i = 0;
+            while(i < vanClassification.length) {
+                if(vanClassification[i].vanType === vanType) {
+                    for(j = 0; j < vanClassification[i].accessories.length; j++) {
+                        if(view.van.data.accessories !== null && view.van.data.accessories.indexOf(vanClassification[i].accessories[j]) > -1) {
+                            html += '<input type="checkbox" name="' + vanClassification[i].accessories[j] + '" value="' + vanClassification[i].accessories[j] + '" checked> ' + vanClassification[i].accessories[j];
+                        }
+                        else {
+                            html += '<input type="checkbox" name="' + vanClassification[i].accessories[j] + '" value="' + vanClassification[i].accessories[j] + '"> ' + vanClassification[i].accessories[j];
+                        }
+                    }
+                    i = vanClassification.length;
+                }
+                i++;
+            }
 
-						//Check the checkbox if the specific accessory was selected for this gear before
-						if (view.gear.data.accessories.indexOf(gearSubtypes[i].accessories[j])>-1) {
-							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'" checked> '+gearSubtypes[i].accessories[j];
-						}else{
-							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
-						}
-					}
-				}
-			}
-            $('#editgear-accessories-container',this.$element).html(html);
+            $('#editvan-accessories-container', view.$element).html(html);
 		};
 
         handleDeliveryCheckbox = function(){
@@ -564,9 +506,9 @@ define(
 
             view.toggleLoading();
 
-			view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
+			view.van.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), function(error, url) {
 				var $thumbList, html;
-				$('#editgear-form-imageupload').val('');
+				$('#editvan-form-imageupload').val('');
 				if(error) {
 					alert('Error uploading file.');
 					console.log(error);
@@ -574,8 +516,8 @@ define(
 					return;
 				}
 
-				$thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
-				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
+				$thumbList = $('#editvan-photos-form .thumb-list-container ul', view.$element);
+				html = '<li><img src="' + url + '" alt="Van thumb"></li>';
 				$thumbList.append(html);
 
                 view.toggleLoading();
@@ -585,14 +527,14 @@ define(
 		handleSave = function(event) {
 			var view = event.data,
                 isLocationSame = false,
-                currentAddress = view.gear.data.address,
-                currentPostalCode = view.gear.data.postal_code,
-                currentCity = view.gear.data.city,
-                currentRegion = view.gear.data.region,
-                currentCountry = view.gear.data.country,
+                currentAddress = view.van.data.address,
+                currentPostalCode = view.van.data.postal_code,
+                currentCity = view.van.data.city,
+                currentRegion = view.van.data.region,
+                currentCountry = view.van.data.country,
                 availabilityArray = [],
 				accessoriesArray = [],
-                selections, alwaysFlag, updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
+                selections, alwaysFlag, updatedVanData, addressOneliner, updateCall, month, monthSelections, selection, j;
 
             if(view.isLoading === true) {
                 return;
@@ -617,7 +559,7 @@ define(
                     }
                 }
 
-                view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
+                view.van.setAvailability(availabilityArray, alwaysFlag, function(error) {
                     if(error) {
                         alert('Error saving availability.');
                         console.log(error);
@@ -627,129 +569,120 @@ define(
             }
 
 			//Push the checked checkboxes to the array
-            $('#editgear-accessories-container input:checked', view.$element).each(function() {
+            $('#editvan-accessories-container input:checked', view.$element).each(function() {
                 accessoriesArray.push(this.name);
             });
 
-			updatedGearData = {
-				brand: $('#editgear-brand option:selected', view.$element).val(),
-				subtype: $('#editgear-subtype option:selected', view.$element).val(),
-				model: $('#editgear-model', view.$element).val(),
-				description: $('#editgear-description', view.$element).val(),
-				price_a: $('#editgearpricing-form #price_a', this.$element).val(),
-				price_b: $('#editgearpricing-form #price_b', this.$element).val(),
-				price_c: $('#editgearpricing-form #price_c', this.$element).val(),
+			updatedVanData = {
+				brand: $('#editvan-brand option:selected', view.$element).val(),
+				subtype: $('#editvan-subtype option:selected', view.$element).val(),
+				model: $('#editvan-model', view.$element).val(),
+				description: $('#editvan-description', view.$element).val(),
+				price_a: $('#editvanpricing-form #price_a', this.$element).val(),
+				price_b: $('#editvanpricing-form #price_b', this.$element).val(),
+				price_c: $('#editvanpricing-form #price_c', this.$element).val(),
                 currency: App.user.data.currency,
-                delivery_price: '',
-                delivery_distance: '',
+                //delivery_price: '',
+                //delivery_distance: '',
 				accessories: accessoriesArray,
-				address: $('#editgearpricingloc-form #editgearpricing-address', this.$element).val(),
-				postal_code: $('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val(),
-				city: $('#editgearpricingloc-form #editgearpricing-city', this.$element).val(),
-				region: $('#editgearpricingloc-form #editgearpricing-region', this.$element).val(),
-				country: $('#editgearpricingloc-form #editgearpricing-country option:selected').val()
+				address: $('#editvanpricing-address', this.$element).val(),
+				postal_code: $('#editvanpricing-postalcode', this.$element).val(),
+				city: $('#editvanpricing-city', this.$element).val(),
+				region: $('#editvanpricing-region', this.$element).val(),
+				country: $('#editvanpricing-country option:selected').val()
             };
 
-            if ($('#editgear-subtype', view.$element).selectedIndex === 0) {
+            if ($('#editvan-subtype', view.$element).selectedIndex === 0) {
                 alert('The subtype field is required.');
 				view.toggleLoading();
                 return;
             }
-            if ($('#editgear-brand', view.$element).selectedIndex === 0) {
+            if ($('#editvan-brand', view.$element).selectedIndex === 0) {
                 alert('The brand field is required.');
 				view.toggleLoading();
 				return;
             }
-            if ($('#editgear-model', view.$element).val() === '') {
+            if ($('#editvan-model', view.$element).val() === '') {
                 alert('The model field is required.');
                 view.toggleLoading();
 				return;
             }
-            if ($('#editgearpricing-form #price_a', this.$element).val() === '') {
+            if ($('#price_a', this.$element).val() === '') {
                 alert('The rental price field is required.');
                 view.toggleLoading();
 				return;
             }
-			if (parseFloat($('#editgearpricing-form #price_a', this.$element).val())%1!==0) {
+			if (parseFloat($('#price_a', this.$element).val())%1!==0) {
 				alert('The hourly rental price is invalid.');
 				view.toggleLoading();
 				return;
 			}
-            if ($('#editgearpricing-form #price_b', this.$element).val() === '') {
+            if ($('#price_b', this.$element).val() === '') {
                 alert('The rental price field is required.');
                 view.toggleLoading();
 				return;
             }
-			if (parseFloat($('#editgearpricing-form #price_b', this.$element).val())%1!==0) {
+			if (parseFloat($('#price_b', this.$element).val())%1!==0) {
 				alert('The daily rental price is invalid.');
 				view.toggleLoading();
 				return;
 			}
-            if ($('#editgearpricing-form #price_c', this.$element).val() === '') {
+            if ($('#price_c', this.$element).val() === '') {
                 alert('The rental price field is required.');
                 view.toggleLoading();
 				return;
             }
-			if (parseFloat($('#editgearpricing-form #price_c', this.$element).val())%1!==0) {
+			if (parseFloat($('#price_c', this.$element).val())%1!==0) {
 				alert('The weekly rental price is invalid.');
 				view.toggleLoading();
 				return;
 			}
-            if ($('#editgearpricingloc-form #editgearpricing-address', this.$element).val() === '') {
+            if ($('#editvanpricing-address', this.$element).val() === '') {
                 alert('The address field is required.');
                 view.toggleLoading();               
 				return;
             }
-            if ($('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val() === '') {
+            if ($('#editvanpricing-postalcode', this.$element).val() === '') {
                 alert('The postalcode field is required.');
                 view.toggleLoading();                
 				return;
             }
-            if ($('#editgearpricingloc-form #editgearpricing-city', this.$element).val() === '') {
+            if ($('#editvanpricing-city', this.$element).val() === '') {
                 alert('The city field is required.');
                 view.toggleLoading(); 
 				return;
             }
-            if ($('#editgearpricingloc-form #editgearpricing-country').selectedIndex === 0 || $('#editgearpricingloc-form #editgearpricing-country').selectedIndex === null) {
+            if ($('#editvanpricing-country').selectedIndex === 0 || $('#editvanpricing-country').selectedIndex === null) {
                 alert('The country field is required.');
                 view.toggleLoading();                 
 				return;
             }
-            _.extend(view.gear.data, updatedGearData);
+            _.extend(view.van.data, updatedVanData);
 
 			updateCall = function() {
-                /*Localization.convertPrices([updatedGearData.price_a, updatedGearData.price_b, updatedGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
+				view.van.save(function(error) {
                     if(error) {
-                        console.log('Error converting prices: ' + error);
+                        alert('Error updating van.');
+                        console.log(error);
+                        view.toggleLoading();
                         return;
-                    }
-                    view.gear.data.price_a = convertedPrices[0];
-                    view.gear.data.price_b = convertedPrices[1];
-                    view.gear.data.price_c = convertedPrices[2];*/
-				    view.gear.save(App.user.data.id, function(error) {
-                        if(error) {
-                            alert('Error updating gear.');
-						  console.log(error);
-                            view.toggleLoading();
-						  return;
-					   }
-					   App.router.closeModalView();
-				    });
-                //});
+					}
+					App.router.closeModalView();
+				});
 			};
 
-			isLocationSame = (currentAddress === updatedGearData.address &&
-				currentPostalCode === updatedGearData.postal_code &&
-				currentCity === updatedGearData.city &&
-				currentRegion === updatedGearData.region &&
-				currentCountry === updatedGearData.country);
+			isLocationSame = (currentAddress === updatedVanData.address &&
+				currentPostalCode === updatedVanData.postal_code &&
+				currentCity === updatedVanData.city &&
+				currentRegion === updatedVanData.region &&
+				currentCountry === updatedVanData.country);
 
 			if(isLocationSame === false) {
-				addressOneliner = updatedGearData.address + ', ' + updatedGearData.postal_code + ' ' + updatedGearData.city + ', ' + updatedGearData.region + ', ' + updatedGearData.country;
+				addressOneliner = updatedVanData.address + ', ' + updatedVanData.postal_code + ' ' + updatedVanData.city + ', ' + updatedVanData.region + ', ' + updatedVanData.country;
 				geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
-						view.gear.data.longitude = results[0].geometry.location.lng();
-						view.gear.data.latitude = results[0].geometry.location.lat();
+						view.van.data.longitude = results[0].geometry.location.lng();
+						view.van.data.latitude = results[0].geometry.location.lat();
 						updateCall();
 					}
 					else {
