@@ -149,14 +149,11 @@ define(
             
             if(selectedDay !== null) {
                 if(selectedDay <= monthDays) {
-                    console.log("in range");
                     $selectDay.val(selectedDay);
                 } else {
-                    console.log("out of range");
                     $selectDay.val('-');
                 }
             } else {
-                console.log("is null");
                 $selectDay.val('-');
             }
 

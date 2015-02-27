@@ -667,12 +667,8 @@ define(
             $selectYear.html(html);
             if(selectedYear !== null && selectedYear !== '-') {
                 $selectYear.val(selectedYear);
-                console.log('year is not null');
-                console.log(selectedYear);
             } else {   							// 
-            	console.log('year is null');
             	selectedYear = new Moment.tz(Localization.getCurrentTimeZone()).format('YYYY');
-            	console.log(selectedYear);
             }
 
             selectedMonth = $selectMonth.val();
@@ -687,24 +683,19 @@ define(
             
             selectedDay = $selectDay.val();
             monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
-            console.log(selectedYear + '-' + selectedMonth + '-' + 1);
             monthDays = monthDays.endOf('month').date();
             html = '<option> - </option>';
             for(i = 1; i <= monthDays; i++) {
                 html += '<option value="' + i + '">' + i + '</option>';
             }
             $selectDay.html(html);
-            console.log(monthDays);
             if(selectedDay !== null) {
             	if(selectedDay <= monthDays) {
-            		console.log("in range");
             		$selectDay.val(selectedDay);
                 } else {
-                	console.log("out of range");
                 	$selectDay.val('-');
                 }
             } else {
-            	console.log("is null");
             	$selectDay.val('-');
             }
             
