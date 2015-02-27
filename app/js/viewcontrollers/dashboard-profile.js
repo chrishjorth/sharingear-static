@@ -249,6 +249,51 @@ define(
                 return;
             }
 
+            if ($('#dashboard-profile-form #dashboard-profile-birthdate-date', view.$element).val()==='') {
+                alert('The birthday fields are required.');
+                return;
+            }
+
+            if ($('#dashboard-profile-form #dashboard-profile-birthdate-month', view.$element).val()==='') {
+                alert('The birthday fields are required.');
+                return;
+            }
+
+            if ($('#dashboard-profile-form #dashboard-profile-birthdate-year', view.$element).val()==='') {
+                alert('The birthday fields are required.');
+                return;
+            }
+
+            if ($('#dashboard-profile-form #dashboard-profile-address', view.$element).val()==='') {
+                alert('The address field is required.');
+                return;
+            }
+
+            if ($('#dashboard-profile-form #dashboard-profile-postalcode', view.$element).val()==='') {
+                alert('The postal code field is required.');
+                return;
+            }
+
+            if ($('#dashboard-profile-form #hometown', view.$element).val()==='') {
+                alert('The city field is required.');
+                return;
+            }
+
+            if ($('#dashboard-profile-form #dashboard-profile-country', view.$element).val()==='') {
+                alert('The country field is required.');
+                return;
+            }
+
+            if ($('#dashboard-profile-form #dashboard-profile-phone', view.$element).val()==='') {
+                alert('The phone field is required.');
+                return;
+            }
+
+            if ($('#dashboard-profile-form #dashboard-profile-nationalities', view.$element).val()==='') {
+                alert('The nationality field is required.');
+                return;
+            }
+
             view.isSaving = true;
             // add spinner to btn
             $('#saveButton', view.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
