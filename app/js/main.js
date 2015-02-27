@@ -55,7 +55,7 @@ define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyB
     return window.google.maps;
 });
 
-require(['underscore', 'bootstrap', 'moment', 'momenttz'], function(_) {
+require(['underscore', 'jquery', 'bootstrap', 'moment', 'momenttz'], function(_) {
 	//Loaded moment with timezone support.
 	
 	//Configure underscore templates to use Handlebars style
