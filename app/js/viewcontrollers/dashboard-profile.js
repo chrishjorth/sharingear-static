@@ -62,7 +62,7 @@ define(
 
             this.populateBirthdateInput();
             if(userData.birthdate !== null) {
-                birthdate = new Moment.tz(userData.birthdate, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
+                birthdate = new Moment.tz(userData.birthdate, 'YYYY-M-D', Localization.getCurrentTimeZone());
                 $('#dashboard-profile-birthdate-year', view.$element).val(birthdate.year());
                 $('#dashboard-profile-birthdate-month', view.$element).val(birthdate.month() + 1);
                 $('#dashboard-profile-birthdate-date', view.$element).val(birthdate.date());
@@ -139,7 +139,7 @@ define(
             }
             
             selectedDay = $selectDay.val();
-            monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
+            monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-M-D', Localization.getCurrentTimeZone());
             monthDays = monthDays.endOf('month').date();
             html = '<option> - </option>';
             for(i = 1; i <= monthDays; i++) {
@@ -214,11 +214,7 @@ define(
             }
 
             birthdate = $('#dashboard-profile-birthdate-year', view.$element).val() + '-' + $('#dashboard-profile-birthdate-month', view.$element).val() + '-' + $('#dashboard-profile-birthdate-date', view.$element).val();
-            birthdate = new Moment.tz(birthdate, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
-            if(birthdate.isValid() === false) {
-                alert('Please select a valid date of birth');
-                return;
-            }
+            birthdate = new Moment.tz(birthdate, 'YYYY-M-D', true, Localization.getCurrentTimeZone());
 
             saveData = {
                 name: $('#dashboard-profile-form #name', view.$element).val(),
@@ -226,7 +222,7 @@ define(
                 email: $('#dashboard-profile-form #email', view.$element).val(),
                 city: $('#dashboard-profile-form #hometown', view.$element).val(),
                 bio: $('#dashboard-profile-form #bio', view.$element).val(),
-                birthdate: birthdate.format('YYYY-MM-DD'),
+                birthdate: birthdate.format('YYYY-M-D'),
                 address: $('#dashboard-profile-address', view.$element).val(),
                 postal_code: $('#dashboard-profile-postalcode', view.$element).val(),
                 country: $('#dashboard-profile-country', view.$element).val(),
@@ -249,18 +245,8 @@ define(
                 return;
             }
 
-            if ($('#dashboard-profile-form #dashboard-profile-birthdate-date', view.$element).val()==='') {
-                alert('The birthday fields are required.');
-                return;
-            }
-
-            if ($('#dashboard-profile-form #dashboard-profile-birthdate-month', view.$element).val()==='') {
-                alert('The birthday fields are required.');
-                return;
-            }
-
-            if ($('#dashboard-profile-form #dashboard-profile-birthdate-year', view.$element).val()==='') {
-                alert('The birthday fields are required.');
+            if(birthdate.isValid() === false) {
+                alert('Please select a valid date of birth');
                 return;
             }
 
