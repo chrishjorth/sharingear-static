@@ -1945,20 +1945,20 @@ button:active .sg-gray-bg {
 	padding: 0;
 	margin: 0;
 }
-.search .searchform-container .gearsearchform {
+.search .searchform-container .searchform {
 	padding-top: 0;
 }
-.search .searchform-container .gearsearchform .form-group {
+.search .searchform-container .searchform .form-group {
 	padding-top: 0;
 	padding-bottom: 0;
 }
 @media (min-width: 768px) {
-	.search .searchform-container .gearsearchform .form-group {
+	.search .searchform-container .searchform .form-group {
 		padding-top: 8px;
 		padding-bottom: 8px;
 	}
 }
-.search .searchform-container .gearsearchform label {
+.search .searchform-container .searchform label {
 	display: none;
 }
 
@@ -3094,7 +3094,7 @@ button:active .sg-gray-bg {
 }
 
 /******* 9. HELPERS *******/
-.gearsearchform .sg-no-mobile,
+.searchform .sg-no-mobile,
 .sg-no-mobile {
 	display: none;
 }
