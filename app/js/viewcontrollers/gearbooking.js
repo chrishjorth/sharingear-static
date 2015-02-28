@@ -135,23 +135,26 @@ define(
 			App.router.closeModalView();
 		};
 
-		handlePickupSelection = function(calendarVC) {
+		handlePickupSelection = function(calendarVC,callback) {
 			var view = this,
 				selectTimePopup = new SelectTimePopup.constructor();
 			selectTimePopup.initialize();
 			selectTimePopup.setTitle('Select pickup time');
 			selectTimePopup.show();
 			selectTimePopup.on('close', function(popup) {
-				var time = popup.getSelectedTime();
-				calendarVC.pickupDate.hour(time.hours);
-				calendarVC.pickupDate.minute(time.minutes);
-				view.newBooking.data.start_time = new Moment.tz(calendarVC.pickupDate, Localization.getCurrentTimeZone());
-				view.newBooking.data.end_time = null;
-				view.calculatePrice();
+				if (!popup.getWasClosed()) {
+					var time = popup.getSelectedTime();
+					calendarVC.pickupDate.hour(time.hours);
+					calendarVC.pickupDate.minute(time.minutes);
+					view.newBooking.data.start_time = new Moment.tz(calendarVC.pickupDate, Localization.getCurrentTimeZone());
+					view.newBooking.data.end_time = null;
+					view.calculatePrice();
+					callback();
+				}
 			});
 		};
 
-		handleDeliverySelection = function(calendarVC, isTimeSelected) {
+		handleDeliverySelection = function(calendarVC, isTimeSelected, callback) {
 			var view = this,
 				selectTimePopup;
 			if(isTimeSelected === true) {
@@ -164,11 +167,14 @@ define(
 			selectTimePopup.setTitle('Select delivery time');
 			selectTimePopup.show();
 			selectTimePopup.on('close', function(popup) {
-				var time = popup.getSelectedTime();
-				calendarVC.deliveryDate.hour(time.hours);
-				calendarVC.deliveryDate.minute(time.minutes);
-				view.newBooking.data.end_time = new Moment.tz(calendarVC.deliveryDate, Localization.getCurrentTimeZone());
-				view.calculatePrice();
+				if (!popup.getWasClosed()) {
+					var time = popup.getSelectedTime();
+					calendarVC.deliveryDate.hour(time.hours);
+					calendarVC.deliveryDate.minute(time.minutes);
+					view.newBooking.data.end_time = new Moment.tz(calendarVC.deliveryDate, Localization.getCurrentTimeZone());
+					view.calculatePrice();
+					callback();
+				}
 			});
 		};
 

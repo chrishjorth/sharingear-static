@@ -732,7 +732,7 @@ body {
 .modal-view-container .sg-footerbar button {
 	font-weight: bold;
 	font-size: 18px;
-	line-height: 36px;
+	line-height: 40px;
 }
 
 .modal-view-container .sg-footerbar button .fa {
@@ -777,7 +777,6 @@ body {
 .selecttime-popup {
 	background-color: #ffffff;
 	width: 300px;
-	height: 100px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 30vh;
@@ -792,8 +791,34 @@ body {
 	line-height: 28px;
 }
 
-.selecttime-popup > form > .row {
+.selecttime-popup > form > .row:first-child {
 	padding-top: 20px;
+}
+
+.selecttime-button button {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	background-color: inherit;
+	border: none;
+	cursor: pointer;
+	min-height: 36px;
+	min-width: 44px;
+	color: #00aeff;
+	font-weight: bold;
+	margin-top: 4px;
+}
+
+.selecttime-label p{
+	margin:0;
+	padding: 0;
+}
+
+.selectdiv{
+	padding-bottom: 7px;
+}
+
+.selectdiv select {
+	width: 100%;
 }
 
 /******* 3. TRANSITIONS *******/

@@ -216,6 +216,7 @@ define(
                 today = new Moment.tz(Localization.getCurrentTimeZone()),
                 selectedYear = null,
                 selectedMonth = null,
+                selectedDay = null,
                 maxYear, monthDays, i;
 
             selectedYear = $selectYear.val();
@@ -224,8 +225,10 @@ define(
                 html += '<option value="' + i + '">' + i + '</option>';
             }
             $selectYear.html(html);
-            if(selectedYear !== null) {
+            if(selectedYear !== null && selectedYear !== '-') {
                 $selectYear.val(selectedYear);
+            } else {
+                selectedYear = new Moment.tz(Localization.getCurrentTimeZone()).format('YYYY');
             }
 
             selectedMonth = $selectMonth.val();
@@ -238,7 +241,7 @@ define(
                 $selectMonth.val(selectedMonth);
             }
             
-
+            selectedDay = $selectDay.val();
             monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
             monthDays = monthDays.endOf('month').date();
             html = '<option> - </option>';
@@ -246,7 +249,15 @@ define(
                 html += '<option value="' + i + '">' + i + '</option>';
             }
             $selectDay.html(html);
-            
+            if(selectedDay !== null) {
+                if(selectedDay <= monthDays) {
+                    $selectDay.val(selectedDay);
+                } else {
+                    $selectDay.val('-');
+                }
+            } else {
+                $selectDay.val('-');
+            }
             html = '';
         };
 
