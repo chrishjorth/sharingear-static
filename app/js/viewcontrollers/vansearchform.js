@@ -85,7 +85,7 @@ define(
             	previousSearchDateRange = Utilities.getQueryStringParameterValue(queryString, 'daterange');
             	if(previousSearchDateRange && previousSearchDateRange !== null) {
             		previousSearchDateRange = previousSearchDateRange.split('-');
-            		$('#vansearch-gear', this.$element).val(previousSearchVan);
+            		$('#vansearch-van', this.$element).val(previousSearchVan);
             		$('#vansearch-location', this.$element).val(previousSearchLocation);
             		startDate = new Moment.tz(previousSearchDateRange[0], 'YYYYMMDD', Localization.getCurrentTimeZone());
             		endDate = new Moment.tz(previousSearchDateRange[1], 'YYYYMMDD', Localization.getCurrentTimeZone());
@@ -166,10 +166,10 @@ define(
 				searchParams, queryString;
 
 			searchParams = view.getSearchParameters();
-			queryString = 'location=' + encodeURIComponent(searchParams.locationString) + '&van=' + encodeURIComponent(searchParams.gearString) + '&daterange=' + searchParams.dateRangeString;
+			queryString = 'location=' + encodeURIComponent(searchParams.locationString) + '&van=' + encodeURIComponent(searchParams.vanString) + '&daterange=' + searchParams.dateRangeString;
             App.router.setQueryString(queryString);
             if(App.router.currentViewController.name === 'search') {
-            	App.router.currentViewController.performSearch(searchParams.vanString, searchParams.locationString, searchParams.dateRangeString);
+            	App.router.currentViewController.performVanSearch(searchParams.vanString, searchParams.locationString, searchParams.dateRangeString);
             }
             else {
             	App.router.navigateTo('search');

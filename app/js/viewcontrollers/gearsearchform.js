@@ -169,7 +169,7 @@ define(
 			queryString = 'location=' + encodeURIComponent(searchParams.locationString) + '&gear=' + encodeURIComponent(searchParams.gearString) + '&daterange=' + searchParams.dateRangeString;
             App.router.setQueryString(queryString);
             if(App.router.currentViewController.name === 'search') {
-            	App.router.currentViewController.performSearch(searchParams.gearString, searchParams.locationString, searchParams.dateRangeString);
+            	App.router.currentViewController.performGearSearch(searchParams.gearString, searchParams.locationString, searchParams.dateRangeString);
             }
             else {
             	App.router.navigateTo('search');

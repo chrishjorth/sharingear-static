@@ -110,10 +110,16 @@ define(
 		};
 
 		setCurrentLocation = function(location) {
+			var tab = this.getCurrentTab();
 			if(location === 'all' || location === '') {
 				location = 'the world';
 			}
-			$('#search-currentlocation', this.$element).html('Showing gear near ' + location);
+			if(tab === 'vans') {
+				$('#search-currentlocation', this.$element).html('Showing vehicles around ' + location);
+			}
+			else {
+				$('#search-currentlocation', this.$element).html('Showing gear around ' + location);
+			}
 		};
 
 		handleTab = function(event) {
@@ -295,10 +301,9 @@ define(
 		 * @param searchResults: an array of objects.
 		 */
 		populateSearchBlock = function(searchResults, $searchBlock, callback) {
-            var view = this,
-            	$noResultsBlocks;
+            var view = this;
 
-            $('.searchresults', view.$element).each(function() {
+            $('.searchresults, .no-results', view.$element).each(function() {
             	var $this = $(this);
             	if($this.hasClass('hidden') === false) {
             		$this.addClass('hidden');
@@ -312,11 +317,6 @@ define(
 
 			$searchBlock.removeClass('hidden');
 			$searchBlock.empty();
-
-			$noResultsBlocks = $('.no-results', view.$element);
-			if($noResultsBlocks.hasClass('hidden') === false) {
-				$noResultsBlocks.addClass('hidden');
-			}
 
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
