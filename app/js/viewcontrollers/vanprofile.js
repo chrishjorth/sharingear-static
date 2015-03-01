@@ -250,7 +250,7 @@ define(
 					van: view.van,
 					owner: view.owner
 				};
-				App.router.openModalView('vanbooking', passedData);
+				App.router.openModalView('bookingrequest', passedData);
 			}
 		};
 

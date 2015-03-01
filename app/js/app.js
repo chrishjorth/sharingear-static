@@ -48,7 +48,7 @@ define(
 				'copyright',
 				'privacy',
 				'editgear',
-				'gearbooking',
+				'bookingrequest',
 				'gearavailability',
                 'booking',
                 'payment',

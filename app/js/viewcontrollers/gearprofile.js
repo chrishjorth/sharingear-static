@@ -134,7 +134,12 @@ define(
 				App.router.openModalView('paymentsuccessful', {
 					preAuthorizationID: preAuthorizationID,
 					bookingID: bookingID,
-					gear: this.gear
+					gear_id: this.gear.data.id,
+					item_name: this.gear.data.brand + ' ' + this.gear.data.subtype + ' ' + this.gear.data.model,
+					price_a: this.gear.data.price_a,
+					price_b: this.gear.data.price_b,
+					price_c: this.gear.data.price_c,
+					currency: this.gear.data.currency,
 				});
 				paymentSuccessModalOpen = true;
 			}
@@ -235,8 +240,7 @@ define(
 
 		handleBooking = function(event) {
 			var view = event.data,
-				user = App.user,
-				passedData;
+				user = App.user;
 			if(user.data.id === null) {
 				user.login(function(error) {
 					if(!error) {
@@ -250,11 +254,26 @@ define(
 				});
 			}
 			else {
-				passedData = {
-					gear: view.gear,
-					owner: view.owner
-				};
-				App.router.openModalView('gearbooking', passedData);
+				view.gear.getAvailability(App.user.data.id, function(error, result) {
+					var passedData;
+					if(error) {
+						console.log(error);
+						alert('Error checking gear availability.');
+						return;
+					}
+					passedData = {
+						gear_id: view.gear.data.id,
+						item_name: view.gear.data.brand + ' ' + view.gear.data.subtype + ' ' + view.gear.data.model,
+						price_a: view.gear.data.price_a,
+						price_b: view.gear.data.price_b,
+						price_c: view.gear.data.price_c,
+						currency: view.gear.data.currency,
+						availability: result.availabilityArray,
+						alwaysFlag: result.alwaysFlag,
+						owner: view.owner
+					};
+					App.router.openModalView('bookingrequest', passedData);
+				});
 			}
 		};
 

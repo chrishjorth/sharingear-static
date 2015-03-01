@@ -15,7 +15,14 @@ define(
         didInitialize = function() {
             if(this.data === null) {
                 this.data = {
+                    //The non-null id property determines the booking type
                     gear_id: null,
+                    van_id: null,
+                    item_name: '', //Displayed name of the booked item
+                    price_a: 0,
+                    price_b: 0,
+                    price_c: 0,
+                    currency: 0,
                     start_time: null,
                     end_time: null,
                     cardId: null,

@@ -20,12 +20,10 @@ define(
 			view.paymentSuccessful = null; //null: waiting for server
 
 			view.templateParameters = {
-				brand: '',
-				subtype: '',
-				model: '',
+				item_name: '',
 				start_date: '',
 				end_date: '',
-				currency: 'DKK',
+				currency: App.user.data.currency,
 				vat: '',
 				price: '',
 				price_vat: '',
@@ -34,8 +32,6 @@ define(
 				total: ''
 			};
 
-			this.gear = this.passedData.gear;
-
 			booking = new Booking.constructor({
 				rootURL: Config.API_URL
 			});
@@ -43,7 +39,7 @@ define(
 			booking.data.id = this.passedData.bookingID;
 			booking.data.preauth_id = this.passedData.preAuthorizationID;
 			booking.data.booking_status = 'pending';
-			booking.data.gear_id = this.gear.data.id;
+			booking.data.gear_id = this.passedData.id;
 
 			booking.update(App.user.data.id, function(error) {
 				if(error) {
@@ -80,9 +76,7 @@ define(
 					//feeVAT = fee / 100 * VAT;
 
 					view.templateParameters = {
-						brand: view.gear.data.brand,
-						subtype: view.gear.data.subtype,
-						model: view.gear.data.model,
+						item_name: view.passedData.item_name,
 						start_date: startMoment.format('DD/MM/YYYY HH:mm'),
 						end_date: endMoment.format('DD/MM/YYYY HH:mm'),
 						currency: booking.data.renter_currency,

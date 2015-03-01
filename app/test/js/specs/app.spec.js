@@ -71,7 +71,7 @@ define(
 				expect(router.routeExists('copyright')).to.equal(true);
 				expect(router.routeExists('privacy')).to.equal(true);
 				expect(router.routeExists('editgear')).to.equal(true);
-				expect(router.routeExists('gearbooking')).to.equal(true);
+				expect(router.routeExists('bookingrequest')).to.equal(true);
 				expect(router.routeExists('gearavailability')).to.equal(true);
 				expect(router.routeExists('booking')).to.equal(true);
 				expect(router.routeExists('payment')).to.equal(true);
