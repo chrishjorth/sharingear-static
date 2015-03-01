@@ -38,15 +38,19 @@ define(
                 url,
 				postData;
 
-            url = '/users/' + App.user.data.id +'/gear/' + newBooking.gear_id + '/bookings';
+            if(this.data.van_id !== null) {
+                url = '/users/' + App.user.data.id +'/vans/' + newBooking.van_id + '/bookings';
+            }
+            else {
+                url = '/users/' + App.user.data.id +'/gear/' + newBooking.gear_id + '/bookings';
+            }
 
-			postData = {
-				gear_id: newBooking.gear_id,
-				start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-				end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+            postData = {
+                start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+                end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
                 cardId: cardId,
                 returnURL: window.location.href
-			};
+            };
 
 			this.post(url, postData, function(error, data) {
 				if(error) {

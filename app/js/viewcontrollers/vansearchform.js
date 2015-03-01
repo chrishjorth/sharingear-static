@@ -268,7 +268,7 @@ define(
 				return;
 			}
 
-			possibleSelections = $('#van-suggestions-box > div');
+			possibleSelections = $('#vans-suggestions-box > div');
 				
 			// arrow keys codes: right, up, left, down  =  39 38 37 40
 			if(event.which == 38) { // up
@@ -311,12 +311,12 @@ define(
 		searchVanLoseFocus = function(event) {
 			var view = event.data;
 			// clears suggestion box when losing focus
-			$('#van-suggestions-box', view.$element).hide();
+			$('#vans-suggestions-box', view.$element).hide();
 		};
 
 		searchVanGainFocus = function(event) {
 			var view = event.data;
-			$('#van-suggestions-box', view.$element).show();
+			$('#vans-suggestions-box', view.$element).show();
 		};
 
 		setVanSuggestion = function(event) {
