@@ -61,8 +61,8 @@ define(
 				expect(router.routeExists('dashboard')).to.equal(true);
 				expect(router.routeExists('dashboard/profile')).to.equal(true);
 				expect(router.routeExists('dashboard/yourgear')).to.equal(true);
-				expect(router.routeExists('dashboard/yourrentals')).to.equal(true);
-				expect(router.routeExists('dashboard/yourreservations')).to.equal(true);
+				expect(router.routeExists('dashboard/yourgearrentals')).to.equal(true);
+				expect(router.routeExists('dashboard/yourgearreservations')).to.equal(true);
 				expect(router.routeExists('dashboard/settings')).to.equal(true);
 				expect(router.routeExists('gearprofile')).to.equal(true);
 				expect(router.routeExists('aboutus')).to.equal(true);

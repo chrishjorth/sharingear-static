@@ -1,14 +1,14 @@
 /**
- * Controller for the Sharingear Your rentals dashboard page view.
+ * Controller for the Sharingear Your Van rentals dashboard page view.
  * @author: Chris Hjorth
  */
 
 'use strict';
 
 define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/gearlist'],
-	function(_, $, Config, ViewController, App, GearList) {
-		var gearBlockID,
+	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/vanlist'],
+	function(_, $, Config, ViewController, App, VanList) {
+		var vanBlockID,
 
 			didInitialize,
 			didRender,
@@ -16,46 +16,46 @@ define(
 
 			handleBooking;
 
-		gearBlockID = 'yourrentals-gear-block';
+		vanBlockID = 'yourrentals-van-block';
 
 		didInitialize = function() {
 			var view = this;
 
 			this.didFetch = false;
-			this.gearList = new GearList.constructor({
+			this.vanList = new VanList.constructor({
 				rootURL: Config.API_URL
 			});
-			this.gearList.initialize();
-			this.gearList.getUserRentals(App.user.data.id, function() {
+			this.vanList.initialize();
+			this.vanList.getUserVanRentals(App.user.data.id, function() {
 				view.didFetch = true;
 				view.render();
 			});
 		};
 
 		didRender = function() {
-			App.header.setTitle('Gear rentals');
+			App.header.setTitle('Van rentals');
 
 			if(this.didFetch === true) {
 				this.populateYourRentals();
 			}
 
-			this.setupEvent('click', '#yourrentals-gear-block .sg-list-item button', this, this.handleBooking);
+			this.setupEvent('click', '#yourrentals-van-block .sg-list-item button', this, this.handleBooking);
 		};
 
 		populateYourRentals = function(callback) {
 			var view = this;
-			require(['text!../templates/yourrentals-item.html'], function(YourRentalsItemTemplate) {
+			require(['text!../templates/yourvanrentals-item.html'], function(YourRentalsItemTemplate) {
 				var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
-					yourRentals = view.gearList.data,
+					yourRentals = view.vanList.data,
 					displayedRentals = 0, //We do not display rentals with status waiting
-					$gearBlock, defaultGear, gear, i, $gearItem, status;
+					$vanBlock, defaultVan, van, i, $vanItem, status;
 
-				$gearBlock = $('#' + gearBlockID, view.$element);
+				$vanBlock = $('#' + vanBlockID, view.$element);
 
 				for(i = 0; i < yourRentals.length; i++) {
-					defaultGear = {
+					defaultVan = {
 						id: null,
-						gear_type: '',
+						van_type: '',
 						subtype: '',
 						brand: '',
 						model: '',
@@ -64,43 +64,41 @@ define(
 						price_a: 0,
 						price_b: 0,
 						price_c: 0,
-						owner_id: null,
-                        gear_status : 'unavailable'
+						owner_id: null
 					};
 
-					gear = yourRentals[i];
-					_.extend(defaultGear, gear.data);
-					if(defaultGear.images.length > 0) {
-						defaultGear.img_url = defaultGear.images.split(',')[0];
+					van = yourRentals[i];
+					_.extend(defaultVan, van.data);
+					if(defaultVan.images.length > 0) {
+						defaultVan.img_url = defaultVan.images.split(',')[0];
 					}
-					$gearItem = $(yourRentalsItemTemplate(defaultGear));
-					$('.sg-bg-image', $gearItem).css({
-						'background-image': 'url("' + defaultGear.img_url + '")'
+					$vanItem = $(yourRentalsItemTemplate(defaultVan));
+					$('.sg-bg-image', $vanItem).css({
+						'background-image': 'url("' + defaultVan.img_url + '")'
 					});
 
 
-					status = gear.data.booking_status;
+					status = van.data.booking_status;
 					if(status !== 'waiting') {
 						if(status === 'pending') {
-							$('.request', $gearItem).removeClass('hidden');
+							$('.request', $vanItem).removeClass('hidden');
 						}
 						if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
-							$('.accepted', $gearItem).removeClass('hidden');
+							$('.accepted', $vanItem).removeClass('hidden');
 						}
 						if(status === 'denied') {
-							$('.denied', $gearItem).removeClass('hidden');
+							$('.denied', $vanItem).removeClass('hidden');
 						}
                     
-						$gearBlock.append($gearItem);
+						$vanBlock.append($vanItem);
 						displayedRentals++;
 					}
 				}
 
 				if(displayedRentals <= 0) {
-					$('#' + gearBlockID, view.$element).append('You currently do not have any rentals.');
+					$('#' + vanBlockID, view.$element).append('You currently do not have any rentals.');
 				}
 				else {
-					view.setupEvent('click', '.yourrentals-status.pending', view, view.handleGearItemPendConfirm);
 					view.setupEvent('click', '.booking-btn', view, view.handleBooking);
 				}
 
@@ -115,7 +113,7 @@ define(
 				bookingID = $(this).data('bookingid'),
 				passedData;
 			passedData = {
-				gear: view.gearList.getGearItem('booking_id', bookingID),
+				van: view.vanList.getVanItem('booking_id', bookingID),
 				mode: 'owner',
 				booking_id: bookingID
 			};

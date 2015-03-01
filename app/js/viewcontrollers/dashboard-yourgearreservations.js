@@ -42,7 +42,7 @@ define(
 
 		populateYourReservations = function(callback) {
 			var view = this;
-			require(['text!../templates/yourreservations-item.html'], function(YourReservationsItemTemplate) {
+			require(['text!../templates/yourgearreservations-item.html'], function(YourReservationsItemTemplate) {
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 					yourReserv = view.gearList.data,
 					$reservationBlock, defaultReservation, reservation, i, $reservationItem, status;

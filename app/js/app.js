@@ -37,8 +37,8 @@ define(
 				'dashboard',
 				'dashboard/profile',
 				'dashboard/yourgear',
-				'dashboard/yourrentals',
-				'dashboard/yourreservations',
+				'dashboard/yourgearrentals',
+				'dashboard/yourgearreservations',
 				'dashboard/settings',
 				'addgear',
 				'gearprofile',
@@ -61,7 +61,9 @@ define(
                 'insurance',
                 'addvan',
                 'vanprofile',
-                'editvan'
+                'editvan',
+                'dashboard/yourvanrentals',
+				'dashboard/yourvanreservations'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.
