@@ -126,11 +126,16 @@ define(
             //Check for querystring sent by a booking payment process
 			preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
 			bookingID = Utilities.getQueryStringParameterValue(window.location.search, 'booking_id');
-			if(paymentSuccessModalOpen === false && preAuthorizationID && bookingID) {
+			if(paymentSuccessModalOpen === false && preAuthorizationID && bookingID && this.van.data.van_type !== '') {
 				App.router.openModalView('paymentsuccessful', {
 					preAuthorizationID: preAuthorizationID,
 					bookingID: bookingID,
-					van: this.van
+					van_id: this.van.data.id,
+					item_name: this.van.data.van_type + ' ' + this.van.data.model,
+					price_a: this.van.data.price_a,
+					price_b: this.van.data.price_b,
+					price_c: this.van.data.price_c,
+					currency: this.van.data.currency,
 				});
 				paymentSuccessModalOpen = true;
 			}
@@ -231,8 +236,7 @@ define(
 
 		handleBooking = function(event) {
 			var view = event.data,
-				user = App.user,
-				passedData;
+				user = App.user;
 			if(user.data.id === null) {
 				user.login(function(error) {
 					if(!error) {
@@ -246,11 +250,26 @@ define(
 				});
 			}
 			else {
-				passedData = {
-					van: view.van,
-					owner: view.owner
-				};
-				App.router.openModalView('bookingrequest', passedData);
+				view.van.getAvailability(function(error, result) {
+					var passedData;
+					if(error) {
+						console.log(error);
+						alert('Error checking van availability.');
+						return;
+					}
+					passedData = {
+						van_id: view.van.data.id,
+						item_name: view.van.data.van_type + ' ' + view.van.data.model,
+						price_a: view.van.data.price_a,
+						price_b: view.van.data.price_b,
+						price_c: view.van.data.price_c,
+						currency: view.van.data.currency,
+						availability: result.availabilityArray,
+						alwaysFlag: result.alwaysFlag,
+						owner: view.owner
+					};
+					App.router.openModalView('bookingrequest', passedData);
+				});
 			}
 		};
 

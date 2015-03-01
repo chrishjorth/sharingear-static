@@ -66,7 +66,14 @@ define(
 
         getBookingInfo = function(userID, callback) {
             var model = this,
+                url;
+
+            if(this.data.van_id !== null) {
+                url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
+            }
+            else {
                 url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+            }
 
             this.get(url, function(error, booking) {
                 if(error) {
@@ -85,8 +92,14 @@ define(
         // PUT: /users/:user_id/gear/:gear_id/bookings/:booking_id
         update = function(userID, callback) {
             var model = this,
-                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id,
-                updateData;
+                url, updateData;
+
+            if(this.data.van_id !== null) {
+                url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
+            }
+            else {
+                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+            }
 
             updateData = {
                 booking_status: model.data.booking_status,

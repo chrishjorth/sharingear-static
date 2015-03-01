@@ -20,7 +20,7 @@ define(
 			view.paymentSuccessful = null; //null: waiting for server
 
 			view.templateParameters = {
-				item_name: '',
+				item_name: this.passedData.item_name,
 				start_date: '',
 				end_date: '',
 				currency: App.user.data.currency,
@@ -39,7 +39,12 @@ define(
 			booking.data.id = this.passedData.bookingID;
 			booking.data.preauth_id = this.passedData.preAuthorizationID;
 			booking.data.booking_status = 'pending';
-			booking.data.gear_id = this.passedData.id;
+			if(this.passedData.van_id) {
+				booking.data.van_id = this.passedData.van_id;
+			}
+			else {
+				booking.data.gear_id = this.passedData.gear_id;
+			}
 
 			booking.update(App.user.data.id, function(error) {
 				if(error) {
