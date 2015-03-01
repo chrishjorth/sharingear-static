@@ -344,7 +344,7 @@ define(
             pickupDate = new Moment.tz($('#vansearch-pickup', view.$element).val(), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
             returnDate = new Moment.tz($('#vansearch-return', view.$element).val(), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
             dateRange = pickupDate.format('YYYYMMDD') + '-' + returnDate.format('YYYYMMDD');
-            searchString = $('#vansearch-gear', this.$element).val();
+            searchString = $('#vansearch-van', this.$element).val();
 
 			searchParameters =  {
 				vanString: searchString,

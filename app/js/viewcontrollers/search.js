@@ -151,8 +151,6 @@ define(
 			var view = this,
 				performSearch, searchParameters;
 
-			console.log('SEARCH GEAR');
-
 			performSearch = function(gear, location, dateRange) {
 				App.user.setSearchInterval(dateRange);
 				if(location === '' || location === 'all' || location === null) {
@@ -247,7 +245,7 @@ define(
 			}
 			else {
 				searchParameters = view.vanSearchFormVC.getSearchParameters();
-				performSearch(searchParameters.gearString, searchParameters.locationString, searchParameters.dateRangeString);
+				performSearch(searchParameters.vanString, searchParameters.locationString, searchParameters.dateRangeString);
 			}
 		};
 
@@ -308,7 +306,6 @@ define(
             });
 
             if (searchResults.length <= 0) {
-            	console.log('#no-results-' + view.getCurrentTab());
             	$('.no-results-' + view.getCurrentTab(), view.$element).removeClass('hidden');
 				return;
 			}
@@ -323,13 +320,13 @@ define(
 
 			require(['text!../templates/search-results.html'], function(SearchResultTemplate) {
 				var searchResultTemplate = _.template(SearchResultTemplate),
-					defaultSearchResults, workingSearchResults, handleImageLoad, handlePrices, html, searchResult, i, img;
+					html = '',
+					defaultSearchResults, workingSearchResults, handleImageLoad, handlePrices, tab, searchResult, i, img;
 
 				defaultSearchResults = {
 					id: 0,
 					gear_type: 0,
-					subtype: 0,
-					brand: 0,
+					item_type: '',
 					model: '',
 					description: '',
 					images: '',
@@ -341,6 +338,7 @@ define(
 					price_a: 0,
 					price_b: 0,
 					price_c: 0,
+					href: '',
 					owner_id: null
 				};
 
@@ -367,7 +365,8 @@ define(
 					});
 				};
 
-				html = '';
+				tab = view.getCurrentTab();
+
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i].data;
                     searchResult.image = searchResult.images.split(',')[0];
@@ -380,6 +379,14 @@ define(
 
                     workingSearchResults = {};
 					_.extend(workingSearchResults, defaultSearchResults, searchResult);
+					if(tab === 'gear') {
+						workingSearchResults.item_type = workingSearchResults.brand + ' ' + workingSearchResults.subtype;
+						workingSearchResults.href = '#gearprofile/' + workingSearchResults.id;
+					}
+					else if(tab === 'vans') {
+						workingSearchResults.item_type = workingSearchResults.van_type;
+						workingSearchResults.href = '#vanprofile/' + workingSearchResults.id;
+					}
 					html += searchResultTemplate(workingSearchResults);
 
 					img = new Image();

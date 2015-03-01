@@ -31,7 +31,7 @@ define(
 			if(location === null || location === '') {
 				location = 'all';
 			}
-			this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+			this.get('/vans/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
 				if(error) {
 					console.log(error);
 					callback([]);
