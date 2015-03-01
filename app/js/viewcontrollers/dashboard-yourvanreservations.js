@@ -108,9 +108,11 @@ define(
 		handleBooking = function(event) {
 			var view = event.data,
 				bookingID = $(this).data('bookingid'),
-				passedData;
+				van, passedData;
+			van = view.vanList.getVanItem('booking_id', bookingID);
 			passedData = {
-				van: view.vanList.getVanItem('booking_id', bookingID),
+				van: van.data.van_type + ' ' + van.data.model,
+				van_id: van.data.id,
 				mode: 'renter',
 				booking_id: bookingID
 			};
