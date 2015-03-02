@@ -1964,6 +1964,12 @@ button:active .sg-gray-bg {
 	margin-bottom: 20px;
 }
 
+.reference-box {
+	text-align: center;
+	height: 170px;
+
+}
+
 
 /*------ 8.b SEARCH ------*/
 .search .jumbotron {
@@ -3303,4 +3309,11 @@ button:active .sg-gray-bg {
 
 .icon-view:before {
 	content: "\e618";
+}
+
+
+.helper{
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
 }
