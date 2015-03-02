@@ -116,7 +116,7 @@ define(
 				gear, passedData;
 			gear = view.gearList.getGearItem('booking_id', bookingID);
 			passedData = {
-				item_name: gear.data.brand + ' ' + gear.data.model + ' ' gear.data.subtype,
+				item_name: gear.data.brand + ' ' + gear.data.model + ' ' + gear.data.subtype,
 				gear_id: gear.data.id,
 				mode: 'owner',
 				booking_id: bookingID
