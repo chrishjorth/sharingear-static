@@ -2541,6 +2541,7 @@ button:active .sg-gray-bg {
 /*------ 8.h GEAR BOOKING ------*/
 .modal-view-container .gearbooking {
 	padding-top: 47px;
+	padding-bottom:50px;
 }
 .gearbooking .total {
 	bottom: 0;
