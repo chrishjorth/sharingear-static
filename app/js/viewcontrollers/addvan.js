@@ -312,7 +312,7 @@ define(
 
             view.toggleLoading();
 
-            view.newVan.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
+            view.newVan.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), function(error, url) {
 				var $thumbList, html;
 				if(error) {
 					alert('Error uploading file.');
