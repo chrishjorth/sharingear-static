@@ -38,7 +38,7 @@ define(
                 url,
 				postData;
 
-            if(this.data.van_id !== null) {
+            if(this.data.van_id && this.data.van_id !== null) {
                 url = '/users/' + App.user.data.id +'/vans/' + newBooking.van_id + '/bookings';
             }
             else {
@@ -68,7 +68,7 @@ define(
             var model = this,
                 url;
 
-            if(this.data.van_id !== null) {
+            if(this.data.van_id && this.data.van_id !== null) {
                 url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
             }
             else {
@@ -94,7 +94,7 @@ define(
             var model = this,
                 url, updateData;
 
-            if(this.data.van_id !== null) {
+            if(this.data.van_id && this.data.van_id !== null) {
                 url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
             }
             else {
