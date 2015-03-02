@@ -45,7 +45,7 @@ define(
 			days = parseInt(duration.days(), 10);
 
 			view.templateParameters = {
-				item_name: this.booking.item_name,
+				item_name: this.booking.data.item_name,
 				start_date: startMoment.format('DD/MM/YYYY HH:mm'),
 				end_date: endMoment.format('DD/MM/YYYY HH:mm'),
 				currency: App.user.data.currency,

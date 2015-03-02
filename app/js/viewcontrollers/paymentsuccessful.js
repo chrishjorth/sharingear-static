@@ -53,7 +53,6 @@ define(
 					view.render();
 					return;
 				}
-
 				booking.getBookingInfo(App.user.data.id, function(error){
 					//var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
 					var startMoment, endMoment, duration, months, weeks, days, price, fee;
