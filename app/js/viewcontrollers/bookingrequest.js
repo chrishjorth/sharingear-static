@@ -29,29 +29,26 @@ define(
 				}
 			});
 
-			this.gear = this.passedData.gear;
 			this.owner = this.passedData.owner;
 
 			this.bookingBtnEnabled = false;
 
 			view.templateParameters = {
-				brand: this.gear.data.brand,
-				gear_type: this.gear.data.gear_type,
-				subtype: this.gear.data.subtype,
-				model: this.gear.data.model,
+				item_name: this.passedData.item_name,
 				currency: App.user.data.currency
 			};
 
-			/*if(this.passedData.booking) {
-				this.newBooking = this.passedData.booking;
-			}
-			else {*/
-				this.newBooking = new Booking.constructor({
-					rootURL: Config.API_URL
-				});
-				this.newBooking.initialize();
-				this.newBooking.data.gear_id = this.gear.data.id;
-			//}
+			this.newBooking = new Booking.constructor({
+				rootURL: Config.API_URL
+			});
+			this.newBooking.initialize();
+			this.newBooking.data.gear_id = this.passedData.gear_id;
+			this.newBooking.data.van_id = this.passedData.van_id;
+			this.newBooking.data.item_name = this.passedData.item_name;
+			this.newBooking.data.price_a = this.passedData.price_a;
+			this.newBooking.data.price_b = this.passedData.price_b;
+			this.newBooking.data.price_c = this.passedData.price_c;
+			this.newBooking.data.currency = this.passedData.currency;
 		};
 
 		didRender = function() {
@@ -63,32 +60,25 @@ define(
 		};
 
 		renderCalendar = function() {
-			var view = this;
+			var view = this,
+				$calendarContainer, passedData;
 
-			this.gear.getAvailability(App.user.data.id, function(error, result) {
-				var $calendarContainer, passedData;
-				if(error) {
-					console.log(error);
-					return;
-				}
-
-				$calendarContainer = $('.pickupdeliverycalendar-container', view.$element);
-				passedData = {
-					availability: result.availabilityArray,
-					alwaysFlag: result.alwaysFlag,
-					parent: view
-				};
-				require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
-					view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
-					view.calendarVC.initialize();
-					view.calendarVC.render();
-				});
+			$calendarContainer = $('.pickupdeliverycalendar-container', view.$element);
+			passedData = {
+				availability: view.passedData.availability,
+				alwaysFlag: view.passedData.alwaysFlag,
+				parent: view
+			};
+			require(['viewcontrollers/pickupdeliverycalendar', 'text!../templates/pickupdeliverycalendar.html'], function(calendarVC, calendarVT) {
+				view.calendarVC = new calendarVC.constructor({name: 'pickupdeliverycalendar', $element: $calendarContainer, template: calendarVT, passedData: passedData});
+				view.calendarVC.initialize();
+				view.calendarVC.render();
 			});
 		};
 
 		renderPricing = function() {
 			var view = this;
-			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
+			Localization.convertPrices([this.passedData.price_a, this.passedData.price_b, this.passedData.price_c], this.passedData.currency, App.user.data.currency, function(error, convertedPrices) {
 				if(error) {
 					console.log('Error converting prices: ' + error);
 					return;
@@ -119,7 +109,7 @@ define(
 			$('#gearbooking-weeks', this.$element).html(weeks);
 			$('#gearbooking-months', this.$element).html(months);
 
-			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
+			Localization.convertPrices([this.passedData.price_a, this.passedData.price_b, this.passedData.price_c], this.passedData.currency, App.user.data.currency, function(error, convertedPrices) {
 				var price;
 				if(error) {
 					console.log('Error converting prices: ' + error);
@@ -135,23 +125,26 @@ define(
 			App.router.closeModalView();
 		};
 
-		handlePickupSelection = function(calendarVC) {
+		handlePickupSelection = function(calendarVC,callback) {
 			var view = this,
 				selectTimePopup = new SelectTimePopup.constructor();
 			selectTimePopup.initialize();
 			selectTimePopup.setTitle('Select pickup time');
 			selectTimePopup.show();
 			selectTimePopup.on('close', function(popup) {
-				var time = popup.getSelectedTime();
-				calendarVC.pickupDate.hour(time.hours);
-				calendarVC.pickupDate.minute(time.minutes);
-				view.newBooking.data.start_time = new Moment.tz(calendarVC.pickupDate, Localization.getCurrentTimeZone());
-				view.newBooking.data.end_time = null;
-				view.calculatePrice();
+				if (!popup.getWasClosed()) {
+					var time = popup.getSelectedTime();
+					calendarVC.pickupDate.hour(time.hours);
+					calendarVC.pickupDate.minute(time.minutes);
+					view.newBooking.data.start_time = new Moment.tz(calendarVC.pickupDate, Localization.getCurrentTimeZone());
+					view.newBooking.data.end_time = null;
+					view.calculatePrice();
+					callback();
+				}
 			});
 		};
 
-		handleDeliverySelection = function(calendarVC, isTimeSelected) {
+		handleDeliverySelection = function(calendarVC, isTimeSelected, callback) {
 			var view = this,
 				selectTimePopup;
 			if(isTimeSelected === true) {
@@ -164,11 +157,14 @@ define(
 			selectTimePopup.setTitle('Select delivery time');
 			selectTimePopup.show();
 			selectTimePopup.on('close', function(popup) {
-				var time = popup.getSelectedTime();
-				calendarVC.deliveryDate.hour(time.hours);
-				calendarVC.deliveryDate.minute(time.minutes);
-				view.newBooking.data.end_time = new Moment.tz(calendarVC.deliveryDate, Localization.getCurrentTimeZone());
-				view.calculatePrice();
+				if (!popup.getWasClosed()) {
+					var time = popup.getSelectedTime();
+					calendarVC.deliveryDate.hour(time.hours);
+					calendarVC.deliveryDate.minute(time.minutes);
+					view.newBooking.data.end_time = new Moment.tz(calendarVC.deliveryDate, Localization.getCurrentTimeZone());
+					view.calculatePrice();
+					callback();
+				}
 			});
 		};
 
@@ -184,7 +180,6 @@ define(
 
 			passedData = {
 				booking: view.newBooking,
-				gear: view.gear,
 				owner: view.owner
 			};
 

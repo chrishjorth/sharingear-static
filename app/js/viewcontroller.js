@@ -131,7 +131,7 @@ define([
 			templateParameters: {},
 			labels: {},
 			path: '', //URL path in the following form mainView/subView fx dashboard/profile
-			hasSubviews: true,
+			hasSubviews: false,
 			$subViewContainer: $(''),
 			subPath: '',
 			passedData: {}, //stores extra data passed to the view

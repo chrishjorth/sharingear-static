@@ -1,24 +1,23 @@
 /**
- * Defines the Sharingear gear classification.
+ * Defines the Sharingear classification of gear, vans and techs.
  * @author: Chris Hjorth
  */
 //TODO: Store the classification locally so that it is always ready on load after the first time
+
+'use strict';
+
 define(
 	['underscore', 'model'],
 	function(_, Model) {
-		var GearClassification = Model.inherit({
-			didInitialize: didInitialize,
-			getClassification: getClassification
-		});
+		var didInitialize,
+			getClassification;
 
-		return GearClassification;
-
-		function didInitialize() {
+		didInitialize = function() {
 			this.data = {};
 			this.getClassification();
-		}
+		};
 
-		function getClassification(callback) {
+		getClassification = function(callback) {
 			var model = this;
 
 			if(_.isEmpty(this.data) === false) {
@@ -28,16 +27,21 @@ define(
 				return;
 			}
 
-			this.get('/gearclassification', function(error, gearClassification) {
+			this.get('/contentclassification', function(error, contentClassification) {
 				if(error) {
 					console.log(error);
 					return;
 				}
-				model.data = gearClassification;
+				model.data = contentClassification;
 				if(callback && typeof callback === 'function') {
 					callback(model.data);
 				}
 			});
-		}
+		};
+
+		return Model.inherit({
+			didInitialize: didInitialize,
+			getClassification: getClassification
+		});
 	}
 );

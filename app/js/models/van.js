@@ -1,5 +1,5 @@
 /**
- * Defines a gear item.
+ * Defines a van item.
  * @author: Chris Hjorth
  */
 'use strict';
@@ -8,7 +8,7 @@ define(
 	['underscore', 'utilities', 'model', 'app'],
 	function(_, Utilities, Model, App) {
 		var didInitialize,
-			createGear,
+			createVan,
 			uploadImage,
 			save,
 			update,
@@ -19,9 +19,7 @@ define(
 			if(this.data === null) {
 				this.data = {
 					id: null,
-					gear_type: '',
-					subtype: '',
-					brand: '',
+					van_type: '',
 					model: '',
 					description: '',
 					images: '',
@@ -29,8 +27,6 @@ define(
 					price_b: '',
 					price_c: '',
 					currency: App.user.data.currency,
-                    delivery_price: '',
-                    delivery_distance: '',
 					accessories: null,
 					address: '',
 					postal_code: '',
@@ -44,36 +40,32 @@ define(
 			}
 		};
 
-		createGear = function createGear(user, callback) {
+		createVan = function createGear(callback) {
 			var model = this,
-				newGear = this.data,
+				newVan = this.data,
 				postData;
 
 			postData = {
-				gear_type: newGear.gear_type,
-				subtype: newGear.subtype,
-				brand: newGear.brand,
-				model: newGear.model,
-				description: newGear.description,
-				images: newGear.images,
-				accessories: newGear.accessories,
-				price_a: newGear.price_a,
-				price_b: newGear.price_b,
-				price_c: newGear.price_c,
-				currency: newGear.currency,
-                delivery_price: newGear.delivery_price,
-                delivery_distance: newGear.delivery_distance,
-				address: newGear.address,
-				postal_code: newGear.postal_code,
-				city: newGear.city,
-				region: newGear.region,
-				country: newGear.country,
-				latitude: newGear.latitude,
-				longitude: newGear.longitude,
-				owner_id: user.data.id
+				van_type: newVan.van_type,
+				model: newVan.model,
+				description: newVan.description,
+				images: newVan.images,
+				accessories: newVan.accessories,
+				price_a: newVan.price_a,
+				price_b: newVan.price_b,
+				price_c: newVan.price_c,
+				currency: newVan.currency,
+				address: newVan.address,
+				postal_code: newVan.postal_code,
+				city: newVan.city,
+				region: newVan.region,
+				country: newVan.country,
+				latitude: newVan.latitude,
+				longitude: newVan.longitude,
+				owner_id: App.user.data.id
 			};
 			
-			this.post('/gear', postData, function(error, data) {
+			this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback(error);
@@ -91,11 +83,11 @@ define(
 		 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
 		 * @param filename: The name of the file
 		 */
-		uploadImage = function(file, filename, userID, callback) {
+		uploadImage = function(file, filename, callback) {
 			var model = this;
 			//Get filename and secret from backend
 			console.log('Get filename from backend');
-			this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
+			this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback('Error getting filename: ' + error);
@@ -114,13 +106,11 @@ define(
 					}
 					//Add image url to backend
 					postData = {
-						user_id: userID,
-						gear_id: model.data.id,
 						image_url: data.url
 					};
 					console.log('File upload success. Add url to backend:');
 					console.log(postData);
-					model.post('/gear/image', postData, function(error, images) {
+					model.post('/users/' + App.user.data.id + '/vans/' + model.data.id + '/image', postData, function(error, images) {
 						if(error) {
 							//TODO: In this case the image should be deleted from the server
 							if(callback && typeof callback === 'function') {
@@ -137,7 +127,7 @@ define(
 			});
 		};
 
-		save = function(userID, callback) {
+		save = function(callback) {
 			var saveData = {
 				subtype: this.data.subtype,
 				brand: this.data.brand,
@@ -160,7 +150,7 @@ define(
 				accessories: JSON.stringify(this.data.accessories)
 			};
 
-			this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
+			this.put('/users/' + App.user.data.id + '/vans/' + this.data.id, saveData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
 						callback('Error saving gear: ' + error);
@@ -176,26 +166,26 @@ define(
 
 		update = function(userID, callback) {
 			var model = this;
-			this.get('/gear/' + this.data.id, function(error, gear) {
+			this.get('/vans/' + this.data.id, function(error, vans) {
 				if(error) {
 					console.log(error);
 					callback(error);
 					return;
 				}
-				_.extend(model.data, gear);
+				_.extend(model.data, vans);
 				callback(null);
 			});
 		};
 
-		getAvailability = function(userID, callback) {
-			if(userID === null) {
+		getAvailability = function(callback) {
+			if(App.user.data.id === null) {
 				callback(null, {
 					alwaysFlag: 0,
 					availabilityArray: []
 				});
 				return;
 			}
-			this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
+			this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
 				if(error) {
 					console.log(error);
 					callback(error);
@@ -208,13 +198,13 @@ define(
 		/**
 		 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
 		 */
-		setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
+		setAvailability = function(availabilityArray, alwaysFlag, callback) {
 			var postData;
 			postData = {
 				availability: JSON.stringify(availabilityArray),
 				alwaysFlag: alwaysFlag
 			};
-			this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error) {
+			this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
 				if(error) {
 					console.log(error);
 					callback(error);
@@ -226,7 +216,7 @@ define(
 
 		return Model.inherit({
 			didInitialize: didInitialize,
-			createGear: createGear,
+			createVan: createVan,
 			uploadImage: uploadImage,
 			save: save,
 			update: update,

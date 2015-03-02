@@ -92,7 +92,7 @@ define(
 
 		renderMap = function() {
 			var mapOptions, latlong, marker;
-			latlong = new GoogleMaps.LatLng(55.682276, 12.577168);
+			latlong = new GoogleMaps.LatLng(55.6805421, 12.6037284);
 			mapOptions = {
 				center: latlong,
 				zoom: 14,

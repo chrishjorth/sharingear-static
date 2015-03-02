@@ -21,12 +21,12 @@ define(
 			handleDeliverySelection,
 
 			handleSearch,
-			showGearSuggestions,
-			drawGearSuggestions,
-			gearInputArrowKeypress,
-			searchGearLoseFocus,
-			searchGearGainFocus,
-			setGearSuggestion,
+			showVanSuggestions,
+			drawVanSuggestions,
+			vanInputArrowKeypress,
+			searchVanLoseFocus,
+			searchVanGainFocus,
+			setVanSuggestion,
 
 			getSearchParameters;
 
@@ -34,46 +34,44 @@ define(
 		geocoder = new GoogleMaps.Geocoder();
 
 		didInitialize = function() {
-			this.gearSelectionIndex = 0;
-			this.gearInputString = '';
-			this.gearSuggestionsArray = null; // array of strings
+			this.vanSelectionIndex = 0;
+			this.vanInputString = '';
+			this.vanSuggestionsArray = []; // array of strings
             this.didSearchBefore = false;
             this.calendarVC = null;
-            this.pickupDate = null;
-            this.deliveryDate = null;
 		};
 
 		didRender = function() {
 			var view = this,
             	$searchPickup, $searchReturn;
 
-            $searchPickup = $('#search-pickup', view.$element);
-            $searchReturn = $('#search-return', view.$element);
+            $searchPickup = $('#vansearch-pickup', view.$element);
+            $searchReturn = $('#vansearch-return', view.$element);
 
-            new GoogleMaps.places.Autocomplete($('#search-location', view.$element)[0], {types: ['geocode']});
+            new GoogleMaps.places.Autocomplete($('#vansearch-location', view.$element)[0], {types: ['geocode']});
 
     		this.prefillForm();
 
-    		this.setupEvent('click', '#search-pickup', this, this.handlePickupDate);
-    		this.setupEvent('click', '#search-return', this, this.handleDeliveryDate);
-			this.setupEvent('submit', '#home-search-form', this, this.handleSearch);
-			this.setupEvent('input', '#search-gear', this, view.showGearSuggestions);
-			this.setupEvent('keydown', '#search-gear', this, view.gearInputArrowKeypress);
-			this.setupEvent('focusout', '#search-gear', this, view.searchGearLoseFocus);
-			this.setupEvent('focusin', '#search-gear', this, view.searchGearGainFocus);
-            this.setupEvent('mousedown touchstart', '.suggestion', this, view.setGearSuggestion);
+    		this.setupEvent('click', '#vansearch-pickup', this, this.handlePickupDate);
+    		this.setupEvent('click', '#vansearch-return', this, this.handleDeliveryDate);
+			this.setupEvent('submit', '#vansearchform-form', this, this.handleSearch);
+			this.setupEvent('input', '#vansearch-van', this, view.showVanSuggestions);
+			this.setupEvent('keydown', '#vansearch-van', this, view.vanInputArrowKeypress);
+			this.setupEvent('focusout', '#vansearch-van', this, view.searchVanLoseFocus);
+			this.setupEvent('focusin', '#vansearch-van', this, view.searchVanGainFocus);
+            this.setupEvent('mousedown touchstart', '.suggestion', this, view.setVanSuggestion);
 		};
 
 		prefillForm = function() {
 			var view = this,
 				$searchPickup, $searchReturn,
-				queryString, previousSearchGear, previousSearchLocation, previousSearchDateRange, startDate, endDate;
+				queryString, previousSearchVan, previousSearchLocation, previousSearchDateRange, startDate, endDate;
 
-			$searchPickup = $('#search-pickup', view.$element);
-            $searchReturn = $('#search-return', view.$element);
+			$searchPickup = $('#vansearch-pickup', view.$element);
+            $searchReturn = $('#vansearch-return', view.$element);
 
 			if(App.user.data && App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
-                $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
+                $('#vansearch-location', view.$element).attr('placeholder', App.user.data.currentCity);
             }
 
             startDate = new Moment.tz(Localization.getCurrentTimeZone());
@@ -82,13 +80,13 @@ define(
 
 			queryString = Utilities.getQueryString();
 			if(queryString) {
-            	previousSearchGear = Utilities.getQueryStringParameterValue(queryString, 'gear');
+            	previousSearchVan = Utilities.getQueryStringParameterValue(queryString, 'van');
             	previousSearchLocation = Utilities.getQueryStringParameterValue(queryString, 'location');
             	previousSearchDateRange = Utilities.getQueryStringParameterValue(queryString, 'daterange');
             	if(previousSearchDateRange && previousSearchDateRange !== null) {
             		previousSearchDateRange = previousSearchDateRange.split('-');
-            		$('#search-gear', this.$element).val(previousSearchGear);
-            		$('#search-location', this.$element).val(previousSearchLocation);
+            		$('#vansearch-van', this.$element).val(previousSearchVan);
+            		$('#vansearch-location', this.$element).val(previousSearchLocation);
             		startDate = new Moment.tz(previousSearchDateRange[0], 'YYYYMMDD', Localization.getCurrentTimeZone());
             		endDate = new Moment.tz(previousSearchDateRange[1], 'YYYYMMDD', Localization.getCurrentTimeZone());
             	}
@@ -100,11 +98,11 @@ define(
 		handlePickupDate = function(event) {
 			var view = event.data,
 				passedData = {},
-				pickupInputString;
+				$calendarContainer, pickupInputString;
 
 			$(this).blur();
 
-			pickupInputString = $('#search-pickup', view.$element).val();
+			pickupInputString = $('#vansearch-pickup', view.$element).val();
 			if(pickupInputString !== '') {
 				passedData = {
 					pickupDate: pickupInputString,
@@ -112,6 +110,8 @@ define(
 				};
 			}
 			passedData.parent = view;
+			
+			$calendarContainer = $('.pickupdeliverycalendar-container', view.$element);
 			
 			App.router.openModalView('pickupdeliverycalendar', passedData);
 		};
@@ -123,10 +123,10 @@ define(
 
 			$(this).blur();
 
-			deliveryInputString = $('#search-return', view.$element).val();
+			deliveryInputString = $('#vansearch-return', view.$element).val();
 			if(deliveryInputString !== '') {
 				passedData = {
-					pickupDate: $('#search-pickup', view.$element).val(),
+					pickupDate: $('#vansearch-pickup', view.$element).val(),
 					deliveryDate: deliveryInputString,
 					pickupActive: false
 				};
@@ -137,12 +137,12 @@ define(
 		};
 
 		handlePickupSelection = function(vc) {
-			$('#search-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
+			$('#vansearch-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
 			this.deliveryDateConfirmed = false;
 		};
 
 		handleDeliverySelection = function(vc) {
-			$('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
+			$('#vansearch-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
 			if(this.deliveryDateConfirmed === true) {
 				App.router.closeModalView();
 			}
@@ -166,10 +166,10 @@ define(
 				searchParams, queryString;
 
 			searchParams = view.getSearchParameters();
-			queryString = 'location=' + encodeURIComponent(searchParams.locationString) + '&gear=' + encodeURIComponent(searchParams.gearString) + '&daterange=' + searchParams.dateRangeString;
+			queryString = 'location=' + encodeURIComponent(searchParams.locationString) + '&van=' + encodeURIComponent(searchParams.vanString) + '&daterange=' + searchParams.dateRangeString;
             App.router.setQueryString(queryString);
             if(App.router.currentViewController.name === 'search') {
-            	App.router.currentViewController.performGearSearch(searchParams.gearString, searchParams.locationString, searchParams.dateRangeString);
+            	App.router.currentViewController.performVanSearch(searchParams.vanString, searchParams.locationString, searchParams.dateRangeString);
             }
             else {
             	App.router.navigateTo('search');
@@ -177,72 +177,59 @@ define(
 			return false;
 		};
 
-		showGearSuggestions = function(event) {
+		showVanSuggestions = function(event) {
 			var view = event.data,
-				$searchGear = $('#search-gear', view.$element),
-				searchString, gearClassificationList, gearBrandList, brandsSuggestions, classificationSuggestions;
+				$searchVan = $('#vansearch-van', view.$element),
+				searchString, vanClassificationList, classificationSuggestions;
 
-			searchString = $searchGear.val();
-			if (view.gearSelectionIndex === 0) {
-				view.gearInputString = searchString; // save the input string when nothing is selected
+			searchString = $searchVan.val();
+			if (view.vanSelectionIndex === 0) {
+				view.vanInputString = searchString; // save the input string when nothing is selected
 			}
 			// reset selection if new input was added since we saved the gearinputstring
-			if (view.gearInputString !== searchString) { 
-				view.gearSelectionIndex = 0; 
-				view.gearInputString = searchString;
+			if (view.vanInputString !== searchString) { 
+				view.vanSelectionIndex = 0; 
+				view.vanInputString = searchString;
 			}
 
 			searchString = searchString.toLowerCase().trim();
 
-			gearClassificationList = App.contentClassification.data.gearClassification;
-			classificationSuggestions = _.map(gearClassificationList, function(value) {
-				var gear;
-				gear = _.filter(value, function(subtype) {
-					var subtypeName = subtype.subtype.toLowerCase(),
-						searchIndex;
-					searchIndex = subtypeName.indexOf(searchString);
-					return searchIndex >= 0;
-				});
-				return _.map(gear, function(value) {
-					return value.subtype;
-				});
+			vanClassificationList = App.contentClassification.data.vanClassification;
+			classificationSuggestions = _.filter(vanClassificationList, function(van) {
+				var typeName = van.vanType.toLowerCase();
+				return typeName.indexOf(searchString) >= 0;
 			});
-			classificationSuggestions = _.flatten(classificationSuggestions);
-
-			gearBrandList = App.contentClassification.data.gearBrands;
-			brandsSuggestions = _.filter(gearBrandList, function(brand) {
-				var searchIndex = brand.toLowerCase().indexOf(searchString);
-				return searchIndex >= 0;
+			classificationSuggestions = _.map(classificationSuggestions, function(van) {
+				return van.vanType;
 			});
 			
-			view.gearSuggestionsArray = classificationSuggestions.concat(brandsSuggestions);
-			view.gearSuggestionsArray = _.first(view.gearSuggestionsArray, numberOfGearSuggestions);
-			view.drawGearSuggestions();
+			view.vanSuggestionsArray = _.first(classificationSuggestions, numberOfGearSuggestions);
+			view.drawVanSuggestions();
 		};
 
-		drawGearSuggestions = function() {
+		drawVanSuggestions = function() {
 			var view = this,
-				$gearSuggestionBox = $('#gear-suggestions-box', view.$element),
+				$vansSuggestionBox = $('#vans-suggestions-box', view.$element),
 				$searchField, suggestions, i, html, j;
 
-			$gearSuggestionBox.html('');
+			$vansSuggestionBox.html('');
 			// hides or styles box
-			if(view.gearInputString.length === 0) {
-				$gearSuggestionBox.addClass('hidden');
+			if(view.vanInputString.length === 0) {
+				$vansSuggestionBox.addClass('hidden');
 				return;
 			}
 
-			$gearSuggestionBox.removeClass('hidden');
+			$vansSuggestionBox.removeClass('hidden');
 
-			$searchField = $('#search-gear', view.$element);
-			$gearSuggestionBox.css({
+			$searchField = $('#vansearch-van', view.$element);
+			$vansSuggestionBox.css({
 				'position': 'absolute',
 				'width': $searchField.outerWidth(),
 				'left': $searchField.position().left,
 				'top': $searchField.position().top + $searchField.outerHeight()
 			});
 
-			suggestions = view.gearSuggestionsArray;
+			suggestions = view.vanSuggestionsArray;
 
 			for (i = 0; i < numberOfGearSuggestions; i++) {
 				if(suggestions.length > i) {
@@ -253,11 +240,11 @@ define(
 					j = 0;
 					while (j < suggestions[i].length) {
 						// if view.gearInputString is here at suggestions[i][j]
-						if (suggestions[i].toLowerCase().indexOf(view.gearInputString) == j	&& (j < 1 || suggestions[i][j - 1] == ' ')) {
+						if (suggestions[i].toLowerCase().indexOf(view.vanInputString) == j	&& (j < 1 || suggestions[i][j - 1] == ' ')) {
 							html += '<span class="suggestion-bold">';
-							html += suggestions[i].substring(j, j + view.gearInputString.length);
+							html += suggestions[i].substring(j, j + view.vanInputString.length);
 							html += '</span>';
-							j += view.gearInputString.length;
+							j += view.vanInputString.length;
 						}
 						else {
 							html += suggestions[i][j];
@@ -265,37 +252,37 @@ define(
 						}
 					}
 					html += '</div>';
-					$gearSuggestionBox.append(html);
+					$vansSuggestionBox.append(html);
 				}
 			}
 		};
 
-		gearInputArrowKeypress = function(event) {
+		vanInputArrowKeypress = function(event) {
 			var view = event.data,
-				$searchGear,
+				$searchVan,
 				possibleSelections, i;
 
-			$searchGear = $('#search-gear', view.$element);
+			$searchVan = $('#vansearch-van', view.$element);
 			
 			if(event.which !== 38 && event.which !== 40) {
 				return;
 			}
 
-			possibleSelections = $('#gear-suggestions-box > div');
+			possibleSelections = $('#vans-suggestions-box > div');
 				
 			// arrow keys codes: right, up, left, down  =  39 38 37 40
 			if(event.which == 38) { // up
-				view.gearSelectionIndex--;
+				view.vanSelectionIndex--;
 			}
 			else if(event.which == 40) {
-				view.gearSelectionIndex++;
+				view.vanSelectionIndex++;
 			}
 				
-			if(view.gearSelectionIndex > possibleSelections.length) { // clamp
-				view.gearSelectionIndex = 0;
+			if(view.vanSelectionIndex > possibleSelections.length) { // clamp
+				view.vanSelectionIndex = 0;
 			}
-			else if(view.gearSelectionIndex < 0) {
-				view.gearSelectionIndex = possibleSelections.length;
+			else if(view.vanSelectionIndex < 0) {
+				view.vanSelectionIndex = possibleSelections.length;
 			}
 			// set classes for selected.
 			for (i = 0; i < possibleSelections.length; i++) {
@@ -305,37 +292,37 @@ define(
 				}
 			}
 
-			if (view.gearSelectionIndex !== 0) {
+			if (view.vanSelectionIndex !== 0) {
 				// set input text to the value of the selection
-				$searchGear.val($('.suggestion-selected').text());
+				$searchVan.val($('.suggestion-selected').text());
 			}
 			else {
 				// set input text back to old input value
-				$searchGear.val(view.gearInputString);
+				$searchVan.val(view.vanInputString);
 			}
 
-			$searchGear.focus();
-			$searchGear.val($searchGear.val());
+			$searchVan.focus();
+			$searchVan.val($searchVan.val());
 
 			// prevents input field to set caret to start position.
 			return false;
 		};
 
-		searchGearLoseFocus = function(event) {
+		searchVanLoseFocus = function(event) {
 			var view = event.data;
 			// clears suggestion box when losing focus
-			$('#gear-suggestions-box', view.$element).hide();
+			$('#vans-suggestions-box', view.$element).hide();
 		};
 
-		searchGearGainFocus = function(event) {
+		searchVanGainFocus = function(event) {
 			var view = event.data;
-			$('#gear-suggestions-box', view.$element).show();
+			$('#vans-suggestions-box', view.$element).show();
 		};
 
-		setGearSuggestion = function(event) {
+		setVanSuggestion = function(event) {
 			var view = event.data;
-			$('#search-gear', view.$element).val($(event.target).text());
-			$('#gear-suggestions-box', view.$element).hide();
+			$('#vansearch-van', view.$element).val($(event.target).text());
+			$('#vans-suggestions-box', view.$element).hide();
 		};
 
 		getSearchParameters = function() {
@@ -344,9 +331,9 @@ define(
 				location, searchString, dateRange, pickupDate, returnDate, searchParameters;
 
             // remove gear suggestion dropdown when submitting
-            $('#gear-suggestions-box', view.$element).hide();
+            $('#vans-suggestions-box', view.$element).hide();
 
-			$locationContainer = $('#search-location', view.$element);
+			$locationContainer = $('#vansearch-location', view.$element);
 			location = $locationContainer.val();
 			if(location === '') {
 				location = $locationContainer.attr('placeholder');
@@ -354,13 +341,13 @@ define(
 
             //URI playground
             //dateRange = '20140828-20140901';
-            pickupDate = new Moment.tz($('#search-pickup', view.$element).val(), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
-            returnDate = new Moment.tz($('#search-return', view.$element).val(), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
+            pickupDate = new Moment.tz($('#vansearch-pickup', view.$element).val(), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
+            returnDate = new Moment.tz($('#vansearch-return', view.$element).val(), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
             dateRange = pickupDate.format('YYYYMMDD') + '-' + returnDate.format('YYYYMMDD');
-            searchString = $('#search-gear', this.$element).val();
+            searchString = $('#vansearch-van', this.$element).val();
 
 			searchParameters =  {
-				gearString: searchString,
+				vanString: searchString,
 				locationString: location,
 				dateRangeString: dateRange
 			};
@@ -378,12 +365,12 @@ define(
 			handleDeliverySelection: handleDeliverySelection,
 
 			handleSearch: handleSearch,
-			showGearSuggestions: showGearSuggestions,
-			drawGearSuggestions: drawGearSuggestions,
-			gearInputArrowKeypress: gearInputArrowKeypress,
-			searchGearLoseFocus: searchGearLoseFocus,
-			searchGearGainFocus: searchGearGainFocus,
-			setGearSuggestion: setGearSuggestion,
+			showVanSuggestions: showVanSuggestions,
+			drawVanSuggestions: drawVanSuggestions,
+			vanInputArrowKeypress: vanInputArrowKeypress,
+			searchVanLoseFocus: searchVanLoseFocus,
+			searchVanGainFocus: searchVanGainFocus,
+			setVanSuggestion: setVanSuggestion,
 
 			getSearchParameters: getSearchParameters
 		});

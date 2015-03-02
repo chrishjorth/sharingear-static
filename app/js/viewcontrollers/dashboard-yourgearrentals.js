@@ -44,7 +44,7 @@ define(
 
 		populateYourRentals = function(callback) {
 			var view = this;
-			require(['text!../templates/yourrentals-item.html'], function(YourRentalsItemTemplate) {
+			require(['text!../templates/yourgearrentals-item.html'], function(YourRentalsItemTemplate) {
 				var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 					yourRentals = view.gearList.data,
 					displayedRentals = 0, //We do not display rentals with status waiting
@@ -113,9 +113,11 @@ define(
 		handleBooking = function(event) {
 			var view = event.data,
 				bookingID = $(this).data('bookingid'),
-				passedData;
+				gear, passedData;
+			gear = view.gearList.getGearItem('booking_id', bookingID);
 			passedData = {
-				gear: view.gearList.getGearItem('booking_id', bookingID),
+				item_name: gear.data.brand + ' ' + gear.data.model + ' ' + gear.data.subtype,
+				gear_id: gear.data.id,
 				mode: 'owner',
 				booking_id: bookingID
 			};

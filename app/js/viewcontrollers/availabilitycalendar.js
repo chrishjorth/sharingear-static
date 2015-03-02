@@ -27,6 +27,7 @@ define(
 			handleDayEndSelect,
 
 			setAlwaysState,
+            setSelections,
 			isBeforeOrSameDay,
 			isAfterOrSameDay,
 
@@ -47,6 +48,8 @@ define(
 			this.shownMoment = new Moment.tz(Localization.getCurrentTimeZone());
 			this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
             this.alwaysFlag = 0;
+
+            /*SEND IN AVAILABILITY DATA AS PASSED DATA!!!
 
             this.gear.getAvailability(App.user.data.id, function(error, result) {
                 var availabilityArray = result.availabilityArray,
@@ -74,7 +77,7 @@ define(
                 //console.log(view.alwaysFlag);
                 //console.log(view.selections);
                 view.renderSelections();
-            });
+            });*/
 		};
 
 		didRender = function() {
@@ -454,20 +457,24 @@ define(
         	}
         };
 
+        setSelections = function(selections) {
+            this.selections = selections;
+        };
+
+        getSelections = function() {
+            return this.selections;
+        };
+
+        getAlwaysFlag = function() {
+            return this.alwaysFlag;
+        };
+
         isBeforeOrSameDay = function(momentA, momentB) {
             return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
         };
 
         isAfterOrSameDay = function(momentA, momentB) {
             return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
-        };
-
-        getSelections = function() {
-        	return this.selections;
-        };
-
-        getAlwaysFlag = function() {
-        	return this.alwaysFlag;
         };
 
 		return ViewController.inherit({
@@ -490,6 +497,7 @@ define(
 			handleDayEndSelect: handleDayEndSelect,
 
 			setAlwaysState: setAlwaysState,
+            setSelections: setSelections,
 			isBeforeOrSameDay: isBeforeOrSameDay,
 			isAfterOrSameDay: isAfterOrSameDay,
 

@@ -45,7 +45,7 @@ define(
 					expect(App.router.routes).to.be.an('array');
 					expect(App.user).to.be.an('object');
 					sinon.assert.calledOnce(spec.loginStatusSpy);
-					expect(App.gearClassification).to.be.an('object');
+					expect(App.contentClassification).to.be.an('object');
 					sinon.assert.calledOnce(spec.setUserLocationSpy);
 					sinon.assert.calledOnce(spec.loadHeaderSpy);
 					sinon.assert.calledWith(spec.loadHeaderSpy, App.$headerContainer);
@@ -61,8 +61,8 @@ define(
 				expect(router.routeExists('dashboard')).to.equal(true);
 				expect(router.routeExists('dashboard/profile')).to.equal(true);
 				expect(router.routeExists('dashboard/yourgear')).to.equal(true);
-				expect(router.routeExists('dashboard/yourrentals')).to.equal(true);
-				expect(router.routeExists('dashboard/yourreservations')).to.equal(true);
+				expect(router.routeExists('dashboard/yourgearrentals')).to.equal(true);
+				expect(router.routeExists('dashboard/yourgearreservations')).to.equal(true);
 				expect(router.routeExists('dashboard/settings')).to.equal(true);
 				expect(router.routeExists('gearprofile')).to.equal(true);
 				expect(router.routeExists('aboutus')).to.equal(true);
@@ -71,7 +71,7 @@ define(
 				expect(router.routeExists('copyright')).to.equal(true);
 				expect(router.routeExists('privacy')).to.equal(true);
 				expect(router.routeExists('editgear')).to.equal(true);
-				expect(router.routeExists('gearbooking')).to.equal(true);
+				expect(router.routeExists('bookingrequest')).to.equal(true);
 				expect(router.routeExists('gearavailability')).to.equal(true);
 				expect(router.routeExists('booking')).to.equal(true);
 				expect(router.routeExists('payment')).to.equal(true);

@@ -29,7 +29,6 @@ define(
 				startMoment, endMoment, duration, months, weeks, days, fee;
 
 			this.booking = this.passedData.booking;
-			this.gear = this.passedData.gear;
 			this.owner = this.passedData.owner;
 
 			startMoment = new Moment.tz(this.booking.data.start_time, Localization.getCurrentTimeZone());
@@ -46,9 +45,7 @@ define(
 			days = parseInt(duration.days(), 10);
 
 			view.templateParameters = {
-				brand: this.gear.data.brand,
-				subtype: this.gear.data.subtype,
-				model: this.gear.data.model,
+				item_name: this.booking.data.item_name,
 				start_date: startMoment.format('DD/MM/YYYY HH:mm'),
 				end_date: endMoment.format('DD/MM/YYYY HH:mm'),
 				currency: App.user.data.currency,
@@ -68,7 +65,7 @@ define(
 
 			this.isPaying = false;
 
-			Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.owner.data.currency, App.user.data.currency, function(error, convertedPrices, rate) {
+			Localization.convertPrices([this.booking.data.price_a, this.booking.data.price_b, this.booking.data.price_c], this.owner.data.currency, App.user.data.currency, function(error, convertedPrices, rate) {
 				var price;
 				if(error) {
 					console.log('Error converting prices: ' + error);

@@ -10,16 +10,18 @@ define([
 ], function($, PopupController, SelectTimePopupTemplate) {
 	var SelectTimePopup,
 
+		wasClosed,
 		didRender,
 		getSelectedTime,
+		getWasClosed,
 
-		handleHours,
-		handleMinutes;
-
+		handleCancel,
+		handleConfirm;
 
 	didRender = function() {
-		this.setupEvent('change', '#selecttimepopup-hours', this, this.handleHours);
-		this.setupEvent('change', '#selecttimepopup-minutes', this, this.handleMinutes);
+		wasClosed = false;
+		this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+		this.setupEvent('click', '.confirm-btn', this, this.handleConfirm);
 	};
 
 	getSelectedTime = function() {
@@ -28,15 +30,22 @@ define([
 			minutes: parseInt($('#selecttimepopup-minutes', this.$element).val(), 10)
 		};
 	};
-
-	handleHours = function(event) {
-		var view = event.data;
-		$('#selecttimepopup-hours', view.$element).prop('disabled', true);
-		$('#selecttimepopup-minutes', view.$element).prop('disabled', false);
+	
+	getWasClosed = function(){
+		return wasClosed;
 	};
 
-	handleMinutes = function(event) {
+	handleConfirm = function(event) {
 		var view = event.data;
+		wasClosed = false;
+		view.hide();
+	};
+
+	handleCancel = function(event) {
+		var view = event.data;
+		wasClosed = true;
+		$('#selecttimepopup-hours', this.$element).val("12");
+		$('#selecttimepopup-minutes', this.$element).val("00");
 		view.hide();
 	};
 
@@ -45,9 +54,11 @@ define([
 
 		didRender: didRender,
 		getSelectedTime: getSelectedTime,
-
-		handleHours: handleHours,
-		handleMinutes: handleMinutes
+		getWasClosed: getWasClosed,
+		handleConfirm: handleConfirm,
+		handleCancel: handleCancel
 	});
+
+
 	return SelectTimePopup;
 });

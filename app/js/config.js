@@ -10,6 +10,7 @@ define(
 		var IS_PRODUCTION = true, //This variable should be set and saved according to the git branch: true for master and false for develop
 			MIN_USER_AGE = 13,
 			AVG_USER_AGE = 27,
+			FB_STATUSCHECK_TIMEOUT = 5000,
 			API_URL,
 			isProduction;
 
@@ -31,6 +32,7 @@ define(
 			API_URL: API_URL,
 			MIN_USER_AGE: MIN_USER_AGE,
 			AVG_USER_AGE: AVG_USER_AGE,
+			FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
 			isProduction: isProduction
 		};
 	}

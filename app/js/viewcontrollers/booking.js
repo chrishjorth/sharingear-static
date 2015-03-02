@@ -1,14 +1,14 @@
 /**
- * Controller for the Sharingear Gear booking confirm page view.
- * We use the booking status and gear status to determine the state of this view
+ * Controller for the Sharingear booking confirm page view.
+ * We use the booking status to determine the state of this view
  * @author: Chris Hjorth
  */
 
 'use strict';
 
 define(
-    ['underscore', 'jquery', 'config', 'viewcontroller', 'moment', 'app', 'models/gear', 'models/user', 'models/booking', 'models/localization'],
-	function(_, $, Config, ViewController, Moment, App, Gear, User, Booking, Localization) {
+    ['underscore', 'jquery', 'config', 'viewcontroller', 'moment', 'app', 'models/user', 'models/booking', 'models/localization'],
+	function(_, $, Config, ViewController, Moment, App, User, Booking, Localization) {
 		var didInitialize,
 			didRender,
 
@@ -32,13 +32,9 @@ define(
 					doy: 4
 				}
 			});
-
-			this.gear = view.passedData.gear;
 			
             view.templateParameters = {
-            	brand: this.gear.data.brand,
-            	subtype: this.gear.data.subtype,
-            	model: this.gear.data.model,
+            	item_name: this.passedData.item_name,
             	start_time: '',
             	end_time: '',
             	peer_role: (this.passedData.mode === 'owner' ? 'Requested by' : 'Owned by'),
@@ -57,6 +53,12 @@ define(
             });
             this.booking.initialize();
             this.booking.data.id = this.passedData.booking_id;
+            if(this.passedData.van_id) {
+            	this.booking.data.van_id = this.passedData.van_id;
+            }
+            else {
+            	this.booking.data.gear_id = this.passedData.gear_id;
+            }
 
             this.booking.getBookingInfo(App.user.data.id, function(error) {
                 //var start_time, end_time, price, VAT, priceVAT, fee, feeVAT;
@@ -96,7 +98,7 @@ define(
                 	rootURL: Config.API_URL
            		});
            		view.peerUser.initialize();
-           		view.peerUser.data.id = (view.passedData.mode === 'owner' ? view.booking.data.renter_id : view.gear.data.owner_id); //Depends on who is viewing the booking
+           		view.peerUser.data.id = (view.passedData.mode === 'owner' ? view.booking.data.renter_id : view.booking.data.owner_id); //Depends on who is viewing the booking
 
            		view.peerUser.getPublicInfo(function(error) {
                 	var userData = view.peerUser.data;

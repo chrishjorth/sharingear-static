@@ -1,0 +1,233 @@
+<div class="container-fluid view editvan">
+	<div class="row">
+		<ul class="nav nav-tabs sg-toptab-container" id="edit-tabs" role="tablist">
+			<li class="sg-toptab active"><a href="#instrument" role="tab" data-toggle="tab">Vehicle</a></li>
+			<li class="sg-toptab"><a href="#photos" role="tab" data-toggle="tab">Photos</a></li>
+			<li class="sg-toptab"><a href="#pricing" role="tab" data-toggle="tab">Pricing</a></li>
+			<li class="sg-toptab"><a href="#location" role="tab" data-toggle="tab">Location</a></li>
+			<li class="sg-toptab"><a href="#availability" role="tab" data-toggle="tab">Availability</a></li>
+		</ul>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-12">
+		
+			<div id="edit-tabs-content" class="tab-content">
+				<div class="tab-pane fade active in" id="instrument">
+					<div class="container-fluid editvan-container-bottom-padding">
+						<div class="row">
+							<div class="col-md-12"><h2>{{van_type}}:</h2></div>
+						</div>
+						<div class="row">
+							<form id="editvan-form" onsubmit="return false;">
+								<div class="col-md-6 form-left">
+									<div class="form-group">
+										<label for="model">Model:*</label>
+										<input type="text" name="editvan-model" id="editvan-model" value="{{model}}" class="form-control">
+									</div>
+									<div class="form-group">
+										<label for="">Accessories:</label>
+										<div id="editvan-accessories-container"></div>
+									</div>
+								</div>
+								<div class="col-md-6 form-right">
+									<div class="form-group">
+										<label>Description:</label>
+										<textarea name="editvan-description" id="editvan-description" class="form-control">{{description}}</textarea>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane fade" id="photos">
+					<div class="container-fluid editvan-container-bottom-padding">
+						<div class="row">
+							<div class="col-md-12"><h2>Photos:</h2></div>
+						</div>
+						<div class="row">
+							<form id="editvan-photos-form" onsubmit="return false;">
+								<div class="col-md-6 form-left">
+									<div class="form-group">
+										<label for="dashboard-addvan-form-imageupload">Upload image:</label>
+										<input type="file" id="editvan-photos-form-imageupload" name="vanpic" class="form-control">
+										<div class="thumb-list-container editvan-photos-list">
+											<ul></ul>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane fade" id="pricing">
+					<div class="container-fluid editvan-container-bottom-padding">
+						<div class="row">
+							<div class="col-md-12"><h2>Price your vehicle</h2></div>
+						</div>
+						<div class="row">
+							<form class="form-horizontal" id="editvanpricing-form" role="form" onsubmit="return false;">
+								<div class="col-sm-6 form-left">
+
+									<div class="form-group price-form">
+										<label>Daily Rental Price*</label>
+										<input id="price_a" class="col-md-10 form-control price-input-font price" name="price_a" size="7" type="text" value="">
+										<label for="price_a" class="col-md-2 price-input-font">{{currency}}</label>
+									</div>
+
+									<div class="form-group price-form">
+										<label>Weekly Rental Price*</label>
+										<input id="price_b" class="col-md-10 form-control price-input-font price" name="price_b" size="7" type="text" value="">
+										<label for="price_b" class="col-md-2 price-input-font">{{currency}}</label>
+									</div>
+
+									<div class="form-group price-form">
+										<label>Monthly Rental Price*</label>
+										<input id="price_c" class="col-md-10 form-control price-input-font price" name="price_c" size="7" type="text" value="">
+										<label for="price_c" class="col-md-2 price-input-font">{{currency}}</label>
+									</div>
+
+								</div>
+								<div class="col-sm-6 form-left bulp-background">
+
+									<h3>Setting the price:</h3>
+									<p>For the following type of vehicle we recommend the following prices.</p>
+
+									<div class="row">
+										<div class="col-xs-4 yellow-text-left">Daily:</div>
+										<div class="col-xs-8 right yellow-text"><span id="editvan-price_a-suggestion"></span> {{currency}}</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 yellow-text-left">Weekly:</div>
+										<div class="col-xs-8 right yellow-text"><span id="editvan-price_b-suggestion"></span> {{currency}}</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-4 yellow-text-left">Monthly:</div>
+										<div class="col-xs-8 right yellow-text"><span id="editvan-price_c-suggestion"></span> {{currency}}</div>
+									</div>
+
+								</div>
+								
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane fade" id="location">
+					<div class="container-fluid editvan-container-bottom-padding">
+						<div class="row">
+							<div class="col-md-12"><h2>Location</h2></div>
+						</div>
+						<div class="row">
+							<form id="editvanpricingloc-form" onsubmit="return false;">
+								<div class="col-md-6 form-left">
+									<div class="form-group">
+										<label for="dashboard-addvanprice-address">Street*</label>
+										<input type="text" name="address" id="editvanpricing-address" class="form-control">
+										<label for="dashboard-addvanprice-postalcode">Postal code*</label>
+										<input type="text" name="postalcode" id="editvanpricing-postalcode" class="form-control">
+										<label for="dashboard-addvanprice-city">City*</label>
+										<input type="text" name="city" id="editvanpricing-city" class="form-control">
+										<label for="editvanpricing-country">Country*</label>
+										<select name="country" id="editvanpricing-country" class="form-control">
+											<option value="">Select country</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6 form-left">
+									<p>We suggest that you enter the exact location of the instrument.</p>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane fade" id="availability">
+					<div class="container-fluid">
+						<div id="editvan-availability-submerchantform" class="hidden">
+							<div class="row">
+								<div class="col-md-12">In order to put your vehicle up for rent we need some extra information about you so that we can pay you.</div>
+							</div>
+							<form id="editvan-submerchantform" onsubmit="return false;">
+								<div class="form-group">
+									<label for="submerchantregistration-birthdate">Date of birth (DD/MM/YYYY):*</label>
+									<div class="birthday-select" id="submerchantregistration-birthdate">
+										<select id="submerchantregistration-birthdate-date" name="birthdate-day"></select>/<select id="submerchantregistration-birthdate-month" name="birthdate-month"></select>/<select id="submerchantregistration-birthdate-year" name="birthdate-year"></select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="submerchantregistration-address">Address:*</label>
+									<input type="text" name="address" id="submerchantregistration-address">
+								</div>
+								<div class="form-group">
+									<label for="submerchantregistration-postalcode">Postal code:*</label>
+									<input type="text" name="postal_code" id="submerchantregistration-postalcode">
+								</div>
+								<div class="form-group">
+									<label for="submerchantregistration-city">City:*</label>
+									<input type="text" name="city" id="submerchantregistration-city">
+								</div>
+								<div class="form-group">
+									<label for="submerchantregistration-region">Region:</label>
+									<input type="text" name="region" id="submerchantregistration-region">
+								</div>
+								<div class="form-group">
+									<select name="country" id="submerchantregistration-country">
+										<option value="">Select your country</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<select name="nationality" id="submerchantregistration-nationality">
+										<option value="">Select your nationality</option>
+									</select>
+								</div>
+								<div class="form-group">
+                					<label for="submerchantregistration-phone">Phone:*</label>
+                					<input type="text" name="phone" id="submerchantregistration-phone">
+              					</div>
+              					<div class="form-group">
+                					<label for="submerchantregistration-iban">IBAN:*</label>
+                					<input type="text" name="iban" id="submerchantregistration-iban">
+              					</div>
+              					<div class="form-group">
+                					<label for="submerchantregistration-swift">BIC/SWIFT:*</label>
+                					<input type="text" name="swift" id="submerchantregistration-swift">
+              					</div>
+              					<button type="submit" class="btn btn-info">Submit</button>
+            				</form>
+						</div>
+						<div id="editvan-availability-terms" class="hidden">
+							<div class="row">
+              					<div class="col-md-12">
+                					<p>
+                  						By pressing accept you confirm that you have read and accepted the Sharingear Terms and Conditions.
+                  						If you press cancel your vehicle will be saved, but it will not be possible to rent it.
+                					</p>
+              					</div>
+            				</div>
+            				<div class="row">
+              					<div class="col-md-12">
+                					<button class="btn btn-info" id="submerchantregistration-accept">Accept</button>
+              					</div>
+            				</div>
+						</div>
+						<div id="editvan-availability-calendar" class="hidden"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="row sg-modal-header">
+  	<div class="col-xs-offset-0 col-xs-2 col-sm-offset-8">
+  		<button class="sg-btn-square" id="editvan-cancel-btn">Cancel <i class="fa fa-times-circle"></i></button>
+  	</div>
+  	<div class="col-xs-8"><h2 class="text-center sg-blue">Edit Vehicle</h2></div>
+  	<div class="col-xs-2 text-center">
+  		<button class="sg-btn-square" id="editvan-save-btn">Save <i class="fa fa-floppy-o"></i></button>
+  	</div>
+  </div>
+</div>

@@ -37,6 +37,7 @@
  *	8.p FOOTER
  *	8.q INSURANCE
  *	8.r DASHBOARD-SETTINGS
+ *	8.s VAN PROFILE
  * 9. HELPERS
  * 10. ICONS
  *
@@ -731,12 +732,28 @@ body {
 .modal-view-container .sg-footerbar button {
 	font-weight: bold;
 	font-size: 18px;
-	line-height: 36px;
+	line-height: 40px;
 }
 
 .modal-view-container .sg-footerbar button .fa {
 	font-size: 24px;
 	line-height: 36px;
+}
+
+@media (min-width: 768px) {
+	.sidebarpanel-container,
+	.sidebarpanel-container > .row,
+	.sidebarpanel-container > .row > form,
+	.sidebarpanel-container > .row > form > .col-sm-3,
+	.sidebarpanel-container .gearbuttonlist-container {
+		height: 100%;
+	}
+	.sidebarpanel-container .footer {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 44px;
+	}
 }
 
 /*------ 2.c BOTTOM NOTIFICATIONS ------*/
@@ -760,7 +777,6 @@ body {
 .selecttime-popup {
 	background-color: #ffffff;
 	width: 300px;
-	height: 100px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 30vh;
@@ -775,8 +791,34 @@ body {
 	line-height: 28px;
 }
 
-.selecttime-popup > form > .row {
+.selecttime-popup > form > .row:first-child {
 	padding-top: 20px;
+}
+
+.selecttime-button button {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	background-color: inherit;
+	border: none;
+	cursor: pointer;
+	min-height: 36px;
+	min-width: 44px;
+	color: #00aeff;
+	font-weight: bold;
+	margin-top: 4px;
+}
+
+.selecttime-label p{
+	margin:0;
+	padding: 0;
+}
+
+.selectdiv{
+	padding-bottom: 7px;
+}
+
+.selectdiv select {
+	width: 100%;
 }
 
 /******* 3. TRANSITIONS *******/
@@ -1080,7 +1122,7 @@ button:active .sg-gray-bg {
     overflow: hidden;
     -webkit-overflow-scrolling: auto;
 }
-.gear-suggestion {
+.suggestion {
     cursor: default;
     padding: 0 4px;
     text-overflow: ellipsis;
@@ -1093,10 +1135,10 @@ button:active .sg-gray-bg {
     color: #000000;
     font-size: 13px;
 }
-.gear-suggestion-bold {
+.suggestion-bold {
     font-weight: 700;
 }
-.gear-suggestion-icon {
+.suggestion-icon {
     display: inline-block;
     background-image: url("../images/sharingearonoff64x32.png");
     background-position: 0 0;
@@ -1111,10 +1153,10 @@ button:active .sg-gray-bg {
     -moz-box-sizing: border-box;
     vertical-align: top;
 }
-.gear-suggestion-selected {
+.suggestion-selected {
     background-color: #ebf2fe;
 }
-.gear-suggestion-selected .gear-suggestion-icon {
+.suggestion-selected .suggestion-icon {
     background-position: -16px 0;
     background-repeat: no-repeat;
 }
@@ -1624,16 +1666,16 @@ button:active .sg-gray-bg {
 }
 
 /*------ 7.d FORMS ------*/
-.gearsearchform {
+.searchform {
 	text-align: left;
 }
 @media (min-width: 768px) {
-	.gearsearchform {
+	.searchform {
 		text-align: center;
 		padding-top: 36px;
 	}
 }
-.gearsearchform .form-group {
+.searchform .form-group {
 	text-align: left;
 	margin: 0;
 	padding: 0;
@@ -1642,23 +1684,23 @@ button:active .sg-gray-bg {
 	width: 100%;
 }
 @media (min-width: 768px) {
-	.gearsearchform .form-group {
+	.searchform .form-group {
 		display: inline-block;
 		width: 20%;
 	}
 }
-.gearsearchform label {
+.searchform label {
 	display: none;
 }
 @media (min-width: 768px) {
-	.gearsearchform label {
+	.searchform label {
 		margin-left: 2%;
 		margin-bottom: 16px;
 		display: block;
 	}
 }
-.gearsearchform input[type="search"],
-.gearsearchform input[type="text"] {
+.searchform input[type="search"],
+.searchform input[type="text"] {
 	border-radius: 0;
 	border-width: 1px;
 	border-left-width: 2px;
@@ -1670,63 +1712,63 @@ button:active .sg-gray-bg {
 	height: 44px;
 }
 @media (min-width: 768px) {
-	.gearsearchform input[type="search"],
-	.gearsearchform input[type="text"] {
+	.searchform input[type="search"],
+	.searchform input[type="text"] {
 		border-top-width: 2px;
 		border-bottom-width: 2px;
 		height: 40px;
 		width: 100%;
 	}
 }
-.gearsearchform .form-group:first-child input[type="search"],
-.gearsearchform .form-group:first-child input[type="text"] {
+.searchform .form-group:first-child input[type="search"],
+.searchform .form-group:first-child input[type="text"] {
 	border-top-width: 2px;
 }
 @media (min-width: 768px) {
-	.gearsearchform .form-group:first-child input[type="search"],
-	.gearsearchform .form-group:first-child input[type="text"] {
+	.searchform .form-group:first-child input[type="search"],
+	.searchform .form-group:first-child input[type="text"] {
 		border-top-left-radius: 2px;
 		border-bottom-left-radius: 2px;
 		border-left-width: 2px;
 	}
 }
-.gearsearchform .search-pickup-container {
+.searchform .search-pickup-container {
 	width: 50%;
 }
 @media (min-width: 768px) {
-	.gearsearchform .search-pickup-container {
+	.searchform .search-pickup-container {
 		width: 130px;
 	}
 }
-.gearsearchform .search-pickup-container input[type="search"],
-.gearsearchform .search-pickup-container input[type="text"] {
+.searchform .search-pickup-container input[type="search"],
+.searchform .search-pickup-container input[type="text"] {
 	border-right-width: 0;
 	border-bottom-width: 2px;
 }
 @media (min-width: 768px) {
-	.gearsearchform .search-pickup-container input[type="search"],
-	.gearsearchform .search-pickup-container input[type="text"] {
+	.searchform .search-pickup-container input[type="search"],
+	.searchform .search-pickup-container input[type="text"] {
 		border-right-width: 2px;
 	}
 }
-.gearsearchform .search-return-container {
+.searchform .search-return-container {
 	width: 50%;
 }
 @media (min-width: 768px) {
-	.gearsearchform .search-return-container {
+	.searchform .search-return-container {
 		width: 130px;
 	}
 }
-.gearsearchform .search-return-container input[type="search"],
-.gearsearchform .search-return-container input[type="text"] {
+.searchform .search-return-container input[type="search"],
+.searchform .search-return-container input[type="text"] {
 	border-bottom-width: 2px;
 }
-.gearsearchform input[type="submit"] {
+.searchform input[type="submit"] {
 	height: 32px;
 	width: 100%;
 }
 @media (min-width: 768px) {
-	.gearsearchform input[type="submit"] {
+	.searchform input[type="submit"] {
 		height: 40px;
 		width: 128px;
 		border-top-right-radius: 2px;
@@ -1734,14 +1776,14 @@ button:active .sg-gray-bg {
 	}
 }
 
-.gearsearchform .submit-container {
+.searchform .submit-container {
 	position: absolute;
 	top: 0;
 	visibility: hidden;
 	z-index: 0;
 }
 @media (min-width: 768px) {
-	.gearsearchform .submit-container {
+	.searchform .submit-container {
 		position: static;
 		visibility: visible;
 	}
@@ -1770,15 +1812,20 @@ button:active .sg-gray-bg {
     cursor: pointer;
     color: #ffffff;
     font-size: 14px;
+    line-height: 20px;
     font-weight: normal;
     width: 100%;
-    line-height: 36px;
     text-align: center;
     text-transform: capitalize;
+    vertical-align: top;
 }
 .custom-radio input[type="radio"]:checked + label {
     cursor: default;
     color: #00aeff;
+}
+.custom-radio input[type="radio"] + label > span {
+	display: inline-block;
+	padding-top: 18px;
 }
 
 /******* 8. SPECIFIC VIEWS *******/
@@ -1917,26 +1964,32 @@ button:active .sg-gray-bg {
 	margin-bottom: 20px;
 }
 
+.reference-box {
+	text-align: center;
+	height: 170px;
+
+}
+
 
 /*------ 8.b SEARCH ------*/
 .search .jumbotron {
 	padding: 0;
 	margin: 0;
 }
-.search .searchform-container .gearsearchform {
+.search .searchform-container .searchform {
 	padding-top: 0;
 }
-.search .searchform-container .gearsearchform .form-group {
+.search .searchform-container .searchform .form-group {
 	padding-top: 0;
 	padding-bottom: 0;
 }
 @media (min-width: 768px) {
-	.search .searchform-container .gearsearchform .form-group {
+	.search .searchform-container .searchform .form-group {
 		padding-top: 8px;
 		padding-bottom: 8px;
 	}
 }
-.search .searchform-container .gearsearchform label {
+.search .searchform-container .searchform label {
 	display: none;
 }
 
@@ -2205,36 +2258,6 @@ button:active .sg-gray-bg {
 }
 
 /*------ 8.f ADD GEAR -----*/
-@media (min-width: 768px) {
-	/*.addgear {
-		height: 100%;
-	}
-	.addgear > .row:first-child {
-		height: 100%;
-	}
-	.addgear > .row:first-child form {
-		height: 100%;
-	}
-	.addgear > .row:first-child form > .col-sm-3 {
-		height: 100%;
-	}*/
-	.addgear,
-	.addgear > .row,
-	.addgear > .row > form,
-	.addgear > .row > form > .col-sm-3,
-	.addgear .gearbuttonlist-container {
-		height: 100%;
-	}
-	.addgear .footer {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		height: 44px;
-	}
-}
-
-
-
 .addgear {
 	padding-bottom: 40px;
 }
@@ -2244,7 +2267,7 @@ button:active .sg-gray-bg {
 	}
 }
 
-.addgear .hint1 {
+.modal-view-container .hint1 {
 	font-size: 16px;
 	line-height: 32px;
 	margin-top: 30px;
@@ -2869,8 +2892,240 @@ button:active .sg-gray-bg {
 	padding: 15px;
 }
 
+/*------ 8.s VAN PROFILE ------*/
+.view-container .vanprofile {
+	padding: 48px 0 0 0;
+}
+@media (min-width: 768px) {
+	.view-container .vanprofile {
+		padding: 90px 5% 0 5%;
+	}
+}
+
+.vanprofile .sg-gray {
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.vanprofile .sg-gray .sg-icon {
+	font-size: 24px;
+	margin-right: 6px;
+}
+
+.vanprofile .sg-darkergray {
+	font-size: 12px;
+	font-weight: bold;
+}
+.vanprofile .sg-darkergray .sg-icon {
+	font-size: 35px;
+	margin-right: 12px;
+}
+@media (min-width: 768px) {
+	.vanprofile .sg-darkergray {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.vanprofile .sg-darkergray .sg-icon {
+		font-size: 68px;
+		margin-right: 20px;
+	}
+}
+
+.vanprofile .van {
+	padding-left: 4px;
+}
+@media (min-width: 768px) {
+	.vanprofile .van {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+.vanprofile .van .sg-icon {
+	vertical-align: top;
+}
+
+.vanprofile .van-title {
+	display: block;
+	max-width: 40%;
+	position: absolute;
+	margin-left: 40px;
+    top: 50%;
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+@media (min-width: 768px) {
+	.vanprofile .van-title {
+		margin-left: 80px;
+	}
+}
+
+.vanprofile .social {
+	display: block;
+	font-size: 22px;
+	font-weight: 100;
+	padding-top: 6px;
+	float: right;
+}
+.vanprofile .social .sg-btn-invisible {
+	font-size: 18px;
+}
+@media (min-width: 768px) {
+	.vanprofile .social {
+		font-size: 44px;
+		padding-top: 12px;
+	}
+	.vanprofile .social .sg-btn-invisible {
+		font-size: 32px;
+	}
+}
+
+.vanprofile .profile-pic-container {
+	height: 50px;
+}
+.vanprofile .profile-pic {
+	border-radius: 25px;
+	height: 50px;
+	width: 50px;
+	background-color: #ffffff;
+	display: inline-block;
+}
+
+.vanprofile .pricing > div {
+	padding: 0;
+	padding-left: 4px;
+}
+@media (min-width: 768px) {
+	.vanprofile .pricing > div {
+		padding: 0;
+		padding-left: 6px;
+	}
+}
+.vanprofile .pricing > div:first-child {
+	padding-left: 0;
+}
+.vanprofile .pricing .sg-darkergray {
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 20px;
+	padding-top: 8px;
+}
+@media (min-width: 768px) {
+	.vanprofile .pricing .sg-darkergray {
+		line-height: 24px;
+		padding-top: 8px;
+	}
+}
+.vanprofile .pricing .sg-white {
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 20px;
+	padding-bottom: 8px;
+}
+@media (min-width: 768px) {
+	.vanprofile .pricing .sg-white {
+		line-height: 26px;
+		padding-bottom: 8px;
+	}
+}
+.vanprofile .pricing .sg-white .currency {
+	font-size: 10px;
+	vertical-align: super;
+}
+
+.vanprofile .pricing .button-container {
+	padding: 0 0 0 4px;
+}
+@media (min-width: 768px) {
+	.vanprofile .pricing .button-container {
+		padding: 6px 0 0 0;
+	}
+}
+.vanprofile .button-container .sg-white {
+	height: 60px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0;
+}
+@media (min-width: 768px) {
+	.vanprofile .button-container .sg-white {
+		height: 60px;
+		font-size: 18px;
+		font-weight: bold;
+	}
+}
+
+.vanprofile .owl-carousel {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.vanprofile .owl-wrapper-outer {
+	margin-top: 15px;
+}
+.vanprofile .owl-wrapper-outer .item {
+	text-align: center;
+}
+.vanprofile .owl-wrapper-outer .item img {
+	max-height: 380px;
+	max-width: 100%;
+}
+
+.vanprofile .accessories {
+	padding-bottom: 30px;
+}
+
+.vanprofile .map-container {
+	padding-bottom: 15px;
+}
+.vanprofile .map-container .fa {
+	font-size: 24px;
+	line-height: 36px;
+}
+.vanprofile .map-container .sg-darkergray {
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 36px;
+}
+.vanprofile .map-container .map {
+	height: 300px;
+}
+
+.vanprofile .profile-container {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+.vanprofile .profile-container .sg-lightgray-bg {
+	padding: 10px;
+}
+.vanprofile .profile-container .profile-pic {
+	height: 100px;
+	width: 100px;
+	border-radius: 50px;
+}
+
+.vanprofile .profile-container .name {
+	font-weight: normal;
+	text-transform: uppercase;
+	font-size: 16px;
+	line-height: 32px;
+	padding-top: 4px;
+}
+.vanprofile .profile-container .tagline {
+	font-weight: normal;
+	text-transform: none;
+}
+.vanprofile .profile-container .sg-btn-invisible .sg-darkergray {
+	font-size: 40px;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
 /******* 9. HELPERS *******/
-.gearsearchform .sg-no-mobile,
+.searchform .sg-no-mobile,
 .sg-no-mobile {
 	display: none;
 }
@@ -2914,6 +3169,30 @@ button:active .sg-gray-bg {
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-addvan-trailer:before {
+	content: "\e622";
+}
+
+.icon-addvan-nightlinerdoubledecker:before {
+	content: "\e621";
+}
+
+.icon-addvan-nightlinersingledecker:before {
+	content: "\e620";
+}
+
+.icon-addvan-sleeper:before {
+	content: "\e61f";
+}
+
+.icon-addvan-splitter:before {
+	content: "\e61e";
+}
+
+.icon-addvan-van:before {
+	content: "\e61d";
 }
 
 .icon-info:before {
@@ -3030,4 +3309,11 @@ button:active .sg-gray-bg {
 
 .icon-view:before {
 	content: "\e618";
+}
+
+
+.helper{
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
 }

@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'config', 'router', 'utilities', 'models/user', 'models/gearclassification', 'models/localization'],
-	function(_, $, Config, Router, Utilities, User, GearClassification) {
+	['underscore', 'jquery', 'config', 'router', 'utilities', 'models/user', 'models/contentclassification', 'models/localization'],
+	function(_, $, Config, Router, Utilities, User, ContentClassification) {
 		var App,
 
 			run,
@@ -37,8 +37,8 @@ define(
 				'dashboard',
 				'dashboard/profile',
 				'dashboard/yourgear',
-				'dashboard/yourrentals',
-				'dashboard/yourreservations',
+				'dashboard/yourgearrentals',
+				'dashboard/yourgearreservations',
 				'dashboard/settings',
 				'addgear',
 				'gearprofile',
@@ -48,7 +48,7 @@ define(
 				'copyright',
 				'privacy',
 				'editgear',
-				'gearbooking',
+				'bookingrequest',
 				'gearavailability',
                 'booking',
                 'payment',
@@ -58,7 +58,12 @@ define(
                 'search',
                 'user',
                 'pickupdeliverycalendar',
-                'insurance'
+                'insurance',
+                'addvan',
+                'vanprofile',
+                'editvan',
+                'dashboard/yourvanrentals',
+				'dashboard/yourvanreservations'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.
@@ -69,6 +74,7 @@ define(
 					loginDeferred.resolve();
 				}
 				else {
+					console.log('Logging into backend.');
 					App.user.loginToBackend(response, function() {
 						console.log('User logged in.');
 						loginDeferred.resolve();
@@ -81,10 +87,10 @@ define(
 				documentReadyDeferred.resolve();
 			});
 
-			App.gearClassification = new GearClassification.constructor({
+			App.contentClassification = new ContentClassification.constructor({
 				rootURL: Config.API_URL
 			});
-			App.gearClassification.initialize();
+			App.contentClassification.initialize();
 
 			App.setUserLocation();
 

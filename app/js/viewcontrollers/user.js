@@ -6,13 +6,14 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/user', 'models/gearlist'],
-	function(_, $, Config, ViewController, App, User, GearList) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/user', 'models/gearlist', 'models/vanlist'],
+	function(_, $, Config, ViewController, App, User, GearList, VanList) {
 		var didInitialize,
 			didRender,
 
 			renderProfilePic,
 			populateGear,
+			populateVans,
 			renderTabs,
 
 			handleTab;
@@ -23,7 +24,7 @@ define(
 
 			pathSections = this.subPath.split('/');
 			gearID = pathSections[0];
-			if(pathSections.length > 1) {
+			if(pathSections.length > 1 && pathSections[1] !== '') {
 				this.currentTab = pathSections[1];	
 			}
 			else {
@@ -63,12 +64,21 @@ define(
 			this.userGear.getUserGear(this.user.data.id, function() {
 				view.render();
 			});
+
+			this.userVans = new VanList.constructor({
+				rootURL: Config.API_URL
+			});
+			this.userVans.initialize();
+			this.userVans.getUserVans(this.user.data.id, function() {
+				view.render();
+			});
 		};
 
 		didRender = function() {
 			this.renderProfilePic();
 			this.renderTabs();
 			this.populateGear();
+			this.populateVans();
 
 			this.setupEvent('click', '.sg-tabs button', this, this.handleTab);
 		};
@@ -130,6 +140,38 @@ define(
 			});
 		};
 
+		populateVans = function() {
+			var view = this;
+			require(['text!../templates/user-vans-item.html'], function(VanItemTemplate) {
+				var vanItemTemplate = _.template(VanItemTemplate),
+					vanList = view.userVans.data,
+					$vanBlock, defaultVan, van, i, $vanItem;
+
+				$vanBlock = $('#user-vans-container', view.$element);
+				for(i = 0; i < vanList.length; i++) {
+					defaultVan = {
+						id: null,
+						van_type: '',
+						subtype: '',
+						brand: '',
+						model: '',
+						img_url: 'images/placeholder_grey.png'
+					};
+
+					van = vanList[i];
+					_.extend(defaultVan, van.data);
+					if(defaultVan.images.length > 0) {
+						defaultVan.img_url = defaultVan.images.split(',')[0];
+					}
+					$vanItem = $(vanItemTemplate(defaultVan));
+					$('.sg-bg-image' ,$vanItem).css({
+						'background-image': 'url("' + defaultVan.img_url + '")'
+					});
+					$vanBlock.append($vanItem);
+				}
+			});
+		};
+
 		renderTabs = function() {
 			var view = this;
 			$('.sg-tab-panel', view.$element).each(function() {
@@ -150,16 +192,14 @@ define(
 					$listItem.removeClass('active');
 				}
 			});
+			
+			$('.sg-tabs li', view.$element).removeClass('active');
+			$('#sg-tabs-' + view.currentTab, view.$element).addClass('active');
 		};
 
 		handleTab = function(event) {
-			var view = event.data,
-				$button = $(this);
-
-			$('.sg-tabs li', view.$element).removeClass('active');
-			$button.parent().addClass('active');
-
-			view.currentTab = $button.data('tab');
+			var view = event.data;
+			view.currentTab = $(this).parent().attr('id').substring(8); //8 is the length of 'sg-tabs-'
 			view.renderTabs();
 		};
 
@@ -169,6 +209,7 @@ define(
 
 			renderProfilePic: renderProfilePic,
 			populateGear: populateGear,
+			populateVans: populateVans,
 			renderTabs: renderTabs,
 
 			handleTab: handleTab

@@ -1,70 +1,45 @@
-<div class="container-fluid view sidebarpanel-container addgear">
+<div class="container-fluid view sidebarpanel-container addvan">
 
-  <div class="row sidebar-panel addgear-panel" id="addgear-panel-type">
-    <form id="addgear-form-type" onsubmit="return false;">
+  <div class="row addvan-panel" id="addvan-panel-type">
+    <form id="addvan-form-type" onsubmit="return false;">
       <div class="col-sm-3 sg-darkgray-bg">
-        <div class="gearbuttonlist-container"></div>
+        <div class="vanbuttonlist-container"></div>
       </div>
       <div class="col-sm-9">
         <div class="row">
           <div class="col-sm-12 hint1 text-center">
-            Please select the gear type.
+            Please select the van or bus type.
           </div>
         </div>
 
+        
         <div class="row">
-          <div class="form-group hidden" id="addgear-form-subtype-container">
+          <div class="form-group">
             <div class="col-sm-3">
-              <label for="addgear-form-subtype">Subtype:</label>
+              <label for="addvan-form-model">Model:</label>
             </div>
             <div class="col-sm-9">
-              <select class="form-control" id="addgear-form-subtype">
-              </select>
+              <input type="text" id="addvan-form-model" class="form-control">
             </div>
           </div>
         </div>
-
         <div class="row">
-          <div class="form-group hidden" id="addgear-form-brand-container">
+          <div class="form-group">
             <div class="col-sm-3">
-              <label for="addgear-form-brand">Brand:</label>
+              <label for="addgvan-form-description">Description:</label>
             </div>
             <div class="col-sm-9">
-              <select class="form-control" id="addgear-form-brand">
-              </select>
+              <textarea class="form-control" id="addvan-form-description"></textarea>
             </div>
           </div>
         </div>
-
-        <div class="hidden" id="addgear-form-geardetails-container">
-          <div class="row">
-            <div class="form-group">
-              <div class="col-sm-3">
-                <label for="addgear-form-model">Model:</label>
-              </div>
-              <div class="col-sm-9">
-                <input type="text" id="addgear-form-model" class="form-control">
-              </div>
+        <div class="row" id="addvan-accessories">
+          <div class="form-group">
+            <div class="col-sm-3">
+              <label for="addvan-form-accessories">Accessories:</label>
             </div>
-          </div>
-          <div class="row">
-            <div class="form-group">
-              <div class="col-sm-3">
-                <label for="addgear-form-description">Description:</label>
-              </div>
-              <div class="col-sm-9">
-                <textarea class="form-control" id="addgear-form-description"></textarea>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group">
-              <div class="col-sm-3">
-                <label for="addgear-form-accessories">Accessories:</label>
-              </div>
-              <div class="col-sm-9">
-                <div id="addgear-accessories-container"></div>
-              </div>
+            <div class="col-sm-9">
+              <div id="addvan-accessories-container"></div>
             </div>
           </div>
         </div>
@@ -72,14 +47,14 @@
     </form>
   </div>
 
-  <div class="row addgear-panel hidden" id="addgear-panel-photos">
-    <form id="dashboard-addgearphotos-form" onsubmit="return false;">
+  <div class="row addvan-panel hidden" id="addvan-panel-photos">
+    <form id="dashboard-addvanphotos-form" onsubmit="return false;">
       <div class="col-sm-12">
         <div class="row">
           <div class="col-sm-12">
             <div class="form-group">
-              <label for="dashboard-addgearphotos-form-imageupload">Upload image:</label>
-              <input type="file" id="dashboard-addgearphotos-form-imageupload" name="gearpic">
+              <label for="dashboard-addvanphotos-form-imageupload">Upload image:</label>
+              <input type="file" id="dashboard-addvanphotos-form-imageupload" name="vanpic">
             </div>
           </div>
         </div>
@@ -95,8 +70,8 @@
     </form>
   </div>
 
-  <div class="row addgear-panel hidden" id="addgear-panel-pricelocation">
-    <form id="dashboard-addgearprice-form" onsubmit="return false;">
+  <div class="row addvan-panel hidden" id="addvan-panel-pricelocation">
+    <form id="dashboard-addvanprice-form" onsubmit="return false;">
       <div class="col-sm-12">
         <div class="row">
           <div class="col-sm-4 form-left">
@@ -112,33 +87,33 @@
 
           <div class="col-sm-4 form-left bulp-background">
             <h3>Setting the price:</h3>
-            <p>For this type of gear we recommend the following prices.</p>
+            <p>For this type of vehicle we recommend the following prices.</p>
             <div class="row">
               <div class="col-xs-4 yellow-text-left">Daily:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_a-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-8 right yellow-text"><span id="addvan-price_a-suggestion"></span> {{currency}}</div>
             </div>
             <div class="row">
               <div class="col-xs-4 yellow-text-left">Weekly:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_b-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-8 right yellow-text"><span id="addvan-price_b-suggestion"></span> {{currency}}</div>
             </div>
             <div class="row">
               <div class="col-xs-4 yellow-text-left">Monthly:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_c-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-8 right yellow-text"><span id="addvan-price_c-suggestion"></span> {{currency}}</div>
             </div>
           </div>
 
           <div class="col-sm-4 form-right">
             <div class="form-group">
-              <label for="dashboard-addgearprice-address">Street</label>
-              <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
-              <label for="dashboard-addgearprice-postalcode">Postal code</label>
-              <input type="text" name="postalcode" id="dashboard-addgearprice-postalcode" class="form-control">
-              <label for="dashboard-addgearprice-city">City</label>
-              <input type="text" name="city" id="dashboard-addgearprice-city" class="form-control">
-              <!--<label for="dashboard-addgearprice-region">Region</label>
-              <input type="text" name="region" id="dashboard-addgearprice-region" class="form-control">-->
-              <label for="dashboard-addgearprice-country">Country</label>
-              <select name="country" id="dashboard-addgearprice-country" class="form-control">
+              <label for="dashboard-addvanprice-address">Street</label>
+              <input type="text" name="address" id="dashboard-addvanprice-address" class="form-control">
+              <label for="dashboard-addvanprice-postalcode">Postal code</label>
+              <input type="text" name="postalcode" id="dashboard-addvanprice-postalcode" class="form-control">
+              <label for="dashboard-addvanprice-city">City</label>
+              <input type="text" name="city" id="dashboard-addvanprice-city" class="form-control">
+              <!--<label for="dashboard-addvanprice-region">Region</label>
+              <input type="text" name="region" id="dashboard-addvanprice-region" class="form-control">-->
+              <label for="dashboard-addvanprice-country">Country</label>
+              <select name="country" id="dashboard-addvanprice-country" class="form-control">
                 <option value="">Select country</option>
               </select>
             </div>
@@ -149,19 +124,19 @@
     </form>
   </div>
 
-  <div class="row addgear-panel hidden" id="addgear-panel-submerchantForm">
+  <div class="row addvan-panel hidden" id="addvan-panel-submerchantForm">
     <div class="col-sm-12">
       <div class="row">
         <div class="col-sm-12"><h2>Submerchant Information</h2></div>
       </div>
 
-      <div class="hidden" id="addgear-availability-submerchantform">  
+      <div class="hidden" id="addvan-availability-submerchantform">  
         <div class="row">
-          <div class="col-sm-12">In order to put your gear up for rent we need some extra information about you so that we can pay you.</div>
+          <div class="col-sm-12">In order to put your vehicle up for rent we need some extra information about you so that we can pay you.</div>
         </div>
         <div class="row">
           <div class="col-sm-12">
-            <form id="addgear-submerchantform" onsubmit="return false;">
+            <form id="addvan-submerchantform" onsubmit="return false;">
               <div class="form-group col-sm-6">
                 <label for="submerchantregistration-birthdate">Date of birth:*</label>
                 <div class="birthday-select" id="submerchantregistration-birthdate">
@@ -215,18 +190,18 @@
     </div>
   </div>
 
-  <div class="row addgear-panel hidden" id="addgear-panel-submerchantTerms">
+  <div class="row addvan-panel hidden" id="addvan-panel-submerchantTerms">
     <div class="col-sm-12">
       <div class="row">
         <div class="col-sm-12"><h2>Submerchant Agreement</h2></div>
       </div>
 
-      <div id="addgear-availability-terms">
+      <div id="addvan-availability-terms">
         <div class="row">
           <div class="col-sm-12">
             <p class="lead text-center">
               By pressing accept you confirm that you have read and accepted the Sharingear Terms and Conditions.
-              If you press cancel your gear will be saved, but it will not be possible to rent it.
+              If you press cancel your vehicle will be saved, but it will not be possible to rent it.
             </p>
           </div>
         </div>
@@ -234,25 +209,25 @@
     </div>
   </div>
 
-  <div class="row addgear-panel hidden" id="addgear-panel-availability">
+  <div class="row addvan-panel hidden" id="addvan-panel-availability">
     <div class="col-sm-12">
       <div class="row">
         <div class="col-sm-12"><h2>Availability</h2></div>
       </div>
 
-      <div id="addgear-availability-calendar" class="hidden"></div>
+      <div id="addvan-availability-calendar" class="hidden"></div>
 
     </div>
   </div>
 
-  <div class="row addgear-panel hidden" id="addgear-panel-final">
+  <div class="row addvan-panel hidden" id="addvan-panel-final">
     <div class="col-sm-12">
       <div class="row">
-        <div class="col-sm-12"><h3 class="text-center">Gear added!</h3></div>
+        <div class="col-sm-12"><h3 class="text-center">Vehicle added!</h3></div>
       </div>
       <div class="row actions">
-        <div class="col-sm-6"><button class="sg-btn-square sg-blue-bg sg-white profile-btn">View gear profile</button></div>
-        <div class="col-sm-6 right"><button class="sg-btn-square sg-blue-bg sg-white addmore-btn">Add more gear</button></div>
+        <div class="col-sm-6"><button class="sg-btn-square sg-blue-bg sg-white profile-btn">View vehicle profile</button></div>
+        <div class="col-sm-6 right"><button class="sg-btn-square sg-blue-bg sg-white addmore-btn">Add more vans or busses</button></div>
       </div>
     </div>
   </div>
@@ -265,7 +240,7 @@
         <div class="col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center">
           <button class="sg-btn-square cancel-btn">Cancel <i class="fa fa-times-circle"></i></button>
         </div>
-        <div class="col-xs-8"><h2 class="text-center">Add gear</h2></div>
+        <div class="col-xs-8"><h2 class="text-center">Add vans &amp; busses</h2></div>
         <div class="col-xs-2 col-sm-2 text-center">
           <button class="sg-btn-square next-btn">Next <i class="fa fa-arrow-circle-right"></i></button>
         </div>

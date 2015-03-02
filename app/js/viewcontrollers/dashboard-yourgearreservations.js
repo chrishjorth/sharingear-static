@@ -42,7 +42,7 @@ define(
 
 		populateYourReservations = function(callback) {
 			var view = this;
-			require(['text!../templates/yourreservations-item.html'], function(YourReservationsItemTemplate) {
+			require(['text!../templates/yourgearreservations-item.html'], function(YourReservationsItemTemplate) {
 				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 					yourReserv = view.gearList.data,
 					$reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
@@ -111,9 +111,11 @@ define(
 		handleBooking = function(event) {
 			var view = event.data,
 				bookingID = $(this).data('bookingid'),
-				passedData;
+				gear, passedData;
+			gear = view.gearList.getGearItem('booking_id', bookingID);
 			passedData = {
-				gear: view.gearList.getGearItem('booking_id', bookingID),
+				item_name: gear.data.brand + ' ' + gear.data.model + ' ' + gear.data.subtype,
+				gear_id: gear.data.id,
 				mode: 'renter',
 				booking_id: bookingID
 			};

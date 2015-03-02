@@ -15,7 +15,14 @@ define(
         didInitialize = function() {
             if(this.data === null) {
                 this.data = {
+                    //The non-null id property determines the booking type
                     gear_id: null,
+                    van_id: null,
+                    item_name: '', //Displayed name of the booked item
+                    price_a: 0,
+                    price_b: 0,
+                    price_c: 0,
+                    currency: 0,
                     start_time: null,
                     end_time: null,
                     cardId: null,
@@ -31,15 +38,19 @@ define(
                 url,
 				postData;
 
-            url = '/users/' + App.user.data.id +'/gear/' + newBooking.gear_id + '/bookings';
+            if(this.data.van_id && this.data.van_id !== null) {
+                url = '/users/' + App.user.data.id +'/vans/' + newBooking.van_id + '/bookings';
+            }
+            else {
+                url = '/users/' + App.user.data.id +'/gear/' + newBooking.gear_id + '/bookings';
+            }
 
-			postData = {
-				gear_id: newBooking.gear_id,
-				start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-				end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+            postData = {
+                start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+                end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
                 cardId: cardId,
                 returnURL: window.location.href
-			};
+            };
 
 			this.post(url, postData, function(error, data) {
 				if(error) {
@@ -55,7 +66,14 @@ define(
 
         getBookingInfo = function(userID, callback) {
             var model = this,
+                url;
+
+            if(this.data.van_id && this.data.van_id !== null) {
+                url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
+            }
+            else {
                 url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+            }
 
             this.get(url, function(error, booking) {
                 if(error) {
@@ -74,8 +92,14 @@ define(
         // PUT: /users/:user_id/gear/:gear_id/bookings/:booking_id
         update = function(userID, callback) {
             var model = this,
-                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id,
-                updateData;
+                url, updateData;
+
+            if(this.data.van_id && this.data.van_id !== null) {
+                url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
+            }
+            else {
+                url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+            }
 
             updateData = {
                 booking_status: model.data.booking_status,
