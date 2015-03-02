@@ -57,7 +57,7 @@ define(
             //Figure out current tab
             queryString = Utilities.getQueryString();
             if(queryString) {
-            	if(Utilities.getQueryStringParameterValue(queryString, 'van')) {
+            	if(queryString.indexOf('van') >= 0) {
             		this.switchToTab($('#search-tab-vans', this.$element));
             	}
             	else {
