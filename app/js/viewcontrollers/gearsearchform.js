@@ -136,12 +136,15 @@ define(
 			App.router.openModalView('pickupdeliverycalendar', passedData);
 		};
 
-		handlePickupSelection = function(vc) {
+		handlePickupSelection = function(vc, callback) {
 			$('#search-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
 			this.deliveryDateConfirmed = false;
+			if(_.isFunction(callback) === true) {
+				callback();
+			}
 		};
 
-		handleDeliverySelection = function(vc) {
+		handleDeliverySelection = function(vc, callback) {
 			$('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
 			if(this.deliveryDateConfirmed === true) {
 				App.router.closeModalView();
@@ -152,6 +155,10 @@ define(
 				this.handleSearch({
 					data: this
 				});
+			}
+
+			if(_.isFunction(callback) === true) {
+				callback();
 			}
 		};
 
