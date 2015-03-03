@@ -222,7 +222,6 @@ define(
 				$dayBox = $(this),
 				$pickupTab, $deliveryTab;
 
-
 			if($(this).hasClass('disabled') === true) {
 				return;
 			}
@@ -239,14 +238,13 @@ define(
 				$('div', $deliveryTab).html('-');
 				//view.pickupActive = false;
 				if(_.isFunction(view.passedData.parent.handlePickupSelection) === true) {
-					view.passedData.parent.handlePickupSelection(view,function(){
-						
-					if($dayBox.hasClass('selected') === false) {
-						$dayBox.addClass('selected');
-					}
+					view.passedData.parent.handlePickupSelection(view, function() {
+						if($dayBox.hasClass('selected') === false) {
+							$dayBox.addClass('selected');
+						}
 
-					view.clearSelections();
-					view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));	
+						view.clearSelections();
+						view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));	
 
 					});
 				}
