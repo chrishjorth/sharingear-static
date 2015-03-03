@@ -293,6 +293,14 @@ define(
 				$pickupTab.addClass('sg-toptab-active');
 				$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 				$deliveryTab.removeClass('sg-toptab-active');
+				
+				var pickupDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
+				var displayedDay = new Moment.tz(view.displayedMoment, Localization.getCurrentTimeZone());
+				
+				if (pickupDate.month()!==displayedDay.month()) {
+					handlePrev(event);
+				}
+
 				view.pickupActive = true;
 				view.clearSelections();
 				view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));
@@ -311,9 +319,19 @@ define(
 
 				if(view.deliveryDate === null) {
 					view.deliveryDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
+					
 					view.deliveryDate.add(1, 'days');
 					view.deliveryDate.hours(12);
+					
+					var deliveryCheck = new Moment.tz(view.deliveryDate, Localization.getCurrentTimeZone());
+					var displayedCheck= new Moment.tz(view.displayedMoment, Localization.getCurrentTimeZone());
+
+					if (deliveryCheck.month()!==displayedCheck.month()) {
+						handleNext(event);
+					}
+
 					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
+					
 					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
 						view.passedData.parent.handleDeliverySelection(view, true);
 					}

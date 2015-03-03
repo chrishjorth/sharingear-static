@@ -150,12 +150,12 @@ define(
 				return;
 			}
 
-			html+='This instrument is delivered with:<br><ul class="acclist">';
-			for(i=0;i<accessories.length;i++){
-				html+='<li>'+accessories[i]+'</li>';
+			html += 'This vehicle is delivered with:<br><ul class="acclist">';
+			for(i = 0; i < accessories.length; i++){
+				html += '<li>' + accessories[i] + '</li>';
 			}
-			html+='</ul>';
-			$('#accessories-holder',this.$element).html(html);
+			html += '</ul>';
+			$('#accessories-holder', this.$element).html(html);
 		};
 
         renderOwnerPicture = function() {
