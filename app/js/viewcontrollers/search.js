@@ -19,6 +19,7 @@ define(
 
 			handleTab,
 			handleFBShare,
+			handleLogin,
 
 			switchToTab,
 			getCurrentTab,
@@ -151,6 +152,17 @@ define(
 				link: 'sharingear.com',
 				description: description
 			}, function() {});
+		};
+
+		handleLogin = function() {
+			App.user.login(function(error) {
+				if(!error) {
+				    App.router.navigateTo('dashboard');
+				    App.header.render();
+				    return;
+                }
+                console.log(error);
+			});
 		};
 
 		performGearSearch = function() {
@@ -416,6 +428,7 @@ define(
 
 			handleTab: handleTab,
 			handleFBShare: handleFBShare,
+			handleLogin: handleLogin,
 
 			switchToTab: switchToTab,
 			getCurrentTab: getCurrentTab,
