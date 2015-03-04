@@ -19,9 +19,14 @@ define(
 				this.data = {
 					id: null,
 					roadie_type: '',
-					model: '',
-					description: '',
-					images: '',
+					about: '',
+					currently: '',
+					genres: '',
+					experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+					xp_years: '',
+					tours: '',
+					companies: '',
+					bands: '',
 					price_a: '',
 					price_b: '',
 					price_c: '',
@@ -46,6 +51,14 @@ define(
 
 			postData = {
 				roadie_type: newTechProfile.roadie_type,
+				about: newTechProfile.about,
+				currently: newTechProfile.currently,
+				genres: newTechProfile.genres,
+				experience: newTechProfile.experience,
+				xp_years: newTechProfile.xp_years,
+				tours: newTechProfile.tours,
+				companies: newTechProfile.companies,
+				bands: newTechProfile.bands,
 				price_a: newTechProfile.price_a,
 				price_b: newTechProfile.price_b,
 				price_c: newTechProfile.price_c,

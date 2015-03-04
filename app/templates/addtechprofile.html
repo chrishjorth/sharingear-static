@@ -1,0 +1,265 @@
+<div class="container-fluid view sidebarpanel-container addtechprofile">
+
+  <div class="row addtechprofile-panel" id="addtechprofile-panel-type">
+    <form id="addtechprofile-form-type" onsubmit="return false;">
+      <div class="col-sm-3 sg-darkgray-bg">
+        <div class="addtechprofilebuttonlist-container"></div>
+      </div>
+      <div class="col-sm-9">
+        <div class="row">
+          <div class="col-sm-12 hint1 text-center">
+            Please select the technician type.
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <div class="col-sm-3">
+              <label for="addgtechprofile-form-description">About:</label>
+            </div>
+            <div class="col-sm-9">
+              <textarea class="form-control" id="addtechprofile-form-about"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <div class="col-sm-3">
+              <label>Currently working for:</label>
+            </div>
+            <div class="col-sm-9">
+              <textarea class="form-control" id="addtechprofile-form-currently"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <div class="col-sm-3">
+              <label>Genres interested in:</label>
+            </div>
+            <div class="col-sm-9">
+              <textarea class="form-control" id="addtechprofile-form-genres"></textarea>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </form>
+  </div>
+
+  <div class="row addtechprofile-panel hidden" id="addtechprofile-panel-experience">
+    <form id="addtechprofile-experience-form" onsubmit="return false;">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="addtechprofile-level">Experience:</label>
+            <select id="addtechprofile-level">
+              <option value="A+">A+</option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label for="addtechprofile-startyear">Years of experience:</label>
+            <select id="addtechprofile-startyear"></select> - <select id="addtechprofile-endyear"></select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <label>Bands &amp; artists toured with:</label>
+            <textarea id="addtechprofile-tours"></textarea>
+          </div>
+          <div class="col-sm-6">
+            <label>Companies, venues and festivals worked for:</label>
+            <textarea id="addtechprofile-companies"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <label>Bands worked for:</label>
+            <textarea id="addtechprofile-bands"></textarea>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row addtechprofile-panel hidden" id="addtechprofile-panel-pricelocation">
+    <form id="dashboard-addtechprofileprice-form" onsubmit="return false;">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-4 form-left">
+            <div class="form-group">
+              <label for="price_a">Daily rental price ({{currency}}):</label>
+              <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
+              <label for="price_b">Weekly rental price ({{currency}}):</label>
+              <div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control price"></div>
+              <label for="price_c">Monthly rental price ({{currency}}):</label>
+              <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
+            </div>
+          </div>
+
+          <div class="col-sm-4 form-left bulp-background">
+            <h3>Setting the price:</h3>
+            <p>For this type of vehicle we recommend the following prices.</p>
+            <div class="row">
+              <div class="col-xs-4 yellow-text-left">Daily:</div>
+              <div class="col-xs-8 right yellow-text"><span id="addtechprofile-price_a-suggestion"></span> {{currency}}</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-4 yellow-text-left">Weekly:</div>
+              <div class="col-xs-8 right yellow-text"><span id="addtechprofile-price_b-suggestion"></span> {{currency}}</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-4 yellow-text-left">Monthly:</div>
+              <div class="col-xs-8 right yellow-text"><span id="addtechprofile-price_c-suggestion"></span> {{currency}}</div>
+            </div>
+          </div>
+
+          <div class="col-sm-4 form-right">
+            <div class="form-group">
+              <label for="dashboard-addtechprofileprice-address">Street</label>
+              <input type="text" name="address" id="dashboard-addtechprofileprice-address" class="form-control">
+              <label for="dashboard-addtechprofileprice-postalcode">Postal code</label>
+              <input type="text" name="postalcode" id="dashboard-addtechprofileprice-postalcode" class="form-control">
+              <label for="dashboard-addtechprofileprice-city">City</label>
+              <input type="text" name="city" id="dashboard-addtechprofileprice-city" class="form-control">
+              <label for="dashboard-addtechprofileprice-country">Country</label>
+              <select name="country" id="dashboard-addtechprofileprice-country" class="form-control">
+                <option value="">Select country</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div class="row addtechprofile-panel hidden" id="addtechprofile-panel-submerchantForm">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12"><h2>Submerchant Information</h2></div>
+      </div>
+
+      <div class="hidden" id="addtechprofile-availability-submerchantform">  
+        <div class="row">
+          <div class="col-sm-12">In order to put your vehicle up for rent we need some extra information about you so that we can pay you.</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <form id="addtechprofile-submerchantform" onsubmit="return false;">
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-birthdate">Date of birth:*</label>
+                <div class="birthday-select" id="submerchantregistration-birthdate">
+                  <select id="submerchantregistration-birthdate-date" name="birthdate-day"></select>/<select id="submerchantregistration-birthdate-month" name="birthdate-month"></select>/<select id="submerchantregistration-birthdate-year" name="birthdate-year"></select>
+                </div>
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-phone">Phone:*</label>
+                <input type="text" name="phone" class="form-control" id="submerchantregistration-phone">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-address">Address:*</label>
+                <input type="text" name="address" class="form-control" id="submerchantregistration-address">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-postalcode">Postal code:*</label>
+                <input type="text" class="form-control" name="postal_code" id="submerchantregistration-postalcode">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-city">City:*</label>
+                <input type="text" name="city" class="form-control" id="submerchantregistration-city">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-region">Region:</label>
+                <input type="text" name="region" class="form-control" id="submerchantregistration-region">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-region">Country:</label>
+                <select class="form-control" name="country" id="submerchantregistration-country">
+                  <option value="">Select your country</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-region">Nationality:</label>
+                <select class="form-control" name="nationality" id="submerchantregistration-nationality">
+                  <option value="">Select your nationality</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-iban">IBAN:*</label>
+                <input type="text" name="iban" class="form-control" id="submerchantregistration-iban">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="submerchantregistration-swift">BIC/SWIFT:*</label>
+                <input type="text" name="swift" class="form-control" id="submerchantregistration-swift">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row addtechprofile-panel hidden" id="addtechprofile-panel-submerchantTerms">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12"><h2>Submerchant Agreement</h2></div>
+      </div>
+
+      <div id="addtechprofile-availability-terms">
+        <div class="row">
+          <div class="col-sm-12">
+            <p class="lead text-center">
+              By pressing accept you confirm that you have read and accepted the Sharingear Terms and Conditions.
+              If you press cancel your vehicle will be saved, but it will not be possible to rent it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row addtechprofile-panel hidden" id="addtechprofile-panel-availability">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12"><h2>Availability</h2></div>
+      </div>
+
+      <div id="addtechprofile-availability-calendar" class="hidden"></div>
+
+    </div>
+  </div>
+
+  <div class="row addtechprofile-panel hidden" id="addtechprofile-panel-final">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12"><h3 class="text-center">Technician profile added!</h3></div>
+      </div>
+      <div class="row actions">
+        <div class="col-sm-6"><button class="sg-btn-square sg-blue-bg sg-white profile-btn">View technician profile</button></div>
+        <div class="col-sm-6 right"><button class="sg-btn-square sg-blue-bg sg-white addmore-btn">Add more technician profiles</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row footer bs-reset">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-9 bs-reset">
+      <div class="row sg-modal-header">
+        <div class="col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center">
+          <button class="sg-btn-square cancel-btn">Cancel <i class="fa fa-times-circle"></i></button>
+        </div>
+        <div class="col-xs-8"><h2 class="text-center">Add technician profile</h2></div>
+        <div class="col-xs-2 col-sm-2 text-center">
+          <button class="sg-btn-square next-btn">Next <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

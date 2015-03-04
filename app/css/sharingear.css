@@ -1802,8 +1802,10 @@ button:active .sg-gray-bg {
 }
 .custom-radio .custom-radio-icon {
     margin: 30px 0 0 0;
+    margin-top: 3.5vh;
     display: block;
     font-size: 50px;
+    font-size: 5vh;
 }
 .custom-radio input[type="radio"] {
     display: none;
@@ -1812,7 +1814,9 @@ button:active .sg-gray-bg {
     cursor: pointer;
     color: #ffffff;
     font-size: 14px;
+    font-size: 1.5vh;
     line-height: 20px;
+    line-height: 2vh;
     font-weight: normal;
     width: 100%;
     text-align: center;
@@ -3170,6 +3174,62 @@ button:active .sg-gray-bg {
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-addtechprofile-security:before {
+	content: "\e630";
+}
+
+.icon-addtechprofile-driver:before {
+	content: "\e62f";
+}
+
+.icon-addtechprofile-avtech:before {
+	content: "\e62e";
+}
+
+.icon-addtechprofile-wardrobeandhospitality:before {
+	content: "\e62d";
+}
+
+.icon-addtechprofile-catering:before {
+	content: "\e62c";
+}
+
+.icon-addtechprofile-stagehands:before {
+	content: "\e62b";
+}
+
+.icon-addtechprofile-merchandiser:before {
+	content: "\e62a";
+}
+
+.icon-addtechprofile-tourmanager:before {
+	content: "\e629";
+}
+
+.icon-addtechprofile-productionmanager:before {
+	content: "\e628";
+}
+
+.icon-addtechprofile-lightdesigner:before {
+	content: "\e627";
+}
+
+.icon-addtechprofile-ieaengineer:before {
+	content: "\e626";
+}
+
+.icon-addtechprofile-soundengineer:before {
+	content: "\e625";
+}
+
+.icon-addtechprofile-stagemanager:before {
+	content: "\e624";
+}
+
+.icon-addtechprofile-backlinetech:before {
+	content: "\e623";
 }
 
 .icon-addvan-trailer:before {

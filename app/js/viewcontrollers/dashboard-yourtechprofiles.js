@@ -42,7 +42,7 @@ define(
 				$('#' + techprofilesBlockID, this.$element).append('You haven\'t listed any technician profiles yet!');
 			}
 
-			this.setupEvent('click', '#dashboard-yourtechnicianprofiles-add-btn', this, this.handleAddTechProfile);
+			this.setupEvent('click', '#dashboard-yourtechprofiles-add-btn', this, this.handleAddTechProfile);
 			this.setupEvent('click', '.yourtechnicianprodiles-item-edit-btn', this, this.handleEditTechProfileItem);
 		};
 
