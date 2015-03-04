@@ -38,7 +38,6 @@
  *	8.q INSURANCE
  *	8.r DASHBOARD-SETTINGS
  *	8.s VAN PROFILE
- *	8.t ADD TECH PROFILE
  * 9. HELPERS
  * 10. ICONS
  *
@@ -1833,6 +1832,11 @@ button:active .sg-gray-bg {
 	padding-top: 18px;
 }
 
+.inline-select-small {
+	width: 25%;
+	display: inline-block;
+}
+
 /******* 8. SPECIFIC VIEWS *******/
 /**
  * These are rules that only apply to a specific view. These types of rules should be avoided as much as possible.
@@ -3128,12 +3132,6 @@ button:active .sg-gray-bg {
 	font-size: 40px;
 	margin-left: 4px;
 	margin-right: 4px;
-}
-
-/*------ 8.t ADD TECH PROFILE ------*/
-.addtechprofile select {
-	width: 25%;
-	display: inline-block;
 }
 
 /******* 9. HELPERS *******/

@@ -23,6 +23,7 @@ define(
 
 			populateYearsOfExperience,
 			handleExperienceStartYearChange,
+			saveExperience,
 
 			populateCountries,
 			populatePriceSuggestions,
@@ -112,12 +113,12 @@ define(
 		};
 
 		populatePriceSuggestions = function () {
-			var techProfileClassification = App.contentClassification.data.techProfileClassification,
+			var techProfileClassification = App.contentClassification.data.roadieClassification,
 				view = this,
                 i, suggestionA, suggestionB, suggestionC;
 
             for(i = 0; i < techProfileClassification.length; i++) {
-                if(techProfileClassification[i].roadieType === view.newTechProfile.data.roadie_type) {
+                if(techProfileClassification[i].roadie_type === view.newTechProfile.data.roadie_type) {
                     suggestionA = techProfileClassification[i].price_a_suggestion;
                     suggestionB = techProfileClassification[i].price_b_suggestion;
                     suggestionC = techProfileClassification[i].price_c_suggestion;
@@ -153,12 +154,12 @@ define(
 				techProfileType, i;
 
 			for(i = 0; i < techProfileClassification.length; i++) {
-				techProfileType = techProfileClassification[i].replace(/\s/g, ''); //Remove spaces
+				techProfileType = techProfileClassification[i].roadie_type.replace(/\s/g, ''); //Remove spaces
 				html += '<div class="custom-radio custom-radio-small">';
-				html += '<input type="radio" name="techprofile-radio" id="addtechprofile-radio-' + techProfileClassification[i] + '" value="' + techProfileClassification[i] + '">';
-				html += '<label for="addtechprofile-radio-' + techProfileClassification[i] + '">';
+				html += '<input type="radio" name="techprofile-radio" id="addtechprofile-radio-' + techProfileClassification[i].roadie_type + '" value="' + techProfileClassification[i].roadie_type + '">';
+				html += '<label for="addtechprofile-radio-' + techProfileClassification[i].roadie_type + '">';
 				html += '<div class="custom-radio-icon sg-icon icon-addtechprofile-' + techProfileType.toLowerCase() + '"></div>';
-				html += '<span>' + techProfileClassification[i] + '</span>';
+				html += '<span>' + techProfileClassification[i].roadie_type + '</span>';
 				html += '</label>';
 				html += '</div>';
 			}
@@ -251,6 +252,18 @@ define(
 			view.populateYearsOfExperience();
 		};
 
+		saveExperience = function() {
+			_.extend(this.newTechProfile.data, {
+				experience: $('#addtechprofile-experience', this.$element).val(),
+				xp_years: $('#addtechprofile-startyear', this.$element).val() + '-' + $('#addtechprofile-endyear', this.$element).val(),
+				tours: $('#addtechprofile-tours', this.$element).val(),
+				companies: $('#addtechprofile-companies', this.$element).val(),
+				bands: $('#addtechprofile-bands').val()
+			});
+			this.populatePriceSuggestions();
+			this.showPanel('#addtechprofile-panel-pricelocation');
+		};
+
 		populateCountries = function($select) {
             var html = $('option', $select).first()[0].outerHTML,
             	countriesArray, i;
@@ -295,9 +308,8 @@ define(
 				currency: App.user.data.currency,
                 address: $('#dashboard-addtechprofileprice-address', this.$element).val(),
 				postal_code: $('#dashboard-addtechprofileprice-postalcode', this.$element).val(),
-				city: $('#dashboard-addtechprofile-city', this.$element).val(),
-				region: $('#dashboard-addtechprofile-region', this.$element).val(),
-				country: $('#dashboard-addtechprofile-country option:selected').val()
+				city: $('#dashboard-addtechprofileprice-city', this.$element).val(),
+				country: $('#dashboard-addtechprofileprice-country option:selected').val()
 			});
 
 			if(this.hasDelivery === true) {
@@ -387,10 +399,11 @@ define(
 
 			if(isLocationSame === false) {
 				addressOneliner = newTechProfileData.address + ', ' + newTechProfileData.postal_code + ' ' + newTechProfileData.city + ', ' + newTechProfileData.country;
+				console.log(addressOneliner);
 				geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
-						view.newTechProfileData.data.longitude = results[0].geometry.location.lng();
-						view.newTechProfileData.data.latitude = results[0].geometry.location.lat();
+						view.newTechProfile.data.longitude = results[0].geometry.location.lng();
+						view.newTechProfile.data.latitude = results[0].geometry.location.lat();
 						saveCall();
 					}
 					else {
@@ -726,10 +739,8 @@ define(
 				case 'addtechprofile-panel-type':
 					view.saveTechProfile();
 					break;
-				case 'addtechprofile-panel-photos':
-					if(view.isLoading === false) {
-						view.showPanel('#addtechprofile-panel-pricelocation');
-					}
+				case 'addtechprofile-panel-experience':
+					view.saveExperience();
 					break;
 				case 'addtechprofile-panel-pricelocation':
 					view.savePriceLocation();
@@ -782,6 +793,7 @@ define(
 
 			populateYearsOfExperience: populateYearsOfExperience,
 			handleExperienceStartYearChange: handleExperienceStartYearChange,
+			saveExperience: saveExperience,
 
 			populatePriceSuggestions:populatePriceSuggestions,
 
