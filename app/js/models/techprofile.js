@@ -27,6 +27,7 @@ define(
 					tours: '',
 					companies: '',
 					bands: '',
+					image: '',
 					price_a: '',
 					price_b: '',
 					price_c: '',

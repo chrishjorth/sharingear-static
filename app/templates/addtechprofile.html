@@ -53,33 +53,41 @@
     <form id="addtechprofile-experience-form" onsubmit="return false;">
       <div class="col-sm-12">
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-6 form-group">
             <label for="addtechprofile-level">Experience:</label>
-            <select id="addtechprofile-level">
-              <option value="A+">A+</option>
-            </select>
+            <div>
+              <select id="addtechprofile-level" class="form-control">
+                <option value="5">D</option>
+                <option value="4">C</option>
+                <option value="3">B</option>
+                <option value="2">A</option>
+                <option value="1">A+</option>
+              </select>
+            </div>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 form-group">
             <label for="addtechprofile-startyear">Years of experience:</label>
-            <select id="addtechprofile-startyear"></select> - <select id="addtechprofile-endyear"></select>
+            <div>
+              <select id="addtechprofile-startyear" class="form-control"></select> - <select id="addtechprofile-endyear" class="form-control"></select>
+            </div>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-6 form-group">
             <label>Bands &amp; artists toured with:</label>
-            <textarea id="addtechprofile-tours"></textarea>
+            <textarea id="addtechprofile-tours" class="form-control"></textarea>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 form-group">
             <label>Companies, venues and festivals worked for:</label>
-            <textarea id="addtechprofile-companies"></textarea>
+            <textarea id="addtechprofile-companies" class="form-control"></textarea>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-6 form-group">
             <label>Bands worked for:</label>
-            <textarea id="addtechprofile-bands"></textarea>
+            <textarea id="addtechprofile-bands" class="form-control"></textarea>
           </div>
         </div>
       </div>

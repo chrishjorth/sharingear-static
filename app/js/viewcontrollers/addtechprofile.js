@@ -21,6 +21,9 @@ define(
 			handleTechProfileRadio,
 			saveTechProfile,
 
+			populateYearsOfExperience,
+			handleExperienceStartYearChange,
+
 			populateCountries,
 			populatePriceSuggestions,
 			handlePriceChange,
@@ -90,6 +93,8 @@ define(
 			this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
 			this.setupEvent('click', '.next-btn', this, this.handleNext);
 			this.setupEvent('change', '#addtechprofile-form-type .addtechprofilebuttonlist-container input[type="radio"]', this, this.handleTechProfileRadio);
+
+			this.setupEvent('click', '#addtechprofile-startyear', this, this.handleExperienceStartYearChange);
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
@@ -203,11 +208,47 @@ define(
 				}
 
 				view.showPanel('#addtechprofile-panel-experience');
-				view.populatePriceSuggestions();
-
+				view.populateYearsOfExperience();
 				view.toggleLoading();
 			});
 			
+		};
+
+		populateYearsOfExperience = function() {
+			var $startYear = $('#addtechprofile-startyear', this.$element),
+				$endYear = $('#addtechprofile-endyear', this.$element),
+				startYearSelectHTML = '',
+				endYearSelectHTML = '',
+				currentYear = (new Moment.tz(Localization.getCurrentTimeZone())).year(),
+				startYear, endYear, i;
+
+			startYear = $startYear.val();
+			if(startYear === null) {
+				startYear = Config.MIN_XP_START_YEAR;
+			}
+			endYear = $endYear.val();
+			if(endYear === null) {
+				endYear = currentYear;
+			}
+			if(endYear < startYear) {
+				endYear = startYear;
+			}
+			for(i = Config.MIN_XP_START_YEAR; i < startYear; i++) {
+				startYearSelectHTML += '<option value="' + i + '">' + i + '</option>';
+			}
+			for(i = startYear; i <= currentYear; i++) {
+				startYearSelectHTML += '<option value="' + i + '">' + i + '</option>';
+				endYearSelectHTML += '<option value="' + i + '">' + i + '</option>';
+			}
+			$startYear.html(startYearSelectHTML);
+			$startYear.val(startYear);
+			$endYear.html(endYearSelectHTML);
+			$endYear.val(endYear);
+		};
+
+		handleExperienceStartYearChange = function(event) {
+			var view = event.data;
+			view.populateYearsOfExperience();
 		};
 
 		populateCountries = function($select) {
@@ -738,6 +779,9 @@ define(
 			addTechProfileIcons: addTechProfileIcons,
 			handleTechProfileRadio: handleTechProfileRadio,
 			saveTechProfile: saveTechProfile,
+
+			populateYearsOfExperience: populateYearsOfExperience,
+			handleExperienceStartYearChange: handleExperienceStartYearChange,
 
 			populatePriceSuggestions:populatePriceSuggestions,
 

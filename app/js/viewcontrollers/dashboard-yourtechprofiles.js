@@ -70,8 +70,8 @@ define(
 
 					techProfile = yourTechProfiles[i];
 					_.extend(defaultTechProfile, techProfile.data);
-					if(defaultTechProfile.images.length > 0) {
-						defaultTechProfile.img_url = defaultTechProfile.images.split(',')[0];
+					if(defaultTechProfile.image.length > 0) {
+						defaultTechProfile.img_url = defaultTechProfile.image;
 					}
 					$techProfileItem = $(yourTechProfilesItemTemplate(defaultTechProfile));
 					$('.sg-bg-image' , $techProfileItem).css({
