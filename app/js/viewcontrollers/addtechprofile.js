@@ -399,7 +399,6 @@ define(
 
 			if(isLocationSame === false) {
 				addressOneliner = newTechProfileData.address + ', ' + newTechProfileData.postal_code + ' ' + newTechProfileData.city + ', ' + newTechProfileData.country;
-				console.log(addressOneliner);
 				geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.newTechProfile.data.longitude = results[0].geometry.location.lng();
