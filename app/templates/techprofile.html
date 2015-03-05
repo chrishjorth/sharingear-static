@@ -1,0 +1,109 @@
+<div class="container-fluid view techprofile sg-lightgray-bg">
+	<div class="row bs-reset">
+		<div class="col-sm-4 bs-reset">
+			<div class="row sg-card sg-white-bg profile-container">
+				<div class="col-sm-12 text-center">
+					<div class="sg-lightgray-bg text-center">
+						<a href="#user/{{owner_id}}"><div class="profile-pic"></div></a>
+					</div>
+					<div class="sg-darkergray name">{{name}}</div>
+					<div class="sg-gray tagline">Sharingear first-mover</div>
+					<hr>
+					<a href="#user/{{owner_id}}" class="sg-btn-invisible"><div class="sg-icon icon-info sg-darkergray"></div></a><a href="#user/{{owner_id}}/gear" class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourgear sg-darkergray"></div></a><button class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourtechprofile sg-darkergray"></div></button><a href="#user/{{owner_id}}/vans" class="sg-btn-invisible"><div class="sg-icon icon-dashboard-yourvans sg-darkergray"></div></a>
+				</div>
+			</div>
+
+			<div class="row sg-card sg-white-bg">
+				<div class="col-sm-12 map-container">
+					<div class="sg-gray"><i class="fa fa-home"></i><span class="sg-darkergray">{{location}}</span></div>
+					<div class="map" id="techprofile-map"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-8 bs-reset">
+			<div class="row sg-card sg-white-bg sg-no-mobile">
+				<div class="col-sm-12 sg-gray profile-type">
+					<div class="sg-icon icon-dashboard-yourtechprofile"></div> TECHNICIAN PROFILE
+				</div>
+			</div>
+
+			<div class="row sg-card sg-white-bg">
+				<div class="col-sm-7 sg-darkergray title-container">
+					<div class="sg-icon icon-addtechprofile-{{icon}} sg-darkgray"></div> <div class="techprofile-title">{{roadie_type}}</div>
+				</div>
+				<div class="col-sm-5">
+					<div class="row pricing sg-card sg-card-sibling">
+						<div class="col-xs-3 col-sm-4">
+							<div class="sg-blue-bg">
+								<div class="text-center sg-darkergray">Day</div>
+								<div class="text-center sg-white"><span id="techprofile-price_a"></span> <span class="currency">{{currency}}</span></div>
+							</div>
+						</div>
+						<div class="col-xs-3 col-sm-4">
+							<div class="sg-blue-bg">
+								<div class="text-center sg-darkergray">Week</div>
+								<div class="text-center sg-white"><span id="techprofile-price_b"></span> <span class="currency">{{currency}}</span></div>
+							</div>
+						</div>
+						<div class="col-xs-3 col-sm-4">
+							<div class="sg-blue-bg">
+								<div class="text-center sg-darkergray">Month</div>
+								<div class="text-center sg-white"><span id="techprofile-price_c"></span> <span class="currency">{{currency}}</span></div>
+							</div>
+						</div>
+						<div class="col-xs-3 col-sm-12 button-container">
+							<button class="sg-btn-square sg-darkergray-bg sg-white disabled hidden" id="techprofile-action-unavailable">UNAVAILABLE</button>
+							<button class="sg-btn-square sg-darkergray-bg sg-white hidden" id="techprofile-action-book">BOOK</button>
+							<button class="sg-btn-square sg-darkergray-bg sg-white hidden" id="techprofile-action-edit">EDIT</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row sg-card sg-white-bg experience">
+				<div class="col-xs-6">
+						<div class="sg-darkergray">Experience: <span class="sg-yellow">{{experience}}</span></div>
+				</div>
+				<div class="col-xs-6">
+					<div class="social sg-gray text-right"><button class="sg-btn-invisible sg-gray" id="techprofile-fb-btn"><i class="fa fa-facebook"></i></button> | <button class="sg-btn-invisible sg-gray" id="techprofile-tw-btn"><i class="fa fa-twitter"></i></button></div>
+				</div>
+			</div>
+
+			<div class="row sg-card sg-white-bg">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-12">
+							<h4 class="sg-gray">ABOUT</h4>
+							<p>{{about}}</p>
+							<h4 class="sg-gray">CURRENTLY WORKING FOR</h4>
+							<p>{{currently}}</p>
+							<h4 class="sg-gray">REFERENCES</h4>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<h5>Bands &amp; artists toured with:</h5>
+							<p>{{tours}}</p>
+						</div>
+						<div class="col-sm-4">
+							<h5>Companies, venues and festivals worked for:</h5>
+							<p>{{companies}}</p>
+						</div>
+						<div class="col-sm-4">
+							<h5>Years of experience</h5>
+							<p>{{xp_years}}</p>
+							<h5>Genres interested in:</h5>
+							<p>{{genres}}</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<h5>Bands worked for:</h5>
+							<p>{{bands}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

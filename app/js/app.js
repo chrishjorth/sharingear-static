@@ -64,7 +64,8 @@ define(
                 'editvan',
                 'dashboard/yourvanrentals',
 				'dashboard/yourvanreservations',
-				'addtechprofile'
+				'addtechprofile',
+				'techprofile'
 			);
 
 			// if logged in on facebook, login user on the backend and go to required page.
