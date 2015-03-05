@@ -54,29 +54,19 @@ define(
 					$techProfilesBlock, defaultTechProfile, techProfile, i, $techProfileItem;
 
 				$techProfilesBlock = $('#' + techprofilesBlockID, view.$element);
-
 				for(i = 0; i < yourTechProfiles.length; i++) {
+					techProfile = yourTechProfiles[i].data;
+					console.log(techProfile);
 					defaultTechProfile = {
 						id: null,
 						roadie_type: '',
-						model: '',
-						description: '',
-						img_url: 'images/placeholder_grey.png',
-						price_a: 0,
-						price_b: 0,
-						price_c: 0,
-						owner_id: null
+						owner_id: null,
+						icon: techProfile.roadie_type.replace(/\s/g, '').toLowerCase()
 					};
-
-					techProfile = yourTechProfiles[i];
-					_.extend(defaultTechProfile, techProfile.data);
-					if(defaultTechProfile.image.length > 0) {
-						defaultTechProfile.img_url = defaultTechProfile.image;
-					}
+					_.extend(defaultTechProfile, techProfile);
+					
 					$techProfileItem = $(yourTechProfilesItemTemplate(defaultTechProfile));
-					$('.sg-bg-image' , $techProfileItem).css({
-						'background-image': 'url("' + defaultTechProfile.img_url + '")'
-					});
+					
 					$techProfilesBlock.append($techProfileItem);
 				}
 				if(callback && typeof callback === 'function') {

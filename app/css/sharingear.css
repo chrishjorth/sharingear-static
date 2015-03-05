@@ -1565,6 +1565,17 @@ button:active .sg-gray-bg {
 		height: 94px;
 	}
 }
+.sg-list-item .sg-bg-image .sg-icon {
+	font-size: 70px;
+	line-height: 77px;
+	color: #b0b0b0;
+}
+@media (min-width: 768px) {
+	.sg-list-item .sg-bg-image .sg-icon {
+		font-size: 80px;
+		line-height: 94px;
+	}
+}
 .sg-list-item-text {
 	font-size: 12px;
 	font-weight: bold;
