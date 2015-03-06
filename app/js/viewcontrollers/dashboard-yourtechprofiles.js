@@ -43,7 +43,7 @@ define(
 			}
 
 			this.setupEvent('click', '#dashboard-yourtechprofiles-add-btn', this, this.handleAddTechProfile);
-			this.setupEvent('click', '.yourtechnicianprodiles-item-edit-btn', this, this.handleEditTechProfileItem);
+			this.setupEvent('click', '.yourtechprofiles-item-edit-btn', this, this.handleEditTechProfileItem);
 		};
 
 		populateYourTechProfiles = function(callback) {
@@ -56,7 +56,6 @@ define(
 				$techProfilesBlock = $('#' + techprofilesBlockID, view.$element);
 				for(i = 0; i < yourTechProfiles.length; i++) {
 					techProfile = yourTechProfiles[i].data;
-					console.log(techProfile);
 					defaultTechProfile = {
 						id: null,
 						roadie_type: '',

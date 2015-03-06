@@ -32,7 +32,6 @@ define(
 					price_b: '',
 					price_c: '',
 					currency: App.user.data.currency,
-					accessories: null,
 					address: '',
 					postal_code: '',
 					city: '',
@@ -90,6 +89,14 @@ define(
 
 		save = function(callback) {
 			var saveData = {
+				about: this.data.about,
+				currently: this.data.currently,
+				genres: this.data.genres,
+				experience: this.data.experience,
+				xp_years: this.data.xp_years,
+				tours: this.data.tours,
+				companies: this.data.companies,
+				bands: this.data.bands,
 				price_a: this.data.price_a,
 				price_b: this.data.price_b,
 				price_c: this.data.price_c,

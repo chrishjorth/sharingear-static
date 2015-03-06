@@ -38,7 +38,7 @@
  *	8.q INSURANCE
  *	8.r DASHBOARD-SETTINGS
  *	8.s VAN PROFILE
- *	8.t VAN PROFILE
+ *	8.t TECH PROFILE
  * 9. HELPERS
  * 10. ICONS
  *
@@ -3343,6 +3343,64 @@ button:active .sg-gray-bg {
 }
 .techprofile .map-container .map {
 	height: 300px;
+}
+
+/*------ 8.u EDIT VAN ------*/
+.editvan {
+	padding-bottom: 80px;
+}
+
+.editvan .sg-toptab-container {
+	height: 70px;
+}
+@media (min-width: 768px) {
+	.editvan .sg-toptab-container {
+		height: 55px;
+	}
+}
+
+.editvan .sg-toptab {
+	font-size: 10px;
+	padding-top: 12px;
+	padding-bottom: 20px;
+	width: 20%;
+}
+@media (min-width: 768px) {
+	.editvan .sg-toptab {
+		font-size: 18px;
+		padding-top: 8px;
+		padding-bottom: 0;
+		width: auto;
+	}
+}
+
+/*------ 8.v EDIT TECH PROFILE ------*/
+.edittechprofile {
+	padding-bottom: 80px;
+}
+
+.edittechprofile .sg-toptab-container {
+	height: 70px;
+}
+@media (min-width: 768px) {
+	.edittechprofile .sg-toptab-container {
+		height: 55px;
+	}
+}
+
+.edittechprofile .sg-toptab {
+	font-size: 10px;
+	padding-top: 12px;
+	padding-bottom: 20px;
+	width: 20%;
+}
+@media (min-width: 768px) {
+	.edittechprofile .sg-toptab {
+		font-size: 18px;
+		padding-top: 8px;
+		padding-bottom: 0;
+		width: auto;
+	}
 }
 
 /******* 9. HELPERS *******/
