@@ -43,6 +43,11 @@ define(
 				view.gearSearchFormVC.initialize();
 				view.gearSearchFormVC.render();
 			});
+			require(['viewcontrollers/techprofilesearchform', 'text!../templates/techprofilesearchform.html'], function(techProfileSearchVC, techProfileSearchVT) {
+				view.techProfileSearchFormVC = new techProfileSearchVC.constructor({name: 'techprofilesearchform', $element: $('#home-searchform-techprofiles .searchform-container', view.$element), template: techProfileSearchVT});
+				view.techProfileSearchFormVC.initialize();
+				view.techProfileSearchFormVC.render();
+			});
 			require(['viewcontrollers/vansearchform', 'text!../templates/vansearchform.html'], function(vanSearchVC, vanSearchVT) {
 				view.vanSearchFormVC = new vanSearchVC.constructor({name: 'vansearchform', $element: $('#home-searchform-vans .searchform-container', view.$element), template: vanSearchVT});
 				view.vanSearchFormVC.initialize();
@@ -64,17 +69,6 @@ define(
 				view = event.data,
 				id;
 			id = $this.attr('id');
-
-			//Remove this once technicians are enabled.
-			if(id === 'home-tab-technicians') {
-				if(App.user.isLoggedIn() === false) {
-					view.handleLogin();
-				}
-				else {
-					alert('This feature will be enabled soon, please stay tuned.');
-				}
-				return;
-			}
 
 			$('.sg-tabbar li .sg-btn-square', view.$element).removeClass('selected');
 			$this.addClass('selected');

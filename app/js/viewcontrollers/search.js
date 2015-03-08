@@ -6,9 +6,10 @@
 'use strict';
 
 define(
-	['jquery', 'underscore', 'config', 'viewcontroller', 'app', 'utilities', 'googlemaps', 'models/gearlist', 'models/vanlist', 'models/localization', 'facebook'],
-	function($, _, Config, ViewController, App, Utilities, GoogleMaps, GearList, VanList, Localization, FB) {
+	['jquery', 'underscore', 'config', 'viewcontroller', 'app', 'utilities', 'googlemaps', 'models/gearlist', 'models/techprofilelist', 'models/vanlist', 'models/localization', 'facebook'],
+	function($, _, Config, ViewController, App, Utilities, GoogleMaps, GearList, TechProfileList, VanList, Localization, FB) {
 		var gearSearchBlockID = 'search-results-gear',
+			techProfileSearchBlockID = 'search-results-techprofiles',
 			vanSearchBlockID = 'search-results-vans',
 			geocoder,
 			
@@ -24,6 +25,7 @@ define(
 			switchToTab,
 			getCurrentTab,
 			performGearSearch,
+			performTechnicianSearch,
 			performVanSearch,
 			populateSearchBlock;
 
@@ -32,12 +34,18 @@ define(
 
 		didInitialize = function() {
 			this.gearSearchFormVC = null;
+			this.techProfileSearchFormVC = null;
 			this.vanSearchFormVC = null;
 
 			this.gearList = new GearList.constructor({
 				rootURL: Config.API_URL
 			});
 			this.gearList.initialize();
+
+			this.techProfileList = new TechProfileList.constructor({
+				rootURL: Config.API_URL
+			});
+			this.techProfileList.initialize();
 
 			this.vanList = new VanList.constructor({
 				rootURL: Config.API_URL
@@ -216,6 +224,57 @@ define(
 			}
 		};
 
+		performTechnicianSearch = function() {
+			var view = this,
+				performSearch, searchParameters;
+
+			performSearch = function(techProfile, location, dateRange) {
+				App.user.setSearchInterval(dateRange);
+				if(location === '' || location === 'all' || location === null) {
+					location = 'all';
+					view.techProfileList.search(location, techProfile, dateRange, function(searchResults) {
+						view.populateSearchBlock(searchResults, $('#' + techProfileSearchBlockID, view.$element));
+						view.renderMap(searchResults);
+						view.setCurrentLocation(location);
+					});
+				}
+				else {
+					geocoder.geocode({address: location}, function(results, status) {
+						var locationData;
+						if(status === GoogleMaps.GeocoderStatus.OK) {
+							locationData = results[0].geometry.location.lat() + ',' + results[0].geometry.location.lng();
+							view.techProfileList.search(locationData, techProfile, dateRange, function(searchResults) {
+								view.populateSearchBlock(searchResults, $('#' + techProfileSearchBlockID, view.$element));
+								view.renderMap(searchResults, results[0].geometry.location.lat(), results[0].geometry.location.lng());
+								view.setCurrentLocation(results[0].formatted_address);
+							});
+						}
+						else {
+							console.log('Error geocoding: ' + status);
+							alert('Couldn\'t find this location. You can use the keyword all, to get locationless results.');
+							view.populateSearchBlock([], $('#' + techProfileSearchBlockID, view.$element));
+							view.renderMap([]);
+							view.setCurrentLocation(location);
+						}
+					});
+				}
+			};
+
+			if(this.techProfileSearchFormVC === null) {
+				require(['viewcontrollers/techprofilesearchform', 'text!../templates/techprofilesearchform.html'], function(techProfileSearchVC, techProfileSearchVT) {
+					view.techProfileSearchFormVC = new techProfileSearchVC.constructor({name: 'techprofilesearchform', $element: $('#search-searchform-techprofiles .searchform-container', view.$element), template: techProfileSearchVT});
+					view.techProfileSearchFormVC.initialize();
+					view.techProfileSearchFormVC.render();
+					searchParameters = view.techProfileSearchFormVC.getSearchParameters();
+					performSearch(searchParameters.techProfileString, searchParameters.locationString, searchParameters.dateRangeString);
+				});
+			}
+			else {
+				searchParameters = view.techProfileSearchFormVC.getSearchParameters();
+				performSearch(searchParameters.techProfileString, searchParameters.locationString, searchParameters.dateRangeString);
+			}
+		};
+
 		performVanSearch = function() {
 			var view = this,
 				performSearch, searchParameters;
@@ -271,17 +330,6 @@ define(
 			var id = $tabButton.attr('id'),
 				tab;
 
-			//Remove this once technicians are enabled.
-			if(id === 'search-tab-technicians') {
-				if(App.user.isLoggedIn() === false) {
-					this.handleLogin();
-				}
-				else {
-					alert('This feature will be enabled soon, please stay tuned.');
-				}
-				return;
-			}
-
 			$('.sg-tabs li', this.$element).removeClass('active');
 			$tabButton.parent().addClass('active');
 
@@ -297,6 +345,9 @@ define(
 			switch(tab) {
 				case 'gear':
 					this.performGearSearch();
+					break;
+				case 'technicians':
+					this.performTechnicianSearch();
 					break;
 				case 'vans':
 					this.performVanSearch();
@@ -433,6 +484,7 @@ define(
 			switchToTab: switchToTab,
 			getCurrentTab: getCurrentTab,
 			performGearSearch: performGearSearch,
+			performTechnicianSearch: performTechnicianSearch,
 			performVanSearch: performVanSearch,
 			populateSearchBlock: populateSearchBlock
 		});
