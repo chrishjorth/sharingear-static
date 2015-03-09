@@ -38,17 +38,23 @@ define(
 				currency: App.user.data.currency
 			};
 
-			this.newBooking = new Booking.constructor({
-				rootURL: Config.API_URL
-			});
-			this.newBooking.initialize();
-			this.newBooking.data.gear_id = this.passedData.gear_id;
-			this.newBooking.data.van_id = this.passedData.van_id;
-			this.newBooking.data.item_name = this.passedData.item_name;
-			this.newBooking.data.price_a = this.passedData.price_a;
-			this.newBooking.data.price_b = this.passedData.price_b;
-			this.newBooking.data.price_c = this.passedData.price_c;
-			this.newBooking.data.currency = this.passedData.currency;
+			if(this.passedData.booking) {
+				this.newBooking = this.passedData.booking;
+			}
+			else {
+				this.newBooking = new Booking.constructor({
+					rootURL: Config.API_URL
+				});
+				this.newBooking.initialize();
+				this.newBooking.data.gear_id = this.passedData.gear_id;
+				this.newBooking.data.van_id = this.passedData.van_id;
+				this.newBooking.data.techprofile_id = this.passedData.techprofile_id;
+				this.newBooking.data.item_name = this.passedData.item_name;
+				this.newBooking.data.price_a = this.passedData.price_a;
+				this.newBooking.data.price_b = this.passedData.price_b;
+				this.newBooking.data.price_c = this.passedData.price_c;
+				this.newBooking.data.currency = this.passedData.currency;
+			}
 		};
 
 		didRender = function() {

@@ -6,13 +6,14 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/user', 'models/gearlist', 'models/vanlist'],
-	function(_, $, Config, ViewController, App, User, GearList, VanList) {
+	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/user', 'models/gearlist', 'models/techprofilelist', 'models/vanlist'],
+	function(_, $, Config, ViewController, App, User, GearList, TechProfileList, VanList) {
 		var didInitialize,
 			didRender,
 
 			renderProfilePic,
 			populateGear,
+			populateTechProfiles,
 			populateVans,
 			renderTabs,
 
@@ -65,6 +66,14 @@ define(
 				view.render();
 			});
 
+			this.userTechProfiles = new TechProfileList.constructor({
+				rootURL: Config.API_URL
+			});
+			this.userTechProfiles.initialize();
+			this.userTechProfiles.getUserTechProfiles(this.user.data.id, function() {
+				view.render();
+			});
+
 			this.userVans = new VanList.constructor({
 				rootURL: Config.API_URL
 			});
@@ -78,6 +87,7 @@ define(
 			this.renderProfilePic();
 			this.renderTabs();
 			this.populateGear();
+			this.populateTechProfiles();
 			this.populateVans();
 
 			this.setupEvent('click', '.sg-tabs button', this, this.handleTab);
@@ -136,6 +146,28 @@ define(
 						'background-image': 'url("' + defaultGear.img_url + '")'
 					});
 					$gearBlock.append($gearItem);
+				}
+			});
+		};
+
+		populateTechProfiles = function() {
+			var view = this;
+			require(['text!../templates/user-techprofiles-item.html'], function(TechProfilesItemTemplate) {
+				var techProfilesItemTemplate = _.template(TechProfilesItemTemplate),
+					techProfileList = view.userTechProfiles.data,
+					$techProfilesBlock, defaultTechProfiles, techProfile, i, $techProfilesItem;
+
+				$techProfilesBlock = $('#user-techprofiles-container', view.$element);
+				for(i = 0; i < techProfileList.length; i++) {
+					techProfile = techProfileList[i].data;
+					defaultTechProfiles = {
+						id: null,
+						roadie_type: '',
+						icon: techProfile.roadie_type.replace(/\s/g, '').toLowerCase()
+					};
+					_.extend(defaultTechProfiles, techProfile);
+					$techProfilesItem = $(techProfilesItemTemplate(defaultTechProfiles));
+					$techProfilesBlock.append($techProfilesItem);
 				}
 			});
 		};
@@ -209,6 +241,7 @@ define(
 
 			renderProfilePic: renderProfilePic,
 			populateGear: populateGear,
+			populateTechProfiles: populateTechProfiles,
 			populateVans: populateVans,
 			renderTabs: renderTabs,
 

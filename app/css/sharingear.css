@@ -38,6 +38,7 @@
  *	8.q INSURANCE
  *	8.r DASHBOARD-SETTINGS
  *	8.s VAN PROFILE
+ *	8.t TECH PROFILE
  * 9. HELPERS
  * 10. ICONS
  *
@@ -1565,6 +1566,17 @@ button:active .sg-gray-bg {
 		height: 94px;
 	}
 }
+.sg-list-item .sg-bg-image .sg-icon {
+	font-size: 70px;
+	line-height: 77px;
+	color: #b0b0b0;
+}
+@media (min-width: 768px) {
+	.sg-list-item .sg-bg-image .sg-icon {
+		font-size: 80px;
+		line-height: 94px;
+	}
+}
 .sg-list-item-text {
 	font-size: 12px;
 	font-weight: bold;
@@ -1802,8 +1814,10 @@ button:active .sg-gray-bg {
 }
 .custom-radio .custom-radio-icon {
     margin: 30px 0 0 0;
+    margin-top: 3.5vh;
     display: block;
     font-size: 50px;
+    font-size: 5vh;
 }
 .custom-radio input[type="radio"] {
     display: none;
@@ -1812,7 +1826,9 @@ button:active .sg-gray-bg {
     cursor: pointer;
     color: #ffffff;
     font-size: 14px;
+    font-size: 1.5vh;
     line-height: 20px;
+    line-height: 2vh;
     font-weight: normal;
     width: 100%;
     text-align: center;
@@ -1826,6 +1842,11 @@ button:active .sg-gray-bg {
 .custom-radio input[type="radio"] + label > span {
 	display: inline-block;
 	padding-top: 18px;
+}
+
+.inline-select-small {
+	width: 25%;
+	display: inline-block;
 }
 
 /******* 8. SPECIFIC VIEWS *******/
@@ -3125,6 +3146,263 @@ button:active .sg-gray-bg {
 	margin-right: 4px;
 }
 
+/*------ 8.t TECH PROFILE ------*/
+.view-container .techprofile {
+	padding: 48px 0 0 0;
+}
+@media (min-width: 768px) {
+	.view-container .techprofile {
+		padding: 90px 5% 0 5%;
+	}
+}
+
+.techprofile .profile-container {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+.techprofile .profile-container .sg-lightgray-bg {
+	padding: 10px;
+}
+.techprofile .profile-container .profile-pic {
+	height: 100px;
+	width: 100px;
+	border-radius: 50px;
+	display: inline-block;
+}
+
+.techprofile .profile-container .name {
+	font-weight: normal;
+	text-transform: uppercase;
+	font-size: 16px;
+	line-height: 32px;
+	padding-top: 4px;
+}
+.techprofile .profile-container .tagline {
+	font-weight: normal;
+	text-transform: none;
+}
+.techprofile .profile-container .sg-btn-invisible .sg-darkergray {
+	font-size: 40px;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.techprofile .profile-type {
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+.techprofile .profile-type .sg-icon {
+	font-size: 24px;
+	margin-right: 6px;
+}
+
+.techprofile .sg-darkergray {
+	font-size: 12px;
+	font-weight: bold;
+}
+.techprofile .sg-darkergray .sg-icon {
+	font-size: 35px;
+	margin-right: 12px;
+}
+@media (min-width: 768px) {
+	.techprofile .sg-darkergray {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.techprofile .sg-darkergray .sg-icon {
+		font-size: 68px;
+		margin-right: 20px;
+	}
+}
+
+.techprofile .title-container {
+	margin-top: 20px;
+}
+.techprofile .techprofile-title {
+	display: block;
+	max-width: 40%;
+	position: absolute;
+	margin-left: 40px;
+    top: 50%;
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    text-transform: capitalize;
+}
+@media (min-width: 768px) {
+	.techprofile .techprofile-title {
+		margin-left: 80px;
+	}
+}
+
+.techprofile .pricing > div {
+	padding: 0;
+	padding-left: 4px;
+}
+@media (min-width: 768px) {
+	.vanprofile .pricing > div {
+		padding: 0;
+		padding-left: 6px;
+	}
+}
+.techprofile .pricing > div:first-child {
+	padding-left: 0;
+}
+.techprofile .pricing .sg-darkergray {
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 20px;
+	padding-top: 8px;
+}
+@media (min-width: 768px) {
+	.techprofile .pricing .sg-darkergray {
+		line-height: 24px;
+		padding-top: 8px;
+	}
+}
+.techprofile .pricing .sg-white {
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 20px;
+	padding-bottom: 8px;
+}
+@media (min-width: 768px) {
+	.techprofile .pricing .sg-white {
+		line-height: 26px;
+		padding-bottom: 8px;
+	}
+}
+.techprofile .pricing .sg-white .currency {
+	font-size: 10px;
+	vertical-align: super;
+}
+
+.techprofile .pricing .button-container {
+	padding: 0 0 0 4px;
+}
+@media (min-width: 768px) {
+	.techprofile .pricing .button-container {
+		padding: 6px 0 0 0;
+	}
+}
+.techprofile .button-container .sg-white {
+	height: 60px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0;
+}
+@media (min-width: 768px) {
+	.techprofile .button-container .sg-white {
+		height: 60px;
+		font-size: 18px;
+		font-weight: bold;
+	}
+}
+
+.techprofile .experience {
+	font-size: 20px;
+	font-weight: bold;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+.techprofile .experience > div:first-child {
+	padding-top: 8px;
+}
+.techprofile .social {
+	font-size: 22px;
+	line-height: 22px;
+	font-weight: 100;
+}
+.techprofile .social .sg-btn-invisible {
+	font-size: 18px;
+}
+@media (min-width: 768px) {
+	.techprofile .social {
+		font-size: 44px;
+		line-height: 44px;
+	}
+	.techprofile .social .sg-btn-invisible {
+		font-size: 32px;
+	}
+}
+
+.techprofile .map-container {
+	padding-bottom: 15px;
+}
+.techprofile .map-container .fa {
+	font-size: 24px;
+	line-height: 36px;
+}
+.techprofile .map-container .sg-darkergray {
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 36px;
+}
+.techprofile .map-container .map {
+	height: 300px;
+}
+
+/*------ 8.u EDIT VAN ------*/
+.editvan {
+	padding-bottom: 80px;
+}
+
+.editvan .sg-toptab-container {
+	height: 70px;
+}
+@media (min-width: 768px) {
+	.editvan .sg-toptab-container {
+		height: 55px;
+	}
+}
+
+.editvan .sg-toptab {
+	font-size: 10px;
+	padding-top: 12px;
+	padding-bottom: 20px;
+	width: 20%;
+}
+@media (min-width: 768px) {
+	.editvan .sg-toptab {
+		font-size: 18px;
+		padding-top: 8px;
+		padding-bottom: 0;
+		width: auto;
+	}
+}
+
+/*------ 8.v EDIT TECH PROFILE ------*/
+.edittechprofile {
+	padding-bottom: 80px;
+}
+
+.edittechprofile .sg-toptab-container {
+	height: 70px;
+}
+@media (min-width: 768px) {
+	.edittechprofile .sg-toptab-container {
+		height: 55px;
+	}
+}
+
+.edittechprofile .sg-toptab {
+	font-size: 10px;
+	padding-top: 12px;
+	padding-bottom: 20px;
+	width: 20%;
+}
+@media (min-width: 768px) {
+	.edittechprofile .sg-toptab {
+		font-size: 18px;
+		padding-top: 8px;
+		padding-bottom: 0;
+		width: auto;
+	}
+}
+
 /******* 9. HELPERS *******/
 .searchform .sg-no-mobile,
 .sg-no-mobile {
@@ -3170,6 +3448,62 @@ button:active .sg-gray-bg {
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-addtechprofile-security:before {
+	content: "\e630";
+}
+
+.icon-addtechprofile-driver:before {
+	content: "\e62f";
+}
+
+.icon-addtechprofile-avtech:before {
+	content: "\e62e";
+}
+
+.icon-addtechprofile-wardrobeandhospitality:before {
+	content: "\e62d";
+}
+
+.icon-addtechprofile-catering:before {
+	content: "\e62c";
+}
+
+.icon-addtechprofile-stagehands:before {
+	content: "\e62b";
+}
+
+.icon-addtechprofile-merchandiser:before {
+	content: "\e62a";
+}
+
+.icon-addtechprofile-tourmanager:before {
+	content: "\e629";
+}
+
+.icon-addtechprofile-productionmanager:before {
+	content: "\e628";
+}
+
+.icon-addtechprofile-lightdesigner:before {
+	content: "\e627";
+}
+
+.icon-addtechprofile-ieaengineer:before {
+	content: "\e626";
+}
+
+.icon-addtechprofile-soundengineer:before {
+	content: "\e625";
+}
+
+.icon-addtechprofile-stagemanager:before {
+	content: "\e624";
+}
+
+.icon-addtechprofile-backlinetech:before {
+	content: "\e623";
 }
 
 .icon-addvan-trailer:before {

@@ -56,6 +56,9 @@ define(
             if(this.passedData.van_id) {
             	this.booking.data.van_id = this.passedData.van_id;
             }
+            else if(this.passedData.techprofile_id) {
+            	this.booking.data.techprofile_id = this.passedData.techprofile_id;
+            }
             else {
             	this.booking.data.gear_id = this.passedData.gear_id;
             }
