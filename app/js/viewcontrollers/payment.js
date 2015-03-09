@@ -64,8 +64,8 @@ define(
 			};
 
 			this.isPaying = false;
-
-			Localization.convertPrices([this.booking.data.price_a, this.booking.data.price_b, this.booking.data.price_c], this.owner.data.currency, App.user.data.currency, function(error, convertedPrices, rate) {
+			
+			Localization.convertPrices([this.booking.data.price_a, this.booking.data.price_b, this.booking.data.price_c], this.booking.data.currency, App.user.data.currency, function(error, convertedPrices, rate) {
 				var price;
 				if(error) {
 					console.log('Error converting prices: ' + error);
