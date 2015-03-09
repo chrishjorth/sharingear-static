@@ -38,6 +38,8 @@ define(
 				xp_years: '',
 				genres: '',
 				bands: '',
+				name: '',
+				location: '',
 				owner_id: ''
 			};
 
@@ -63,7 +65,7 @@ define(
 					view.techProfile.data.id = view.subPath;
 					view.subPath = ''; //To avoid rendering a subview based on the gear id
 				}
-				
+
 				view.techProfile.update(App.user.data.id, function(error) {
 					if(error) {
 						console.log(error);
