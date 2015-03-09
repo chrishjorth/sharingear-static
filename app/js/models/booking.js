@@ -18,6 +18,7 @@ define(
                     //The non-null id property determines the booking type
                     gear_id: null,
                     van_id: null,
+                    techprofile_id: null,
                     item_name: '', //Displayed name of the booked item
                     price_a: 0,
                     price_b: 0,
@@ -39,7 +40,10 @@ define(
 				postData;
 
             if(this.data.van_id && this.data.van_id !== null) {
-                url = '/users/' + App.user.data.id +'/vans/' + newBooking.van_id + '/bookings';
+                url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
+            }
+            if(this.data.techprofile_id && this.data.techprofile_id !== null) {
+                url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
             }
             else {
                 url = '/users/' + App.user.data.id +'/gear/' + newBooking.gear_id + '/bookings';
@@ -71,6 +75,9 @@ define(
             if(this.data.van_id && this.data.van_id !== null) {
                 url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
             }
+            else if(this.data.techprofile_id && this.data.techprofile_id !== null) {
+                url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+            }
             else {
                 url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
             }
@@ -89,13 +96,15 @@ define(
             });
         };
 
-        // PUT: /users/:user_id/gear/:gear_id/bookings/:booking_id
         update = function(userID, callback) {
             var model = this,
                 url, updateData;
 
             if(this.data.van_id && this.data.van_id !== null) {
                 url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
+            }
+            else if(this.data.techprofile_id && this.data.techprofile_id !== null) {
+                url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
             }
             else {
                 url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;

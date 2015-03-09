@@ -215,11 +215,10 @@ define(
 			var view = event.data,
 				passedData;
 			passedData = {
-				gear: view.gear,
 				booking: view.booking,
 				owner: view.owner
 			};
-			App.router.openModalSiblingView('gearbooking', passedData);
+			App.router.openModalSiblingView('bookingrequest', passedData);
 		};
 
 		handleNext = function(event) {

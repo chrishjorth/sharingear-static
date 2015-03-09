@@ -134,7 +134,7 @@ define(
 				App.router.openModalView('paymentsuccessful', {
 					preAuthorizationID: preAuthorizationID,
 					bookingID: bookingID,
-					roadie_id: this.techProfile.data.id,
+					techprofile_id: this.techProfile.data.id,
 					item_name: this.techProfile.data.roadie_type,
 					price_a: this.techProfile.data.price_a,
 					price_b: this.techProfile.data.price_b,
@@ -224,8 +224,8 @@ define(
 						return;
 					}
 					passedData = {
-						roadie_id: view.techProfile.data.id,
-						item_name: view.techProfile.data.roadie_type,
+						techprofile_id: view.techProfile.data.id,
+						item_name: view.owner.data.name + ' ' + view.owner.data.surname + ', ' + view.techProfile.data.roadie_type,
 						price_a: view.techProfile.data.price_a,
 						price_b: view.techProfile.data.price_b,
 						price_c: view.techProfile.data.price_c,
