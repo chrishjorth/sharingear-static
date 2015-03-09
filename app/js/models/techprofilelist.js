@@ -12,8 +12,8 @@ define(
 
 			search,
 			getUserTechProfiles,
-			getUserTechProfileHires,
-			getUserTechProfileBookings,
+			getUserTechProfileRentals,
+			getUserTechProfileReservations,
 			getTechProfileItem,
 			isEmpty,
 			updateTechProfileItem,
@@ -57,9 +57,9 @@ define(
 			});
 		};
 
-		getUserTechProfileHires = function(userID, callback) {
+		getUserTechProfileRentals = function(userID, callback) {
 			var view = this;
-			this.get('/users/' + userID + '/roadiehires', function(error, userHires) {
+			this.get('/users/' + userID + '/roadierentals', function(error, userHires) {
 				if(error) {
 					console.log(error);
 					callback([]);
@@ -71,10 +71,10 @@ define(
 			});
 		};
 
-		getUserTechProfileBookings = function(userID, callback) {
+		getUserTechProfileReservations = function(userID, callback) {
 			var view = this;
             
-            view.get('/users/' + userID + '/roadiebookings', function (error, userBookings) {
+            view.get('/users/' + userID + '/roadiereservations', function (error, userBookings) {
             	if (error) {
             		callback([]);
             	}
@@ -129,8 +129,8 @@ define(
 
 			search: search,
 			getUserTechProfiles: getUserTechProfiles,
-			getUserTechProfileHires: getUserTechProfileHires,
-			getUserTechProfileBookings: getUserTechProfileBookings,
+			getUserTechProfileRentals: getUserTechProfileRentals,
+			getUserTechProfileReservations: getUserTechProfileReservations,
 			getTechProfileItem: getTechProfileItem,
 			isEmpty: isEmpty,
 			updateTechProfileItem: updateTechProfileItem,
