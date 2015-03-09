@@ -343,8 +343,23 @@ define(
         };
 
         populateExperience = function() {
-            var xp_years = this.techProfile.data.xp_years.split('-');
-            $('#edittechprofile-experience', this.$element).val(this.techProfile.data.experience);
+            var xp_years = this.techProfile.data.xp_years.split('-'),
+                level = 5;
+            switch(this.techProfile.data.experience) {
+                case 'A+':
+                    level = 1;
+                    break;
+                case 'A':
+                    level = 2;
+                    break;
+                case 'B':
+                    level = 3;
+                    break;
+                case 'C':
+                    level = 4;
+                    break;
+            }
+            $('#edittechprofile-experience', this.$element).val(level);
             this.populateYearsOfExperience();
             if(xp_years[0]) {
                 $('#edittechprofile-startyear', this.$element).val(xp_years[0]);

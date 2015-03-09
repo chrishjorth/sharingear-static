@@ -211,7 +211,7 @@ define(
 						App.header.render();
 					}
 					else {
-						alert('You need to be logged in, in order to book an instrument.');
+						alert('You need to be logged in, in order to hire a technician.');
 					}
 				});
 			}
