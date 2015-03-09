@@ -24,7 +24,6 @@ define(
 
 		get = function(url, callback) {
 			var encodedURL = encodeURI(this.rootURL + url);
-
 			$.ajax({
 				dataType: 'json',
 				type: 'GET',
