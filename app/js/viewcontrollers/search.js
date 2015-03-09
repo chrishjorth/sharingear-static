@@ -25,7 +25,7 @@ define(
 			switchToTab,
 			getCurrentTab,
 			performGearSearch,
-			performTechnicianSearch,
+			performTechProfileSearch,
 			performVanSearch,
 			populateSearchBlock;
 
@@ -68,6 +68,9 @@ define(
             if(queryString) {
             	if(queryString.indexOf('van') >= 0) {
             		this.switchToTab($('#search-tab-vans', this.$element));
+            	}
+            	else if(queryString.indexOf('techprofile') >= 0) {
+            		this.switchToTab($('#search-tab-technicians', this.$element));
             	}
             	else {
             		//Set to gear search
@@ -224,7 +227,7 @@ define(
 			}
 		};
 
-		performTechnicianSearch = function() {
+		performTechProfileSearch = function() {
 			var view = this,
 				performSearch, searchParameters;
 
@@ -262,7 +265,7 @@ define(
 
 			if(this.techProfileSearchFormVC === null) {
 				require(['viewcontrollers/techprofilesearchform', 'text!../templates/techprofilesearchform.html'], function(techProfileSearchVC, techProfileSearchVT) {
-					view.techProfileSearchFormVC = new techProfileSearchVC.constructor({name: 'techprofilesearchform', $element: $('#search-searchform-techprofiles .searchform-container', view.$element), template: techProfileSearchVT});
+					view.techProfileSearchFormVC = new techProfileSearchVC.constructor({name: 'techprofilesearchform', $element: $('#search-searchform-technicians .searchform-container', view.$element), template: techProfileSearchVT});
 					view.techProfileSearchFormVC.initialize();
 					view.techProfileSearchFormVC.render();
 					searchParameters = view.techProfileSearchFormVC.getSearchParameters();
@@ -347,7 +350,7 @@ define(
 					this.performGearSearch();
 					break;
 				case 'technicians':
-					this.performTechnicianSearch();
+					this.performTechProfileSearch();
 					break;
 				case 'vans':
 					this.performVanSearch();
@@ -432,9 +435,16 @@ define(
 
 				for(i = 0; i < searchResults.length; i++) {
 					searchResult = searchResults[i].data;
-                    searchResult.image = searchResult.images.split(',')[0];
 
-                    if (searchResult.image === '') {
+					if(searchResult.images) {
+						searchResult.image = searchResult.images.split(',')[0];
+					}
+
+					if(searchResult.image_url) {
+						searchResult.image = searchResult.image_url;
+					}
+
+                    if (searchResult.image === '' || !searchResult.image) {
                         searchResult.image = 'images/placeholder_grey.png';
                     }
                     
@@ -449,6 +459,10 @@ define(
 					else if(tab === 'vans') {
 						workingSearchResults.item_type = workingSearchResults.van_type;
 						workingSearchResults.href = '#vanprofile/' + workingSearchResults.id;
+					}
+					else {
+						workingSearchResults.item_type = workingSearchResults.roadie_type;
+						workingSearchResults.href = '#techprofile/' + workingSearchResults.id;
 					}
 					html += searchResultTemplate(workingSearchResults);
 
@@ -484,7 +498,7 @@ define(
 			switchToTab: switchToTab,
 			getCurrentTab: getCurrentTab,
 			performGearSearch: performGearSearch,
-			performTechnicianSearch: performTechnicianSearch,
+			performTechProfileSearch: performTechProfileSearch,
 			performVanSearch: performVanSearch,
 			populateSearchBlock: populateSearchBlock
 		});

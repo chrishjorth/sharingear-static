@@ -176,7 +176,7 @@ define(
 			queryString = 'location=' + encodeURIComponent(searchParams.locationString) + '&techprofile=' + encodeURIComponent(searchParams.techProfileString) + '&daterange=' + searchParams.dateRangeString;
             App.router.setQueryString(queryString);
             if(App.router.currentViewController.name === 'search') {
-            	App.router.currentViewController.performVanSearch(searchParams.techProfileString, searchParams.locationString, searchParams.dateRangeString);
+            	App.router.currentViewController.performTechProfileSearch(searchParams.techProfileString, searchParams.locationString, searchParams.dateRangeString);
             }
             else {
             	App.router.navigateTo('search');
@@ -211,7 +211,7 @@ define(
 			});
 			
 			view.techProfileSuggestionsArray = _.first(classificationSuggestions, numberOfTechProfileSuggestions);
-			view.drawVanSuggestions();
+			view.drawTechProfileSuggestions();
 		};
 
 		drawTechProfileSuggestions = function() {
