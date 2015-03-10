@@ -125,7 +125,7 @@ define(
 					$gearBlock, defaultGear, gear, i, $gearItem;
 
 				$gearBlock = $('#user-gear-container', view.$element);
-
+				$gearBlock.empty();
 				for(i = 0; i < gearList.length; i++) {
 					defaultGear = {
 						id: null,
@@ -158,6 +158,7 @@ define(
 					$techProfilesBlock, defaultTechProfiles, techProfile, i, $techProfilesItem;
 
 				$techProfilesBlock = $('#user-techprofiles-container', view.$element);
+				$techProfilesBlock.empty();
 				for(i = 0; i < techProfileList.length; i++) {
 					techProfile = techProfileList[i].data;
 					defaultTechProfiles = {
@@ -180,6 +181,7 @@ define(
 					$vanBlock, defaultVan, van, i, $vanItem;
 
 				$vanBlock = $('#user-vans-container', view.$element);
+				$vanBlock.empty();
 				for(i = 0; i < vanList.length; i++) {
 					defaultVan = {
 						id: null,
