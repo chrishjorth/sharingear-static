@@ -5,6 +5,13 @@
 
 'use strict';
 
+//ie9 console.log fix
+if(!window.console) {
+	window.console = {
+		log: function(){}
+	};
+}
+
 requirejs.config({
 	baseUrl: 'js',
 	paths: {
