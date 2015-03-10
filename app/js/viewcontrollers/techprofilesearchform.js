@@ -201,13 +201,13 @@ define(
 
 			searchString = searchString.toLowerCase().trim();
 
-			techProfileClassificationList = App.contentClassification.data.techProfileClassification;
+			techProfileClassificationList = App.contentClassification.data.roadieClassification;
 			classificationSuggestions = _.filter(techProfileClassificationList, function(techProfile) {
-				var typeName = techProfile.techProfileType.toLowerCase();
+				var typeName = techProfile.roadie_type.toLowerCase();
 				return typeName.indexOf(searchString) >= 0;
 			});
 			classificationSuggestions = _.map(classificationSuggestions, function(techProfile) {
-				return techProfile.techProfileType;
+				return techProfile.roadie_type;
 			});
 			
 			view.techProfileSuggestionsArray = _.first(classificationSuggestions, numberOfTechProfileSuggestions);
