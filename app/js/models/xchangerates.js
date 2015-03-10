@@ -11,12 +11,38 @@ define(
 	['model'],
 	function(Model) {
 		var yahooAPI = 'https://query.yahooapis.com/v1/public/yql?q=',
+			fixerAPI = 'http://api.fixer.io/latest',
 			currencies = {},
 			XChangeRates,
 
-			getRate;
+			getRate,
+			getYahooRate,
+			getFixerRate;
 
 		getRate = function(fromCurrency, toCurrency, callback) {
+			var code = fromCurrency + toCurrency;
+			if(currencies[code]) {
+				callback(null, currencies[code]);
+				return;
+			}
+			var model = this;
+			this.getYahooRate(fromCurrency, toCurrency, function(error, yahooRate) {
+				if(error) {
+					model.getFixerRate(fromCurrency, toCurrency, function(error, fixerRate) {
+						if(error) {
+							callback(error);
+							return;
+						}
+						callback(null, fixerRate);
+					});
+				}
+				else {
+					callback(null, yahooRate);
+				}
+			});
+		};
+
+		getYahooRate = function(fromCurrency, toCurrency, callback) {
 			var key, query, code;
 			code = fromCurrency + toCurrency;
 			for(key in currencies) {
@@ -28,6 +54,7 @@ define(
 			query = 'select * from yahoo.finance.xchange where pair in ("';
 			query += code;
 			query += '")&format=json&env=store://datatables.org/alltableswithkeys&callback=';
+			this.rootURL = yahooAPI;
 			this.get(query, function(error, data) {
 				var rate;
 				if(error) {
@@ -44,12 +71,27 @@ define(
 			});
 		};
 
+		getFixerRate = function(fromCurrency, toCurrency, callback) {
+			var query = '?symbols=' + fromCurrency + ',' + toCurrency;
+			this.rootURL = fixerAPI;
+			this.get(query, function(error, data) {
+				var rate;
+				if(error) {
+					callback('Error retrieving exhange rate: ' + error);
+					return;
+				}
+				rate = parseFloat(data.rates[toCurrency]);
+				currencies[fromCurrency + toCurrency] = rate;
+				callback(null, rate);
+			});
+		};
+
 		XChangeRates = Model.inherit({
-			getRate: getRate
+			getRate: getRate,
+			getYahooRate: getYahooRate,
+			getFixerRate: getFixerRate
 		});
-		XChangeRates = new XChangeRates.constructor({
-			rootURL: yahooAPI
-		});
+		XChangeRates = new XChangeRates.constructor();
 		return XChangeRates;
 	}
 );
