@@ -3345,6 +3345,10 @@ button:active .sg-gray-bg {
 	height: 300px;
 }
 
+.techprofile .profile-text {
+	padding: 30px 45px 45px 45px;
+}
+
 /*------ 8.u EDIT VAN ------*/
 .editvan {
 	padding-bottom: 80px;
