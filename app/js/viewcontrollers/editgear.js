@@ -358,7 +358,7 @@ define(
             }
             user.swift = swift[0];
 
-            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.region + ', ' + tempUser.country;
+            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.country;
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
                 if(status === GoogleMaps.GeocoderStatus.OK) {
                     _.extend(user, tempUser);
@@ -366,7 +366,7 @@ define(
                     $('#editgear-availability-terms', view.$element).removeClass('hidden');
                 }
                 else {
-                    alert('The address is not valid!');
+                    alert('Google Maps could not find your address. Please verify that it is correct.');
                 }
             });
         };
@@ -756,15 +756,16 @@ define(
 				currentCountry === updatedGearData.country);
 
 			if(isLocationSame === false) {
-				addressOneliner = updatedGearData.address + ', ' + updatedGearData.postal_code + ' ' + updatedGearData.city + ', ' + updatedGearData.region + ', ' + updatedGearData.country;
-				geocoder.geocode({'address': addressOneliner}, function(results, status) {
+				addressOneliner = updatedGearData.address + ', ' + updatedGearData.postal_code + ' ' + updatedGearData.city + ', ' + updatedGearData.country;
+				console.log(addressOneliner);
+                geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.gear.data.longitude = results[0].geometry.location.lng();
 						view.gear.data.latitude = results[0].geometry.location.lat();
 						updateCall();
 					}
 					else {
-                        alert('The address is not valid!');
+                        alert('Google Maps could not find your address. Please verify that it is correct.');
                         view.toggleLoading();
 					}
 				});

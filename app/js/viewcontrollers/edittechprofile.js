@@ -300,7 +300,7 @@ define(
             }
             user.swift = swift[0];
 
-            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.region + ', ' + tempUser.country;
+            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.country;
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
                 if(status === GoogleMaps.GeocoderStatus.OK) {
                     _.extend(user, tempUser);
@@ -308,7 +308,7 @@ define(
                     $('#edittechprofile-availability-terms', view.$element).removeClass('hidden');
                 }
                 else {
-                    alert('The address is not valid!');
+                    alert('Google Maps could not find your address. Please verify that it is correct.');
                 }
             });
         };
@@ -633,15 +633,15 @@ define(
 				currentCountry === updatedVanData.country);
 
 			if(isLocationSame === false) {
-				addressOneliner = updatedVanData.address + ', ' + updatedVanData.postal_code + ' ' + updatedVanData.city + ', ' + updatedVanData.region + ', ' + updatedVanData.country;
-				geocoder.geocode({'address': addressOneliner}, function(results, status) {
+				addressOneliner = updatedVanData.address + ', ' + updatedVanData.postal_code + ' ' + updatedVanData.city + ', ' + updatedVanData.country;
+                geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.techProfile.data.longitude = results[0].geometry.location.lng();
 						view.techProfile.data.latitude = results[0].geometry.location.lat();
 						updateCall();
 					}
 					else {
-                        alert('The address is not valid!');
+                        alert('Google Maps could not find your address. Please verify that it is correct.');
                         view.toggleLoading();
 					}
 				});
