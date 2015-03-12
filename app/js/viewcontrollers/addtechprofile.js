@@ -33,11 +33,6 @@ define(
 
 			renderAvailability,
 			renderSubmerchantForm,
-			populateBirthdateInput,
-			handleBirthdateChange,
-			handleSubmerchantSubmit,
-			handleSubmerchantAccept,
-			handleAvailabilityNext,
 			saveAvailability,
 
 			handleCancel,
@@ -64,6 +59,7 @@ define(
 			});
 
 			this.isLoading = false;
+			this.submerchantFormVC = null;
 
 			this.templateParameters = {
 				currency: App.user.data.currency
@@ -98,7 +94,6 @@ define(
 			this.setupEvent('click', '#addtechprofile-startyear', this, this.handleExperienceStartYearChange);
 
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
-			this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
 		};
 
 		getTabID = function() {
@@ -379,21 +374,19 @@ define(
 
 			saveCall = function() {
 				view.newTechProfile.save(function(error) {
+					view.toggleLoading();
 					if(error) {
 						alert('Error saving data');
-						view.toggleLoading();
 						return;
 					}
-						
+					
+					view.showPanel('#addtechprofile-panel-availability');
 					if(App.user.isSubMerchant() === false) {
-						view.showPanel('#addtechprofile-panel-submerchantForm');
 						view.renderSubmerchantForm();
 					}
 					else {
-						view.showPanel('#addtechprofile-panel-availability');
 						view.renderAvailability();
 					}
-					view.toggleLoading();
 				});
 			};
 
@@ -454,227 +447,13 @@ define(
 		};
 
 		renderSubmerchantForm = function() {
-			var user = App.user.data;
+			var $submerchantFormContainer = $('#addtechprofile-availability-calendar', this.$element),
+				view = this;
 
-			$('#addtechprofile-availability-submerchantform', this.$element).removeClass('hidden');
-			if(user.birthdate && user.birthdate !== '') {
-				$('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
-			}
-			else {
-				this.populateBirthdateInput();
-			}
-			if(user.address && user.address !== '') {
-				$('#submerchantregistration-address', this.$element).parent().addClass('hidden');
-			}
-			if(user.postal_code && user.postal_code !== '') {
-				$('#submerchantregistration-postalcode', this.$element).parent().addClass('hidden');
-			}
-			if(user.city && user.city !== '') {
-				$('#submerchantregistration-city', this.$element).parent().addClass('hidden');
-			}
-			if(user.region && user.region !== '') {
-				$('#submerchantregistration-region', this.$element).parent().addClass('hidden');
-			}
-			if(user.country && user.country !== '') {
-				$('#submerchantregistration-country', this.$element).parent().addClass('hidden');
-			}
-			else {
-				populateCountries($('#submerchantregistration-country', this.$element));
-			}
-			if(user.nationality && user.nationality !== '') {
-				$('#submerchantregistration-nationality', this.$element).parent().addClass('hidden');
-			}
-			else {
-				populateCountries($('#submerchantregistration-nationality', this.$element));
-			}
-			if(user.phone && user.phone !== '') {
-				$('#submerchantregistration-phone', this.$element).parent().addClass('hidden');
-			}
-		};
-
-		//TODO: move this into a utility module
-		populateBirthdateInput = function() {
-			var $inputContainer = $('.birthday-select', this.$element),
-                $selectDay = $('#submerchantregistration-birthdate-date', $inputContainer),
-                $selectMonth = $('#submerchantregistration-birthdate-month', $inputContainer),
-                $selectYear = $('#submerchantregistration-birthdate-year', $inputContainer),
-                html = '<option> - </option>',
-                today = new Moment.tz(Localization.getCurrentTimeZone()),
-                selectedYear = null,
-                selectedMonth = null,
-                maxYear, monthDays, i;
-
-            selectedYear = $selectYear.val();
-            maxYear = today.year() - Config.MIN_USER_AGE;
-            for(i = 1914; i <= maxYear; i++) {
-                html += '<option value="' + i + '">' + i + '</option>';
-            }
-            $selectYear.html(html);
-            if(selectedYear !== null) {
-                $selectYear.val(selectedYear);
-            }
-
-            selectedMonth = $selectMonth.val();
-            html = '<option> - </option>';
-            for(i = 1; i <= 12; i++) {
-                html += '<option value="' + i + '">' + i + '</option>';
-            }
-            $selectMonth.html(html);
-            if(selectedMonth !== null) {
-                $selectMonth.val(selectedMonth);
-            }
-            
-
-            monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
-            monthDays = monthDays.endOf('month').date();
-            html = '<option> - </option>';
-            for(i = 1; i <= monthDays; i++) {
-                html += '<option value="' + i + '">' + i + '</option>';
-            }
-            $selectDay.html(html);
-            
-            html = '';
-		};
-
-		handleBirthdateChange = function(event) {
-			var view = event.data;
-			view.populateBirthdateInput();
-		};
-
-		handleSubmerchantSubmit = function(event) {
-			var view = event.data,
-				user = App.user.data,
-				tempUser = {},
-				day, month, year, addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx;
-
-			_.extend(tempUser, user);
-
-			if(user.birthdate === null) {
-				day = $('#submerchantregistration-birthdate-date', view.$element).val();
-				month = $('#submerchantregistration-birthdate-month', view.$element).val();
-				year = $('#submerchantregistration-birthdate-year', view.$element).val();
-				tempUser.birthdate = (new Moment.tz(day + '/' + month + '/' + year, 'DD/MM/YYYY', Localization.getCurrentTimeZone())).format('YYYY-MM-DD');
-			}
-			if(user.address === null) {
-				tempUser.address = $('#submerchantregistration-address', view.$element).val();
-			}
-			if(user.postal_code === null) {
-				tempUser.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
-			}
-			if(user.city === null) {
-				tempUser.city = $('#submerchantregistration-city', view.$element).val();
-			}
-			if(user.region === null) {
-				tempUser.region = $('#submerchantregistration-region', view.$element).val();
-			}
-			if(user.country === null) {
-				$select = $('#submerchantregistration-country', view.$element);
-				content = $select.val();
-				if(content !== $('option', $select).first().attr('value')) {
-					tempUser.country = content;
-				}
-				else {
-                	alert('Please select a country.');
-                	return;
-            	}
-			}
-			if(user.nationality === null) {
-				$select = $('#submerchantregistration-nationality', view.$element);
-				content = $select.val();
-				if(content !== $('option', $select).first().attr('value')) {
-					tempUser.nationality = content;
-				}
-				else {
-                	alert('Please select a nationality.');
-                	return;
-            	}
-			}
-			if(user.phone === null) {
-				tempUser.phone = $('#submerchantregistration-phone', view.$element).val();
-			}
-
-			//Validate
-			if(tempUser.birthdate === '' || tempUser.birthdate === 'Invalid date') {
-                alert('The birthday field is required.');
-                return;
-            }
-            if(tempUser.address === '') {
-            	alert('The address field is required.');
-            	return;
-			}
-			if(tempUser.postal_code === '') {
-				alert('The postal code field is required.');
-				return;
-			}
-			if(tempUser.city === '') {
-				alert('The city field is required.');
-				return;
-			}
-            if(tempUser.phone === '') {
-                alert('The phone field is required.');
-                return;
-            }
-            
-            iban = $('#submerchantregistration-iban', view.$element).val();
-			ibanRegEx = /^[a-zA-Z]{2}\d{2}\s*(\w{4}\s*){2,7}\w{1,4}\s*$/;
-			iban = iban.match(ibanRegEx);
-			if(iban === null) {
-				alert('Please insert a correct IBAN.');
-				return;
-			}
-			user.iban = iban[0];
-
-            swift = $('#submerchantregistration-swift', view.$element).val();
-			swiftRegEx = /^[a-zA-Z]{6}\w{2}(\w{3})?$/;
-			swift = swift.match(swiftRegEx);
-			if(swift === null) {
-				alert('Please insert a correct SWIFT');
-				return;
-			}
-			user.swift = swift[0];
-
-            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.country;
-            geocoder.geocode({'address': addressOneliner}, function(results, status) {
-                if(status === GoogleMaps.GeocoderStatus.OK) {
-                	_.extend(user, tempUser);
-                	view.showPanel('#addtechprofile-panel-submerchantTerms');
-                }
-                else {
-                    alert('The address is not valid!');
-                }
-            });
-		};
-
-		handleSubmerchantAccept = function(event) {
-			var view = event.data;
-
-            view.toggleLoading();
-
-			App.user.update(function(error) {
-				if(error) {
-					console.log(error);
-					alert('Error saving user data.');
-					view.toggleLoading();
-					return;
-				}
-				App.user.updateBankDetails(function(error) {
-					view.toggleLoading();
-					if(error) {
-						console.log(error);
-						alert('Error registering bank data.');
-						return;
-					}
-					$('#addtechprofile-availability-terms', view.$element).addClass('hidden');
-					$('#addtechprofile-availability-calendar', view.$element).removeClass('hidden');
-					$('#addtechprofile-next-btn', view.$element).removeClass('hidden');
-					view.showPanel('#addtechprofile-panel-availability');
-					view.renderAvailability();
-					App.user.fetch(function(error) {
-						if(error) {
-							console.log('Error fetching user: ' + error);
-						}
-					});
-				});
+			require(['viewcontrollers/submerchantregistration', 'text!../templates/submerchantregistration.html'], function(submerchantFormVC, submerchantFormVT) {
+				view.submerchantFormVC = new submerchantFormVC.constructor({name: 'submerchantform', $element: $submerchantFormContainer, template: submerchantFormVT});
+				view.submerchantFormVC.initialize();
+				view.submerchantFormVC.render();
 			});
 		};
 
@@ -744,14 +523,28 @@ define(
 				case 'addtechprofile-panel-pricelocation':
 					view.savePriceLocation();
 					break;
-				case 'addtechprofile-panel-submerchantForm':
-					view.handleSubmerchantSubmit(event);
-					break;
-				case 'addtechprofile-panel-submerchantTerms':
-					view.handleSubmerchantAccept(event);
-					break;
 				case 'addtechprofile-panel-availability':
-					view.saveAvailability();
+					if(view.submerchantFormVC !== null) {
+						if(view.submerchantFormVC.formSubmitted === false) {
+							view.submerchantFormVC.submitForm();
+						}
+						else {
+							view.toggleLoading();
+							view.submerchantFormVC.acceptTerms(function(error) {
+								view.toggleLoading();
+								if(error) {
+									console.log(error);
+									return;
+								}
+								view.submerchantFormVC.close();
+								view.submerchantFormVC = null;
+								view.renderAvailability();
+							});
+						}
+					}
+					else {
+						view.saveAvailability();
+					}
 					break;
 				default:
 					console.log('Something went wrong.');
@@ -803,11 +596,6 @@ define(
 
 			renderAvailability: renderAvailability,
 			renderSubmerchantForm: renderSubmerchantForm,
-			populateBirthdateInput: populateBirthdateInput,
-			handleBirthdateChange: handleBirthdateChange,
-			handleSubmerchantSubmit: handleSubmerchantSubmit,
-			handleSubmerchantAccept: handleSubmerchantAccept,
-			handleAvailabilityNext: handleAvailabilityNext,
 			saveAvailability: saveAvailability,
 			
 			handleCancel: handleCancel,
