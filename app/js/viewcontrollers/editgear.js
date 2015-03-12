@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'models/localization', 'googlemaps','utilities', 'moment', 'config'],
-	function(_, $, ViewController, App, Gear, Localization, GoogleMaps, Utilities, Moment, Config) {
+	['underscore', 'jquery', 'viewcontroller', 'app', 'models/gear', 'models/localization', 'googlemaps','utilities', 'moment'],
+	function(_, $, ViewController, App, Gear, Localization, GoogleMaps, Utilities, Moment) {
 		var geocoder,
 
             didInitialize,
@@ -33,10 +33,8 @@ define(
 			populatePriceSuggestions,
 
             renderAvailability,
-            populateBirthdateInput,
-            handleBirthdateChange,
-            handleSubmerchantSubmit,
-            handleSubmerchantAccept,
+            handleSubmerchantFormSubmit,
+
 			handlePriceChange,
 
             handleCancel,
@@ -103,7 +101,7 @@ define(
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#editgear-subtype', this, this.handleSubtypeChange);
 
-            this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
+            this.setupEvent('click', '#editgear-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
         };
 
         toggleLoading = function() {
@@ -153,251 +151,58 @@ define(
 
         renderAvailability = function() {
             var view = this,
-                $calendarContainer;
+                $calendarContainer,
+                $submerchantFormBtn;
+            
+            $calendarContainer = $('#editgear-availability-calendar', this.$element);
+            $calendarContainer.removeClass('hidden');
+
+            $submerchantFormBtn = $('#editgear-submerchantform-buttons', this.$element);
+
             if(App.user.isSubMerchant() === true) {
-                $calendarContainer = $('#editgear-availability-calendar', this.$element);
-                $calendarContainer.removeClass('hidden');
                 require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
                     view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.gear});
                     view.calendarVC.initialize();
                     view.calendarVC.render();
                 });
+                if($submerchantFormBtn.hasClass('hidden') === false) {
+                    $submerchantFormBtn.addClass('hidden');
+                }
             }
             else {
-                var user = App.user.data;
-
-                $('#editgear-availability-submerchantform', this.$element).removeClass('hidden');
-
-                if(user.birthdate && user.birthdate !== '') {
-                    $('#submerchantregistration-birthdate', this.$element).parent().addClass('hidden');
-                }
-                else {
-                    this.populateBirthdateInput();
-                }
-                if(user.address && user.address !== '') {
-                    $('#submerchantregistration-address', this.$element).parent().addClass('hidden');
-                }
-                if(user.postal_code && user.postal_code !== '') {
-                    $('#submerchantregistration-postalcode', this.$element).parent().addClass('hidden');
-                }
-                if(user.city && user.city !== '') {
-                    $('#submerchantregistration-city', this.$element).parent().addClass('hidden');
-                }
-                if(user.region && user.region !== '') {
-                    $('#submerchantregistration-region', this.$element).parent().addClass('hidden');
-                }
-                if(user.country && user.country !== '') {
-                    $('#submerchantregistration-country', this.$element).parent().addClass('hidden');
-                }
-                else {
-                    populateCountries($('#submerchantregistration-country', this.$element));
-                }
-                if(user.nationality && user.nationality !== '') {
-                    $('#submerchantregistration-nationality', this.$element).parent().addClass('hidden');
-                }
-                else {
-                    populateCountries($('#submerchantregistration-nationality', this.$element));
-                }
-                if(user.phone && user.phone !== '') {
-                    $('#submerchantregistration-phone', this.$element).parent().addClass('hidden');
-                }
-
-                this.setupEvent('submit', '#editgear-submerchantform', this, this.handleSubmerchantSubmit);
-                this.setupEvent('click', '#submerchantregistration-accept', this, this.handleSubmerchantAccept);
-            }
-        };
-
-        populateBirthdateInput = function() {
-            var $inputContainer = $('.birthday-select', this.$element),
-                $selectDay = $('#submerchantregistration-birthdate-date', $inputContainer),
-                $selectMonth = $('#submerchantregistration-birthdate-month', $inputContainer),
-                $selectYear = $('#submerchantregistration-birthdate-year', $inputContainer),
-                html = '<option> - </option>',
-                today = new Moment.tz(Localization.getCurrentTimeZone()),
-                selectedYear = null,
-                selectedMonth = null,
-                selectedDay = null,
-                maxYear, monthDays, i;
-
-            selectedYear = $selectYear.val();
-            maxYear = today.year() - Config.MIN_USER_AGE;
-            for(i = 1914; i <= maxYear; i++) {
-                html += '<option value="' + i + '">' + i + '</option>';
-            }
-            $selectYear.html(html);
-            if(selectedYear !== null && selectedYear !== '-') {
-                $selectYear.val(selectedYear);
-            } else {
-                selectedYear = new Moment.tz(Localization.getCurrentTimeZone()).format('YYYY');
-            }
-
-            selectedMonth = $selectMonth.val();
-            html = '<option> - </option>';
-            for(i = 1; i <= 12; i++) {
-                html += '<option value="' + i + '">' + i + '</option>';
-            }
-            $selectMonth.html(html);
-            if(selectedMonth !== null) {
-                $selectMonth.val(selectedMonth);
-            }
-            
-            selectedDay = $selectDay.val();
-            monthDays = new Moment.tz(selectedYear + '-' + selectedMonth + '-' + 1, 'YYYY-MM-DD', Localization.getCurrentTimeZone());
-            monthDays = monthDays.endOf('month').date();
-            html = '<option> - </option>';
-            for(i = 1; i <= monthDays; i++) {
-                html += '<option value="' + i + '">' + i + '</option>';
-            }
-            $selectDay.html(html);
-            if(selectedDay !== null) {
-                if(selectedDay <= monthDays) {
-                    $selectDay.val(selectedDay);
-                } else {
-                    $selectDay.val('-');
-                }
-            } else {
-                $selectDay.val('-');
-            }
-            html = '';
-        };
-
-        handleBirthdateChange = function(event) {
-            var view = event.data;
-            view.populateBirthdateInput();
-        };
-
-        handleSubmerchantSubmit = function(event) {
-            var view = event.data,
-                user = App.user.data,
-                tempUser = {},
-                day, month, year, addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx;
-
-            _.extend(tempUser, user);
-
-            if(user.birthdate === null) {
-                day = $('#submerchantregistration-birthdate-date', view.$element).val();
-                month = $('#submerchantregistration-birthdate-month', view.$element).val();
-                year = $('#submerchantregistration-birthdate-year', view.$element).val();
-                tempUser.birthdate = (new Moment.tz(day + '/' + month + '/' + year, 'DD/MM/YYYY', Localization.getCurrentTimeZone())).format('YYYY-MM-DD');
-            }
-            if(user.address === null) {
-                tempUser.address = $('#submerchantregistration-address', view.$element).val();
-            }
-            if(user.postal_code === null) {
-                tempUser.postal_code = $('#submerchantregistration-postalcode', view.$element).val();
-            }
-            if(user.city === null) {
-                tempUser.city = $('#submerchantregistration-city', view.$element).val();
-            }
-            if(user.region === null) {
-                tempUser.region = $('#submerchantregistration-region', view.$element).val();
-            }
-            if(user.country === null) {
-                $select = $('#submerchantregistration-country', view.$element);
-                content = $select.val();
-                if(content !== $('option', $select).first().attr('value')) {
-                    tempUser.country = content;
-                }
-                else {
-                    alert('Please select a country.');
-                    return;
-                }
-            }
-            if(user.nationality === null) {
-                $select = $('#submerchantregistration-nationality', view.$element);
-                content = $select.val();
-                if(content !== $('option', $select).first().attr('value')) {
-                    tempUser.nationality = content;
-                }
-                else {
-                    alert('Please select a nationality.');
-                    return;
-                }
-            }
-            if(user.phone === null) {
-                tempUser.phone = $('#submerchantregistration-phone', view.$element).val();
-            }
-
-            //Validate
-            if(tempUser.birthdate === '') {
-                alert('The birthday field is required.');
-                return;
-            }
-            if(tempUser.address === '') {
-                alert('The address field is required.');
-                return;
-            }
-            if(tempUser.postal_code === '') {
-                alert('The postal code field is required.');
-                return;
-            }
-            if(tempUser.city === '') {
-                alert('The city field is required.');
-                return;
-            }
-            if(tempUser.phone === '') {
-                alert('The phone field is required.');
-                return;
-            }
-            
-            iban = $('#submerchantregistration-iban', view.$element).val();
-            ibanRegEx = /^[a-zA-Z]{2}\d{2}\s*(\w{4}\s*){2,7}\w{1,4}\s*$/;
-            iban = iban.match(ibanRegEx);
-            if(iban === null) {
-                alert('Please insert a correct IBAN.');
-                return;
-            }
-            user.iban = iban[0];
-
-            swift = $('#submerchantregistration-swift', view.$element).val();
-            swiftRegEx = /^[a-zA-Z]{6}\w{2}(\w{3})?$/;
-            swift = swift.match(swiftRegEx);
-            if(swift === null) {
-                alert('Please insert a correct SWIFT');
-                return;
-            }
-            user.swift = swift[0];
-
-            addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.country;
-            geocoder.geocode({'address': addressOneliner}, function(results, status) {
-                if(status === GoogleMaps.GeocoderStatus.OK) {
-                    _.extend(user, tempUser);
-                    $('#editgear-availability-submerchantform', view.$element).addClass('hidden');
-                    $('#editgear-availability-terms', view.$element).removeClass('hidden');
-                }
-                else {
-                    alert('Google Maps could not find your address. Please verify that it is correct.');
-                }
-            });
-        };
-
-        handleSubmerchantAccept = function(event) {
-            var view = event.data,
-                currentBtn = $(this);
-
-            currentBtn.html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i>');
-            App.user.update(function(error) {
-                if(error) {
-                    console.log(error);
-                    alert('Error saving user data.');
-                    return;
-                }
-                App.user.updateBankDetails(function(error) {
-                    if(error) {
-                        console.log(error);
-                        alert('Error registering bank data.');
-                        return;
-                    }
-                    $('#editgear-availability-terms', view.$element).addClass('hidden');
-                    $('#editgear-availability-calendar', view.$element).removeClass('hidden');
-                    view.renderAvailability();
-                    App.user.fetch(function(error) {
-                        if(error) {
-                            console.log('Error fetching user: ' + error);
-                        }
-                    });
+                require(['viewcontrollers/submerchantregistration', 'text!../templates/submerchantregistration.html'], function(submerchantFormVC, submerchantFormVT) {
+                    view.submerchantFormVC = new submerchantFormVC.constructor({name: 'submerchantform', $element: $calendarContainer, template: submerchantFormVT});
+                    view.submerchantFormVC.initialize();
+                    view.submerchantFormVC.render();
                 });
-            });
+                $submerchantFormBtn.removeClass('hidden');
+            }
+        };
+
+        handleSubmerchantFormSubmit = function(event) {
+            var view = event.data,
+                $button = $(this);
+            $button.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+            if(view.submerchantFormVC !== null) {
+                if(view.submerchantFormVC.formSubmitted === false) {
+                    view.submerchantFormVC.submitForm(function(error) {
+                        if(error) {
+                            console.log('Error submitting form: ' + error);
+                            return;
+                        }
+                        $button.html('Accept');
+                    });
+                }
+                else {
+                    view.submerchantFormVC.acceptTerms(function(error) {
+                        if(error) {
+                            console.log('Error accepting terms: ' + error);
+                            return;
+                        }
+                        view.renderAvailability();
+                    });
+                }
+            }
         };
 
         populateLocation = function() {
@@ -757,7 +562,6 @@ define(
 
 			if(isLocationSame === false) {
 				addressOneliner = updatedGearData.address + ', ' + updatedGearData.postal_code + ' ' + updatedGearData.city + ', ' + updatedGearData.country;
-				console.log(addressOneliner);
                 geocoder.geocode({'address': addressOneliner}, function(results, status) {
 					if(status === GoogleMaps.GeocoderStatus.OK) {
 						view.gear.data.longitude = results[0].geometry.location.lng();
@@ -797,10 +601,7 @@ define(
 
 			initAccessories:initAccessories,
             renderAvailability:renderAvailability,
-            populateBirthdateInput: populateBirthdateInput,
-            handleBirthdateChange: handleBirthdateChange,
-            handleSubmerchantSubmit: handleSubmerchantSubmit,
-            handleSubmerchantAccept: handleSubmerchantAccept,
+            handleSubmerchantFormSubmit: handleSubmerchantFormSubmit,
 
             populatePricing: populatePricing,
 			populatePriceSuggestions:populatePriceSuggestions,

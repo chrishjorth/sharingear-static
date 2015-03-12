@@ -152,7 +152,7 @@ define(
 			view.populateBirthdateInput();
 		};
 
-		submitForm = function() {
+		submitForm = function(callback) {
 			var view = this,
 				user = App.user.data,
 				tempUser = {},
@@ -186,6 +186,7 @@ define(
 				}
 				else {
                 	alert('Please select a country.');
+                	callback('Country is missing.');
                 	return;
             	}
 			}
@@ -197,6 +198,7 @@ define(
 				}
 				else {
                 	alert('Please select a nationality.');
+                	callback('Nationality is missing');
                 	return;
             	}
 			}
@@ -206,23 +208,28 @@ define(
 
 			//Validate
 			if(tempUser.birthdate === '' || tempUser.birthdate === 'Invalid date') {
-                alert('The birthday field is required.');
+                alert('The date of birth field is required.');
+                callback('Date of birth is missing.');
                 return;
             }
             if(tempUser.address === '') {
             	alert('The address field is required.');
+            	callback('Address is missing.');
             	return;
 			}
 			if(tempUser.postal_code === '') {
 				alert('The postal code field is required.');
+				callback('Postal code is missing.');
 				return;
 			}
 			if(tempUser.city === '') {
 				alert('The city field is required.');
+				callback('City is missing.');
 				return;
 			}
             if(tempUser.phone === '') {
                 alert('The phone field is required.');
+                callback('Phone is missing.');
                 return;
             }
             
@@ -231,6 +238,7 @@ define(
 			iban = iban.match(ibanRegEx);
 			if(iban === null) {
 				alert('Please insert a correct IBAN.');
+				callback('IBAN is missing.');
 				return;
 			}
 			user.iban = iban[0];
@@ -240,6 +248,7 @@ define(
 			swift = swift.match(swiftRegEx);
 			if(swift === null) {
 				alert('Please insert a correct SWIFT');
+				callback('SWIFT is missing.');
 				return;
 			}
 			user.swift = swift[0];
@@ -249,9 +258,11 @@ define(
                 if(status === GoogleMaps.GeocoderStatus.OK) {
                 	_.extend(user, tempUser);
                 	view.showTerms();
+                	callback(null);
                 }
                 else {
                     alert('The address is not valid!');
+                    callback('Invalid address.');
                 }
             });
 		};
