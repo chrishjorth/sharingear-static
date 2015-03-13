@@ -3407,6 +3407,12 @@ button:active .sg-gray-bg {
 }
 
 /******* 9. HELPERS *******/
+
+button:focus,div:focus {
+    outline: none;
+}
+
+
 .searchform .sg-no-mobile,
 .sg-no-mobile {
 	display: none;
