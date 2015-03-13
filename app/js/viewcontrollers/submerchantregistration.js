@@ -16,7 +16,6 @@ define(
 			setupForm,
 			populateBirthdateInput,
 			populateCountries,
-			showTerms,
 
 			handleBirthdateChange,
 			handleCountrySelect,
@@ -29,12 +28,7 @@ define(
 		};
 
 		didRender = function() {
-			if(this.formSubmitted === true) {
-				this.showTerms();
-			}
-			else {
-				this.setupForm();
-			}
+			this.setupForm();
 			this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
 			this.setupEvent('change', '#submerchantregistration-country', this, this.handleCountrySelect);
 		};
@@ -147,12 +141,6 @@ define(
 			}
 
 			$select.html(html);
-		};
-
-		showTerms = function() {
-			$('#addgear-availability-submerchantform', this.$element).addClass('hidden');
-			$('#submerchantregistration-terms-container', this.$element).removeClass('hidden');
-			this.formSubmitted = true;
 		};
 
 		handleBirthdateChange = function(event) {
@@ -300,8 +288,7 @@ define(
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
                 if(status === GoogleMaps.GeocoderStatus.OK) {
                 	_.extend(user, tempUser);
-                	view.showTerms();
-                	callback(null);
+                	view.acceptTerms(callback);
                 }
                 else {
                     alert('The address is not valid!');
@@ -341,7 +328,6 @@ define(
 			setupForm: setupForm,
 			populateBirthdateInput: populateBirthdateInput,
 			populateCountries: populateCountries,
-			showTerms: showTerms,
 
 			handleBirthdateChange: handleBirthdateChange,
 			handleCountrySelect: handleCountrySelect,

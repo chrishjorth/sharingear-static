@@ -693,12 +693,8 @@ define(
 					break;
 				case 'addgear-panel-availability':
 					if(view.submerchantFormVC !== null) {
-						if(view.submerchantFormVC.formSubmitted === false) {
-							view.submerchantFormVC.submitForm();
-						}
-						else {
 							view.toggleLoading();
-							view.submerchantFormVC.acceptTerms(function(error) {
+							view.submerchantFormVC.submitForm(function(error) {
 								view.toggleLoading();
 								if(error) {
 									console.log(error);
@@ -708,7 +704,6 @@ define(
 								view.submerchantFormVC = null;
 								view.renderAvailability();
 							});
-						}
 					}
 					else {
 						view.saveAvailability();

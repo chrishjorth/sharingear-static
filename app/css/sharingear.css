@@ -2306,6 +2306,36 @@ button:active .sg-gray-bg {
 	padding-bottom: 70px;
 }
 
+.submerchant-container, .submerchant-height  {
+	height: 100%;
+}
+
+.submerchant-sidebar-text{
+	color:white;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.submerchant-terms-styles{
+	border-top:  1px solid #CFD4D8;	
+	font-weight: bold;
+	margin-top: 30px;
+	margin-right: 20px;
+	margin-left: 20px;
+}
+
+.vertical-align{
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+@media (min-width: 768px){
+	.vertical-aling{
+		transform: translateY(0%);
+	}
+}
+
 /*------ 8.g GEAR PROFILE ------*/
 .view-container .gearprofile {
 	padding: 48px 0 0 0;
