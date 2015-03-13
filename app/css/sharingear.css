@@ -277,6 +277,7 @@ body {
 	background-color: inherit;
 	border-radius: 0;
 	box-shadow: none;
+	outline: none;
 }
 .sg-navbar-dropdownmenu .dropdown .btn:visited,
 .sg-navbar-dropdownmenu .dropdown .btn:hover,
@@ -473,7 +474,6 @@ body {
 .sg-toptab div {
 	display: inline-block;
 	height: 54px;
-	width: 85%;
 }
 
 .dashboard-menu {
@@ -3408,6 +3408,12 @@ button:active .sg-gray-bg {
 }
 
 /******* 9. HELPERS *******/
+
+button:focus,div:focus {
+    outline: none;
+}
+
+
 .searchform .sg-no-mobile,
 .sg-no-mobile {
 	display: none;
