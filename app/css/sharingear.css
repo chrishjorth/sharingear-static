@@ -277,6 +277,7 @@ body {
 	background-color: inherit;
 	border-radius: 0;
 	box-shadow: none;
+	outline: none;
 }
 .sg-navbar-dropdownmenu .dropdown .btn:visited,
 .sg-navbar-dropdownmenu .dropdown .btn:hover,
