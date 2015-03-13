@@ -19,6 +19,7 @@ define(
 			showTerms,
 
 			handleBirthdateChange,
+			handleCountrySelect,
 
 			submitForm,
 			acceptTerms;
@@ -35,6 +36,7 @@ define(
 				this.setupForm();
 			}
 			this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
+			this.setupEvent('change', '#submerchantregistration-country', this, this.handleCountrySelect);
 		};
 
 		setupForm = function() {
@@ -60,6 +62,12 @@ define(
 			}
 			if(user.country && user.country !== '') {
 				$('#submerchantregistration-country', this.$element).parent().addClass('hidden');
+				if(user.country === 'US') {
+					$('#aba-container', this.$element).removeClass('hidden');
+				}
+				else {
+					$('#iban-container', this.$element).removeClass('hidden');
+				}
 			}
 			else {
 				this.populateCountries($('#submerchantregistration-country', this.$element));
@@ -152,11 +160,23 @@ define(
 			view.populateBirthdateInput();
 		};
 
+		handleCountrySelect = function() {
+			var country = $(this).val();
+			if(country === 'US') {
+				$('#iban-container', this.$element).addClass('hidden');
+				$('#aba-container', this.$element).removeClass('hidden');
+			}
+			else {
+				$('#aba-container', this.$element).addClass('hidden');
+				$('#iban-container', this.$element).removeClass('hidden');
+			}
+		};
+
 		submitForm = function(callback) {
 			var view = this,
 				user = App.user.data,
 				tempUser = {},
-				day, month, year, addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx;
+				day, month, year, addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx, accountNumber, accountNumberRegEx, aba, abaRegEx;
 
 			_.extend(tempUser, user);
 
@@ -232,26 +252,49 @@ define(
                 callback('Phone is missing.');
                 return;
             }
-            
-            iban = $('#submerchantregistration-iban', view.$element).val();
-			ibanRegEx = /^[a-zA-Z]{2}\d{2}\s*(\w{4}\s*){2,7}\w{1,4}\s*$/;
-			iban = iban.match(ibanRegEx);
-			if(iban === null) {
-				alert('Please insert a correct IBAN.');
-				callback('IBAN is missing.');
-				return;
-			}
-			user.iban = iban[0];
 
-            swift = $('#submerchantregistration-swift', view.$element).val();
-			swiftRegEx = /^[a-zA-Z]{6}\w{2}(\w{3})?$/;
-			swift = swift.match(swiftRegEx);
-			if(swift === null) {
-				alert('Please insert a correct SWIFT');
-				callback('SWIFT is missing.');
-				return;
-			}
-			user.swift = swift[0];
+            if(tempUser.country === 'US') {
+            	accountNumber = $('#submerchantregistration-accountnumber', view.$element).val();
+            	accountNumberRegEx = /\d+/;
+            	accountNumber = accountNumber.match(accountNumberRegEx);
+            	if(accountNumber === null) {
+            		alert('Please insert your bank account number.');
+            		callback('Bank account number missing.');
+            		return;
+            	}
+            	user.accountNumber = accountNumber[0];
+
+            	aba = $('#submerchantregistration-aba', view.$element).val();
+            	abaRegEx = /\d{9}/;
+            	aba = aba.match(abaRegEx);
+            	if(aba === null) {
+            		alert('Please insert your routing number.');
+            		callback('Routing number missing.');
+            		return;
+            	}
+            	user.aba = aba[0];
+            }
+            else {
+            	iban = $('#submerchantregistration-iban', view.$element).val();
+				ibanRegEx = /^[a-zA-Z]{2}\d{2}\s*(\w{4}\s*){2,7}\w{1,4}\s*$/;
+				iban = iban.match(ibanRegEx);
+				if(iban === null) {
+					alert('Please insert a correct IBAN.');
+					callback('IBAN is missing.');
+					return;
+				}
+				user.iban = iban[0];
+
+            	swift = $('#submerchantregistration-swift', view.$element).val();
+				swiftRegEx = /^[a-zA-Z]{6}\w{2}(\w{3})?$/;
+				swift = swift.match(swiftRegEx);
+				if(swift === null) {
+					alert('Please insert a correct SWIFT');
+					callback('SWIFT is missing.');
+					return;
+				}
+				user.swift = swift[0];
+            }
 
             addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.country;
             geocoder.geocode({'address': addressOneliner}, function(results, status) {
@@ -301,6 +344,7 @@ define(
 			showTerms: showTerms,
 
 			handleBirthdateChange: handleBirthdateChange,
+			handleCountrySelect: handleCountrySelect,
 
 			submitForm: submitForm,
 			acceptTerms: acceptTerms
