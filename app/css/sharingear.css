@@ -987,6 +987,13 @@ body {
 	margin: 0;
 }
 
+.sg-gray-headline{
+	font-size: 19px;
+	font-weight: bold;
+	line-height: 45px;
+	color: rgb(84, 99, 106);
+}
+
 /******* 6. GENERAL COLORS *******/
 /**
  * These are color classes. The goal is to keep all color definitions here for color consistency.
@@ -2288,6 +2295,35 @@ button:active .sg-gray-bg {
 	}
 }
 
+.addphotos-center{
+	text-align: center;
+	margin:0 auto;
+	margin-top: 20%;
+}
+
+.addphotos-upload, .addphotos-upload:link, .addphotos-upload:hover{
+	color:white;
+	position: relative;
+	overflow: hidden;
+	width: 140px;
+	height: 40px;
+	line-height: 40px;
+}
+
+.addphotos-upload input{
+	color:white;
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+
 .modal-view-container .hint1 {
 	font-size: 16px;
 	line-height: 32px;
@@ -2307,6 +2343,10 @@ button:active .sg-gray-bg {
 }
 
 .submerchant-container, .submerchant-height  {
+	height: 100%;
+}
+
+.full-height{
 	height: 100%;
 }
 
@@ -2330,9 +2370,11 @@ button:active .sg-gray-bg {
 	transform: translateY(-50%);
 }
 
-@media (min-width: 768px){
-	.vertical-aling{
+@media (max-width: 768px){
+	.vertical-align{
 		transform: translateY(0%);
+		padding-top: 15px;
+		padding-bottom: 15px;
 	}
 }
 
