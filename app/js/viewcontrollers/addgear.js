@@ -582,7 +582,7 @@ define(
 			$calendarContainer = $('#addgear-availability-calendar', this.$element);
 			$calendarContainer.removeClass('hidden');
 			
-			$("#addgear-darkgrey-left", this.$element).hide();
+			$("#addgear-darkgray-left", this.$element).hide();
 			$calendarContainer.removeClass('col-sm-9');
 			$calendarContainer.addClass('col-sm-12');	
 			

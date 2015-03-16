@@ -416,7 +416,7 @@ define(
 			$calendarContainer = $('#addtechprofile-availability-calendar', this.$element);
 			$calendarContainer.removeClass('hidden');
 			
-			$("#addtechprofile-darkgrey-left", this.$element).hide();
+			$("#addtechprofile-darkgray-left", this.$element).hide();
 			$calendarContainer.removeClass('col-sm-9');
 			$calendarContainer.addClass('col-sm-12');	
 

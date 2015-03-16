@@ -493,7 +493,7 @@ define(
 			$calendarContainer = $('#addvan-availability-calendar', this.$element);
 			$calendarContainer.removeClass('hidden');
 
-			$("#addvan-darkgrey-left", this.$element).hide();
+			$("#addvan-darkgray-left", this.$element).hide();
 			$calendarContainer.removeClass('col-sm-9');
 			$calendarContainer.addClass('col-sm-12');	
 
