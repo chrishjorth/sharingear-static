@@ -8,7 +8,9 @@
 define(
 	['underscore', 'jquery', 'viewcontroller', 'moment', 'utilities', 'models/localization'],
 	function(_, $, ViewController, Moment, Utilities, Localization) {
-		var didInitialize,
+		var pickupHintText = 'Select a pickup date',
+			deliveryHintText = 'Select a delivery date',
+			didInitialize,
 			didRender,
 
 			renderMonthCalendar,
@@ -37,10 +39,18 @@ define(
 			this.pickupDate = null;
 			if(this.passedData.pickupDate && Moment.isMoment(this.passedData.pickupDate) === true) {
 				this.pickupDate = this.passedData.pickupDate;
+				if(this.pickupDate.isBefore(this.displayedMoment) === true) {
+					this.pickupDate = new Moment.tz(this.displayedMoment, Localization.getCurrentTimeZone());
+				}
 			}
+
 			this.deliveryDate = null;
 			if(this.passedData.deliveryDate && Moment.isMoment(this.passedData.deliveryDate) === true) {
 				this.deliveryDate = this.passedData.deliveryDate;
+				if(this.deliveryDate.isBefore(this.pickupDate) === true) {
+					this.pickupDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
+					this.pickupDate.add(1, 'days');
+				}
 			}
 
 			this.pickupActive = true;
@@ -85,6 +95,10 @@ define(
 			$tab = $tab.next();
 			if(this.deliveryDate !== null && this.pickupActive === false) {
 				$('div', $tab).html(this.deliveryDate.format('DD/MM/YYYY'));
+				$('.hint', this.$element).html(deliveryHintText);
+			}
+			else {
+				$('.hint', this.$element).html(pickupHintText);
 			}
 
 			this.setupEvent('click', '#pickupdeliverycalendar-prev', this, this.handlePrev);
@@ -142,6 +156,7 @@ define(
 					$dayBox.removeClass('disabled');
 					disable = false;
 					
+					//Render date
 					if(iteratorMoment.month() !== moment.month()) {
 						//$dayBox.addClass('disabled');
 						disable = true;
@@ -150,10 +165,13 @@ define(
 					else {
 						$dayBox.html(date);
 					}
-					if(iteratorMoment.isBefore(new Moment.tz(Localization.getCurrentTimeZone())) === true){
+
+					//Disable past days
+					if(iteratorMoment.isBefore(new Moment.tz(Localization.getCurrentTimeZone()), 'day') === true) {
 						disable = true;
 						//$dayBox.addClass('disabled');
 					}
+					//In case of delivery selection disable days before or equal to pickup date
 					if(this.pickupActive === false && (iteratorMoment.isBefore(this.pickupDate, 'day') === true || iteratorMoment.isSame(this.pickupDate, 'day') === true)) {
 						disable = true;
 						//$dayBox.addClass('disabled');
@@ -300,6 +318,7 @@ define(
 				}
 
 				view.pickupActive = true;
+				$('.hint', view.$element).html(pickupHintText);
 				view.clearSelections();
 				view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));
 			}
@@ -314,6 +333,8 @@ define(
 				$deliveryTab.addClass('sg-toptab-active');
 				$pickupTab = $('#pickupdeliverycalendar-pickupdate', view.$element);
 				$pickupTab.removeClass('sg-toptab-active');
+
+				$('.hint', view.$element).html(deliveryHintText);
 
 				if(view.deliveryDate === null) {
 					view.deliveryDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
