@@ -97,7 +97,7 @@ define(
 
 		handlePickupDate = function(event) {
 			var view = event.data,
-				passedData, pickupInputString;
+				passedData, pickupInputString, deliveryInputString;
 
 			$(this).blur();
 
@@ -109,6 +109,10 @@ define(
 			pickupInputString = $('#techprofilesearch-pickup', view.$element).val();
 			if(pickupInputString !== '') {
 				passedData.pickupDate = new Moment.tz(pickupInputString, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
+			}
+			deliveryInputString = $('#search-return', view.$element).val();
+			if(deliveryInputString !== '') {
+				passedData.deliveryDate = new Moment.tz(deliveryInputString, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 			}
 			
 			App.router.openModalView('pickupdeliverycalendar', passedData);

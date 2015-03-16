@@ -99,7 +99,7 @@ define(
 
 		handlePickupDate = function(event) {
 			var view = event.data,
-				passedData, pickupInputString;
+				passedData, pickupInputString, deliveryInputString;
 
 			$(this).blur();
 
@@ -111,6 +111,10 @@ define(
 			pickupInputString = $('#search-pickup', view.$element).val();
 			if(pickupInputString !== '') {
 				passedData.pickupDate = new Moment.tz(pickupInputString, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
+			}
+			deliveryInputString = $('#search-return', view.$element).val();
+			if(deliveryInputString !== '') {
+				passedData.deliveryDate = new Moment.tz(deliveryInputString, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 			}
 			
 			App.router.openModalView('pickupdeliverycalendar', passedData);
@@ -149,10 +153,9 @@ define(
 
 		handleDeliverySelection = function(vc, callback) {
 			$('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
-			if(this.deliveryDateConfirmed === true) {
+			if(vc.deliveryDateConfirmed === true) {
 				App.router.closeModalView();
 			}
-			this.deliveryDateConfirmed = true; //next time the user selects delivery we close the calendar
 			
 			if(Utilities.isMobile() === true) {
 				this.handleSearch({

@@ -23,6 +23,8 @@ define(
 			handlePickupDateClick,
 			handleDeliveryDateClick,
 
+			switchToDeliveryTab,
+
 			isDayInAvailability,
 			isIntervalAvailable;
 
@@ -69,32 +71,34 @@ define(
 			if(this.passedData.alwaysFlag === 0 || this.passedData.alwaysFlag === 1) {
 				this.alwaysFlag = this.passedData.alwaysFlag;
 			}
+
+			this.deliveryDateConfirmed = false; //Flag that confirms the user has selected a new deliverydate
 		};
 
 		didRender = function() {
 			var $calendarContainer = $('.calendar', this.$element),
-				$tab;
+				$pickupTab, $deliveryTab;
 
 			this.renderMonthCalendar($calendarContainer);
 			this.populateMonthCalendar(this.displayedMoment, $calendarContainer);
-			$tab = $('#pickupdeliverycalendar-pickupdate', this.$element);
+
+			$pickupTab = $('#pickupdeliverycalendar-pickupdate', this.$element);
+			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', this.$element);
 
 			if(this.pickupActive === false) {
-				$tab.removeClass('sg-toptab-active');
-				$tab.next().addClass('sg-toptab-active');
+				$pickupTab.removeClass('sg-toptab-active');
+				$deliveryTab.addClass('sg-toptab-active');
 			}
 
 			if(this.pickupDate !== null) {
-				$('div', $tab).html(this.pickupDate.format('DD/MM/YYYY'));
-				$('div', $tab.next()).html('-');
+				$('div', $pickupTab).html(this.pickupDate.format('DD/MM/YYYY'));
 			}
-			else {
-				$('div', $tab).html('-');
+			if(this.deliveryDate !== null) {
+				$('div', $deliveryTab).html(this.deliveryDate.format('DD/MM/YYYY'));
 			}
+			
 
-			$tab = $tab.next();
 			if(this.deliveryDate !== null && this.pickupActive === false) {
-				$('div', $tab).html(this.deliveryDate.format('DD/MM/YYYY'));
 				$('.hint', this.$element).html(deliveryHintText);
 			}
 			else {
@@ -248,26 +252,29 @@ define(
 			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 
 			if(view.pickupActive === true) {
+				//We are in the pickup tab
 				view.pickupDate = new Moment.tz($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
-				//$pickupTab.removeClass('sg-toptab-active');
 				$('div', $pickupTab).html(view.pickupDate.format('DD/MM/YYYY'));
-				//$deliveryTab.addClass('sg-toptab-active');
 				view.deliveryDate = null;
 				$('div', $deliveryTab).html('-');
-				//view.pickupActive = false;
+
 				if(_.isFunction(view.passedData.parent.handlePickupSelection) === true) {
 					view.passedData.parent.handlePickupSelection(view, function() {
-						if($dayBox.hasClass('selected') === false) {
+						/*if($dayBox.hasClass('selected') === false) {
 							$dayBox.addClass('selected');
 						}
 
 						view.clearSelections();
-						view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));	
-
+						view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));*/
+						view.switchToDeliveryTab();	
 					});
+				}
+				else {
+					view.switchToDeliveryTab();
 				}
 			}
 			else {
+				//We are in the delivery tab
 				view.deliveryDate = new Moment.tz($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 				//Check that delivery date is after pickup date
 				if(view.deliveryDate.isBefore(view.pickupDate) === true || view.deliveryDate.isSame(view.pickupDate) === true) {
@@ -278,6 +285,7 @@ define(
 				if(view.isIntervalAvailable(view.pickupDate, view.deliveryDate) === true) {
 					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
 					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
+						view.deliveryDateConfirmed = true;
 						view.passedData.parent.handleDeliverySelection(view, false, function(){
 				
 							if($dayBox.hasClass('selected') === false) {
@@ -310,12 +318,12 @@ define(
 				$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 				$deliveryTab.removeClass('sg-toptab-active');
 				
-				var pickupDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
-				var displayedDay = new Moment.tz(view.displayedMoment, Localization.getCurrentTimeZone());
+				//var pickupDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
+				//var displayedDay = new Moment.tz(view.displayedMoment, Localization.getCurrentTimeZone());
 				
-				if (pickupDate.month()!==displayedDay.month()) {
-					handlePrev(event);
-				}
+				//if (pickupDate.month()!==displayedDay.month()) {
+				//	handlePrev(event);
+				//}
 
 				view.pickupActive = true;
 				$('.hint', view.$element).html(pickupHintText);
@@ -325,41 +333,39 @@ define(
 		};
 
 		handleDeliveryDateClick = function(event) {
-			var view = event.data,
-				$pickupTab, $deliveryTab;
+			var view = event.data;
 			
 			if(view.pickupActive === true && view.pickupDate !== null) {
-				$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
-				$deliveryTab.addClass('sg-toptab-active');
-				$pickupTab = $('#pickupdeliverycalendar-pickupdate', view.$element);
-				$pickupTab.removeClass('sg-toptab-active');
-
-				$('.hint', view.$element).html(deliveryHintText);
-
-				if(view.deliveryDate === null) {
-					view.deliveryDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
-					
-					view.deliveryDate.add(1, 'days');
-					view.deliveryDate.hours(12);
-					
-					var deliveryCheck = new Moment.tz(view.deliveryDate, Localization.getCurrentTimeZone());
-					var displayedCheck= new Moment.tz(view.displayedMoment, Localization.getCurrentTimeZone());
-
-					if (deliveryCheck.month()!==displayedCheck.month()) {
-						handleNext(event);
-					}
-
-					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
-					
-					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
-						view.passedData.parent.handleDeliverySelection(view, true);
-					}
-				}
-
-				view.pickupActive = false;
-				view.clearSelections();
-				view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));
+				view.switchToDeliveryTab();
 			}
+		};
+
+		switchToDeliveryTab = function() {
+			var $pickupTab, $deliveryTab;
+
+			$pickupTab = $('#pickupdeliverycalendar-pickupdate', this.$element);
+			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', this.$element);
+
+			$pickupTab.removeClass('sg-toptab-active');
+			$deliveryTab.addClass('sg-toptab-active');
+			this.pickupActive = false;
+
+			$('.hint', this.$element).html(deliveryHintText);
+
+					
+			this.deliveryDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
+					
+			this.deliveryDate.add(1, 'days');
+			this.deliveryDate.hours(12);
+
+			$('div', $deliveryTab).html(this.deliveryDate.format('DD/MM/YYYY'));
+					
+			if(_.isFunction(this.passedData.parent.handleDeliverySelection) === true) {
+				this.passedData.parent.handleDeliverySelection(this, true);
+			}
+
+			this.clearSelections();
+			this.populateMonthCalendar(this.displayedMoment, $('.calendar', this.$element));
 		};
 
 		isDayInAvailability = function(moment) {
@@ -423,6 +429,8 @@ define(
 			handleDaySelection: handleDaySelection,
 			handlePickupDateClick: handlePickupDateClick,
 			handleDeliveryDateClick: handleDeliveryDateClick,
+
+			switchToDeliveryTab: switchToDeliveryTab,
 
 			isDayInAvailability: isDayInAvailability,
 			isIntervalAvailable: isIntervalAvailable
