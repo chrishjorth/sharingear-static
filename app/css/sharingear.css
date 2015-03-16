@@ -1368,6 +1368,10 @@ button:active .sg-gray-bg {
 	background-color: #416d80;
 	color: #ffffff;
 }
+.calendar .pickup {
+	background-color: #5796b2;
+	color: #ffffff;
+}
 
 .availability-legend-box {
 	padding: 4px 10px 4px 10px;

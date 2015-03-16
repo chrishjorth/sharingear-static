@@ -59,9 +59,6 @@ define(
 			if(this.passedData.pickupActive === false) {
 				this.pickupActive = false;
 			}
-			else {
-				this.deliveryDate = null;
-			}
 
 			this.availability = [];
 			if(Array.isArray(this.passedData.availability) === true) {
@@ -201,6 +198,15 @@ define(
 						}
 					}
 					if(this.pickupActive === false && this.deliveryDate !== null) {
+						if(iteratorMoment.isSame(this.pickupDate, 'day') === true && iteratorMoment.isSame(this.pickupDate, 'month') === true && iteratorMoment.isSame(this.pickupDate, 'year') === true) {
+							$dayBox.addClass('pickup');
+						}
+
+
+						if(iteratorMoment.isAfter(this.pickupDate, 'day') === true && iteratorMoment.isBefore(this.deliveryDate, 'day') === true) {
+							$dayBox.addClass('selected');
+						}
+
 						//We need to granulate to day, as deliveryDate might have a delivery time set
 						if(iteratorMoment.isSame(this.deliveryDate, 'day') === true && iteratorMoment.isSame(this.deliveryDate, 'month') === true && iteratorMoment.isSame(this.deliveryDate, 'year') === true) {
 							$dayBox.addClass('selected');
@@ -215,6 +221,7 @@ define(
 
 		clearSelections = function() {
 			$('.day', this.$element).removeClass('selected');
+			$('.day', this.$element).removeClass('pickup');
 		};
 
 		handlePrev = function(event) {
@@ -352,11 +359,11 @@ define(
 
 			$('.hint', this.$element).html(deliveryHintText);
 
-					
-			this.deliveryDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
-					
-			this.deliveryDate.add(1, 'days');
-			this.deliveryDate.hours(12);
+			if(this.deliveryDate === null) {
+				this.deliveryDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());	
+				this.deliveryDate.add(1, 'days');
+				this.deliveryDate.hours(12);
+			}
 
 			$('div', $deliveryTab).html(this.deliveryDate.format('DD/MM/YYYY'));
 					
