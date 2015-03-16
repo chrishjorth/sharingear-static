@@ -2323,6 +2323,13 @@ button:active .sg-gray-bg {
 	filter: alpha(opacity=0);
 }
 
+.text-right{
+text-align: right;
+}
+
+.text-left{
+text-align: left;
+}
 
 .modal-view-container .hint1 {
 	font-size: 16px;

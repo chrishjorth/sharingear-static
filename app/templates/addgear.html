@@ -119,57 +119,68 @@
   </div>
 
   <div class="row addgear-panel hidden" id="addgear-panel-pricelocation">
-    <form id="dashboard-addgearprice-form" onsubmit="return false;">
-      <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-4 form-left">
-            <div class="form-group">
-              <label for="price_a">Daily rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
-              <label for="price_b">Weekly rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control price"></div>
-              <label for="price_c">Monthly rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
-            </div>
-          </div>
-
-          <div class="col-sm-4 form-left bulp-background">
-            <h3>Setting the price:</h3>
-            <p>For this type of gear we recommend the following prices.</p>
+    <div class="col-sm-12 full-height">
+    <div class="row full-height">
+      <div class="col-sm-3 full-height sg-darkgray-bg">
+      
+        <div class="vertical-align">
+          <div class="row text-center"><img src="images/light_bulb.png"/></div>
+            <div class="row text-center submerchant-sidebar-text">
+              <div class="col-sm-12" style="margin-bottom: 15px;">For this type of gear we recommend the following prices.</div>
             <div class="row">
-              <div class="col-xs-4 yellow-text-left">Daily:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_a-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-6 text-right">Daily:</div>
+              <div class="col-xs-6 text-left"><span id="addgear-price_a-suggestion"></span> {{currency}}</div>
             </div>
             <div class="row">
-              <div class="col-xs-4 yellow-text-left">Weekly:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_b-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-6 text-right">Weekly:</div>
+              <div class="col-xs-6 text-left"><span id="addgear-price_b-suggestion"></span> {{currency}}</div>
             </div>
             <div class="row">
-              <div class="col-xs-4 yellow-text-left">Monthly:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_c-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-6 text-right">Monthly:</div>
+              <div class="col-xs-6 text-left"><span id="addgear-price_c-suggestion"></span> {{currency}}</div>
             </div>
-          </div>
-
-          <div class="col-sm-4 form-right">
-            <div class="form-group">
-              <label for="dashboard-addgearprice-address">Street</label>
-              <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
-              <label for="dashboard-addgearprice-postalcode">Postal code</label>
-              <input type="text" name="postalcode" id="dashboard-addgearprice-postalcode" class="form-control">
-              <label for="dashboard-addgearprice-city">City</label>
-              <input type="text" name="city" id="dashboard-addgearprice-city" class="form-control">
-              <!--<label for="dashboard-addgearprice-region">Region</label>
-              <input type="text" name="region" id="dashboard-addgearprice-region" class="form-control">-->
-              <label for="dashboard-addgearprice-country">Country</label>
-              <select name="country" id="dashboard-addgearprice-country" class="form-control">
-                <option value="">Select country</option>
-              </select>
-            </div>
-          </div>
+            </div>    
         </div>
-
       </div>
-    </form>
+      
+      <div class="col-sm-9 full-height">
+        <form id="dashboard-addgearprice-form" onsubmit="return false;">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-6 form-left">
+                <div class="form-group">
+                  <label for="price_a">Daily rental price ({{currency}}):</label>
+                  <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
+                  <label for="price_b">Weekly rental price ({{currency}}):</label>
+                  <div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control price"></div>
+                  <label for="price_c">Monthly rental price ({{currency}}):</label>
+                  <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 form-right">
+                <div class="form-group">
+                  <label for="dashboard-addgearprice-address">Street</label>
+                  <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
+                  <label for="dashboard-addgearprice-postalcode">Postal code</label>
+                  <input type="text" name="postalcode" id="dashboard-addgearprice-postalcode" class="form-control">
+                  <label for="dashboard-addgearprice-city">City</label>
+                  <input type="text" name="city" id="dashboard-addgearprice-city" class="form-control">
+                  <!--<label for="dashboard-addgearprice-region">Region</label>
+                  <input type="text" name="region" id="dashboard-addgearprice-region" class="form-control">-->
+                  <label for="dashboard-addgearprice-country">Country</label>
+                  <select name="country" id="dashboard-addgearprice-country" class="form-control">
+                    <option value="">Select country</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
   </div>
 
   <div class="row addgear-panel hidden" id="addgear-panel-availability">
