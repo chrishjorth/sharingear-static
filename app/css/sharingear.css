@@ -425,8 +425,7 @@ body {
 	}
 }
 .sg-toptab {
-	color: #ffffff;
-	background-color: #d5dada;
+	color: #d5dada;
 	padding-top: 8px;
 	font-size: 28px;
 	text-align: center;
@@ -988,6 +987,13 @@ body {
 	margin: 0;
 }
 
+.sg-gray-headline{
+	font-size: 19px;
+	font-weight: bold;
+	line-height: 45px;
+	color: rgb(84, 99, 106);
+}
+
 /******* 6. GENERAL COLORS *******/
 /**
  * These are color classes. The goal is to keep all color definitions here for color consistency.
@@ -1240,23 +1246,14 @@ button:active .sg-gray-bg {
 }
 
 /*------ 7.a CALENDARS ------*/
-.pickupdeliverycalendar {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-}
 .pickupdeliverycalendar .sg-toptab {
 	border-bottom-style: solid;
 	border-bottom-color: #00aeff;
 	border-bottom-width: 1px;
-	cursor: pointer;
 }
 .pickupdeliverycalendar .sg-toptab-active {
 	border-bottom-width: 0;
 	border-top-width: 1px;
-	cursor: default;
 }
 .pickupdeliverycalendar .sg-toptab > div {
 	font-size: 16px;
@@ -1266,34 +1263,10 @@ button:active .sg-gray-bg {
 		font-size: 28px;
 	}
 }
-.pickupdeliverycalendar .hint {
-	font-size: 12px;
-	line-height: 24px;
-	padding-top: 8px;
-}
-.pickupdeliverycalendar .calendar {
-	position: absolute;
-	top: 136px;
-	right: 0;
-	bottom: 0;
-	left: 0;
-}
-.pickupdeliverycalendar .calendar .row:first-child {
-	height: 10%;
-}
-.pickupdeliverycalendar .calendar .row:first-child .col {
-	padding-top: 8px;
-}
-.pickupdeliverycalendar .calendar .row {
-	height: 15%;
-}
-.pickupdeliverycalendar .calendar .col {
-	height: 100%;
-}
 
 .calendar-navigation {
 	font-size: 24px;
-	line-height: 36px;
+	line-height: 64px;
 }
 
 .calendar {
@@ -2322,6 +2295,42 @@ button:active .sg-gray-bg {
 	}
 }
 
+.addphotos-center{
+	text-align: center;
+	margin:0 auto;
+	margin-top: 20%;
+}
+
+.addphotos-upload, .addphotos-upload:link, .addphotos-upload:hover{
+	color:white;
+	position: relative;
+	overflow: hidden;
+	width: 140px;
+	height: 40px;
+	line-height: 40px;
+}
+
+.addphotos-upload input{
+	color:white;
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+.text-right{
+text-align: right;
+}
+
+.text-left{
+text-align: left;
+}
+
 .modal-view-container .hint1 {
 	font-size: 16px;
 	line-height: 32px;
@@ -2341,6 +2350,10 @@ button:active .sg-gray-bg {
 }
 
 .submerchant-container, .submerchant-height  {
+	height: 100%;
+}
+
+.full-height{
 	height: 100%;
 }
 
@@ -2364,9 +2377,11 @@ button:active .sg-gray-bg {
 	transform: translateY(-50%);
 }
 
-@media (min-width: 768px){
-	.vertical-aling{
+@media (max-width: 768px){
+	.vertical-align{
 		transform: translateY(0%);
+		padding-top: 15px;
+		padding-bottom: 15px;
 	}
 }
 
@@ -2623,17 +2638,12 @@ button:active .sg-gray-bg {
 	margin-right: 4px;
 }
 
-/*------ 8.h BOOKING REQUEST ------*/
-.modal-view-container .bookingrequest {
+/*------ 8.h GEAR BOOKING ------*/
+.modal-view-container .gearbooking {
 	padding-top: 47px;
 	padding-bottom:50px;
 }
-.bookingrequest .pickupdeliverycalendar-container {
-	position: relative;
-	height: 400px;
-	width: 100%;
-}
-.bookingrequest .total {
+.gearbooking .total {
 	bottom: 0;
 	top: 0;
 	font-size: 24px;
@@ -2641,16 +2651,52 @@ button:active .sg-gray-bg {
 	padding-bottom: 16px;
 }
 @media (min-width: 768px) {
-	.bookingrequest .total {
+	.gearbooking .total {
 		font-size: 32px;
 	}
 }
-.bookingrequest .total div:first-child {
+.gearbooking .total div:first-child {
 	font-size: 16px;
 }
 @media (min-width: 768px) {
-	.bookingrequest .total div:first-child {
+	.gearbooking .total div:first-child {
 		font-size: 24px;
+	}
+}
+
+.gearbooking .pickupdeliverycalendar-container {
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+.sharethis{
+	color:#C5CDD0;
+	font-size: 10px;
+	text-align: center;
+	margin-bottom: -10px;
+	text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+	.sharethis {
+		font-size: 8px;
+		margin-bottom: 0;
+	}
+}
+
+.sharethistech{
+	color:#C5CDD0;
+	font-size: 10px;
+	text-align: right;
+	margin-bottom: -10px;
+	text-transform: uppercase;
+	padding-right: 8px;
+}
+
+@media (max-width: 768px) {
+	.sharethistech {
+		font-size: 8px;
+		margin-bottom: 0;
 	}
 }
 

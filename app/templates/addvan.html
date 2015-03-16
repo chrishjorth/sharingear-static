@@ -48,33 +48,79 @@
   </div>
 
   <div class="row addvan-panel hidden" id="addvan-panel-photos">
-    <form id="dashboard-addvanphotos-form" onsubmit="return false;">
-      <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="form-group">
-              <label for="dashboard-addvanphotos-form-imageupload">Upload image:</label>
-              <input type="file" id="dashboard-addvanphotos-form-imageupload" name="vanpic">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="thumb-list-container">
-              <ul>
-              </ul>
-            </div>
-          </div>
+  <div class="col-sm-12 full-height">
+    <div class="row full-height">
+      <div class="col-sm-3 full-height sg-darkgray-bg">
+        <div class="vertical-align">
+            <div class="row text-center"><img src="images/important.png"/></div>
+            <div class="row text-center submerchant-sidebar-text">
+              <div class="col-sm-12">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>
+            </div>  
         </div>
       </div>
-    </form>
+      <div class="col-sm-9 full-height">
+        
+      <form id="dashboard-addvanphotos-form" onsubmit="return false;">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-12 addphotos-center">
+              <div class="form-group">
+                  <div class="row"><img src="images/add-photos.png"/></div>
+                  <div class="row"><label class="sg-gray-headline" for="dashboard-addvanphotos-form-imageupload">Add a photo or two!</label></div>
+                  <div class="row">
+                    <div class="addphotos-upload sg-btn-square sg-blue-bg">
+                      <span>Add Photos</span>  
+                      <input type="file" id="dashboard-addvanphotos-form-imageupload" name="vanpic">
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="thumb-list-container">
+                <ul>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+  
+      </div>
+    </div>
+  </div>
   </div>
 
   <div class="row addvan-panel hidden" id="addvan-panel-pricelocation">
-    <form id="dashboard-addvanprice-form" onsubmit="return false;">
+    <div class="col-sm-12 full-height">
+      <div class="row full-height">
+        <div class="col-sm-3 full-height sg-darkgray-bg">
+          
+          <div class="vertical-align">
+            <div class="row text-center"><img src="images/light_bulb.png"/></div>
+            <div class="row text-center submerchant-sidebar-text">
+              <div class="col-sm-12" style="margin-bottom: 15px;">For this type of vehicle we recommend the following prices.</div>
+              <div class="row">
+                <div class="col-xs-6 text-right">Daily:</div>
+                <div class="col-xs-6 text-left"><span id="addvan-price_a-suggestion"></span> {{currency}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6 text-right">Weekly:</div>
+                <div class="col-xs-6 text-left"><span id="addvan-price_b-suggestion"></span> {{currency}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6 text-right">Monthly:</div>
+                <div class="col-xs-6 text-left"><span id="addvan-price_c-suggestion"></span> {{currency}}</div>
+              </div>
+            </div>    
+          </div>
+        </div>
+        <div class="col-sm-9 full-height">
+          <form id="dashboard-addvanprice-form" onsubmit="return false;">
       <div class="col-sm-12">
         <div class="row">
-          <div class="col-sm-4 form-left">
+          <div class="col-sm-6 form-left">
             <div class="form-group">
               <label for="price_a">Daily rental price ({{currency}}):</label>
               <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
@@ -85,24 +131,7 @@
             </div>
           </div>
 
-          <div class="col-sm-4 form-left bulp-background">
-            <h3>Setting the price:</h3>
-            <p>For this type of vehicle we recommend the following prices.</p>
-            <div class="row">
-              <div class="col-xs-4 yellow-text-left">Daily:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addvan-price_a-suggestion"></span> {{currency}}</div>
-            </div>
-            <div class="row">
-              <div class="col-xs-4 yellow-text-left">Weekly:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addvan-price_b-suggestion"></span> {{currency}}</div>
-            </div>
-            <div class="row">
-              <div class="col-xs-4 yellow-text-left">Monthly:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addvan-price_c-suggestion"></span> {{currency}}</div>
-            </div>
-          </div>
-
-          <div class="col-sm-4 form-right">
+          <div class="col-sm-6 form-right">
             <div class="form-group">
               <label for="dashboard-addvanprice-address">Street</label>
               <input type="text" name="address" id="dashboard-addvanprice-address" class="form-control">
@@ -122,16 +151,28 @@
 
       </div>
     </form>
+
+        </div>
+      </div>
+    </div>  
   </div>
 
   <div class="row addvan-panel hidden" id="addvan-panel-availability">
-    <div class="col-sm-12">
-      <div class="row">
-        <div class="col-sm-12"><h2>Availability</h2></div>
+    <div class="col-sm-12 submerchant-height">
+    <div class="row submerchant-height">
+      
+       <div id="addvan-darkgray-left" class="col-sm-3 sg-darkgray-bg submerchant-height">
+        <div class="vertical-align">
+            <div class="row text-center"><img src="images/submerchant.png"/></div>
+              <div class="row text-center submerchant-sidebar-text">
+                <div class="col-sm-12">In order to put your van up for rent we need some extra information about you so that we can pay you.</div>
+              </div>  
+        </div>
       </div>
 
-      <div id="addvan-availability-calendar"></div>
+    <div class="col-sm-9 submerchant-height" id="addvan-availability-calendar"></div>
 
+    </div>      
     </div>
   </div>
 
