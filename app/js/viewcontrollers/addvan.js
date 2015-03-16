@@ -492,6 +492,12 @@ define(
 				$calendarContainer;
 			$calendarContainer = $('#addvan-availability-calendar', this.$element);
 			$calendarContainer.removeClass('hidden');
+
+			$("#addvan-darkgrey-left", this.$element).hide();
+			$calendarContainer.removeClass('col-sm-9');
+			$calendarContainer.addClass('col-sm-12');	
+
+
 			require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
 				view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.newVan});
 				view.calendarVC.initialize();
@@ -604,12 +610,8 @@ define(
 					break;
 				case 'addvan-panel-availability':
 					if(view.submerchantFormVC !== null) {
-						if(view.submerchantFormVC.formSubmitted === false) {
-							view.submerchantFormVC.submitForm();
-						}
-						else {
 							view.toggleLoading();
-							view.submerchantFormVC.acceptTerms(function(error) {
+							view.submerchantFormVC.submitForm(function(error) {
 								view.toggleLoading();
 								if(error) {
 									console.log(error);
@@ -619,7 +621,6 @@ define(
 								view.submerchantFormVC = null;
 								view.renderAvailability();
 							});
-						}
 					}
 					else {
 						view.saveAvailability();
