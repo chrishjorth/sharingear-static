@@ -73,90 +73,132 @@
   </div>
 
   <div class="row addgear-panel hidden" id="addgear-panel-photos">
-    <form id="dashboard-addgearphotos-form" onsubmit="return false;">
-      <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="form-group">
-              <label for="dashboard-addgearphotos-form-imageupload">Upload image:</label>
-              <input type="file" id="dashboard-addgearphotos-form-imageupload" name="gearpic">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="thumb-list-container">
-              <ul>
-              </ul>
-            </div>
-          </div>
+  <div class="col-sm-12 full-height">
+    <div class="row full-height">
+      <div class="col-sm-3 full-height sg-darkgray-bg">
+        <div class="vertical-align">
+            <div class="row text-center"><img src="images/important.png"/></div>
+              <div class="row text-center submerchant-sidebar-text">
+                <div class="col-sm-12">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>
+              </div>  
         </div>
       </div>
-    </form>
+      <div class="col-sm-9 full-height">
+        
+        <form id="dashboard-addgearphotos-form" onsubmit="return false;">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12 addphotos-center">
+                <div class="form-group">
+                  <div class="row"><img src="images/add-photos.png"/></div>
+                  <div class="row"><label class="sg-gray-headline" for="dashboard-addgearphotos-form-imageupload">Add a photo or two!</label></div>
+                  <div class="row">
+                    <div class="addphotos-upload sg-btn-square sg-blue-bg">
+                      <span>Add Photos</span>
+                      <input type="file" id="dashboard-addgearphotos-form-imageupload" name="gearpic">  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="thumb-list-container">
+                  <ul>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+    
   </div>
 
   <div class="row addgear-panel hidden" id="addgear-panel-pricelocation">
-    <form id="dashboard-addgearprice-form" onsubmit="return false;">
-      <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-4 form-left">
-            <div class="form-group">
-              <label for="price_a">Daily rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
-              <label for="price_b">Weekly rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control price"></div>
-              <label for="price_c">Monthly rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
-            </div>
-          </div>
-
-          <div class="col-sm-4 form-left bulp-background">
-            <h3>Setting the price:</h3>
-            <p>For this type of gear we recommend the following prices.</p>
+    <div class="col-sm-12 full-height">
+    <div class="row full-height">
+      <div class="col-sm-3 full-height sg-darkgray-bg">
+      
+        <div class="vertical-align">
+          <div class="row text-center"><img src="images/light_bulb.png"/></div>
+            <div class="row text-center submerchant-sidebar-text">
+              <div class="col-sm-12" style="margin-bottom: 15px;">For this type of gear we recommend the following prices.</div>
             <div class="row">
-              <div class="col-xs-4 yellow-text-left">Daily:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_a-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-6 text-right">Daily:</div>
+              <div class="col-xs-6 text-left"><span id="addgear-price_a-suggestion"></span> {{currency}}</div>
             </div>
             <div class="row">
-              <div class="col-xs-4 yellow-text-left">Weekly:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_b-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-6 text-right">Weekly:</div>
+              <div class="col-xs-6 text-left"><span id="addgear-price_b-suggestion"></span> {{currency}}</div>
             </div>
             <div class="row">
-              <div class="col-xs-4 yellow-text-left">Monthly:</div>
-              <div class="col-xs-8 right yellow-text"><span id="addgear-price_c-suggestion"></span> {{currency}}</div>
+              <div class="col-xs-6 text-right">Monthly:</div>
+              <div class="col-xs-6 text-left"><span id="addgear-price_c-suggestion"></span> {{currency}}</div>
             </div>
-          </div>
-
-          <div class="col-sm-4 form-right">
-            <div class="form-group">
-              <label for="dashboard-addgearprice-address">Street</label>
-              <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
-              <label for="dashboard-addgearprice-postalcode">Postal code</label>
-              <input type="text" name="postalcode" id="dashboard-addgearprice-postalcode" class="form-control">
-              <label for="dashboard-addgearprice-city">City</label>
-              <input type="text" name="city" id="dashboard-addgearprice-city" class="form-control">
-              <!--<label for="dashboard-addgearprice-region">Region</label>
-              <input type="text" name="region" id="dashboard-addgearprice-region" class="form-control">-->
-              <label for="dashboard-addgearprice-country">Country</label>
-              <select name="country" id="dashboard-addgearprice-country" class="form-control">
-                <option value="">Select country</option>
-              </select>
-            </div>
-          </div>
+            </div>    
         </div>
-
       </div>
-    </form>
+      
+      <div class="col-sm-9 full-height">
+        <form id="dashboard-addgearprice-form" onsubmit="return false;">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-6 form-left">
+                <div class="form-group">
+                  <label for="price_a">Daily rental price ({{currency}}):</label>
+                  <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
+                  <label for="price_b">Weekly rental price ({{currency}}):</label>
+                  <div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control price"></div>
+                  <label for="price_c">Monthly rental price ({{currency}}):</label>
+                  <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 form-right">
+                <div class="form-group">
+                  <label for="dashboard-addgearprice-address">Street</label>
+                  <input type="text" name="address" id="dashboard-addgearprice-address" class="form-control">
+                  <label for="dashboard-addgearprice-postalcode">Postal code</label>
+                  <input type="text" name="postalcode" id="dashboard-addgearprice-postalcode" class="form-control">
+                  <label for="dashboard-addgearprice-city">City</label>
+                  <input type="text" name="city" id="dashboard-addgearprice-city" class="form-control">
+                  <!--<label for="dashboard-addgearprice-region">Region</label>
+                  <input type="text" name="region" id="dashboard-addgearprice-region" class="form-control">-->
+                  <label for="dashboard-addgearprice-country">Country</label>
+                  <select name="country" id="dashboard-addgearprice-country" class="form-control">
+                    <option value="">Select country</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
   </div>
 
   <div class="row addgear-panel hidden" id="addgear-panel-availability">
-    <div class="col-sm-12">
-      <div class="row">
-        <div class="col-sm-12"><h2>Availability</h2></div>
+    
+    <div class="col-sm-12 submerchant-height">
+      <div class="row submerchant-height">
+      <div class="col-sm-3 sg-darkgray-bg submerchant-height"  id="addgear-darkgray-left">
+        <div class="vertical-align">
+            <div class="row text-center"><img src="images/submerchant.png"/></div>
+              <div class="row text-center submerchant-sidebar-text">
+                <div class="col-sm-12">In order to put your gear up for rent we need some extra information about you so that we can pay you.</div>
+              </div>  
+        </div>
       </div>
+      
 
-      <div id="addgear-availability-calendar"></div>
-
+      <div class="col-sm-9 submerchant-height" id="addgear-availability-calendar"></div>
+      </div>
     </div>
   </div>
 

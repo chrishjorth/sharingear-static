@@ -8,7 +8,9 @@
 define(
 	['underscore', 'jquery', 'viewcontroller', 'moment', 'utilities', 'models/localization'],
 	function(_, $, ViewController, Moment, Utilities, Localization) {
-		var didInitialize,
+		var pickupHintText = 'Select a pickup date',
+			deliveryHintText = 'Select a delivery date',
+			didInitialize,
 			didRender,
 
 			renderMonthCalendar,
@@ -21,6 +23,8 @@ define(
 			handlePickupDateClick,
 			handleDeliveryDateClick,
 
+			switchToDeliveryTab,
+
 			isDayInAvailability,
 			isIntervalAvailable;
 
@@ -31,24 +35,36 @@ define(
 					doy: 4
 				}
 			});
-
-			this.displayedMoment = new Moment.tz(Localization.getCurrentTimeZone());
 			
 			this.pickupDate = null;
 			if(this.passedData.pickupDate && Moment.isMoment(this.passedData.pickupDate) === true) {
 				this.pickupDate = this.passedData.pickupDate;
+				if(this.pickupDate.isBefore(this.displayedMoment) === true) {
+					this.pickupDate = new Moment.tz(Localization.getCurrentTimeZone());
+				}
+				this.displayedPickupMonth = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
 			}
+			else {
+				this.displayedPickupMonth = new Moment.tz(Localization.getCurrentTimeZone());
+			}
+
 			this.deliveryDate = null;
 			if(this.passedData.deliveryDate && Moment.isMoment(this.passedData.deliveryDate) === true) {
 				this.deliveryDate = this.passedData.deliveryDate;
+				if(this.deliveryDate.isBefore(this.pickupDate) === true) {
+					console.log('BEFORE');
+					this.deliveryDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
+					this.deliveryDate.add(1, 'days');
+				}
+				this.displayedDeliveryMonth = new Moment.tz(this.deliveryDate, Localization.getCurrentTimeZone());
+			}
+			else {
+				this.displayedDeliveryMonth = new Moment.tz(this.displayedPickupMonth, Localization.getCurrentTimeZone());
 			}
 
 			this.pickupActive = true;
 			if(this.passedData.pickupActive === false) {
 				this.pickupActive = false;
-			}
-			else {
-				this.deliveryDate = null;
 			}
 
 			this.availability = [];
@@ -59,32 +75,43 @@ define(
 			if(this.passedData.alwaysFlag === 0 || this.passedData.alwaysFlag === 1) {
 				this.alwaysFlag = this.passedData.alwaysFlag;
 			}
+
+			this.deliveryDateConfirmed = false; //Flag that confirms the user has selected a new deliverydate
 		};
 
 		didRender = function() {
 			var $calendarContainer = $('.calendar', this.$element),
-				$tab;
+				$pickupTab, $deliveryTab;
 
 			this.renderMonthCalendar($calendarContainer);
-			this.populateMonthCalendar(this.displayedMoment, $calendarContainer);
-			$tab = $('#pickupdeliverycalendar-pickupdate', this.$element);
+			if(this.pickupActive === true) {
+				this.populateMonthCalendar(this.displayedPickupMonth, $calendarContainer);
+			}
+			else {
+				this.populateMonthCalendar(this.displayedDeliveryMonth, $calendarContainer);
+			}
+
+			$pickupTab = $('#pickupdeliverycalendar-pickupdate', this.$element);
+			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', this.$element);
 
 			if(this.pickupActive === false) {
-				$tab.removeClass('sg-toptab-active');
-				$tab.next().addClass('sg-toptab-active');
+				$pickupTab.removeClass('sg-toptab-active');
+				$deliveryTab.addClass('sg-toptab-active');
 			}
 
 			if(this.pickupDate !== null) {
-				$('div', $tab).html(this.pickupDate.format('DD/MM/YYYY'));
-				$('div', $tab.next()).html('-');
+				$('div', $pickupTab).html(this.pickupDate.format('DD/MM/YYYY'));
+			}
+			if(this.deliveryDate !== null) {
+				$('div', $deliveryTab).html(this.deliveryDate.format('DD/MM/YYYY'));
+			}
+			
+
+			if(this.deliveryDate !== null && this.pickupActive === false) {
+				$('.hint', this.$element).html(deliveryHintText);
 			}
 			else {
-				$('div', $tab).html('-');
-			}
-
-			$tab = $tab.next();
-			if(this.deliveryDate !== null && this.pickupActive === false) {
-				$('div', $tab).html(this.deliveryDate.format('DD/MM/YYYY'));
+				$('.hint', this.$element).html(pickupHintText);
 			}
 
 			this.setupEvent('click', '#pickupdeliverycalendar-prev', this, this.handlePrev);
@@ -142,6 +169,7 @@ define(
 					$dayBox.removeClass('disabled');
 					disable = false;
 					
+					//Render date
 					if(iteratorMoment.month() !== moment.month()) {
 						//$dayBox.addClass('disabled');
 						disable = true;
@@ -150,10 +178,13 @@ define(
 					else {
 						$dayBox.html(date);
 					}
-					if(iteratorMoment.isBefore(new Moment.tz(Localization.getCurrentTimeZone())) === true){
+
+					//Disable past days
+					if(iteratorMoment.isBefore(new Moment.tz(Localization.getCurrentTimeZone()), 'day') === true) {
 						disable = true;
 						//$dayBox.addClass('disabled');
 					}
+					//In case of delivery selection disable days before or equal to pickup date
 					if(this.pickupActive === false && (iteratorMoment.isBefore(this.pickupDate, 'day') === true || iteratorMoment.isSame(this.pickupDate, 'day') === true)) {
 						disable = true;
 						//$dayBox.addClass('disabled');
@@ -179,6 +210,14 @@ define(
 						}
 					}
 					if(this.pickupActive === false && this.deliveryDate !== null) {
+						if(iteratorMoment.isSame(this.pickupDate, 'day') === true && iteratorMoment.isSame(this.pickupDate, 'month') === true && iteratorMoment.isSame(this.pickupDate, 'year') === true) {
+							$dayBox.addClass('pickup');
+						}
+
+						if(iteratorMoment.isAfter(this.pickupDate, 'day') === true && iteratorMoment.isBefore(this.deliveryDate, 'day') === true && iteratorMoment.month() === this.displayedDeliveryMonth.month()) {
+							$dayBox.addClass('selected');
+						}
+
 						//We need to granulate to day, as deliveryDate might have a delivery time set
 						if(iteratorMoment.isSame(this.deliveryDate, 'day') === true && iteratorMoment.isSame(this.deliveryDate, 'month') === true && iteratorMoment.isSame(this.deliveryDate, 'year') === true) {
 							$dayBox.addClass('selected');
@@ -193,6 +232,7 @@ define(
 
 		clearSelections = function() {
 			$('.day', this.$element).removeClass('selected');
+			$('.day', this.$element).removeClass('pickup');
 		};
 
 		handlePrev = function(event) {
@@ -202,8 +242,14 @@ define(
 			view.clearSelections();
 
 			$calendarContainer = $('.calendar', view.$element);
-			view.displayedMoment.subtract(1, 'months');
-			view.populateMonthCalendar(view.displayedMoment, $calendarContainer);
+			if(view.pickupActive === true) {
+				view.displayedPickupMonth.subtract(1, 'months');
+				view.populateMonthCalendar(view.displayedPickupMonth, $calendarContainer);
+			}
+			else {
+				view.displayedDeliveryMonth.subtract(1, 'months');
+				view.populateMonthCalendar(view.displayedDeliveryMonth, $calendarContainer);
+			}
 		};
 
 		handleNext = function (event) {
@@ -213,8 +259,15 @@ define(
 			view.clearSelections();
 
 			$calendarContainer = $('.calendar', view.$element);
-			view.displayedMoment.add(1, 'months');
-			view.populateMonthCalendar(view.displayedMoment, $calendarContainer);
+			if(view.pickupActive === true) {
+				view.displayedPickupMonth.add(1, 'months');
+				view.populateMonthCalendar(view.displayedPickupMonth, $calendarContainer);
+			}
+			else {
+				view.displayedDeliveryMonth.add(1, 'months');
+				view.populateMonthCalendar(view.displayedDeliveryMonth, $calendarContainer);
+
+			}
 		};
 
 		handleDaySelection = function(event) {
@@ -230,26 +283,23 @@ define(
 			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 
 			if(view.pickupActive === true) {
+				//We are in the pickup tab
 				view.pickupDate = new Moment.tz($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
-				//$pickupTab.removeClass('sg-toptab-active');
 				$('div', $pickupTab).html(view.pickupDate.format('DD/MM/YYYY'));
-				//$deliveryTab.addClass('sg-toptab-active');
 				view.deliveryDate = null;
 				$('div', $deliveryTab).html('-');
-				//view.pickupActive = false;
+
 				if(_.isFunction(view.passedData.parent.handlePickupSelection) === true) {
 					view.passedData.parent.handlePickupSelection(view, function() {
-						if($dayBox.hasClass('selected') === false) {
-							$dayBox.addClass('selected');
-						}
-
-						view.clearSelections();
-						view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));	
-
+						view.switchToDeliveryTab();	
 					});
+				}
+				else {
+					view.switchToDeliveryTab();
 				}
 			}
 			else {
+				//We are in the delivery tab
 				view.deliveryDate = new Moment.tz($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 				//Check that delivery date is after pickup date
 				if(view.deliveryDate.isBefore(view.pickupDate) === true || view.deliveryDate.isSame(view.pickupDate) === true) {
@@ -260,6 +310,7 @@ define(
 				if(view.isIntervalAvailable(view.pickupDate, view.deliveryDate) === true) {
 					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
 					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
+						view.deliveryDateConfirmed = true;
 						view.passedData.parent.handleDeliverySelection(view, false, function(){
 				
 							if($dayBox.hasClass('selected') === false) {
@@ -267,7 +318,7 @@ define(
 							}
 
 							view.clearSelections();
-							view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));	
+							view.populateMonthCalendar(view.displayedDeliveryMonth, $('.calendar', view.$element));	
 
 						});
 					}
@@ -291,54 +342,48 @@ define(
 				$pickupTab.addClass('sg-toptab-active');
 				$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 				$deliveryTab.removeClass('sg-toptab-active');
-				
-				var pickupDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
-				var displayedDay = new Moment.tz(view.displayedMoment, Localization.getCurrentTimeZone());
-				
-				if (pickupDate.month()!==displayedDay.month()) {
-					handlePrev(event);
-				}
 
 				view.pickupActive = true;
+				$('.hint', view.$element).html(pickupHintText);
 				view.clearSelections();
-				view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));
+				view.populateMonthCalendar(view.displayedPickupMonth, $('.calendar', view.$element));
 			}
 		};
 
 		handleDeliveryDateClick = function(event) {
-			var view = event.data,
-				$pickupTab, $deliveryTab;
+			var view = event.data;
 			
 			if(view.pickupActive === true && view.pickupDate !== null) {
-				$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
-				$deliveryTab.addClass('sg-toptab-active');
-				$pickupTab = $('#pickupdeliverycalendar-pickupdate', view.$element);
-				$pickupTab.removeClass('sg-toptab-active');
-
-				if(view.deliveryDate === null) {
-					view.deliveryDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
-					
-					view.deliveryDate.add(1, 'days');
-					view.deliveryDate.hours(12);
-					
-					var deliveryCheck = new Moment.tz(view.deliveryDate, Localization.getCurrentTimeZone());
-					var displayedCheck= new Moment.tz(view.displayedMoment, Localization.getCurrentTimeZone());
-
-					if (deliveryCheck.month()!==displayedCheck.month()) {
-						handleNext(event);
-					}
-
-					$('div', $deliveryTab).html(view.deliveryDate.format('DD/MM/YYYY'));
-					
-					if(_.isFunction(view.passedData.parent.handleDeliverySelection) === true) {
-						view.passedData.parent.handleDeliverySelection(view, true);
-					}
-				}
-
-				view.pickupActive = false;
-				view.clearSelections();
-				view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));
+				view.switchToDeliveryTab();
 			}
+		};
+
+		switchToDeliveryTab = function() {
+			var $pickupTab, $deliveryTab;
+
+			$pickupTab = $('#pickupdeliverycalendar-pickupdate', this.$element);
+			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', this.$element);
+
+			$pickupTab.removeClass('sg-toptab-active');
+			$deliveryTab.addClass('sg-toptab-active');
+			this.pickupActive = false;
+
+			$('.hint', this.$element).html(deliveryHintText);
+
+			if(this.deliveryDate === null) {
+				this.deliveryDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());	
+				this.deliveryDate.add(1, 'days');
+				this.deliveryDate.hours(12);
+			}
+
+			$('div', $deliveryTab).html(this.deliveryDate.format('DD/MM/YYYY'));
+					
+			if(_.isFunction(this.passedData.parent.handleDeliverySelection) === true) {
+				this.passedData.parent.handleDeliverySelection(this, true);
+			}
+
+			this.clearSelections();
+			this.populateMonthCalendar(this.displayedDeliveryMonth, $('.calendar', this.$element));
 		};
 
 		isDayInAvailability = function(moment) {
@@ -402,6 +447,8 @@ define(
 			handleDaySelection: handleDaySelection,
 			handlePickupDateClick: handlePickupDateClick,
 			handleDeliveryDateClick: handleDeliveryDateClick,
+
+			switchToDeliveryTab: switchToDeliveryTab,
 
 			isDayInAvailability: isDayInAvailability,
 			isIntervalAvailable: isIntervalAvailable

@@ -61,8 +61,8 @@ define(
 			this.renderPricing();
 			this.calculatePrice();
 			this.renderCalendar();
-			this.setupEvent('click', '#gearbooking-cancel-btn', this, this.handleCancel);
-			this.setupEvent('click', '#gearbooking-next', this, this.handleNext);
+			this.setupEvent('click', '#bookingrequest-cancel-btn', this, this.handleCancel);
+			this.setupEvent('click', '#bookingrequest-next', this, this.handleNext);
 		};
 
 		renderCalendar = function() {
@@ -111,9 +111,9 @@ define(
 			duration = Moment.duration(endMoment.diff(startMoment));
 			days = parseInt(duration.days(), 10);
 
-			$('#gearbooking-days', this.$element).html(days);
-			$('#gearbooking-weeks', this.$element).html(weeks);
-			$('#gearbooking-months', this.$element).html(months);
+			$('#bookingrequest-days', this.$element).html(days);
+			$('#bookingrequest-weeks', this.$element).html(weeks);
+			$('#bookingrequest-months', this.$element).html(months);
 
 			Localization.convertPrices([this.passedData.price_a, this.passedData.price_b, this.passedData.price_c], this.passedData.currency, App.user.data.currency, function(error, convertedPrices) {
 				var price;
@@ -123,7 +123,7 @@ define(
 				}
 				price = months * Math.ceil(convertedPrices[2]) + weeks * Math.ceil(convertedPrices[1]) + days * Math.ceil(convertedPrices[0]);
 
-				$('#gearbooking-price', view.$element).html(price);
+				$('#bookingrequest-price', view.$element).html(price);
 			});
 		};
 

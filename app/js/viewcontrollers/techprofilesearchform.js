@@ -97,41 +97,47 @@ define(
 
 		handlePickupDate = function(event) {
 			var view = event.data,
-				passedData = {},
-				$calendarContainer, pickupInputString;
+				passedData, pickupInputString, deliveryInputString;
 
 			$(this).blur();
 
+			passedData = {
+				pickupActive: true,
+				parent: view
+			};
+
 			pickupInputString = $('#techprofilesearch-pickup', view.$element).val();
 			if(pickupInputString !== '') {
-				passedData = {
-					pickupDate: pickupInputString,
-					pickupActive: true
-				};
+				passedData.pickupDate = new Moment.tz(pickupInputString, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 			}
-			passedData.parent = view;
-			
-			$calendarContainer = $('.pickupdeliverycalendar-container', view.$element);
+			deliveryInputString = $('#search-return', view.$element).val();
+			if(deliveryInputString !== '') {
+				passedData.deliveryDate = new Moment.tz(deliveryInputString, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
+			}
 			
 			App.router.openModalView('pickupdeliverycalendar', passedData);
 		};
 
 		handleDeliveryDate = function(event) {
 			var view = event.data,
-				passedData = {},
-				deliveryInputString;
+				passedData, pickupInputString, deliveryInputString;
 
 			$(this).blur();
 
+			passedData = {
+				pickupActive: false,
+				parent: view
+			};
+
+			pickupInputString = $('#techprofilesearch-pickup', view.$element).val();
+			if(pickupInputString !== '') {
+				passedData.pickupDate = new Moment.tz(pickupInputString, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
+			}
+
 			deliveryInputString = $('#techprofilesearch-return', view.$element).val();
 			if(deliveryInputString !== '') {
-				passedData = {
-					pickupDate: $('#techprofilesearch-pickup', view.$element).val(),
-					deliveryDate: deliveryInputString,
-					pickupActive: false
-				};
+				passedData.deliveryDate = new Moment.tz(deliveryInputString, 'DD/MM/YYYY', Localization.getCurrentTimeZone());
 			}
-			passedData.parent = view;
 			
 			App.router.openModalView('pickupdeliverycalendar', passedData);
 		};
