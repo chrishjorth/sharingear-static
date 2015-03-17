@@ -3613,6 +3613,20 @@ button:focus,div:focus {
 	content: "\e630";
 }
 
+.icon-test {
+	position: absolute;
+	color: pink;
+	margin-top: 100px;
+	height: 100px;
+	width: 100px;
+	font-size: 18px;
+	z-index: 10000;
+	content: "\e630";
+}
+.icon-test:before {
+	content: "\e630";
+}
+
 .icon-addtechprofile-driver:before {
 	content: "\e62f";
 }
