@@ -3615,15 +3615,12 @@ button:focus,div:focus {
 
 .icon-test {
 	position: absolute;
-	color: pink;
+	color: blue;
 	margin-top: 100px;
 	height: 100px;
 	width: 100px;
 	font-size: 18px;
 	z-index: 10000;
-}
-.icon-test:after {
-	content: "WTF!!!";
 }
 
 .icon-addtechprofile-driver:before {
