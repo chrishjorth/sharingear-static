@@ -49,8 +49,6 @@ define(
 			this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
             this.alwaysFlag = 0;
 
-            /*SEND IN AVAILABILITY DATA AS PASSED DATA!!!
-
             this.gear.getAvailability(App.user.data.id, function(error, result) {
                 var availabilityArray = result.availabilityArray,
                     i, startMoment, endMoment;
@@ -77,7 +75,7 @@ define(
                 //console.log(view.alwaysFlag);
                 //console.log(view.selections);
                 view.renderSelections();
-            });*/
+            });
 		};
 
 		didRender = function() {
