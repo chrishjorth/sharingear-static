@@ -415,7 +415,7 @@ body {
 	border-top-width: 1px;
 	height: 70px;
 	z-index: 410;
-	background-color: #ffffff;
+	background-color: #d5dada;
 }
 @media (min-width: 768px) {
 	.sg-toptab-container {
@@ -456,7 +456,7 @@ body {
 }
 .sg-toptab-container > li > a,
 .sg-toptab-container > li > a:hover {
-	color: #d5dada;
+	color: #ffffff;
 	border: none;
 	background: none;
 	padding-left: 0;

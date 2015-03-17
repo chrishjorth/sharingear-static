@@ -35,24 +35,31 @@ define(
 					doy: 4
 				}
 			});
-
-			this.displayedMoment = new Moment.tz(Localization.getCurrentTimeZone());
 			
 			this.pickupDate = null;
 			if(this.passedData.pickupDate && Moment.isMoment(this.passedData.pickupDate) === true) {
 				this.pickupDate = this.passedData.pickupDate;
 				if(this.pickupDate.isBefore(this.displayedMoment) === true) {
-					this.pickupDate = new Moment.tz(this.displayedMoment, Localization.getCurrentTimeZone());
+					this.pickupDate = new Moment.tz(Localization.getCurrentTimeZone());
 				}
+				this.displayedPickupMonth = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
+			}
+			else {
+				this.displayedPickupMonth = new Moment.tz(Localization.getCurrentTimeZone());
 			}
 
 			this.deliveryDate = null;
 			if(this.passedData.deliveryDate && Moment.isMoment(this.passedData.deliveryDate) === true) {
 				this.deliveryDate = this.passedData.deliveryDate;
 				if(this.deliveryDate.isBefore(this.pickupDate) === true) {
-					this.pickupDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
-					this.pickupDate.add(1, 'days');
+					console.log('BEFORE');
+					this.deliveryDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
+					this.deliveryDate.add(1, 'days');
 				}
+				this.displayedDeliveryMonth = new Moment.tz(this.deliveryDate, Localization.getCurrentTimeZone());
+			}
+			else {
+				this.displayedDeliveryMonth = new Moment.tz(this.displayedPickupMonth, Localization.getCurrentTimeZone());
 			}
 
 			this.pickupActive = true;
@@ -77,7 +84,12 @@ define(
 				$pickupTab, $deliveryTab;
 
 			this.renderMonthCalendar($calendarContainer);
-			this.populateMonthCalendar(this.displayedMoment, $calendarContainer);
+			if(this.pickupActive === true) {
+				this.populateMonthCalendar(this.displayedPickupMonth, $calendarContainer);
+			}
+			else {
+				this.populateMonthCalendar(this.displayedDeliveryMonth, $calendarContainer);
+			}
 
 			$pickupTab = $('#pickupdeliverycalendar-pickupdate', this.$element);
 			$deliveryTab = $('#pickupdeliverycalendar-deliverydate', this.$element);
@@ -202,8 +214,7 @@ define(
 							$dayBox.addClass('pickup');
 						}
 
-
-						if(iteratorMoment.isAfter(this.pickupDate, 'day') === true && iteratorMoment.isBefore(this.deliveryDate, 'day') === true) {
+						if(iteratorMoment.isAfter(this.pickupDate, 'day') === true && iteratorMoment.isBefore(this.deliveryDate, 'day') === true && iteratorMoment.month() === this.displayedDeliveryMonth.month()) {
 							$dayBox.addClass('selected');
 						}
 
@@ -231,8 +242,14 @@ define(
 			view.clearSelections();
 
 			$calendarContainer = $('.calendar', view.$element);
-			view.displayedMoment.subtract(1, 'months');
-			view.populateMonthCalendar(view.displayedMoment, $calendarContainer);
+			if(view.pickupActive === true) {
+				view.displayedPickupMonth.subtract(1, 'months');
+				view.populateMonthCalendar(view.displayedPickupMonth, $calendarContainer);
+			}
+			else {
+				view.displayedDeliveryMonth.subtract(1, 'months');
+				view.populateMonthCalendar(view.displayedDeliveryMonth, $calendarContainer);
+			}
 		};
 
 		handleNext = function (event) {
@@ -242,8 +259,15 @@ define(
 			view.clearSelections();
 
 			$calendarContainer = $('.calendar', view.$element);
-			view.displayedMoment.add(1, 'months');
-			view.populateMonthCalendar(view.displayedMoment, $calendarContainer);
+			if(view.pickupActive === true) {
+				view.displayedPickupMonth.add(1, 'months');
+				view.populateMonthCalendar(view.displayedPickupMonth, $calendarContainer);
+			}
+			else {
+				view.displayedDeliveryMonth.add(1, 'months');
+				view.populateMonthCalendar(view.displayedDeliveryMonth, $calendarContainer);
+
+			}
 		};
 
 		handleDaySelection = function(event) {
@@ -267,12 +291,6 @@ define(
 
 				if(_.isFunction(view.passedData.parent.handlePickupSelection) === true) {
 					view.passedData.parent.handlePickupSelection(view, function() {
-						/*if($dayBox.hasClass('selected') === false) {
-							$dayBox.addClass('selected');
-						}
-
-						view.clearSelections();
-						view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));*/
 						view.switchToDeliveryTab();	
 					});
 				}
@@ -300,7 +318,7 @@ define(
 							}
 
 							view.clearSelections();
-							view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));	
+							view.populateMonthCalendar(view.displayedDeliveryMonth, $('.calendar', view.$element));	
 
 						});
 					}
@@ -324,18 +342,11 @@ define(
 				$pickupTab.addClass('sg-toptab-active');
 				$deliveryTab = $('#pickupdeliverycalendar-deliverydate', view.$element);
 				$deliveryTab.removeClass('sg-toptab-active');
-				
-				//var pickupDate = new Moment.tz(view.pickupDate, Localization.getCurrentTimeZone());
-				//var displayedDay = new Moment.tz(view.displayedMoment, Localization.getCurrentTimeZone());
-				
-				//if (pickupDate.month()!==displayedDay.month()) {
-				//	handlePrev(event);
-				//}
 
 				view.pickupActive = true;
 				$('.hint', view.$element).html(pickupHintText);
 				view.clearSelections();
-				view.populateMonthCalendar(view.displayedMoment, $('.calendar', view.$element));
+				view.populateMonthCalendar(view.displayedPickupMonth, $('.calendar', view.$element));
 			}
 		};
 
@@ -372,7 +383,7 @@ define(
 			}
 
 			this.clearSelections();
-			this.populateMonthCalendar(this.displayedMoment, $('.calendar', this.$element));
+			this.populateMonthCalendar(this.displayedDeliveryMonth, $('.calendar', this.$element));
 		};
 
 		isDayInAvailability = function(moment) {
