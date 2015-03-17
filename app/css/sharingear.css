@@ -3621,9 +3621,8 @@ button:focus,div:focus {
 	width: 100px;
 	font-size: 18px;
 	z-index: 10000;
-	content: "\e630";
 }
-.icon-test:before {
+.icon-test:after {
 	content: "\e630";
 }
 
