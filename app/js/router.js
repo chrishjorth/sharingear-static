@@ -84,7 +84,7 @@ define(
 						newLocation += '?' + queryString;
 					}
 					newLocation += '#' + route;
-					history.replaceState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
+					history.pushState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
 				}
 			}
 			else {
