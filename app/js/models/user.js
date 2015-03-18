@@ -23,9 +23,14 @@ define(
 
 			isLoggedIn;
 
-		FB.init({
-			appId: '522375581240221'
-		});
+		if(FB) {
+			FB.init({
+				appId: '522375581240221'
+			});
+		}
+		else {
+			console.log('Error: Facebook library is not loaded or blocked.');
+		}
 
 		didInitialize = function() {
 			if(this.data === null) {
@@ -50,6 +55,12 @@ define(
 
 		getLoginStatus = function(callback) {
 			var user = this;
+			if(!FB) {
+				callback({
+					status: 'Failed.'
+				});
+				return;
+			}
 			FB.getLoginStatus(function(response) {
 				//console.log(response);
 				user.fbStatus = response.status;
@@ -61,6 +72,11 @@ define(
 
 		login = function(callback) {
 			var user = this;
+
+			if(!FB) {
+				callback('Facebook library is not loaded or blocked.');
+				return;
+			}
 
 			//We need to make sure Facebook has not changed the status on their side.
 			this.getLoginStatus(function(response) {
