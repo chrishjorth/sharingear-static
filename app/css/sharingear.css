@@ -3585,11 +3585,11 @@ button:focus,div:focus {
 /******* 10. ICONS *******/
 @font-face {
 	font-family: 'icomoon';
-	src:url('https://dev.sharingear.com/fonts/icomoon.eot');
-	src:url('https://dev.sharingear.com/fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-	url('https://dev.sharingear.com/fonts/icomoon.woff') format('woff'),
-	url('https://dev.sharingear.com/fonts/icomoon.ttf') format('truetype'),
-	url('https://dev.sharingear.com/fonts/icomoon.svg#icomoon') format('svg');
+	src:url('../fonts/icomoon.eot');
+	src:url('../fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/icomoon.woff') format('woff'),
+	url('../fonts/icomoon.ttf') format('truetype'),
+	url('../fonts/icomoon.svg#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
