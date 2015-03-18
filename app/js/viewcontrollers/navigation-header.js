@@ -169,6 +169,10 @@ define(
 				    App.router.navigateTo('dashboard');
 				    view.render();
                 }
+                else {
+                	alert('Could not connect to Facebook.');
+                	console.log(error);
+                }
 				
 				if(callback && typeof callback === 'function') {
 					callback();
