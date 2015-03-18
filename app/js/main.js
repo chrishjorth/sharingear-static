@@ -75,11 +75,6 @@ require(['underscore', 'jquery', 'bootstrap', 'moment', 'momenttz'], function(_)
 	console.log('Loaded core libraries.');
 
 	require(['app'], function(App) {
-		App.run(function() {
-			window.setTimeout(function() {
-				console.log('REDRAW!');
-				$(window).trigger('resize');
-			}, 5000)
-		});
+		App.run();
 	});
 });
