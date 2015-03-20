@@ -86,7 +86,8 @@ define(
             this.setupEvent('change', '#edittechprofile-photos-form-imageupload', this, this.handleImageUpload);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#edittechprofile-subtype', this, this.handleSubtypeChange);
-
+            this.setupEvent('click', '#edittechprofile-cancel-symbol', this, this.handleCancel);
+            
             this.setupEvent('click', '#edittechprofile-startyear', this, this.handleExperienceStartYearChange);
 
             this.setupEvent('click', '#edittechprofile-submerchantform-submit', this, this.handleSubmerchantFormSubmit);

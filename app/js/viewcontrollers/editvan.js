@@ -97,7 +97,7 @@ define(
             this.setupEvent('change', '#van-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#editvan-subtype', this, this.handleSubtypeChange);
-
+            this.setupEvent('click', '#editvan-cancel-symbol', this, this.handleCancel);
             this.setupEvent('click', '#editvan-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
         };
 
