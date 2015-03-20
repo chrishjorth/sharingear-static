@@ -100,7 +100,8 @@ define(
             this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 			this.setupEvent('change', '.price', this, this.handlePriceChange);
 			this.setupEvent('change', '#editgear-subtype', this, this.handleSubtypeChange);
-
+            this.setupEvent('click', '#editgear-cancel-symbol', this, this.handleCancel);
+            
             this.setupEvent('click', '#editgear-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
         };
 
