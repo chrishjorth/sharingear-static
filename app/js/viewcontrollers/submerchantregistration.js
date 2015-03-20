@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'viewcontroller', 'config', 'app', 'models/localization', 'moment', 'googlemaps'],
-	function(_, $, ViewController, Config, App, Localization, Moment, GoogleMaps) {
+	['underscore', 'jquery', 'viewcontroller', 'config', 'app', 'models/localization', 'moment', 'googlemaps','popups/messagepopup'],
+	function(_, $, ViewController, Config, App, Localization, Moment, GoogleMaps, MessagePopup) {
 		var geocoder = new GoogleMaps.Geocoder(),
 
 			didInitialize,
@@ -20,6 +20,9 @@ define(
 			handleBirthdateChange,
 			handleCountrySelect,
 
+			handleHintIBAN,
+			handleHintSwift,
+
 			submitForm,
 			acceptTerms;
 
@@ -29,8 +32,31 @@ define(
 
 		didRender = function() {
 			this.setupForm();
+
 			this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
 			this.setupEvent('change', '#submerchantregistration-country', this, this.handleCountrySelect);
+			this.setupEvent('click', '#iban-hint', this, this.handleHintIBAN);
+			this.setupEvent('click', '#swift-hint', this, this.handleHintSwift);
+		};
+
+		handleHintIBAN	= function () {
+			var view = this,
+				messagePopup = new MessagePopup.constructor(),
+				message = "IBAN stands for International Bank Account Number and is a number attached to all accounts in the EU countries plus Norway, Switzerland, Liechtenstein and Hungary. The IBAN is made up of a code that identifies the country the account belongs to, the account holder's bank and the account number itself. The IBAN makes it easier and faster to process cross-border payments.";
+
+			messagePopup.initialize();
+			messagePopup.show();
+			messagePopup.setMessage(message);
+		};
+
+		handleHintSwift	= function () {
+			var view = this,
+				messagePopup = new MessagePopup.constructor(),
+				message = "The SWIFT/BIC (Bank Identifier Code) is an international standard for the identification of banks. The IBAN is an extension of your existing account number for use when you make cross-border payments.";
+
+			messagePopup.initialize();
+			messagePopup.show();
+			messagePopup.setMessage(message);
 		};
 
 		setupForm = function() {
@@ -331,7 +357,8 @@ define(
 
 			handleBirthdateChange: handleBirthdateChange,
 			handleCountrySelect: handleCountrySelect,
-
+			handleHintIBAN: handleHintIBAN,
+			handleHintSwift: handleHintSwift,
 			submitForm: submitForm,
 			acceptTerms: acceptTerms
 		});

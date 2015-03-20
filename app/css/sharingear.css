@@ -2387,8 +2387,30 @@ text-align: left;
 	padding-bottom: 70px;
 }
 
+.message-pop{
+	padding: 15px;
+}
+
 .submerchant-container, .submerchant-height  {
 	height: 100%;
+}
+
+.submerchant-hits {
+	color: #808080;
+	font-size: 12px;
+	padding-left: 5px;
+	vertical-align: middle;
+	position: absolute;
+	top: 28px;
+	cursor: pointer;
+}
+
+.submerchant-message-close{
+
+	margin-right: -10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+
 }
 
 .full-height{
