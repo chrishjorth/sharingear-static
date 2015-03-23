@@ -5,8 +5,16 @@ PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
 git stash -q --keep-index
 
+#Build app
+cd app/js
+webpack
+
+#Build test
+cd ../test/js
+webpack
+
 #Run test
-cd app/test
+cd ..
 mocha-phantomjs ./index.html
 RETVAL=$?
 cd ../../
