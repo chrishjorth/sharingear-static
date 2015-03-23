@@ -3,30 +3,36 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['jquery', 'viewcontroller'],
-	function($, ViewController) {
-		var didRender,
-			loadFooter;
+var $ = require('jquery'),
+	
+	ViewController = require('../viewcontroller.js'),
 
-		didRender = function() {
-			this.loadFooter();
-		};
+    didRender,
+    loadFooter;
 
-		loadFooter = function() {
-			var view = this;
-			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
-				view.footer = new FooterController.constructor({name: 'footer', $element: $('footer', view.$element), template: FooterTemplate});
-				view.footer.initialize();
-				view.footer.render();
-			});
-		};
+didRender = function() {
+    this.loadFooter();
+};
 
-		return ViewController.inherit({
-			didRender: didRender,
-			loadFooter: loadFooter
-		});
-	}
-);
+loadFooter = function() {
+    var view = this,
+        FooterController, FooterTemplate;
+    FooterController = require('./footer.js');
+    FooterTemplate = require('../../templates/footer.html');
+
+    view.footer = new FooterController.constructor({
+        name: 'footer',
+        $element: $('footer', view.$element),
+        template: FooterTemplate
+    });
+    view.footer.initialize();
+    view.footer.render();
+};
+
+module.exports = ViewController.inherit({
+    didRender: didRender,
+    loadFooter: loadFooter
+});

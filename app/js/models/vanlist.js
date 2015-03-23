@@ -3,138 +3,135 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'model', 'models/van'],
-	function(_, Model, Van) {
-		var didInitialize,
+var _ = require('underscore'),
 
-			search,
-			getUserVans,
-			getUserVanRentals,
-			getUserVanReservations,
-			getVanItem,
-			isEmpty,
-			updateVanItem,
-			loadFromArray;
+    Model = require('../model'),
+    Van = require('./van'),
 
-		didInitialize = function() {
-			if(this.data === null) {
-				this.data = [];
-			}
-		};
+    didInitialize,
 
-		search = function(location, gear, daterange, callback) {
-			var view = this;
+    search,
+    getUserVans,
+    getUserVanRentals,
+    getUserVanReservations,
+    getVanItem,
+    isEmpty,
+    updateVanItem,
+    loadFromArray;
 
-			if(location === null || location === '') {
-				location = 'all';
-			}
-			this.get('/vans/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(searchResults);
-					callback(view.data);
-				}
-			});
-		};
+didInitialize = function() {
+    if (this.data === null) {
+        this.data = [];
+    }
+};
 
-		getUserVans = function(userID, callback) {
-			var view = this;
-			this.get('/users/' + userID + '/vans', function(error, userGear) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(userGear);
-					callback(view.data);
-				}
-			});
-		};
+search = function(location, gear, daterange, callback) {
+    var view = this;
 
-		getUserVanRentals = function(userID, callback) {
-			var view = this;
-			this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(userRentals);
-					callback(view.data);
-				}
-			});
-		};
+    if (location === null || location === '') {
+        location = 'all';
+    }
+    this.get('/vans/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+        if (error) {
+            console.log(error);
+            callback([]);
+        } else {
+            view.loadFromArray(searchResults);
+            callback(view.data);
+        }
+    });
+};
 
-		getUserVanReservations = function(userID, callback) {
-			var view = this;
-            
-            view.get('/users/' + userID + '/vanreservations', function (error, userReservations) {
-            	if (error) {
-            		callback([]);
-            	}
-            	else {
-            		view.loadFromArray(userReservations);
-            		callback(view.data);
-            	}
-            });
-		};
+getUserVans = function(userID, callback) {
+    var view = this;
+    this.get('/users/' + userID + '/vans', function(error, userGear) {
+        if (error) {
+            console.log(error);
+            callback([]);
+        } else {
+            view.loadFromArray(userGear);
+            callback(view.data);
+        }
+    });
+};
 
-		getVanItem = function(property, key) {
-			var i;
-			for(i = 0; i < this.data.length; i++) {
-				if(this.data[i].data[property] === key) {
-					return this.data[i];
-				}
-			}
-			return null;
-		};
+getUserVanRentals = function(userID, callback) {
+    var view = this;
+    this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
+        if (error) {
+            console.log(error);
+            callback([]);
+        } else {
+            view.loadFromArray(userRentals);
+            callback(view.data);
+        }
+    });
+};
 
-		isEmpty = function() {
-			return this.data.length <= 0;
-		};
+getUserVanReservations = function(userID, callback) {
+    var view = this;
 
-		updateVanItem = function(vanItem) {
-			var i;
-			for(i = 0; i < this.data.length; i++) {
-				if(this.data[i].id === vanItem.data.id) {
-					this.data[i] = vanItem.data;
-					return;
-				}
-			}
-		};
+    view.get('/users/' + userID + '/vanreservations', function(error, userReservations) {
+        if (error) {
+            callback([]);
+        } else {
+            view.loadFromArray(userReservations);
+            callback(view.data);
+        }
+    });
+};
 
-		loadFromArray = function(vanArray) {
-			var i, vanItem;
+getVanItem = function(property, key) {
+    var i;
+    for (i = 0; i < this.data.length; i++) {
+        if (this.data[i].data[property] === key) {
+            return this.data[i];
+        }
+    }
+    return null;
+};
 
-            this.data = [];
+isEmpty = function() {
+    return this.data.length <= 0;
+};
 
-			for(i = 0; i < vanArray.length; i++) {
-                vanItem = new Van.constructor({
-                    rootURL: this.rootURL
-                });
-                vanItem.initialize();
-                _.extend(vanItem.data, vanArray[i]);
-				this.data.push(vanItem);
-			}
-		};
+updateVanItem = function(vanItem) {
+    var i;
+    for (i = 0; i < this.data.length; i++) {
+        if (this.data[i].id === vanItem.data.id) {
+            this.data[i] = vanItem.data;
+            return;
+        }
+    }
+};
 
-		return Model.inherit({
-			didInitialize: didInitialize,
+loadFromArray = function(vanArray) {
+    var i, vanItem;
 
-			search: search,
-			getUserVans: getUserVans,
-			getUserVanRentals: getUserVanRentals,
-			getUserVanReservations: getUserVanReservations,
-			getVanItem: getVanItem,
-			isEmpty: isEmpty,
-			updateVanItem: updateVanItem,
-			loadFromArray: loadFromArray
-		});
-	}
-);
+    this.data = [];
+
+    for (i = 0; i < vanArray.length; i++) {
+        vanItem = new Van.constructor({
+            rootURL: this.rootURL
+        });
+        vanItem.initialize();
+        _.extend(vanItem.data, vanArray[i]);
+        this.data.push(vanItem);
+    }
+};
+
+module.exports = Model.inherit({
+    didInitialize: didInitialize,
+
+    search: search,
+    getUserVans: getUserVans,
+    getUserVanRentals: getUserVanRentals,
+    getUserVanReservations: getUserVanReservations,
+    getVanItem: getVanItem,
+    isEmpty: isEmpty,
+    updateVanItem: updateVanItem,
+    loadFromArray: loadFromArray
+});

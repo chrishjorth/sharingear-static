@@ -3,127 +3,125 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'jquery', 'utilities'], 
-	function(_, $, Utilities) {
-		var initialize,
-			get,
-			post,
-			put,
-			del,
+var _ = require('underscore'),
+	$ = require('jquery'),
 
-			constructor, inherit;
+	Utilities = require('./utilities.js'),
 
-		initialize = function() {
-			if(this.didInitialize && typeof this.didInitialize == 'function') {
-				this.didInitialize();
-			}
-		};
+	initialize,
+    get,
+    post,
+    put,
+    del,
 
-		get = function(url, callback) {
-			var encodedURL = encodeURI(this.rootURL + url);
-			$.ajax({
-				dataType: 'json',
-				type: 'GET',
-				url: encodedURL,
-				error: function(jqXHR, textStatus, errorThrown) {
-					console.log(jqXHR);
-					console.log(textStatus);
-					callback('Error executing GET request: ' + errorThrown);
-				},
-				success: function(data) {
-					if(data.error) {
-						callback('Error retrieving resource from server: ' + data.error);
-					}
-					else {
-						callback(null, data);
-					}
-				}
-			});
-		};
+    constructor, inherit;
 
-		post = function(url, data, callback) {
-			var encodedURL = encodeURI(this.rootURL + url);
+initialize = function() {
+    if (this.didInitialize && typeof this.didInitialize == 'function') {
+        this.didInitialize();
+    }
+};
 
-			$.ajax({
-				dataType: 'json',
-				type: 'POST',
-				data: data,
-				url: encodedURL,
-				error: function(jqXHR, textStatus, errorThrown) {
-					callback('Error executing POST request: ' + errorThrown);
+get = function(url, callback) {
+    var encodedURL = encodeURI(this.rootURL + url);
+    $.ajax({
+        dataType: 'json',
+        type: 'GET',
+        url: encodedURL,
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            callback('Error executing GET request: ' + errorThrown);
+        },
+        success: function(data) {
+            if (data.error) {
+                callback('Error retrieving resource from server: ' + data.error);
+            } else {
+                callback(null, data);
+            }
+        }
+    });
+};
 
-				},
-				success: function(data) {
+post = function(url, data, callback) {
+    var encodedURL = encodeURI(this.rootURL + url);
 
-					if(data.error) {
-						callback('Error sending resource to server: ' + data.error);
-					}
-					else {
-						callback(null, data);
-					}
-				}
-			});
-		};
+    $.ajax({
+        dataType: 'json',
+        type: 'POST',
+        data: data,
+        url: encodedURL,
+        error: function(jqXHR, textStatus, errorThrown) {
+            callback('Error executing POST request: ' + errorThrown);
 
-		put = function(url, data, callback) {
-			var encodedURL = encodeURI(this.rootURL + url);
+        },
+        success: function(data) {
 
-			$.ajax({
-				dataType: 'json',
-				type: 'PUT',
-				data: data,
-				url: encodedURL,
-				error: function(jqXHR, textStatus, errorThrown) {
-					callback('Error executing PUT request: ' + errorThrown);
-				},
-				success: function(data) {
-					if(data.error) {
-						console.log(data.error);
-						callback('Error putting resource to server: ' + data.error);
-					}
-					else {
-						callback(null, data);
-					}
-				}
-			});
-		};
+            if (data.error) {
+                callback('Error sending resource to server: ' + data.error);
+            } else {
+                callback(null, data);
+            }
+        }
+    });
+};
 
-		del = function() {
+put = function(url, data, callback) {
+    var encodedURL = encodeURI(this.rootURL + url);
 
-		};
+    $.ajax({
+        dataType: 'json',
+        type: 'PUT',
+        data: data,
+        url: encodedURL,
+        error: function(jqXHR, textStatus, errorThrown) {
+            callback('Error executing PUT request: ' + errorThrown);
+        },
+        success: function(data) {
+            if (data.error) {
+                console.log(data.error);
+                callback('Error putting resource to server: ' + data.error);
+            } else {
+                callback(null, data);
+            }
+        }
+    });
+};
 
-		constructor = function(options) {
-			var defaults, methods;
+del = function() {
 
-			defaults = {
-				rootURL: '',
-				data: null
-			};
+};
 
-			methods = {
-				initialize: initialize,
-				get: get,
-				post: post,
-				put: put,
-				del: del
-			};
-			_.extend(this, defaults, methods, options);
-		};
+constructor = function(options) {
+    var defaults, methods;
 
-		inherit = function(inheritOptions) {
-			var inherited = {
-				constructor: Utilities.inherit(this.constructor, inheritOptions)
-			};
-			return inherited;
-		};
+    defaults = {
+        rootURL: '',
+        data: null
+    };
 
-		//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-		return {
-			constructor: constructor,
-			inherit: inherit
-		};
-	}
-);
+    methods = {
+        initialize: initialize,
+        get: get,
+        post: post,
+        put: put,
+        del: del
+    };
+    _.extend(this, defaults, methods, options);
+};
+
+inherit = function(inheritOptions) {
+    var inherited = {
+        constructor: Utilities.inherit(this.constructor, inheritOptions)
+    };
+    return inherited;
+};
+
+//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+module.exports = {
+    constructor: constructor,
+    inherit: inherit
+};

@@ -3,106 +3,111 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['config', 'underscore', 'jquery', 'viewcontroller', 'app', 'models/vanlist'],
-	function(Config, _, $, ViewController, App, VanList) {
-		var vanBlockID,
+var _ = require('underscore'),
+    $ = require('jquery'),
 
-			didInitialize,
-			didRender,
-			populateYourVans,
+    Config = require('../config.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-			handleAddVan,
-			handleEditVanItem;
+    VanList = require('../models/vanlist.js'),
 
-		vanBlockID = 'yourvans-vans-block';
+    vanBlockID,
 
-		didInitialize = function() {
-			var view = this;
-			view.vanList = new VanList.constructor({
-				rootURL: Config.API_URL
-			});
-			view.vanList.initialize();
-			view.vanList.getUserVans(App.user.data.id, function() {
-				view.render();
-			});
-		};
+    didInitialize,
+    didRender,
+    populateYourVans,
 
-		didRender = function() {
-			if(App.header) {
-				App.header.setTitle('Your vans');
-			}
+    handleAddVan,
+    handleEditVanItem;
 
-			if(this.vanList.data.length > 0) {
-				this.populateYourVans();
-			}
-			else {
-				$('#' + vanBlockID, this.$element).append('You haven\'t listed any vans yet!');
-			}
+vanBlockID = 'yourvans-vans-block';
 
-			this.setupEvent('click', '#dashboard-yourvans-add-btn', this, this.handleAddVan);
-			this.setupEvent('click', '.yourvan-item-edit-btn', this, this.handleEditVanItem);
-		};
+didInitialize = function() {
+    var view = this;
+    view.vanList = new VanList.constructor({
+        rootURL: Config.API_URL
+    });
+    view.vanList.initialize();
+    view.vanList.getUserVans(App.user.data.id, function() {
+        view.render();
+    });
+};
 
-		populateYourVans = function(callback) {
-			var view = this;
-			require(['text!../templates/yourvans-item.html'], function(YourVansItemTemplate) {
-				var yourVansItemTemplate = _.template(YourVansItemTemplate),
-					yourVans = view.vanList.data,
-					$vanBlock, defaultVan, van, i, $vanItem;
+didRender = function() {
+    if (App.rootVC !== null && App.rootVC.header) {
+        App.rootVC.header.setTitle('Your vans');
+    }
 
-				$vanBlock = $('#' + vanBlockID, view.$element);
+    if (this.vanList.data.length > 0) {
+        this.populateYourVans();
+    } else {
+        $('#' + vanBlockID, this.$element).append('You haven\'t listed any vans yet!');
+    }
 
-				for(i = 0; i < yourVans.length; i++) {
-					defaultVan = {
-						id: null,
-						van_type: '',
-						model: '',
-						description: '',
-						img_url: 'images/placeholder_grey.png',
-						price_a: 0,
-						price_b: 0,
-						price_c: 0,
-						owner_id: null
-					};
+    this.setupEvent('click', '#dashboard-yourvans-add-btn', this, this.handleAddVan);
+    this.setupEvent('click', '.yourvan-item-edit-btn', this, this.handleEditVanItem);
+};
 
-					van = yourVans[i];
-					_.extend(defaultVan, van.data);
-					if(defaultVan.images.length > 0) {
-						defaultVan.img_url = defaultVan.images.split(',')[0];
-					}
-					$vanItem = $(yourVansItemTemplate(defaultVan));
-					$('.sg-bg-image' , $vanItem).css({
-						'background-image': 'url("' + defaultVan.img_url + '")'
-					});
-					$vanBlock.append($vanItem);
-				}
-				if(callback && typeof callback === 'function') {
-					callback();
-				}
-			});
-		};
+populateYourVans = function(callback) {
+    var view = this,
+        YourVansItemTemplate;
+    YourVansItemTemplate = require('../../templates/yourvans-item.html');
 
-		handleAddVan = function() {
-			App.router.openModalView('addvan');
-		};
+    var yourVansItemTemplate = _.template(YourVansItemTemplate),
+        yourVans = view.vanList.data,
+        $vanBlock, defaultVan, van, i, $vanItem;
 
-		handleEditVanItem = function(event) {
-			var view = event.data,
-				van;
-			van = view.vanList.getVanItem('id', $(this).data('yourvanid'));
-			App.router.openModalView('editvan', van);
-		};
+    $vanBlock = $('#' + vanBlockID, view.$element);
 
-		return ViewController.inherit({
-			didInitialize: didInitialize,
-			didRender: didRender,
-			populateYourVans: populateYourVans,
+    for (i = 0; i < yourVans.length; i++) {
+        defaultVan = {
+            id: null,
+            van_type: '',
+            model: '',
+            description: '',
+            img_url: 'images/placeholder_grey.png',
+            price_a: 0,
+            price_b: 0,
+            price_c: 0,
+            owner_id: null
+        };
 
-			handleAddVan: handleAddVan,
-			handleEditVanItem: handleEditVanItem
-		}); 
-	}
-);
+        van = yourVans[i];
+        _.extend(defaultVan, van.data);
+        if (defaultVan.images.length > 0) {
+            defaultVan.img_url = defaultVan.images.split(',')[0];
+        }
+        $vanItem = $(yourVansItemTemplate(defaultVan));
+        $('.sg-bg-image', $vanItem).css({
+            'background-image': 'url("' + defaultVan.img_url + '")'
+        });
+        $vanBlock.append($vanItem);
+    }
+    if (callback && typeof callback === 'function') {
+        callback();
+    }
+};
+
+handleAddVan = function() {
+    App.router.openModalView('addvan');
+};
+
+handleEditVanItem = function(event) {
+    var view = event.data,
+        van;
+    van = view.vanList.getVanItem('id', $(this).data('yourvanid'));
+    App.router.openModalView('editvan', van);
+};
+
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize,
+    didRender: didRender,
+    populateYourVans: populateYourVans,
+
+    handleAddVan: handleAddVan,
+    handleEditVanItem: handleEditVanItem
+});

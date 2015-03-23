@@ -1,0 +1,53 @@
+{
+  "name": "Sharingear",
+  "version": "1.0.0",
+  "description": "The frontend of Sharingear.com",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha-phantomjs text/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chrishjorth/sharingear-static"
+  },
+  "keywords": [
+    "p2p",
+    "marketplace",
+    "musicians",
+    "bands",
+    "tour",
+    "gear",
+    "technicians",
+    "vans",
+    "busses"
+  ],
+  "author": "Chris Hjorth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrishjorth/sharingear-static/issues"
+  },
+  "homepage": "https://www.sharingear.com",
+  "devDependencies": {
+    "webpack": "~1.7.3",
+    "underscore": "~1.8.2",
+    "jquery": "~2.1.3",
+    "html-loader": "~0.2.3",
+    "moment": "~2.9.0",
+    "moment-timezone": "~0.3.1",
+    "imports-loader": "~0.6.3",
+    "json-loader": "~0.5.1",
+    "bootstrap": "~3.3.4",
+    "file-loader": "~0.8.1",
+    "raw-loader": "~0.5.1",
+    "exports-loader": "~0.6.2",
+    "chai": "~2.1.2",
+    "mocha": "~2.2.1",
+    "sinon": "~1.14.1",
+    "script-loader": "~0.6.1",
+    "mocha-loader": "~0.7.1",
+    "phantomjs-polyfill": "0.0.1"
+  }
+}

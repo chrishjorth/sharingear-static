@@ -3,114 +3,135 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'jquery', 'utilities', 'app', 'viewcontroller'],
-	function(_, $, Utilities, App, ViewController) {
-		var didInitialize,
-			didRender,
+var $ = require('jquery'),
 
-			loadSearchBar,
-			loadFooter,
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-			handleTab,
-			handleLogin,
-			handleScrollDown;
+    didInitialize,
+    didRender,
 
-		didInitialize = function() {
-			this.hasSubviews = true;
-			this.gearSearchFormVC = null;
-			this.vanSearchFormVC = null;
-		};
+    loadSearchBar,
+    loadFooter,
 
-		didRender = function() {
-			if(App.header) {
-                App.header.setTitle();
-            }
+    handleTab,
+    handleLogin,
+    handleScrollDown;
 
-			this.loadSearchBar();
-			this.loadFooter();
+didInitialize = function() {
+    this.hasSubviews = true;
+    this.gearSearchFormVC = null;
+    this.vanSearchFormVC = null;
+};
 
-			this.setupEvent('click', '.sg-tabbar li .sg-btn-square', this, this.handleTab);
-			this.setupEvent('click', '#home-scroll-btn', this, this.handleScrollDown);
-        };
+didRender = function() {
+    if (App.rootVC !== null && App.rootVC.header) {
+        App.rootVC.header.setTitle();
+    }
 
-        loadSearchBar = function() {
-			var view = this;
-        	require(['viewcontrollers/gearsearchform', 'text!../templates/gearsearchform.html'], function(gearSearchVC, gearSearchVT) {
-				view.gearSearchFormVC = new gearSearchVC.constructor({name: 'gearsearchform', $element: $('#home-searchform-gear .searchform-container', view.$element), template: gearSearchVT});
-				view.gearSearchFormVC.initialize();
-				view.gearSearchFormVC.render();
-			});
-			require(['viewcontrollers/techprofilesearchform', 'text!../templates/techprofilesearchform.html'], function(techProfileSearchVC, techProfileSearchVT) {
-				view.techProfileSearchFormVC = new techProfileSearchVC.constructor({name: 'techprofilesearchform', $element: $('#home-searchform-techprofiles .searchform-container', view.$element), template: techProfileSearchVT});
-				view.techProfileSearchFormVC.initialize();
-				view.techProfileSearchFormVC.render();
-			});
-			require(['viewcontrollers/vansearchform', 'text!../templates/vansearchform.html'], function(vanSearchVC, vanSearchVT) {
-				view.vanSearchFormVC = new vanSearchVC.constructor({name: 'vansearchform', $element: $('#home-searchform-vans .searchform-container', view.$element), template: vanSearchVT});
-				view.vanSearchFormVC.initialize();
-				view.vanSearchFormVC.render();
-			});
-        };
+    this.loadSearchBar();
+    this.loadFooter();
 
-		loadFooter = function() {
-			var view = this;
-			require(['viewcontrollers/footer', 'text!../templates/footer.html'], function(FooterController, FooterTemplate) {
-				view.footer = new FooterController.constructor({name: 'footer', $element: $('footer', view.$element), template: FooterTemplate});
-				view.footer.initialize();
-				view.footer.render();
-			});
-		};
+    this.setupEvent('click', '.sg-tabbar li .sg-btn-square', this, this.handleTab);
+    this.setupEvent('click', '#home-scroll-btn', this, this.handleScrollDown);
+};
 
-		handleTab = function(event) {
-			var $this = $(this),
-				view = event.data,
-				id;
-			id = $this.attr('id');
+loadSearchBar = function() {
+    var view = this,
+        gearSearchVC, gearSearchVT, techProfileSearchVC, techProfileSearchVT, vanSearchVC, vanSearchVT;
+    gearSearchVC = require('./gearsearchform.js');
+    gearSearchVT = require('../../templates/gearsearchform.html');
+    view.gearSearchFormVC = new gearSearchVC.constructor({
+        name: 'gearsearchform',
+        $element: $('#home-searchform-gear .searchform-container', view.$element),
+        template: gearSearchVT
+    });
+    view.gearSearchFormVC.initialize();
+    view.gearSearchFormVC.render();
 
-			$('.sg-tabbar li .sg-btn-square', view.$element).removeClass('selected');
-			$this.addClass('selected');
+    techProfileSearchVC = require('./techprofilesearchform.js');
+    techProfileSearchVT = require('../../templates/techprofilesearchform.html');
+    view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
+        name: 'techprofilesearchform',
+        $element: $('#home-searchform-techprofiles .searchform-container', view.$element),
+        template: techProfileSearchVT
+    });
+    view.techProfileSearchFormVC.initialize();
+    view.techProfileSearchFormVC.render();
 
-			$('.sg-tab-panel', view.$element).each(function() {
-				var $panel = $(this);
-				if($panel.hasClass('hidden') === false) {
-					$panel.addClass('hidden');
-				}
-			});
-			$('#home-searchform-' + id.substring(9), view.$element).removeClass('hidden'); //9 is the length of 'home-tab-'
-		};
+    vanSearchVC = require('./vansearchform.js');
+    vanSearchVT = require('../../templates/vansearchform.html');
+    view.vanSearchFormVC = new vanSearchVC.constructor({
+        name: 'vansearchform',
+        $element: $('#home-searchform-vans .searchform-container', view.$element),
+        template: vanSearchVT
+    });
+    view.vanSearchFormVC.initialize();
+    view.vanSearchFormVC.render();
+};
 
-		handleLogin = function() {
-			App.user.login(function(error) {
-				if(!error) {
-				    App.router.navigateTo('dashboard');
-				    App.header.render();
-				    return;
-                }
-                console.log(error);
-			});
-		};
+loadFooter = function() {
+    var view = this,
+        FooterController, FooterTemplate;
+    FooterController = require('./footer.js');
+    FooterTemplate = require('../../templates/footer.html');
+    view.footer = new FooterController.constructor({
+        name: 'footer',
+        $element: $('footer', view.$element),
+        template: FooterTemplate
+    });
+    view.footer.initialize();
+    view.footer.render();
+};
 
-		handleScrollDown = function(event) {
-			var view = event.data;
+handleTab = function(event) {
+    var $this = $(this),
+        view = event.data,
+        id;
+    id = $this.attr('id');
 
-			$('html,body').animate({
-          		scrollTop: $('#home-whatsay', view.$element).offset().top - 60
-        	}, 1000);
-		};
+    $('.sg-tabbar li .sg-btn-square', view.$element).removeClass('selected');
+    $this.addClass('selected');
 
-		return ViewController.inherit({
-			didInitialize: didInitialize,
-			didRender: didRender,
+    $('.sg-tab-panel', view.$element).each(function() {
+        var $panel = $(this);
+        if ($panel.hasClass('hidden') === false) {
+            $panel.addClass('hidden');
+        }
+    });
+    $('#home-searchform-' + id.substring(9), view.$element).removeClass('hidden'); //9 is the length of 'home-tab-'
+};
 
-			loadSearchBar: loadSearchBar,
-			loadFooter: loadFooter,
+handleLogin = function() {
+    App.user.login(function(error) {
+        if (!error) {
+            App.router.navigateTo('dashboard');
+            App.header.render();
+            return;
+        }
+        console.log(error);
+    });
+};
 
-			handleTab: handleTab,
-			handleLogin: handleLogin,
-			handleScrollDown: handleScrollDown
-		});
-	}
-);
+handleScrollDown = function(event) {
+    var view = event.data;
+
+    $('html,body').animate({
+        scrollTop: $('#home-whatsay', view.$element).offset().top - 60
+    }, 1000);
+};
+
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize,
+    didRender: didRender,
+
+    loadSearchBar: loadSearchBar,
+    loadFooter: loadFooter,
+
+    handleTab: handleTab,
+    handleLogin: handleLogin,
+    handleScrollDown: handleScrollDown
+});

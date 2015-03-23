@@ -3,128 +3,132 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['jquery', 'config', 'viewcontroller', 'app', 'models/booking', 'moment', 'models/localization'],
-	function($, Config, ViewController, App, Booking, Moment, Localization) {
-		var didInitialize,
-			didRender,
+var $ = require('jquery'),
+	Moment = require('moment-timezone'),
 
-			handleClose;
+	Config = require('../config.js'),
+	App = require('../app.js'),
 
-		didInitialize = function () {
-			var view = this,
-				booking;
+	Localization = require('../models/localization.js'),
+	ViewController = require('../viewcontroller.js'),
+	Booking = require('../models/booking.js'),
 
-			view.paymentSuccessful = null; //null: waiting for server
+	didInitialize,
+    didRender,
 
-			view.templateParameters = {
-				item_name: this.passedData.item_name,
-				start_date: '',
-				end_date: '',
-				currency: App.user.data.currency,
-				vat: '',
-				price: '',
-				price_vat: '',
-				fee: '',
-				fee_vat: '',
-				total: ''
-			};
+    handleClose;
 
-			booking = new Booking.constructor({
-				rootURL: Config.API_URL
-			});
-			booking.initialize();
-			booking.data.id = this.passedData.bookingID;
-			booking.data.preauth_id = this.passedData.preAuthorizationID;
-			booking.data.booking_status = 'pending';
-			if(this.passedData.van_id) {
-				booking.data.van_id = this.passedData.van_id;
-			}
-			else if(this.passedData.techprofile_id) {
-				booking.data.techprofile_id = this.passedData.techprofile_id;
-			}
-			else {
-				booking.data.gear_id = this.passedData.gear_id;
-			}
+didInitialize = function() {
+    var view = this,
+        booking;
 
-			booking.update(App.user.data.id, function(error) {
-				if(error) {
-					console.log('Error updating booking: ' + error);
-					view.paymentSuccessful = false;
-					view.render();
-					return;
-				}
-				booking.getBookingInfo(App.user.data.id, function(error){
-					//var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
-					var startMoment, endMoment, duration, months, weeks, days, price, fee;
-					if(error) {
-						console.log('Error getting booking info: ' + error);
-						return;
-					}
+    view.paymentSuccessful = null; //null: waiting for server
 
-					startMoment = new Moment.tz(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
-					endMoment = new Moment.tz(booking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+    view.templateParameters = {
+        item_name: this.passedData.item_name,
+        start_date: '',
+        end_date: '',
+        currency: App.user.data.currency,
+        vat: '',
+        price: '',
+        price_vat: '',
+        fee: '',
+        fee_vat: '',
+        total: ''
+    };
 
-					duration = Moment.duration(endMoment.diff(startMoment));
-					months = parseInt(duration.months(), 10);
-					endMoment.subtract(months, 'months');
-					duration = Moment.duration(endMoment.diff(startMoment));
-					weeks = parseInt(duration.weeks(), 10);
-					endMoment.subtract(weeks, 'weeks');
-					duration = Moment.duration(endMoment.diff(startMoment));
-					days = parseInt(duration.days(), 10);
+    booking = new Booking.constructor({
+        rootURL: Config.API_URL
+    });
+    booking.initialize();
+    booking.data.id = this.passedData.bookingID;
+    booking.data.preauth_id = this.passedData.preAuthorizationID;
+    booking.data.booking_status = 'pending';
+    if (this.passedData.van_id) {
+        booking.data.van_id = this.passedData.van_id;
+    } else if (this.passedData.techprofile_id) {
+        booking.data.techprofile_id = this.passedData.techprofile_id;
+    } else {
+        booking.data.gear_id = this.passedData.gear_id;
+    }
 
-					price = booking.data.renter_price;
-					//VAT = Localization.getVAT(App.user.data.country);
-					//priceVAT = price / 100 * VAT;
-					fee = price / 100 * App.user.data.buyer_fee;
-					//feeVAT = fee / 100 * VAT;
+    booking.update(App.user.data.id, function(error) {
+        if (error) {
+            console.log('Error updating booking: ' + error);
+            view.paymentSuccessful = false;
+            view.render();
+            return;
+        }
+        booking.getBookingInfo(App.user.data.id, function(error) {
+            //var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
+            var startMoment, endMoment, duration, months, weeks, days, price, fee;
+            if (error) {
+                console.log('Error getting booking info: ' + error);
+                return;
+            }
 
-					view.templateParameters = {
-						item_name: view.passedData.item_name,
-						start_date: startMoment.format('DD/MM/YYYY HH:mm'),
-						end_date: endMoment.format('DD/MM/YYYY HH:mm'),
-						currency: booking.data.renter_currency,
-						//vat: VAT,
-						vat: '',
-						price: price,
-						//price_vat: priceVAT,
-						price_vat: '',
-						fee: fee.toFixed(2),
-						//fee_vat: feeVAT,
-						fee_vat: '',
-						//total: price + priceVAT + fee + feeVAT
-						total: (price + fee).toFixed(2)
-					};
+            startMoment = new Moment.tz(booking.data.start_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+            endMoment = new Moment.tz(booking.data.end_time, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
 
-					view.paymentSuccessful = true;
-					view.render();
-				});
-			});
-		};
+            duration = Moment.duration(endMoment.diff(startMoment));
+            months = parseInt(duration.months(), 10);
+            endMoment.subtract(months, 'months');
+            duration = Moment.duration(endMoment.diff(startMoment));
+            weeks = parseInt(duration.weeks(), 10);
+            endMoment.subtract(weeks, 'weeks');
+            duration = Moment.duration(endMoment.diff(startMoment));
+            days = parseInt(duration.days(), 10);
 
-		didRender = function () {
-			if(this.paymentSuccessful === true) {
-				$('.payment-success', this.$element).removeClass('hidden');
-			}
-			if(this.paymentSuccessful === false) {
-				$('.payment-failure', this.$element).removeClass('hidden');
-			}
-			this.setupEvent('click', '#paymentsuccessful-close-btn', this, this.handleClose);
-		};
+            price = booking.data.renter_price;
+            //VAT = Localization.getVAT(App.user.data.country);
+            //priceVAT = price / 100 * VAT;
+            fee = price / 100 * App.user.data.buyer_fee;
+            //feeVAT = fee / 100 * VAT;
 
-		handleClose = function() {
-			App.router.setQueryString('');
-			App.router.closeModalView();
-		};
+            view.templateParameters = {
+                item_name: view.passedData.item_name,
+                start_date: startMoment.format('DD/MM/YYYY HH:mm'),
+                end_date: endMoment.format('DD/MM/YYYY HH:mm'),
+                currency: booking.data.renter_currency,
+                //vat: VAT,
+                vat: '',
+                price: price,
+                //price_vat: priceVAT,
+                price_vat: '',
+                fee: fee.toFixed(2),
+                //fee_vat: feeVAT,
+                fee_vat: '',
+                //total: price + priceVAT + fee + feeVAT
+                total: (price + fee).toFixed(2)
+            };
 
-		return ViewController.inherit({
-			didInitialize: didInitialize,
-			didRender: didRender,
+            view.paymentSuccessful = true;
+            view.render();
+        });
+    });
+};
 
-			handleClose: handleClose
-		});
-	}
-);
+didRender = function() {
+    if (this.paymentSuccessful === true) {
+        $('.payment-success', this.$element).removeClass('hidden');
+    }
+    if (this.paymentSuccessful === false) {
+        $('.payment-failure', this.$element).removeClass('hidden');
+    }
+    this.setupEvent('click', '#paymentsuccessful-close-btn', this, this.handleClose);
+};
+
+handleClose = function() {
+    App.router.setQueryString('');
+    App.router.closeModalView();
+};
+
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize,
+    didRender: didRender,
+
+    handleClose: handleClose
+});

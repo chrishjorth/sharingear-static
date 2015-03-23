@@ -3,78 +3,35 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
 //ie9 console.log fix
-if(!window.console) {
-	window.console = {
-		log: function(){}
-	};
+if (!window.console) {
+    window.console = {
+        log: function() {}
+    };
 }
 
-requirejs.config({
-	baseUrl: 'js',
-	paths: {
-		text: 'libraries/text',
-		async: 'libraries/async',
-		underscore: 'libraries/underscore-min',
-		jquery: 'libraries/jquery-2.1.1.min',
-		bootstrap: 'libraries/bootstrap.min',
-		moment: 'libraries/moment.min',
-		momenttz: 'libraries/moment-timezone-with-data.min',
-		facebook: 'https://connect.facebook.net/en_US/all',
-		owlcarousel: 'libraries/owl-carousel/owl.carousel.min',
-		//braintree: 'https://assets.braintreegateway.com/v2/braintree',
-		mangopay: 'libraries/mangopay-kit'
-	},
-	shim: {
-		underscore: {
-			exports: '_'
-		},
-		jquery: {
-			exports: '$'
-		},
-		bootstrap: {
-			deps: ['jquery']
-		},
-		'facebook' : {
-			exports: 'FB'
-		},
-		'owlcarousel': {
-			deps: ['jquery'],
-			exports: 'OwlCarousel'
-		},
-		'mangopay': {
-			exports: 'MangoPay'
-		},
-		'momenttz': {
-			deps: ['moment']
-		}
-	}
-});
+var _ = require('underscore'),
+    $ = require('jquery'),
 
-//Based on http://blog.millermedeiros.com/requirejs-2-0-delayed-module-evaluation-and-google-maps/
-// convert Google Maps into an AMD module
-//
-define('googlemaps', ['async!https://maps.googleapis.com/maps/api/js?key=AIzaSyByhkzhQYoAk2bAGRYIuvHOl1jIP99_iyE&libraries=places'], function(){
-    // return the googlemaps namespace for brevity
-		
-    return window.google.maps;
-});
+    app = require('./app.js'),
+    rootVC = require('./rootviewcontroller.js');
 
-require(['underscore', 'jquery', 'bootstrap', 'moment', 'momenttz'], function(_) {
-	//Loaded moment with timezone support.
-	
-	//Configure underscore templates to use Handlebars style
-	_.templateSettings = {
-		evaluate: /\{\{=(.+?)\}\}/g,
-		interpolate: /\{\{(.+?)\}\}/g,
-		escape: /\{\{-(.+?)\}\}/g
-	};
 
-	console.log('Loaded core libraries.');
+_.templateSettings = {
+    evaluate: /\{\{=(.+?)\}\}/g,
+    interpolate: /\{\{(.+?)\}\}/g,
+    escape: /\{\{-(.+?)\}\}/g
+};
 
-	require(['app'], function(App) {
-		App.run();
-	});
+window.jQuery = $;
+
+$(document).ready(function() {
+    console.log('DOM ready.');
+
+    app.run(function() {
+        rootVC.initialize();
+    });
 });

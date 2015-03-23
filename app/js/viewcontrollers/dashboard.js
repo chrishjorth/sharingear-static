@@ -3,74 +3,75 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['jquery', 'viewcontroller', 'app'],
-	function($, ViewController, App) {
-		var subViewContainerID,
+var $ = require('jquery'),
 
-			didInitialize,
-			didRender,
-			didRenderSubview,
+	ViewController = require('../viewcontroller.js'),
+	App = require('../app.js'),
 
-			handleSelection,
+	subViewContainerID,
 
-			changeActiveState;
+    didInitialize,
+    didRender,
+    didRenderSubview,
 
-		/* Static variables */
-		subViewContainerID = 'dashboard-subview-container';
+    handleSelection,
 
-		didInitialize = function() {
-			if(App.user.data.id === null) {
-				this.ready = false;
-				App.router.navigateTo('home');
-				return;
-			}
+    changeActiveState;
 
-			this.hasSubviews = true;
+/* Static variables */
+subViewContainerID = 'dashboard-subview-container';
 
-			this.$subViewContainer = $('');
-			
-			if(this.path === 'dashboard') {
-				App.router.navigateTo('dashboard/profile');
-			}
-		};
+didInitialize = function() {
+    if (App.user.data.id === null) {
+        this.ready = false;
+        App.router.navigateTo('home');
+        return;
+    }
 
-		didRender = function() {
-			this.$subViewContainer = $('#' + subViewContainerID);
-			this.setupEvent('click', '.dashboard-menu .list-group-item', this, this.handleSelection);
-		};
+    this.hasSubviews = true;
 
-		didRenderSubview = function() {
-			var $menuItem;
-			$menuItem = $('a[href="#' + this.path + '"]');
-			this.changeActiveState($menuItem);
-		};
+    this.$subViewContainer = $('');
 
-		handleSelection = function(event) {
-			var view = event.data,	
-				$this = $(this);
-			if($this.hasClass('disabled') === true) {
-				alert('This feature will be enabled soon, please stay tuned.');
-				return;
-			}
-			view.changeActiveState($this);
-		};
+    if (this.path === 'dashboard') {
+        App.router.navigateTo('dashboard/profile');
+    }
+};
 
-        changeActiveState = function($menuItem){
-        	$('.list-group-item', this.$element).removeClass('list-group-item-selected');
-			$menuItem.addClass('list-group-item-selected');
-        };
+didRender = function() {
+    this.$subViewContainer = $('#' + subViewContainerID);
+    this.setupEvent('click', '.dashboard-menu .list-group-item', this, this.handleSelection);
+};
 
-        return ViewController.inherit({
-        	didInitialize: didInitialize,
-			didRender: didRender,
-			didRenderSubview: didRenderSubview,
+didRenderSubview = function() {
+    var $menuItem;
+    $menuItem = $('a[href="#' + this.path + '"]');
+    this.changeActiveState($menuItem);
+};
 
-			handleSelection: handleSelection,
+handleSelection = function(event) {
+    var view = event.data,
+        $this = $(this);
+    if ($this.hasClass('disabled') === true) {
+        alert('This feature will be enabled soon, please stay tuned.');
+        return;
+    }
+    view.changeActiveState($this);
+};
 
-            changeActiveState: changeActiveState
-		});
-	}
-);
+changeActiveState = function($menuItem) {
+    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
+    $menuItem.addClass('list-group-item-selected');
+};
+
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize,
+    didRender: didRender,
+    didRenderSubview: didRenderSubview,
+
+    handleSelection: handleSelection,
+
+    changeActiveState: changeActiveState
+});
