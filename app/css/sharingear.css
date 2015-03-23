@@ -3398,6 +3398,20 @@ text-align: left;
 	font-weight: bold;
 	text-transform: uppercase;
 }
+.techprofilelistborder{
+	border-top: 1px solid darkgray;
+}
+
+.techprofilelist{
+	text-transform: capitalize;
+	float: left;
+	margin-left: 5px;
+}
+
+.techprofilelistname{
+	float: left;
+}
+
 .techprofile .profile-type .sg-icon {
 	font-size: 24px;
 	margin-right: 6px;

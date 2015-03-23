@@ -39,7 +39,8 @@ define(
 					country: '',
 					latitude: null,
 					longitude: null,
-					owner_id: null
+					owner_id: null,
+					techprofilelist: null
 				};
 			}
 		};
@@ -70,9 +71,10 @@ define(
 				country: newTechProfile.country,
 				latitude: newTechProfile.latitude,
 				longitude: newTechProfile.longitude,
-				owner_id: App.user.data.id
+				owner_id: App.user.data.id,
+				techprofilelist: newTechProfile.techprofilelist
 			};
-			
+
 			this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
 				if(error) {
 					if(callback && typeof callback === 'function') {
@@ -80,6 +82,7 @@ define(
 					}
 					return;
 				}
+			
 				_.extend(model.data, data);
 				if(callback && typeof callback === 'function') {
 					callback(null);
@@ -108,6 +111,7 @@ define(
 				country: this.data.country,
 				latitude: this.data.latitude,
 				longitude: this.data.longitude,
+				techprofilelist: this.data.techprofilelist
 			};
 
 			this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {

@@ -16,6 +16,7 @@ define(
 			renderPricing,
 			renderMap,
 			renderActionButton,
+			renderTechProfileList,
 			handleBooking,
             handleEditProfile,
             handleFacebookShare,
@@ -61,7 +62,6 @@ define(
 						rootURL: Config.API_URL
 					});
 					view.techProfile.initialize();
-
 					view.techProfile.data.id = view.subPath;
 					view.subPath = ''; //To avoid rendering a subview based on the gear id
 				}
@@ -71,6 +71,7 @@ define(
 						console.log(error);
 						return;
 					}
+
 					view.owner.data.id = view.techProfile.data.owner_id;
 					view.owner.getPublicInfo(function(error) {
 						var techProfileData, ownerData;
@@ -123,11 +124,13 @@ define(
 			this.renderMap();
 
             this.renderActionButton();
+            this.renderTechProfileList();
 
             this.setupEvent('click', '#techprofile-action-book', this, this.handleBooking);
             this.setupEvent('click', '#techprofile-action-edit', this, this.handleEditProfile);
             this.setupEvent('click', '#techprofile-fb-btn', this, this.handleFacebookShare);
             this.setupEvent('click', '#techprofile-tw-btn', this, this.handleTwitterShare);
+
 
             //Check for querystring sent by a booking payment process
 			preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
@@ -274,6 +277,22 @@ define(
             window.open(twtLink);
         };
 
+        renderTechProfileList = function(){
+        	var techProfile = this.techProfile.data,
+        		view = this,
+        		container = $("#techprofilelist",view.$element);
+
+        		if (techProfile.techprofilelist!==null && techProfile.techprofilelist.length>0) {
+        			container.html("");
+        			techProfile.techprofilelist.forEach(function(entry){
+        				container.html(function (_, html) { 
+        					return html +'<a href="#techprofile/'+entry.id+'">'+ entry.roadie_type + '</a>  ';
+        				});
+        			});
+        		}
+
+        };
+
 		renderActionButton = function() {
 			var view = this;
 
@@ -316,6 +335,7 @@ define(
 			renderMap: renderMap,
             renderOwnerPicture: renderOwnerPicture,
 			renderActionButton: renderActionButton,
+			renderTechProfileList: renderTechProfileList,
 			handleBooking: handleBooking,
             handleEditProfile: handleEditProfile,
             handleFacebookShare: handleFacebookShare,
