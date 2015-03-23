@@ -104,6 +104,7 @@
 	
 	    User = __webpack_require__(8),
 	    ContentClassification = __webpack_require__(9),
+	    MessagePopup = __webpack_require__(10),
 	
 	    App,
 	
@@ -176,6 +177,7 @@
 	        }
 	    });
 	
+	    App.setUserLocation();
 	
 	    App.contentClassification = new ContentClassification.constructor({
 	        rootURL: Config.API_URL
@@ -186,6 +188,18 @@
 	
 	    $.when(loginDeferred).then(function() {
 	        console.log('Sharingear loaded and ready.');
+	
+	        if (!window.history.pushState) {
+	
+	            //show message if pushState is not defined
+	            var messagePopup = new MessagePopup.constructor(),
+	                message = 'Your browser is outdated and does not support some important features. Please dowload the latest version of your browser of preference.';
+	
+	            messagePopup.initialize();
+	            messagePopup.show();
+	            messagePopup.setMessage(message);
+	
+	        }
 	
 	        if (_.isFunction(callback)) {
 	            callback();
@@ -233,6 +247,64 @@
 	});
 	App.user.initialize();
 	
+	setUserLocation = function(location, callback) {
+	    if ((!location || location === null) && navigator.geolocation && App.user.data.id !== null) {
+	        navigator.geolocation.getCurrentPosition(function(position) {
+	            var lat, lon;
+	            lat = position.coords.latitude;
+	            lon = position.coords.longitude;
+	            Utilities.getCityFromCoordinates(lat, lon, function(locationCity) {
+	                App.user.data.currentCity = locationCity;
+	                if (_.isFunction(callback)) {
+	                    callback();
+	                }
+	            });
+	        });
+	    } else if (!location || location === null) {
+	        App.user.data.currentCity = null;
+	    } else {
+	        App.user.data.currentCity = location;
+	        if (_.isFunction(callback)) {
+	            callback();
+	        }
+	    }
+	};
+	
+	getCookie = function(cname) {
+	    var name = cname + '=',
+	        ca = document.cookie.split(';'),
+	        i, c;
+	    for (i = 0; i < ca.length; i++) {
+	        c = ca[i];
+	        while (c.charAt(0) === ' ') {
+	            c = c.substring(1);
+	        }
+	        if (c.indexOf(name) !== -1) {
+	            return c.substring(name.length, c.length);
+	        }
+	    }
+	    return '';
+	};
+	
+	App = {
+	    $headerContainer: $headerContainer,
+	    router: Router,
+	    user: null,
+	    header: null,
+	    footer: null,
+	    gearClassification: null,
+	
+	    run: run,
+	    setUserLocation: setUserLocation,
+	    loadHeader: loadHeader,
+	    getCookie: getCookie
+	};
+	
+	App.user = new User.constructor({
+	    rootURL: Config.API_URL
+	});
+	App.user.initialize();
+	
 	module.exports = App;
 
 
@@ -253,16 +325,16 @@
 	
 		App = __webpack_require__(1),
 	
-		HeaderController = __webpack_require__(10),
-	    HeaderTemplate = __webpack_require__(17),
+		HeaderController = __webpack_require__(11),
+	    HeaderTemplate = __webpack_require__(14),
 	
 	    initialize,
 	
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(19);
-	__webpack_require__(11);
+	__webpack_require__(21);
+	__webpack_require__(12);
 	
 	initialize = function() {
 		var hash, route;
@@ -11143,7 +11215,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-		ViewLoader = __webpack_require__(13),
+		ViewLoader = __webpack_require__(15),
 		Utilities = __webpack_require__(7);
 	
 	var Router,
@@ -11337,7 +11409,7 @@
 	
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(12),
+		GoogleMaps = __webpack_require__(13),
 		
 		geocoder,
 	    inherit,
@@ -11506,9 +11578,9 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    FB = __webpack_require__(14),
-	    Localization = __webpack_require__(15),
-	    Model = __webpack_require__(16),
+	    FB = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
+	    Model = __webpack_require__(18),
 	    Utilities = __webpack_require__(7),
 	
 	    didInitialize,
@@ -11546,6 +11618,8 @@
 	            time_zone: 'UTC'
 	        };
 	    }
+	    console.log('user');
+	    console.log(this.data);
 	};
 	
 	getLoginStatus = function(callback) {
@@ -11630,6 +11704,8 @@
 	        if (user.data === null) {
 	            user.data = {};
 	        }
+	        console.log('LOGGED IN!');
+	        console.log(data);
 	        _.extend(user.data, data);
 	
 	        //Enable Google Analytics user tracking
@@ -11652,6 +11728,8 @@
 	            callback(error);
 	            return;
 	        }
+	        console.log('GOT DATA');
+	        console.log(data);
 	        _.extend(user.data, data);
 	        Localization.setCurrentTimeZone(user.data.time_zone);
 	        callback(null);
@@ -11665,6 +11743,8 @@
 	            callback('Error updating user: ' + error);
 	            return;
 	        }
+	        console.log('GOT UPDATE');
+	        console.log(data);
 	        _.extend(user.data, data);
 	        Localization.setCurrentTimeZone(user.data.time_zone);
 	        callback(null);
@@ -11717,6 +11797,8 @@
 	            callback(error);
 	            return;
 	        }
+	        console.log('GOT PUB INFO');
+	        console.log(user);
 	        _.extend(model.data, user);
 	        callback(null);
 	    });
@@ -11795,7 +11877,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(16),
+	    Model = __webpack_require__(18),
 	
 	    didInitialize,
 	    getClassification;
@@ -11838,6 +11920,66 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Popup that requests a time.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var $ = __webpack_require__(4),
+	
+		PopupController = __webpack_require__(19),
+	
+		MessagePopupTemplate = __webpack_require__(22),
+	
+		MessagePopup,
+	
+	    setMessage,
+	    wasClosed,
+	    didRender,
+	    getWasClosed,
+	
+	    handleCancel;
+	
+	didRender = function() {
+	    wasClosed = false;
+	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+	};
+	
+	setMessage = function(message) {
+	    $('#popup-message', this.$element).html(message);
+	};
+	
+	getWasClosed = function() {
+	    return wasClosed;
+	};
+	
+	handleCancel = function(event) {
+	    var view = event.data;
+	    wasClosed = true;
+	    view.hide();
+	};
+	
+	MessagePopup = PopupController.inherit({
+	    template: MessagePopupTemplate,
+	
+	    didRender: didRender,
+	    setMessage: setMessage,
+	
+	    getWasClosed: getWasClosed,
+	    handleCancel: handleCancel
+	});
+	
+	
+	module.exports = MessagePopup;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Controller for the Sharingear header with navigation view.
 	 * @author: Chris Hjorth
 	 */
@@ -11848,7 +11990,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    Utilities = __webpack_require__(7),
 	    App = __webpack_require__(1),
 	
@@ -12059,7 +12201,7 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {"function"!==typeof Object.create&&(Object.create=function(f){function g(){}g.prototype=f;return new g});
@@ -12112,13 +12254,19 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = google.maps;
 
 /***/ },
-/* 13 */
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<nav class=\"sg-navbar\" role=\"navigation\">\n\t<div class=\"container-fluid\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-2\">\n\t\t\t\t<button type=\"button\" class=\"sg-navbar-toggle sg-btn-invisible-blue\" data-target=\"#navigation-header-menu-left\"><i class=\"fa fa-bars\"></i></button>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-8 col-sm-8 sg-blue sg-navbar-brand\"></div>\n\t\t\t<div class=\"col-sm-3 col-sm-offset-1 sg-navbar-dropdownmenu sg-navbar-dropdownmenu-left hidden\" id=\"navigation-header-dropdownmenu-left\">\n\t\t\t\t<div class=\"dropdown pull-right sg-no-mobile\">\n\t\t\t\t\t<button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-expanded=\"true\"><div src=\"\" class=\"profile-pic\"></div><div class=\"menu-text\">MENU</div><!--<span class=\"caret\"></span>--></button>\n\t\t\t\t\t<div class=\"dropdown-menu list-group\" role=\"menu\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</nav>\n\n<div class=\"sg-navbar-slidemenu sg-navbar-slidemenu-left\" id=\"navigation-header-slidemenu-left\">\n\t<div class=\"list-group\" role=\"menu\"></div>\n</div>\n";
+
+/***/ },
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12180,8 +12328,8 @@
 	        return;
 	    }
 	
-	    ViewController = __webpack_require__(20)("./" + view + '.js');
-	    ViewTemplate = __webpack_require__(21)("./" + view + '.html');
+	    ViewController = __webpack_require__(23)("./" + view + '.js');
+	    ViewTemplate = __webpack_require__(24)("./" + view + '.html');
 	
 	    //Close the previous controller properly before loading a new one
 	    if (viewLoader.currentViewController !== null) {
@@ -12212,8 +12360,8 @@
 	        viewString = this.currentViewController.name + '-' + subview,
 	        SubViewController, SubViewTemplate;
 	
-	    SubViewController = __webpack_require__(20)("./" + viewString + '.js');
-	    SubViewTemplate = __webpack_require__(21)("./" + viewString + '.html');
+	    SubViewController = __webpack_require__(23)("./" + viewString + '.js');
+	    SubViewTemplate = __webpack_require__(24)("./" + viewString + '.html');
 	
 	    if (viewLoader.currentSubViewController !== null) {
 	        viewLoader.currentSubViewController.close();
@@ -12245,8 +12393,8 @@
 	        $modalViewContainer = $(modalViewContainer),
 	        ViewController, ViewTemplate;
 	
-	    ViewController = __webpack_require__(20)("./" + view + '.js');
-	    ViewTemplate = __webpack_require__(21)("./" + view + '.html');
+	    ViewController = __webpack_require__(23)("./" + view + '.js');
+	    ViewTemplate = __webpack_require__(24)("./" + view + '.html');
 	
 	    if (viewLoader.currentModalViewController !== null) {
 	        viewLoader.currentModalViewController.close();
@@ -12357,7 +12505,7 @@
 
 
 /***/ },
-/* 14 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*jslint node: true */
@@ -12422,7 +12570,7 @@
 
 
 /***/ },
-/* 15 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12433,11 +12581,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Moment = __webpack_require__(134),
+	var Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    Model = __webpack_require__(16),
-	    XChangeRates = __webpack_require__(22),
+	    Model = __webpack_require__(18),
+	    XChangeRates = __webpack_require__(25),
 	    Localization,
 	
 	    didInitialize,
@@ -12622,7 +12770,7 @@
 
 
 /***/ },
-/* 16 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12755,13 +12903,64 @@
 
 
 /***/ },
-/* 17 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<nav class=\"sg-navbar\" role=\"navigation\">\n\t<div class=\"container-fluid\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-2\">\n\t\t\t\t<button type=\"button\" class=\"sg-navbar-toggle sg-btn-invisible-blue\" data-target=\"#navigation-header-menu-left\"><i class=\"fa fa-bars\"></i></button>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-8 col-sm-8 sg-blue sg-navbar-brand\"></div>\n\t\t\t<div class=\"col-sm-3 col-sm-offset-1 sg-navbar-dropdownmenu sg-navbar-dropdownmenu-left hidden\" id=\"navigation-header-dropdownmenu-left\">\n\t\t\t\t<div class=\"dropdown pull-right sg-no-mobile\">\n\t\t\t\t\t<button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-expanded=\"true\"><div src=\"\" class=\"profile-pic\"></div><div class=\"menu-text\">MENU</div><!--<span class=\"caret\"></span>--></button>\n\t\t\t\t\t<div class=\"dropdown-menu list-group\" role=\"menu\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</nav>\n\n<div class=\"sg-navbar-slidemenu sg-navbar-slidemenu-left\" id=\"navigation-header-slidemenu-left\">\n\t<div class=\"list-group\" role=\"menu\"></div>\n</div>\n";
+	/**
+	 * General popup object that inherits from ViewController.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+	
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(20),
+	
+		$popupLightbox = $('#popup-lightbox'),
+	    inherit, show, hide, setTitle;
+	
+	show = function() {
+	    $popupLightbox.removeClass('hidden');
+	    this.templateParameters.title = this.title;
+	    this.render();
+	};
+	
+	hide = function() {
+	    $popupLightbox.addClass('hidden');
+	    this.close();
+	};
+	
+	setTitle = function(title) {
+	    this.title = title;
+	};
+	
+	inherit = function(inheritOptions) {
+	    var options = {
+	        $element: $('.popup-container', $popupLightbox),
+	        title: 'Popup',
+	
+	        show: show,
+	        hide: hide,
+	        setTitle: setTitle
+	    };
+	    _.extend(options, inheritOptions);
+	
+	    return {
+	        constructor: Utilities.inherit(ViewController.constructor, options)
+	    };
+	};
+	
+	module.exports = {
+	    inherit: inherit
+	};
+
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12937,13 +13136,10 @@
 
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(23)
-	__webpack_require__(24)
-	__webpack_require__(25)
 	__webpack_require__(26)
 	__webpack_require__(27)
 	__webpack_require__(28)
@@ -12953,150 +13149,159 @@
 	__webpack_require__(32)
 	__webpack_require__(33)
 	__webpack_require__(34)
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./aboutus.js": 35,
-		"./addgear.js": 36,
-		"./addtechprofile.js": 37,
-		"./addvan.js": 38,
-		"./availabilitycalendar.js": 39,
-		"./booking.js": 40,
-		"./bookingrequest.js": 41,
-		"./contactus.js": 42,
-		"./copyright.js": 43,
-		"./dashboard-profile.js": 44,
-		"./dashboard-settings.js": 45,
-		"./dashboard-yourgear.js": 46,
-		"./dashboard-yourgearrentals.js": 47,
-		"./dashboard-yourgearreservations.js": 48,
-		"./dashboard-yourtechprofilerentals.js": 49,
-		"./dashboard-yourtechprofilereservations.js": 50,
-		"./dashboard-yourtechprofiles.js": 51,
-		"./dashboard-yourvanrentals.js": 52,
-		"./dashboard-yourvanreservations.js": 53,
-		"./dashboard-yourvans.js": 54,
-		"./dashboard.js": 55,
-		"./editgear.js": 56,
-		"./edittechprofile.js": 57,
-		"./editvan.js": 58,
-		"./error.js": 59,
-		"./footer.js": 60,
-		"./gearprofile.js": 61,
-		"./gearsearchform.js": 62,
-		"./home.js": 63,
-		"./insurance.js": 64,
-		"./navigation-header.js": 10,
-		"./payment.js": 65,
-		"./paymentsuccessful.js": 66,
-		"./pickupdeliverycalendar.js": 67,
-		"./privacy.js": 68,
-		"./search.js": 69,
-		"./submerchantregistration.js": 70,
-		"./techprofile.js": 71,
-		"./techprofilesearchform.js": 72,
-		"./terms.js": 73,
-		"./user.js": 74,
-		"./vanprofile.js": 75,
-		"./vansearchform.js": 76
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 20;
-
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./aboutus.html": 77,
-		"./addgear.html": 78,
-		"./addtechprofile.html": 79,
-		"./addvan.html": 80,
-		"./availabilitycalendar.html": 81,
-		"./booking.html": 82,
-		"./bookingrequest.html": 83,
-		"./closedbeta.html": 84,
-		"./contactus.html": 85,
-		"./copyright.html": 86,
-		"./dashboard-profile.html": 87,
-		"./dashboard-settings.html": 88,
-		"./dashboard-yourgear.html": 89,
-		"./dashboard-yourgearrentals.html": 90,
-		"./dashboard-yourgearreservations.html": 91,
-		"./dashboard-yourtechprofilerentals.html": 92,
-		"./dashboard-yourtechprofilereservations.html": 93,
-		"./dashboard-yourtechprofiles.html": 94,
-		"./dashboard-yourvanrentals.html": 95,
-		"./dashboard-yourvanreservations.html": 96,
-		"./dashboard-yourvans.html": 97,
-		"./dashboard.html": 98,
-		"./editgear.html": 99,
-		"./edittechprofile.html": 100,
-		"./editvan.html": 101,
-		"./error.html": 102,
-		"./footer.html": 103,
-		"./gearprofile.html": 104,
-		"./gearsearchform.html": 105,
-		"./home.html": 106,
-		"./insurance.html": 107,
-		"./navigation-header.html": 17,
-		"./payment.html": 108,
-		"./paymentsuccessful.html": 109,
-		"./pickupdeliverycalendar.html": 110,
-		"./privacy.html": 111,
-		"./search-results.html": 112,
-		"./search.html": 113,
-		"./submerchantregistration.html": 114,
-		"./techprofile.html": 115,
-		"./techprofilesearchform.html": 116,
-		"./terms.html": 117,
-		"./testimonial.html": 118,
-		"./user-gear-item.html": 119,
-		"./user-techprofiles-item.html": 120,
-		"./user-vans-item.html": 121,
-		"./user.html": 122,
-		"./vanprofile.html": 123,
-		"./vansearchform.html": 124,
-		"./yourgear-item.html": 125,
-		"./yourgearrentals-item.html": 126,
-		"./yourgearreservations-item.html": 127,
-		"./yourtechprofilerentals-item.html": 128,
-		"./yourtechprofilereservations-item.html": 129,
-		"./yourtechprofiles-item.html": 130,
-		"./yourvanrentals-item.html": 131,
-		"./yourvanreservations-item.html": 132,
-		"./yourvans-item.html": 133
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 21;
-
+	__webpack_require__(35)
+	__webpack_require__(36)
+	__webpack_require__(37)
 
 /***/ },
 /* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-right\">\n\t\t\t<button class=\"cancel-btn sg-btn-round submerchant-message-close sg-white-bg sg-blue\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div id=\"popup-message\" class=\"message-pop\"></div>\n\t</div>\n</div>";
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./aboutus.js": 38,
+		"./addgear.js": 39,
+		"./addtechprofile.js": 40,
+		"./addvan.js": 41,
+		"./availabilitycalendar.js": 42,
+		"./booking.js": 43,
+		"./bookingrequest.js": 44,
+		"./contactus.js": 45,
+		"./copyright.js": 46,
+		"./dashboard-profile.js": 47,
+		"./dashboard-settings.js": 48,
+		"./dashboard-yourgear.js": 49,
+		"./dashboard-yourgearrentals.js": 50,
+		"./dashboard-yourgearreservations.js": 51,
+		"./dashboard-yourtechprofilerentals.js": 52,
+		"./dashboard-yourtechprofilereservations.js": 53,
+		"./dashboard-yourtechprofiles.js": 54,
+		"./dashboard-yourvanrentals.js": 55,
+		"./dashboard-yourvanreservations.js": 56,
+		"./dashboard-yourvans.js": 57,
+		"./dashboard.js": 58,
+		"./editgear.js": 59,
+		"./edittechprofile.js": 60,
+		"./editvan.js": 61,
+		"./error.js": 62,
+		"./footer.js": 63,
+		"./gearprofile.js": 64,
+		"./gearsearchform.js": 65,
+		"./home.js": 66,
+		"./insurance.js": 67,
+		"./navigation-header.js": 11,
+		"./payment.js": 68,
+		"./paymentsuccessful.js": 69,
+		"./pickupdeliverycalendar.js": 70,
+		"./privacy.js": 71,
+		"./search.js": 72,
+		"./submerchantregistration.js": 73,
+		"./techprofile.js": 74,
+		"./techprofilesearchform.js": 75,
+		"./terms.js": 76,
+		"./user.js": 77,
+		"./vanprofile.js": 78,
+		"./vansearchform.js": 79
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 23;
+
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./aboutus.html": 80,
+		"./addgear.html": 81,
+		"./addtechprofile.html": 82,
+		"./addvan.html": 83,
+		"./availabilitycalendar.html": 84,
+		"./booking.html": 85,
+		"./bookingrequest.html": 86,
+		"./closedbeta.html": 87,
+		"./contactus.html": 88,
+		"./copyright.html": 89,
+		"./dashboard-profile.html": 90,
+		"./dashboard-settings.html": 91,
+		"./dashboard-yourgear.html": 92,
+		"./dashboard-yourgearrentals.html": 93,
+		"./dashboard-yourgearreservations.html": 94,
+		"./dashboard-yourtechprofilerentals.html": 95,
+		"./dashboard-yourtechprofilereservations.html": 96,
+		"./dashboard-yourtechprofiles.html": 97,
+		"./dashboard-yourvanrentals.html": 98,
+		"./dashboard-yourvanreservations.html": 99,
+		"./dashboard-yourvans.html": 100,
+		"./dashboard.html": 101,
+		"./editgear.html": 102,
+		"./edittechprofile.html": 103,
+		"./editvan.html": 104,
+		"./error.html": 105,
+		"./footer.html": 106,
+		"./gearprofile.html": 107,
+		"./gearsearchform.html": 108,
+		"./home.html": 109,
+		"./insurance.html": 110,
+		"./navigation-header.html": 14,
+		"./payment.html": 111,
+		"./paymentsuccessful.html": 112,
+		"./pickupdeliverycalendar.html": 113,
+		"./privacy.html": 114,
+		"./search-results.html": 115,
+		"./search.html": 116,
+		"./submerchantregistration.html": 117,
+		"./techprofile.html": 118,
+		"./techprofilesearchform.html": 119,
+		"./terms.html": 120,
+		"./testimonial.html": 121,
+		"./user-gear-item.html": 122,
+		"./user-techprofiles-item.html": 123,
+		"./user-vans-item.html": 124,
+		"./user.html": 125,
+		"./vanprofile.html": 126,
+		"./vansearchform.html": 127,
+		"./yourgear-item.html": 128,
+		"./yourgearrentals-item.html": 129,
+		"./yourgearreservations-item.html": 130,
+		"./yourtechprofilerentals-item.html": 131,
+		"./yourtechprofilereservations-item.html": 132,
+		"./yourtechprofiles-item.html": 133,
+		"./yourvanrentals-item.html": 134,
+		"./yourvanreservations-item.html": 135,
+		"./yourvans-item.html": 136
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 24;
+
+
+/***/ },
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13108,7 +13313,7 @@
 	'use strict';
 	
 	var Config = __webpack_require__(5),
-		Model = __webpack_require__(16),
+		Model = __webpack_require__(18),
 	
 		currencies = {},
 	    XChangeRates,
@@ -13141,7 +13346,7 @@
 
 
 /***/ },
-/* 23 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13207,7 +13412,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 24 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13308,7 +13513,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 25 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13431,7 +13636,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 26 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13675,7 +13880,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 27 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13893,7 +14098,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 28 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14061,7 +14266,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 29 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14407,7 +14612,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 30 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14890,7 +15095,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 31 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15005,7 +15210,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 32 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15184,7 +15389,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 33 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15344,7 +15549,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 34 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15513,7 +15718,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 35 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15526,9 +15731,9 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(12),
+	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	
 	    testimonials,
 	
@@ -15591,7 +15796,7 @@
 	    var view = this,
 	        TestimonialTemplate;
 	
-	    TestimonialTemplate = __webpack_require__(118);
+	    TestimonialTemplate = __webpack_require__(121);
 	
 	    var testimonialTemplate = _.template(TestimonialTemplate),
 	        $owlContainer = $('.owl-carousel', view.$element),
@@ -15632,8 +15837,8 @@
 	loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(60);
-	    FooterTemplate = __webpack_require__(103);
+	    FooterController = __webpack_require__(63);
+	    FooterTemplate = __webpack_require__(106);
 	
 	    view.footer = new FooterController.constructor({
 	        name: 'footer',
@@ -15655,7 +15860,7 @@
 
 
 /***/ },
-/* 36 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15668,15 +15873,15 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(12),
-	    Moment = __webpack_require__(134),
+	    GoogleMaps = __webpack_require__(13),
+	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
-	    Gear = __webpack_require__(135),
+	    Localization = __webpack_require__(17),
+	    Gear = __webpack_require__(139),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -16254,8 +16459,8 @@
 	    $calendarContainer.removeClass('col-sm-9');
 	    $calendarContainer.addClass('col-sm-12');
 	
-	    calendarVC = __webpack_require__(39);
-	    calendarVT = __webpack_require__(81);
+	    calendarVC = __webpack_require__(42);
+	    calendarVT = __webpack_require__(84);
 	
 	    view.calendarVC = new calendarVC.constructor({
 	        name: 'availabilitycalendar',
@@ -16296,8 +16501,8 @@
 	        view = this,
 	        submerchantFormVC, submerchantFormVT;
 	
-	    submerchantFormVC = __webpack_require__(70);
-	    submerchantFormVT = __webpack_require__(114);
+	    submerchantFormVC = __webpack_require__(73);
+	    submerchantFormVT = __webpack_require__(117);
 	
 	    view.submerchantFormVC = new submerchantFormVC.constructor({
 	        name: 'submerchantform',
@@ -16459,7 +16664,7 @@
 
 
 /***/ },
-/* 37 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16472,15 +16677,15 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(12),
-	    Moment = __webpack_require__(134),
+	    GoogleMaps = __webpack_require__(13),
+	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
-	    TechProfile = __webpack_require__(136),
+	    Localization = __webpack_require__(17),
+	    TechProfile = __webpack_require__(138),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -16895,8 +17100,8 @@
 	    $calendarContainer.removeClass('col-sm-9');
 	    $calendarContainer.addClass('col-sm-12');
 	
-	    calendarVC = __webpack_require__(39);
-	    calendarVT = __webpack_require__(81);
+	    calendarVC = __webpack_require__(42);
+	    calendarVT = __webpack_require__(84);
 	
 	    view.calendarVC = new calendarVC.constructor({
 	        name: 'availabilitycalendar',
@@ -16937,8 +17142,8 @@
 	        view = this,
 	        submerchantFormVC, submerchantFormVT;
 	
-	    submerchantFormVC = __webpack_require__(70);
-	    submerchantFormVT = __webpack_require__(114);
+	    submerchantFormVC = __webpack_require__(73);
+	    submerchantFormVT = __webpack_require__(117);
 	    view.submerchantFormVC = new submerchantFormVC.constructor({
 	        name: 'submerchantform',
 	        $element: $submerchantFormContainer,
@@ -17093,7 +17298,7 @@
 
 
 /***/ },
-/* 38 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17106,15 +17311,15 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(12),
-	    Moment = __webpack_require__(134),
+	    GoogleMaps = __webpack_require__(13),
+	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
-	    Van = __webpack_require__(137),
+	    Localization = __webpack_require__(17),
+	    Van = __webpack_require__(140),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -17604,8 +17809,8 @@
 	    $calendarContainer.removeClass('col-sm-9');
 	    $calendarContainer.addClass('col-sm-12');
 	
-	    calendarVC = __webpack_require__(39);
-	    calendarVT = __webpack_require__(81);
+	    calendarVC = __webpack_require__(42);
+	    calendarVT = __webpack_require__(84);
 	
 	    view.calendarVC = new calendarVC.constructor({
 	        name: 'availabilitycalendar',
@@ -17646,8 +17851,8 @@
 	        view = this,
 	        submerchantFormVC, submerchantFormVT;
 	
-	    submerchantFormVC = __webpack_require__(70);
-	    submerchantFormVT = __webpack_require__(114);
+	    submerchantFormVC = __webpack_require__(73);
+	    submerchantFormVT = __webpack_require__(117);
 	
 	    view.submerchantFormVC = new submerchantFormVC.constructor({
 	        name: 'submerchantform',
@@ -17805,7 +18010,7 @@
 
 
 /***/ },
-/* 39 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17817,12 +18022,12 @@
 	'use strict';
 	
 	var $ = __webpack_require__(4),
-	    Moment = __webpack_require__(134),
+	    Moment = __webpack_require__(137),
 	    
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
+	    Localization = __webpack_require__(17),
 	
 	    didInitialize,
 	    didRender,
@@ -18306,7 +18511,7 @@
 
 
 /***/ },
-/* 40 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18320,15 +18525,15 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    Moment = __webpack_require__(134),
+	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
+	    Localization = __webpack_require__(17),
 	    User = __webpack_require__(8),
-	    Booking = __webpack_require__(138),
+	    Booking = __webpack_require__(141),
 	
 	    didInitialize,
 	    didRender,
@@ -18606,7 +18811,7 @@
 
 
 /***/ },
-/* 41 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18618,16 +18823,16 @@
 	'use strict';
 	
 	var $ = __webpack_require__(4),
-	    Moment = __webpack_require__(134),
+	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
-	    Booking = __webpack_require__(138),
+	    Localization = __webpack_require__(17),
+	    Booking = __webpack_require__(141),
 	
-	    SelectTimePopup = __webpack_require__(139),
+	    SelectTimePopup = __webpack_require__(142),
 	
 	    didInitialize,
 	    didRender,
@@ -18696,8 +18901,8 @@
 	        parent: view
 	    };
 	
-	    calendarVC = __webpack_require__(67);
-	    calendarVT = __webpack_require__(110);
+	    calendarVC = __webpack_require__(70);
+	    calendarVT = __webpack_require__(113);
 	
 	    view.calendarVC = new calendarVC.constructor({
 	        name: 'pickupdeliverycalendar',
@@ -18834,7 +19039,7 @@
 
 
 /***/ },
-/* 42 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18845,13 +19050,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(18);
+	var ViewController = __webpack_require__(20);
 	
 	module.exports = ViewController.inherit({});
 
 
 /***/ },
-/* 43 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18864,7 +19069,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		
 	    didRender,
 	    loadFooter;
@@ -18877,8 +19082,8 @@
 	    var view = this,
 	        FooterController, FooterTemplate;
 	
-	    FooterController = __webpack_require__(60);
-	    FooterTemplate = __webpack_require__(103);
+	    FooterController = __webpack_require__(63);
+	    FooterTemplate = __webpack_require__(106);
 	
 	    view.footer = new FooterController.constructor({
 	        name: 'footer',
@@ -18897,7 +19102,7 @@
 
 
 /***/ },
-/* 44 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18910,13 +19115,13 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    Moment = __webpack_require__(134),
+	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
+	    Localization = __webpack_require__(17),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -18959,8 +19164,7 @@
 	    var view = this,
 	        userData = this.user.data,
 	        birthdate, $countriesSelect, $nationalitiesSelect;
-	
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Your profile');
 	    }
 	
@@ -19223,7 +19427,7 @@
 
 
 /***/ },
-/* 45 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19236,10 +19440,10 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(15),
+		Localization = __webpack_require__(17),
 	
 		didInitialize,
 	    didRender,
@@ -19311,7 +19515,7 @@
 
 
 /***/ },
-/* 46 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19326,10 +19530,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    GearList = __webpack_require__(140),
+	    GearList = __webpack_require__(143),
 	
 	    gearBlockID,
 	
@@ -19354,7 +19558,7 @@
 	};
 	
 	didRender = function() {
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Your gear');
 	    }
 	
@@ -19372,7 +19576,7 @@
 	    var view = this,
 	        YourGearItemTemplate;
 	
-	    YourGearItemTemplate = __webpack_require__(125);
+	    YourGearItemTemplate = __webpack_require__(128);
 	    var yourGearItemTemplate = _.template(YourGearItemTemplate),
 	        yourGear = view.gearList.data,
 	        $gearBlock, defaultGear, gear, i, $gearItem;
@@ -19433,7 +19637,7 @@
 
 
 /***/ },
-/* 47 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19448,10 +19652,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    GearList = __webpack_require__(140),
+	    GearList = __webpack_require__(143),
 	
 	    gearBlockID,
 	
@@ -19478,7 +19682,7 @@
 	};
 	
 	didRender = function() {
-	    if(App.rootVC.header) {
+	    if(App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Gear rentals');
 	    }
 	
@@ -19493,7 +19697,7 @@
 	    var view = this,
 	        YourRentalsItemTemplate;
 	
-	    YourRentalsItemTemplate = __webpack_require__(126);
+	    YourRentalsItemTemplate = __webpack_require__(129);
 	
 	    var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 	        yourRentals = view.gearList.data,
@@ -19582,7 +19786,7 @@
 
 
 /***/ },
-/* 48 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19597,10 +19801,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    GearList = __webpack_require__(140),
+	    GearList = __webpack_require__(143),
 	
 	    reservationBlockID,
 	
@@ -19626,7 +19830,7 @@
 	};
 	
 	didRender = function() {
-	    if(App.rootVC.header) {
+	    if(App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Gear reservations');
 	    }
 	    if (this.didFetch === true) {
@@ -19639,7 +19843,7 @@
 	populateYourReservations = function(callback) {
 	    var view = this,
 	        YourReservationsItemTemplate;
-	    YourReservationsItemTemplate = __webpack_require__(127);
+	    YourReservationsItemTemplate = __webpack_require__(130);
 	    var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 	        yourReserv = view.gearList.data,
 	        $reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
@@ -19727,7 +19931,7 @@
 
 
 /***/ },
-/* 49 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19742,10 +19946,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    TechProfileList = __webpack_require__(141),
+	    TechProfileList = __webpack_require__(144),
 	
 	    techProfileBlockID,
 	
@@ -19772,7 +19976,7 @@
 	};
 	
 	didRender = function() {
-	    if(App.rootVC.header) {
+	    if(App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Tech profile rentals');
 	    }
 	
@@ -19786,7 +19990,7 @@
 	populateYourRentals = function(callback) {
 	    var view = this,
 	        YourRentalsItemTemplate;
-	    YourRentalsItemTemplate = __webpack_require__(128);
+	    YourRentalsItemTemplate = __webpack_require__(131);
 	    var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 	        yourRentals = view.techProfileList.data,
 	        displayedRentals = 0, //We do not display rentals with status waiting
@@ -19872,7 +20076,7 @@
 
 
 /***/ },
-/* 50 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19887,10 +20091,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    TechProfileList = __webpack_require__(141),
+	    TechProfileList = __webpack_require__(144),
 	
 	    reservationBlockID,
 	
@@ -19916,7 +20120,7 @@
 	};
 	
 	didRender = function() {
-	    if(App.rootVC.header) {
+	    if(App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Tech profile reservations');
 	    }
 	    if (this.didFetch === true) {
@@ -19929,7 +20133,7 @@
 	populateYourReservations = function(callback) {
 	    var view = this,
 	        YourReservationsItemTemplate;
-	    YourReservationsItemTemplate = __webpack_require__(129);
+	    YourReservationsItemTemplate = __webpack_require__(132);
 	
 	    var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 	        yourReserv = view.techProfileList.data,
@@ -20015,7 +20219,7 @@
 
 
 /***/ },
-/* 51 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20030,10 +20234,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    TechProfileList = __webpack_require__(141),
+	    TechProfileList = __webpack_require__(144),
 	
 	    techprofilesBlockID,
 	
@@ -20058,7 +20262,7 @@
 	};
 	
 	didRender = function() {
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Your technician profiles');
 	    }
 	
@@ -20075,7 +20279,7 @@
 	populateYourTechProfiles = function(callback) {
 	    var view = this,
 	        YourTechProfilesItemTemplate;
-	    YourTechProfilesItemTemplate = __webpack_require__(130);
+	    YourTechProfilesItemTemplate = __webpack_require__(133);
 	    var yourTechProfilesItemTemplate = _.template(YourTechProfilesItemTemplate),
 	        yourTechProfiles = view.techProfilesList.data,
 	        $techProfilesBlock, defaultTechProfile, techProfile, i, $techProfileItem;
@@ -20122,7 +20326,7 @@
 
 
 /***/ },
-/* 52 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20137,10 +20341,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    VanList = __webpack_require__(142),
+	    VanList = __webpack_require__(145),
 	
 	    vanBlockID,
 	
@@ -20167,7 +20371,7 @@
 	};
 	
 	didRender = function() {
-	    if(App.rootVC.header) {
+	    if(App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Van rentals');
 	    }
 	
@@ -20181,7 +20385,7 @@
 	populateYourRentals = function(callback) {
 	    var view = this,
 	        YourRentalsItemTemplate;
-	    YourRentalsItemTemplate = __webpack_require__(131);
+	    YourRentalsItemTemplate = __webpack_require__(134);
 	    var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 	        yourRentals = view.vanList.data,
 	        displayedRentals = 0, //We do not display rentals with status waiting
@@ -20267,7 +20471,7 @@
 
 
 /***/ },
-/* 53 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20282,10 +20486,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    VanList = __webpack_require__(142),
+	    VanList = __webpack_require__(145),
 	
 	    reservationBlockID,
 	
@@ -20311,7 +20515,7 @@
 	};
 	
 	didRender = function() {
-	    if(App.rootVC.header) {
+	    if(App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Van reservations');
 	    }
 	    if (this.didFetch === true) {
@@ -20324,7 +20528,7 @@
 	populateYourReservations = function(callback) {
 	    var view = this,
 	        YourReservationsItemTemplate;
-	    YourReservationsItemTemplate = __webpack_require__(132);
+	    YourReservationsItemTemplate = __webpack_require__(135);
 	
 	    var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 	        yourReserv = view.vanList.data,
@@ -20410,7 +20614,7 @@
 
 
 /***/ },
-/* 54 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20425,10 +20629,10 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    VanList = __webpack_require__(142),
+	    VanList = __webpack_require__(145),
 	
 	    vanBlockID,
 	
@@ -20453,7 +20657,7 @@
 	};
 	
 	didRender = function() {
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Your vans');
 	    }
 	
@@ -20470,7 +20674,7 @@
 	populateYourVans = function(callback) {
 	    var view = this,
 	        YourVansItemTemplate;
-	    YourVansItemTemplate = __webpack_require__(133);
+	    YourVansItemTemplate = __webpack_require__(136);
 	
 	    var yourVansItemTemplate = _.template(YourVansItemTemplate),
 	        yourVans = view.vanList.data,
@@ -20529,7 +20733,7 @@
 
 
 /***/ },
-/* 55 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20542,7 +20746,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
 		subViewContainerID,
@@ -20612,7 +20816,7 @@
 
 
 /***/ },
-/* 56 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20623,15 +20827,15 @@
 	/*jslint node: true */
 	'use strict';
 	
+	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(12),
-	    Moment = __webpack_require__(134),
+	    Moment = __webpack_require__(137),
+	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(18),
 	    App = __webpack_require__(1),
-	
-	    Localization = __webpack_require__(15),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -20722,6 +20926,7 @@
 	    this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 	    this.setupEvent('change', '.price', this, this.handlePriceChange);
 	    this.setupEvent('change', '#editgear-subtype', this, this.handleSubtypeChange);
+	    this.setupEvent('click', '#editgear-cancel-symbol', this, this.handleCancel);
 	
 	    this.setupEvent('click', '#editgear-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
 	};
@@ -20772,8 +20977,7 @@
 	
 	renderAvailability = function() {
 	    var view = this,
-	        $calendarContainer,
-	        $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
+	        $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
 	
 	    $calendarContainer = $('#editgear-availability-calendar', this.$element);
 	    $calendarContainer.removeClass('hidden');
@@ -20781,9 +20985,8 @@
 	    $submerchantFormBtn = $('#editgear-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        calendarVC = __webpack_require__(39);
-	        calendarVT = __webpack_require__(81);
-	
+	        calendarVC = __webpack_require__(42);
+	        calendarVT = __webpack_require__(84);
 	        view.calendarVC = new calendarVC.constructor({
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
@@ -20797,8 +21000,9 @@
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        submerchantFormVC = __webpack_require__(70);
-	        submerchantFormVT = __webpack_require__(114);
+	        submerchantFormVC = __webpack_require__(73);
+	        submerchantFormVT = __webpack_require__(117);
+	
 	        view.submerchantFormVC = new submerchantFormVC.constructor({
 	            name: 'submerchantform',
 	            $element: $calendarContainer,
@@ -20806,6 +21010,7 @@
 	        });
 	        view.submerchantFormVC.initialize();
 	        view.submerchantFormVC.render();
+	
 	        $submerchantFormBtn.removeClass('hidden');
 	    }
 	};
@@ -21245,7 +21450,7 @@
 
 
 /***/ },
-/* 57 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21258,14 +21463,13 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(12),
-	    Moment = __webpack_require__(134),
+	    GoogleMaps = __webpack_require__(13),
+	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
 	    App = __webpack_require__(1),
-	
-	    Localization = __webpack_require__(15),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -21342,6 +21546,7 @@
 	    this.setupEvent('change', '#edittechprofile-photos-form-imageupload', this, this.handleImageUpload);
 	    this.setupEvent('change', '.price', this, this.handlePriceChange);
 	    this.setupEvent('change', '#edittechprofile-subtype', this, this.handleSubtypeChange);
+	    this.setupEvent('click', '#edittechprofile-cancel-symbol', this, this.handleCancel);
 	
 	    this.setupEvent('click', '#edittechprofile-startyear', this, this.handleExperienceStartYearChange);
 	
@@ -21360,9 +21565,7 @@
 	
 	renderAvailability = function() {
 	    var view = this,
-	        $calendarContainer,
-	        $submerchantFormBtn,
-	        calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
+	        $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
 	
 	    $calendarContainer = $('#edittechprofile-availability-calendar', this.$element);
 	    $calendarContainer.removeClass('hidden');
@@ -21370,9 +21573,8 @@
 	    $submerchantFormBtn = $('#edittechprofile-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        calendarVC = __webpack_require__(39);
-	        calendarVT = __webpack_require__(81);
-	
+	        calendarVC = __webpack_require__(42);
+	        calendarVT = __webpack_require__(84);
 	        view.calendarVC = new calendarVC.constructor({
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
@@ -21381,13 +21583,12 @@
 	        });
 	        view.calendarVC.initialize();
 	        view.calendarVC.render();
-	
 	        if ($submerchantFormBtn.hasClass('hidden') === false) {
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        submerchantFormVC = __webpack_require__(70);
-	        submerchantFormVT = __webpack_require__(114);
+	        submerchantFormVC = __webpack_require__(73);
+	        submerchantFormVT = __webpack_require__(117);
 	        view.submerchantFormVC = new submerchantFormVC.constructor({
 	            name: 'submerchantform',
 	            $element: $calendarContainer,
@@ -21760,7 +21961,7 @@
 
 
 /***/ },
-/* 58 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21773,13 +21974,12 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(12),
-	    Moment = __webpack_require__(134),
+	    GoogleMaps = __webpack_require__(13),
+	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(18),
 	    App = __webpack_require__(1),
-	
-	    Localization = __webpack_require__(15),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -21867,7 +22067,7 @@
 	    this.setupEvent('change', '#van-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 	    this.setupEvent('change', '.price', this, this.handlePriceChange);
 	    this.setupEvent('change', '#editvan-subtype', this, this.handleSubtypeChange);
-	
+	    this.setupEvent('click', '#editvan-cancel-symbol', this, this.handleCancel);
 	    this.setupEvent('click', '#editvan-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
 	};
 	
@@ -21914,8 +22114,7 @@
 	
 	renderAvailability = function() {
 	    var view = this,
-	        $calendarContainer,
-	        $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
+	        $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
 	
 	    $calendarContainer = $('#editvan-availability-calendar', this.$element);
 	    $calendarContainer.removeClass('hidden');
@@ -21923,8 +22122,8 @@
 	    $submerchantFormBtn = $('#editvan-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        calendarVC = __webpack_require__(39);
-	        calendarVT = __webpack_require__(81);
+	        calendarVC = __webpack_require__(42);
+	        calendarVT = __webpack_require__(84);
 	        view.calendarVC = new calendarVC.constructor({
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
@@ -21937,8 +22136,8 @@
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        submerchantFormVC = __webpack_require__(70);
-	        submerchantFormVT = __webpack_require__(114);
+	        submerchantFormVC = __webpack_require__(73);
+	        submerchantFormVT = __webpack_require__(117);
 	        view.submerchantFormVC = new submerchantFormVC.constructor({
 	            name: 'submerchantform',
 	            $element: $calendarContainer,
@@ -22323,7 +22522,7 @@
 
 
 /***/ },
-/* 59 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22334,12 +22533,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(18);
+	var ViewController = __webpack_require__(20);
 	module.exports = ViewController.inherit();
 
 
 /***/ },
-/* 60 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22350,11 +22549,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Moment = __webpack_require__(134),
+	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 	
-		Localization = __webpack_require__(15),
+		Localization = __webpack_require__(17),
 	
 		didInitialize;
 	
@@ -22372,7 +22571,7 @@
 
 
 /***/ },
-/* 61 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22384,16 +22583,16 @@
 	'use strict';
 	
 	var $ = __webpack_require__(4),
-		FB = __webpack_require__(14),
-		GoogleMaps = __webpack_require__(12),
+		FB = __webpack_require__(16),
+		GoogleMaps = __webpack_require__(13),
 	
 		Config = __webpack_require__(5),
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(15),
-		Gear = __webpack_require__(135),
+		Localization = __webpack_require__(17),
+		Gear = __webpack_require__(139),
 		User = __webpack_require__(8),
 	
 		paymentSuccessModalOpen = false,
@@ -22497,7 +22696,7 @@
 	didRender = function() {
 	    var preAuthorizationID, bookingID;
 	
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle(this.gear.data.gear_type);
 	    }
 	
@@ -22747,7 +22946,7 @@
 
 
 /***/ },
-/* 62 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22760,14 +22959,14 @@
 	
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(12),
-		Moment = __webpack_require__(134),
+		GoogleMaps = __webpack_require__(13),
+		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(15),
+		Localization = __webpack_require__(17),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -23161,7 +23360,7 @@
 
 
 /***/ },
-/* 63 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23174,7 +23373,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23194,7 +23393,7 @@
 	};
 	
 	didRender = function() {
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle();
 	    }
 	
@@ -23208,8 +23407,8 @@
 	loadSearchBar = function() {
 	    var view = this,
 	        gearSearchVC, gearSearchVT, techProfileSearchVC, techProfileSearchVT, vanSearchVC, vanSearchVT;
-	    gearSearchVC = __webpack_require__(62);
-	    gearSearchVT = __webpack_require__(105);
+	    gearSearchVC = __webpack_require__(65);
+	    gearSearchVT = __webpack_require__(108);
 	    view.gearSearchFormVC = new gearSearchVC.constructor({
 	        name: 'gearsearchform',
 	        $element: $('#home-searchform-gear .searchform-container', view.$element),
@@ -23218,8 +23417,8 @@
 	    view.gearSearchFormVC.initialize();
 	    view.gearSearchFormVC.render();
 	
-	    techProfileSearchVC = __webpack_require__(72);
-	    techProfileSearchVT = __webpack_require__(116);
+	    techProfileSearchVC = __webpack_require__(75);
+	    techProfileSearchVT = __webpack_require__(119);
 	    view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
 	        name: 'techprofilesearchform',
 	        $element: $('#home-searchform-techprofiles .searchform-container', view.$element),
@@ -23228,8 +23427,8 @@
 	    view.techProfileSearchFormVC.initialize();
 	    view.techProfileSearchFormVC.render();
 	
-	    vanSearchVC = __webpack_require__(76);
-	    vanSearchVT = __webpack_require__(124);
+	    vanSearchVC = __webpack_require__(79);
+	    vanSearchVT = __webpack_require__(127);
 	    view.vanSearchFormVC = new vanSearchVC.constructor({
 	        name: 'vansearchform',
 	        $element: $('#home-searchform-vans .searchform-container', view.$element),
@@ -23242,8 +23441,8 @@
 	loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(60);
-	    FooterTemplate = __webpack_require__(103);
+	    FooterController = __webpack_require__(63);
+	    FooterTemplate = __webpack_require__(106);
 	    view.footer = new FooterController.constructor({
 	        name: 'footer',
 	        $element: $('footer', view.$element),
@@ -23304,7 +23503,7 @@
 
 
 /***/ },
-/* 64 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23317,7 +23516,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	
 	    didRender,
 	    loadFooter;
@@ -23329,8 +23528,8 @@
 	loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(60);
-	    FooterTemplate = __webpack_require__(103);
+	    FooterController = __webpack_require__(63);
+	    FooterTemplate = __webpack_require__(106);
 	    view.footer = new FooterController.constructor({
 	        name: 'footer',
 	        $element: $('footer', view.$element),
@@ -23347,7 +23546,7 @@
 
 
 /***/ },
-/* 65 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23360,14 +23559,14 @@
 	
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
-		Moment = __webpack_require__(134),
+		Moment = __webpack_require__(137),
 	
 		Config = __webpack_require__(5),
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(15),
-		Card = __webpack_require__(143),
+		Localization = __webpack_require__(17),
+		Card = __webpack_require__(146),
 	
 		didInitialize,
 	    didRender,
@@ -23787,7 +23986,7 @@
 
 
 /***/ },
-/* 66 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23799,14 +23998,14 @@
 	'use strict';
 	
 	var $ = __webpack_require__(4),
-		Moment = __webpack_require__(134),
+		Moment = __webpack_require__(137),
 	
 		Config = __webpack_require__(5),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(15),
-		ViewController = __webpack_require__(18),
-		Booking = __webpack_require__(138),
+		Localization = __webpack_require__(17),
+		ViewController = __webpack_require__(20),
+		Booking = __webpack_require__(141),
 	
 		didInitialize,
 	    didRender,
@@ -23927,7 +24126,7 @@
 
 
 /***/ },
-/* 67 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23940,12 +24139,12 @@
 	
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
-		Moment = __webpack_require__(134),
+		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 	
-		Localization = __webpack_require__(15),
+		Localization = __webpack_require__(17),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -24382,7 +24581,7 @@
 
 
 /***/ },
-/* 68 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24395,7 +24594,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 	
 	    didRender,
 	    loadFooter;
@@ -24407,8 +24606,8 @@
 	loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(60);
-	    FooterTemplate = __webpack_require__(103);
+	    FooterController = __webpack_require__(63);
+	    FooterTemplate = __webpack_require__(106);
 	
 	    view.footer = new FooterController.constructor({
 	        name: 'footer',
@@ -24426,7 +24625,7 @@
 
 
 /***/ },
-/* 69 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24439,18 +24638,18 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(12),
-	    FB = __webpack_require__(14),
+	    GoogleMaps = __webpack_require__(13),
+	    FB = __webpack_require__(16),
 	
 	    Config = __webpack_require__(5),
 	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
-	    GearList = __webpack_require__(140),
-	    TechProfileList = __webpack_require__(141),
-	    VanList = __webpack_require__(142),
+	    Localization = __webpack_require__(17),
+	    GearList = __webpack_require__(143),
+	    TechProfileList = __webpack_require__(144),
+	    VanList = __webpack_require__(145),
 	
 	    gearSearchBlockID = 'search-results-gear',
 	    techProfileSearchBlockID = 'search-results-techprofiles',
@@ -24503,7 +24702,7 @@
 	didRender = function() {
 	    var queryString;
 	
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Search gear');
 	    }
 	
@@ -24655,8 +24854,8 @@
 	    };
 	
 	    if (this.gearSearchFormVC === null) {
-	        gearSearchVC = __webpack_require__(62);
-	        gearSearchVT = __webpack_require__(105);
+	        gearSearchVC = __webpack_require__(65);
+	        gearSearchVT = __webpack_require__(108);
 	
 	        view.gearSearchFormVC = new gearSearchVC.constructor({
 	            name: 'gearsearchform',
@@ -24710,8 +24909,8 @@
 	    };
 	
 	    if (this.techProfileSearchFormVC === null) {
-	        techProfileSearchVC = __webpack_require__(72);
-	        techProfileSearchVT = __webpack_require__(116);
+	        techProfileSearchVC = __webpack_require__(75);
+	        techProfileSearchVT = __webpack_require__(119);
 	        view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
 	            name: 'techprofilesearchform',
 	            $element: $('#search-searchform-technicians .searchform-container', view.$element),
@@ -24764,8 +24963,8 @@
 	    };
 	
 	    if (this.vanSearchFormVC === null) {
-	        vanSearchVC = __webpack_require__(76);
-	        vanSearchVT = __webpack_require__(124);
+	        vanSearchVC = __webpack_require__(79);
+	        vanSearchVT = __webpack_require__(127);
 	        view.vanSearchFormVC = new vanSearchVC.constructor({
 	            name: 'vansearchform',
 	            $element: $('#search-searchform-vans .searchform-container', view.$element),
@@ -24837,7 +25036,7 @@
 	    $searchBlock.removeClass('hidden');
 	    $searchBlock.empty();
 	
-	    SearchResultTemplate = __webpack_require__(112);
+	    SearchResultTemplate = __webpack_require__(115);
 	    var searchResultTemplate = _.template(SearchResultTemplate),
 	        html = '',
 	        defaultSearchResults, workingSearchResults, handleImageLoad, handlePrices, tab, searchResult, i, img;
@@ -24954,7 +25153,7 @@
 
 
 /***/ },
-/* 70 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24966,17 +25165,17 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(12),
-		Moment = __webpack_require__(134),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(13),
+	    Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(5),
-		ViewController = __webpack_require__(18),
-		App = __webpack_require__(1),
+	    Config = __webpack_require__(5),
+	    App = __webpack_require__(1),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
+	    MessagePopup = __webpack_require__(10),
 	
-		Localization = __webpack_require__(15),
-	
-		geocoder,
+	    geocoder,
 	
 	    didInitialize,
 	    didRender,
@@ -24987,6 +25186,9 @@
 	
 	    handleBirthdateChange,
 	    handleCountrySelect,
+	
+	    handleHintIBAN,
+	    handleHintSwift,
 	
 	    submitForm,
 	    acceptTerms;
@@ -24999,8 +25201,29 @@
 	
 	didRender = function() {
 	    this.setupForm();
+	
 	    this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
 	    this.setupEvent('change', '#submerchantregistration-country', this, this.handleCountrySelect);
+	    this.setupEvent('click', '#iban-hint', this, this.handleHintIBAN);
+	    this.setupEvent('click', '#swift-hint', this, this.handleHintSwift);
+	};
+	
+	handleHintIBAN = function() {
+	    var messagePopup = new MessagePopup.constructor(),
+	        message = 'IBAN stands for International Bank Account Number and is a number attached to all accounts in the EU countries plus Norway, Switzerland, Liechtenstein and Hungary. The IBAN is made up of a code that identifies the country the account belongs to, the account holder\'s bank and the account number itself. The IBAN makes it easier and faster to process cross-border payments.';
+	
+	    messagePopup.initialize();
+	    messagePopup.show();
+	    messagePopup.setMessage(message);
+	};
+	
+	handleHintSwift = function() {
+	    var messagePopup = new MessagePopup.constructor(),
+	        message = 'The SWIFT/BIC (Bank Identifier Code) is an international standard for the identification of banks. The IBAN is an extension of your existing account number for use when you make cross-border payments.';
+	
+	    messagePopup.initialize();
+	    messagePopup.show();
+	    messagePopup.setMessage(message);
 	};
 	
 	setupForm = function() {
@@ -25296,14 +25519,15 @@
 	
 	    handleBirthdateChange: handleBirthdateChange,
 	    handleCountrySelect: handleCountrySelect,
-	
+	    handleHintIBAN: handleHintIBAN,
+	    handleHintSwift: handleHintSwift,
 	    submitForm: submitForm,
 	    acceptTerms: acceptTerms
 	});
 
 
 /***/ },
-/* 71 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25315,17 +25539,17 @@
 	'use strict';
 	
 	var $ = __webpack_require__(4),
-		FB = __webpack_require__(14),
-		GoogleMaps = __webpack_require__(12),
+		FB = __webpack_require__(16),
+		GoogleMaps = __webpack_require__(13),
 		
 		Config = __webpack_require__(5),
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 		
-		Localization = __webpack_require__(15),
+		Localization = __webpack_require__(17),
 		User = __webpack_require__(8),
-		TechProfile = __webpack_require__(136),
+		TechProfile = __webpack_require__(138),
 	
 		paymentSuccessModalOpen = false,
 	
@@ -25432,7 +25656,7 @@
 	didRender = function() {
 	    var preAuthorizationID, bookingID;
 	
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle(this.techProfile.data.roadie_type);
 	    }
 	
@@ -25638,7 +25862,7 @@
 
 
 /***/ },
-/* 72 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25651,14 +25875,14 @@
 	
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(12),
-		Moment = __webpack_require__(134),
+		GoogleMaps = __webpack_require__(13),
+		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(15),
+		Localization = __webpack_require__(17),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -26039,7 +26263,7 @@
 
 
 /***/ },
-/* 73 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26049,13 +26273,13 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(18);
+	var ViewController = __webpack_require__(20);
 	
 	module.exports = ViewController;
 
 
 /***/ },
-/* 74 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26070,12 +26294,12 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	
 	    User = __webpack_require__(8),
-	    GearList = __webpack_require__(140),
-	    TechProfileList = __webpack_require__(141),
-	    VanList = __webpack_require__(142),
+	    GearList = __webpack_require__(143),
+	    TechProfileList = __webpack_require__(144),
+	    VanList = __webpack_require__(145),
 	
 	    didInitialize,
 	    didRender,
@@ -26189,7 +26413,7 @@
 	    var view = this,
 	        GearItemTemplate;
 	
-	    GearItemTemplate = __webpack_require__(119);
+	    GearItemTemplate = __webpack_require__(122);
 	    var gearItemTemplate = _.template(GearItemTemplate),
 	        gearList = view.userGear.data,
 	        $gearBlock, defaultGear, gear, i, $gearItem;
@@ -26222,7 +26446,7 @@
 	populateTechProfiles = function() {
 	    var view = this,
 	        TechProfilesItemTemplate;
-	    TechProfilesItemTemplate = __webpack_require__(120);
+	    TechProfilesItemTemplate = __webpack_require__(123);
 	
 	    var techProfilesItemTemplate = _.template(TechProfilesItemTemplate),
 	        techProfileList = view.userTechProfiles.data,
@@ -26246,7 +26470,7 @@
 	populateVans = function() {
 	    var view = this,
 	        VanItemTemplate;
-	    VanItemTemplate = __webpack_require__(121);
+	    VanItemTemplate = __webpack_require__(124);
 	    var vanItemTemplate = _.template(VanItemTemplate),
 	        vanList = view.userVans.data,
 	        $vanBlock, defaultVan, van, i, $vanItem;
@@ -26321,7 +26545,7 @@
 
 
 /***/ },
-/* 75 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26333,17 +26557,17 @@
 	'use strict';
 	
 	var $ = __webpack_require__(4),
-	    FB = __webpack_require__(14),
-	    GoogleMaps = __webpack_require__(12),
+	    FB = __webpack_require__(16),
+	    GoogleMaps = __webpack_require__(13),
 	
 	    Config = __webpack_require__(5),
 	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(18),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(15),
+	    Localization = __webpack_require__(17),
 	    User = __webpack_require__(8),
-	    Van = __webpack_require__(137),
+	    Van = __webpack_require__(140),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -26442,7 +26666,7 @@
 	didRender = function() {
 	    var preAuthorizationID, bookingID;
 	
-	    if (App.rootVC.header) {
+	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle(this.van.data.van_type);
 	    }
 	
@@ -26691,7 +26915,7 @@
 
 
 /***/ },
-/* 76 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26704,14 +26928,14 @@
 	
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(12),
-		Moment = __webpack_require__(134),
+		GoogleMaps = __webpack_require__(13),
+		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(15),
+		Localization = __webpack_require__(17),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -27092,357 +27316,551 @@
 
 
 /***/ },
-/* 77 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"view aboutus\">\n  <div class=\"container-fluid sg-lightgray-bg\">\n    <div class=\"row sg-white-bg\">\n      <div class=\"col-sm-offset-1 col-sm-10\">\n        <h1 class=\"sg-h1 sg-blue\">About Us</h1>\n      </div>\n    </div>\n    \n    <div class=\"row\">\n      <div class=\"col-sm-offset-1 col-sm-10\">\n        <p>\n          <strong class=\"sg-darkgray\">Sharingear is the first trusted community marketplace for musicians and touring personnel.<br>\n          We know all there is about being in a touring band, tour production, concerts, festivals and logistics and we are creating a hub where everyone can meet, create deals and share experiences.<br>\n          Our vision is to create a marketplace to find the best and cheapest deals when it comes to concerts and touring.</strong>\n\t\t\t </p>\n        <ul>\n          <li><div class=\"sg-icon icon-addgear-guitar sg-darkgray\"></div><div>You as a musician have the opportunity to register and rent out your personal gear, or even rent gear that you are in need of from other musicians.</div></li>\n          <li><div class=\"sg-icon icon-tabbar-technicians sg-darkgray\"></div><div>Technicians have for the first time the opportunity to be payed upfront and online via their profiles and directly into their bank accounts. As a FOH engineer, tech, tour manager, production manager, merchandiser, stage-hands, etc., you have the possibility to create and showcase your profile to potential future employees.</div></li>\n          <li><div class=\"sg-icon icon-tabbar-vans sg-darkgray\"></div><div>Any van owner or company specialized in offering touring vehicles is now able to connect with any type of band without having to go through the hassle of word-of-mouth or spending large amounts of cash on marketing. Touring artists can now find the right type of transportation in order to lower productions costs.</div></li>\n          <li><div class=\"sg-icon icon-addgear-studio sg-darkgray\"></div><div>If you are in an up-and-coming band you have the opportunity to work with a high profile sound-engineer that has a great amount of touring experience under his/hers belt. Through personalized profiles, all users can add and manage their instrument rentals, bus/van orders, hire and connect with the right type of personnel.</div></li>\n        </ul>\n        <p>\n          In other words Sharingear is the ultimate community marketplace for touring musicians, managements, booking agencies, promoters and production companies.<br>\n          Its what the music industry has been in need of for years - a centralized platform with transparency and high quality service to enhance the live music experience.\n        </p>\n        <p>\n          <strong class=\"sg-darkgray\">Sharingear is build by musicians for musicians!</strong>\n        </p>\n      </div>\n    </div>\n\n    <div class=\"row sg-white-bg\">\n      <div class=\"col-sm-offset-1 col-sm-10\">\n        <h3 class=\"sg-h3 sg-blue\">Our offices</h3>\n      </div>\n    </div>\n\n    <div class=\"row\">\n      <div class=\"col-sm-offset-1 col-sm-10\">\n        <p>\n          We are located in the heart of Copenhagen, and our door is always open, therefore you are more than\n\t\t\t\t  welcome to drop by for a hot cop of coffee. We also love cake, and wouldnt mind if you are thinking of\n\t\t\t\t  bringing some with you.\n        </p>\n\t\t  </div>\n    </div>\n    \n    <div class=\"row\">\n\t\t  <div class=\"col-sm-offset-1 col-sm-10\">\n        <p>\n          Sharingear IVS<br>\n\t\t\t\t  Danneskiold-Samsøes Allé 41, 1,<br>\n\t\t\t\t  1434 Copenhagen K,<br>\n\t\t\t\t  Denmark<br><br>\n\t\t\t\t  E-mail:<a href=\"mailto:support@sharingear.com?Subject=Sent%20from%20Sharingear\" target=\"_top\">support@sharingear.com</a><br>\n\t\t\t\t  Phone number: +4540436536<br><br>\n\t\t\t\t  VAT# DK35845186\n        </p>\n      </div>\n    </div>\n    \n    <div class=\"row\">\n\t\t  <div class=\"col-sm-offset-1 col-sm-10\">\n        <div class=\"map\" id=\"aboutus-map\"></div>\n\t\t  </div>\n    </div>\n    \n    <div class=\"row sg-white-bg\">\n       <div class=\"col-sm-offset-1 col-sm-10\">\n         <h1 class=\"sg-h1 sg-blue\">Credits</h1>\n        </div>\n    </div>\n\n    <div class=\"row\">\n      <div class=\"col-sm-offset-1 col-sm-10\">\n      <p>All photography on this Site is provided by concert and touring photographer Fiaz Farelly (www.fiazfarrelly.com).</p>\n      </div>\n    </div>\n\n    <div class=\"row sg-white-bg\">\n      <div class=\"col-sm-12\">\n        <h2 class=\"sg-h2 text-center sg-blue\">Testimonials from various musicians</h2>\n      </div>\n    </div>\n    \n    <div class=\"row sg-crowd-bg\">\n      <div class=\"col-sm-12\">\n        <div class=\"owl-carousel\"></div>\n      </div>\n    </div>\n  </div>\n\n    \n\n  <footer></footer>\n</div>";
 
 /***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div class=\"container-fluid view sidebarpanel-container addgear\">\n    <div class=\"row sidebar-panel addgear-panel\" id=\"addgear-panel-type\">\n        <form id=\"addgear-form-type\" onsubmit=\"return false;\">\n            <div class=\"col-sm-3 sg-darkgray-bg\">\n                <div class=\"gearbuttonlist-container\"></div>\n            </div>\n            <div class=\"col-sm-9\">\n                <div class=\"row\">\n                    <div class=\"col-sm-12 hint1 text-center\">\n                        Please select the gear type.\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"form-group hidden\" id=\"addgear-form-subtype-container\">\n                        <div class=\"col-sm-3\">\n                            <label for=\"addgear-form-subtype\">Subtype:</label>\n                        </div>\n                        <div class=\"col-sm-9\">\n                            <select class=\"form-control\" id=\"addgear-form-subtype\">\n                            </select>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"form-group hidden\" id=\"addgear-form-brand-container\">\n                        <div class=\"col-sm-3\">\n                            <label for=\"addgear-form-brand\">Brand:</label>\n                        </div>\n                        <div class=\"col-sm-9\">\n                            <select class=\"form-control\" id=\"addgear-form-brand\">\n                            </select>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"hidden\" id=\"addgear-form-geardetails-container\">\n                    <div class=\"row\">\n                        <div class=\"form-group\">\n                            <div class=\"col-sm-3\">\n                                <label for=\"addgear-form-model\">Model:</label>\n                            </div>\n                            <div class=\"col-sm-9\">\n                                <input type=\"text\" id=\"addgear-form-model\" class=\"form-control\">\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"form-group\">\n                            <div class=\"col-sm-3\">\n                                <label for=\"addgear-form-description\">Description:</label>\n                            </div>\n                            <div class=\"col-sm-9\">\n                                <textarea class=\"form-control\" id=\"addgear-form-description\"></textarea>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"form-group\">\n                            <div class=\"col-sm-3\">\n                                <label for=\"addgear-form-accessories\">Accessories:</label>\n                            </div>\n                            <div class=\"col-sm-9\">\n                                <div id=\"addgear-accessories-container\"></div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </form>\n    </div>\n    <div class=\"row addgear-panel hidden\" id=\"addgear-panel-photos\">\n        <div class=\"col-sm-12 full-height\">\n            <div class=\"row full-height\">\n                <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n                    <div class=\"vertical-align\">\n                        <div class=\"row text-center\"><img src=\"images/important.png\" /></div>\n                        <div class=\"row text-center submerchant-sidebar-text\">\n                            <div class=\"col-sm-12\">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-sm-9 full-height\">\n                    <form id=\"dashboard-addgearphotos-form\" onsubmit=\"return false;\">\n                        <div class=\"col-sm-12\">\n                            <div class=\"row\">\n                                <div class=\"col-sm-12 addphotos-center\">\n                                    <div class=\"form-group\">\n                                        <div class=\"row\"><img src=\"images/add-photos.png\" /></div>\n                                        <div class=\"row\">\n                                            <label class=\"sg-gray-headline\" for=\"dashboard-addgearphotos-form-imageupload\">Add a photo or two!</label>\n                                        </div>\n                                        <div class=\"row\">\n                                            <div class=\"addphotos-upload sg-btn-square sg-blue-bg\">\n                                                <span>Add Photos</span>\n                                                <input type=\"file\" id=\"dashboard-addgearphotos-form-imageupload\" name=\"gearpic\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-sm-12\">\n                                    <div class=\"thumb-list-container\">\n                                        <ul>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row addgear-panel hidden\" id=\"addgear-panel-pricelocation\">\n        <div class=\"col-sm-12 full-height\">\n            <div class=\"row full-height\">\n                <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n                    <div class=\"vertical-align\">\n                        <div class=\"row text-center\"><img src=\"images/light_bulb.png\" /></div>\n                        <div class=\"row text-center submerchant-sidebar-text\">\n                            <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of gear we recommend the following prices.</div>\n                            <div class=\"row\">\n                                <div class=\"col-xs-6 text-right\">Daily:</div>\n                                <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_a-suggestion\"></span> {{currency}}</div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-xs-6 text-right\">Weekly:</div>\n                                <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_b-suggestion\"></span> {{currency}}</div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-xs-6 text-right\">Monthly:</div>\n                                <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_c-suggestion\"></span> {{currency}}</div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-sm-9 full-height\">\n                    <form id=\"dashboard-addgearprice-form\" onsubmit=\"return false;\">\n                        <div class=\"col-sm-12\">\n                            <div class=\"row\">\n                                <div class=\"col-sm-6 form-left\">\n                                    <div class=\"form-group\">\n                                        <label for=\"price_a\">Daily rental price ({{currency}}):</label>\n                                        <div class=\"form-control-price\">\n                                            <input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\">\n                                        </div>\n                                        <label for=\"price_b\">Weekly rental price ({{currency}}):</label>\n                                        <div class=\"form-control-price\">\n                                            <input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\">\n                                        </div>\n                                        <label for=\"price_c\">Monthly rental price ({{currency}}):</label>\n                                        <div class=\"form-control-price\">\n                                            <input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\">\n                                        </div>\n                                    </div>\n                                </div>\n                                <div class=\"col-sm-6 form-right\">\n                                    <div class=\"form-group\">\n                                        <label for=\"dashboard-addgearprice-address\">Street</label>\n                                        <input type=\"text\" name=\"address\" id=\"dashboard-addgearprice-address\" class=\"form-control\">\n                                        <label for=\"dashboard-addgearprice-postalcode\">Postal code</label>\n                                        <input type=\"text\" name=\"postalcode\" id=\"dashboard-addgearprice-postalcode\" class=\"form-control\">\n                                        <label for=\"dashboard-addgearprice-city\">City</label>\n                                        <input type=\"text\" name=\"city\" id=\"dashboard-addgearprice-city\" class=\"form-control\">\n                                        <!--<label for=\"dashboard-addgearprice-region\">Region</label>\n                  <input type=\"text\" name=\"region\" id=\"dashboard-addgearprice-region\" class=\"form-control\">-->\n                                        <label for=\"dashboard-addgearprice-country\">Country</label>\n                                        <select name=\"country\" id=\"dashboard-addgearprice-country\" class=\"form-control\">\n                                            <option value=\"\">Select country</option>\n                                        </select>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row addgear-panel hidden\" id=\"addgear-panel-availability\">\n        <div class=\"col-sm-12 submerchant-height\">\n            <div class=\"row submerchant-height\">\n                <div class=\"col-sm-3 sg-darkgray-bg submerchant-height\" id=\"addgear-darkgray-left\">\n                    <div class=\"vertical-align\">\n                        <div class=\"row text-center\"><img src=\"images/submerchant.png\" /></div>\n                        <div class=\"row text-center submerchant-sidebar-text\">\n                            <div class=\"col-sm-12\">In order to put your gear up for rent we need some extra information about you so that we can pay you.</div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-sm-9 submerchant-height\" id=\"addgear-availability-calendar\"></div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row addgear-panel hidden\" id=\"addgear-panel-final\">\n        <div class=\"col-sm-12\">\n            <div class=\"row\">\n                <div class=\"col-sm-12\">\n                    <h3 class=\"text-center\">Gear added!</h3></div>\n            </div>\n            <div class=\"row actions\">\n                <div class=\"col-sm-6\">\n                    <button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View gear profile</button>\n                </div>\n                <div class=\"col-sm-6 right\">\n                    <button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more gear</button>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row footer bs-reset\">\n        <div class=\"col-sm-3\">\n        </div>\n        <div class=\"col-sm-9 bs-reset\">\n            <div class=\"row sg-modal-header\">\n                <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\n                    <button class=\"sg-btn-square cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n                </div>\n                <div class=\"col-xs-8\">\n                    <h2 class=\"text-center\">Add gear</h2></div>\n                <div class=\"col-xs-2 col-sm-2 text-center\">\n                    <button class=\"sg-btn-square next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div class=\"container-fluid view sidebarpanel-container addtechprofile\">\n\n  <div class=\"row addtechprofile-panel\" id=\"addtechprofile-panel-type\">\n    <form id=\"addtechprofile-form-type\" onsubmit=\"return false;\">\n      <div class=\"col-sm-3 sg-darkgray-bg\">\n        <div class=\"addtechprofilebuttonlist-container\"></div>\n      </div>\n      <div class=\"col-sm-9\">\n        <div class=\"row\">\n          <div class=\"col-sm-12 hint1 text-center\">\n            Please select the technician type.\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label for=\"addgtechprofile-form-description\">About:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <textarea class=\"form-control\" id=\"addtechprofile-form-about\"></textarea>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label>Currently working for:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <textarea class=\"form-control\" id=\"addtechprofile-form-currently\"></textarea>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label>Genres interested in:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <textarea class=\"form-control\" id=\"addtechprofile-form-genres\"></textarea>\n            </div>\n          </div>\n        </div>\n        \n      </div>\n    </form>\n  </div>\n\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-experience\">\n    <form id=\"addtechprofile-experience-form\" onsubmit=\"return false;\">\n      <div class=\"col-sm-12\">\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-group\">\n            <label for=\"addtechprofile-level\">Experience:</label>\n            <div>\n              <select id=\"addtechprofile-experience\" class=\"form-control inline-select-small\">\n                <option value=\"5\">D</option>\n                <option value=\"4\">C</option>\n                <option value=\"3\">B</option>\n                <option value=\"2\">A</option>\n                <option value=\"1\">A+</option>\n              </select>\n            </div>\n          </div>\n          <div class=\"col-sm-6 form-group\">\n            <label for=\"addtechprofile-startyear\">Years of experience:</label>\n            <div>\n              <select id=\"addtechprofile-startyear\" class=\"form-control inline-select-small\"></select> - <select id=\"addtechprofile-endyear\" class=\"form-control inline-select-small\"></select>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-group\">\n            <label>Bands &amp; artists toured with:</label>\n            <textarea id=\"addtechprofile-tours\" class=\"form-control\"></textarea>\n          </div>\n          <div class=\"col-sm-6 form-group\">\n            <label>Companies, venues and festivals worked for:</label>\n            <textarea id=\"addtechprofile-companies\" class=\"form-control\"></textarea>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-group\">\n            <label>Bands worked for:</label>\n            <textarea id=\"addtechprofile-bands\" class=\"form-control\"></textarea>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-pricelocation\">\n  <div class=\"col-sm-12 full-height\">\n    <div class=\"row full-height\">\n    <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n        <div class=\"vertical-align\">\n          <div class=\"row text-center\"><img src=\"images/light_bulb.png\"/></div>\n            <div class=\"row text-center submerchant-sidebar-text\">\n              <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of technician we recommend the following prices.</div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Daily:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_a-suggestion\"></span> {{currency}}</div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Weekly:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_b-suggestion\"></span> {{currency}}</div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Monthly:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_c-suggestion\"></span> {{currency}}</div>\n            </div>\n            </div>    \n        </div>\n    </div>\n    <div class=\"col-sm-9 full-height\">\n      \n         <form id=\"dashboard-addtechprofileprice-form\" onsubmit=\"return false;\">\n      <div class=\"col-sm-12\">\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-left\">\n            <div class=\"form-group\">\n              <label for=\"price_a\">Daily hire price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\"></div>\n              <label for=\"price_b\">Weekly hire price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\"></div>\n              <label for=\"price_c\">Monthly hire price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\"></div>\n            </div>\n          </div>\n\n          <div class=\"col-sm-6 form-right\">\n            <div class=\"form-group\">\n              <label for=\"dashboard-addtechprofileprice-address\">Street</label>\n              <input type=\"text\" name=\"address\" id=\"dashboard-addtechprofileprice-address\" class=\"form-control\">\n              <label for=\"dashboard-addtechprofileprice-postalcode\">Postal code</label>\n              <input type=\"text\" name=\"postalcode\" id=\"dashboard-addtechprofileprice-postalcode\" class=\"form-control\">\n              <label for=\"dashboard-addtechprofileprice-city\">City</label>\n              <input type=\"text\" name=\"city\" id=\"dashboard-addtechprofileprice-city\" class=\"form-control\">\n              <label for=\"dashboard-addtechprofileprice-country\">Country</label>\n              <select name=\"country\" id=\"dashboard-addtechprofileprice-country\" class=\"form-control\">\n                <option value=\"\">Select country</option>\n              </select>\n            </div>\n          </div>\n        </div>\n\n      </div>\n    </form>\n\n    </div>\n    </div>\n  </div>\n  </div>\n\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-availability\">\n    <div class=\"col-sm-12 submerchant-height\">\n      <div class=\"row submerchant-height\">\n\n       <div id=\"addtechprofile-darkgray-left\" class=\"col-sm-3 sg-darkgray-bg submerchant-height\">\n        <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\n              <div class=\"row text-center submerchant-sidebar-text\">\n                <div class=\"col-sm-12\">In order to finish creating your technician profile and put it for rent, we need some extra information about you so that we can pay you.</div>\n              </div>  \n        </div>\n      </div>\n\n      <div class=\"col-sm-9 submerchant-height\" id=\"addtechprofile-availability-calendar\"></div>\n      \n      </div>\n    </div>\n  </div>\n\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-final\">\n    <div class=\"col-sm-12\">\n      <div class=\"row\">\n        <div class=\"col-sm-12\"><h3 class=\"text-center\">Technician profile added!</h3></div>\n      </div>\n      <div class=\"row actions\">\n        <div class=\"col-sm-6\"><button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View technician profile</button></div>\n        <div class=\"col-sm-6 right\"><button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more technician profiles</button></div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row footer bs-reset\">\n    <div class=\"col-sm-3\">\n    </div>\n    <div class=\"col-sm-9 bs-reset\">\n      <div class=\"row sg-modal-header\">\n        <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\n          <button class=\"sg-btn-square cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n        </div>\n        <div class=\"col-xs-8\"><h2 class=\"text-center\">Add technician profile</h2></div>\n        <div class=\"col-xs-2 col-sm-2 text-center\">\n          <button class=\"sg-btn-square next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</div>\n";
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div class=\"container-fluid view sidebarpanel-container addvan\">\n\n  <div class=\"row addvan-panel\" id=\"addvan-panel-type\">\n    <form id=\"addvan-form-type\" onsubmit=\"return false;\">\n      <div class=\"col-sm-3 sg-darkgray-bg\">\n        <div class=\"vanbuttonlist-container\"></div>\n      </div>\n      <div class=\"col-sm-9\">\n        <div class=\"row\">\n          <div class=\"col-sm-12 hint1 text-center\">\n            Please select the van or bus type.\n          </div>\n        </div>\n\n        \n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label for=\"addvan-form-model\">Model:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <input type=\"text\" id=\"addvan-form-model\" class=\"form-control\">\n            </div>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label for=\"addgvan-form-description\">Description:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <textarea class=\"form-control\" id=\"addvan-form-description\"></textarea>\n            </div>\n          </div>\n        </div>\n        <div class=\"row\" id=\"addvan-accessories\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label for=\"addvan-form-accessories\">Accessories:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <div id=\"addvan-accessories-container\"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-photos\">\n  <div class=\"col-sm-12 full-height\">\n    <div class=\"row full-height\">\n      <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n        <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/important.png\"/></div>\n            <div class=\"row text-center submerchant-sidebar-text\">\n              <div class=\"col-sm-12\">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>\n            </div>  \n        </div>\n      </div>\n      <div class=\"col-sm-9 full-height\">\n        \n      <form id=\"dashboard-addvanphotos-form\" onsubmit=\"return false;\">\n        <div class=\"col-sm-12\">\n          <div class=\"row\">\n            <div class=\"col-sm-12 addphotos-center\">\n              <div class=\"form-group\">\n                  <div class=\"row\"><img src=\"images/add-photos.png\"/></div>\n                  <div class=\"row\"><label class=\"sg-gray-headline\" for=\"dashboard-addvanphotos-form-imageupload\">Add a photo or two!</label></div>\n                  <div class=\"row\">\n                    <div class=\"addphotos-upload sg-btn-square sg-blue-bg\">\n                      <span>Add Photos</span>  \n                      <input type=\"file\" id=\"dashboard-addvanphotos-form-imageupload\" name=\"vanpic\">\n                    </div>\n                  </div>\n              </div>\n            </div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-sm-12\">\n              <div class=\"thumb-list-container\">\n                <ul>\n                </ul>\n              </div>\n            </div>\n          </div>\n        </div>\n      </form>\n  \n      </div>\n    </div>\n  </div>\n  </div>\n\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-pricelocation\">\n    <div class=\"col-sm-12 full-height\">\n      <div class=\"row full-height\">\n        <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n          \n          <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/light_bulb.png\"/></div>\n            <div class=\"row text-center submerchant-sidebar-text\">\n              <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of vehicle we recommend the following prices.</div>\n              <div class=\"row\">\n                <div class=\"col-xs-6 text-right\">Daily:</div>\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_a-suggestion\"></span> {{currency}}</div>\n              </div>\n              <div class=\"row\">\n                <div class=\"col-xs-6 text-right\">Weekly:</div>\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_b-suggestion\"></span> {{currency}}</div>\n              </div>\n              <div class=\"row\">\n                <div class=\"col-xs-6 text-right\">Monthly:</div>\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_c-suggestion\"></span> {{currency}}</div>\n              </div>\n            </div>    \n          </div>\n        </div>\n        <div class=\"col-sm-9 full-height\">\n          <form id=\"dashboard-addvanprice-form\" onsubmit=\"return false;\">\n      <div class=\"col-sm-12\">\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-left\">\n            <div class=\"form-group\">\n              <label for=\"price_a\">Daily rental price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\"></div>\n              <label for=\"price_b\">Weekly rental price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\"></div>\n              <label for=\"price_c\">Monthly rental price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\"></div>\n            </div>\n          </div>\n\n          <div class=\"col-sm-6 form-right\">\n            <div class=\"form-group\">\n              <label for=\"dashboard-addvanprice-address\">Street</label>\n              <input type=\"text\" name=\"address\" id=\"dashboard-addvanprice-address\" class=\"form-control\">\n              <label for=\"dashboard-addvanprice-postalcode\">Postal code</label>\n              <input type=\"text\" name=\"postalcode\" id=\"dashboard-addvanprice-postalcode\" class=\"form-control\">\n              <label for=\"dashboard-addvanprice-city\">City</label>\n              <input type=\"text\" name=\"city\" id=\"dashboard-addvanprice-city\" class=\"form-control\">\n              <!--<label for=\"dashboard-addvanprice-region\">Region</label>\n              <input type=\"text\" name=\"region\" id=\"dashboard-addvanprice-region\" class=\"form-control\">-->\n              <label for=\"dashboard-addvanprice-country\">Country</label>\n              <select name=\"country\" id=\"dashboard-addvanprice-country\" class=\"form-control\">\n                <option value=\"\">Select country</option>\n              </select>\n            </div>\n          </div>\n        </div>\n\n      </div>\n    </form>\n\n        </div>\n      </div>\n    </div>  \n  </div>\n\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-availability\">\n    <div class=\"col-sm-12 submerchant-height\">\n    <div class=\"row submerchant-height\">\n      \n       <div id=\"addvan-darkgray-left\" class=\"col-sm-3 sg-darkgray-bg submerchant-height\">\n        <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\n              <div class=\"row text-center submerchant-sidebar-text\">\n                <div class=\"col-sm-12\">In order to put your van up for rent we need some extra information about you so that we can pay you.</div>\n              </div>  \n        </div>\n      </div>\n\n    <div class=\"col-sm-9 submerchant-height\" id=\"addvan-availability-calendar\"></div>\n\n    </div>      \n    </div>\n  </div>\n\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-final\">\n    <div class=\"col-sm-12\">\n      <div class=\"row\">\n        <div class=\"col-sm-12\"><h3 class=\"text-center\">Vehicle added!</h3></div>\n      </div>\n      <div class=\"row actions\">\n        <div class=\"col-sm-6\"><button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View vehicle profile</button></div>\n        <div class=\"col-sm-6 right\"><button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more vans or busses</button></div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row footer bs-reset\">\n    <div class=\"col-sm-3\">\n    </div>\n    <div class=\"col-sm-9 bs-reset\">\n      <div class=\"row sg-modal-header\">\n        <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\n          <button class=\"sg-btn-square cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n        </div>\n        <div class=\"col-xs-8\"><h2 class=\"text-center\">Add vans &amp; busses</h2></div>\n        <div class=\"col-xs-2 col-sm-2 text-center\">\n          <button class=\"sg-btn-square next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</div>\n";
-
-/***/ },
 /* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid availabilitycalendar\">\n\t<div class=\"row calendar-navigation\">\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray prev-btn\"><i class=\"fa fa-angle-left\"></i></button></div>\n\t\t<div class=\"col-xs-8 text-center\"><strong class=\"currentmonth\"></strong></div>\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray next-btn\"><i class=\"fa fa-angle-right\"></i></button></div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-6 col-sm-3\">\n\t\t\t<div class=\"availability-legend-box sg-darkergray-bg sg-white text-center\">Available</div>\n\t\t</div>\n\t\t<div class=\"col-xs-6 col-sm-3\">\n\t\t\t<div class=\"availability-legend-box text-center\">Not available</div>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"calendar\"></div>\n\t</div>\n\t<div class=\"row always-never\">\n\t\t<div class=\"col-sm-4\">\n\t\t\t<button class=\"sg-btn-square sg-green-bg sg-white always-btn\">Always available</button>\n\t\t</div>\n\t\t<div class=\"col-sm-4\">\n\t\t\t<button class=\"sg-btn-square sg-red-bg sg-white never-btn\">Never available</button>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"container-fluid view sidebarpanel-container addgear\">\n\n  <div class=\"row sidebar-panel addgear-panel\" id=\"addgear-panel-type\">\n    <form id=\"addgear-form-type\" onsubmit=\"return false;\">\n      <div class=\"col-sm-3 sg-darkgray-bg\">\n        <div class=\"gearbuttonlist-container\"></div>\n      </div>\n      <div class=\"col-sm-9\">\n        <div class=\"row\">\n          <div class=\"col-sm-12 hint1 text-center\">\n            Please select the gear type.\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"form-group hidden\" id=\"addgear-form-subtype-container\">\n            <div class=\"col-sm-3\">\n              <label for=\"addgear-form-subtype\">Subtype:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <select class=\"form-control\" id=\"addgear-form-subtype\">\n              </select>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"form-group hidden\" id=\"addgear-form-brand-container\">\n            <div class=\"col-sm-3\">\n              <label for=\"addgear-form-brand\">Brand:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <select class=\"form-control\" id=\"addgear-form-brand\">\n              </select>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"hidden\" id=\"addgear-form-geardetails-container\">\n          <div class=\"row\">\n            <div class=\"form-group\">\n              <div class=\"col-sm-3\">\n                <label for=\"addgear-form-model\">Model:</label>\n              </div>\n              <div class=\"col-sm-9\">\n                <input type=\"text\" id=\"addgear-form-model\" class=\"form-control\">\n              </div>\n            </div>\n          </div>\n          <div class=\"row\">\n            <div class=\"form-group\">\n              <div class=\"col-sm-3\">\n                <label for=\"addgear-form-description\">Description:</label>\n              </div>\n              <div class=\"col-sm-9\">\n                <textarea class=\"form-control\" id=\"addgear-form-description\"></textarea>\n              </div>\n            </div>\n          </div>\n          <div class=\"row\">\n            <div class=\"form-group\">\n              <div class=\"col-sm-3\">\n                <label for=\"addgear-form-accessories\">Accessories:</label>\n              </div>\n              <div class=\"col-sm-9\">\n                <div id=\"addgear-accessories-container\"></div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"row addgear-panel hidden\" id=\"addgear-panel-photos\">\n  <div class=\"col-sm-12 full-height\">\n    <div class=\"row full-height\">\n      <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n        <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/important.png\"/></div>\n              <div class=\"row text-center submerchant-sidebar-text\">\n                <div class=\"col-sm-12\">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>\n              </div>  \n        </div>\n      </div>\n      <div class=\"col-sm-9 full-height\">\n        \n        <form id=\"dashboard-addgearphotos-form\" onsubmit=\"return false;\">\n          <div class=\"col-sm-12\">\n            <div class=\"row\">\n              <div class=\"col-sm-12 addphotos-center\">\n                <div class=\"form-group\">\n                  <div class=\"row\"><img src=\"images/add-photos.png\"/></div>\n                  <div class=\"row\"><label class=\"sg-gray-headline\" for=\"dashboard-addgearphotos-form-imageupload\">Add a photo or two!</label></div>\n                  <div class=\"row\">\n                    <div class=\"addphotos-upload sg-btn-square sg-blue-bg\">\n                      <span>Add Photos</span>\n                      <input type=\"file\" id=\"dashboard-addgearphotos-form-imageupload\" name=\"gearpic\">  \n                    </div>\n                  </div>\n                </div>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <div class=\"thumb-list-container\">\n                  <ul>\n                  </ul>\n                </div>\n              </div>\n            </div>\n          </div>\n        </form>\n\n      </div>\n    </div>\n  </div>\n    \n  </div>\n\n  <div class=\"row addgear-panel hidden\" id=\"addgear-panel-pricelocation\">\n    <div class=\"col-sm-12 full-height\">\n    <div class=\"row full-height\">\n      <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n      \n        <div class=\"vertical-align\">\n          <div class=\"row text-center\"><img src=\"images/light_bulb.png\"/></div>\n            <div class=\"row text-center submerchant-sidebar-text\">\n              <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of gear we recommend the following prices.</div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Daily:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_a-suggestion\"></span> {{currency}}</div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Weekly:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_b-suggestion\"></span> {{currency}}</div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Monthly:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_c-suggestion\"></span> {{currency}}</div>\n            </div>\n            </div>    \n        </div>\n      </div>\n      \n      <div class=\"col-sm-9 full-height\">\n        <form id=\"dashboard-addgearprice-form\" onsubmit=\"return false;\">\n          <div class=\"col-sm-12\">\n            <div class=\"row\">\n              <div class=\"col-sm-6 form-left\">\n                <div class=\"form-group\">\n                  <label for=\"price_a\">Daily rental price ({{currency}}):</label>\n                  <div class=\"form-control-price\"><input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\"></div>\n                  <label for=\"price_b\">Weekly rental price ({{currency}}):</label>\n                  <div class=\"form-control-price\"><input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\"></div>\n                  <label for=\"price_c\">Monthly rental price ({{currency}}):</label>\n                  <div class=\"form-control-price\"><input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\"></div>\n                </div>\n              </div>\n\n              <div class=\"col-sm-6 form-right\">\n                <div class=\"form-group\">\n                  <label for=\"dashboard-addgearprice-address\">Street</label>\n                  <input type=\"text\" name=\"address\" id=\"dashboard-addgearprice-address\" class=\"form-control\">\n                  <label for=\"dashboard-addgearprice-postalcode\">Postal code</label>\n                  <input type=\"text\" name=\"postalcode\" id=\"dashboard-addgearprice-postalcode\" class=\"form-control\">\n                  <label for=\"dashboard-addgearprice-city\">City</label>\n                  <input type=\"text\" name=\"city\" id=\"dashboard-addgearprice-city\" class=\"form-control\">\n                  <!--<label for=\"dashboard-addgearprice-region\">Region</label>\n                  <input type=\"text\" name=\"region\" id=\"dashboard-addgearprice-region\" class=\"form-control\">-->\n                  <label for=\"dashboard-addgearprice-country\">Country</label>\n                  <select name=\"country\" id=\"dashboard-addgearprice-country\" class=\"form-control\">\n                    <option value=\"\">Select country</option>\n                  </select>\n                </div>\n              </div>\n            </div>\n\n          </div>\n        </form>\n      </div>\n    </div>\n    </div>\n  </div>\n\n  <div class=\"row addgear-panel hidden\" id=\"addgear-panel-availability\">\n    \n    <div class=\"col-sm-12 submerchant-height\">\n      <div class=\"row submerchant-height\">\n      <div class=\"col-sm-3 sg-darkgray-bg submerchant-height\"  id=\"addgear-darkgray-left\">\n        <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\n              <div class=\"row text-center submerchant-sidebar-text\">\n                <div class=\"col-sm-12\">In order to put your gear up for rent we need some extra information about you so that we can pay you.</div>\n              </div>  \n        </div>\n      </div>\n      \n\n      <div class=\"col-sm-9 submerchant-height\" id=\"addgear-availability-calendar\"></div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row addgear-panel hidden\" id=\"addgear-panel-final\">\n    <div class=\"col-sm-12\">\n      <div class=\"row\">\n        <div class=\"col-sm-12\"><h3 class=\"text-center\">Gear added!</h3></div>\n      </div>\n      <div class=\"row actions\">\n        <div class=\"col-sm-6\"><button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View gear profile</button></div>\n        <div class=\"col-sm-6 right\"><button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more gear</button></div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row footer bs-reset\">\n    <div class=\"col-sm-3\">\n    </div>\n    <div class=\"col-sm-9 bs-reset\">\n      <div class=\"row sg-modal-header\">\n        <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\n          <button class=\"sg-btn-square sg-inherit-bg sg-blue cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n        </div>\n        <div class=\"col-xs-8\"><h2 class=\"text-center\">Add gear</h2></div>\n        <div class=\"col-xs-2 col-sm-2 text-center\">\n          <button class=\"sg-btn-square sg-white-bg sg-blue next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</div>\n";
 
 /***/ },
 /* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view booking\">\n  <div class=\"row sg-blue-bg sg-white sg-navbar\">\n    <div class=\"col-xs-2\"><div class=\"sg-icon icon-sg-logo\"></div></div>\n      <div class=\"col-xs-8 text-center\">Booking</div>\n    <div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"booking-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-12 text-center sg-darkergray gear\">\n      <h3 class=\"sg-h3\">{{item_name}}</h3>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-6 from-to\">\n      <div class=\"text-center\"><h5 class=\"sg-h5\">Rental period</h5></div>\n      <div class=\"sg-lightgray-bg\"><strong>From:</strong> {{start_time}}</div>\n      <div class=\"sg-lightgray-bg\"><strong>To:</strong> {{end_time}}</div>\n    </div>\n    <div class=\"col-sm-6\">\n      <div class=\"text-center\"><h5 class=\"sg-h5\">{{peer_role}}</h5></div>\n      <div class=\"profile-pic-container sg-lightgray-bg text-center\">\n        <div class=\"profile-pic\"></div>\n      </div>\n      <div class=\"name sg-darkergray text-center\">{{name}} {{surname}}</div>\n      <div class=\"tagline sg-gray text-center\">{{tagline}}</div>\n      <div class=\"email text-center\"><a href=\"mailto:{{email}}\">{{email}}</a></div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <div class=\"sg-darkergray-bg sg-white total text-center\">TOTAL: {{total}} <span class=\"sg-super\">{{currency}}</span></div>\n    </div>\n  </div>\n\n  <div class=\"row cancelled-owner hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"sg-red text-center\">You have cancelled this booking request.</div>\n    </div>\n  </div>\n\n  <div class=\"row cancelled-renter hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"sg-red text-center\">Your booking request was cancelled by the owner.</div>\n    </div>\n  </div>\n\n  <div class=\"row owner-returned hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"text-center\">Waiting for the renter to end this booking.</div>\n    </div>\n  </div>\n\n  <div class=\"row renter-returned hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"text-center\">Waiting for the owner to end this booking.</div>\n    </div>\n  </div>\n\n  <div class=\"row ended hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"text-center\">This booking has ended successfully.</div>\n    </div>\n  </div>\n\n  <div class=\"row error hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"sg-red text-center\">Something went wrong with this booking request. Please try to book the instrument again or contact support at <a href=\"mailto:support@sharingear\">support@sharingear.com</a>.</div>\n    </div>\n  </div>\n\n  <div class=\"row sg-footerbar\">\n    <div class=\"accept-deny hidden\">\n      <div class=\"col-xs-6 bs-reset\">\n        <button class=\"sg-btn-square sg-red-bg sg-white\" id=\"booking-deny-btn\">deny</button>\n      </div>\n      <div class=\"col-xs-6 bs-reset\">\n        <button class=\"sg-btn-square sg-green-bg sg-white\" id=\"booking-confirm-btn\">confirm</button>\n      </div>\n    </div>\n\n    <div class=\"sg-close hidden\">\n      <div class=\"col-sm-12 bs-reset\">\n        <button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"booking-close-btn\">close</button>\n      </div>\n    </div>\n\n    <div class=\"end hidden\">\n      <div class=\"col-sm-12 bs-reset\">\n        <button class=\"sg-btn-square sg-green-bg sg-white\" id=\"booking-end-btn\">end booking</button>\n      </div>\n    </div>\n\n  </div>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view sidebarpanel-container addtechprofile\">\n\n  <div class=\"row addtechprofile-panel\" id=\"addtechprofile-panel-type\">\n    <form id=\"addtechprofile-form-type\" onsubmit=\"return false;\">\n      <div class=\"col-sm-3 sg-darkgray-bg\">\n        <div class=\"addtechprofilebuttonlist-container\"></div>\n      </div>\n      <div class=\"col-sm-9\">\n        <div class=\"row\">\n          <div class=\"col-sm-12 hint1 text-center\">\n            Please select the technician type.\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label for=\"addgtechprofile-form-description\">About:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <textarea class=\"form-control\" id=\"addtechprofile-form-about\"></textarea>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label>Currently working for:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <textarea class=\"form-control\" id=\"addtechprofile-form-currently\"></textarea>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label>Genres interested in:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <textarea class=\"form-control\" id=\"addtechprofile-form-genres\"></textarea>\n            </div>\n          </div>\n        </div>\n        \n      </div>\n    </form>\n  </div>\n\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-experience\">\n    <form id=\"addtechprofile-experience-form\" onsubmit=\"return false;\">\n      <div class=\"col-sm-12\">\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-group\">\n            <label for=\"addtechprofile-level\">Experience:</label>\n            <div>\n              <select id=\"addtechprofile-experience\" class=\"form-control inline-select-small\">\n                <option value=\"5\">D</option>\n                <option value=\"4\">C</option>\n                <option value=\"3\">B</option>\n                <option value=\"2\">A</option>\n                <option value=\"1\">A+</option>\n              </select>\n            </div>\n          </div>\n          <div class=\"col-sm-6 form-group\">\n            <label for=\"addtechprofile-startyear\">Years of experience:</label>\n            <div>\n              <select id=\"addtechprofile-startyear\" class=\"form-control inline-select-small\"></select> - <select id=\"addtechprofile-endyear\" class=\"form-control inline-select-small\"></select>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-group\">\n            <label>Bands &amp; artists toured with:</label>\n            <textarea id=\"addtechprofile-tours\" class=\"form-control\"></textarea>\n          </div>\n          <div class=\"col-sm-6 form-group\">\n            <label>Companies, venues and festivals worked for:</label>\n            <textarea id=\"addtechprofile-companies\" class=\"form-control\"></textarea>\n          </div>\n        </div>\n\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-group\">\n            <label>Bands worked for:</label>\n            <textarea id=\"addtechprofile-bands\" class=\"form-control\"></textarea>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-pricelocation\">\n  <div class=\"col-sm-12 full-height\">\n    <div class=\"row full-height\">\n    <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n        <div class=\"vertical-align\">\n          <div class=\"row text-center\"><img src=\"images/light_bulb.png\"/></div>\n            <div class=\"row text-center submerchant-sidebar-text\">\n              <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of technician we recommend the following prices.</div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Daily:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_a-suggestion\"></span> {{currency}}</div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Weekly:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_b-suggestion\"></span> {{currency}}</div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-xs-6 text-right\">Monthly:</div>\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_c-suggestion\"></span> {{currency}}</div>\n            </div>\n            </div>    \n        </div>\n    </div>\n    <div class=\"col-sm-9 full-height\">\n      \n         <form id=\"dashboard-addtechprofileprice-form\" onsubmit=\"return false;\">\n      <div class=\"col-sm-12\">\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-left\">\n            <div class=\"form-group\">\n              <label for=\"price_a\">Daily hire price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\"></div>\n              <label for=\"price_b\">Weekly hire price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\"></div>\n              <label for=\"price_c\">Monthly hire price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\"></div>\n            </div>\n          </div>\n\n          <div class=\"col-sm-6 form-right\">\n            <div class=\"form-group\">\n              <label for=\"dashboard-addtechprofileprice-address\">Street</label>\n              <input type=\"text\" name=\"address\" id=\"dashboard-addtechprofileprice-address\" class=\"form-control\">\n              <label for=\"dashboard-addtechprofileprice-postalcode\">Postal code</label>\n              <input type=\"text\" name=\"postalcode\" id=\"dashboard-addtechprofileprice-postalcode\" class=\"form-control\">\n              <label for=\"dashboard-addtechprofileprice-city\">City</label>\n              <input type=\"text\" name=\"city\" id=\"dashboard-addtechprofileprice-city\" class=\"form-control\">\n              <label for=\"dashboard-addtechprofileprice-country\">Country</label>\n              <select name=\"country\" id=\"dashboard-addtechprofileprice-country\" class=\"form-control\">\n                <option value=\"\">Select country</option>\n              </select>\n            </div>\n          </div>\n        </div>\n\n      </div>\n    </form>\n\n    </div>\n    </div>\n  </div>\n  </div>\n\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-availability\">\n    <div class=\"col-sm-12 submerchant-height\">\n      <div class=\"row submerchant-height\">\n\n       <div id=\"addtechprofile-darkgray-left\" class=\"col-sm-3 sg-darkgray-bg submerchant-height\">\n        <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\n              <div class=\"row text-center submerchant-sidebar-text\">\n                <div class=\"col-sm-12\">In order to finish creating your technician profile and put it for rent, we need some extra information about you so that we can pay you.</div>\n              </div>  \n        </div>\n      </div>\n\n      <div class=\"col-sm-9 submerchant-height\" id=\"addtechprofile-availability-calendar\"></div>\n      \n      </div>\n    </div>\n  </div>\n\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-final\">\n    <div class=\"col-sm-12\">\n      <div class=\"row\">\n        <div class=\"col-sm-12\"><h3 class=\"text-center\">Technician profile added!</h3></div>\n      </div>\n      <div class=\"row actions\">\n        <div class=\"col-sm-6\"><button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View technician profile</button></div>\n        <div class=\"col-sm-6 right\"><button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more technician profiles</button></div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row footer bs-reset\">\n    <div class=\"col-sm-3\">\n    </div>\n    <div class=\"col-sm-9 bs-reset\">\n      <div class=\"row sg-modal-header\">\n        <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\n          <button class=\"sg-btn-square sg-inherit-bg sg-blue cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n        </div>\n        <div class=\"col-xs-8\"><h2 class=\"text-center\">Add technician profile</h2></div>\n        <div class=\"col-xs-2 col-sm-2 text-center\">\n          <button class=\"sg-btn-square sg-white-bg sg-blue next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</div>\n";
 
 /***/ },
 /* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view bookingrequest\">\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\n\t\t<div class=\"col-xs-2\"><div class=\"sg-icon icon-sg-logo\"></div></div>\n\t\t<div class=\"col-xs-8\">Booking step 1</div>\n\t\t<div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"bookingrequest-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 text-center sg-darkergray\">\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-8\">\n\t\t\t<table class=\"table table-bordered\">\n\t\t\t\t<tbody>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Days (<span class=\"price_a\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\n\t\t\t\t\t\t<td id=\"bookingrequest-days\">0</td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Weeks (<span class=\"price_b\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\n\t\t\t\t\t\t<td id=\"bookingrequest-weeks\">0</td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Months (<span class=\"price_c\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\n\t\t\t\t\t\t<td id=\"bookingrequest-months\">0</td>\n\t\t\t\t\t</tr>\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t</div>\n\t\t<div class=\"col-xs-4 bs-reset sg-darkergray-bg total\">\n\t\t\t<div class=\"text-center sg-white\">Total</div>\n\t\t\t<div class=\"text-center sg-white\"><span id=\"bookingrequest-price\">0</span> <span class=\"sg-super\">{{currency}}</span></div>\n\t\t</div>\n\t</div>\n\t\n\t<div class=\"row\">\n\t\t<div class=\"pickupdeliverycalendar-container\"></div>\n\t</div>\n\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\n\t\t<div class=\"col-sm-12\">\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"bookingrequest-next\">next <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n\t\t</div>\n\t</div>\n\n</div>\n";
+	module.exports = "<div class=\"container-fluid view sidebarpanel-container addvan\">\n\n  <div class=\"row addvan-panel\" id=\"addvan-panel-type\">\n    <form id=\"addvan-form-type\" onsubmit=\"return false;\">\n      <div class=\"col-sm-3 sg-darkgray-bg\">\n        <div class=\"vanbuttonlist-container\"></div>\n      </div>\n      <div class=\"col-sm-9\">\n        <div class=\"row\">\n          <div class=\"col-sm-12 hint1 text-center\">\n            Please select the van or bus type.\n          </div>\n        </div>\n\n        \n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label for=\"addvan-form-model\">Model:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <input type=\"text\" id=\"addvan-form-model\" class=\"form-control\">\n            </div>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label for=\"addgvan-form-description\">Description:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <textarea class=\"form-control\" id=\"addvan-form-description\"></textarea>\n            </div>\n          </div>\n        </div>\n        <div class=\"row\" id=\"addvan-accessories\">\n          <div class=\"form-group\">\n            <div class=\"col-sm-3\">\n              <label for=\"addvan-form-accessories\">Accessories:</label>\n            </div>\n            <div class=\"col-sm-9\">\n              <div id=\"addvan-accessories-container\"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-photos\">\n  <div class=\"col-sm-12 full-height\">\n    <div class=\"row full-height\">\n      <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n        <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/important.png\"/></div>\n            <div class=\"row text-center submerchant-sidebar-text\">\n              <div class=\"col-sm-12\">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>\n            </div>  \n        </div>\n      </div>\n      <div class=\"col-sm-9 full-height\">\n        \n      <form id=\"dashboard-addvanphotos-form\" onsubmit=\"return false;\">\n        <div class=\"col-sm-12\">\n          <div class=\"row\">\n            <div class=\"col-sm-12 addphotos-center\">\n              <div class=\"form-group\">\n                  <div class=\"row\"><img src=\"images/add-photos.png\"/></div>\n                  <div class=\"row\"><label class=\"sg-gray-headline\" for=\"dashboard-addvanphotos-form-imageupload\">Add a photo or two!</label></div>\n                  <div class=\"row\">\n                    <div class=\"addphotos-upload sg-btn-square sg-blue-bg\">\n                      <span>Add Photos</span>  \n                      <input type=\"file\" id=\"dashboard-addvanphotos-form-imageupload\" name=\"vanpic\">\n                    </div>\n                  </div>\n              </div>\n            </div>\n          </div>\n          <div class=\"row\">\n            <div class=\"col-sm-12\">\n              <div class=\"thumb-list-container\">\n                <ul>\n                </ul>\n              </div>\n            </div>\n          </div>\n        </div>\n      </form>\n  \n      </div>\n    </div>\n  </div>\n  </div>\n\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-pricelocation\">\n    <div class=\"col-sm-12 full-height\">\n      <div class=\"row full-height\">\n        <div class=\"col-sm-3 full-height sg-darkgray-bg\">\n          \n          <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/light_bulb.png\"/></div>\n            <div class=\"row text-center submerchant-sidebar-text\">\n              <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of vehicle we recommend the following prices.</div>\n              <div class=\"row\">\n                <div class=\"col-xs-6 text-right\">Daily:</div>\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_a-suggestion\"></span> {{currency}}</div>\n              </div>\n              <div class=\"row\">\n                <div class=\"col-xs-6 text-right\">Weekly:</div>\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_b-suggestion\"></span> {{currency}}</div>\n              </div>\n              <div class=\"row\">\n                <div class=\"col-xs-6 text-right\">Monthly:</div>\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_c-suggestion\"></span> {{currency}}</div>\n              </div>\n            </div>    \n          </div>\n        </div>\n        <div class=\"col-sm-9 full-height\">\n          <form id=\"dashboard-addvanprice-form\" onsubmit=\"return false;\">\n      <div class=\"col-sm-12\">\n        <div class=\"row\">\n          <div class=\"col-sm-6 form-left\">\n            <div class=\"form-group\">\n              <label for=\"price_a\">Daily rental price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\"></div>\n              <label for=\"price_b\">Weekly rental price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\"></div>\n              <label for=\"price_c\">Monthly rental price ({{currency}}):</label>\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\"></div>\n            </div>\n          </div>\n\n          <div class=\"col-sm-6 form-right\">\n            <div class=\"form-group\">\n              <label for=\"dashboard-addvanprice-address\">Street</label>\n              <input type=\"text\" name=\"address\" id=\"dashboard-addvanprice-address\" class=\"form-control\">\n              <label for=\"dashboard-addvanprice-postalcode\">Postal code</label>\n              <input type=\"text\" name=\"postalcode\" id=\"dashboard-addvanprice-postalcode\" class=\"form-control\">\n              <label for=\"dashboard-addvanprice-city\">City</label>\n              <input type=\"text\" name=\"city\" id=\"dashboard-addvanprice-city\" class=\"form-control\">\n              <!--<label for=\"dashboard-addvanprice-region\">Region</label>\n              <input type=\"text\" name=\"region\" id=\"dashboard-addvanprice-region\" class=\"form-control\">-->\n              <label for=\"dashboard-addvanprice-country\">Country</label>\n              <select name=\"country\" id=\"dashboard-addvanprice-country\" class=\"form-control\">\n                <option value=\"\">Select country</option>\n              </select>\n            </div>\n          </div>\n        </div>\n\n      </div>\n    </form>\n\n        </div>\n      </div>\n    </div>  \n  </div>\n\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-availability\">\n    <div class=\"col-sm-12 submerchant-height\">\n    <div class=\"row submerchant-height\">\n      \n       <div id=\"addvan-darkgray-left\" class=\"col-sm-3 sg-darkgray-bg submerchant-height\">\n        <div class=\"vertical-align\">\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\n              <div class=\"row text-center submerchant-sidebar-text\">\n                <div class=\"col-sm-12\">In order to put your van up for rent we need some extra information about you so that we can pay you.</div>\n              </div>  \n        </div>\n      </div>\n\n    <div class=\"col-sm-9 submerchant-height\" id=\"addvan-availability-calendar\"></div>\n\n    </div>      \n    </div>\n  </div>\n\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-final\">\n    <div class=\"col-sm-12\">\n      <div class=\"row\">\n        <div class=\"col-sm-12\"><h3 class=\"text-center\">Vehicle added!</h3></div>\n      </div>\n      <div class=\"row actions\">\n        <div class=\"col-sm-6\"><button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View vehicle profile</button></div>\n        <div class=\"col-sm-6 right\"><button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more vans or busses</button></div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row footer bs-reset\">\n    <div class=\"col-sm-3\">\n    </div>\n    <div class=\"col-sm-9 bs-reset\">\n      <div class=\"row sg-modal-header\">\n        <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\n          <button class=\"sg-btn-square sg-inherit-bg sg-blue cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n        </div>\n        <div class=\"col-xs-8\"><h2 class=\"text-center\">Add vans &amp; busses</h2></div>\n        <div class=\"col-xs-2 col-sm-2 text-center\">\n          <button class=\"sg-btn-square sg-white-bg sg-blue next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n</div>\n";
 
 /***/ },
 /* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid closedbeta-view\">\n\t<div id=\"closedbeta-intro\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<h1 style=\"color:#00aeff;text-align: center\">Welcome to Sharingear!</h1>\n                <p>This is a closed Beta version and you are one of the first to test it! Since Sharingear is in it's first stages of life you might be experiencing some bugs or errors - don't despair because our team is working 24/7 to create the best service available. If you experience any issues or have some feedback or feature requests, shoot an email to the technical guru by using this email <a href=\"\" class=\"ctomail\"></a>.</p>\n                <p>If you want to get access, please send us an email at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a></p>\n                <p>We hope you enjoy the Sharingear website, and looking forward to be hearing from you,<br>The Sharingear Team</p>\n            </div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<button class=\"btn editgear-save-button btn-primary btn-default\" id=\"closedbeta-login-btn\">Login</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<div id=\"closedbeta-noaccess\" class=\"hidden\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<p>\n                    Sorry, but we haven't arrived to you on the waiting list yet. You will receive an email as soon as we do. If you believe there is an error please contact our CTO <a href=\"\" class=\"ctomail\"></a>.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<a href=\"http://www.sharingear.com\">Return to sharingear.com</a>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"container-fluid availabilitycalendar\">\n\t<div class=\"row calendar-navigation\">\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray prev-btn\"><i class=\"fa fa-angle-left\"></i></button></div>\n\t\t<div class=\"col-xs-8 text-center\"><strong class=\"currentmonth\"></strong></div>\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray next-btn\"><i class=\"fa fa-angle-right\"></i></button></div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-6 col-sm-3\">\n\t\t\t<div class=\"sg-darkergray-bg availability-legend-box\"></div>\n\t\t\t<div class=\"text-center availability-text-box\">Available</div>\n\t\t</div>\n\t\t<div class=\"col-xs-6 col-sm-4\">\n\t\t\t<div class=\"availability-legend-box\"></div>\n\t\t\t<div class=\"text-center sg-gray availability-text-box\">Not available</div>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"calendar\"></div>\n\t</div>\n\t<div class=\"row always-never\">\n\t\t<div class=\"col-sm-offset-2 col-sm-4\">\n\t\t\t<button class=\"sg-btn-square sg-green-bg sg-white always-btn\">Always available</button>\n\t\t</div>\n\t\t<div class=\"col-sm-4\">\n\t\t\t<button class=\"sg-btn-square sg-red-bg sg-white never-btn\">Never available</button>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div>Contact us dummy.</div>";
+	module.exports = "<div class=\"container-fluid view booking\">\n  <div class=\"row sg-blue-bg sg-white sg-navbar\">\n    <div class=\"col-xs-2\"><div class=\"sg-icon icon-sg-logo\"></div></div>\n      <div class=\"col-xs-8 text-center\">Booking</div>\n    <div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"booking-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-12 text-center sg-darkergray gear\">\n      <h3 class=\"sg-h3\">{{item_name}}</h3>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-6 from-to\">\n      <div class=\"text-center\"><h5 class=\"sg-h5\">Rental period</h5></div>\n      <div class=\"sg-lightgray-bg\"><strong>From:</strong> {{start_time}}</div>\n      <div class=\"sg-lightgray-bg\"><strong>To:</strong> {{end_time}}</div>\n    </div>\n    <div class=\"col-sm-6\">\n      <div class=\"text-center\"><h5 class=\"sg-h5\">{{peer_role}}</h5></div>\n      <div class=\"profile-pic-container sg-lightgray-bg text-center\">\n        <div class=\"profile-pic\"></div>\n      </div>\n      <div class=\"name sg-darkergray text-center\">{{name}} {{surname}}</div>\n      <div class=\"tagline sg-gray text-center\">{{tagline}}</div>\n      <div class=\"email text-center\"><a href=\"mailto:{{email}}\">{{email}}</a></div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-12\">\n      <div class=\"sg-darkergray-bg sg-white total text-center\">TOTAL: {{total}} <span class=\"sg-super\">{{currency}}</span></div>\n    </div>\n  </div>\n\n  <div class=\"row cancelled-owner hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"sg-red text-center\">You have cancelled this booking request.</div>\n    </div>\n  </div>\n\n  <div class=\"row cancelled-renter hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"sg-red text-center\">Your booking request was cancelled by the owner.</div>\n    </div>\n  </div>\n\n  <div class=\"row owner-returned hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"text-center\">Waiting for the renter to end this booking.</div>\n    </div>\n  </div>\n\n  <div class=\"row renter-returned hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"text-center\">Waiting for the owner to end this booking.</div>\n    </div>\n  </div>\n\n  <div class=\"row ended hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"text-center\">This booking has ended successfully.</div>\n    </div>\n  </div>\n\n  <div class=\"row error hidden\">\n    <div class=\"col-sm-12\">\n      <div class=\"sg-red text-center\">Something went wrong with this booking request. Please try to book the instrument again or contact support at <a href=\"mailto:support@sharingear\">support@sharingear.com</a>.</div>\n    </div>\n  </div>\n\n  <div class=\"row sg-footerbar\">\n    <div class=\"accept-deny hidden\">\n      <div class=\"col-xs-6 bs-reset\">\n        <button class=\"sg-btn-square sg-red-bg sg-white\" id=\"booking-deny-btn\">deny</button>\n      </div>\n      <div class=\"col-xs-6 bs-reset\">\n        <button class=\"sg-btn-square sg-green-bg sg-white\" id=\"booking-confirm-btn\">confirm</button>\n      </div>\n    </div>\n\n    <div class=\"sg-close hidden\">\n      <div class=\"col-sm-12 bs-reset\">\n        <button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"booking-close-btn\">close</button>\n      </div>\n    </div>\n\n    <div class=\"end hidden\">\n      <div class=\"col-sm-12 bs-reset\">\n        <button class=\"sg-btn-square sg-green-bg sg-white\" id=\"booking-end-btn\">end booking</button>\n      </div>\n    </div>\n\n  </div>\n</div>\n";
 
 /***/ },
 /* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"view aboutus\">\n\t<div class=\"container-fluid sg-lightgray-bg\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h1 class=\"sg-h1 sg-blue\">Sharingear copyright policy</h1>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tSharingear respects and expects its users to respect the intellectual property of others.\n\t\t\t\t\tAs setforth in detail in our Terms of Use, each Sharingear user is responsible for ensuring that the materials they upload to <a href=\"http://www.sharingear.com\">www.sharingear.com</a> (the “Website”) or via a Sharingear mobile application, if any, (the “Application”) do not infringe any third party copyright or other intellectual property right.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tSharingear will promptly remove or disable materials from the Site and Application in accordance with the Electronic Commerce Directive (EU) Copyright Directive 87/54/EEC(1) and Directive 96/9/EC(2) if notified in accordance with the requirements below that the materials infringe a third party's copyright.\n\t\t\t\t\tWhether or not we disable access to or remove materials, Sharingear may attempt to forward the written notification, including the complainant’s contact information, to the Sharingear user who posted the content and/or take other reasonable steps to notify the Sharingear user that Sharingear has received notice of an alleged violation of intellectual property rights or other content violation.\n\t\t\t\t\tSharingear may also, in its discretion, terminate the accounts of repeat copyright infringers or of those who post inaccurate or unlawful content.\n\t\t\t\t\tOur policies and procedures for removing or disabling access to content alleged to be infringing, inaccurate, or otherwise unlawful are at our sole discretion.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tPlease note that any notice or counter-notice you submit must be truthful and submitted under <u>penalty of perjury</u>.\n\t\t\t\t\tA false notice or counter-notice may give rise to personal liability.\n\t\t\t\t\tYou may therefore want to seek the advice of legal counsel before submitting a notice or a counter-notice.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Claims Regarding Copyright Infringement</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tIf you believe in good faith that your copyright has been infringed, please provide us with a written notice which contains:\n\t\t\t\t</p>\n\t\t\t\t<ol>\n\t\t\t\t\t<li>Your name, telephone number, address, and e-mail address (if any);</li>\n\t\t\t\t\t<li>A description of the copyrighted work that you claim has been infringed;</li>\n\t\t\t\t\t<li>A description of where on the Site the material that you claim is infringing may be found, sufficient for us to locate the material (e.g., the URL);</li>\n\t\t\t\t\t<li>A statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law;</li>\n\t\t\t\t\t<li>A statement by you, made under <u>penalty of perjury</u>, that the information in your notice is accurate and that you are the copyright owner or authorized to act on the copyright owner’s behalf; and</li>\n\t\t\t\t\t<li>Your electronic or physical signature.</li>\n\t\t\t\t</ol>\n\t\t\t\t<p>\n\t\t\t\t\tPlease submit your notice to Sharingear as follows:<br>\n\t\t\t\t\tEmail: <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a><br>\n\t\t\t\t\tBy mail: Sharingear IVS, Danneskiold-Samsøes Allé 41, 1, 1434 Copenhagen K, Denmark\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Counter-Notice to Restore Removed Content</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tIf you believe that a notice of copyright infringement has been improperly submitted against you, you may submit a Counter-Notice, by providing Sharingear with a written notice which contains:\n\t\t\t\t</p>\n\t\t\t\t<ol>\n\t\t\t\t\t<li>Your name, telephone number, address, and e-mail address (if any);</li>\n\t\t\t\t\t<li>Identification of the material removed from the Site or to which access has been disabled;</li>\n\t\t\t\t\t<li>A statement under <u>penalty of perjury</u> that you have a good faith belief that removal or disablement of the material was a mistake or that the material was misidentified;</li>\n\t\t\t\t\t<li>A statement that you consent to the jurisdiction of the Federal District court (i) in the judicial district where your address is located if the address is in the United States, or (ii) if your address is located outside the United States, any judicial district in which Sharingear may be found and that you will accept service of process from the Complainant submitting the notice or his/her authorized agent; and</li>\n\t\t\t\t\t<li>Your physical or electronic signature;</li>\n\t\t\t\t</ol>\n\t\t\t\t<p>\n\t\t\t\t\tPlease submit your counter-notice to Sharingear as follows:<br>\n\t\t\t\t\tEmail: <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a><br>\n\t\t\t\t\tBy mail: Sharingear IVS, Danneskiold-Samsøes Allé 41, 1, 1434 Copenhagen K, Denmark\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<footer></footer>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view bookingrequest\">\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\n\t\t<div class=\"col-xs-2\"><div class=\"sg-icon icon-sg-logo\"></div></div>\n\t\t<div class=\"col-xs-8\">Booking step 1</div>\n\t\t<div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"bookingrequest-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 text-center sg-darkergray\">\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-8\">\n\t\t\t<table class=\"table table-bordered\">\n\t\t\t\t<tbody>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Days (<span class=\"price_a\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\n\t\t\t\t\t\t<td id=\"bookingrequest-days\">0</td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Weeks (<span class=\"price_b\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\n\t\t\t\t\t\t<td id=\"bookingrequest-weeks\">0</td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Months (<span class=\"price_c\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\n\t\t\t\t\t\t<td id=\"bookingrequest-months\">0</td>\n\t\t\t\t\t</tr>\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t</div>\n\t\t<div class=\"col-xs-4 bs-reset sg-darkergray-bg total\">\n\t\t\t<div class=\"text-center sg-white\">Total</div>\n\t\t\t<div class=\"text-center sg-white\"><span id=\"bookingrequest-price\">0</span> <span class=\"sg-super\">{{currency}}</span></div>\n\t\t</div>\n\t</div>\n\t\n\t<div class=\"row\">\n\t\t<div class=\"pickupdeliverycalendar-container\"></div>\n\t</div>\n\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\n\t\t<div class=\"col-sm-12\">\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"bookingrequest-next\">next <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n\t\t</div>\n\t</div>\n\n</div>\n";
 
 /***/ },
 /* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"profile subview\">\n\t<div class=\"row dashboard-profile-row\">\n\t\t<div class=\"col-sm-3 dashboard-profile-pic-view sg-darkgray-bg\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0\">\n\t\t\t\t\t<div class=\"dashboard-profile-pic\" id=\"dashboard-profile-pic\"></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0 dashboard-profile-pic-upload\">\n\t\t\t\t\t<button class=\"btn btn-primary dashboard-profile-pic-upload-btn\">Upload photo</button>\n\t\t\t\t\t<div id=\"profileImageSuccessDiv\"></div>\n\t\t\t\t</div>\n\t\t\t\t<input type=\"file\" name=\"profile-pic\" id=\"profile-pic\" style=\"visibility: hidden;\">\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col-sm-9 dashboard-profile-form-view\">\n\t\t\t<form id=\"dashboard-profile-form\" class=\"form-horizontal\" onsubmit=\"return false;\">\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"name\" class=\"col-sm-3 dashboard-profile-form-label control-label\">First Name</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"name\" id=\"name\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"surname\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Last Name</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"surname\" id=\"surname\" class=\"form-control\">\n\t\t\t\t\t\t<p class=\"help-block\"><small>This is only shared after you have confirmed a booking with another Sharingear user.</small></p>\n\t\t\t\t\t</div>\n\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"email\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Email Address</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"email\" id=\"email\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-birthdate-day\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Date of birth (private)</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<div class=\"birthday-select\">\n\t\t\t\t\t\t\t<select id=\"dashboard-profile-birthdate-date\" name=\"birthdate-day\"></select>/<select id=\"dashboard-profile-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"dashboard-profile-birthdate-year\" name=\"birthdate-year\"></select>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-address\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Address (private)</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"dashboard-profile-address\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-address\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Postal code (private)</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"dashboard-profile-postalcode\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"hometown\" class=\"col-sm-3 dashboard-profile-form-label control-label\">City</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"hometown\" id=\"hometown\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-country\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Country</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<select name=\"country\" id=\"dashboard-profile-country\" class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"\">Select your country</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-phone\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Phone (private)</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"phone\" id=\"dashboard-profile-phone\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-nationalities\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Nationality</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<select name=\"nationality\" id=\"dashboard-profile-nationalities\" class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"\">Select your nationality</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"bio\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Describe Yourself</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<textarea name=\"bio\" id=\"bio\" class=\"dashboard-profile-form-bio form-control\">{{bio}}</textarea>\n\t\t\t\t\t\t<button type=\"submit\" id=\"saveButton\" class=\"sg-btn sg-blue-bg sg-white sg-btn-save\">Save</button>\n\t\t\t\t\t\t<div id=\"saveSuccessDiv\"></div>\n\t\t\t\t\t\t<p class=\"help-block\"><small>Sharingear is built on relationships. Help others to get to know you.</small></p>\n\t\t\t\t\t\t<p class=\"help-block\"><small>Tell them about your achievements, and in what part of the industry you come from. If you are a musician, tell them about the tours you have done, your favourite instruments and how many records you have recorded.</small></p>\n\t\t\t\t\t\t<p class=\"help-block\"><small>If you are a technician, tell them about how many tours you have done, what bands have you worked with and what you would like to work more on.</small></p>\n\t\t\t\t\t\t<p class=\"help-block\"><small>If you have a van or a bus, tell them about which bands you have been on the road with, and what other tours or bands you would like to work with.</small></p>\n\t\t\t\t\t\t<p class=\"help-block\"><small>Tell them about you.</small></p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\n\n\t\t\t</form>\n\t\t</div>\n\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"container-fluid closedbeta-view\">\n\t<div id=\"closedbeta-intro\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<h1 style=\"color:#00aeff;text-align: center\">Welcome to Sharingear!</h1>\n                <p>This is a closed Beta version and you are one of the first to test it! Since Sharingear is in it's first stages of life you might be experiencing some bugs or errors - don't despair because our team is working 24/7 to create the best service available. If you experience any issues or have some feedback or feature requests, shoot an email to the technical guru by using this email <a href=\"\" class=\"ctomail\"></a>.</p>\n                <p>If you want to get access, please send us an email at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a></p>\n                <p>We hope you enjoy the Sharingear website, and looking forward to be hearing from you,<br>The Sharingear Team</p>\n            </div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<button class=\"btn editgear-save-button btn-primary btn-default\" id=\"closedbeta-login-btn\">Login</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<div id=\"closedbeta-noaccess\" class=\"hidden\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<p>\n                    Sorry, but we haven't arrived to you on the waiting list yet. You will receive an email as soon as we do. If you believe there is an error please contact our CTO <a href=\"\" class=\"ctomail\"></a>.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<a href=\"http://www.sharingear.com\">Return to sharingear.com</a>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"dashboard-settings subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12\">\n\t\t\t<form id=\"dashboard-settings-form\" onsubmit=\"return false;\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t<label for=\"\">Set your timezone:</label>\n\t\t\t\t\t\t<select id=\"dashboard-settings-timezone\">\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-3 col-sm-offset-9\">\n\t\t\t\t\t\t<button type=\"submit\" id=\"dashboard-settings-savebtn\" class=\"sg-btn sg-blue-bg sg-white sg-btn-save\">Save</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row hidden\" id=\"dashboard-settings-savesuccess\">\n\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\tSettings successfully saved.\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div>Contact us dummy.</div>";
 
 /***/ },
 /* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourgear subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 no-gutter\">\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourgear-add-btn\">\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\n\t\t\t\t<div class=\"sg-btn-text\">Add gear</div>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourgear-gear-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"view aboutus\">\n\t<div class=\"container-fluid sg-lightgray-bg\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h1 class=\"sg-h1 sg-blue\">Sharingear copyright policy</h1>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tSharingear respects and expects its users to respect the intellectual property of others.\n\t\t\t\t\tAs setforth in detail in our Terms of Use, each Sharingear user is responsible for ensuring that the materials they upload to <a href=\"http://www.sharingear.com\">www.sharingear.com</a> (the “Website”) or via a Sharingear mobile application, if any, (the “Application”) do not infringe any third party copyright or other intellectual property right.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tSharingear will promptly remove or disable materials from the Site and Application in accordance with the Electronic Commerce Directive (EU) Copyright Directive 87/54/EEC(1) and Directive 96/9/EC(2) if notified in accordance with the requirements below that the materials infringe a third party's copyright.\n\t\t\t\t\tWhether or not we disable access to or remove materials, Sharingear may attempt to forward the written notification, including the complainant’s contact information, to the Sharingear user who posted the content and/or take other reasonable steps to notify the Sharingear user that Sharingear has received notice of an alleged violation of intellectual property rights or other content violation.\n\t\t\t\t\tSharingear may also, in its discretion, terminate the accounts of repeat copyright infringers or of those who post inaccurate or unlawful content.\n\t\t\t\t\tOur policies and procedures for removing or disabling access to content alleged to be infringing, inaccurate, or otherwise unlawful are at our sole discretion.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tPlease note that any notice or counter-notice you submit must be truthful and submitted under <u>penalty of perjury</u>.\n\t\t\t\t\tA false notice or counter-notice may give rise to personal liability.\n\t\t\t\t\tYou may therefore want to seek the advice of legal counsel before submitting a notice or a counter-notice.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Claims Regarding Copyright Infringement</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tIf you believe in good faith that your copyright has been infringed, please provide us with a written notice which contains:\n\t\t\t\t</p>\n\t\t\t\t<ol>\n\t\t\t\t\t<li>Your name, telephone number, address, and e-mail address (if any);</li>\n\t\t\t\t\t<li>A description of the copyrighted work that you claim has been infringed;</li>\n\t\t\t\t\t<li>A description of where on the Site the material that you claim is infringing may be found, sufficient for us to locate the material (e.g., the URL);</li>\n\t\t\t\t\t<li>A statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law;</li>\n\t\t\t\t\t<li>A statement by you, made under <u>penalty of perjury</u>, that the information in your notice is accurate and that you are the copyright owner or authorized to act on the copyright owner’s behalf; and</li>\n\t\t\t\t\t<li>Your electronic or physical signature.</li>\n\t\t\t\t</ol>\n\t\t\t\t<p>\n\t\t\t\t\tPlease submit your notice to Sharingear as follows:<br>\n\t\t\t\t\tEmail: <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a><br>\n\t\t\t\t\tBy mail: Sharingear IVS, Danneskiold-Samsøes Allé 41, 1, 1434 Copenhagen K, Denmark\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Counter-Notice to Restore Removed Content</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tIf you believe that a notice of copyright infringement has been improperly submitted against you, you may submit a Counter-Notice, by providing Sharingear with a written notice which contains:\n\t\t\t\t</p>\n\t\t\t\t<ol>\n\t\t\t\t\t<li>Your name, telephone number, address, and e-mail address (if any);</li>\n\t\t\t\t\t<li>Identification of the material removed from the Site or to which access has been disabled;</li>\n\t\t\t\t\t<li>A statement under <u>penalty of perjury</u> that you have a good faith belief that removal or disablement of the material was a mistake or that the material was misidentified;</li>\n\t\t\t\t\t<li>A statement that you consent to the jurisdiction of the Federal District court (i) in the judicial district where your address is located if the address is in the United States, or (ii) if your address is located outside the United States, any judicial district in which Sharingear may be found and that you will accept service of process from the Complainant submitting the notice or his/her authorized agent; and</li>\n\t\t\t\t\t<li>Your physical or electronic signature;</li>\n\t\t\t\t</ol>\n\t\t\t\t<p>\n\t\t\t\t\tPlease submit your counter-notice to Sharingear as follows:<br>\n\t\t\t\t\tEmail: <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a><br>\n\t\t\t\t\tBy mail: Sharingear IVS, Danneskiold-Samsøes Allé 41, 1, 1434 Copenhagen K, Denmark\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<footer></footer>\n</div>\n";
 
 /***/ },
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourrentals subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-gear-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"profile subview\">\n\t<div class=\"row dashboard-profile-row\">\n\t\t<div class=\"col-sm-3 dashboard-profile-pic-view sg-darkgray-bg\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0\">\n\t\t\t\t\t<div class=\"dashboard-profile-pic\" id=\"dashboard-profile-pic\"></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0 dashboard-profile-pic-upload\">\n\t\t\t\t\t<button class=\"btn btn-primary dashboard-profile-pic-upload-btn\">Upload photo</button>\n\t\t\t\t\t<div id=\"profileImageSuccessDiv\"></div>\n\t\t\t\t</div>\n\t\t\t\t<input type=\"file\" name=\"profile-pic\" id=\"profile-pic\" style=\"visibility: hidden;\">\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"col-sm-9 dashboard-profile-form-view\">\n\t\t\t<form id=\"dashboard-profile-form\" class=\"form-horizontal\" onsubmit=\"return false;\">\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"name\" class=\"col-sm-3 dashboard-profile-form-label control-label\">First Name</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"name\" id=\"name\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"surname\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Last Name</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"surname\" id=\"surname\" class=\"form-control\">\n\t\t\t\t\t\t<p class=\"help-block\"><small>This is only shared after you have confirmed a booking with another Sharingear user.</small></p>\n\t\t\t\t\t</div>\n\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"email\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Email Address</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"email\" id=\"email\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-birthdate-day\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Date of birth (private)</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<div class=\"birthday-select\">\n\t\t\t\t\t\t\t<select id=\"dashboard-profile-birthdate-date\" name=\"birthdate-day\"></select>/<select id=\"dashboard-profile-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"dashboard-profile-birthdate-year\" name=\"birthdate-year\"></select>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-address\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Address (private)</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"dashboard-profile-address\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-address\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Postal code (private)</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"dashboard-profile-postalcode\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"hometown\" class=\"col-sm-3 dashboard-profile-form-label control-label\">City</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"hometown\" id=\"hometown\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-country\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Country</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<select name=\"country\" id=\"dashboard-profile-country\" class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"\">Select your country</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-phone\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Phone (private)</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<input type=\"text\" name=\"phone\" id=\"dashboard-profile-phone\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"dashboard-profile-nationalities\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Nationality</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<select name=\"nationality\" id=\"dashboard-profile-nationalities\" class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"\">Select your nationality</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t<label for=\"bio\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Describe Yourself</label>\n\t\t\t\t\t<div class=\"col-sm-8\">\n\t\t\t\t\t\t<textarea name=\"bio\" id=\"bio\" class=\"dashboard-profile-form-bio form-control\">{{bio}}</textarea>\n\t\t\t\t\t\t<button type=\"submit\" id=\"saveButton\" class=\"sg-btn sg-blue-bg sg-white sg-btn-save\">Save</button>\n\t\t\t\t\t\t<div id=\"saveSuccessDiv\"></div>\n\t\t\t\t\t\t<p class=\"help-block\"><small>Sharingear is built on relationships. Help others to get to know you.</small></p>\n\t\t\t\t\t\t<p class=\"help-block\"><small>Tell them about your achievements, and in what part of the industry you come from. If you are a musician, tell them about the tours you have done, your favourite instruments and how many records you have recorded.</small></p>\n\t\t\t\t\t\t<p class=\"help-block\"><small>If you are a technician, tell them about how many tours you have done, what bands have you worked with and what you would like to work more on.</small></p>\n\t\t\t\t\t\t<p class=\"help-block\"><small>If you have a van or a bus, tell them about which bands you have been on the road with, and what other tours or bands you would like to work with.</small></p>\n\t\t\t\t\t\t<p class=\"help-block\"><small>Tell them about you.</small></p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\n\n\t\t\t</form>\n\t\t</div>\n\n\t</div>\n</div>\n";
 
 /***/ },
 /* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourreservations subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-gear-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"dashboard-settings subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12\">\n\t\t\t<form id=\"dashboard-settings-form\" onsubmit=\"return false;\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t<label for=\"\">Set your timezone:</label>\n\t\t\t\t\t\t<select id=\"dashboard-settings-timezone\">\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-3 col-sm-offset-9\">\n\t\t\t\t\t\t<button type=\"submit\" id=\"dashboard-settings-savebtn\" class=\"sg-btn sg-blue-bg sg-white sg-btn-save\">Save</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row hidden\" id=\"dashboard-settings-savesuccess\">\n\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\tSettings successfully saved.\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourrentals subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-techprofile-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"yourgear subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 no-gutter\">\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourgear-add-btn\">\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\n\t\t\t\t<div class=\"sg-btn-text\">Add gear</div>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourgear-gear-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourreservations subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-techprofile-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"yourrentals subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-gear-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourtechprofiles subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 no-gutter\">\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourtechprofiles-add-btn\">\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\n\t\t\t\t<div class=\"sg-btn-text\">Add technician profile</div>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourtechprofiles-techprofile-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"yourreservations subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-gear-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourrentals subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-van-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"yourrentals subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-techprofile-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourreservations subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-van-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"yourreservations subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-techprofile-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"yourvans subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 no-gutter\">\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourvans-add-btn\">\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\n\t\t\t\t<div class=\"sg-btn-text\">Add vans &amp; busses</div>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourvans-vans-block\"></div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"yourtechprofiles subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 no-gutter\">\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourtechprofiles-add-btn\">\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\n\t\t\t\t<div class=\"sg-btn-text\">Add technician profile</div>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourtechprofiles-techprofile-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"view dashboard container-fluid\">\n\t<div class=\"row\">\n\t\t<div id=\"dashboard-menu\" class=\"col-sm-3 dashboard-menu\">\n\t\t\t<div class=\"list-group\">\n\t\t\t\t<a href=\"#dashboard/profile\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-profile\"></div><div class=\"list-group-item-text\">Your profile</div></a>\n\t\t\t\t<a href=\"#dashboard/yourgear\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourgear\"></div><div class=\"list-group-item-text\">Your gear</div></a>\n\t\t\t\t<a href=\"#dashboard/yourtechprofiles\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourtechprofile\"></div><div class=\"list-group-item-text\">Your tech profiles</div></a>\n\t\t\t\t<a href=\"#dashboard/yourvans\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourvans\"></div><div class=\"list-group-item-text\">Your vans &amp; buses</div></a>\n\t\t\t\t<a href=\"#dashboard/yourgearrentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-gearrentals\"></div><div class=\"list-group-item-text\">Gear rentals</div></a>\n\t\t\t\t<a href=\"#dashboard/yourtechprofilerentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-techhires\"></div><div class=\"list-group-item-text\">Tech hires</div></a>\n\t\t\t\t<a href=\"#dashboard/yourvanrentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-vanrentals\"></div><div class=\"list-group-item-text\">Van rentals</div></a>\n\t\t\t\t<a href=\"#dashboard/yourgearreservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Gear reservations</div></a>\n\t\t\t\t<a href=\"#dashboard/yourtechprofilereservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Tech reservations</div></a>\n\t\t\t\t<a href=\"#dashboard/yourvanreservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Van reservations</div></a>\n\t\t\t\t<a href=\"#dashboard/settings\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-settings\"></div><div class=\"list-group-item-text\">Settings</div></a>\n\t\t\t</div>\n\t\t</div>\n\t\t<div id=\"dashboard-subview-container\" class=\"col-xs-12 col-sm-9 dashboard-subview-container bs-reset\"></div>\n\t</div>\n</div>\n\n\n";
+	module.exports = "<div class=\"yourrentals subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-van-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view editgear\">\n\t<div class=\"row\">\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Instrument</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#photos\" role=\"tab\" data-toggle=\"tab\">Photos</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\n\t\t</ul>\n\t</div>\n\t\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12\">\n\t\t\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{gear_type}}:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editgear-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Subtype:*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"subtype\" id=\"editgear-subtype\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Brand:*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"brand\" id=\"editgear-brand\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"model\">Model:*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"editgear-model\" id=\"editgear-model\" value=\"{{model}}\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Accessories:</label>\n\t\t\t\t\t\t\t\t\t\t<div id=\"editgear-accessories-container\"></div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label>Description:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"editgear-description\" id=\"editgear-description\" class=\"form-control\">{{description}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"photos\">\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Photos:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editgear-photos-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgear-form-imageupload\">Upload image:</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"file\" id=\"editgear-photos-form-imageupload\" name=\"gearpic\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"thumb-list-container editgear-photos-list\">\n\t\t\t\t\t\t\t\t\t\t\t<ul></ul>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Price your gear</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"editgearpricing-form\" role=\"form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Daily Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Weekly Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Monthly Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\n\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\n\t\t\t\t\t\t\t\t\t<p>For this type of gear we recommend the following prices.</p>\n\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_a-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_b-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_c-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editgearpricingloc-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-address\">Street*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"editgearpricing-address\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-postalcode\">Postal code*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"editgearpricing-postalcode\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-city\">City*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"editgearpricing-city\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<!--<label for=\"dashboard-addgearprice-region\">Region</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"region\" id=\"editgearpricing-region\" class=\"form-control\">-->\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-country\">Country*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"editgearpricing-country\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter the exact location of the instrument.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\n\t\t\t\t\t<div class=\"container-fluid\">\n\t\t\t\t\t\t<div id=\"editgear-availability-calendar\"></div>\n\t\t\t\t\t\t<div id=\"editgear-submerchantform-buttons\" class=\"hidden\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"editgear-submerchantform-submit\">Submit</button>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-modal-header\">\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8\">\n  \t\t<button class=\"sg-btn-square\" id=\"editgear-cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n  \t</div>\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit gear</h2></div>\n  \t<div class=\"col-xs-2 text-center\">\n  \t\t<button class=\"sg-btn-square\" id=\"editgear-save-btn\">Save <i class=\"fa fa-floppy-o\"></i></button>\n  \t</div>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"yourreservations subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-van-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view edittechprofile\">\n\t<div class=\"row\">\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Technician</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#experience\" role=\"tab\" data-toggle=\"tab\">Experience</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\n\t\t</ul>\n\t</div>\n\t\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12\">\n\t\t\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{roadie_type}}:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"edittechprofile-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-about\">About:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-about\" id=\"edittechprofile-about\" class=\"form-control\">{{about}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-currently\">Currently working for:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-currently\" id=\"edittechprofile-currently\" class=\"form-control\">{{currently}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-genres\">Genres interested in:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-genres\" id=\"edittechprofile-genres\" class=\"form-control\">{{genres}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"experience\">\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\n\t\t\t\t\t\t<form id=\"edittechprofile-experience-form\" onsubmit=\"return false;\">\t\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\n\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-experience\">Experience:</label>\n\t\t\t\t\t\t\t\t\t<select id=\"edittechprofile-experience\" class=\"form-control inline-select-small\">\n                \t\t<option value=\"5\">D</option>\n                \t\t<option value=\"4\">C</option>\n                \t\t<option value=\"3\">B</option>\n                \t\t<option value=\"2\">A</option>\n                \t\t<option value=\"1\">A+</option>\n              \t\t</select>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\n\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-startyear\">Years of experience:</label>\n            \t\t\t<div>\n              \t\t\t<select id=\"edittechprofile-startyear\" class=\"form-control inline-select-small\"></select> - <select id=\"edittechprofile-endyear\" class=\"form-control inline-select-small\"></select>\n            \t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\n\t\t\t\t\t\t\t\t\t<label>Bands &amp; artists toured with:</label>\n            \t\t\t<textarea id=\"edittechprofile-tours\" class=\"form-control\">{{tours}}</textarea>\n            \t\t\t<label>Bands worked for:</label>\n            \t\t\t<textarea id=\"edittechprofile-bands\" class=\"form-control\">{{bands}}</textarea>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\n\t\t\t\t\t\t\t\t\t<label>Companies, venues and festivals worked for:</label>\n            \t\t\t<textarea id=\"edittechprofile-companies\" class=\"form-control\">{{companies}}</textarea>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</form>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Set your price</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"edittechprofilepricing-form\" role=\"form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Daily hire price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Weekly hire price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Monthly hire price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\n\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\n\t\t\t\t\t\t\t\t\t<p>For this type of technician we recommend the following prices.</p>\n\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_a-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_b-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_c-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"edittechprofilepricingloc-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-address\">Street*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"edittechprofilepricing-address\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-postalcode\">Postal code*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"edittechprofilepricing-postalcode\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-city\">City*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"edittechprofilepricing-city\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofilepricing-country\">Country*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"edittechprofilepricing-country\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter your exact location.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\n\t\t\t\t\t<div class=\"container-fluid\">\n\t\t\t\t\t\t<div id=\"edittechprofile-availability-calendar\" class=\"hidden\"></div>\n\t\t\t\t\t\t<div id=\"edittechprofile-submerchantform-buttons\" class=\"hidden\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"edittechprofile-submerchantform-submit\">Submit</button>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-modal-header\">\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8\">\n  \t\t<button class=\"sg-btn-square\" id=\"edittechprofile-cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n  \t</div>\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit Vehicle</h2></div>\n  \t<div class=\"col-xs-2 text-center\">\n  \t\t<button class=\"sg-btn-square\" id=\"edittechprofile-save-btn\">Save <i class=\"fa fa-floppy-o\"></i></button>\n  \t</div>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"yourvans subview\">\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 no-gutter\">\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourvans-add-btn\">\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\n\t\t\t\t<div class=\"sg-btn-text\">Add vans &amp; busses</div>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourvans-vans-block\"></div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view editvan\">\n\t<div class=\"row\">\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Vehicle</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#photos\" role=\"tab\" data-toggle=\"tab\">Photos</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\n\t\t</ul>\n\t</div>\n\t\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12\">\n\t\t\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{van_type}}:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editvan-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"model\">Model:*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"editvan-model\" id=\"editvan-model\" value=\"{{model}}\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Accessories:</label>\n\t\t\t\t\t\t\t\t\t\t<div id=\"editvan-accessories-container\"></div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label>Description:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"editvan-description\" id=\"editvan-description\" class=\"form-control\">{{description}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"photos\">\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Photos:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editvan-photos-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvan-form-imageupload\">Upload image:</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"file\" id=\"editvan-photos-form-imageupload\" name=\"vanpic\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"thumb-list-container editvan-photos-list\">\n\t\t\t\t\t\t\t\t\t\t\t<ul></ul>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Price your vehicle</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"editvanpricing-form\" role=\"form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Daily Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Weekly Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Monthly Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\n\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\n\t\t\t\t\t\t\t\t\t<p>For this type of vehicle we recommend the following prices.</p>\n\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_a-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_b-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_c-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editvanpricingloc-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-address\">Street*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"editvanpricing-address\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-postalcode\">Postal code*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"editvanpricing-postalcode\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-city\">City*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"editvanpricing-city\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"editvanpricing-country\">Country*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"editvanpricing-country\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter the exact location of the vehicle.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\n\t\t\t\t\t<div class=\"container-fluid\">\n\t\t\t\t\t\t<div id=\"editvan-availability-calendar\" class=\"hidden\"></div>\n\t\t\t\t\t\t<div id=\"editvan-submerchantform-buttons\" class=\"hidden\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"editvan-submerchantform-submit\">Submit</button>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-modal-header\">\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8\">\n  \t\t<button class=\"sg-btn-square\" id=\"editvan-cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n  \t</div>\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit Vehicle</h2></div>\n  \t<div class=\"col-xs-2 text-center\">\n  \t\t<button class=\"sg-btn-square\" id=\"editvan-save-btn\">Save <i class=\"fa fa-floppy-o\"></i></button>\n  \t</div>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"view dashboard container-fluid\">\n\t<div class=\"row\">\n\t\t<div id=\"dashboard-menu\" class=\"col-sm-3 dashboard-menu\">\n\t\t\t<div class=\"list-group\">\n\t\t\t\t<a href=\"#dashboard/profile\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-profile\"></div><div class=\"list-group-item-text\">Your profile</div></a>\n\t\t\t\t<a href=\"#dashboard/yourgear\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourgear\"></div><div class=\"list-group-item-text\">Your gear</div></a>\n\t\t\t\t<a href=\"#dashboard/yourtechprofiles\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourtechprofile\"></div><div class=\"list-group-item-text\">Your tech profiles</div></a>\n\t\t\t\t<a href=\"#dashboard/yourvans\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourvans\"></div><div class=\"list-group-item-text\">Your vans &amp; buses</div></a>\n\t\t\t\t<a href=\"#dashboard/yourgearrentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-gearrentals\"></div><div class=\"list-group-item-text\">Gear rentals</div></a>\n\t\t\t\t<a href=\"#dashboard/yourtechprofilerentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-techhires\"></div><div class=\"list-group-item-text\">Tech hires</div></a>\n\t\t\t\t<a href=\"#dashboard/yourvanrentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-vanrentals\"></div><div class=\"list-group-item-text\">Van rentals</div></a>\n\t\t\t\t<a href=\"#dashboard/yourgearreservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Gear reservations</div></a>\n\t\t\t\t<a href=\"#dashboard/yourtechprofilereservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Tech reservations</div></a>\n\t\t\t\t<a href=\"#dashboard/yourvanreservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Van reservations</div></a>\n\t\t\t\t<a href=\"#dashboard/settings\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-settings\"></div><div class=\"list-group-item-text\">Settings</div></a>\n\t\t\t</div>\n\t\t</div>\n\t\t<div id=\"dashboard-subview-container\" class=\"col-xs-12 col-sm-9 dashboard-subview-container bs-reset\"></div>\n\t</div>\n</div>\n\n\n";
 
 /***/ },
 /* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div>An error occurred.</div>";
+	module.exports = "<div class=\"container-fluid view editgear\">\n\t<div class=\"row\">\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Instrument</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#photos\" role=\"tab\" data-toggle=\"tab\">Photos</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\n\t\t</ul>\n\n\t\t<button id=\"editgear-cancel-symbol\" style=\"float: left;\" class=\"cancel-btn editgear-close-top sg-btn-round submerchant-message-close sg-darkgray-bg sg-white\">\n\t\t\t<i class=\"fa fa-times\"></i>\n\t\t</button>\n\n\t</div>\n\t\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12\">\n\t\t\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{gear_type}}:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editgear-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Subtype:*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"subtype\" id=\"editgear-subtype\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Brand:*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"brand\" id=\"editgear-brand\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"model\">Model:*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"editgear-model\" id=\"editgear-model\" value=\"{{model}}\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Accessories:</label>\n\t\t\t\t\t\t\t\t\t\t<div id=\"editgear-accessories-container\"></div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label>Description:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"editgear-description\" id=\"editgear-description\" class=\"form-control\">{{description}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"photos\">\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Photos:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editgear-photos-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgear-form-imageupload\">Upload image:</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"file\" id=\"editgear-photos-form-imageupload\" name=\"gearpic\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"thumb-list-container editgear-photos-list\">\n\t\t\t\t\t\t\t\t\t\t\t<ul></ul>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Price your gear</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"editgearpricing-form\" role=\"form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Daily Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Weekly Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Monthly Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\n\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\n\t\t\t\t\t\t\t\t\t<p>For this type of gear we recommend the following prices.</p>\n\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_a-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_b-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_c-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editgearpricingloc-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-address\">Street*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"editgearpricing-address\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-postalcode\">Postal code*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"editgearpricing-postalcode\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-city\">City*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"editgearpricing-city\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<!--<label for=\"dashboard-addgearprice-region\">Region</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"region\" id=\"editgearpricing-region\" class=\"form-control\">-->\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-country\">Country*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"editgearpricing-country\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter the exact location of the instrument.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\n\t\t\t\t\t<div class=\"container-fluid\">\n\t\t\t\t\t\t<div id=\"editgear-availability-calendar\"></div>\n\t\t\t\t\t\t<div id=\"editgear-submerchantform-buttons\" class=\"hidden\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"editgear-submerchantform-submit\">Submit</button>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-modal-header\">\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 editgearcancel\">\n  \t\t<button class=\"sg-btn-square sg-inherit-bg sg-blue\" id=\"editgear-cancel-btn\">Cancel</button>\n  \t</div>\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit gear</h2></div>\n  \t<div class=\"col-sm-offset-10 col-xs-2 text-center\">\n  \t\t<button class=\"sg-btn-square sg-white-bg sg-blue editsavebutton\" id=\"editgear-save-btn\">Save</button>\n  \t</div>\n  </div>\n</div>\n";
 
 /***/ },
 /* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid sg-black-bg footer\">\n\t<div class=\"row sg-blue links\">\n\t\t<div class=\"col-sm-offset-1 col-sm-2 text-center\">\n\t\t\t<a href=\"#aboutus\">about us</a>\n\t\t</div>\n\t\t<div class=\"col-sm-2 text-center\">\n\t\t\t<a href=\"#insurance\">insurance</a>\n\t\t</div>\n\t\t<div class=\"col-sm-2 text-center\">\n\t\t\t<a href=\"#terms\">terms of service</a>\n\t\t</div>\n\t\t<div class=\"col-sm-2 text-center\">\n\t\t\t<a href=\"#copyright\">copyright policy</a>\n\t\t</div>\n\t\t<div class=\"col-sm-2 text-center\">\n\t\t\t<a href=\"#privacy\">privacy policy</a>\n\t\t</div>\n\t</div>\n\t<div class=\"row sg-blue follow\">\n\t\t<div class=\"col-sm-12 text-center\">Follow us on</div>\n\t</div>\n\t<div class=\"row social\">\n\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t<a href=\"//www.facebook.com/sharingear\" target=\"new\"><img src=\"images/icon-fbicon.png\" alt=\"Facebook\"></a><a href=\"//twitter.com/sharingear\" target=\"new\"><img src=\"images/icon-twittericon.png\" alt=\"Twitter\"></a><a href=\"//instagram.com/sharingear\" target=\"new\"><img src=\"images/icon-igicon.png\" alt=\"Instagram\"></a>\n\t\t</div>\n\t</div>\n\t<div class=\"row logo\">\n\t\t<div class=\"col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 text-center\">\n\t\t\t<img src=\"images/logotop@2x.png\" alt=\"Sharingear logo\">\n\t\t</div>\n\t</div>\n\t<div class=\"row copyright\">\n\t\t<div class=\"col-sm-12 text-center sg-lightgray\">\n\t\t\t&copy; {{year}} Sharingear\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view edittechprofile\">\n\t<div class=\"row\">\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Technician</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#experience\" role=\"tab\" data-toggle=\"tab\">Experience</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\n\t\t</ul>\n\n\t\t<button id=\"edittechprofile-cancel-symbol\" style=\"float: left;\" class=\"cancel-btn editgear-close-top sg-btn-round submerchant-message-close sg-darkgray-bg sg-white\">\n\t\t\t<i class=\"fa fa-times\"></i>\n\t\t</button>\n\n\t</div>\n\t\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12\">\n\t\t\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{roadie_type}}:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"edittechprofile-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-about\">About:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-about\" id=\"edittechprofile-about\" class=\"form-control\">{{about}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-currently\">Currently working for:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-currently\" id=\"edittechprofile-currently\" class=\"form-control\">{{currently}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-genres\">Genres interested in:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-genres\" id=\"edittechprofile-genres\" class=\"form-control\">{{genres}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"experience\">\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\n\t\t\t\t\t\t<form id=\"edittechprofile-experience-form\" onsubmit=\"return false;\">\t\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\n\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-experience\">Experience:</label>\n\t\t\t\t\t\t\t\t\t<select id=\"edittechprofile-experience\" class=\"form-control inline-select-small\">\n                \t\t<option value=\"5\">D</option>\n                \t\t<option value=\"4\">C</option>\n                \t\t<option value=\"3\">B</option>\n                \t\t<option value=\"2\">A</option>\n                \t\t<option value=\"1\">A+</option>\n              \t\t</select>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\n\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-startyear\">Years of experience:</label>\n            \t\t\t<div>\n              \t\t\t<select id=\"edittechprofile-startyear\" class=\"form-control inline-select-small\"></select> - <select id=\"edittechprofile-endyear\" class=\"form-control inline-select-small\"></select>\n            \t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\n\t\t\t\t\t\t\t\t\t<label>Bands &amp; artists toured with:</label>\n            \t\t\t<textarea id=\"edittechprofile-tours\" class=\"form-control\">{{tours}}</textarea>\n            \t\t\t<label>Bands worked for:</label>\n            \t\t\t<textarea id=\"edittechprofile-bands\" class=\"form-control\">{{bands}}</textarea>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\n\t\t\t\t\t\t\t\t\t<label>Companies, venues and festivals worked for:</label>\n            \t\t\t<textarea id=\"edittechprofile-companies\" class=\"form-control\">{{companies}}</textarea>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</form>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Set your price</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"edittechprofilepricing-form\" role=\"form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Daily hire price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Weekly hire price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Monthly hire price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\n\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\n\t\t\t\t\t\t\t\t\t<p>For this type of technician we recommend the following prices.</p>\n\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_a-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_b-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_c-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"edittechprofilepricingloc-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-address\">Street*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"edittechprofilepricing-address\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-postalcode\">Postal code*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"edittechprofilepricing-postalcode\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-city\">City*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"edittechprofilepricing-city\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofilepricing-country\">Country*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"edittechprofilepricing-country\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter your exact location.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\n\t\t\t\t\t<div class=\"container-fluid\">\n\t\t\t\t\t\t<div id=\"edittechprofile-availability-calendar\" class=\"hidden\"></div>\n\t\t\t\t\t\t<div id=\"edittechprofile-submerchantform-buttons\" class=\"hidden\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"edittechprofile-submerchantform-submit\">Submit</button>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-modal-header\">\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 editgearcancel\">\n  \t\t<button class=\"sg-btn-square sg-inherit-bg sg-blue\" id=\"edittechprofile-cancel-btn\">Cancel</button>\n  \t</div>\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit Vehicle</h2></div>\n  \t<div class=\"col-sm-offset-10 col-xs-2 text-center\">\n  \t\t<button class=\"sg-btn-square sg-white-bg sg-blue editsavebutton\" id=\"edittechprofile-save-btn\">Save</button>\n  \t</div>\n  </div>\n</div>\n";
 
 /***/ },
 /* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view gearprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourgear\"></div>{{gear_type}}</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card\">\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset gear\">\n\t\t\t\t\t<div class=\"sg-icon icon-addgear-{{gear_type}} sg-darkgray\"></div>\n\t\t\t\t\t<span class=\"gear-title\">{{brand}} {{subtype}} {{model}}</span>\n\t\t\t\t\t<div class=\"social sg-gray\">\n\t\t\t\t\t\t<div class=\"sharethis\">Share this profile</div>\n\t\t\t\t\t\t<button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-fb-btn\"><i class=\"fa fa-facebook\"></i>\n\t\t\t\t\t\t</button> | <button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-tw-btn\">\n\t\t\t\t\t\t<i class=\"fa fa-twitter\"></i>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"gearprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-book\">BOOK</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-edit\">EDIT</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h3>Description</h3>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t{{description}}\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\n\t\t\t\t\t\t\t<h3>Accessories</h3>\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\n\t\t\t\t\t\t\t{{location}}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\" row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t<div class=\"map\" id=\"gearprofile-map\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view editvan\">\n\t<div class=\"row\">\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Vehicle</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#photos\" role=\"tab\" data-toggle=\"tab\">Photos</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\n\t\t</ul>\n\n\t\t<button id=\"editvan-cancel-symbol\" style=\"float: left;\" class=\"cancel-btn editgear-close-top sg-btn-round submerchant-message-close sg-darkgray-bg sg-white\">\n\t\t\t<i class=\"fa fa-times\"></i>\n\t\t</button>\n\n\t</div>\n\t\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12\">\n\t\t\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{van_type}}:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editvan-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"model\">Model:*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"editvan-model\" id=\"editvan-model\" value=\"{{model}}\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Accessories:</label>\n\t\t\t\t\t\t\t\t\t\t<div id=\"editvan-accessories-container\"></div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label>Description:</label>\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"editvan-description\" id=\"editvan-description\" class=\"form-control\">{{description}}</textarea>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"photos\">\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Photos:</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editvan-photos-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvan-form-imageupload\">Upload image:</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"file\" id=\"editvan-photos-form-imageupload\" name=\"vanpic\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"thumb-list-container editvan-photos-list\">\n\t\t\t\t\t\t\t\t\t\t\t<ul></ul>\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Price your vehicle</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"editvanpricing-form\" role=\"form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Daily Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Weekly Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\n\t\t\t\t\t\t\t\t\t\t<label>Monthly Rental Price*</label>\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\n\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\n\t\t\t\t\t\t\t\t\t<p>For this type of vehicle we recommend the following prices.</p>\n\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_a-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_b-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_c-suggestion\"></span> {{currency}}</div>\n\t\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<form id=\"editvanpricingloc-form\" onsubmit=\"return false;\">\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-address\">Street*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"editvanpricing-address\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-postalcode\">Postal code*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"editvanpricing-postalcode\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-city\">City*</label>\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"editvanpricing-city\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t<label for=\"editvanpricing-country\">Country*</label>\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"editvanpricing-country\" class=\"form-control\">\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\n\t\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter the exact location of the vehicle.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\n\t\t\t\t\t<div class=\"container-fluid\">\n\t\t\t\t\t\t<div id=\"editvan-availability-calendar\" class=\"hidden\"></div>\n\t\t\t\t\t\t<div id=\"editvan-submerchantform-buttons\" class=\"hidden\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"editvan-submerchantform-submit\">Submit</button>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-modal-header\">\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 editgearcancel\">\n  \t\t<button class=\"sg-btn-square sg-inherit-bg sg-blue\" id=\"editvan-cancel-btn\">Cancel</button>\n  \t</div>\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit Vehicle</h2></div>\n  \t<div class=\"col-sm-offset-10 col-xs-2 text-center\">\n\t\t<button class=\"sg-btn-square sg-white-bg sg-blue editsavebutton\" id=\"editvan-save-btn\">Save</button>\n  \t</div>\n  </div>\n</div>\n";
 
 /***/ },
 /* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"searchform\">\n  <form class=\"form-inline\" id=\"home-search-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\n    <div class=\"form-group\">\n      <label class=\"sg-blue\">Find your gear</label>\n      <input type=\"search\" class=\"form-control\" id=\"search-gear\" placeholder=\"Guitars, amps, drums etc.\">\n      <div class=\"suggestion-box hidden\" id=\"gear-suggestions-box\"></div>\n    </div><div class=\"form-group\">\n      <label class=\"sg-blue\">Find a location</label>\n      <input type=\"text\" class=\"form-control\" id=\"search-location\" placeholder=\"\">\n    </div><div class=\"form-group search-pickup-container\">\n      <label class=\"sg-blue\">Pickup</label>\n      <input type=\"text\" class=\"form-control\" id=\"search-pickup\" placeholder=\"15/08/1969\" >\n    </div><div class=\"form-group search-return-container\">\n      <label class=\"sg-blue\">Delivery</label>\n      <input type=\"text\" class=\"form-control\" id=\"search-return\" placeholder=\"18/08/1969\" >\n    </div><div class=\"form-group submit-container\">\n      <input type=\"submit\" id=\"home-submit-button-id\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\n    </div>\n  </form>\n</div>\n";
+	module.exports = "<div>An error occurred.</div>";
 
 /***/ },
 /* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"view home\">\n  <div class=\"jumbotron sg-banner\">\n    <div class=\"container-fluid\">\n      <div class=\"row\">\n        <div class=\"col-sm-12\">\n          <h2 class=\"sg-h1 text-center sg-white\">THE ULTIMATE MARKETPLACE FOR TOURING MUSICIANS</h2>\n        </div>\n      </div>\n\n      <div class=\"row sg-tabbar-container bs-reset\">\n        <div class=\"col-sm-2 bs-reset\"><div class=\"sg-fill sg-blue-bg-50\"></div></div>\n        <div class=\"col-sm-8 bs-reset\">\n          <div class=\"sg-tabbar sg-tabbar-3\">\n            <ul>\n              <li>\n                <button class=\"sg-btn-square sg-white selected\" id=\"home-tab-gear\"><div class=\"sg-icon icon-tabbar-gear\"></div><div class=\"sg-btn-text\">GEAR</div></button>\n              </li>\n              <li>\n                <button class=\"sg-btn-square sg-white\" id=\"home-tab-techprofiles\"><div class=\"sg-icon icon-tabbar-technicians\"></div><div class=\"sg-btn-text\">TECHNICIANS</div></button>\n              </li>\n              <li>\n                <button class=\"sg-btn-square sg-white\" id=\"home-tab-vans\"><div class=\"sg-icon icon-tabbar-vans\"></div><div class=\"sg-btn-text\">VANS &amp; BUSES</div></button>\n              </li>\n            </ul>\n          </div>\n        </div>\n        <div class=\"col-sm-2 bs-reset\"><div class=\"sg-fill sg-blue-bg-50\"></div></div>\n      </div>\n\n      <div class=\"row sg-tab-panel sg-darkblue-bg-transparent\" id=\"home-searchform-gear\">\n        <div class=\"col-sm-12 searchform-container\">\n        </div>\n      </div>\n\n      <div class=\"row sg-tab-panel sg-darkblue-bg-transparent hidden\" id=\"home-searchform-techprofiles\">\n        <div class=\"col-sm-12 searchform-container\">\n        </div>\n      </div>\n\n      <div class=\"row sg-tab-panel sg-darkblue-bg-transparent hidden\" id=\"home-searchform-vans\">\n        <div class=\"col-sm-12 searchform-container\">\n        </div>\n      </div>\n\n      <div class=\"row\">\n        <div class=\"col-sm-12 text-center\">\n          <button class=\"sg-btn-invisible sg-white\" id=\"home-scroll-btn\">Scroll down <i class=\"fa fa-arrow-circle-o-down\"></i> to see more</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"container-fluid\" id=\"home-whatsay\">\n    <div class=\"row testimonials-title-row\">\n      <div class=\"col-md-12 testimonials-title\">\n        <h3 class=\"text-center text-uppercase\">What other musicians say</h3>\n      </div>\n    </div>\n\n    <div class=\"row testimonials-row\">\n      <div class=\"col-xs-12 col-sm-4 testimonials-video\">\n        <iframe src=\"//player.vimeo.com/video/107903629\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\n      </div>\n      <div class=\"col-xs-12 testimonials-name\">\n        <div class=\"h5 text-uppercase\">Stephen Carpenter</div>\n        <div class=\"h3 text-uppercase\">Deftones</div>\n      </div>\n      <div class=\"col-xs-12 col-sm-4 testimonials-video\">\n        <iframe src=\"//player.vimeo.com/video/117566193\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\n      </div>\n      <div class=\"col-xs-12 testimonials-name\">\n        <div class=\"h5 text-uppercase\">Jeff Walker</div>\n        <div class=\"h3 text-uppercase\">Carcass</div>\n      </div>\n      <div class=\"col-xs-12 col-sm-4 testimonials-video\">\n        <iframe src=\"//player.vimeo.com/video/109912371\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\n      </div>\n      <div class=\"col-xs-12 testimonials-name\">\n        <div class=\"h5 text-uppercase\">Peter Dolving</div>\n        <div class=\"h3 text-uppercase\">IAMFIRE</div>\n      </div>\n    </div>\n\n    <div class=\"row testimonials-big-name-container\">\n      <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\n        <div class=\"h5 text-uppercase\">Stephen Carpenter</div>\n        <div class=\"h3 text-uppercase\">Deftones</div>\n      </div>\n      <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\n        <div class=\"h5 text-uppercase\">Jeff Walker</div>\n        <div class=\"h3 text-uppercase\">Carcass</div>\n      </div>\n      <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\n        <div class=\"h5 text-uppercase\">Peter Dolving</div>\n        <div class=\"h3 text-uppercase\">IAMFIRE</div>\n      </div>\n    </div>\n\n    <div class=\"row references-row\">\n      <div class=\"col-sm-8\">\n        <div class=\"row\">\n          <div class=\"col-xs-offset-1 col-sm-12\">\n            <h6 class=\"text-uppercase sg-gray\">As featured on</h6>\n          </div>\n        </div>\n        <div class=\"row reference-images-row\">\n          <div class=\"col-xs-offset-1 col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" src=\"images/metalhammer@2x.png\">\n          </div>\n          <div class=\"col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" style=\"width:85%\" src=\"images/betalist@2x.png\" alt=\"Beta List\">\n          </div>\n          <div class=\"col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" style=\"width:85%\" src=\"images/bandsoftomorrow@2x.png\" alt=\"Bands of Tomorrow\">\n          </div>\n          <div class=\"col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" style=\"width:100%\" src=\"images/geargods@2x.png\" alt=\"Gear Gods\">\n          </div>\n          <div class=\"col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" src=\"images/arcticstartup@2x.png\" alt=\"Artic Startup\">\n          </div>\n        </div>\n      </div>\n      <div class=\"col-sm-4\">\n        <div class=\"row\">\n          <div class=\"col-sm-12\">\n            <h6 class=\"text-uppercase sg-gray\">Partnered with</h6>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"col-xs-6 col-sm-6 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" src=\"images/royalbeer@2x.png\" alt=\"Royal Beer\">\n          </div>\n          <div class=\"col-xs-4 col-sm-4 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" src=\"images/ora@2x.png\" alt=\"ORA\">\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n  <footer></footer>\n</div>\n";
+	module.exports = "<div class=\"container-fluid sg-black-bg footer\">\n\t<div class=\"row sg-blue links\">\n\t\t<div class=\"col-sm-offset-1 col-sm-2 text-center\">\n\t\t\t<a href=\"#aboutus\">about us</a>\n\t\t</div>\n\t\t<div class=\"col-sm-2 text-center\">\n\t\t\t<a href=\"#insurance\">insurance</a>\n\t\t</div>\n\t\t<div class=\"col-sm-2 text-center\">\n\t\t\t<a href=\"#terms\">terms of service</a>\n\t\t</div>\n\t\t<div class=\"col-sm-2 text-center\">\n\t\t\t<a href=\"#copyright\">copyright policy</a>\n\t\t</div>\n\t\t<div class=\"col-sm-2 text-center\">\n\t\t\t<a href=\"#privacy\">privacy policy</a>\n\t\t</div>\n\t</div>\n\t<div class=\"row sg-blue follow\">\n\t\t<div class=\"col-sm-12 text-center\">Follow us on</div>\n\t</div>\n\t<div class=\"row social\">\n\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t<a href=\"//www.facebook.com/sharingear\" target=\"new\"><img src=\"images/icon-fbicon.png\" alt=\"Facebook\"></a><a href=\"//twitter.com/sharingear\" target=\"new\"><img src=\"images/icon-twittericon.png\" alt=\"Twitter\"></a><a href=\"//instagram.com/sharingear\" target=\"new\"><img src=\"images/icon-igicon.png\" alt=\"Instagram\"></a>\n\t\t</div>\n\t</div>\n\t<div class=\"row logo\">\n\t\t<div class=\"col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 text-center\">\n\t\t\t<img src=\"images/logotop@2x.png\" alt=\"Sharingear logo\">\n\t\t</div>\n\t</div>\n\t<div class=\"row copyright\">\n\t\t<div class=\"col-sm-12 text-center sg-lightgray\">\n\t\t\t&copy; {{year}} Sharingear\n\t\t</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"view insurance\">\n\t<div class=\"container-fluid\">\n\t\t<div class=\"row sg-rehearsal-bg\">\n\t\t\t<div class=\"col-xs-12 col-sm-4 text-center insurance-stamp\">\n\t\t\t\t<img src=\"images/insurance_stamp.png\" alt=\"Insurance stamp\">\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-12 col-sm-7 sg-yellow\">\n\t\t\t\t<p>\n\t\t\t\t\tThe Sharingear Guarantee<br>\n\t\t\t\t\tWe’re constantly working to make Sharingear a safe place for renters and owners.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p class=\"text-center sg-blue message\">\n\t\t\t\t\tWe want you to be comfortable listing your instruments and backline on Sharingear.<br>\n\t\t\t\t\tThat's why we're guaranteeing your gear’s safety on our system. If your gear is damaged or stolen during a rental period and the renter is unable to reimburse you for the fair value of your gear, we'll cover the cost up to 10,000€ for instruments listed on our platform. \n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<hr>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h1 class=\"sg-h1 sg-darkergray text-center\">How we build trust</h1>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t<div class=\"title sg-blue\">\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> ID Verification\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\tRenters and owners verify their Sharingear accounts with their Credit Card, mobile phone number, Twitter and Facebook. The verification validates your online identity to help people get a better idea of who they’re renting to or from. Verifying your account helps others trust you and makes your ride show up higher in search results.\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t<div class=\"title sg-blue\">\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> Community reviews\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\tReviews are collected from the owner and the renter following every rental in order to self regulate our community. Reviews are left for the owner, the renter, and the gear, so you can hear first hand about other people's experiences with the great people on Sharingear.\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t<div class=\"title sg-blue\">\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> Keep your privacy\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\tWe never share your information with anyone until you confirm their rental. You can keep all communications in our secure, private messaging system so you don’t need to share your contact info and you can choose where you’d like to meet renters if you’d rather not share your address.\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<footer></footer>\n</div>";
+	module.exports = "<div class=\"container-fluid view gearprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourgear\"></div>{{gear_type}}</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card\">\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset gear\">\n\t\t\t\t\t<div class=\"sg-icon icon-addgear-{{gear_type}} sg-darkgray\"></div>\n\t\t\t\t\t<span class=\"gear-title\">{{brand}} {{subtype}} {{model}}</span>\n\t\t\t\t\t<div class=\"social sg-gray\">\n\t\t\t\t\t\t<div class=\"sharethis\">Share this profile</div>\n\t\t\t\t\t\t<button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-fb-btn\"><i class=\"fa fa-facebook\"></i>\n\t\t\t\t\t\t</button> | <button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-tw-btn\">\n\t\t\t\t\t\t<i class=\"fa fa-twitter\"></i>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"gearprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-book\">BOOK</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-edit\">EDIT</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h3>Description</h3>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t{{description}}\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\n\t\t\t\t\t\t\t<h3>Accessories</h3>\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\n\t\t\t\t\t\t\t{{location}}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\" row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t<div class=\"map\" id=\"gearprofile-map\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view payment\">\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\n\t\t<div class=\"col-xs-2\"><button class=\"sg-btn-invisible sg-white\" id=\"payment-back-btn\"><i class=\"fa fa-arrow-circle-o-left\"></i></button></div>\n\t\t<div class=\"col-xs-8\">Booking step 2</div>\n\t\t<div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"payment-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 text-center sg-darkergray gear\">\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t<table class=\"table\">\n\t\t\t\t<tbody>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>From:</strong> {{start_date}}</td>\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>To:</strong> {{end_date}}</td>\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\n\t\t\t\t\t</tr>\n\t\t\t\t</tbody>\n\t\t\t\t<tfoot>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Price: {{price}} <span class=\"sg-super\">{{currency}}</span></td>\n\t\t\t\t\t\t<!--<td>VAT({{vat}}%): {{price_vat}} <span class=\"sg-super\">{{currency}}</span>-->\n\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Fee: {{fee}} <span class=\"sg-super\">{{currency}}</span></td>\n\t\t\t\t\t\t<!--<td>VAT({{vat}}%): {{fee_vat}} <span class=\"sg-super\">{{currency}}</span></td>-->\n\t\t\t\t\t</tr>\n\t\t\t\t</tfoot>\n\t\t\t</table>\n\t\t</div>\n\t</div>\n\t<div class=\"row sg-darkergray-bg sg-white total\">\n\t\t<div class=\"col-xs-6\">TOTAL:</div>\n\t\t<div class=\"col-xs-6\">{{total}}<span class=\"sg-super\">{{currency}}</span></div>\n\t</div>\n\t<div class=\"row xchange-rate\">\n\t\t<div class=\"col-xs-12 text-center sg-mediumblue-bg sg-yellow\">The exchange rate for the booking in this listing is 1 {{currency}} to {{xchange}} {{owner_currency}} (your owner's listing currency).</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t<ul class=\"sg-tabs sg-tabs-3\">\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray active\"><button>VISA</button></li>\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray disabled\"><button>MasterCard</button></li>\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray disabled\"><button>PayPal</button></li>\n\t\t\t</ul>\n\t\t</div>\n\t</div>\n\t\n\t<div id=\"payment-visa-block\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t<form id=\"payment-form-visa\" onsubmit=\"return false;\">\n\t\t\t\t\t<div class=\"form-group missing-userdata\" id=\"payment-birthdate\">\n\t\t\t\t\t\t<label for=\"payment-birthdate-day\">Date of birth:</label>\n\t\t\t\t\t\t<div class=\"birthday-select\">\n\t\t\t\t\t\t\t<select id=\"payment-birthdate-day\" name=\"birthdate-day\"></select>/<select id=\"payment-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"payment-birthdate-year\" name=\"birthdate-year\"></select>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<label for=\"payment-address\">Address:</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"payment-address\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<label for=\"payment-postalcode\">Postal code:</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"postal_code\" id=\"payment-postalcode\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<label for=\"payment-city\">City:</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"payment-city\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<select name=\"country\" id=\"payment-country\" class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"\">Select your country</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<select name=\"nationality\" id=\"payment-nationality\" class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"\">Select your nationality</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<label for=\"payment-phone\">Phone:</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"phone\" id=\"payment-phone\" class=\"form-control\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label for=\"payment-form-visa-cardholder\">Cardholder name:</label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" id=\"payment-form-visa-cardholder\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label for=\"payment-form-visa-cardnumber\">Card number:</label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" id=\"payment-form-visa-cardnumber\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label for=\"payment-form-visa-month\">Expiration date:</label>\n\t\t\t\t\t\t<select class=\"form-control\" id=\"payment-form-visa-month\"></select>/<select class=\"form-control\" id=\"payment-form-visa-year\"></select>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Security code:</label>\n\t\t\t\t\t\t<input type=\"text\" id=\"payment-form-visa-csc\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<p>\n\t\t\t\t\t\tWe will only withdraw the money once the owner has accepted your booking.\n\t\t\t\t\t</p>\n\t\t\t\t</form>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\n\t\t<div class=\"col-sm-12\">\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"payment-next-btn\">next <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n\t\t</div>\n\t</div>\n\n</div>\n";
+	module.exports = "<div class=\"searchform\">\n  <form class=\"form-inline\" id=\"home-search-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\n    <div class=\"form-group\">\n      <label class=\"sg-blue\">Find your gear</label>\n      <input type=\"search\" class=\"form-control\" id=\"search-gear\" placeholder=\"Guitars, amps, drums etc.\">\n      <div class=\"suggestion-box hidden\" id=\"gear-suggestions-box\"></div>\n    </div><div class=\"form-group\">\n      <label class=\"sg-blue\">Find a location</label>\n      <input type=\"text\" class=\"form-control\" id=\"search-location\" placeholder=\"\">\n    </div><div class=\"form-group search-pickup-container\">\n      <label class=\"sg-blue\">Pickup</label>\n      <input type=\"text\" class=\"form-control\" id=\"search-pickup\" placeholder=\"15/08/1969\" >\n    </div><div class=\"form-group search-return-container\">\n      <label class=\"sg-blue\">Delivery</label>\n      <input type=\"text\" class=\"form-control\" id=\"search-return\" placeholder=\"18/08/1969\" >\n    </div><div class=\"form-group submit-container\">\n      <input type=\"submit\" id=\"home-submit-button-id\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\n    </div>\n  </form>\n</div>\n";
 
 /***/ },
 /* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid paymentsuccessful\">\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\n\t\t<div class=\"col-xs-offset-1 col-xs-10\">Booking step 3</div>\n\t</div>\n\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 text-center sg-darkergray gear\">\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\n\t\t</div>\n\t</div>\n\n\t<div class=\"payment-success hidden\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12 booking-confirm-header text-center\">\n\t\t\t\t<h1>{{item_name}} was successfully booked.</h1>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row text-center\">\n\t\t\t<div class=\"col-md-8 col-md-offset-2 booking-confirm-warning\">\n\t\t\t\t<h3>\n\t\t\t\t\t<p>\n\t\t\t\t\t<span class=\"fa fa-exclamation-circle\" aria-hidden=\"true\"></span>&nbsp;&nbsp;The owner must first confirm your booking before it becomes valid\n\t\t\t\t\t</p>\n\t\t\t\t</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t<table class=\"table\">\n\t\t\t\t\t<tbody>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>Booked from:</strong> {{start_date}}</td>\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>Booked to:</strong> {{end_date}}</td>\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</tbody>\n\t\t\t\t\t<tfoot>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Price: {{price}} <span class=\"sg-super\">{{currency}}</span></td>\n\t\t\t\t\t\t\t<!--<td>Price VAT({{vat}}%): {{price_vat}} <span class=\"sg-super\">{{currency}}</span>-->\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Sharingear fee: {{fee}} <span class=\"sg-super\">{{currency}}</span></td>\n\t\t\t\t\t\t\t<!--<td>Fee VAT({{vat}}%): {{fee_vat}} <span class=\"sg-super\">{{currency}}</span></td>-->\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</tfoot>\n\t\t\t\t</table>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-8 col-md-offset-2 col-xs-12 text-center booking-confirm-table\">\n\t\t\t\t<h3><strong>Total:</strong> {{total}} {{currency}}</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-8 col-xs-offset-2 text-center\">\n\t\t\t\t<h4>The total is reserved on your card, and will be charged upon gear owner's confirmation.</h4>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"payment-failure hidden\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12 booking-confirm-header text-center\">\n\t\t\t\t<h1>Your booking could not be completed.</h1>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row text-center\">\n\t\t\t<div class=\"col-md-8 col-md-offset-2 booking-error-warning\">\n\t\t\t\t<h3>\n\t\t\t\t\t<p>\n\t\t\t\t\t<span class=\"fa fa-exclamation-circle\" aria-hidden=\"true\"></span>&nbsp;&nbsp;Payment failed. No money has been charged.\n\t\t\t\t\t</p>\n\t\t\t\t</h3>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\n\t\t<div class=\"col-sm-12\">\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"paymentsuccessful-close-btn\">close <i class=\"fa fa-times sg-white-bg sg-blue\"></i></button>\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"view home\">\n  <div class=\"jumbotron sg-banner\">\n    <div class=\"container-fluid\">\n      <div class=\"row\">\n        <div class=\"col-sm-12\">\n          <h2 class=\"sg-h1 text-center sg-white\">THE ULTIMATE MARKETPLACE FOR TOURING MUSICIANS</h2>\n        </div>\n      </div>\n\n      <div class=\"row sg-tabbar-container bs-reset\">\n        <div class=\"col-sm-2 bs-reset\"><div class=\"sg-fill sg-blue-bg-50\"></div></div>\n        <div class=\"col-sm-8 bs-reset\">\n          <div class=\"sg-tabbar sg-tabbar-3\">\n            <ul>\n              <li>\n                <button class=\"sg-btn-square sg-white selected\" id=\"home-tab-gear\"><div class=\"sg-icon icon-tabbar-gear\"></div><div class=\"sg-btn-text\">GEAR</div></button>\n              </li>\n              <li>\n                <button class=\"sg-btn-square sg-white\" id=\"home-tab-techprofiles\"><div class=\"sg-icon icon-tabbar-technicians\"></div><div class=\"sg-btn-text\">TECHNICIANS</div></button>\n              </li>\n              <li>\n                <button class=\"sg-btn-square sg-white\" id=\"home-tab-vans\"><div class=\"sg-icon icon-tabbar-vans\"></div><div class=\"sg-btn-text\">VANS &amp; BUSES</div></button>\n              </li>\n            </ul>\n          </div>\n        </div>\n        <div class=\"col-sm-2 bs-reset\"><div class=\"sg-fill sg-blue-bg-50\"></div></div>\n      </div>\n\n      <div class=\"row sg-tab-panel sg-darkblue-bg-transparent\" id=\"home-searchform-gear\">\n        <div class=\"col-sm-12 searchform-container\">\n        </div>\n      </div>\n\n      <div class=\"row sg-tab-panel sg-darkblue-bg-transparent hidden\" id=\"home-searchform-techprofiles\">\n        <div class=\"col-sm-12 searchform-container\">\n        </div>\n      </div>\n\n      <div class=\"row sg-tab-panel sg-darkblue-bg-transparent hidden\" id=\"home-searchform-vans\">\n        <div class=\"col-sm-12 searchform-container\">\n        </div>\n      </div>\n\n      <div class=\"row\">\n        <div class=\"col-sm-12 text-center\">\n          <button class=\"sg-btn-invisible sg-white\" id=\"home-scroll-btn\">Scroll down <i class=\"fa fa-arrow-circle-o-down\"></i> to see more</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"container-fluid\" id=\"home-whatsay\">\n    <div class=\"row testimonials-title-row\">\n      <div class=\"col-md-12 testimonials-title\">\n        <h3 class=\"text-center text-uppercase\">What other musicians say</h3>\n      </div>\n    </div>\n\n    <div class=\"row testimonials-row\">\n      <div class=\"col-xs-12 col-sm-4 testimonials-video\">\n        <iframe src=\"//player.vimeo.com/video/107903629\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\n      </div>\n      <div class=\"col-xs-12 testimonials-name\">\n        <div class=\"h5 text-uppercase\">Stephen Carpenter</div>\n        <div class=\"h3 text-uppercase\">Deftones</div>\n      </div>\n      <div class=\"col-xs-12 col-sm-4 testimonials-video\">\n        <iframe src=\"//player.vimeo.com/video/117566193\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\n      </div>\n      <div class=\"col-xs-12 testimonials-name\">\n        <div class=\"h5 text-uppercase\">Jeff Walker</div>\n        <div class=\"h3 text-uppercase\">Carcass</div>\n      </div>\n      <div class=\"col-xs-12 col-sm-4 testimonials-video\">\n        <iframe src=\"//player.vimeo.com/video/109912371\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\n      </div>\n      <div class=\"col-xs-12 testimonials-name\">\n        <div class=\"h5 text-uppercase\">Peter Dolving</div>\n        <div class=\"h3 text-uppercase\">IAMFIRE</div>\n      </div>\n    </div>\n\n    <div class=\"row testimonials-big-name-container\">\n      <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\n        <div class=\"h5 text-uppercase\">Stephen Carpenter</div>\n        <div class=\"h3 text-uppercase\">Deftones</div>\n      </div>\n      <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\n        <div class=\"h5 text-uppercase\">Jeff Walker</div>\n        <div class=\"h3 text-uppercase\">Carcass</div>\n      </div>\n      <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\n        <div class=\"h5 text-uppercase\">Peter Dolving</div>\n        <div class=\"h3 text-uppercase\">IAMFIRE</div>\n      </div>\n    </div>\n\n    <div class=\"row references-row\">\n      <div class=\"col-sm-8\">\n        <div class=\"row\">\n          <div class=\"col-xs-offset-1 col-sm-12\">\n            <h6 class=\"text-uppercase sg-gray\">As featured on</h6>\n          </div>\n        </div>\n        <div class=\"row reference-images-row\">\n          <div class=\"col-xs-offset-1 col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" src=\"images/metalhammer@2x.png\">\n          </div>\n          <div class=\"col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" style=\"width:85%\" src=\"images/betalist@2x.png\" alt=\"Beta List\">\n          </div>\n          <div class=\"col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" style=\"width:85%\" src=\"images/bandsoftomorrow@2x.png\" alt=\"Bands of Tomorrow\">\n          </div>\n          <div class=\"col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" style=\"width:100%\" src=\"images/geargods@2x.png\" alt=\"Gear Gods\">\n          </div>\n          <div class=\"col-xs-2 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" src=\"images/arcticstartup@2x.png\" alt=\"Artic Startup\">\n          </div>\n        </div>\n      </div>\n      <div class=\"col-sm-4\">\n        <div class=\"row\">\n          <div class=\"col-sm-12\">\n            <h6 class=\"text-uppercase sg-gray\">Partnered with</h6>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"col-xs-6 col-sm-6 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" src=\"images/royalbeer@2x.png\" alt=\"Royal Beer\">\n          </div>\n          <div class=\"col-xs-4 col-sm-4 reference-box\">\n            <span class=\"helper\"></span><img class=\"references-image\" src=\"images/ora@2x.png\" alt=\"ORA\">\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n  <footer></footer>\n</div>\n";
 
 /***/ },
 /* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid pickupdeliverycalendar\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-6 sg-toptab sg-toptab-active\" id=\"pickupdeliverycalendar-pickupdate\">\n\t\t\t<i class=\"col-xs-2 fa fa-calendar\"></i>\n\t\t\t<span class=\"col-xs-2 text-left\">From</span>\n\t\t\t<div class=\"col-xs-8 text-center\"> - </div>\n\t\t</div>\n\t\t<div class=\"col-xs-6 sg-toptab\" id=\"pickupdeliverycalendar-deliverydate\">\n\t\t\t<i class=\"col-xs-2 fa fa-calendar\"></i>\n\t\t\t<span class=\"col-xs-2 text-left\">To</span>\n\t\t\t<div class=\"col-xs-8 text-center\"> - </div>\n\t\t</div>\n\t</div>\n\t<div class=\"text-center hint\">Select from date</div>\n\t<div class=\"row calendar-navigation\">\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray\" id=\"pickupdeliverycalendar-prev\"><i class=\"fa fa-angle-left\"></i></button></div>\n\t\t<div class=\"col-xs-8 text-center\"><strong id=\"pickupdeliverycalendar-currentmonth\"></strong></div>\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray\" id=\"pickupdeliverycalendar-next\"><i class=\"fa fa-angle-right\"></i></button></div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"calendar\">\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"view insurance\">\n\t<div class=\"container-fluid\">\n\t\t<div class=\"row sg-rehearsal-bg\">\n\t\t\t<div class=\"col-xs-12 col-sm-4 text-center insurance-stamp\">\n\t\t\t\t<img src=\"images/insurance_stamp.png\" alt=\"Insurance stamp\">\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-12 col-sm-7 sg-yellow\">\n\t\t\t\t<p>\n\t\t\t\t\tThe Sharingear Guarantee<br>\n\t\t\t\t\tWe’re constantly working to make Sharingear a safe place for renters and owners.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p class=\"text-center sg-blue message\">\n\t\t\t\t\tWe want you to be comfortable listing your instruments and backline on Sharingear.<br>\n\t\t\t\t\tThat's why we're guaranteeing your gear’s safety on our system. If your gear is damaged or stolen during a rental period and the renter is unable to reimburse you for the fair value of your gear, we'll cover the cost up to 10,000€ for instruments listed on our platform. \n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<hr>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h1 class=\"sg-h1 sg-darkergray text-center\">How we build trust</h1>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t<div class=\"title sg-blue\">\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> ID Verification\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\tRenters and owners verify their Sharingear accounts with their Credit Card, mobile phone number, Twitter and Facebook. The verification validates your online identity to help people get a better idea of who they’re renting to or from. Verifying your account helps others trust you and makes your ride show up higher in search results.\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t<div class=\"title sg-blue\">\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> Community reviews\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\tReviews are collected from the owner and the renter following every rental in order to self regulate our community. Reviews are left for the owner, the renter, and the gear, so you can hear first hand about other people's experiences with the great people on Sharingear.\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t<div class=\"title sg-blue\">\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> Keep your privacy\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\tWe never share your information with anyone until you confirm their rental. You can keep all communications in our secure, private messaging system so you don’t need to share your contact info and you can choose where you’d like to meet renters if you’d rather not share your address.\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<footer></footer>\n</div>";
 
 /***/ },
 /* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"view privacy\">\n\t<div class=\"container-fluid sg-lightgray-bg\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h1 class=\"sg-h1 sg-blue\">SharingearPrivacy Policy</h1>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tLast Updated: November 28, 2014\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tThese privacy policies (the “Privacy Policy”) explain how Sharingear IVS (“we,” “us,” “our,” or “Sharingear”) collects, stores, uses, and discloses your personal information when you use  <a href=\"http://www.sharingear.com\">www.sharingear.com</a> (the “Site”), our mobile and desktop apps, if any (the “Application”), and all related sites, widgets, tools, apps, data, software and other services provided by Sharingear (collectively, the “Services”) (the Site, Application, and Services shall be sometimes collectively referred to herein as the “Platform”).\n\t\t\t\t\tWe encourage you to read this Privacy Policy thoroughly prior to use of the Platform.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tBy using the Platform, you agree and consent to the terms and practices described in this Privacy Policy.\n\t\t\t\t\t<strong>If you do not agree to any of the provisions outlinedin this Privacy Policy, you should not use the Platform.</strong>\n\t\t\t\t\tIf you have any questions about this Privacy Policy, please contact <a href=\"mailto:legal@sharingear.com\">legal@sharingear.com</a>.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tUnless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our <a href=\"#terms\">Terms of Service</a>.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\t\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">1. Information we collect</h3>\n\t\t\t</div>\n\t\t</div>\t\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\tWhen you use the Platform, we may collect personal information that can identify you, such as your name and email address, and other information that does not identify you.\n\t\t\t\tOur primary purposes in collecting information are to provide and improve the Platform, to administer your use of the Platform, and to enable users to enjoy and easily navigate the Platform.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information you provide</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\tWhen you register for an account through the Site or Application and become a Member, when you choose to post a Gear profile or book a Gear, or when you wish to contact another Member, we will ask you for personally identifiable information that can be used to contact or identify you, such as your full name, phone number, home address, email address, and social security number (SSN).\n\t\t\t\tIn order to process transactions through the Site and Application, we may also ask you for your credit card, bank details, and other billing information.\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tTo register for an account via the Site or Application, you will be required to either:\n\t\t\t\t</p>\n\t\t\t\t<ol class=\"sg-romanlist\">\n\t\t\t\t\t<li>provide your first name, last name, and email address and choose a password; or</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tprovide information by logging into your online account with a third party service provider (“SNS”), such as Facebook, (each such account, a “Third Party Account”), linking such account to your Sharingear account, and allowing Sharingear to obtain information from your Third Party Account to create your Sharingear account and profile page (for more information, please see Section 4 in our Terms of Service).\n\t\t\t\t\t\tDepending on the Third Party Accounts you choose to link with your Sharingear account, and subject to your privacy settings in such Third Party Accounts, you understand and agree that by granting us access to the Third Party Accounts, we will access, obtain, make available, and store (if applicable and as permitted by the SNS) the information in your Third Party Accounts (such as your full name, email address, profile picture, names of contacts on your Third Party Account (“Friends”), photographs, and/or other information you make publicly available or authorize us to access by authorizing the SNS to provide such information) so that it is available on and through your Sharingear account on the Platform.\n\t\t\t\t\t\tThis may include information about your “friends” or people with whom you are associated on your Third Party Account (depending on the privacy settings such people have with the applicable SNS).\n\t\t\t\t\t\tYou represent that you are entitled to disclose your Third Party Account login information to Sharingear and/or grant Sharingear access to your Third Party Account (including, but not limited to, for the purposes described herein) without breach by you of any of the terms and conditions that govern your use of the applicable Third Party Account and without obligating Sharingear to pay any fees or making Sharingear subject to any usage limitations imposed by the applicable SNS.\n\t\t\t\t\t</li>\n\t\t\t\t</ol>\n\t\t\t\t<p>\n\t\t\t\t\tYou may choose to provide additional personal information for your Sharingear Profile, such as photograph(s), biographical information, and website URLs. You may choose to provide additional information when you create a Gear, such as photographs and descriptions of your listed item(s). If any of the content you upload, share, and/or distribute via the Platform contains personal information about yourself and/or others, such information may be stored as well.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tThe Platform may provide a referral service that allows you to invite your friends and contacts to use the Platform or write a reference about you, to be published on your public profile. We may integrate the Platform with third-party sites such as Facebook, so that you can send invitation messages or requests for references via the third-party site itself.\n\t\t\t\t\tThese messages will be sent by the third-party site, and Sharingear does not collect or retain the contact information that is used to send them.\n\t\t\t\t\tYou may also send invitation/request emails via the Platform, in which case we will ask you for the email addresses to send these emails to.\n\t\t\t\t\tWe will use the information sent to us for the purpose of sending your friends and contacts a one-time email, inviting him or her to visit the Platform or to write a reference for you.\n\t\t\t\t\tWith respect to referrals, we will also store the email addresses of your invitees to track if your friends join Sharingear in response to your referral.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information we collect automatically</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWe may collect some information automatically as a result of your use of the Platform or through the use of web analytics services. This information may include:\n\t\t\t\t</p>\n\t\t\t\t<ol class=\"sg-romanlist\">\n\t\t\t\t\t<li>the Internet Protocol (IP) address of the device from which you access the Site or Application;</li>\n\t\t\t\t\t<li>the specific actions you take on the Site or Application, including the pages you visit, content you upload, accounts you link, content you share with others, comments and feedback you post, your communications with other users, and searches you perform;</li>\n\t\t\t\t\t<li>any search terms you may enter on the Site or Application;</li>\n\t\t\t\t\t<li>the time, frequency, and duration of your visits to the Site and Application;</li>\n\t\t\t\t\t<li>your browser type, operating system, and the nature of the device from which you are accessing the Platform;</li>\n\t\t\t\t\t<li>information collected through cookies and similar technology; and</li>\n\t\t\t\t\t<li>information regarding your interaction with email messages.</li>\n\t\t\t\t</ol>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information we collect using cookies</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tSharingear uses “cookies” in conjunction with the Platform to obtain information.\n\t\t\t\t\tA cookie is a small data file that is transferred to your device (e.g., your phone or computer) for record-keeping purposes.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tWhen you visit the Platform, we may assign your device one or more cookies, to facilitate access to the Platform, streamline the functioning of the Platform, monitor and analyze the performance and operation of the Platform, and personalize your experience.\n\t\t\t\t\tWe use cookies to collect site data, such as when you visit the Site and use our Application, the links you click, and pages you visit.\n\t\t\t\t\tWe may, either directly or through third party companies and individuals we engage to provide services to us, also continue to track your behavior on the Platform for purposes of our own customer support, analytics, research, product development, fraud prevention, risk assessment, regulatory compliance, investigation, as well as to enable you to use and access the Platform and pay for your activities on the Platform.\n\t\t\t\t\tWe may also use other Internet technology, such as web beacons, to track your use of our site and in e-mail messages or newsletters.\n\t\t\t\t\tThis Privacy Police will apply to our treatment of the information we obtain via our cookies and other Internet technology.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tWe may also allow our business partners to place cookies on your device.\n\t\t\t\t\tFor example, we use Google Analytics for web analytics, and so Google may also set cookies on your device.\n\t\t\t\t\tThird parties may also place cookies on your device for advertising purposes.\n\t\t\t\t\tThird parties that use cookies and other tracking technologies to deliver targeted advertisements on the Platform and/or third party websites may offer you a way to prevent such targeted advertisements by opting-out at the websites of certain industry groups or such third parties.\n\t\t\t\t\tPlease note that even if you choose to opt-out of receiving targeted advertising, you may still receive advertising on the Platform – it just will not be tailored to your interests.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tMost browsers have an option for turning off cookies; however, if you disable cookies, you may not be able to sign into your account or use most of the Platform content and features.\n\t\t\t\t\tBy choosing to use the Platform without blocking or disabling cookies or other similar technologies, you indicate your consent to our use of these technologies and to our use (in accordance with this Privacy Policy) of any personal information that we collect using these technologies.\n\t\t\t\t\tThis Privacy policy covers our and our business partners’ use of cookies and does not cover the use of cookies by other third parties.\n\t\t\t\t\tWe do not control when or how third parties place cookies on your computer.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Third-Party social media plugins</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThe Platform may use third-party social plugins that are provided and operated by third-party companies, such as Facebook’s “Like” button or Pinterest’s “Pin It” button.\n\t\t\t\t\tBy utilizing these features, you may send to the third-party company the information that you are viewing on a certain part of our Platform.\n\t\t\t\t\tIf you are not logged into your account with the third-party company, then the third party may not know your identity.\n\t\t\t\t\tIf you are logged into your account with the third-party company, then the third party may be able to link information about your visit to the Platform to your account with them and your interactions with the social plugin may be recorded by the third party.\n\t\t\t\t\tPlease reference the third party’s privacy policy for information about its data practices, such as what data is collected about you and how it is used.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">2. How we use your information</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWe use the information that we collect about you for the following general purposes:\n\t\t\t\t</p>\n\t\t\t\t<ul>\n\t\t\t\t\t<li>To operate and maintain your Sharingear account and to provide you with access to the Platform.</li>\n\t\t\t\t\t<li>To identify you as the creator of the content that you upload, the ratings that you post, the Gears that you make, and/or the other contributions that you make to the Platform.</li>\n\t\t\t\t\t<li>To operate, protect, improve, and optimize the Platform, our business, and our users’ experience, such as to perform analytics, conduct research, and for advertising and marketing.</li>\n\t\t\t\t\t<li>To send you service, support, and administrative messages, reminders, technical notices, updates, security alerts, and information requested by you.</li>\n\t\t\t\t\t<li>To customize your use of the Platform.</li>\n\t\t\t\t\t<li>To administer rewards, surveys, sweepstakes, contests, or other promotional activities or events sponsored or managed by Sharingear or our business partners.</li>\n\t\t\t\t\t<li>To comply with our legal obligations, resolve any disputes that we may have with any of our users, enforce our agreements with third parties, and prevent or take action against activities that are, or may be, in breach of our <strong>Terms of Service</strong> or applicable law.</li>\n\t\t\t\t\t<li>For other purposes, provided that we disclose this to you at the relevant time and provided that you agree to the proposed use of your personal information.</li>\n\t\t\t\t</ul>\n\t\t\t\t<p>\n\t\t\t\t\tWe may also use the information for the following purposes:\n\t\t\t\t</p>\n\t\t\t\t<ul>\n\t\t\t\t\t<li>Your email address and password are used to identify you when you log into the Site.</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tAdditional personal information that you provide as part of your profile, such as your name, Gear, uploaded content (such as photographs), and links to your website and other social media profiles (but not your email address or phone number), will be published on your profile page.\n\t\t\t\t\t\tThis information will be publicly accessible to and may be viewed by anyone accessing the Platform.\n\t\t\t\t\t\tParts of your public profile page that may contain personal information may be displayed in other parts of the Platform to other users for marketing purposes.\n\t\t\t\t\t\tPlease keep this in mind when considering whether to provide any additional information about yourself.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tEach of your Gear profile pages will always include some minimum information such as the city and neighborhood where the Equipment in the Gear is located, your public profile photo, first name, and location.\n\t\t\t\t\t\tParts of your Gear pages may be displayed in other parts of the Platform to other users for marketing purposes.\n\t\t\t\t\t\tThe Platform may also display the approximate geographic location of your listed items on a map, including on the Gear page, in search results or otherwise, so that a user can see the general area of the listed tem.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tThe Platform allows your public profile and public Gear profile pages to be included in search engines, in which case your public profile and public Gear profile pages will be indexed by search engines and may be published as search results.\n\t\t\t\t\t\tIf you change the information on your public profile or public Gear profile pages, third-party search engines may not update their databases quickly or at all.\n\t\t\t\t\t\tWe do not control the practices of third-party search engines, and they may use caches containing outdated information, including any information indexed by the search engine before you change your settings or the information on your public profile or public Gear profile pages.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>When you submit a reservation request for Gear, your delivery address, if any, will become visible to the Owner.</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tWhen your request to book Gear is accepted by the Owner or when you accept a Renter’s request to book your Gear, we will disclose some of your personal information to the Owner or Renter, which may include, without limitation, your address (e.g., for delivery or pick up), e-mail address, and phone number.\n\t\t\t\t\t\tHowever, your billing information will never be shared with another user.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tWhen a Renter rents your Gear or when you rent an Owner’s Gear, we will ask you to review the Renter or Gear.\n\t\t\t\t\t\tIf you choose to provide a review, your review may be public on the Platform.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tIf you choose to link your Account to a SNS:\n\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t<li>some of the information you provide to use from the linking of your accounts may be published on your Sharingear account profile;</li>\n\t\t\t\t\t\t\t<li>your activities on the Platform may be displayed to your Friends on the Platform and/or that third party site;</li>\n\t\t\t\t\t\t\t<li>other Sharingear users may be able to see any common Friends that you may have with them, or that you are a Friend of their Friend, if applicable;</li>\n\t\t\t\t\t\t\t<li>other Sharingear users may be able to see your information listed on your social networking site(s) profile, such as schools, hometowns, or groups you have in common; and</li>\n\t\t\t\t\t\t\t<li>the information you provide us from the linking of your accounts may be stored, processed, and transmitted for fraud prevention and risk assessment purposes.</li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>We may distribute parts of the Platform (including your Gear and information from your public profile page) for display on sites operated by Sharingear’s business partners.</li>\n\t\t\t\t\t<li>In order to verify and confirm your postal address or the postal address of Gear, we may send you a code via postal mail to the address provided by you in your account, if any, or to the address contained in a Gear profile and ask that you enter the code via the Site.</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tWe may review, scan, or analyze your communications with other users exchanged via the Platform for fraud prevention, regulatory compliance, risk assessment, investigation, product development, research, and customer support purposes.\n\t\t\t\t\t\tFor example, as part of our fraud prevention efforts, the Platform may scan and analyze messages to mask contact information and references to other websites.\n\t\t\t\t\t\tWe may also scan, review, or analyze messages for research and product development purposes to help make search, reservations, and user communications more efficient and effective, as well as to debug product offerings.\n\t\t\t\t\t\tWe will carry out these reviews or analyses either through automated methods or manually.\n\t\t\t\t\t\tBy using the Platform, you consent that Sharingear, in its sole discretion, may review, scan, analyze, and store your communications, whether done manually or through automated means.\n\t\t\t\t\t</li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">3. Sharing your information</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWhen you use the Platform, your data may be sent to the United States and possibly other countries. Laws vary from jurisdiction to jurisdiction, so the privacy laws applicable to the places where your information is transferred to, stored, used or processed, may be different from the privacy laws applicable to the place where you are a resident.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tThere are circumstances where we may need to share some of the personal information we collect about you or which you provide to us, such as the following:\n\t\t\t\t</p>\n\t\t\t\t<ul>\n\t\t\t\t\t<li><i>Other Users of the Platform</i>: Any personal information in your member profile (other than your last name, email address, phone number, postal address, and all account details related to receiving payments such as your social security number and bank account number) will be publicly accessible, and anyone may view your profile information, send you messages, view and save your Gear, and make requests to book your Gear.</li>\n\t\t\t\t\t<li><i>Renters Who Reserve Your Gear and Owners of Gear You Reserve</i>: Once a reservation requested by a Renter is approved by the Owner, that Owner and Renter’s phone number, address, and e-mail address may be made available to the other.</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>Sharingear Related Entities</i>:\n\t\t\t\t\t\tWe may allow our related entities such as our subsidiaries, and their employees, to use and process your personal information in the same way and to the same extent that we are permitted to under this Privacy Policy.\n\t\t\t\t\t\tThese related entities comply with the same obligations that we have to protect your personal information under this Privacy Policy.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>Service Providers</i>:\n\t\t\t\t\t\tWe may engage certain third party companies and individuals to provide us with services related to the Platform, such as processing credit card payments, verifying your identification, or to conduct checks against databases such as public government databases (where legally allowed).\n\t\t\t\t\t\tThese third parties may have access to your personal information but only when it is necessary in order for those third parties to provide those services to us.\n\t\t\t\t\t\tWe will use commercially reasonable efforts to ensure that such third parties are obligated to protect your personal information and to not use it for unrelated purposes.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>As Aggregated Data</i>:\n\t\t\t\t\t\tWe may aggregate the information we collect, including your personal data, with similar data relating to other users of the Platform in order to create statistical and analytic information regarding the Platform and its use, which we may then share with third parties or make publicly available.\n\t\t\t\t\t\tHowever, none of this information would include your address, email address, or other contact information, or anything that could be used to identify you individually, either online or in real life.\n\t\t\t\t\t\tWe may publish, disclose, and use this aggregated information and non-personal information for industry analysis, demographic profiling, marketing and advertising, and other business purposes.\n\t\t\t\t\t\tThis information may also be used to develop website content and services that you and other users will find of interest and to target content and advertising.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>As Required by Law</i>:\n\t\t\t\t\t\tWe will disclose your personal information if we believe in good faith that we are permitted or required to do so by law, including in response to a court order, subpoena, or other legal demand or request.\n\t\t\t\t\t\tWe will use commercially reasonable efforts to notify users about law enforcement requests for their data unless prohibited by law or by the government request, or if doing so would be futile or ineffective.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>To Protect Our Interests</i>:\n\t\t\t\t\t\tWe may access, preserve, and disclose your personal information if we in good faith believe it is necessary:\n\t\t\t\t\t\t<ol class=\"sg-alphalist\">\n\t\t\t\t\t\t\t<li>to respond to claims asserted against Sharingear;</li>\n\t\t\t\t\t\t\t<li>to enforce and administer our agreements with users, such as our <strong>Terms of Service</strong>;</li>\n\t\t\t\t\t\t\t<li>for fraud prevention, risk assessment, investigation, customer support, product development and de-bugging purposes; or</li>\n\t\t\t\t\t\t\t<li>to protect or defend the rights, property, interests, and personal safety of Sharingear, its employees, directors, shareholders, partners, affiliates, users, and members of the general public.</li>\n\t\t\t\t\t\t</ol>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li><i>In a Business Transfer</i>: We may sell, transfer, or share your personal information to any person or company that acquires all or substantially all of the assets or business of Sharingear, or on a merger, acquisition, or reorganization of our business, or in the event of our insolvency.</li>\n\t\t\t\t\t<li><i>With Your Consent</i>: We may disclose your personal information other than as described in this Privacy Policy if you have explicitly agreed that we may do so. We will make this clear to you prior to any such disclosure.</li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">4. Third-party websites</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThere are a number of places on the Platform where you may click on a link to access other websites that are not owned or controlled by Sharingear and do not operate under this Privacy Policy.\n\t\t\t\t\tThese third-party websites may place their own cookies, web beacons and files on your device, or independently solicit and collect information, including personal information, from you.\n\t\t\t\t\tWe recommend that you consult the privacy policies of all third-party websites you visit.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tSome portions of the Platform implement Google Maps/Earth mapping services, including Google Maps API(s).\n\t\t\t\t\tYour use of Google Maps/Earth through the Platform is subject to Google’s terms of use (located at <a href=\"http://www.google.com/intl/en_us/help/terms_maps.html\">http://www.google.com/intl/en_us/help/terms_maps.html</a>) and Google’s privacy policy (located at <a href=\"http://www.google.com/policies/privacy/\">http://www.google.com/policies/privacy/</a>), as may be amended by Google from time to time.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">5. Your choices</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tYou may review, update, or correct the personal information in your Sharingear account by logging into your account.\n\t\t\t\t\tYou can choose to not provide us with certain information but that may result in you being unable to use certain features of the Platform.\n\t\t\t\t\tYou can request for us to delete your account entirely by emailing us at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\n\t\t\t\t\tPlease note that reviews, forum postings and similar materials posted by you may continue to be publicly available on the Platform in association with your first name, even after your Sharingear account is cancelled.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">6. Security of your personal information</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWe have implemented reasonable administrative, technical, and physical security measures to protect your Personal Information against unauthorized access, destruction, or alteration; however, no method of transmission over the Internet, and no method of storing electronic information, can be 100% secure, so we cannot guarantee the absolute security of your transmissions to use and of your personal information that we store.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">7. Children</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThis Platform is not intended for use by children.\n\t\t\t\t\tAnyone under the age of 13 is not permitted to use the Platform and must not attempt to register an account or submit any personal information to us.\n\t\t\t\t\tWe do not knowingly collect any personal information from any person who is under the age of 13 or allow them to register an account.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">8. Using the platform from outside europe</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThis Privacy Policy is intended to cover collection of information on or via the Platform from residents of Europe.\n\t\t\t\t\tIf you are using the Platform from outside Europe, please be aware that your information may be transferred to, stored, and processed in the Europe where our servers are located and our central database is operated.\n\t\t\t\t\tThe data protection and other laws of Europe and other countries may not be as comprehensive as those in your country.\n\t\t\t\t\tBy using the Platform, you understand and agree that your information may be transferred to our facilities and those third parties with whom we share it as described in this Privacy Policy.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">9. No rights of third parties</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThis Privacy Policy does not create rights enforceable by third parties or require disclosure of any personal information relating to users of the Platform.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">10. Changes to this Privacy Policy</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWe will occasionally update this Privacy Policy to reflect changes in our practices and services.\n\t\t\t\t\tWhen we post changes to this Privacy Policy, we will revise the “Last Updated” date at the top of this Privacy Policy.\n\t\t\t\t\tIf we make any material changes in the way we collect, use, and/or share your personal information, we will notify you by posting a notice of the change on the Site or by sending an email to the email address you most recently provided us in your account, profile, or registration.\n\t\t\t\t\tWe recommend that you check the Site from time to time to inform yourself of any changes in this Privacy Policy or to any of our other policies.\n\t\t\t\t\tYour continued use of the Platform after we post any such change shall indicate your agreement to be bound by the revised terms.\n\t\t\t\t\tIf you do not wish to agree to the changed Privacy Policy, then we will not be able to continue providing the Platform to you, and your only option will be to stop accessing the Platform and deactivate your Sharingear account.\n\t\t\t\t\tTo deactivate your account, please email <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">11. Contact us</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tIf you have questions or concerns about this Privacy Policy, please contact us by email at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t</div>\n\n\t<footer></footer>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view payment\">\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\n\t\t<div class=\"col-xs-2\"><button class=\"sg-btn-invisible sg-white\" id=\"payment-back-btn\"><i class=\"fa fa-arrow-circle-o-left\"></i></button></div>\n\t\t<div class=\"col-xs-8\">Booking step 2</div>\n\t\t<div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"payment-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 text-center sg-darkergray gear\">\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t<table class=\"table\">\n\t\t\t\t<tbody>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>From:</strong> {{start_date}}</td>\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>To:</strong> {{end_date}}</td>\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\n\t\t\t\t\t</tr>\n\t\t\t\t</tbody>\n\t\t\t\t<tfoot>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Price: {{price}} <span class=\"sg-super\">{{currency}}</span></td>\n\t\t\t\t\t\t<!--<td>VAT({{vat}}%): {{price_vat}} <span class=\"sg-super\">{{currency}}</span>-->\n\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>Fee: {{fee}} <span class=\"sg-super\">{{currency}}</span></td>\n\t\t\t\t\t\t<!--<td>VAT({{vat}}%): {{fee_vat}} <span class=\"sg-super\">{{currency}}</span></td>-->\n\t\t\t\t\t</tr>\n\t\t\t\t</tfoot>\n\t\t\t</table>\n\t\t</div>\n\t</div>\n\t<div class=\"row sg-darkergray-bg sg-white total\">\n\t\t<div class=\"col-xs-6\">TOTAL:</div>\n\t\t<div class=\"col-xs-6\">{{total}}<span class=\"sg-super\">{{currency}}</span></div>\n\t</div>\n\t<div class=\"row xchange-rate\">\n\t\t<div class=\"col-xs-12 text-center sg-mediumblue-bg sg-yellow\">The exchange rate for the booking in this listing is 1 {{currency}} to {{xchange}} {{owner_currency}} (your owner's listing currency).</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t<ul class=\"sg-tabs sg-tabs-3\">\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray active\"><button>VISA</button></li>\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray disabled\"><button>MasterCard</button></li>\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray disabled\"><button>PayPal</button></li>\n\t\t\t</ul>\n\t\t</div>\n\t</div>\n\t\n\t<div id=\"payment-visa-block\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t<form id=\"payment-form-visa\" onsubmit=\"return false;\">\n\t\t\t\t\t<div class=\"form-group missing-userdata\" id=\"payment-birthdate\">\n\t\t\t\t\t\t<label for=\"payment-birthdate-day\">Date of birth:</label>\n\t\t\t\t\t\t<div class=\"birthday-select\">\n\t\t\t\t\t\t\t<select id=\"payment-birthdate-day\" name=\"birthdate-day\"></select>/<select id=\"payment-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"payment-birthdate-year\" name=\"birthdate-year\"></select>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<label for=\"payment-address\">Address:</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"payment-address\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<label for=\"payment-postalcode\">Postal code:</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"postal_code\" id=\"payment-postalcode\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<label for=\"payment-city\">City:</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"payment-city\" class=\"form-control\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<select name=\"country\" id=\"payment-country\" class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"\">Select your country</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<select name=\"nationality\" id=\"payment-nationality\" class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"\">Select your nationality</option>\n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\n\t\t\t\t\t\t<label for=\"payment-phone\">Phone:</label>\n\t\t\t\t\t\t<input type=\"text\" name=\"phone\" id=\"payment-phone\" class=\"form-control\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label for=\"payment-form-visa-cardholder\">Cardholder name:</label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" id=\"payment-form-visa-cardholder\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label for=\"payment-form-visa-cardnumber\">Card number:</label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" id=\"payment-form-visa-cardnumber\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label for=\"payment-form-visa-month\">Expiration date:</label>\n\t\t\t\t\t\t<select class=\"form-control\" id=\"payment-form-visa-month\"></select>/<select class=\"form-control\" id=\"payment-form-visa-year\"></select>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Security code:</label>\n\t\t\t\t\t\t<input type=\"text\" id=\"payment-form-visa-csc\">\n\t\t\t\t\t</div>\n\t\t\t\t\t<p>\n\t\t\t\t\t\tWe will only withdraw the money once the owner has accepted your booking.\n\t\t\t\t\t</p>\n\t\t\t\t</form>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\n\t\t<div class=\"col-sm-12\">\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"payment-next-btn\">next <i class=\"fa fa-arrow-circle-o-right\"></i></button>\n\t\t</div>\n\t</div>\n\n</div>\n";
 
 /***/ },
 /* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<a href=\"{{href}}\">\n    <div class=\"col-xs-12 col-sm-6 bs-reset search-results-gear\" id=\"search-results-{{resultNum}}\">\n        <div class=\"title sg-black-bg-25 sg-white\">{{item_type}}, {{model}}</div>\n        <div class=\"info sg-black-bg-25 sg-blue\">\n        \t<div class=\"price sg-blue-bg sg-white\"><div>From<br> <span class=\"price_a\"></span> <span class=\"sg-super currency\">{{currency}}</span></div></div>\n        \t<div class=\"location\">{{city}}, {{country}}</div>\n       \t</div>\n    </div>\n</a>\n";
+	module.exports = "<div class=\"container-fluid paymentsuccessful\">\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\n\t\t<div class=\"col-xs-offset-1 col-xs-10\">Booking step 3</div>\n\t</div>\n\n\t<div class=\"row\">\n\t\t<div class=\"col-sm-12 text-center sg-darkergray gear\">\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\n\t\t</div>\n\t</div>\n\n\t<div class=\"payment-success hidden\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12 booking-confirm-header text-center\">\n\t\t\t\t<h1>{{item_name}} was successfully booked.</h1>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row text-center\">\n\t\t\t<div class=\"col-md-8 col-md-offset-2 booking-confirm-warning\">\n\t\t\t\t<h3>\n\t\t\t\t\t<p>\n\t\t\t\t\t<span class=\"fa fa-exclamation-circle\" aria-hidden=\"true\"></span>&nbsp;&nbsp;The owner must first confirm your booking before it becomes valid\n\t\t\t\t\t</p>\n\t\t\t\t</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t<table class=\"table\">\n\t\t\t\t\t<tbody>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>Booked from:</strong> {{start_date}}</td>\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>Booked to:</strong> {{end_date}}</td>\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</tbody>\n\t\t\t\t\t<tfoot>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Price: {{price}} <span class=\"sg-super\">{{currency}}</span></td>\n\t\t\t\t\t\t\t<!--<td>Price VAT({{vat}}%): {{price_vat}} <span class=\"sg-super\">{{currency}}</span>-->\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>Sharingear fee: {{fee}} <span class=\"sg-super\">{{currency}}</span></td>\n\t\t\t\t\t\t\t<!--<td>Fee VAT({{vat}}%): {{fee_vat}} <span class=\"sg-super\">{{currency}}</span></td>-->\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</tfoot>\n\t\t\t\t</table>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-8 col-md-offset-2 col-xs-12 text-center booking-confirm-table\">\n\t\t\t\t<h3><strong>Total:</strong> {{total}} {{currency}}</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-8 col-xs-offset-2 text-center\">\n\t\t\t\t<h4>The total is reserved on your card, and will be charged upon gear owner's confirmation.</h4>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"payment-failure hidden\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-md-12 booking-confirm-header text-center\">\n\t\t\t\t<h1>Your booking could not be completed.</h1>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"row text-center\">\n\t\t\t<div class=\"col-md-8 col-md-offset-2 booking-error-warning\">\n\t\t\t\t<h3>\n\t\t\t\t\t<p>\n\t\t\t\t\t<span class=\"fa fa-exclamation-circle\" aria-hidden=\"true\"></span>&nbsp;&nbsp;Payment failed. No money has been charged.\n\t\t\t\t\t</p>\n\t\t\t\t</h3>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\n\t\t<div class=\"col-sm-12\">\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"paymentsuccessful-close-btn\">close <i class=\"fa fa-times sg-white-bg sg-blue\"></i></button>\n\t\t</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"view search searchiefix\">\n  <div class=\"jumbotron\">\n    <div class=\"sg-tab-panel\" id=\"search-searchform-gear\">\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\n    </div>\n\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-technicians\">\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\n    </div>\n\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-vans\">\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\n    </div>\n  </div>\n\n  <div class=\"container-fluid search-results\">\n    <div class=\"row map-row\">\n\t\t  <div class=\"col-sm-6 map-col\">\n        <div class=\"searchmap\" id=\"search-map\"></div>  \n      </div>\n\t\t  <div class=\"col-xs-12 col-sm-6 search-results-col bs-reset\">\n        <ul class=\"sg-tabs sg-tabs-3 sg-darkergray-bg sg-white\">\n    \t\t  <li class=\"sg-action-blue-bg sg-white active\">\n            <button class=\"sg-btn-invisible\" id=\"search-tab-gear\">\n              <div class=\"sg-icon icon-tabbar-gear\"></div>\n              <div class=\"sg-btn-text\">GEAR</div>\n            </button>\n          </li>\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\n            <button class=\"sg-btn-invisible\" id=\"search-tab-technicians\">\n              <div class=\"sg-icon icon-tabbar-technicians\"></div>\n              <div class=\"sg-btn-text\">TECHNICIANS</div>\n            </button>\n          </li>\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\n            <button class=\"sg-btn-invisible\" id=\"search-tab-vans\">\n              <div class=\"sg-icon icon-tabbar-vans\"></div>\n              <div class=\"sg-btn-text\">VANS &amp; BUSES</div>\n            </button>\n          </li>\n        </ul>\n        <div class=\"row bs-reset sg-darkergray-bg sg-white currentlocation-container\">\n\t\t\t\t  <div class=\"col-sm-12\" id=\"search-currentlocation\"></div>\n        </div>\n        <div class=\"row searchresults bs-reset\" id=\"search-results-gear\"></div>\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-techprofiles\"></div>\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-vans\"></div>\n        \n        <div class=\"no-results no-results-gear hidden\">\n          <div class=\"row sorry-section bs-reset\">\n            <h1>Sorry, no instruments matching your search were found.</h1>\n          </div>\n          <div class=\"row request-section bs-reset\">\n            <h2>Request an instrument: </h2>\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\n          </div>\n        </div>\n\n        <div class=\"no-results no-results-vans hidden\">\n          <div class=\"row sorry-section bs-reset\">\n            <h1>Sorry, no vehicles matching your search were found.</h1>\n          </div>\n          <div class=\"row request-section bs-reset\">\n            <h2>Request a vehicle: </h2>\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\n          </div>\n        </div>\n\n      </div>\n    </div>\n  </div>\n</div>";
+	module.exports = "<div class=\"container-fluid pickupdeliverycalendar\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-6 sg-toptab sg-toptab-active\" id=\"pickupdeliverycalendar-pickupdate\">\n\t\t\t<i class=\"col-xs-2 fa fa-calendar\"></i>\n\t\t\t<span class=\"col-xs-2 text-left\">From</span>\n\t\t\t<div class=\"col-xs-8 text-center\"> - </div>\n\t\t</div>\n\t\t<div class=\"col-xs-6 sg-toptab\" id=\"pickupdeliverycalendar-deliverydate\">\n\t\t\t<i class=\"col-xs-2 fa fa-calendar\"></i>\n\t\t\t<span class=\"col-xs-2 text-left\">To</span>\n\t\t\t<div class=\"col-xs-8 text-center\"> - </div>\n\t\t</div>\n\t</div>\n\t<div class=\"text-center hint\">Select from date</div>\n\t<div class=\"row calendar-navigation\">\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray\" id=\"pickupdeliverycalendar-prev\"><i class=\"fa fa-angle-left\"></i></button></div>\n\t\t<div class=\"col-xs-8 text-center\"><strong id=\"pickupdeliverycalendar-currentmonth\"></strong></div>\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray\" id=\"pickupdeliverycalendar-next\"><i class=\"fa fa-angle-right\"></i></button></div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div class=\"calendar\">\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row submerchant-container\" id=\"addgear-availability-submerchantform\">\n  <div class=\"col-sm-12 submerchant-height\">\n    \n    \n\n      <div class=\"col-sm-12 submerchant-height\">\n        <div class=\"row\">\n          <div class=\"col-sm-12\">\n            <form id=\"addgear-submerchantform\" onsubmit=\"return false;\">        \n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-birthdate\">Date of birth:*</label>\n                <div class=\"birthday-select\" id=\"submerchantregistration-birthdate\">\n                  <select id=\"submerchantregistration-birthdate-date\" name=\"birthdate-day\"></select>/<select id=\"submerchantregistration-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"submerchantregistration-birthdate-year\" name=\"birthdate-year\"></select>\n                </div>\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-phone\">Phone:*</label>\n                <input type=\"text\" name=\"phone\" class=\"form-control\" id=\"submerchantregistration-phone\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-address\">Address:*</label>\n                <input type=\"text\" name=\"address\" class=\"form-control\" id=\"submerchantregistration-address\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-postalcode\">Postal code:*</label>\n                <input type=\"text\" class=\"form-control\" name=\"postal_code\" id=\"submerchantregistration-postalcode\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-city\">City:*</label>\n                <input type=\"text\" name=\"city\" class=\"form-control\" id=\"submerchantregistration-city\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-region\">Region:</label>\n                <input type=\"text\" name=\"region\" class=\"form-control\" id=\"submerchantregistration-region\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-region\">Country:</label>\n                <select class=\"form-control\" name=\"country\" id=\"submerchantregistration-country\">\n                  <option value=\"\">Select your country</option>\n                </select>\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-region\">Nationality:</label>\n                <select class=\"form-control\" name=\"nationality\" id=\"submerchantregistration-nationality\">\n                  <option value=\"\">Select your nationality</option>\n                </select>\n              </div>\n              <div class=\"hidden\" id=\"iban-container\">\n                <div class=\"form-group col-sm-6\">\n                  <label for=\"submerchantregistration-iban\">IBAN:*</label>\n                  <input type=\"text\" name=\"iban\" class=\"form-control\" id=\"submerchantregistration-iban\">\n                </div>\n                <div class=\"form-group col-sm-6\">\n                  <label for=\"submerchantregistration-swift\">BIC/SWIFT:*</label>\n                  <input type=\"text\" name=\"swift\" class=\"form-control\" id=\"submerchantregistration-swift\">\n                </div>\n              </div>\n              <div class=\"hidden\" id=\"aba-container\">\n                <div class=\"form-group col-sm-6\">\n                  <label for=\"submerchantregistration-accountnumber\">Account number:*</label>\n                  <input type=\"text\" name=\"iban\" class=\"form-control\" id=\"submerchantregistration-accountnumber\">\n                </div>\n                <div class=\"form-group col-sm-6\">\n                  <label for=\"submerchantregistration-aba\">ABA (routing transit number):*</label>\n                  <input type=\"text\" name=\"swift\" class=\"form-control\" id=\"submerchantregistration-aba\">\n                </div>\n              </div>\n            </form>\n          </div>\n        </div>\n\n        <div id=\"submerchantregistration-terms\">\n          <div class=\"row submerchant-terms-styles\">\n            <div class=\"col-sm-12\">\n              <p class=\"text-center\">\n                By pressing accept you confirm that you have read and accepted the Sharingear Terms and Conditions.\n                If you press cancel your gear will be saved, but it will not be possible to rent it.\n              </p>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"row hidden\" id=\"submerchantregistration-terms-container\">\n      <div class=\"col-sm-12\">\n        \n      </div>\n    </div>\n\n  </div>\n</div>";
+	module.exports = "<div class=\"view privacy\">\n\t<div class=\"container-fluid sg-lightgray-bg\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h1 class=\"sg-h1 sg-blue\">SharingearPrivacy Policy</h1>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tLast Updated: November 28, 2014\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tThese privacy policies (the “Privacy Policy”) explain how Sharingear IVS (“we,” “us,” “our,” or “Sharingear”) collects, stores, uses, and discloses your personal information when you use  <a href=\"http://www.sharingear.com\">www.sharingear.com</a> (the “Site”), our mobile and desktop apps, if any (the “Application”), and all related sites, widgets, tools, apps, data, software and other services provided by Sharingear (collectively, the “Services”) (the Site, Application, and Services shall be sometimes collectively referred to herein as the “Platform”).\n\t\t\t\t\tWe encourage you to read this Privacy Policy thoroughly prior to use of the Platform.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tBy using the Platform, you agree and consent to the terms and practices described in this Privacy Policy.\n\t\t\t\t\t<strong>If you do not agree to any of the provisions outlinedin this Privacy Policy, you should not use the Platform.</strong>\n\t\t\t\t\tIf you have any questions about this Privacy Policy, please contact <a href=\"mailto:legal@sharingear.com\">legal@sharingear.com</a>.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tUnless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our <a href=\"#terms\">Terms of Service</a>.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\t\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">1. Information we collect</h3>\n\t\t\t</div>\n\t\t</div>\t\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\tWhen you use the Platform, we may collect personal information that can identify you, such as your name and email address, and other information that does not identify you.\n\t\t\t\tOur primary purposes in collecting information are to provide and improve the Platform, to administer your use of the Platform, and to enable users to enjoy and easily navigate the Platform.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information you provide</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\tWhen you register for an account through the Site or Application and become a Member, when you choose to post a Gear profile or book a Gear, or when you wish to contact another Member, we will ask you for personally identifiable information that can be used to contact or identify you, such as your full name, phone number, home address, email address, and social security number (SSN).\n\t\t\t\tIn order to process transactions through the Site and Application, we may also ask you for your credit card, bank details, and other billing information.\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tTo register for an account via the Site or Application, you will be required to either:\n\t\t\t\t</p>\n\t\t\t\t<ol class=\"sg-romanlist\">\n\t\t\t\t\t<li>provide your first name, last name, and email address and choose a password; or</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tprovide information by logging into your online account with a third party service provider (“SNS”), such as Facebook, (each such account, a “Third Party Account”), linking such account to your Sharingear account, and allowing Sharingear to obtain information from your Third Party Account to create your Sharingear account and profile page (for more information, please see Section 4 in our Terms of Service).\n\t\t\t\t\t\tDepending on the Third Party Accounts you choose to link with your Sharingear account, and subject to your privacy settings in such Third Party Accounts, you understand and agree that by granting us access to the Third Party Accounts, we will access, obtain, make available, and store (if applicable and as permitted by the SNS) the information in your Third Party Accounts (such as your full name, email address, profile picture, names of contacts on your Third Party Account (“Friends”), photographs, and/or other information you make publicly available or authorize us to access by authorizing the SNS to provide such information) so that it is available on and through your Sharingear account on the Platform.\n\t\t\t\t\t\tThis may include information about your “friends” or people with whom you are associated on your Third Party Account (depending on the privacy settings such people have with the applicable SNS).\n\t\t\t\t\t\tYou represent that you are entitled to disclose your Third Party Account login information to Sharingear and/or grant Sharingear access to your Third Party Account (including, but not limited to, for the purposes described herein) without breach by you of any of the terms and conditions that govern your use of the applicable Third Party Account and without obligating Sharingear to pay any fees or making Sharingear subject to any usage limitations imposed by the applicable SNS.\n\t\t\t\t\t</li>\n\t\t\t\t</ol>\n\t\t\t\t<p>\n\t\t\t\t\tYou may choose to provide additional personal information for your Sharingear Profile, such as photograph(s), biographical information, and website URLs. You may choose to provide additional information when you create a Gear, such as photographs and descriptions of your listed item(s). If any of the content you upload, share, and/or distribute via the Platform contains personal information about yourself and/or others, such information may be stored as well.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tThe Platform may provide a referral service that allows you to invite your friends and contacts to use the Platform or write a reference about you, to be published on your public profile. We may integrate the Platform with third-party sites such as Facebook, so that you can send invitation messages or requests for references via the third-party site itself.\n\t\t\t\t\tThese messages will be sent by the third-party site, and Sharingear does not collect or retain the contact information that is used to send them.\n\t\t\t\t\tYou may also send invitation/request emails via the Platform, in which case we will ask you for the email addresses to send these emails to.\n\t\t\t\t\tWe will use the information sent to us for the purpose of sending your friends and contacts a one-time email, inviting him or her to visit the Platform or to write a reference for you.\n\t\t\t\t\tWith respect to referrals, we will also store the email addresses of your invitees to track if your friends join Sharingear in response to your referral.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information we collect automatically</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWe may collect some information automatically as a result of your use of the Platform or through the use of web analytics services. This information may include:\n\t\t\t\t</p>\n\t\t\t\t<ol class=\"sg-romanlist\">\n\t\t\t\t\t<li>the Internet Protocol (IP) address of the device from which you access the Site or Application;</li>\n\t\t\t\t\t<li>the specific actions you take on the Site or Application, including the pages you visit, content you upload, accounts you link, content you share with others, comments and feedback you post, your communications with other users, and searches you perform;</li>\n\t\t\t\t\t<li>any search terms you may enter on the Site or Application;</li>\n\t\t\t\t\t<li>the time, frequency, and duration of your visits to the Site and Application;</li>\n\t\t\t\t\t<li>your browser type, operating system, and the nature of the device from which you are accessing the Platform;</li>\n\t\t\t\t\t<li>information collected through cookies and similar technology; and</li>\n\t\t\t\t\t<li>information regarding your interaction with email messages.</li>\n\t\t\t\t</ol>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information we collect using cookies</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tSharingear uses “cookies” in conjunction with the Platform to obtain information.\n\t\t\t\t\tA cookie is a small data file that is transferred to your device (e.g., your phone or computer) for record-keeping purposes.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tWhen you visit the Platform, we may assign your device one or more cookies, to facilitate access to the Platform, streamline the functioning of the Platform, monitor and analyze the performance and operation of the Platform, and personalize your experience.\n\t\t\t\t\tWe use cookies to collect site data, such as when you visit the Site and use our Application, the links you click, and pages you visit.\n\t\t\t\t\tWe may, either directly or through third party companies and individuals we engage to provide services to us, also continue to track your behavior on the Platform for purposes of our own customer support, analytics, research, product development, fraud prevention, risk assessment, regulatory compliance, investigation, as well as to enable you to use and access the Platform and pay for your activities on the Platform.\n\t\t\t\t\tWe may also use other Internet technology, such as web beacons, to track your use of our site and in e-mail messages or newsletters.\n\t\t\t\t\tThis Privacy Police will apply to our treatment of the information we obtain via our cookies and other Internet technology.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tWe may also allow our business partners to place cookies on your device.\n\t\t\t\t\tFor example, we use Google Analytics for web analytics, and so Google may also set cookies on your device.\n\t\t\t\t\tThird parties may also place cookies on your device for advertising purposes.\n\t\t\t\t\tThird parties that use cookies and other tracking technologies to deliver targeted advertisements on the Platform and/or third party websites may offer you a way to prevent such targeted advertisements by opting-out at the websites of certain industry groups or such third parties.\n\t\t\t\t\tPlease note that even if you choose to opt-out of receiving targeted advertising, you may still receive advertising on the Platform – it just will not be tailored to your interests.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tMost browsers have an option for turning off cookies; however, if you disable cookies, you may not be able to sign into your account or use most of the Platform content and features.\n\t\t\t\t\tBy choosing to use the Platform without blocking or disabling cookies or other similar technologies, you indicate your consent to our use of these technologies and to our use (in accordance with this Privacy Policy) of any personal information that we collect using these technologies.\n\t\t\t\t\tThis Privacy policy covers our and our business partners’ use of cookies and does not cover the use of cookies by other third parties.\n\t\t\t\t\tWe do not control when or how third parties place cookies on your computer.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Third-Party social media plugins</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThe Platform may use third-party social plugins that are provided and operated by third-party companies, such as Facebook’s “Like” button or Pinterest’s “Pin It” button.\n\t\t\t\t\tBy utilizing these features, you may send to the third-party company the information that you are viewing on a certain part of our Platform.\n\t\t\t\t\tIf you are not logged into your account with the third-party company, then the third party may not know your identity.\n\t\t\t\t\tIf you are logged into your account with the third-party company, then the third party may be able to link information about your visit to the Platform to your account with them and your interactions with the social plugin may be recorded by the third party.\n\t\t\t\t\tPlease reference the third party’s privacy policy for information about its data practices, such as what data is collected about you and how it is used.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">2. How we use your information</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWe use the information that we collect about you for the following general purposes:\n\t\t\t\t</p>\n\t\t\t\t<ul>\n\t\t\t\t\t<li>To operate and maintain your Sharingear account and to provide you with access to the Platform.</li>\n\t\t\t\t\t<li>To identify you as the creator of the content that you upload, the ratings that you post, the Gears that you make, and/or the other contributions that you make to the Platform.</li>\n\t\t\t\t\t<li>To operate, protect, improve, and optimize the Platform, our business, and our users’ experience, such as to perform analytics, conduct research, and for advertising and marketing.</li>\n\t\t\t\t\t<li>To send you service, support, and administrative messages, reminders, technical notices, updates, security alerts, and information requested by you.</li>\n\t\t\t\t\t<li>To customize your use of the Platform.</li>\n\t\t\t\t\t<li>To administer rewards, surveys, sweepstakes, contests, or other promotional activities or events sponsored or managed by Sharingear or our business partners.</li>\n\t\t\t\t\t<li>To comply with our legal obligations, resolve any disputes that we may have with any of our users, enforce our agreements with third parties, and prevent or take action against activities that are, or may be, in breach of our <strong>Terms of Service</strong> or applicable law.</li>\n\t\t\t\t\t<li>For other purposes, provided that we disclose this to you at the relevant time and provided that you agree to the proposed use of your personal information.</li>\n\t\t\t\t</ul>\n\t\t\t\t<p>\n\t\t\t\t\tWe may also use the information for the following purposes:\n\t\t\t\t</p>\n\t\t\t\t<ul>\n\t\t\t\t\t<li>Your email address and password are used to identify you when you log into the Site.</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tAdditional personal information that you provide as part of your profile, such as your name, Gear, uploaded content (such as photographs), and links to your website and other social media profiles (but not your email address or phone number), will be published on your profile page.\n\t\t\t\t\t\tThis information will be publicly accessible to and may be viewed by anyone accessing the Platform.\n\t\t\t\t\t\tParts of your public profile page that may contain personal information may be displayed in other parts of the Platform to other users for marketing purposes.\n\t\t\t\t\t\tPlease keep this in mind when considering whether to provide any additional information about yourself.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tEach of your Gear profile pages will always include some minimum information such as the city and neighborhood where the Equipment in the Gear is located, your public profile photo, first name, and location.\n\t\t\t\t\t\tParts of your Gear pages may be displayed in other parts of the Platform to other users for marketing purposes.\n\t\t\t\t\t\tThe Platform may also display the approximate geographic location of your listed items on a map, including on the Gear page, in search results or otherwise, so that a user can see the general area of the listed tem.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tThe Platform allows your public profile and public Gear profile pages to be included in search engines, in which case your public profile and public Gear profile pages will be indexed by search engines and may be published as search results.\n\t\t\t\t\t\tIf you change the information on your public profile or public Gear profile pages, third-party search engines may not update their databases quickly or at all.\n\t\t\t\t\t\tWe do not control the practices of third-party search engines, and they may use caches containing outdated information, including any information indexed by the search engine before you change your settings or the information on your public profile or public Gear profile pages.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>When you submit a reservation request for Gear, your delivery address, if any, will become visible to the Owner.</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tWhen your request to book Gear is accepted by the Owner or when you accept a Renter’s request to book your Gear, we will disclose some of your personal information to the Owner or Renter, which may include, without limitation, your address (e.g., for delivery or pick up), e-mail address, and phone number.\n\t\t\t\t\t\tHowever, your billing information will never be shared with another user.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tWhen a Renter rents your Gear or when you rent an Owner’s Gear, we will ask you to review the Renter or Gear.\n\t\t\t\t\t\tIf you choose to provide a review, your review may be public on the Platform.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tIf you choose to link your Account to a SNS:\n\t\t\t\t\t\t<ul>\n\t\t\t\t\t\t\t<li>some of the information you provide to use from the linking of your accounts may be published on your Sharingear account profile;</li>\n\t\t\t\t\t\t\t<li>your activities on the Platform may be displayed to your Friends on the Platform and/or that third party site;</li>\n\t\t\t\t\t\t\t<li>other Sharingear users may be able to see any common Friends that you may have with them, or that you are a Friend of their Friend, if applicable;</li>\n\t\t\t\t\t\t\t<li>other Sharingear users may be able to see your information listed on your social networking site(s) profile, such as schools, hometowns, or groups you have in common; and</li>\n\t\t\t\t\t\t\t<li>the information you provide us from the linking of your accounts may be stored, processed, and transmitted for fraud prevention and risk assessment purposes.</li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>We may distribute parts of the Platform (including your Gear and information from your public profile page) for display on sites operated by Sharingear’s business partners.</li>\n\t\t\t\t\t<li>In order to verify and confirm your postal address or the postal address of Gear, we may send you a code via postal mail to the address provided by you in your account, if any, or to the address contained in a Gear profile and ask that you enter the code via the Site.</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\tWe may review, scan, or analyze your communications with other users exchanged via the Platform for fraud prevention, regulatory compliance, risk assessment, investigation, product development, research, and customer support purposes.\n\t\t\t\t\t\tFor example, as part of our fraud prevention efforts, the Platform may scan and analyze messages to mask contact information and references to other websites.\n\t\t\t\t\t\tWe may also scan, review, or analyze messages for research and product development purposes to help make search, reservations, and user communications more efficient and effective, as well as to debug product offerings.\n\t\t\t\t\t\tWe will carry out these reviews or analyses either through automated methods or manually.\n\t\t\t\t\t\tBy using the Platform, you consent that Sharingear, in its sole discretion, may review, scan, analyze, and store your communications, whether done manually or through automated means.\n\t\t\t\t\t</li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">3. Sharing your information</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWhen you use the Platform, your data may be sent to the United States and possibly other countries. Laws vary from jurisdiction to jurisdiction, so the privacy laws applicable to the places where your information is transferred to, stored, used or processed, may be different from the privacy laws applicable to the place where you are a resident.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tThere are circumstances where we may need to share some of the personal information we collect about you or which you provide to us, such as the following:\n\t\t\t\t</p>\n\t\t\t\t<ul>\n\t\t\t\t\t<li><i>Other Users of the Platform</i>: Any personal information in your member profile (other than your last name, email address, phone number, postal address, and all account details related to receiving payments such as your social security number and bank account number) will be publicly accessible, and anyone may view your profile information, send you messages, view and save your Gear, and make requests to book your Gear.</li>\n\t\t\t\t\t<li><i>Renters Who Reserve Your Gear and Owners of Gear You Reserve</i>: Once a reservation requested by a Renter is approved by the Owner, that Owner and Renter’s phone number, address, and e-mail address may be made available to the other.</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>Sharingear Related Entities</i>:\n\t\t\t\t\t\tWe may allow our related entities such as our subsidiaries, and their employees, to use and process your personal information in the same way and to the same extent that we are permitted to under this Privacy Policy.\n\t\t\t\t\t\tThese related entities comply with the same obligations that we have to protect your personal information under this Privacy Policy.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>Service Providers</i>:\n\t\t\t\t\t\tWe may engage certain third party companies and individuals to provide us with services related to the Platform, such as processing credit card payments, verifying your identification, or to conduct checks against databases such as public government databases (where legally allowed).\n\t\t\t\t\t\tThese third parties may have access to your personal information but only when it is necessary in order for those third parties to provide those services to us.\n\t\t\t\t\t\tWe will use commercially reasonable efforts to ensure that such third parties are obligated to protect your personal information and to not use it for unrelated purposes.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>As Aggregated Data</i>:\n\t\t\t\t\t\tWe may aggregate the information we collect, including your personal data, with similar data relating to other users of the Platform in order to create statistical and analytic information regarding the Platform and its use, which we may then share with third parties or make publicly available.\n\t\t\t\t\t\tHowever, none of this information would include your address, email address, or other contact information, or anything that could be used to identify you individually, either online or in real life.\n\t\t\t\t\t\tWe may publish, disclose, and use this aggregated information and non-personal information for industry analysis, demographic profiling, marketing and advertising, and other business purposes.\n\t\t\t\t\t\tThis information may also be used to develop website content and services that you and other users will find of interest and to target content and advertising.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>As Required by Law</i>:\n\t\t\t\t\t\tWe will disclose your personal information if we believe in good faith that we are permitted or required to do so by law, including in response to a court order, subpoena, or other legal demand or request.\n\t\t\t\t\t\tWe will use commercially reasonable efforts to notify users about law enforcement requests for their data unless prohibited by law or by the government request, or if doing so would be futile or ineffective.\n\t\t\t\t\t</li>\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<i>To Protect Our Interests</i>:\n\t\t\t\t\t\tWe may access, preserve, and disclose your personal information if we in good faith believe it is necessary:\n\t\t\t\t\t\t<ol class=\"sg-alphalist\">\n\t\t\t\t\t\t\t<li>to respond to claims asserted against Sharingear;</li>\n\t\t\t\t\t\t\t<li>to enforce and administer our agreements with users, such as our <strong>Terms of Service</strong>;</li>\n\t\t\t\t\t\t\t<li>for fraud prevention, risk assessment, investigation, customer support, product development and de-bugging purposes; or</li>\n\t\t\t\t\t\t\t<li>to protect or defend the rights, property, interests, and personal safety of Sharingear, its employees, directors, shareholders, partners, affiliates, users, and members of the general public.</li>\n\t\t\t\t\t\t</ol>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li><i>In a Business Transfer</i>: We may sell, transfer, or share your personal information to any person or company that acquires all or substantially all of the assets or business of Sharingear, or on a merger, acquisition, or reorganization of our business, or in the event of our insolvency.</li>\n\t\t\t\t\t<li><i>With Your Consent</i>: We may disclose your personal information other than as described in this Privacy Policy if you have explicitly agreed that we may do so. We will make this clear to you prior to any such disclosure.</li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">4. Third-party websites</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThere are a number of places on the Platform where you may click on a link to access other websites that are not owned or controlled by Sharingear and do not operate under this Privacy Policy.\n\t\t\t\t\tThese third-party websites may place their own cookies, web beacons and files on your device, or independently solicit and collect information, including personal information, from you.\n\t\t\t\t\tWe recommend that you consult the privacy policies of all third-party websites you visit.\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\tSome portions of the Platform implement Google Maps/Earth mapping services, including Google Maps API(s).\n\t\t\t\t\tYour use of Google Maps/Earth through the Platform is subject to Google’s terms of use (located at <a href=\"http://www.google.com/intl/en_us/help/terms_maps.html\">http://www.google.com/intl/en_us/help/terms_maps.html</a>) and Google’s privacy policy (located at <a href=\"http://www.google.com/policies/privacy/\">http://www.google.com/policies/privacy/</a>), as may be amended by Google from time to time.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">5. Your choices</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tYou may review, update, or correct the personal information in your Sharingear account by logging into your account.\n\t\t\t\t\tYou can choose to not provide us with certain information but that may result in you being unable to use certain features of the Platform.\n\t\t\t\t\tYou can request for us to delete your account entirely by emailing us at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\n\t\t\t\t\tPlease note that reviews, forum postings and similar materials posted by you may continue to be publicly available on the Platform in association with your first name, even after your Sharingear account is cancelled.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">6. Security of your personal information</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWe have implemented reasonable administrative, technical, and physical security measures to protect your Personal Information against unauthorized access, destruction, or alteration; however, no method of transmission over the Internet, and no method of storing electronic information, can be 100% secure, so we cannot guarantee the absolute security of your transmissions to use and of your personal information that we store.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">7. Children</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThis Platform is not intended for use by children.\n\t\t\t\t\tAnyone under the age of 13 is not permitted to use the Platform and must not attempt to register an account or submit any personal information to us.\n\t\t\t\t\tWe do not knowingly collect any personal information from any person who is under the age of 13 or allow them to register an account.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">8. Using the platform from outside europe</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThis Privacy Policy is intended to cover collection of information on or via the Platform from residents of Europe.\n\t\t\t\t\tIf you are using the Platform from outside Europe, please be aware that your information may be transferred to, stored, and processed in the Europe where our servers are located and our central database is operated.\n\t\t\t\t\tThe data protection and other laws of Europe and other countries may not be as comprehensive as those in your country.\n\t\t\t\t\tBy using the Platform, you understand and agree that your information may be transferred to our facilities and those third parties with whom we share it as described in this Privacy Policy.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">9. No rights of third parties</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tThis Privacy Policy does not create rights enforceable by third parties or require disclosure of any personal information relating to users of the Platform.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">10. Changes to this Privacy Policy</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tWe will occasionally update this Privacy Policy to reflect changes in our practices and services.\n\t\t\t\t\tWhen we post changes to this Privacy Policy, we will revise the “Last Updated” date at the top of this Privacy Policy.\n\t\t\t\t\tIf we make any material changes in the way we collect, use, and/or share your personal information, we will notify you by posting a notice of the change on the Site or by sending an email to the email address you most recently provided us in your account, profile, or registration.\n\t\t\t\t\tWe recommend that you check the Site from time to time to inform yourself of any changes in this Privacy Policy or to any of our other policies.\n\t\t\t\t\tYour continued use of the Platform after we post any such change shall indicate your agreement to be bound by the revised terms.\n\t\t\t\t\tIf you do not wish to agree to the changed Privacy Policy, then we will not be able to continue providing the Platform to you, and your only option will be to stop accessing the Platform and deactivate your Sharingear account.\n\t\t\t\t\tTo deactivate your account, please email <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">11. Contact us</h3>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\n\t\t\t\t<p>\n\t\t\t\t\tIf you have questions or concerns about this Privacy Policy, please contact us by email at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\n\t\t\t\t</p>\n\t\t\t</div>\n\t\t</div>\n\n\t</div>\n\n\t<footer></footer>\n</div>\n";
 
 /***/ },
 /* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view techprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t<hr>\n\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 map-container\">\n\t\t\t\t\t<div class=\"sg-gray\"><i class=\"fa fa-home\"></i><span class=\"sg-darkergray\"> {{location}}</span></div>\n\t\t\t\t\t<div class=\"map\" id=\"techprofile-map\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-white-bg sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-gray profile-type\">\n\t\t\t\t\t<div class=\"sg-icon icon-dashboard-yourtechprofile\"></div> TECHNICIAN PROFILE\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-7 sg-darkergray title-container\">\n\t\t\t\t\t<div class=\"sg-icon icon-addtechprofile-{{icon}} sg-darkgray\"></div> <div class=\"techprofile-title\">{{roadie_type}}</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-sm-5\">\n\t\t\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"techprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-book\">BOOK</button>\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-edit\">EDIT</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg experience\">\n\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t\t<div class=\"sg-darkergray\">Experience: <span class=\"sg-yellow\">{{experience}}</span></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t<div class=\"social sg-gray text-right\"><div class=\"sharethistech\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 profile-text\">\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">ABOUT</h4>\n\t\t\t\t\t\t\t<p>{{about}}</p>\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">CURRENTLY WORKING FOR</h4>\n\t\t\t\t\t\t\t<p>{{currently}}</p>\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">REFERENCES</h4>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Bands &amp; artists toured with:</h5>\n\t\t\t\t\t\t\t<p>{{tours}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Companies, venues and festivals worked for:</h5>\n\t\t\t\t\t\t\t<p>{{companies}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Years of experience:</h5>\n\t\t\t\t\t\t\t<p>{{xp_years}}</p>\n\t\t\t\t\t\t\t<h5>Genres interested in:</h5>\n\t\t\t\t\t\t\t<p>{{genres}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Bands worked for:</h5>\n\t\t\t\t\t\t\t<p>{{bands}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<a href=\"{{href}}\">\n    <div class=\"col-xs-12 col-sm-6 bs-reset search-results-gear\" id=\"search-results-{{resultNum}}\">\n        <div class=\"title sg-black-bg-25 sg-white\">{{item_type}}, {{model}}</div>\n        <div class=\"info sg-black-bg-25 sg-blue\">\n        \t<div class=\"price sg-blue-bg sg-white\"><div>From<br> <span class=\"price_a\"></span> <span class=\"sg-super currency\">{{currency}}</span></div></div>\n        \t<div class=\"location\">{{city}}, {{country}}</div>\n       \t</div>\n    </div>\n</a>\n";
 
 /***/ },
 /* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"searchform\">\n  <form class=\"form-inline\" id=\"techprofilesearchform-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\n    <div class=\"form-group\">\n      <label class=\"sg-blue\">Find your technician</label>\n      <input type=\"search\" class=\"form-control\" id=\"techprofilesearch-techprofile\" placeholder=\"technician, manager, etc.\">\n      <div class=\"suggestion-box hidden\" id=\"techprofiles-suggestions-box\"></div>\n    </div><div class=\"form-group\">\n      <label class=\"sg-blue\">Find a location</label>\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-location\" placeholder=\"\">\n    </div><div class=\"form-group search-pickup-container\">\n      <label class=\"sg-blue\">Pickup</label>\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-pickup\" placeholder=\"15/08/1969\" >\n    </div><div class=\"form-group search-return-container\">\n      <label class=\"sg-blue\">Delivery</label>\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-return\" placeholder=\"18/08/1969\" >\n    </div><div class=\"form-group submit-container\">\n      <input type=\"submit\" id=\"techprofilesearchform-submit-btn\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\n    </div>\n  </form>\n</div>\n";
+	module.exports = "<div class=\"view search searchiefix\">\n  <div class=\"jumbotron\">\n    <div class=\"sg-tab-panel\" id=\"search-searchform-gear\">\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\n    </div>\n\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-technicians\">\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\n    </div>\n\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-vans\">\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\n    </div>\n  </div>\n\n  <div class=\"container-fluid search-results\">\n    <div class=\"row map-row\">\n\t\t  <div class=\"col-sm-6 map-col\">\n        <div class=\"searchmap\" id=\"search-map\"></div>  \n      </div>\n\t\t  <div class=\"col-xs-12 col-sm-6 search-results-col bs-reset\">\n        <ul class=\"sg-tabs sg-tabs-3 sg-darkergray-bg sg-white\">\n    \t\t  <li class=\"sg-action-blue-bg sg-white active\">\n            <button class=\"sg-btn-invisible\" id=\"search-tab-gear\">\n              <div class=\"sg-icon icon-tabbar-gear\"></div>\n              <div class=\"sg-btn-text\">GEAR</div>\n            </button>\n          </li>\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\n            <button class=\"sg-btn-invisible\" id=\"search-tab-technicians\">\n              <div class=\"sg-icon icon-tabbar-technicians\"></div>\n              <div class=\"sg-btn-text\">TECHNICIANS</div>\n            </button>\n          </li>\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\n            <button class=\"sg-btn-invisible\" id=\"search-tab-vans\">\n              <div class=\"sg-icon icon-tabbar-vans\"></div>\n              <div class=\"sg-btn-text\">VANS &amp; BUSES</div>\n            </button>\n          </li>\n        </ul>\n        <div class=\"row bs-reset sg-darkergray-bg sg-white currentlocation-container\">\n\t\t\t\t  <div class=\"col-sm-12\" id=\"search-currentlocation\"></div>\n        </div>\n        <div class=\"row searchresults bs-reset\" id=\"search-results-gear\"></div>\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-techprofiles\"></div>\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-vans\"></div>\n        \n        <div class=\"no-results no-results-gear hidden\">\n          <div class=\"row sorry-section bs-reset\">\n            <h1>Sorry, no instruments matching your search were found.</h1>\n          </div>\n          <div class=\"row request-section bs-reset\">\n            <h2>Request an instrument: </h2>\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\n          </div>\n        </div>\n\n        <div class=\"no-results no-results-vans hidden\">\n          <div class=\"row sorry-section bs-reset\">\n            <h1>Sorry, no vehicles matching your search were found.</h1>\n          </div>\n          <div class=\"row request-section bs-reset\">\n            <h2>Request a vehicle: </h2>\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\n          </div>\n        </div>\n\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ },
 /* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"billboard-wrapper wall-of-text\" style=\"padding-top:30px\">\n<div class=WordSection1><h1 style=\"color: #00aeff\">SHARINGEAR Terms of Service</h1>\n\n<p><span>Last Updated: 26 <sup>th</sup> of November 2014</span></p>\n\n<p><span>&nbsp;</span></p>\n\n<p><b> <span>Please readthe following terms of service carefully (the “Terms”). By accessing the Site,Applications or Services of Sharingear, you agree to be bound by these Terms,as amended from time to time. If you do not agree to these Terms, you areprohibited from using or accessing the Site, Application, or Services.</span>\n</b></p>\n\n<p><span>Sharingear IVS(hereafter referred to as “Sharingear” “we,” “us,” or “our”) provides an onlineplatform that connects owners of equipment, musical instruments and otherartistic tools (the “Equipment”) with people seeking to rent such Equipment(collectively, the “Services”), which Services are accessible at </span>\n\t<span>                <a href=\"http://www.sharingear.com\"> <span style=''>www.sharingear.com</span> </a>            </span>\n\t<span>and any other websites through which Sharingear makes the Services available(collectively, the “Site”) and via applications for mobile devices, if any (the“Application”). The Site, Application, and Services are sometimes collectivelyreferred to herein as the “Platform.” By using the Site and/or Application, youagree to comply with and be legally bound by the terms and conditions of theseTerms of Service (“Terms”), whether or not you become a registered user of theServices. These Terms govern your access to and use of the Site, Application,Services, and all Collective Content (defined below), and constitute a bindinglegal agreement between you and Sharingear. Please read carefully these Termsand our Privacy Policy which is incorporated by reference into these Terms. Ifyou do not agree to these Terms, you have no right to obtain information fromor otherwise continue to use the Platform. Failure to use the Platform inaccordance with these Terms may subject you to civil and criminal penalties.</span>\n</p>\n\n<p><span>Youunderstand and agree that Sharingear is not a party to any agreements enteredinto between Owners and Renters (defined below). Sharingear is not a broker,agent, or insurer and has no control over the conduct of Owners, Renters, andother users of the Platform or any Equipment, and disclaims all liability inthis regard.</span>\n</p>\n\n<p><b> <i> <span>KeyDefinitions</span> </i> </b></p>\n\n<p><span>- “Renter”means a Member who requests from an Owner a reservation of Equipment via thePlatform, or a Member who uses Equipment and is not the Owner of suchEquipment.</span>\n</p>\n\n<p><span>-“Collective Content” means Member Content and Sharingear Content.</span></p>\n\n<p><span>- “Content”means text, graphics, images, music, software (excluding the Site andApplication), audio, video, information, or other materials.</span>\n</p>\n\n<p><span>- “Gear”means Equipment that is listed by an Owner as available for rental via thePlatform.</span></p>\n\n<p><span>- “Member”means a person who completes Sharingear’s account registration process,including but not limited to Owners and Renters, as described under Section 4(“Your Account”) below.</span>\n</p>\n\n<p><span>- “MemberContent” means all Content that a Member posts, uploads, publishes, submits, ortransmits to be made available through the Platform.</span>\n</p>\n\n<p><span>- “Owner”means a Member who creates a Gear via the Platform.</span></p>\n\n<p><span>- “SharingearContent” means all Content that Sharingear makes available through the Platform,including any Content licensed from a third party, but excluding MemberContent.</span>\n</p>\n\n<p><span>- “Tax” or“Taxes” mean any sales taxes, value added taxes (VAT), goods and services taxes(GST), transient occupancy taxes, tourist or other visitor taxes, accommodationor lodging taxes, fees that equipment or accommodation providers may berequired by law to collect and remit to governmental agencies, and othersimilar municipal, state, federal, and national indirect or other withholdingtaxes, and personal or corporate income taxes.</span>\n</p>\n\n<p><b> <span>1.Modification</span> </b></p>\n\n<p><span>Sharingearreserves the right, in our sole discretion, to modify the Platform or to modifythese Terms, including the Service Fees (defined below), at any time andwithout prior notice. If we modify these Terms, we will post the modificationon the Site or via the Application to provide you with notice of themodification. We will also update the “Last Updated” date at the top of theseTerms. By continuing to access or use the Platform after we have posted amodification on the Site or via the Application or have provided you withnotice of a modification, you are indicating that you agree to be bound by themodified Terms. If the modified Terms are not acceptable to you, your onlyrecourse is to cease using the Platform.</span>\n</p>\n\n<p><b> <span>2.Eligibility</span> </b></p>\n\n<p><span>ThePlatform is intended for use solely by persons who are 18 years of age orolder. Any access to or use of the Platform by anyone under 18 is expresslyprohibited. By accessing or using the Platform you represent and warrant thatyou are 18 years of age or older.</span>\n</p>\n\n<p><b> <span>3. Services</span> </b></p>\n\n<p><span>As statedabove, Sharingear makes available an online platform or marketplace withrelated technology for Owners and Renters to meet online and arrange for thereservation of Equipment directly with each other via the Platform. You mayview Gear as an unregistered visitor to the Site or Application; however, youmust be a registered Member (defined below) to book or create a Gear.</span>\n</p>\n\n<p><span>Sharingearis not an owner of Equipment and does not own, sell, resell, furnish, provide,rent, re-rent, manage and/or control Equipment, including but not limited toreal property, instruments, and transportation, delivery, or travel services. Sharingear’sresponsibilities are limited to: (i) facilitating the availability of the Site,Application, and Services; and (ii) serving as the limited agent of each Ownerfor the purposes of accepting payments from Renters on behalf of the Owner.</span>\n</p>\n\n<p><span>SHARINGEARCANNOT AND DOES NOT CONTROL THE CONTENT CONTAINED IN ANY GEARS AND THECONDITION, LEGALITY, OR SUITABILITY OF ANY EQUIPMENT. SHARINGEAR IS NOT RESPONSIBLEFOR AND DISCLAIMS ANY AND ALL LIABILITY RELATED TO ANY AND ALL GEARS ANDEQUIPMENT. ALL RESERVATIONS ARE MADE AT THE OWNER’S AND RENTER’S OWN RISK.</span>\n</p>\n\n<p><b> <span>4. YourAccount</span> </b></p>\n\n<p><span>In order toaccess certain features of the Platform and to book or create a Gear profile,you must first become a Member by registering an account (“Account”), either byproviding your email address and setting a password or through certain thirdparty social networking sites (“SNS”), including, without limitation, Facebook,via the Site or application. As part of the functionality of the Platform, youmay link your Account with your SNS accounts (each such SNS account, a “ThirdParty Account”), by either: (i) providing your Third Party Account logininformation to Sharingear through the Platform; or (ii) allowing Sharingear toaccess your Third Party Account as permitted under the applicable terms andconditions that govern your use of each Third Party Account. You represent thatyou are entitled to disclose your Third Party Account login information to Sharingearand/or grant Sharingear access to your Third Party Account (including, but notlimited to, for use for the purposes described herein), without breach by youof any of the terms and conditions that govern your use of the applicable ThirdParty Account and without obligating Sharingear to pay any fees or making Sharingearsubject to any usage limitations imposed by such third party service providers.By granting Sharingear access to any Third Party Accounts, you understand thatSharingear will access, make available and store (if applicable) any text,graphics, images, information and other materials you have provided to andstored in your Third Party Account, subject to your privacy settings in suchThird Party Account, if any (“SNS Content”) so that it is available on andthrough the Platform via your Account and Account profile page. You have theability to disable the connection between your Account and your Third PartyAccounts, at any time, by contacting </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>. Pleasenote that your relationship with the SNS associated with your Third PartyAccounts is governed solely by your agreement(s) with such SNS. Sharingearmakes no effort to review any SNS Content for any purposes, including, but notlimited to, for accuracy, legality, or non-infringement, and Sharingear is notresponsible for any SNS Content.</span>\n</p>\n\n<p><span>We willcreate your Account and your Account profile page for your use of the Platformbased upon the personal information you provide to us or that we obtain via anSNS as described above. You may not have more than one (1) active Account. Youagree to provide accurate, current, and complete information during the registrationprocess and to update such information to keep it accurate, current, andcomplete. Sharingear reserves the right to suspend or terminate your Accountand your access to the Platform if you create more than one (1) SharingearAccount or if any information provided during the registration process orthereafter process to be inaccurate, not current, or incomplete. You areresponsible for safeguarding your password. You agree that you will notdisclose your password to any third party and that you will take soleresponsibility for any activities or actions under your Account, whether or notyou have authorized such activities or actions. You will immediately notify usof any unauthorized use of your Account.</span>\n</p>\n\n<p><b> <span>5. Gear</span> </b> <span></span></p>\n\n<p><span>As aMember, you may create Gear profiles. To create a Gear profile, you will beasked a variety of questions about the Equipment to be listed, including butnot limited to a description, the location, the condition, and availability ofthe Equipment, additional services or features that can be added to areservation request at the Renter’s option (i.e., “add-ons”), and pricing andrelated rules and financial terms. Gears will be made publicly available viathe Platform. Other Members will be able to book your Gear via the Platformbased upon the information provided in the Gear. You understand and agree thatonce a Renter requests a reservation of your Gear, you may not request theRenter to pay a higher price than in the reservation request.</span>\n</p>\n\n<p><span>Youacknowledge and agree that you are responsible for any and all Gear profilesyou post. Accordingly, you represent and warrant that any Gear you post and thereservation of, or a Renter’s use of, Equipment in a Gear profile you post: (i)will not breach any agreements you have entered into with any third parties,such as ownership, lease or rental agreements; and (ii) will (a) be incompliance with all applicable laws, Tax requirements, and rules andregulations that may apply to any Equipment included in a Gear profile you postand (b) not conflict with the rights of third parties. Please note that Sharingearassumes no responsibility for an Owner’s compliance with any agreements with orduties to third parties, applicable laws, rules and regulations. Sharingearreserves the right, at any time and without prior notice, to remove or disableaccess to any Gear profile for any reason, including Gear profiles that Sharingear,in its sole discretion, considers to be objectionable for any reason, inviolation of these Terms or otherwise harmful to the Platform.</span>\n</p>\n\n<p><span>If you arean Owner, you understand and agree that Sharingear does not act as an insureror as your contracting agent. If a Renter requests a reservation of yourEquipment and uses your Equipment, any agreement you enter into with suchRenter is between you and the Renter and Sharingear is not a party thereto.Notwithstanding the foregoing, Sharingear services as the limited authorizedpayment collection agent of the Owner for the purposes of accepting, on behalfof the Owner, payments from Renters of such amounts stipulated by the Owner(including delivery or other fees and/or Taxes).</span>\n</p>\n\n<p><span>If you arean Owner, Sharingear makes certain tools available to you to help you makeinformed decisions about which Members you choose to approve for booking yourEquipment. You acknowledge and agree that, as an Owner, you are responsible foryour own acts and omissions and are also responsible for the acts and omissionsof any individuals who may have access to the Equipment at your request orinvitation, excluding the Renter.</span>\n</p>\n\n<p><b> <span>&nbsp;</span> </b></p>\n\n<p><b> <span>6. NoEndorsement</span> </b> <span> .</span></p>\n\n<p><span>Sharingeardoes not endorse any Member or any Equipment. Members are required by theseTerms to provide accurate information, and although Sharingear may undertakeadditional checks and processes designed to help verify or check the identitiesor backgrounds of users, we do not make any representations about, confirm, orendorse any Member or the Member’s purported identity or background.</span>\n</p>\n\n<p><span>Anyreferences in the Platform to a Member being “verified” or “connected” (orsimilar language) only indicate that the Member has completed a relevantverification process and do not represent anything else. Any such descriptionis not an endorsement, certification or guarantee by Sharingear about anyMember, including of the Member’s identity and whether the Member istrustworthy, safe, or suitable. Instead, any such description is intended to beuseful information for you to evaluate when you make your own decisions aboutthe identity and suitability of others whom you contact or interact with viathe Platform. We recommend that you always exercise due diligence and care whendeciding whether to book from an Owner or accept a reservation request from aRenter, or to have any other interaction with any other Member. We are notresponsible for any damage or harm resulting from your interactions with otherMembers.</span>\n</p>\n\n<p><span>By usingthe Platform, you agree that any legal remedy or liability that you seek toobtain for actions and omissions of other Members or other third parties willbe limited to a claim against the particular Members or other third parties whocaused you harm. You agree not to attempt to impose liability on or seek anylegal remedy from Sharingear with respect to such actions or omissions.Accordingly, we encourage you to communicate directly with other Members on thePlatform regarding any reservations or Gears made by you. This limitation shallnot apply to any claim by an Owner against Sharingear regarding the remittanceof payments received from a Renter by Sharingear on behalf of an Owner, whichinstead shall be subject to the limitations described in Section 18 below(“Limitation of Liability”).</span>\n</p>\n\n<p><b> <span>7. Reservationsand Financial Terms</span> </b></p>\n\n<p><b> <i> <span>KeyDefinitions</span> </i> </b></p>\n\n<p><span>-“Equipment Fees” means the amounts that are due and payable by a Renter inexchange for that Renter’s rental of Equipment, inclusive of any and all“add-ons” (such as delivery or pick-up services) selected by the Renter. TheOwner alone, and not Sharingear, determines these amounts. The Owner may in hisor her sole discretion decide to include Taxes that the Owner determines thathe or she has to collect in connection with the reservation.</span>\n</p>\n\n<p><span>- “RenterFees” means the fee that Sharingear charges a Renter for the use of its onlineplatform, which is calculated as a fixed percentage on top of the applicableEquipment Fees. The Renter Fees will be displayed to the Renter when the Renteris asked whether to send a reservation request to an Owner.</span>\n</p>\n\n<p><span>- “OwnerFees” means the fee that Sharingear charges an Owner for the use of its onlineplatform, which is calculated as a fixed percentage on top of the applicableEquipment Fees. The Owner Fees will be displayed to the Owner when the Owner isasked whether to approve or reject a reservation request from a prospectiveRenter.</span>\n</p>\n\n<p><span>- “ServiceFees” means collectively the Renter Fees and Owner Fees.</span></p>\n\n<p><span>- “TotalFees” means collectively the Equipment Fees and the Renter Fees (plus any Taxesin respect of Renter Fees).</span>\n</p>\n\n<p><b> <i> <span>Reservationand Financial Terms for Owners</span> </i> </b></p>\n\n<p><span>If you arean Owner and a reservation is requested for your Equipment via the Platform,you will be required to either approve or reject the reservation within 24hours of when the reservation is requested (as determined by Sharingear in itssole discretion) (the “Reservation Request Period”) or the reservation requestwill be automatically cancelled. During the Reservation Request Period, untilthe Owner either approves or rejects the reservation, the Gear will be in abooked state and no other Member may make a reservation request for the samedays and times, until the Owner either approves or rejects the pendingreservation request or the Reservation Request Period has expired. When areservation for your Equipment is requested via the Platform, we will sharewith you (i) the first and last name of the Renter who has requested thereservation, (ii) a link to the Renter’s Account profile page, (iii) the Rentersaddress, and (iv) if the Renter has requested delivery of the Equipment, theaddress where the Equipment is requested to be delivered by the Owner, so thatyou can view such information before approving or rejecting the reservation. Ifyou are unable to approve or decide to reject a reservation request of yourEquipment within the Reservation Request Period, the requested reservation willbe cancelled by Sharingear and the credit card will not be charged and anypre-authorization of such credit card will be released, unless in Italy, Greeceand Spain, the pre-authorization has a particular running. In fact, thepre-authorized amount is debited from the bank account. Pre-authorized fundsare stored by the bank. The user will get his/her funds back within 7 days.When you approve a reservation requested by a Renter, the reservation is deemedconfirmed, and Sharingear will send you an email confirming such reservation.</span>\n</p>\n\n<p><span>Sharingear willcollect the Total Fees at the time of reservation confirmation (i.e., when theOwner approves the reservation request) and will initiate payment of theEquipment Fees (less Sharingear’s Owner Fees and any Taxes in respect of theOwner Fees) to the Owner when the Owner receives the Equipment from Renter andhas checked it for any damage and has made the confirmation for receiving onthe Sharingear platform. The time it takes for the Owner to receive payouts maydepend upon the method for receiving payouts chosen by the Owner. Some methodsinvolve the use of third-party payment processors, who may impose their ownadditional charges for the use of their services on the Owner, including bydeducting their charges from the payout amount.</span>\n</p>\n\n<p><span>If you oweor agree to pay any amount to Sharingear (whether as a result of yourreservations or actions as a Renter or otherwise), then Sharingear may (but isnot obligated to) withhold the amount owing to Sharingear from any payoutamounts due to you as an Owner and use the withheld amount to setoff the amountowed by you to Sharingear. If Sharingear does so, then your obligation to pay Sharingearwill be extinguished to the extent of the amount withheld by Sharingear, and Sharingearwill cease to owe you any obligations, including, but not limited to, anyobligation to pay you, with respect to the amount withheld.</span>\n</p>\n\n<p><b> <i> <span>Appointmentof Sharingear as Limited Payment Collection Agent for Owner</span> </i> </b></p>\n\n<p><span>Each Ownerhereby appoints Sharingear as the Owner’s limited payment collection agentsolely for the purposes of accepting the Equipment Fees from Renters.</span>\n</p>\n\n<p><span>Each Owneragrees that payment made by a Renter through Sharingear shall be considered thesame as a payment made directly to the Owner, and the Owner will make theEquipment available to the Renter in the agreed-upon manner as if the Owner hasreceived the Equipment Fees. Each Owner agrees that Sharingear may, inaccordance with the Sharingear cancellation policy set forth below(“Cancellation and Refunds”), (i) permit the Renter to cancel the reservationand (ii) refund to the Renter that portion of the Equipment Fees specified inthe applicable cancellation policy. Each Owner understands that as Sharingearaccepts payments from Renters as the Owner’s limited payment collection agent,Sharingear’s obligation to pay the Owner is subject to and conditional upon Sharingearsuccessfully receiving the payments from Renters. Sharingear does not guaranteepayments to Owners for amounts that have not been successfully received fromRenters. In accepting appointment as the limited authorized agent of the Owner,Sharingear assumes no liability for any acts or omissions of the Owner.</span>\n</p>\n\n<p><span>If you arean Owner, and as a condition of your appointment of Sharingear as your limitedpayment collection agent, you understand that you may be deemed a sub-merchantof Sharingear under its agreement with its third party payment service providerand that you may be subject to terms and conditions governing use of that thirdparty’s service and that third-party’s personal information collectionpractices.</span>\n</p>\n\n<p><span>Please notethat Sharingear does not currently charge fees for the creation of Gearprofiles or to be a Member. However, you as an Owner acknowledge and agree thatSharingear reserves the right, in its sole discretion, to charge you for andcollect fees from you for the creation of Gear profiles or for being a Member.Please note that Sharingear will provide notice of any Gear fee collection viathe Platform prior to implementing such a Gear fee feature.</span>\n</p>\n\n<p><b> <i> <span>Reservationsand Financial Terms for Renters</span> </i> </b></p>\n\n<p><span>The Owners,not Sharingear, are solely responsible for honoring any confirmed reservationsand making available any Equipment booked through the Platform. If you, as aRenter, choose to enter into a transaction with an Owner for the reservation ofEquipment, you agree and understand that you will be required to enter into anagreement with the Owner and you agree to accept any terms, conditions, rulesand restrictions associated with such Equipment imposed by the Owner. Youacknowledge and agree that you, and not Sharingear, will be responsible forperforming the obligations of any such agreements, that Sharingear is not aparty to such agreements, and that, with the exception of its payment obligationshereunder, Sharingear disclaims all liability arising from or related to anysuch agreements. You further acknowledge and agree that, notwithstanding thefact that Sharingear is not a party to the agreement between you and the Owner,Sharingear acts as the Owner’s payment collection agent for the limited purposeof accepting payments from you on behalf of the Owner. Upon your payment of theTotal Fees to Sharingear, your payment obligation to the Owner for theEquipment Fees is extinguished, and Sharingear is responsible for remitting theEquipment Fees (less Sharingear’s Owner Fees and any Taxes in respect of theOwner Fees), in the manner described in these Terms. In the event that Sharingeardoes not remit any such amounts as described in these Terms, such Owner willhave recourse only against Sharingear.</span>\n</p>\n\n<p><span>The TotalFees payable will be displayed to a Renter before the Renter sends areservation request to an Owner. As noted above, the Owner is required toeither approve or reject the reservation request within the Reservation RequestPeriod, otherwise the reservation request will be automatically cancelled. If areservation request is cancelled (i.e., not approved by the applicable Owner),any amounts collected by Sharingear will be refunded to such Renter, dependingon the selections the Renter makes via the Site and/or Application, and anypre-authorization of such Renter’s credit card will be released, if applicable</span>\n</p>\n\n<p><span>You, as aRenter, agree to pay Sharingear for the Total Fees for all reservationsrequested in connection with your Sharingear Account if such requestedreservations are approved by the applicable Owner. In order to establish areservation pending the applicable Owner’s confirmation of your requestedreservation, you understand and agree that Sharingear, on behalf of the Owner,reserves the right, in its sole discretion, to (i) obtain a pre-authorizationvia your credit card for the Total Fees or (ii) charge your card a nominalamount, not to exceed one ($1) dollar, or a similar sum in the currency inwhich you are transacting (e.g., one euro or one British pound), to verify yourcredit card. Once Sharingear receives approval of your reservation from theapplicable Owner, Sharingear will collect the Total Fees in accordance withthese Terms and the pricing terms set forth in the applicable Gear profile. Atthis time Sharingear may also collect the Security Deposit (defined below) or aportion thereof, in its sole discretion. Please note that Sharingear cannotcontrol any fees that may be charged to a Renter by his or her bank related toSharingear’s collection of the Total Fees, and Sharingear disclaims allliability in this regard.</span>\n</p>\n\n<p><span>Inconnection with your requested reservation, you will be asked to providecustomary billing information such as name, billing address, and credit cardinformation either to Sharingear or its third-party payment processor. Youagree to pay Sharingear for any approved reservations made in connection withyour Sharingear Account in accordance with these Terms by one of the methodsdescribed on the Site or Application, e.g. by PayPal or credit card. You herebyauthorize the collection of such amounts by charging the credit card providedas part of requesting the reservation, either by Sharingear or indirectly, viaa third-party online payment processor or by one of the payment methods describedon the Site or Application. If you are directed to Sharingear’s third-partypayment processor, you may be subject to terms and conditions governing use ofthat third party’s service and that third-party’s personal informationcollection practices. Please review such terms and conditions and privacypolicy before using the services. Once your confirmed reservation transactionis complete, you will receive a confirmation email summarizing your confirmedreservation.</span>\n</p>\n\n<p><b> <i> <span>SecurityDeposits</span> </i> </b></p>\n\n<p><span>Sharingear choosesto include a security deposit in the reservation billing (“Security Deposits”),based on a fixed amount of the actual value of the respective Equipment in the Gearprofile. Each reservation billing will describe the Security Deposit amount as afixed percentage of the value of each respective Equipment. Sharingear will, inits capacity as the payment collection agent of the Owner, use its commerciallyreasonable efforts to either: (i) charge the Renter’s credit card at the timeof reservation confirmation the Security Deposit amount, or (ii) obtain apre-authorization of the Renter’s credit card in the amount of the SecurityDeposit, at the time of reservation confirmation or within a reasonable timeprior to the Renter’s use of the Owner’s Equipment. Sharingear will also useits commercially reasonable efforts to address Owner’s requests and claimsrelated to Security Deposits, but Sharingear is not responsible foradministering or accepting any claims by Owners related to Security Depositsand disclaims any and all liability in this regard.</span>\n</p>\n\n<p><b> <i> <span>ServiceFees</span> </i> </b></p>\n\n<p><span>In considerationfor the use of Sharingear’s online marketplace and Platform, Sharingear chargesthe Services Fees. Where applicable, Taxes may also be charged in respect ofthe Owner Fees and Renter Fees. Sharingear deducts the Owner Fees from theEquipment Fees before remitting the balance to the Owner as described in theseTerms. Renter Fees are, as noted above, included in the Total Fees.</span>\n</p>\n\n<p><span>Balanceswill be remitted by Sharingear to Owners via direct deposit or other paymentmethods described on the Site or via the Application, depending on the currencyselections the Owner makes via the Platform. Amounts may be rounded up or downas described in the “Rounding Off “ section below.</span>\n</p>\n\n<p><span>Please notethat Sharingear may impose or deduct foreign currency processing costs on orfrom any remittances by Sharingear in currencies other than Euros. Except asotherwise provided herein, Service Fees are non-refundable.</span>\n</p>\n\n<p><b> <i> <span>&nbsp;</span> </i> </b></p>\n\n<p><b> <i> <span>EquipmentDamage, Theft or Loss - RENTER</span> </i> </b></p>\n\n<p><span>Youacknowledge and agree that, as a Renter, you are responsible for your own actsand omissions and are also responsible for the acts and omissions of anyindividuals whom you allow to use, invite to, or otherwise provide access tothe Equipment. As a Renter, you are responsible for returning or leaving theEquipment, as applicable, in the condition it was in when you arrived and/orreceived it, as applicable. In the event that an Owner claims otherwise andprovides evidence of damage, loss, or theft, including but not limited tophotographs, Owner agrees to contact Sharingear by sending a Damage reportthrough the Sharingear contact form. After being notified of the claim andgiven forty-eight (48) hours to respond, the payment (in addition to any thirdparty transaction fees incurred by Sharingear in connection therewith) and the SecurityDeposit held by Sharingear, if any, and the balance due, if any, will becharged to and                <span>taken from the credit card onfile in Renters Sharingear Account. Sharingear also reserves the right tocharge the credit card on file in your Sharingear Account, or otherwise collectpayment from you and pursue any avenues available to Sharingear in this regard,including Security Deposits, in situations in which you have been determined,in Sharingear’s sole discretion, to have damaged, lost, or misappropriated anyEquipment, in relation to any payments made by Sharingear to Owners, plus anythird party payment transaction fees incurred in connection therewith</span>.If we are unable to charge the credit card on file or otherwise collect paymentfrom you, you agree to remit payment to the applicable Owner or to Sharingear,if applicable.            </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>BothRenters and Owners agree to cooperate with and assist Sharingear in good faithand to provide Sharingear with such information and take such actions as may bereasonably requested by Sharingear, in connection with any complaints or claimsmade by Members relating to the Equipment or any personal or other propertyused or available in connection with the Equipment or with respect to anyinvestigation undertaken by Sharingear or a representative of Sharingearregarding use or abuse of the Platform. If you are a Renter, upon Sharingear’sreasonable request, and to the extent you are reasonably able to do so, youagree to participate in mediation or similar resolution process with an Owner,at no cost to you, which process will be conducted by Sharingear or a thirdparty selected by Sharingear, with respect to losses for which the Owner isrequesting payment from Sharingear in connection with your reservation ofEquipment or use of the Platform.</span>\n</p>\n\n<p><span>If you area Renter, you understand and agree that Sharingear reserves the right, in itssole discretion, to withdraw deposit and make a claim related to any damage orloss that you may have caused or been responsible for to Equipment or anypersonal or other property used or available in connection with the Equipment.You agree to cooperate with and assist Sharingear in good faith, and to provideSharingear with such information as may be reasonably requested by Sharingear. </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>If you area Renter and you do not return the Equipment to the Owner at the conclusion ofthe reservation and you do not agree within twenty-four (24) hours to schedulea new return time, or do not return the Equipment at such rescheduled returntime, then Owner agrees to file a report with the applicable police departmentand provide a copy of such report to Sharingear. In filing the report, Owner isrequired to notify the police department of the Security Deposit and that Sharingearmay ultimately be subrogated to Owner’s right to recovery of the Equipment. TheOwner must also authorize the police department to discuss and provide anyinformation regarding the case with Sharingear.</span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><b> <i> <span>GeneralReservation and Financial Terms</span> </i> </b></p>\n\n<p><u> <span>Cancellationsand Refunds</span> </u></p>\n\n<p><span>If, as aRenter, you cancel your requested reservation before the requested reservationis confirmed by an Owner, Sharingear will cancel any pre-authorization to yourcredit card but will not refund any nominal amounts charged to your credit cardin connection with the requested reservation. If the cancellation is madewithin the twenty-four hour of the requested reservation by the Renter and therequested reservation is not confirmed by an Owner, Sharingear will deduct 50% ofthe Security Deposit from the Renters account. A 25% refund will be transferredto the Owner and the remaining 25% refund will be transferred to Sharingear.  </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>If an Ownercancels a confirmed reservation made via the Platform, (i) Sharingear willrefund the Total Fees for such reservation to the applicable Renter within acommercially reasonable time of the cancellation and (ii) the Renter mayreceive an email or other communication from Sharingear containing alternative Gearprofiles and other related information. If the Renter requests a reservationfrom one of the alternative Gear profiles and the Owner associated with suchalternative Gear profiles confirms the Renter’s requested reservation, then theRenter agrees to pay Sharingear the Total Fees relating to the confirmedreservation for the Equipment in the alternative Gear profile, in accordancewith these terms. If an Owner cancelled a confirmed reservation and you, as aRenter, have not received an email or other communication from Sharingear,please contact Sharingear at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>.</span></p>\n\n<p><span>If, as anOwner, you cancel a confirmed reservation, Sharingear may apply penalties orconsequences to you or your Gear profile, including (i) publishing an automatedreview on your Gear profile indicating that a reservation was cancelled, (ii)keeping the calendar for your Gear unavailable or blocked for the dates of thecancelled reservation, or (iii) imposing a cancellation fee (to be withheldfrom your future payouts). You will be notified of the situations in which acancellation fee applies before you decide to cancel.</span>\n</p>\n\n<p><span>If, as aRenter, you want to cancel a reservation due to an Equipment Issue (definedbelow), within twenty-four hours after the start of your reservation, we agree,at our discretion, to use our reasonable efforts to find and book you otherEquipment for the time left in your reservation which in our determination isreasonably comparable to the Equipment described in your original reservationin terms of type, features, and quality. All determinations of Sharingear withrespect to refunds requested related to Equipment Issues, including withoutlimitation the size of any refund, shall be final and binding on the Rentersand Owners. An “Equipment Issue” means any one of the following: (a) the Ownerof the Equipment (i) cancels a reservation shortly before the scheduled startof the reservation, or (ii) fails to provide the Renter with the reasonableability to access the Equipment; or (b) the description of the Equipment in theGear profile on the Site is materially inaccurate with respect to: (i) the makeand/or model of the Equipment, (ii) the condition of the Equipment, to theextent it affects the Renter’s ability to utilize the Equipment as intended,(iii) special amenities or features represented in the Gear description are notprovided or do not function, or (iv) the physical location of the Equipment(proximity). Only a Renter may submit a claim for an Equipment Issue. To submita claim: (a) You must bring the Equipment Issue to our attention in writing to </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>and provide us with information, including photographs or other evidence, aboutthe Equipment and the circumstances of the Equipment Issue, within twenty-four(24) hours after the start of your reservation, and must respond to anyrequests by us for additional information or cooperation on the EquipmentIssue; (b) you must not have directly or indirectly caused the Equipment Issue(through your action, omission, or negligence); and (c) you must have usedreasonable efforts to try and remedy the circumstances of the Equipment Issuewith the Owner prior to making a claim for an Equipment Issue.</span>\n</p>\n\n<p><span>If you arean Owner, you are responsible for ensuring that the Equipment you list on theSite meets minimum quality standards regarding access, adequacy of thedescription on the Site, and does not present a Renter with Equipment Issues.During the 24-hour period after the start of a Renter’s reservation, Ownersshould be available, or make a third-party available, in order to try, in goodfaith, to resolve Equipment Issues. If you are an Owner, and if (i) Sharingeardetermines that a Renter has suffered an Equipment Issue related to Equipmentlisted by you and (ii) Sharingear either reimburses that Renter any amount upto the amount paid by the Renter through the Platform for the Equipment orprovides alternative Equipment to the Renter, you agree to reimburse Sharingearup to the amount paid by Sharingear within thirty (30) days of Sharingear’srequest. You also agree that in order for you to reimburse Sharingear up to theamount paid by Sharingear, Sharingear may off-set or reduce any amounts owed bySharingear to you by this amount. If the Renter uses the Equipment for part orall of the reservation despite the Equipment Issue, the Renter may receive arefund that will reduce the amount of the Equipment Fees ultimately paid toyou. If the Renter uses alternative Equipment, you may lose part or all of theEquipment Fee payment for the reservation and you may be responsible forreasonable additional costs incurred in order for the Renter to use thealternate Equipment. The rights of the Renters relating to Equipment Issuessupersedes the Sharingear cancellation policy or the cancellation policy set bythe Owner, if any. If you dispute the Equipment Issue, you may notify us inwriting to </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>and provide us with information, including photographs or other evidence,disputing the claims regarding the Equipment Issue, provided you must have usedreasonable and good faith efforts to try to remedy the Equipment Issue with theRenter prior to disputing the Equipment Issue claim. In the event of one ormore Equipment Issues, Sharingear, in its discretion, may elect to takeadditional actions, including, without limitation, negatively affecting your Gearprofile ranking, automated reviews indicating Equipment Issues, cancellingfuture reservations, suspending or removing the Gear profile of the Equipmentor imposing penalties or fees for the administrative burden associated with theEquipment Issue. All determinations of Sharingear with respect to EquipmentIssue claims, including without limitation the size of any refund to theRenter, shall be final and binding on the Renters and Owners.</span>\n</p>\n\n<p><span>In certaincircumstances, Sharingear may decide, in its sole discretion, that it is necessaryor desirable to cancel a confirmed reservation made via the Platform andoverride the cancellation policy applicable to such reservation, in whole or inpart. Such circumstances include death in the Owner’s or Renter’s family,serious illness of the Renter or Renter’s family member, natural disaster inthe country where the Equipment is located, political unrest in the countrywhere the Equipment is located, jury duty other similar civil obligations, orfor any other reason, contingent in all cases on proper documentation, wherevalid.</span>\n</p>\n\n<p><u> <span>RoundingOff</span> </u></p>\n\n<p><span>Sharingearmay, in its sole discretion, round up or round down amounts that are payablefrom or to Renters or Owners to the nearest whole functional base unit in whichthe currency is denominated (e.g., to the nearest dollar, euro, or othersupported currency); for example, Sharingear may round up an amount of €101.50to €102.00, and €101.49 to €101.00.</span>\n</p>\n\n<p><span>Somecurrencies are denominated in large numbers. In those cases, Sharingear maydetermine the functional base unit in which those currencies are denominated tobe 10, 100, or 1,000 of the currency; the corresponding examples for suchcurrencies would be for Sharingear to round up an amount of 2,025 up to 2,030and 2,024 down to 2,020, or 48,750 to you 48,700 and 48,749 down to 48,700, or675,500 up to 676,000 and 675,499 down to 675,000.</span>\n</p>\n\n<p><u> <span>Donations</span> </u></p>\n\n<p><span>Some Ownersmay pledge to donate a portion of the funds they receive from confirmedreservations made via the Platform to a particular cause or charity. Sharingeardoes not control, and will not take any responsibility or liability for,whether the Owner does in fact make the donation he or she pledged to make.</span>\n</p>\n\n<p><u> <span>Taxes</span> </u></p>\n\n<p><span>Taxregulations may require us to collect appropriate tax information from ourOwners, or to withhold taxes from payouts to Owners, or both. For instance, IRSregulations may stipulate that Sharingear must collect IRS Form W-9 from USOwners or an appropriate IRS Form W-8 from non-US Owners with at least one Gearprofile in the US. You as an Owner are solely responsible for keeping theinformation in your tax forms current, complete, and accurate. If you as anOwner fail to provide us with documentation that we determine to be sufficientto alleviate our obligation (if any) to withhold payments to you (e.g., whereyou are a US Owner and you fail to provide us with a completed IRS Form W-9),we reserve the right in our sole discretion to freeze all payouts to you untilresolution, to withhold such amounts as required by law, or to do both.</span>\n</p>\n\n<p><span>You as anOwner understand and agree that you are solely responsible for determining (i)your applicable Tax reporting requirements, and (ii) the Taxes that should beincluded, and for including Taxes to be collected or obligations relating toapplicable Taxes in Gears. You are also solely responsible for remitting to therelevant authority any Taxes included or received by you. Sharingear cannot anddoes not offer Tax-related advice to any Members.</span>\n</p>\n\n<p><b> <span>8. UserConduct</span> </b></p>\n\n<p><span>Youunderstand and agree that you are solely responsible for compliance with anyand all laws, rules, regulations, and Tax obligations that may apply to youruse of the Platform and Collective Content. In connection with your use of thePlatform and Collective Content, you may not and you agree that you will not:</span>\n</p>\n\n<p><span>&#9679;violate any local, state, provincial, national, or other law or regulation, orany order of a court, including, without limitation, Tax regulations;</span>\n</p>\n\n<p><span>&#9679; usemanual or automated software, devices, scripts, robots, or other means orprocesses to access, “scrape,” “crawl,” or “spider” any web pages or otherservices contained in the Platform or Collective Content ;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content for any commercial or other purposes thatare not expressly permitted by these Terms;</span>\n</p>\n\n<p><span>&#9679;copy, store, or otherwise access any information contained on the Platform or CollectiveContent for purposes not expressly permitted by these Terms;</span>\n</p>\n\n<p><span>&#9679;infringe the rights of any person or entity, including without limitation,their intellectual property, privacy, publicity, or contractual rights;</span>\n</p>\n\n<p><span>&#9679;interfere with or damage our Platform, including, without limitation, throughthe use of viruses, cancel bots, Trojan horses, harmful code, flood pings,denial-of-service attacks, packet or IP spoofing, forged routing, or electronicmail address information or similar methods or technology;</span>\n</p>\n\n<p><span>&#9679; usethe Platform to transmit, distribute, post, or submit any informationconcerning any other person or entity, including without limitation,photographs of others without their permission, personal contact information,or credit, debit, or account numbers;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content in connection with the distribution ofunsolicited commercial email (“spam”) or advertisements unrelated to rentingartistic tools, equipment, and space.</span>\n</p>\n\n<p><span>&#9679;“stalk” or harass any other user of the Platform or Collective Content, orcollect or store any personally identifiable information about any other userother than for purposes of transacting as a Sharingear Renter or Owner;</span>\n</p>\n\n<p><span>&#9679;offer, as an Owner, any Equipment, that you do not yourself own or havepermission to rent (without limiting the foregoing, you will not list Equipmentas an Owner if you are serving in the capacity as an agent for a third party);</span>\n</p>\n\n<p><span>&#9679;offer, as an Owner, any Equipment that may not be rented or subleased pursuantto the terms and conditions of an agreement with a third party, including, butnot limited to, a property rental agreement;</span>\n</p>\n\n<p><span>&#9679;register for more than one Sharingear Account or register for a SharingearAccount on behalf of an individual other than yourself;</span>\n</p>\n\n<p><span>&#9679;unless Sharingear explicitly permits otherwise, request or book a reservationof Equipment if you will not actually be the one using the Equipment yourself;</span>\n</p>\n\n<p><span>&#9679;contact an Owner for any purpose other than asking a question related to areservation or such Owner’s Equipment or Gears;</span>\n</p>\n\n<p><span>&#9679;contact a Renter for any purpose other than asking a question related to areservation or such Renter’s use of the Platform;</span>\n</p>\n\n<p><span>&#9679;recruit or otherwise solicit any Owner or other Member to join third-partyservices or websites that are competitive to Sharingear, without Sharingear’sprior written approval;</span>\n</p>\n\n<p><span>&#9679;impersonate any person or entity, or falsify or otherwise misrepresent yourselfor your affiliation with any person or entity;</span>\n</p>\n\n<p><span>&#9679; useautomated scripts to collect information from or otherwise interact with thePlatform or Collective Content;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content to find an Owner or Renter and then completea reservation of Equipment independent of the Platform, in order to circumventthe obligation to pay any Service Fees related to Sharingear’s provision of theServices or for any other reasons;</span>\n</p>\n\n<p><span>&#9679; asan Owner, submit any Gear with false or misleading price information or submitany Gear with a price that you do not intend to honor;</span>\n</p>\n\n<p><span>&#9679;post, upload, publish, submit, or transmit any Content that: (i) infringes,misappropriates, or violates a third party’s patent, copyright, trademark,trade secret, moral rights, or other intellectual property rights, or rights ofpublicity or privacy; (ii) violates, or encourages any conduct that wouldviolate, any applicable law or regulation or would give rise to civilliability; (iii) is fraudulent, false, misleading, or deceptive; (iv) isdefamatory, obscene, pornographic, vulgar, or offensive; (v) promotesdiscrimination, bigotry, racism, hatred, harassment, or harm against anyindividual or group; (vi) is violent or threatening or promotes violence oractions that are threatening to any other person; or (vii) promotes illegal orharmful activities or substances;</span>\n</p>\n\n<p><span>&#9679;systematically retrieve data or other content from our Platform to create orcompile, directly or indirectly, in single or multiple downloads, a collection,compilation, database, directory, or the like, whether by manual methods,through the use of bots, crawlers, or spiders, or otherwise;</span>\n</p>\n\n<p><span>&#9679;use, display, mirror, or frame the Platform or Collective Content, or anyindividual element within the Platform or Collective Content, Sharingear’sname, any trademark, logo, or other proprietary information, or the layout anddesign of any page or form contained on a page in the Platform, without Sharingear’sexpress written consent;</span>\n</p>\n\n<p><span>&#9679;access, tamper with, or use non-public areas of the Platform, Sharingear’scomputer systems, or the technical delivery systems of Sharingear’s providers;</span>\n</p>\n\n<p><span>&#9679;attempt to probe, scan, or test the vulnerability of any Sharingear system ornetwork or breach any security or authentication measures;</span>\n</p>\n\n<p><span>&#9679;avoid, bypass, remove, deactivate, impair, descramble, or otherwise circumventany technological measure implemented by Sharingearor any of Sharingear’sproviders or any other third party (including another user) to protect thePlatform or Collective Content;</span>\n</p>\n\n<p><span>&#9679;force any TCP/IP packet header or any part of the header information in anyemail or newsgroup posting, or in any way use the Platform or CollectiveContent to send altered, deceptive or false source-identifying information;</span>\n</p>\n\n<p><span>&#9679;attempt to decipher, decompile, disassemble, or reverse engineer any of thesoftware used to provide the Platform or Collective Content; or</span>\n</p>\n\n<p><span>&#9679;advocate, encourage, or assist any third party in doing any of the foregoing.</span></p>\n\n<p><span>Sharingear hasthe right to investigate and prosecute violations of any of the above to thefullest extent of the law.</span>\n</p>\n\n<p><span>Sharingearmay access, preserve, and disclose any of your information if we are requiredto do so by law, or if we believe in good faith that it is reasonably necessaryto: (i) respond to claims asserted against Sharingear or to comply with legalprocess (for example, subpoenas or warrants); (ii) enforce or administer our agreementswith users, such as these Terms); (iii) for fraud prevention, risk assessment,investigation, customer support, product development, and de-bugging purposes;or (iv) protect the rights, property, or safety of Sharingear, its users, ormembers of the public. You acknowledge that Sharingear has no obligation tomonitor your access to or use of the Platform or Collective Content or toreview or edit any Member Content, but has the right to do so for the purposesof operating and improving the Platform (including without limitation for fraudprevention, risk assessment, investigation, and customer support purposes), toensure your compliance with these Terms, to comply with applicable law or therequirement of a court, administrative agency, or other governmental body, torespond to content that it determines is otherwise objectionable, or as setforth in these Terms. Sharingear reserves the right, at any time and withoutprior notice, to remove or disable access to any Collective Content that Sharingear</span>\n</p>\n\n<p><span>, in itssole discretion, considers to be objectionable for any reason, in violation ofthese Terms, or otherwise harmful to the Platform.</span>\n</p>\n\n<p><b> <span>9. PrivacyPolicy</span> </b></p>\n\n<p><span>See Sharingear’sPrivacy Policy, at </span> <span>                <a\n\t\thref=\"http://www.sharingear.com/privacy\"> <span style=''>www.sharingear.com/privacy</span>\n</a>            </span>\n\t<span>,for information and notices concerning Sharingear’s collection and use of yourpersonal information.</span>\n</p>\n\n<p><b> <span>10.Proprietary Rights</span> </b></p>\n\n<p><span>ThePlatform and Collective Content are protected by copyright, trademark, andother laws of the United States and foreign countries. You acknowledge andagree that the Platform and Collective Content, including all associatedintellectual property rights, are the exclusive property of Sharingear and itslicensors. You will not remove, alter, or obscure any copyright, trademark,service mark, or other proprietary rights notices incorporated in oraccompanying the Platform or Collective Content.</span>\n</p>\n\n<p><span>Alltrademarks, service marks, logos, trade names, and any proprietary designationsof Sharingear used herein are trademarks or registered trademarks of Sharingear.Any other trademarks, service marks, logos, trade names, and other proprietarydesignations are the trademarks or registered trademarks of their respectiveparties.</span>\n</p>\n\n<p><b> <span>11. SharingearContent</span> </b></p>\n\n<p><span>Subject toyour compliance with these Terms, Sharingear grants you a limited,non-exclusive, non-transferable license to (i) access and view any SharingearContent solely for your personal and non-commercial purposes and (ii) accessand view any Member Content to which you are permitted access, solely for yourpersonal and non-commercial purposes. You have no rights to sublicense thelicense rights granted in this section.</span>\n</p>\n\n<p><span>You willnot use, copy, adapt, modify, prepare derivative works based upon, distribute,license, sell, transfer, publicly display, publicly perform, transmit,broadcast, or otherwise exploit the Platform or Collective Content, except asexpressly permitted in these Terms. No licenses or rights are granted to you byimplication or otherwise under any intellectual property rights owned orcontrolled by Sharingear its licensors, except for the licenses and rightsexpressly granted in these Terms.</span>\n</p>\n\n<p><b> <span>12. MemberContent</span> </b></p>\n\n<p><span>We may, inour sole discretion, permit you to post, upload, publish, submit, or transmitMember Content. By making available any Member Content on or through thePlatform, you hereby grant to Sharingear a worldwide, irrevocable, perpetual,non-exclusive, transferable, royalty-free license, with the right tosublicense, use, view, copy, adapt, modify, distribute, license, sell,transfer, publicly display, publicly perform, transmit, stream, broadcast,access, view, and otherwise exploit such Member Content on, through, by meansof, or to promote or market the Platform. Sharingear does not claim anyownership rights in such Member Content and nothing in these Terms will bedeemed to restrict any rights that you may have to use and exploit any suchMember Content.</span>\n</p>\n\n<p><span>Youacknowledge and agree that you are solely responsible for all Member Contentthat you make available through the Platform. Accordingly, you represent andwarrant that: (i) you either are the sole and exclusive owner of all MemberContent that you make available through the Platform or you have all rights,licenses, consents, and releases that are necessary to grant to Sharingear therights in such Member Content, as contemplated under these Terms; and (ii)neither the Member Content nor your posting, uploading, publication,submission, or transmittal of the Member Content or Sharingear’s use of theMember Content (or any portion thereof) on, through, or by means of thePlatform will infringe, misappropriate, or violate a third party’s patent,copyright, trademark, trade secret, moral rights, or other proprietary orintellectual property rights, or rights of publicity or privacy, or result inthe violation of any applicable law or regulation.</span>\n</p>\n\n<p><b> <span>13. Links</span> </b></p>\n\n<p><span>ThePlatform may contain links to third-party websites or resources. Youacknowledge and agree that Sharingear is not responsible or liable for: (i) theavailability or accuracy of such websites or resources; or (ii) the content,products, or services on or available from such websites or resources. Links tosuch websites or resources do not imply any endorsement by Sharingear of suchwebsites or resources or the content, products, or services available from suchwebsites or resources. You acknowledge sole responsibility for and assume allrisk arising from your use of any such websites or resources or the Content,products, or services on or available from such websites or resources.</span>\n</p>\n\n<p><span>Someportions of the Platform implement Google Maps/Earth mapping services,including Google Maps API(s). Your use of Google Maps/Earth is subject toGoogle’s terms of use, located at</span>\n<span>                <a href=\"http://www.google.com/intl/en_us/help/terms_maps.html\"> <u> <span>http://www.google.com/intl/en_us/help/terms_maps.html</span>\n</u> </a>            </span> <span>.</span></p>\n\n<p><b> <span>14.Feedback</span> </b></p>\n\n<p><span>We welcomeand encourage you to provide feedback, comments, and suggestions forimprovements to the Platform (“Feedback”). You may submit Feedback by emailingus at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>or through a contact form on the Platform, if any. You acknowledge and agreethat all Feedback will be the sole and exclusive property of Sharingear and youhereby irrevocably assign to Sharingear all of your right, title, and interestin and to all Feedback, including without limitation all worldwide patent,copyright, trade secret, moral, and other proprietary or intellectual propertyrights therein. At Sharingear’s request and expense, you will execute documentsand take such further acts as Sharingear may reasonably request to assist Sharingearto acquire, perfect, and maintain its intellectual property rights and otherlegal protections for the Feedback.</span>\n</p>\n\n<p><b> <span>15.Copyright Policy</span> </b></p>\n\n<p><span>Sharingearrespects copyright law and expects its users to do the same. It is Sharingear’spolicy to terminate, in appropriate circumstances, the Sharingear Accounts ofMembers or other account holders who repeatedly infringe or are believed to berepeatedly infringing the rights of copyright holders. Please see Sharingear’sCopyright Policy, at </span>\n<span>                <a href=\"http://www.sharingear.com/copyright\"> <span style=''>www.sharingear.com/copyright</span>\n</a>            </span> <span>for further information.</span></p>\n\n<p><b> <span>16.Suspension, Termination, and Sharingear Account Cancellation</span> </b></p>\n\n<p><span>We may, inour discretion and without liability to you, with or without cause, with orwithout prior notice, and at any time, decide to limit, suspend, deactivate, orcancel your Sharingear Account. If we exercise our discretion under these Termsto do so, any or all of the following can occur with or without prior notice orexplanation to you: (a) your Sharingear Account will be deactivated orsuspended, your password will be disabled, and you will not be able to accessthe Platform, your Sharingear Account, or your Member Content or receiveassistance from Sharingear Customer Service; (b) any pending or accepted futurereservations as either Owner or Renter will be immediately terminated; (c) wemay communicate to your Renters or Owners that a potential or confirmedreservation has been cancelled; (d) we may refund your Renters in full for anyand all confirmed reservations, irrespective of preexisting cancellationpolicies; (e) we may contact your Renters to inform them about potentialalternate Equipment with other Owners that may be available on the Platform;and (f) you will not be entitled to any compensation for reservations (even ifconfirmed) that were cancelled as a result of a suspension, deactivation, ortermination of your Sharingear Account. You may cancel your Sharingear Accountat any time by emailing us at support@sharingear.com. Please note that if your SharingearAccount is cancelled, we do not have an obligation to delete or return to youany Content you have posted on the Platform, including but not limited to, anyreviews or Feedback.</span>\n</p>\n\n<p><b> <span>17.Disclaimers</span> </b></p>\n\n<p><span>IF YOUCHOOSE TO USE THE PLATFORM OR COLLECTIVE CONTENT, YOU DO SO AT YOUR SOLE RISK.YOU ACKNOWLEDGE AND AGREE THAT SHARINGEAR DOES NOT HAVE AN OBLIGATION TOCONDUCT BACKGROUND CHECKS ON ANY MEMBER, INCLUDING, BUT NOT LIMITED TO, RENTERSAND OWNERS, BUT MAY CONDUCT SUCH BACKGROUND CHECKS IN ITS SOLE DISCRETION. THEPLATFORM AND COLLECTIVE CONTENT ARE PROVIDED “AS IS,” WITHOUT WARRANTY OF ANYKIND, EITHER EXPRESS OR IMPLIED. WITHOUT LIMITING THE FOREGOING, SHARINGEAREXPLICITLY DISCLAIMS ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR APARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT, AND ANY WARRANTIESARISING OUT OF COURSE OF DEALING OR USAGE OF TRADE. SHARINGEAR MAKES NO WARRANTYTHAT THE PLATFORM OR COLLECTIVE CONTENT, INCLUDING, BUT NOT LIMITED TO, THE GEARSOR ANY EQUIPMENT, WILL MEET YOUR REQUIREMENTS OR BE AVAILABLE ON ANUNINTERRUPTED, SECURE, OR ERROR-FREE BASIS. SHARINGEAR MAKES NO WARRANTYREGARDING THE QUALITY OF ANY GEARS, EQUIPMENT, THE SERVICES, OR COLLECTIVECONTENT OR THE ACCURACY, TIMELINESS, TRUTHFULNESS, COMPLETENESS, OR RELIABILITYOF ANY COLLECTIVE CONTENT OBTAINED THROUGH THE PLATFORM.</span>\n</p>\n\n<p><span>NO ADVICEOR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED FROM SHARINGEAR OR THROUGHTHE PLATFORM OR COLLECTIVE CONTENT, WILL CREATE ANY WARRANTY NOT EXPRESSLY MADEHEREIN.</span>\n</p>\n\n<p><span>YOU ARESOLELY RESPONSIBLE FOR ALL OF YOUR COMMUNICATIONS AND INTERACTIONS WITH OTHERUSERS OF THE PLATFORM AND WITH OTHER PERSONS WITH WHOM YOU COMMUNICATE ORINTERACT AS A RESULT OF YOUR USE OF THE PLATFORM, INCLUDING, BUT NOT LIMITEDTO, ANY OWNERS OR RENTERS. YOU UNDERSTAND THAT SHARINGEAR DOES NOT MAKE ANYATTEMPT TO VERIFY THE STATEMENTS OF USERS OF THE PLATFORM OR TO REVIEW ANYEQUIPMENT. SHARINGEAR MAKES NO REPRESENTATIONS OR WARRANTIES AS TO THE CONDUCTOF USERS OF THE PLATFORM OR THEIR COMPATIBILITY WITH ANY CURRENT OR FUTUREUSERS OF THE PLATFORM. YOU AGREE TO TAKE REASONABLE PRECAUTIONS IN ALLCOMMUNICATIONS AND INTERACTIONS WITH OTHER USERS OF THE PLATFORM AND WITH OTHERPERSONS WITH WHOM YOU COMMUNICATE OR INTERACT AS A RESULT OF YOUR USE OF THEPLATFORM, INCLUDING, BUT NOT LIMITED TO, RENTERS AND OWNERS, PARTICULARLY IFYOU DECIDE TO MEET OFFLINE OR IN PERSON, REGARDLESS OF WHETHER SUCH MEETINGS AREORGANIZED BY SHARINGEAR. NOTWITHSTANDING SHARINGEAR’S APPOINTMENT AS THELIMITED PAYMENT COLLECTION AGENT OF THE OWNERS FOR THE PURPOSE OF ACCEPTINGPAYMENTS FROM RENTERS ON BEHALF OF THE OWNERS, SHARINGEAR EXPLICITLY DISCLAIMSALL LIABILITY FOR ANY ACT OR OMISSION OF ANY RENTER OR OTHER THIRD PARTY.</span>\n</p>\n\n<p><b> <span>18.Limitation of Liability</span> </b> <span> .</span></p>\n\n<p><span>YOUACKNOWLEDGE AND AGREE THAT, TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE ENTIRERISK ARISING OUT OF YOUR ACCESS TO AND USE OF THE PLATFORM AND COLLECTIVECONTENT, YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIA THE PLATFORM, AND ANYCONTACT YOU HAVE WITH OTHER USERS OF SHARINGEAR WHETHER IN PERSON OR ONLINEREMAINS WITH YOU. NEITHER SHARINGEAR NOR ANY OTHER PARTY INVOLVED IN CREATING,PRODUCING, OR DELIVERING THE PLATFORM OR COLLECTIVE CONTENT WILL BE LIABLE FORANY INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES, INCLUDING LOSTPROFITS, LOSS OF DATA OR LOSS OF GOODWILL, SERVICE INTERRUPTION, COMPUTERDAMAGE OR SYSTEM FAILURE, OR THE COST OF SUBSTITUTE PRODUCTS OR SERVICES, ORFOR ANY DAMAGES FOR PERSONAL OR BODILY INJURY OR EMOTIONAL DISTRESS ARISING OUTOF OR IN CONNECTION WITH THESE TERMS, FROM THE USE OR INABILITY TO USE THEPLATFORM OR OTHER PERSONS WITH WHOM YOU COMMUNICATE OR INTERACT AS A RESULT OFYOUR USE OF THE PLATFORM OR FROM YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIATHE PLATFORM, WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE),PRODUCT LIABILITY OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT SHARINGEAR HASBEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE, EVEN IF A LIMITED REMEDY SETFORTH HEREIN IS FOUND TO HAVE FAILED OF ITS ESSENTIAL PURPOSE.</span>\n</p>\n\n<p><span>EXCEPT FOROUR OBLIGATIONS TO PAY AMOUNTS TO APPLICABLE OWNERS PURSUANT TO THESE TERMS, INNO EVENT WILL SHARINGEAR’S AGGREGATE LIABILITY ARISING OUT OF OR IN CONNECTIONWITH THESE TERMS AND YOUR USE OF THE PLATFORM, INCLUDING, BUT NOT LIMITED TO,FROM YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIA THE PLATFORM, FROM THE USEOF OR INABILITY TO USE THE PLATFORM OR COLLECTIVE CONTENT, AND IN CONNECTION WITHANY EQUIPMENT OR INTERACTIONS WITH ANY OTHER MEMBERS, EXCEED THE AMOUNTS YOUHAVE PAID OR OWE FOR RESERVATIONS VIA THE PLATFORM AS A RENTER IN THE TWELVE(12) MONTH PERIOD PRIOR TO THE EVENT GIVING RISE TO THE LIABILITY, OR IF YOUARE AN OWNER, THE AMOUNTS PAID BY SHARINGEAR TO YOU IN THE TWELVE (12) MONTHPERIOD PRIOR TO THE EVENT GIVING RISE TO THE LIABILITY, OR ONE HUNDRED U.S.DOLLARS (US$100), IF NO SUCH PAYMENTS HAVE BEEN MADE, AS APPLICABLE. THELIMITATION OF DAMAGES SET FORTH ABOVE ARE FUNDAMENTAL ELEMENTS OF THE BASIS OFTHE BARGAIN BETWEEN SHARINGEAR AND YOU. SOME JURISDICTIONS DO NOT ALLOW THEEXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES,SO THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</span>\n</p>\n\n<p><b> <span>19.Indemnification</span> </b> <span> .</span></p>\n\n<p><span>You agreeto release, defend, indemnify and hold Sharingear and its affiliates andsubsidiaries, and their officers, directors, employees, and agents, harmlessfrom and against any claims, liabilities, damages, losses, and expenses,including, without limitation, reasonable legal and accounting fees, arisingout of or in any way connected with (a) your access to or use of the Platformor Collective Content or your violation of these Terms; (b) your MemberContent; (c) your (i) interaction with any Member, (ii) reservation of Equipment,or (iii) creation of a Gear; and (d) the use, condition, or rental of Equipmentby you, including but not limited to any injuries, losses, or damages(compensatory, direct, incidental, consequential, or otherwise) of any kindarising in connection with or as a result of a rental, reservation, or use ofEquipment.</span>\n</p>\n\n<p><b> <span>20.Reporting Misconduct</span> </b> <span> .</span></p>\n\n<p><span>If youinteract with a Member, Renter or Owner, whether via the Platform, offline, orin person, in connection with a reservation of a Gear or Equipment, who youfeel is acting or has acted inappropriately, including but not limited toanyone who (i) engages in offensive, violent, or sexually inappropriatebehavior; (ii) you suspect of stealing from you; or (iii) engages in otherdisturbing conduct, you should immediately report such person to theappropriate authorities and then to Sharingear by contacting us with yourpolice station and report number at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span> ; providedthat your report will not obligate us to take any action beyond that requiredby law (if any) or cause us to incur any liability to you.</span>\n</p>\n\n<p><b> <span>21.Miscellaneous.</span> </b></p>\n\n<p><b> <i> <span>EntireAgreement</span> </i> </b></p>\n\n<p><span>These Termsconstitute the entire and exclusive understanding and agreement between Sharingearand you regarding the Platform and Collective Content, and any reservations or Gearprofiles of Equipment made via the Platform, and these Terms supersede andreplace any and all prior oral or written understandings or agreements between Sharingearand you regarding reservations or Gear profiles of Equipment, the Platform, andCollective Content.</span>\n</p>\n\n<p><b> <i> <span>Assignment</span> </i> </b></p>\n\n<p><span>You may notassign or transfer these Terms, by operation of law or otherwise, without Sharingear’sprior written consent. Any attempt by you to assign or transfer these Terms,without such consent, will be null and of no effect. Sharingear may assign ortransfer these Terms, at its sole discretion, without restriction. Subject tothe foregoing, these Terms will bind and inure to the benefit of the parties,their successors and permitted assigns.</span>\n</p>\n\n<p><b> <i> <span>Notices</span> </i> </b></p>\n\n<p><span>Any noticesor other communications permitted or required hereunder, including thoseregarding modifications to these Terms, will be in writing and given by Sharingear(i) via email (in each case to the address that you provide) or (ii) by postingto the Site or via the Application. For notices made by e-mail, the date ofreceipt will be deemed the date on which such notice is transmitted.</span>\n</p>\n\n<p><b> <i> <span>ControllingLaw and Jurisdiction</span> </i> </b></p>\n\n<p><span>These Termswill be interpreted in accordance with the laws of Denmark, without regard toits conflict of law provisions. You and we submit to the personal jurisdictionor federal court in Copenhagen, Denmark for any actions for which the partiesretain the right to seek injunctive or other equitable relief in a court ofcompetent jurisdiction to prevent the actual or threatened infringement,misappropriation, or violation of a party’s copyrights, trademarks, tradesecrets, patents, or other intellectual property rights, as set forth in theDispute Resolution provision below.</span>\n</p>\n\n<p><b> <i> <span>DisputeResolution</span> </i> </b></p>\n\n<p><span>You and Sharingearagree that any dispute, claim, or controversy arising out of or relating tothese Terms or the breach, termination, enforcement, interpretation, orvalidity thereof, or to the use of the Platform (collectively, “Disputes”) willbe settled by binding arbitration, except that each party retains the right toseek injunctive or other equitable relief in a court of competent jurisdictionto prevent the actual or threatened infringement, misappropriation, or violationof a party’s copyrights, trademarks, trade secrets, patents, or otherintellectual property rights. You acknowledge and agree that you and Sharingearare each waiving the right to a trial by jury or to participate as a plaintiffor class member in any purported class action or representative proceeding.Further, unless both you and Sharingear otherwise agree in writing, thearbitrator may not consolidate more than one person’s claims and may nototherwise preside over any form of any class or representative proceeding. Ifthis specific paragraph is held unenforceable, then the entirety of this“Dispute Resolution” section will be deemed void.</span>\n</p>\n\n<p><b> <i> <span>Survival</span> </i> </b></p>\n\n<p><span>Theprovisions and terms of these Terms that by their nature should survivetermination of these Terms, including, without limitation, the “DisputeResolution” section and Section 18 (“Limitation of Liability”), shall surviveany termination or expiration of these Terms.</span>\n</p>\n\n<p><b> <i> <span>General</span> </i> </b></p>\n\n<p><span>The failureof Sharingear to enforce any right or provision of these Terms will notconstitute a waiver of future enforcement of that right or provision. Thewaiver of any such right or provision will be effective only if in writing andsigned by a duly authorized representative of Sharingear. Except as expresslyset forth in these Terms, the exercise by either party of any of its remediesunder these Terms will be without prejudice to its other remedies under theseTerms or otherwise. If for any reason an arbitrator or a court of competentjurisdiction finds any provision of these Terms invalid or unenforceable, thatprovision will be enforced to the maximum extent permissible and the otherprovisions of these Terms will remain in full force and effect.</span>\n</p>\n\n<p><b> <i> <span>Contacting Sharingear</span> </i> </b></p>\n\n<p><span>If you have any questions about these Terms, please contact Sharingearat </span> <span>\n\t<a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span></span></p></div>\n</div>";
+	module.exports = "<div class=\"row submerchant-container\" id=\"addgear-availability-submerchantform\">\n  <div class=\"col-sm-12 submerchant-height\">\n    \n    \n\n      <div class=\"col-sm-12 submerchant-height\">\n        <div class=\"row\">\n          <div class=\"col-sm-12\">\n            <form id=\"addgear-submerchantform\" onsubmit=\"return false;\">        \n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-birthdate\">Date of birth:*</label>\n                <div class=\"birthday-select\" id=\"submerchantregistration-birthdate\">\n                  <select id=\"submerchantregistration-birthdate-date\" name=\"birthdate-day\"></select>/<select id=\"submerchantregistration-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"submerchantregistration-birthdate-year\" name=\"birthdate-year\"></select>\n                </div>\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-phone\">Phone:*</label>\n                <input type=\"text\" name=\"phone\" class=\"form-control\" id=\"submerchantregistration-phone\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-address\">Address:*</label>\n                <input type=\"text\" name=\"address\" class=\"form-control\" id=\"submerchantregistration-address\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-postalcode\">Postal code:*</label>\n                <input type=\"text\" class=\"form-control\" name=\"postal_code\" id=\"submerchantregistration-postalcode\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-city\">City:*</label>\n                <input type=\"text\" name=\"city\" class=\"form-control\" id=\"submerchantregistration-city\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-region\">Region:</label>\n                <input type=\"text\" name=\"region\" class=\"form-control\" id=\"submerchantregistration-region\">\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-region\">Country:</label>\n                <select class=\"form-control\" name=\"country\" id=\"submerchantregistration-country\">\n                  <option value=\"\">Select your country</option>\n                </select>\n              </div>\n              <div class=\"form-group col-sm-6\">\n                <label for=\"submerchantregistration-region\">Nationality:</label>\n                <select class=\"form-control\" name=\"nationality\" id=\"submerchantregistration-nationality\">\n                  <option value=\"\">Select your nationality</option>\n                </select>\n              </div>\n              <div class=\"hidden\" id=\"iban-container\">\n                <div class=\"form-group col-sm-6\">\n                  <label for=\"submerchantregistration-iban\">IBAN:<span id=\"iban-hint\" class=\"submerchant-hits\">[?]</span></label>\n                  <input type=\"text\" name=\"iban\" class=\"form-control\" id=\"submerchantregistration-iban\">\n                </div>\n                <div class=\"form-group col-sm-6\">\n                  <label for=\"submerchantregistration-swift\">BIC/SWIFT:<span id=\"swift-hint\" class=\"submerchant-hits\">[?]</span></label>\n                  <input type=\"text\" name=\"swift\" class=\"form-control\" id=\"submerchantregistration-swift\">\n                </div>\n              </div>\n              <div class=\"hidden\" id=\"aba-container\">\n                <div class=\"form-group col-sm-6\">\n                  <label for=\"submerchantregistration-accountnumber\">Account number:*</label>\n                  <input type=\"text\" name=\"iban\" class=\"form-control\" id=\"submerchantregistration-accountnumber\">\n                </div>\n                <div class=\"form-group col-sm-6\">\n                  <label for=\"submerchantregistration-aba\">ABA (routing transit number):*</label>\n                  <input type=\"text\" name=\"swift\" class=\"form-control\" id=\"submerchantregistration-aba\">\n                </div>\n              </div>\n            </form>\n          </div>\n        </div>\n\n        <div id=\"submerchantregistration-terms\">\n          <div class=\"row submerchant-terms-styles\">\n            <div class=\"col-sm-12\">\n              <p class=\"text-center\">\n                By pressing accept you confirm that you have read and accepted the Sharingear Terms and Conditions.\n                If you press cancel your gear will be saved, but it will not be possible to rent it.\n              </p>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"row hidden\" id=\"submerchantregistration-terms-container\">\n      <div class=\"col-sm-12\">\n        \n      </div>\n    </div>\n\n  </div>\n</div>";
 
 /***/ },
 /* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"testimonial stephen-carpenter-deftones\">\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8 text-center\">\n      <div class=\"profile-pic\"></div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8\">\n      <p class=\"text-center sg-white\">\n        \"{{citation}}\"\n      </p>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8\">\n      <hr>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8 sg-white text-center name\">\n      {{name}}\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8 sg-blue text-center\">\n      <span class=\"role\">{{role}}</span>, <span class=\"band\">{{band}}</span>\n    </div>\n  </div>\n</div>";
+	module.exports = "<div class=\"container-fluid view techprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t<hr>\n\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 map-container\">\n\t\t\t\t\t<div class=\"sg-gray\"><i class=\"fa fa-home\"></i><span class=\"sg-darkergray\"> {{location}}</span></div>\n\t\t\t\t\t<div class=\"map\" id=\"techprofile-map\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-white-bg sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-gray profile-type\">\n\t\t\t\t\t<div class=\"sg-icon icon-dashboard-yourtechprofile\"></div> TECHNICIAN PROFILE\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-7 sg-darkergray title-container\">\n\t\t\t\t\t<div class=\"sg-icon icon-addtechprofile-{{icon}} sg-darkgray\"></div> <div class=\"techprofile-title\">{{roadie_type}}</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-sm-5\">\n\t\t\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"techprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-book\">BOOK</button>\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-edit\">EDIT</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg experience\">\n\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t\t<div class=\"sg-darkergray\">Experience: <span class=\"sg-yellow\">{{experience}}</span></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t<div class=\"social sg-gray text-right\"><div class=\"sharethistech\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 profile-text\">\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">ABOUT</h4>\n\t\t\t\t\t\t\t<p>{{about}}</p>\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">CURRENTLY WORKING FOR</h4>\n\t\t\t\t\t\t\t<p>{{currently}}</p>\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">REFERENCES</h4>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Bands &amp; artists toured with:</h5>\n\t\t\t\t\t\t\t<p>{{tours}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Companies, venues and festivals worked for:</h5>\n\t\t\t\t\t\t\t<p>{{companies}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Years of experience:</h5>\n\t\t\t\t\t\t\t<p>{{xp_years}}</p>\n\t\t\t\t\t\t\t<h5>Genres interested in:</h5>\n\t\t\t\t\t\t\t<p>{{genres}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Bands worked for:</h5>\n\t\t\t\t\t\t\t<p>{{bands}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n    <div class=\"col-xs-2\">\n        <div class=\"sg-bg-image\"></div>\n    </div>\n    <div class=\"col-xs-8\">\n        <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\n    </div>\n    <div class=\"col-xs-2 bs-reset\">\n    \t<div class=\"button-container\">\n        \t<a href=\"#gearprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourgear-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "<div class=\"searchform\">\n  <form class=\"form-inline\" id=\"techprofilesearchform-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\n    <div class=\"form-group\">\n      <label class=\"sg-blue\">Find your technician</label>\n      <input type=\"search\" class=\"form-control\" id=\"techprofilesearch-techprofile\" placeholder=\"technician, manager, etc.\">\n      <div class=\"suggestion-box hidden\" id=\"techprofiles-suggestions-box\"></div>\n    </div><div class=\"form-group\">\n      <label class=\"sg-blue\">Find a location</label>\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-location\" placeholder=\"\">\n    </div><div class=\"form-group search-pickup-container\">\n      <label class=\"sg-blue\">Pickup</label>\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-pickup\" placeholder=\"15/08/1969\" >\n    </div><div class=\"form-group search-return-container\">\n      <label class=\"sg-blue\">Delivery</label>\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-return\" placeholder=\"18/08/1969\" >\n    </div><div class=\"form-group submit-container\">\n      <input type=\"submit\" id=\"techprofilesearchform-submit-btn\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\n    </div>\n  </form>\n</div>\n";
 
 /***/ },
 /* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n    <div class=\"col-xs-2\">\n        <div class=\"sg-bg-image text-center\"><div class=\"sg-icon icon-addtechprofile-{{icon}}\"></div></div>\n    </div>\n    <div class=\"col-xs-8\">\n        <div class=\"sg-list-item-text\">{{roadie_type}}</div>\n    </div>\n    <div class=\"col-xs-2 bs-reset\">\n    \t<div class=\"button-container\">\n        \t<a href=\"#techprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourtechprofile-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "<div class=\"billboard-wrapper wall-of-text\" style=\"padding-top:30px\">\n<div class=WordSection1><h1 style=\"color: #00aeff\">SHARINGEAR Terms of Service</h1>\n\n<p><span>Last Updated: 26 <sup>th</sup> of November 2014</span></p>\n\n<p><span>&nbsp;</span></p>\n\n<p><b> <span>Please readthe following terms of service carefully (the “Terms”). By accessing the Site,Applications or Services of Sharingear, you agree to be bound by these Terms,as amended from time to time. If you do not agree to these Terms, you areprohibited from using or accessing the Site, Application, or Services.</span>\n</b></p>\n\n<p><span>Sharingear IVS(hereafter referred to as “Sharingear” “we,” “us,” or “our”) provides an onlineplatform that connects owners of equipment, musical instruments and otherartistic tools (the “Equipment”) with people seeking to rent such Equipment(collectively, the “Services”), which Services are accessible at </span>\n\t<span>                <a href=\"http://www.sharingear.com\"> <span style=''>www.sharingear.com</span> </a>            </span>\n\t<span>and any other websites through which Sharingear makes the Services available(collectively, the “Site”) and via applications for mobile devices, if any (the“Application”). The Site, Application, and Services are sometimes collectivelyreferred to herein as the “Platform.” By using the Site and/or Application, youagree to comply with and be legally bound by the terms and conditions of theseTerms of Service (“Terms”), whether or not you become a registered user of theServices. These Terms govern your access to and use of the Site, Application,Services, and all Collective Content (defined below), and constitute a bindinglegal agreement between you and Sharingear. Please read carefully these Termsand our Privacy Policy which is incorporated by reference into these Terms. Ifyou do not agree to these Terms, you have no right to obtain information fromor otherwise continue to use the Platform. Failure to use the Platform inaccordance with these Terms may subject you to civil and criminal penalties.</span>\n</p>\n\n<p><span>Youunderstand and agree that Sharingear is not a party to any agreements enteredinto between Owners and Renters (defined below). Sharingear is not a broker,agent, or insurer and has no control over the conduct of Owners, Renters, andother users of the Platform or any Equipment, and disclaims all liability inthis regard.</span>\n</p>\n\n<p><b> <i> <span>KeyDefinitions</span> </i> </b></p>\n\n<p><span>- “Renter”means a Member who requests from an Owner a reservation of Equipment via thePlatform, or a Member who uses Equipment and is not the Owner of suchEquipment.</span>\n</p>\n\n<p><span>-“Collective Content” means Member Content and Sharingear Content.</span></p>\n\n<p><span>- “Content”means text, graphics, images, music, software (excluding the Site andApplication), audio, video, information, or other materials.</span>\n</p>\n\n<p><span>- “Gear”means Equipment that is listed by an Owner as available for rental via thePlatform.</span></p>\n\n<p><span>- “Member”means a person who completes Sharingear’s account registration process,including but not limited to Owners and Renters, as described under Section 4(“Your Account”) below.</span>\n</p>\n\n<p><span>- “MemberContent” means all Content that a Member posts, uploads, publishes, submits, ortransmits to be made available through the Platform.</span>\n</p>\n\n<p><span>- “Owner”means a Member who creates a Gear via the Platform.</span></p>\n\n<p><span>- “SharingearContent” means all Content that Sharingear makes available through the Platform,including any Content licensed from a third party, but excluding MemberContent.</span>\n</p>\n\n<p><span>- “Tax” or“Taxes” mean any sales taxes, value added taxes (VAT), goods and services taxes(GST), transient occupancy taxes, tourist or other visitor taxes, accommodationor lodging taxes, fees that equipment or accommodation providers may berequired by law to collect and remit to governmental agencies, and othersimilar municipal, state, federal, and national indirect or other withholdingtaxes, and personal or corporate income taxes.</span>\n</p>\n\n<p><b> <span>1.Modification</span> </b></p>\n\n<p><span>Sharingearreserves the right, in our sole discretion, to modify the Platform or to modifythese Terms, including the Service Fees (defined below), at any time andwithout prior notice. If we modify these Terms, we will post the modificationon the Site or via the Application to provide you with notice of themodification. We will also update the “Last Updated” date at the top of theseTerms. By continuing to access or use the Platform after we have posted amodification on the Site or via the Application or have provided you withnotice of a modification, you are indicating that you agree to be bound by themodified Terms. If the modified Terms are not acceptable to you, your onlyrecourse is to cease using the Platform.</span>\n</p>\n\n<p><b> <span>2.Eligibility</span> </b></p>\n\n<p><span>ThePlatform is intended for use solely by persons who are 18 years of age orolder. Any access to or use of the Platform by anyone under 18 is expresslyprohibited. By accessing or using the Platform you represent and warrant thatyou are 18 years of age or older.</span>\n</p>\n\n<p><b> <span>3. Services</span> </b></p>\n\n<p><span>As statedabove, Sharingear makes available an online platform or marketplace withrelated technology for Owners and Renters to meet online and arrange for thereservation of Equipment directly with each other via the Platform. You mayview Gear as an unregistered visitor to the Site or Application; however, youmust be a registered Member (defined below) to book or create a Gear.</span>\n</p>\n\n<p><span>Sharingearis not an owner of Equipment and does not own, sell, resell, furnish, provide,rent, re-rent, manage and/or control Equipment, including but not limited toreal property, instruments, and transportation, delivery, or travel services. Sharingear’sresponsibilities are limited to: (i) facilitating the availability of the Site,Application, and Services; and (ii) serving as the limited agent of each Ownerfor the purposes of accepting payments from Renters on behalf of the Owner.</span>\n</p>\n\n<p><span>SHARINGEARCANNOT AND DOES NOT CONTROL THE CONTENT CONTAINED IN ANY GEARS AND THECONDITION, LEGALITY, OR SUITABILITY OF ANY EQUIPMENT. SHARINGEAR IS NOT RESPONSIBLEFOR AND DISCLAIMS ANY AND ALL LIABILITY RELATED TO ANY AND ALL GEARS ANDEQUIPMENT. ALL RESERVATIONS ARE MADE AT THE OWNER’S AND RENTER’S OWN RISK.</span>\n</p>\n\n<p><b> <span>4. YourAccount</span> </b></p>\n\n<p><span>In order toaccess certain features of the Platform and to book or create a Gear profile,you must first become a Member by registering an account (“Account”), either byproviding your email address and setting a password or through certain thirdparty social networking sites (“SNS”), including, without limitation, Facebook,via the Site or application. As part of the functionality of the Platform, youmay link your Account with your SNS accounts (each such SNS account, a “ThirdParty Account”), by either: (i) providing your Third Party Account logininformation to Sharingear through the Platform; or (ii) allowing Sharingear toaccess your Third Party Account as permitted under the applicable terms andconditions that govern your use of each Third Party Account. You represent thatyou are entitled to disclose your Third Party Account login information to Sharingearand/or grant Sharingear access to your Third Party Account (including, but notlimited to, for use for the purposes described herein), without breach by youof any of the terms and conditions that govern your use of the applicable ThirdParty Account and without obligating Sharingear to pay any fees or making Sharingearsubject to any usage limitations imposed by such third party service providers.By granting Sharingear access to any Third Party Accounts, you understand thatSharingear will access, make available and store (if applicable) any text,graphics, images, information and other materials you have provided to andstored in your Third Party Account, subject to your privacy settings in suchThird Party Account, if any (“SNS Content”) so that it is available on andthrough the Platform via your Account and Account profile page. You have theability to disable the connection between your Account and your Third PartyAccounts, at any time, by contacting </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>. Pleasenote that your relationship with the SNS associated with your Third PartyAccounts is governed solely by your agreement(s) with such SNS. Sharingearmakes no effort to review any SNS Content for any purposes, including, but notlimited to, for accuracy, legality, or non-infringement, and Sharingear is notresponsible for any SNS Content.</span>\n</p>\n\n<p><span>We willcreate your Account and your Account profile page for your use of the Platformbased upon the personal information you provide to us or that we obtain via anSNS as described above. You may not have more than one (1) active Account. Youagree to provide accurate, current, and complete information during the registrationprocess and to update such information to keep it accurate, current, andcomplete. Sharingear reserves the right to suspend or terminate your Accountand your access to the Platform if you create more than one (1) SharingearAccount or if any information provided during the registration process orthereafter process to be inaccurate, not current, or incomplete. You areresponsible for safeguarding your password. You agree that you will notdisclose your password to any third party and that you will take soleresponsibility for any activities or actions under your Account, whether or notyou have authorized such activities or actions. You will immediately notify usof any unauthorized use of your Account.</span>\n</p>\n\n<p><b> <span>5. Gear</span> </b> <span></span></p>\n\n<p><span>As aMember, you may create Gear profiles. To create a Gear profile, you will beasked a variety of questions about the Equipment to be listed, including butnot limited to a description, the location, the condition, and availability ofthe Equipment, additional services or features that can be added to areservation request at the Renter’s option (i.e., “add-ons”), and pricing andrelated rules and financial terms. Gears will be made publicly available viathe Platform. Other Members will be able to book your Gear via the Platformbased upon the information provided in the Gear. You understand and agree thatonce a Renter requests a reservation of your Gear, you may not request theRenter to pay a higher price than in the reservation request.</span>\n</p>\n\n<p><span>Youacknowledge and agree that you are responsible for any and all Gear profilesyou post. Accordingly, you represent and warrant that any Gear you post and thereservation of, or a Renter’s use of, Equipment in a Gear profile you post: (i)will not breach any agreements you have entered into with any third parties,such as ownership, lease or rental agreements; and (ii) will (a) be incompliance with all applicable laws, Tax requirements, and rules andregulations that may apply to any Equipment included in a Gear profile you postand (b) not conflict with the rights of third parties. Please note that Sharingearassumes no responsibility for an Owner’s compliance with any agreements with orduties to third parties, applicable laws, rules and regulations. Sharingearreserves the right, at any time and without prior notice, to remove or disableaccess to any Gear profile for any reason, including Gear profiles that Sharingear,in its sole discretion, considers to be objectionable for any reason, inviolation of these Terms or otherwise harmful to the Platform.</span>\n</p>\n\n<p><span>If you arean Owner, you understand and agree that Sharingear does not act as an insureror as your contracting agent. If a Renter requests a reservation of yourEquipment and uses your Equipment, any agreement you enter into with suchRenter is between you and the Renter and Sharingear is not a party thereto.Notwithstanding the foregoing, Sharingear services as the limited authorizedpayment collection agent of the Owner for the purposes of accepting, on behalfof the Owner, payments from Renters of such amounts stipulated by the Owner(including delivery or other fees and/or Taxes).</span>\n</p>\n\n<p><span>If you arean Owner, Sharingear makes certain tools available to you to help you makeinformed decisions about which Members you choose to approve for booking yourEquipment. You acknowledge and agree that, as an Owner, you are responsible foryour own acts and omissions and are also responsible for the acts and omissionsof any individuals who may have access to the Equipment at your request orinvitation, excluding the Renter.</span>\n</p>\n\n<p><b> <span>&nbsp;</span> </b></p>\n\n<p><b> <span>6. NoEndorsement</span> </b> <span> .</span></p>\n\n<p><span>Sharingeardoes not endorse any Member or any Equipment. Members are required by theseTerms to provide accurate information, and although Sharingear may undertakeadditional checks and processes designed to help verify or check the identitiesor backgrounds of users, we do not make any representations about, confirm, orendorse any Member or the Member’s purported identity or background.</span>\n</p>\n\n<p><span>Anyreferences in the Platform to a Member being “verified” or “connected” (orsimilar language) only indicate that the Member has completed a relevantverification process and do not represent anything else. Any such descriptionis not an endorsement, certification or guarantee by Sharingear about anyMember, including of the Member’s identity and whether the Member istrustworthy, safe, or suitable. Instead, any such description is intended to beuseful information for you to evaluate when you make your own decisions aboutthe identity and suitability of others whom you contact or interact with viathe Platform. We recommend that you always exercise due diligence and care whendeciding whether to book from an Owner or accept a reservation request from aRenter, or to have any other interaction with any other Member. We are notresponsible for any damage or harm resulting from your interactions with otherMembers.</span>\n</p>\n\n<p><span>By usingthe Platform, you agree that any legal remedy or liability that you seek toobtain for actions and omissions of other Members or other third parties willbe limited to a claim against the particular Members or other third parties whocaused you harm. You agree not to attempt to impose liability on or seek anylegal remedy from Sharingear with respect to such actions or omissions.Accordingly, we encourage you to communicate directly with other Members on thePlatform regarding any reservations or Gears made by you. This limitation shallnot apply to any claim by an Owner against Sharingear regarding the remittanceof payments received from a Renter by Sharingear on behalf of an Owner, whichinstead shall be subject to the limitations described in Section 18 below(“Limitation of Liability”).</span>\n</p>\n\n<p><b> <span>7. Reservationsand Financial Terms</span> </b></p>\n\n<p><b> <i> <span>KeyDefinitions</span> </i> </b></p>\n\n<p><span>-“Equipment Fees” means the amounts that are due and payable by a Renter inexchange for that Renter’s rental of Equipment, inclusive of any and all“add-ons” (such as delivery or pick-up services) selected by the Renter. TheOwner alone, and not Sharingear, determines these amounts. The Owner may in hisor her sole discretion decide to include Taxes that the Owner determines thathe or she has to collect in connection with the reservation.</span>\n</p>\n\n<p><span>- “RenterFees” means the fee that Sharingear charges a Renter for the use of its onlineplatform, which is calculated as a fixed percentage on top of the applicableEquipment Fees. The Renter Fees will be displayed to the Renter when the Renteris asked whether to send a reservation request to an Owner.</span>\n</p>\n\n<p><span>- “OwnerFees” means the fee that Sharingear charges an Owner for the use of its onlineplatform, which is calculated as a fixed percentage on top of the applicableEquipment Fees. The Owner Fees will be displayed to the Owner when the Owner isasked whether to approve or reject a reservation request from a prospectiveRenter.</span>\n</p>\n\n<p><span>- “ServiceFees” means collectively the Renter Fees and Owner Fees.</span></p>\n\n<p><span>- “TotalFees” means collectively the Equipment Fees and the Renter Fees (plus any Taxesin respect of Renter Fees).</span>\n</p>\n\n<p><b> <i> <span>Reservationand Financial Terms for Owners</span> </i> </b></p>\n\n<p><span>If you arean Owner and a reservation is requested for your Equipment via the Platform,you will be required to either approve or reject the reservation within 24hours of when the reservation is requested (as determined by Sharingear in itssole discretion) (the “Reservation Request Period”) or the reservation requestwill be automatically cancelled. During the Reservation Request Period, untilthe Owner either approves or rejects the reservation, the Gear will be in abooked state and no other Member may make a reservation request for the samedays and times, until the Owner either approves or rejects the pendingreservation request or the Reservation Request Period has expired. When areservation for your Equipment is requested via the Platform, we will sharewith you (i) the first and last name of the Renter who has requested thereservation, (ii) a link to the Renter’s Account profile page, (iii) the Rentersaddress, and (iv) if the Renter has requested delivery of the Equipment, theaddress where the Equipment is requested to be delivered by the Owner, so thatyou can view such information before approving or rejecting the reservation. Ifyou are unable to approve or decide to reject a reservation request of yourEquipment within the Reservation Request Period, the requested reservation willbe cancelled by Sharingear and the credit card will not be charged and anypre-authorization of such credit card will be released, unless in Italy, Greeceand Spain, the pre-authorization has a particular running. In fact, thepre-authorized amount is debited from the bank account. Pre-authorized fundsare stored by the bank. The user will get his/her funds back within 7 days.When you approve a reservation requested by a Renter, the reservation is deemedconfirmed, and Sharingear will send you an email confirming such reservation.</span>\n</p>\n\n<p><span>Sharingear willcollect the Total Fees at the time of reservation confirmation (i.e., when theOwner approves the reservation request) and will initiate payment of theEquipment Fees (less Sharingear’s Owner Fees and any Taxes in respect of theOwner Fees) to the Owner when the Owner receives the Equipment from Renter andhas checked it for any damage and has made the confirmation for receiving onthe Sharingear platform. The time it takes for the Owner to receive payouts maydepend upon the method for receiving payouts chosen by the Owner. Some methodsinvolve the use of third-party payment processors, who may impose their ownadditional charges for the use of their services on the Owner, including bydeducting their charges from the payout amount.</span>\n</p>\n\n<p><span>If you oweor agree to pay any amount to Sharingear (whether as a result of yourreservations or actions as a Renter or otherwise), then Sharingear may (but isnot obligated to) withhold the amount owing to Sharingear from any payoutamounts due to you as an Owner and use the withheld amount to setoff the amountowed by you to Sharingear. If Sharingear does so, then your obligation to pay Sharingearwill be extinguished to the extent of the amount withheld by Sharingear, and Sharingearwill cease to owe you any obligations, including, but not limited to, anyobligation to pay you, with respect to the amount withheld.</span>\n</p>\n\n<p><b> <i> <span>Appointmentof Sharingear as Limited Payment Collection Agent for Owner</span> </i> </b></p>\n\n<p><span>Each Ownerhereby appoints Sharingear as the Owner’s limited payment collection agentsolely for the purposes of accepting the Equipment Fees from Renters.</span>\n</p>\n\n<p><span>Each Owneragrees that payment made by a Renter through Sharingear shall be considered thesame as a payment made directly to the Owner, and the Owner will make theEquipment available to the Renter in the agreed-upon manner as if the Owner hasreceived the Equipment Fees. Each Owner agrees that Sharingear may, inaccordance with the Sharingear cancellation policy set forth below(“Cancellation and Refunds”), (i) permit the Renter to cancel the reservationand (ii) refund to the Renter that portion of the Equipment Fees specified inthe applicable cancellation policy. Each Owner understands that as Sharingearaccepts payments from Renters as the Owner’s limited payment collection agent,Sharingear’s obligation to pay the Owner is subject to and conditional upon Sharingearsuccessfully receiving the payments from Renters. Sharingear does not guaranteepayments to Owners for amounts that have not been successfully received fromRenters. In accepting appointment as the limited authorized agent of the Owner,Sharingear assumes no liability for any acts or omissions of the Owner.</span>\n</p>\n\n<p><span>If you arean Owner, and as a condition of your appointment of Sharingear as your limitedpayment collection agent, you understand that you may be deemed a sub-merchantof Sharingear under its agreement with its third party payment service providerand that you may be subject to terms and conditions governing use of that thirdparty’s service and that third-party’s personal information collectionpractices.</span>\n</p>\n\n<p><span>Please notethat Sharingear does not currently charge fees for the creation of Gearprofiles or to be a Member. However, you as an Owner acknowledge and agree thatSharingear reserves the right, in its sole discretion, to charge you for andcollect fees from you for the creation of Gear profiles or for being a Member.Please note that Sharingear will provide notice of any Gear fee collection viathe Platform prior to implementing such a Gear fee feature.</span>\n</p>\n\n<p><b> <i> <span>Reservationsand Financial Terms for Renters</span> </i> </b></p>\n\n<p><span>The Owners,not Sharingear, are solely responsible for honoring any confirmed reservationsand making available any Equipment booked through the Platform. If you, as aRenter, choose to enter into a transaction with an Owner for the reservation ofEquipment, you agree and understand that you will be required to enter into anagreement with the Owner and you agree to accept any terms, conditions, rulesand restrictions associated with such Equipment imposed by the Owner. Youacknowledge and agree that you, and not Sharingear, will be responsible forperforming the obligations of any such agreements, that Sharingear is not aparty to such agreements, and that, with the exception of its payment obligationshereunder, Sharingear disclaims all liability arising from or related to anysuch agreements. You further acknowledge and agree that, notwithstanding thefact that Sharingear is not a party to the agreement between you and the Owner,Sharingear acts as the Owner’s payment collection agent for the limited purposeof accepting payments from you on behalf of the Owner. Upon your payment of theTotal Fees to Sharingear, your payment obligation to the Owner for theEquipment Fees is extinguished, and Sharingear is responsible for remitting theEquipment Fees (less Sharingear’s Owner Fees and any Taxes in respect of theOwner Fees), in the manner described in these Terms. In the event that Sharingeardoes not remit any such amounts as described in these Terms, such Owner willhave recourse only against Sharingear.</span>\n</p>\n\n<p><span>The TotalFees payable will be displayed to a Renter before the Renter sends areservation request to an Owner. As noted above, the Owner is required toeither approve or reject the reservation request within the Reservation RequestPeriod, otherwise the reservation request will be automatically cancelled. If areservation request is cancelled (i.e., not approved by the applicable Owner),any amounts collected by Sharingear will be refunded to such Renter, dependingon the selections the Renter makes via the Site and/or Application, and anypre-authorization of such Renter’s credit card will be released, if applicable</span>\n</p>\n\n<p><span>You, as aRenter, agree to pay Sharingear for the Total Fees for all reservationsrequested in connection with your Sharingear Account if such requestedreservations are approved by the applicable Owner. In order to establish areservation pending the applicable Owner’s confirmation of your requestedreservation, you understand and agree that Sharingear, on behalf of the Owner,reserves the right, in its sole discretion, to (i) obtain a pre-authorizationvia your credit card for the Total Fees or (ii) charge your card a nominalamount, not to exceed one ($1) dollar, or a similar sum in the currency inwhich you are transacting (e.g., one euro or one British pound), to verify yourcredit card. Once Sharingear receives approval of your reservation from theapplicable Owner, Sharingear will collect the Total Fees in accordance withthese Terms and the pricing terms set forth in the applicable Gear profile. Atthis time Sharingear may also collect the Security Deposit (defined below) or aportion thereof, in its sole discretion. Please note that Sharingear cannotcontrol any fees that may be charged to a Renter by his or her bank related toSharingear’s collection of the Total Fees, and Sharingear disclaims allliability in this regard.</span>\n</p>\n\n<p><span>Inconnection with your requested reservation, you will be asked to providecustomary billing information such as name, billing address, and credit cardinformation either to Sharingear or its third-party payment processor. Youagree to pay Sharingear for any approved reservations made in connection withyour Sharingear Account in accordance with these Terms by one of the methodsdescribed on the Site or Application, e.g. by PayPal or credit card. You herebyauthorize the collection of such amounts by charging the credit card providedas part of requesting the reservation, either by Sharingear or indirectly, viaa third-party online payment processor or by one of the payment methods describedon the Site or Application. If you are directed to Sharingear’s third-partypayment processor, you may be subject to terms and conditions governing use ofthat third party’s service and that third-party’s personal informationcollection practices. Please review such terms and conditions and privacypolicy before using the services. Once your confirmed reservation transactionis complete, you will receive a confirmation email summarizing your confirmedreservation.</span>\n</p>\n\n<p><b> <i> <span>SecurityDeposits</span> </i> </b></p>\n\n<p><span>Sharingear choosesto include a security deposit in the reservation billing (“Security Deposits”),based on a fixed amount of the actual value of the respective Equipment in the Gearprofile. Each reservation billing will describe the Security Deposit amount as afixed percentage of the value of each respective Equipment. Sharingear will, inits capacity as the payment collection agent of the Owner, use its commerciallyreasonable efforts to either: (i) charge the Renter’s credit card at the timeof reservation confirmation the Security Deposit amount, or (ii) obtain apre-authorization of the Renter’s credit card in the amount of the SecurityDeposit, at the time of reservation confirmation or within a reasonable timeprior to the Renter’s use of the Owner’s Equipment. Sharingear will also useits commercially reasonable efforts to address Owner’s requests and claimsrelated to Security Deposits, but Sharingear is not responsible foradministering or accepting any claims by Owners related to Security Depositsand disclaims any and all liability in this regard.</span>\n</p>\n\n<p><b> <i> <span>ServiceFees</span> </i> </b></p>\n\n<p><span>In considerationfor the use of Sharingear’s online marketplace and Platform, Sharingear chargesthe Services Fees. Where applicable, Taxes may also be charged in respect ofthe Owner Fees and Renter Fees. Sharingear deducts the Owner Fees from theEquipment Fees before remitting the balance to the Owner as described in theseTerms. Renter Fees are, as noted above, included in the Total Fees.</span>\n</p>\n\n<p><span>Balanceswill be remitted by Sharingear to Owners via direct deposit or other paymentmethods described on the Site or via the Application, depending on the currencyselections the Owner makes via the Platform. Amounts may be rounded up or downas described in the “Rounding Off “ section below.</span>\n</p>\n\n<p><span>Please notethat Sharingear may impose or deduct foreign currency processing costs on orfrom any remittances by Sharingear in currencies other than Euros. Except asotherwise provided herein, Service Fees are non-refundable.</span>\n</p>\n\n<p><b> <i> <span>&nbsp;</span> </i> </b></p>\n\n<p><b> <i> <span>EquipmentDamage, Theft or Loss - RENTER</span> </i> </b></p>\n\n<p><span>Youacknowledge and agree that, as a Renter, you are responsible for your own actsand omissions and are also responsible for the acts and omissions of anyindividuals whom you allow to use, invite to, or otherwise provide access tothe Equipment. As a Renter, you are responsible for returning or leaving theEquipment, as applicable, in the condition it was in when you arrived and/orreceived it, as applicable. In the event that an Owner claims otherwise andprovides evidence of damage, loss, or theft, including but not limited tophotographs, Owner agrees to contact Sharingear by sending a Damage reportthrough the Sharingear contact form. After being notified of the claim andgiven forty-eight (48) hours to respond, the payment (in addition to any thirdparty transaction fees incurred by Sharingear in connection therewith) and the SecurityDeposit held by Sharingear, if any, and the balance due, if any, will becharged to and                <span>taken from the credit card onfile in Renters Sharingear Account. Sharingear also reserves the right tocharge the credit card on file in your Sharingear Account, or otherwise collectpayment from you and pursue any avenues available to Sharingear in this regard,including Security Deposits, in situations in which you have been determined,in Sharingear’s sole discretion, to have damaged, lost, or misappropriated anyEquipment, in relation to any payments made by Sharingear to Owners, plus anythird party payment transaction fees incurred in connection therewith</span>.If we are unable to charge the credit card on file or otherwise collect paymentfrom you, you agree to remit payment to the applicable Owner or to Sharingear,if applicable.            </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>BothRenters and Owners agree to cooperate with and assist Sharingear in good faithand to provide Sharingear with such information and take such actions as may bereasonably requested by Sharingear, in connection with any complaints or claimsmade by Members relating to the Equipment or any personal or other propertyused or available in connection with the Equipment or with respect to anyinvestigation undertaken by Sharingear or a representative of Sharingearregarding use or abuse of the Platform. If you are a Renter, upon Sharingear’sreasonable request, and to the extent you are reasonably able to do so, youagree to participate in mediation or similar resolution process with an Owner,at no cost to you, which process will be conducted by Sharingear or a thirdparty selected by Sharingear, with respect to losses for which the Owner isrequesting payment from Sharingear in connection with your reservation ofEquipment or use of the Platform.</span>\n</p>\n\n<p><span>If you area Renter, you understand and agree that Sharingear reserves the right, in itssole discretion, to withdraw deposit and make a claim related to any damage orloss that you may have caused or been responsible for to Equipment or anypersonal or other property used or available in connection with the Equipment.You agree to cooperate with and assist Sharingear in good faith, and to provideSharingear with such information as may be reasonably requested by Sharingear. </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>If you area Renter and you do not return the Equipment to the Owner at the conclusion ofthe reservation and you do not agree within twenty-four (24) hours to schedulea new return time, or do not return the Equipment at such rescheduled returntime, then Owner agrees to file a report with the applicable police departmentand provide a copy of such report to Sharingear. In filing the report, Owner isrequired to notify the police department of the Security Deposit and that Sharingearmay ultimately be subrogated to Owner’s right to recovery of the Equipment. TheOwner must also authorize the police department to discuss and provide anyinformation regarding the case with Sharingear.</span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><b> <i> <span>GeneralReservation and Financial Terms</span> </i> </b></p>\n\n<p><u> <span>Cancellationsand Refunds</span> </u></p>\n\n<p><span>If, as aRenter, you cancel your requested reservation before the requested reservationis confirmed by an Owner, Sharingear will cancel any pre-authorization to yourcredit card but will not refund any nominal amounts charged to your credit cardin connection with the requested reservation. If the cancellation is madewithin the twenty-four hour of the requested reservation by the Renter and therequested reservation is not confirmed by an Owner, Sharingear will deduct 50% ofthe Security Deposit from the Renters account. A 25% refund will be transferredto the Owner and the remaining 25% refund will be transferred to Sharingear.  </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>If an Ownercancels a confirmed reservation made via the Platform, (i) Sharingear willrefund the Total Fees for such reservation to the applicable Renter within acommercially reasonable time of the cancellation and (ii) the Renter mayreceive an email or other communication from Sharingear containing alternative Gearprofiles and other related information. If the Renter requests a reservationfrom one of the alternative Gear profiles and the Owner associated with suchalternative Gear profiles confirms the Renter’s requested reservation, then theRenter agrees to pay Sharingear the Total Fees relating to the confirmedreservation for the Equipment in the alternative Gear profile, in accordancewith these terms. If an Owner cancelled a confirmed reservation and you, as aRenter, have not received an email or other communication from Sharingear,please contact Sharingear at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>.</span></p>\n\n<p><span>If, as anOwner, you cancel a confirmed reservation, Sharingear may apply penalties orconsequences to you or your Gear profile, including (i) publishing an automatedreview on your Gear profile indicating that a reservation was cancelled, (ii)keeping the calendar for your Gear unavailable or blocked for the dates of thecancelled reservation, or (iii) imposing a cancellation fee (to be withheldfrom your future payouts). You will be notified of the situations in which acancellation fee applies before you decide to cancel.</span>\n</p>\n\n<p><span>If, as aRenter, you want to cancel a reservation due to an Equipment Issue (definedbelow), within twenty-four hours after the start of your reservation, we agree,at our discretion, to use our reasonable efforts to find and book you otherEquipment for the time left in your reservation which in our determination isreasonably comparable to the Equipment described in your original reservationin terms of type, features, and quality. All determinations of Sharingear withrespect to refunds requested related to Equipment Issues, including withoutlimitation the size of any refund, shall be final and binding on the Rentersand Owners. An “Equipment Issue” means any one of the following: (a) the Ownerof the Equipment (i) cancels a reservation shortly before the scheduled startof the reservation, or (ii) fails to provide the Renter with the reasonableability to access the Equipment; or (b) the description of the Equipment in theGear profile on the Site is materially inaccurate with respect to: (i) the makeand/or model of the Equipment, (ii) the condition of the Equipment, to theextent it affects the Renter’s ability to utilize the Equipment as intended,(iii) special amenities or features represented in the Gear description are notprovided or do not function, or (iv) the physical location of the Equipment(proximity). Only a Renter may submit a claim for an Equipment Issue. To submita claim: (a) You must bring the Equipment Issue to our attention in writing to </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>and provide us with information, including photographs or other evidence, aboutthe Equipment and the circumstances of the Equipment Issue, within twenty-four(24) hours after the start of your reservation, and must respond to anyrequests by us for additional information or cooperation on the EquipmentIssue; (b) you must not have directly or indirectly caused the Equipment Issue(through your action, omission, or negligence); and (c) you must have usedreasonable efforts to try and remedy the circumstances of the Equipment Issuewith the Owner prior to making a claim for an Equipment Issue.</span>\n</p>\n\n<p><span>If you arean Owner, you are responsible for ensuring that the Equipment you list on theSite meets minimum quality standards regarding access, adequacy of thedescription on the Site, and does not present a Renter with Equipment Issues.During the 24-hour period after the start of a Renter’s reservation, Ownersshould be available, or make a third-party available, in order to try, in goodfaith, to resolve Equipment Issues. If you are an Owner, and if (i) Sharingeardetermines that a Renter has suffered an Equipment Issue related to Equipmentlisted by you and (ii) Sharingear either reimburses that Renter any amount upto the amount paid by the Renter through the Platform for the Equipment orprovides alternative Equipment to the Renter, you agree to reimburse Sharingearup to the amount paid by Sharingear within thirty (30) days of Sharingear’srequest. You also agree that in order for you to reimburse Sharingear up to theamount paid by Sharingear, Sharingear may off-set or reduce any amounts owed bySharingear to you by this amount. If the Renter uses the Equipment for part orall of the reservation despite the Equipment Issue, the Renter may receive arefund that will reduce the amount of the Equipment Fees ultimately paid toyou. If the Renter uses alternative Equipment, you may lose part or all of theEquipment Fee payment for the reservation and you may be responsible forreasonable additional costs incurred in order for the Renter to use thealternate Equipment. The rights of the Renters relating to Equipment Issuessupersedes the Sharingear cancellation policy or the cancellation policy set bythe Owner, if any. If you dispute the Equipment Issue, you may notify us inwriting to </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>and provide us with information, including photographs or other evidence,disputing the claims regarding the Equipment Issue, provided you must have usedreasonable and good faith efforts to try to remedy the Equipment Issue with theRenter prior to disputing the Equipment Issue claim. In the event of one ormore Equipment Issues, Sharingear, in its discretion, may elect to takeadditional actions, including, without limitation, negatively affecting your Gearprofile ranking, automated reviews indicating Equipment Issues, cancellingfuture reservations, suspending or removing the Gear profile of the Equipmentor imposing penalties or fees for the administrative burden associated with theEquipment Issue. All determinations of Sharingear with respect to EquipmentIssue claims, including without limitation the size of any refund to theRenter, shall be final and binding on the Renters and Owners.</span>\n</p>\n\n<p><span>In certaincircumstances, Sharingear may decide, in its sole discretion, that it is necessaryor desirable to cancel a confirmed reservation made via the Platform andoverride the cancellation policy applicable to such reservation, in whole or inpart. Such circumstances include death in the Owner’s or Renter’s family,serious illness of the Renter or Renter’s family member, natural disaster inthe country where the Equipment is located, political unrest in the countrywhere the Equipment is located, jury duty other similar civil obligations, orfor any other reason, contingent in all cases on proper documentation, wherevalid.</span>\n</p>\n\n<p><u> <span>RoundingOff</span> </u></p>\n\n<p><span>Sharingearmay, in its sole discretion, round up or round down amounts that are payablefrom or to Renters or Owners to the nearest whole functional base unit in whichthe currency is denominated (e.g., to the nearest dollar, euro, or othersupported currency); for example, Sharingear may round up an amount of €101.50to €102.00, and €101.49 to €101.00.</span>\n</p>\n\n<p><span>Somecurrencies are denominated in large numbers. In those cases, Sharingear maydetermine the functional base unit in which those currencies are denominated tobe 10, 100, or 1,000 of the currency; the corresponding examples for suchcurrencies would be for Sharingear to round up an amount of 2,025 up to 2,030and 2,024 down to 2,020, or 48,750 to you 48,700 and 48,749 down to 48,700, or675,500 up to 676,000 and 675,499 down to 675,000.</span>\n</p>\n\n<p><u> <span>Donations</span> </u></p>\n\n<p><span>Some Ownersmay pledge to donate a portion of the funds they receive from confirmedreservations made via the Platform to a particular cause or charity. Sharingeardoes not control, and will not take any responsibility or liability for,whether the Owner does in fact make the donation he or she pledged to make.</span>\n</p>\n\n<p><u> <span>Taxes</span> </u></p>\n\n<p><span>Taxregulations may require us to collect appropriate tax information from ourOwners, or to withhold taxes from payouts to Owners, or both. For instance, IRSregulations may stipulate that Sharingear must collect IRS Form W-9 from USOwners or an appropriate IRS Form W-8 from non-US Owners with at least one Gearprofile in the US. You as an Owner are solely responsible for keeping theinformation in your tax forms current, complete, and accurate. If you as anOwner fail to provide us with documentation that we determine to be sufficientto alleviate our obligation (if any) to withhold payments to you (e.g., whereyou are a US Owner and you fail to provide us with a completed IRS Form W-9),we reserve the right in our sole discretion to freeze all payouts to you untilresolution, to withhold such amounts as required by law, or to do both.</span>\n</p>\n\n<p><span>You as anOwner understand and agree that you are solely responsible for determining (i)your applicable Tax reporting requirements, and (ii) the Taxes that should beincluded, and for including Taxes to be collected or obligations relating toapplicable Taxes in Gears. You are also solely responsible for remitting to therelevant authority any Taxes included or received by you. Sharingear cannot anddoes not offer Tax-related advice to any Members.</span>\n</p>\n\n<p><b> <span>8. UserConduct</span> </b></p>\n\n<p><span>Youunderstand and agree that you are solely responsible for compliance with anyand all laws, rules, regulations, and Tax obligations that may apply to youruse of the Platform and Collective Content. In connection with your use of thePlatform and Collective Content, you may not and you agree that you will not:</span>\n</p>\n\n<p><span>&#9679;violate any local, state, provincial, national, or other law or regulation, orany order of a court, including, without limitation, Tax regulations;</span>\n</p>\n\n<p><span>&#9679; usemanual or automated software, devices, scripts, robots, or other means orprocesses to access, “scrape,” “crawl,” or “spider” any web pages or otherservices contained in the Platform or Collective Content ;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content for any commercial or other purposes thatare not expressly permitted by these Terms;</span>\n</p>\n\n<p><span>&#9679;copy, store, or otherwise access any information contained on the Platform or CollectiveContent for purposes not expressly permitted by these Terms;</span>\n</p>\n\n<p><span>&#9679;infringe the rights of any person or entity, including without limitation,their intellectual property, privacy, publicity, or contractual rights;</span>\n</p>\n\n<p><span>&#9679;interfere with or damage our Platform, including, without limitation, throughthe use of viruses, cancel bots, Trojan horses, harmful code, flood pings,denial-of-service attacks, packet or IP spoofing, forged routing, or electronicmail address information or similar methods or technology;</span>\n</p>\n\n<p><span>&#9679; usethe Platform to transmit, distribute, post, or submit any informationconcerning any other person or entity, including without limitation,photographs of others without their permission, personal contact information,or credit, debit, or account numbers;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content in connection with the distribution ofunsolicited commercial email (“spam”) or advertisements unrelated to rentingartistic tools, equipment, and space.</span>\n</p>\n\n<p><span>&#9679;“stalk” or harass any other user of the Platform or Collective Content, orcollect or store any personally identifiable information about any other userother than for purposes of transacting as a Sharingear Renter or Owner;</span>\n</p>\n\n<p><span>&#9679;offer, as an Owner, any Equipment, that you do not yourself own or havepermission to rent (without limiting the foregoing, you will not list Equipmentas an Owner if you are serving in the capacity as an agent for a third party);</span>\n</p>\n\n<p><span>&#9679;offer, as an Owner, any Equipment that may not be rented or subleased pursuantto the terms and conditions of an agreement with a third party, including, butnot limited to, a property rental agreement;</span>\n</p>\n\n<p><span>&#9679;register for more than one Sharingear Account or register for a SharingearAccount on behalf of an individual other than yourself;</span>\n</p>\n\n<p><span>&#9679;unless Sharingear explicitly permits otherwise, request or book a reservationof Equipment if you will not actually be the one using the Equipment yourself;</span>\n</p>\n\n<p><span>&#9679;contact an Owner for any purpose other than asking a question related to areservation or such Owner’s Equipment or Gears;</span>\n</p>\n\n<p><span>&#9679;contact a Renter for any purpose other than asking a question related to areservation or such Renter’s use of the Platform;</span>\n</p>\n\n<p><span>&#9679;recruit or otherwise solicit any Owner or other Member to join third-partyservices or websites that are competitive to Sharingear, without Sharingear’sprior written approval;</span>\n</p>\n\n<p><span>&#9679;impersonate any person or entity, or falsify or otherwise misrepresent yourselfor your affiliation with any person or entity;</span>\n</p>\n\n<p><span>&#9679; useautomated scripts to collect information from or otherwise interact with thePlatform or Collective Content;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content to find an Owner or Renter and then completea reservation of Equipment independent of the Platform, in order to circumventthe obligation to pay any Service Fees related to Sharingear’s provision of theServices or for any other reasons;</span>\n</p>\n\n<p><span>&#9679; asan Owner, submit any Gear with false or misleading price information or submitany Gear with a price that you do not intend to honor;</span>\n</p>\n\n<p><span>&#9679;post, upload, publish, submit, or transmit any Content that: (i) infringes,misappropriates, or violates a third party’s patent, copyright, trademark,trade secret, moral rights, or other intellectual property rights, or rights ofpublicity or privacy; (ii) violates, or encourages any conduct that wouldviolate, any applicable law or regulation or would give rise to civilliability; (iii) is fraudulent, false, misleading, or deceptive; (iv) isdefamatory, obscene, pornographic, vulgar, or offensive; (v) promotesdiscrimination, bigotry, racism, hatred, harassment, or harm against anyindividual or group; (vi) is violent or threatening or promotes violence oractions that are threatening to any other person; or (vii) promotes illegal orharmful activities or substances;</span>\n</p>\n\n<p><span>&#9679;systematically retrieve data or other content from our Platform to create orcompile, directly or indirectly, in single or multiple downloads, a collection,compilation, database, directory, or the like, whether by manual methods,through the use of bots, crawlers, or spiders, or otherwise;</span>\n</p>\n\n<p><span>&#9679;use, display, mirror, or frame the Platform or Collective Content, or anyindividual element within the Platform or Collective Content, Sharingear’sname, any trademark, logo, or other proprietary information, or the layout anddesign of any page or form contained on a page in the Platform, without Sharingear’sexpress written consent;</span>\n</p>\n\n<p><span>&#9679;access, tamper with, or use non-public areas of the Platform, Sharingear’scomputer systems, or the technical delivery systems of Sharingear’s providers;</span>\n</p>\n\n<p><span>&#9679;attempt to probe, scan, or test the vulnerability of any Sharingear system ornetwork or breach any security or authentication measures;</span>\n</p>\n\n<p><span>&#9679;avoid, bypass, remove, deactivate, impair, descramble, or otherwise circumventany technological measure implemented by Sharingearor any of Sharingear’sproviders or any other third party (including another user) to protect thePlatform or Collective Content;</span>\n</p>\n\n<p><span>&#9679;force any TCP/IP packet header or any part of the header information in anyemail or newsgroup posting, or in any way use the Platform or CollectiveContent to send altered, deceptive or false source-identifying information;</span>\n</p>\n\n<p><span>&#9679;attempt to decipher, decompile, disassemble, or reverse engineer any of thesoftware used to provide the Platform or Collective Content; or</span>\n</p>\n\n<p><span>&#9679;advocate, encourage, or assist any third party in doing any of the foregoing.</span></p>\n\n<p><span>Sharingear hasthe right to investigate and prosecute violations of any of the above to thefullest extent of the law.</span>\n</p>\n\n<p><span>Sharingearmay access, preserve, and disclose any of your information if we are requiredto do so by law, or if we believe in good faith that it is reasonably necessaryto: (i) respond to claims asserted against Sharingear or to comply with legalprocess (for example, subpoenas or warrants); (ii) enforce or administer our agreementswith users, such as these Terms); (iii) for fraud prevention, risk assessment,investigation, customer support, product development, and de-bugging purposes;or (iv) protect the rights, property, or safety of Sharingear, its users, ormembers of the public. You acknowledge that Sharingear has no obligation tomonitor your access to or use of the Platform or Collective Content or toreview or edit any Member Content, but has the right to do so for the purposesof operating and improving the Platform (including without limitation for fraudprevention, risk assessment, investigation, and customer support purposes), toensure your compliance with these Terms, to comply with applicable law or therequirement of a court, administrative agency, or other governmental body, torespond to content that it determines is otherwise objectionable, or as setforth in these Terms. Sharingear reserves the right, at any time and withoutprior notice, to remove or disable access to any Collective Content that Sharingear</span>\n</p>\n\n<p><span>, in itssole discretion, considers to be objectionable for any reason, in violation ofthese Terms, or otherwise harmful to the Platform.</span>\n</p>\n\n<p><b> <span>9. PrivacyPolicy</span> </b></p>\n\n<p><span>See Sharingear’sPrivacy Policy, at </span> <span>                <a\n\t\thref=\"http://www.sharingear.com/privacy\"> <span style=''>www.sharingear.com/privacy</span>\n</a>            </span>\n\t<span>,for information and notices concerning Sharingear’s collection and use of yourpersonal information.</span>\n</p>\n\n<p><b> <span>10.Proprietary Rights</span> </b></p>\n\n<p><span>ThePlatform and Collective Content are protected by copyright, trademark, andother laws of the United States and foreign countries. You acknowledge andagree that the Platform and Collective Content, including all associatedintellectual property rights, are the exclusive property of Sharingear and itslicensors. You will not remove, alter, or obscure any copyright, trademark,service mark, or other proprietary rights notices incorporated in oraccompanying the Platform or Collective Content.</span>\n</p>\n\n<p><span>Alltrademarks, service marks, logos, trade names, and any proprietary designationsof Sharingear used herein are trademarks or registered trademarks of Sharingear.Any other trademarks, service marks, logos, trade names, and other proprietarydesignations are the trademarks or registered trademarks of their respectiveparties.</span>\n</p>\n\n<p><b> <span>11. SharingearContent</span> </b></p>\n\n<p><span>Subject toyour compliance with these Terms, Sharingear grants you a limited,non-exclusive, non-transferable license to (i) access and view any SharingearContent solely for your personal and non-commercial purposes and (ii) accessand view any Member Content to which you are permitted access, solely for yourpersonal and non-commercial purposes. You have no rights to sublicense thelicense rights granted in this section.</span>\n</p>\n\n<p><span>You willnot use, copy, adapt, modify, prepare derivative works based upon, distribute,license, sell, transfer, publicly display, publicly perform, transmit,broadcast, or otherwise exploit the Platform or Collective Content, except asexpressly permitted in these Terms. No licenses or rights are granted to you byimplication or otherwise under any intellectual property rights owned orcontrolled by Sharingear its licensors, except for the licenses and rightsexpressly granted in these Terms.</span>\n</p>\n\n<p><b> <span>12. MemberContent</span> </b></p>\n\n<p><span>We may, inour sole discretion, permit you to post, upload, publish, submit, or transmitMember Content. By making available any Member Content on or through thePlatform, you hereby grant to Sharingear a worldwide, irrevocable, perpetual,non-exclusive, transferable, royalty-free license, with the right tosublicense, use, view, copy, adapt, modify, distribute, license, sell,transfer, publicly display, publicly perform, transmit, stream, broadcast,access, view, and otherwise exploit such Member Content on, through, by meansof, or to promote or market the Platform. Sharingear does not claim anyownership rights in such Member Content and nothing in these Terms will bedeemed to restrict any rights that you may have to use and exploit any suchMember Content.</span>\n</p>\n\n<p><span>Youacknowledge and agree that you are solely responsible for all Member Contentthat you make available through the Platform. Accordingly, you represent andwarrant that: (i) you either are the sole and exclusive owner of all MemberContent that you make available through the Platform or you have all rights,licenses, consents, and releases that are necessary to grant to Sharingear therights in such Member Content, as contemplated under these Terms; and (ii)neither the Member Content nor your posting, uploading, publication,submission, or transmittal of the Member Content or Sharingear’s use of theMember Content (or any portion thereof) on, through, or by means of thePlatform will infringe, misappropriate, or violate a third party’s patent,copyright, trademark, trade secret, moral rights, or other proprietary orintellectual property rights, or rights of publicity or privacy, or result inthe violation of any applicable law or regulation.</span>\n</p>\n\n<p><b> <span>13. Links</span> </b></p>\n\n<p><span>ThePlatform may contain links to third-party websites or resources. Youacknowledge and agree that Sharingear is not responsible or liable for: (i) theavailability or accuracy of such websites or resources; or (ii) the content,products, or services on or available from such websites or resources. Links tosuch websites or resources do not imply any endorsement by Sharingear of suchwebsites or resources or the content, products, or services available from suchwebsites or resources. You acknowledge sole responsibility for and assume allrisk arising from your use of any such websites or resources or the Content,products, or services on or available from such websites or resources.</span>\n</p>\n\n<p><span>Someportions of the Platform implement Google Maps/Earth mapping services,including Google Maps API(s). Your use of Google Maps/Earth is subject toGoogle’s terms of use, located at</span>\n<span>                <a href=\"http://www.google.com/intl/en_us/help/terms_maps.html\"> <u> <span>http://www.google.com/intl/en_us/help/terms_maps.html</span>\n</u> </a>            </span> <span>.</span></p>\n\n<p><b> <span>14.Feedback</span> </b></p>\n\n<p><span>We welcomeand encourage you to provide feedback, comments, and suggestions forimprovements to the Platform (“Feedback”). You may submit Feedback by emailingus at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>or through a contact form on the Platform, if any. You acknowledge and agreethat all Feedback will be the sole and exclusive property of Sharingear and youhereby irrevocably assign to Sharingear all of your right, title, and interestin and to all Feedback, including without limitation all worldwide patent,copyright, trade secret, moral, and other proprietary or intellectual propertyrights therein. At Sharingear’s request and expense, you will execute documentsand take such further acts as Sharingear may reasonably request to assist Sharingearto acquire, perfect, and maintain its intellectual property rights and otherlegal protections for the Feedback.</span>\n</p>\n\n<p><b> <span>15.Copyright Policy</span> </b></p>\n\n<p><span>Sharingearrespects copyright law and expects its users to do the same. It is Sharingear’spolicy to terminate, in appropriate circumstances, the Sharingear Accounts ofMembers or other account holders who repeatedly infringe or are believed to berepeatedly infringing the rights of copyright holders. Please see Sharingear’sCopyright Policy, at </span>\n<span>                <a href=\"http://www.sharingear.com/copyright\"> <span style=''>www.sharingear.com/copyright</span>\n</a>            </span> <span>for further information.</span></p>\n\n<p><b> <span>16.Suspension, Termination, and Sharingear Account Cancellation</span> </b></p>\n\n<p><span>We may, inour discretion and without liability to you, with or without cause, with orwithout prior notice, and at any time, decide to limit, suspend, deactivate, orcancel your Sharingear Account. If we exercise our discretion under these Termsto do so, any or all of the following can occur with or without prior notice orexplanation to you: (a) your Sharingear Account will be deactivated orsuspended, your password will be disabled, and you will not be able to accessthe Platform, your Sharingear Account, or your Member Content or receiveassistance from Sharingear Customer Service; (b) any pending or accepted futurereservations as either Owner or Renter will be immediately terminated; (c) wemay communicate to your Renters or Owners that a potential or confirmedreservation has been cancelled; (d) we may refund your Renters in full for anyand all confirmed reservations, irrespective of preexisting cancellationpolicies; (e) we may contact your Renters to inform them about potentialalternate Equipment with other Owners that may be available on the Platform;and (f) you will not be entitled to any compensation for reservations (even ifconfirmed) that were cancelled as a result of a suspension, deactivation, ortermination of your Sharingear Account. You may cancel your Sharingear Accountat any time by emailing us at support@sharingear.com. Please note that if your SharingearAccount is cancelled, we do not have an obligation to delete or return to youany Content you have posted on the Platform, including but not limited to, anyreviews or Feedback.</span>\n</p>\n\n<p><b> <span>17.Disclaimers</span> </b></p>\n\n<p><span>IF YOUCHOOSE TO USE THE PLATFORM OR COLLECTIVE CONTENT, YOU DO SO AT YOUR SOLE RISK.YOU ACKNOWLEDGE AND AGREE THAT SHARINGEAR DOES NOT HAVE AN OBLIGATION TOCONDUCT BACKGROUND CHECKS ON ANY MEMBER, INCLUDING, BUT NOT LIMITED TO, RENTERSAND OWNERS, BUT MAY CONDUCT SUCH BACKGROUND CHECKS IN ITS SOLE DISCRETION. THEPLATFORM AND COLLECTIVE CONTENT ARE PROVIDED “AS IS,” WITHOUT WARRANTY OF ANYKIND, EITHER EXPRESS OR IMPLIED. WITHOUT LIMITING THE FOREGOING, SHARINGEAREXPLICITLY DISCLAIMS ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR APARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT, AND ANY WARRANTIESARISING OUT OF COURSE OF DEALING OR USAGE OF TRADE. SHARINGEAR MAKES NO WARRANTYTHAT THE PLATFORM OR COLLECTIVE CONTENT, INCLUDING, BUT NOT LIMITED TO, THE GEARSOR ANY EQUIPMENT, WILL MEET YOUR REQUIREMENTS OR BE AVAILABLE ON ANUNINTERRUPTED, SECURE, OR ERROR-FREE BASIS. SHARINGEAR MAKES NO WARRANTYREGARDING THE QUALITY OF ANY GEARS, EQUIPMENT, THE SERVICES, OR COLLECTIVECONTENT OR THE ACCURACY, TIMELINESS, TRUTHFULNESS, COMPLETENESS, OR RELIABILITYOF ANY COLLECTIVE CONTENT OBTAINED THROUGH THE PLATFORM.</span>\n</p>\n\n<p><span>NO ADVICEOR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED FROM SHARINGEAR OR THROUGHTHE PLATFORM OR COLLECTIVE CONTENT, WILL CREATE ANY WARRANTY NOT EXPRESSLY MADEHEREIN.</span>\n</p>\n\n<p><span>YOU ARESOLELY RESPONSIBLE FOR ALL OF YOUR COMMUNICATIONS AND INTERACTIONS WITH OTHERUSERS OF THE PLATFORM AND WITH OTHER PERSONS WITH WHOM YOU COMMUNICATE ORINTERACT AS A RESULT OF YOUR USE OF THE PLATFORM, INCLUDING, BUT NOT LIMITEDTO, ANY OWNERS OR RENTERS. YOU UNDERSTAND THAT SHARINGEAR DOES NOT MAKE ANYATTEMPT TO VERIFY THE STATEMENTS OF USERS OF THE PLATFORM OR TO REVIEW ANYEQUIPMENT. SHARINGEAR MAKES NO REPRESENTATIONS OR WARRANTIES AS TO THE CONDUCTOF USERS OF THE PLATFORM OR THEIR COMPATIBILITY WITH ANY CURRENT OR FUTUREUSERS OF THE PLATFORM. YOU AGREE TO TAKE REASONABLE PRECAUTIONS IN ALLCOMMUNICATIONS AND INTERACTIONS WITH OTHER USERS OF THE PLATFORM AND WITH OTHERPERSONS WITH WHOM YOU COMMUNICATE OR INTERACT AS A RESULT OF YOUR USE OF THEPLATFORM, INCLUDING, BUT NOT LIMITED TO, RENTERS AND OWNERS, PARTICULARLY IFYOU DECIDE TO MEET OFFLINE OR IN PERSON, REGARDLESS OF WHETHER SUCH MEETINGS AREORGANIZED BY SHARINGEAR. NOTWITHSTANDING SHARINGEAR’S APPOINTMENT AS THELIMITED PAYMENT COLLECTION AGENT OF THE OWNERS FOR THE PURPOSE OF ACCEPTINGPAYMENTS FROM RENTERS ON BEHALF OF THE OWNERS, SHARINGEAR EXPLICITLY DISCLAIMSALL LIABILITY FOR ANY ACT OR OMISSION OF ANY RENTER OR OTHER THIRD PARTY.</span>\n</p>\n\n<p><b> <span>18.Limitation of Liability</span> </b> <span> .</span></p>\n\n<p><span>YOUACKNOWLEDGE AND AGREE THAT, TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE ENTIRERISK ARISING OUT OF YOUR ACCESS TO AND USE OF THE PLATFORM AND COLLECTIVECONTENT, YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIA THE PLATFORM, AND ANYCONTACT YOU HAVE WITH OTHER USERS OF SHARINGEAR WHETHER IN PERSON OR ONLINEREMAINS WITH YOU. NEITHER SHARINGEAR NOR ANY OTHER PARTY INVOLVED IN CREATING,PRODUCING, OR DELIVERING THE PLATFORM OR COLLECTIVE CONTENT WILL BE LIABLE FORANY INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES, INCLUDING LOSTPROFITS, LOSS OF DATA OR LOSS OF GOODWILL, SERVICE INTERRUPTION, COMPUTERDAMAGE OR SYSTEM FAILURE, OR THE COST OF SUBSTITUTE PRODUCTS OR SERVICES, ORFOR ANY DAMAGES FOR PERSONAL OR BODILY INJURY OR EMOTIONAL DISTRESS ARISING OUTOF OR IN CONNECTION WITH THESE TERMS, FROM THE USE OR INABILITY TO USE THEPLATFORM OR OTHER PERSONS WITH WHOM YOU COMMUNICATE OR INTERACT AS A RESULT OFYOUR USE OF THE PLATFORM OR FROM YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIATHE PLATFORM, WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE),PRODUCT LIABILITY OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT SHARINGEAR HASBEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE, EVEN IF A LIMITED REMEDY SETFORTH HEREIN IS FOUND TO HAVE FAILED OF ITS ESSENTIAL PURPOSE.</span>\n</p>\n\n<p><span>EXCEPT FOROUR OBLIGATIONS TO PAY AMOUNTS TO APPLICABLE OWNERS PURSUANT TO THESE TERMS, INNO EVENT WILL SHARINGEAR’S AGGREGATE LIABILITY ARISING OUT OF OR IN CONNECTIONWITH THESE TERMS AND YOUR USE OF THE PLATFORM, INCLUDING, BUT NOT LIMITED TO,FROM YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIA THE PLATFORM, FROM THE USEOF OR INABILITY TO USE THE PLATFORM OR COLLECTIVE CONTENT, AND IN CONNECTION WITHANY EQUIPMENT OR INTERACTIONS WITH ANY OTHER MEMBERS, EXCEED THE AMOUNTS YOUHAVE PAID OR OWE FOR RESERVATIONS VIA THE PLATFORM AS A RENTER IN THE TWELVE(12) MONTH PERIOD PRIOR TO THE EVENT GIVING RISE TO THE LIABILITY, OR IF YOUARE AN OWNER, THE AMOUNTS PAID BY SHARINGEAR TO YOU IN THE TWELVE (12) MONTHPERIOD PRIOR TO THE EVENT GIVING RISE TO THE LIABILITY, OR ONE HUNDRED U.S.DOLLARS (US$100), IF NO SUCH PAYMENTS HAVE BEEN MADE, AS APPLICABLE. THELIMITATION OF DAMAGES SET FORTH ABOVE ARE FUNDAMENTAL ELEMENTS OF THE BASIS OFTHE BARGAIN BETWEEN SHARINGEAR AND YOU. SOME JURISDICTIONS DO NOT ALLOW THEEXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES,SO THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</span>\n</p>\n\n<p><b> <span>19.Indemnification</span> </b> <span> .</span></p>\n\n<p><span>You agreeto release, defend, indemnify and hold Sharingear and its affiliates andsubsidiaries, and their officers, directors, employees, and agents, harmlessfrom and against any claims, liabilities, damages, losses, and expenses,including, without limitation, reasonable legal and accounting fees, arisingout of or in any way connected with (a) your access to or use of the Platformor Collective Content or your violation of these Terms; (b) your MemberContent; (c) your (i) interaction with any Member, (ii) reservation of Equipment,or (iii) creation of a Gear; and (d) the use, condition, or rental of Equipmentby you, including but not limited to any injuries, losses, or damages(compensatory, direct, incidental, consequential, or otherwise) of any kindarising in connection with or as a result of a rental, reservation, or use ofEquipment.</span>\n</p>\n\n<p><b> <span>20.Reporting Misconduct</span> </b> <span> .</span></p>\n\n<p><span>If youinteract with a Member, Renter or Owner, whether via the Platform, offline, orin person, in connection with a reservation of a Gear or Equipment, who youfeel is acting or has acted inappropriately, including but not limited toanyone who (i) engages in offensive, violent, or sexually inappropriatebehavior; (ii) you suspect of stealing from you; or (iii) engages in otherdisturbing conduct, you should immediately report such person to theappropriate authorities and then to Sharingear by contacting us with yourpolice station and report number at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span> ; providedthat your report will not obligate us to take any action beyond that requiredby law (if any) or cause us to incur any liability to you.</span>\n</p>\n\n<p><b> <span>21.Miscellaneous.</span> </b></p>\n\n<p><b> <i> <span>EntireAgreement</span> </i> </b></p>\n\n<p><span>These Termsconstitute the entire and exclusive understanding and agreement between Sharingearand you regarding the Platform and Collective Content, and any reservations or Gearprofiles of Equipment made via the Platform, and these Terms supersede andreplace any and all prior oral or written understandings or agreements between Sharingearand you regarding reservations or Gear profiles of Equipment, the Platform, andCollective Content.</span>\n</p>\n\n<p><b> <i> <span>Assignment</span> </i> </b></p>\n\n<p><span>You may notassign or transfer these Terms, by operation of law or otherwise, without Sharingear’sprior written consent. Any attempt by you to assign or transfer these Terms,without such consent, will be null and of no effect. Sharingear may assign ortransfer these Terms, at its sole discretion, without restriction. Subject tothe foregoing, these Terms will bind and inure to the benefit of the parties,their successors and permitted assigns.</span>\n</p>\n\n<p><b> <i> <span>Notices</span> </i> </b></p>\n\n<p><span>Any noticesor other communications permitted or required hereunder, including thoseregarding modifications to these Terms, will be in writing and given by Sharingear(i) via email (in each case to the address that you provide) or (ii) by postingto the Site or via the Application. For notices made by e-mail, the date ofreceipt will be deemed the date on which such notice is transmitted.</span>\n</p>\n\n<p><b> <i> <span>ControllingLaw and Jurisdiction</span> </i> </b></p>\n\n<p><span>These Termswill be interpreted in accordance with the laws of Denmark, without regard toits conflict of law provisions. You and we submit to the personal jurisdictionor federal court in Copenhagen, Denmark for any actions for which the partiesretain the right to seek injunctive or other equitable relief in a court ofcompetent jurisdiction to prevent the actual or threatened infringement,misappropriation, or violation of a party’s copyrights, trademarks, tradesecrets, patents, or other intellectual property rights, as set forth in theDispute Resolution provision below.</span>\n</p>\n\n<p><b> <i> <span>DisputeResolution</span> </i> </b></p>\n\n<p><span>You and Sharingearagree that any dispute, claim, or controversy arising out of or relating tothese Terms or the breach, termination, enforcement, interpretation, orvalidity thereof, or to the use of the Platform (collectively, “Disputes”) willbe settled by binding arbitration, except that each party retains the right toseek injunctive or other equitable relief in a court of competent jurisdictionto prevent the actual or threatened infringement, misappropriation, or violationof a party’s copyrights, trademarks, trade secrets, patents, or otherintellectual property rights. You acknowledge and agree that you and Sharingearare each waiving the right to a trial by jury or to participate as a plaintiffor class member in any purported class action or representative proceeding.Further, unless both you and Sharingear otherwise agree in writing, thearbitrator may not consolidate more than one person’s claims and may nototherwise preside over any form of any class or representative proceeding. Ifthis specific paragraph is held unenforceable, then the entirety of this“Dispute Resolution” section will be deemed void.</span>\n</p>\n\n<p><b> <i> <span>Survival</span> </i> </b></p>\n\n<p><span>Theprovisions and terms of these Terms that by their nature should survivetermination of these Terms, including, without limitation, the “DisputeResolution” section and Section 18 (“Limitation of Liability”), shall surviveany termination or expiration of these Terms.</span>\n</p>\n\n<p><b> <i> <span>General</span> </i> </b></p>\n\n<p><span>The failureof Sharingear to enforce any right or provision of these Terms will notconstitute a waiver of future enforcement of that right or provision. Thewaiver of any such right or provision will be effective only if in writing andsigned by a duly authorized representative of Sharingear. Except as expresslyset forth in these Terms, the exercise by either party of any of its remediesunder these Terms will be without prejudice to its other remedies under theseTerms or otherwise. If for any reason an arbitrator or a court of competentjurisdiction finds any provision of these Terms invalid or unenforceable, thatprovision will be enforced to the maximum extent permissible and the otherprovisions of these Terms will remain in full force and effect.</span>\n</p>\n\n<p><b> <i> <span>Contacting Sharingear</span> </i> </b></p>\n\n<p><span>If you have any questions about these Terms, please contact Sharingearat </span> <span>\n\t<a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span></span></p></div>\n</div>";
 
 /***/ },
 /* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n    <div class=\"col-xs-2\">\n        <div class=\"sg-bg-image\"></div>\n    </div>\n    <div class=\"col-xs-8\">\n        <div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\n    </div>\n    <div class=\"col-xs-2 bs-reset\">\n    \t<div class=\"button-container\">\n        \t<a href=\"#vanprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourvan-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "<div class=\"testimonial stephen-carpenter-deftones\">\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8 text-center\">\n      <div class=\"profile-pic\"></div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8\">\n      <p class=\"text-center sg-white\">\n        \"{{citation}}\"\n      </p>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8\">\n      <hr>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8 sg-white text-center name\">\n      {{name}}\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-sm-offset-2 col-sm-8 sg-blue text-center\">\n      <span class=\"role\">{{role}}</span>, <span class=\"band\">{{band}}</span>\n    </div>\n  </div>\n</div>";
 
 /***/ },
 /* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view user sg-lightgray-bg\">\n  <div class=\"row sg-card bs-reset view-descriptor sg-no-mobile\">\n    <div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-profile\"></div> USER PROFILE</div>\n  </div>\n  <div class=\"row bs-reset\">\n    <div class=\"col-sm-4 bs-reset\">\n      <div class=\"row sg-card sg-card-follower\">\n        <div class=\"col-sm-12 bs-reset sg-white-bg\">\n          <div class=\"profile-pic-container sg-lightgray-bg\">\n            <div class=\"profile-pic\"></div>\n          </div>\n          <div class=\"name sg-darkergray text-center\">{{name}}</div>\n          <div class=\"tagline sg-gray text-center\">Sharingear first-mover</div>\n        </div>\n      </div>\n    </div>\n    <div class=\"col-sm-8 bs-reset\">\n      <div class=\"row sg-card sg-card-follower\">\n        <div class=\"col-sm-12 sg-white-bg\">\n          <ul class=\"sg-tabs sg-tabs-4\">\n            <li class=\"sg-blue active\" id=\"sg-tabs-info\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info\"></div></button></li>\n            <li class=\"sg-blue\" id=\"sg-tabs-gear\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear\"></div></button></li>\n            <li class=\"sg-blue\" id=\"sg-tabs-techprofiles\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile\"></div></button></li>\n            <li class=\"sg-blue\" id=\"sg-tabs-vans\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans\"></div></button></li>\n          </ul>\n\n          <div class=\"sg-tab-panel info\">\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <h3>Biography</h3>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12 bio\">\n                {{bio}}\n              </div>\n            </div>\n          </div>\n\n          <div class=\"sg-tab-panel gear hidden\">\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <h3>Gear</h3>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12 bio\" id=\"user-gear-container\">\n                \n              </div>\n            </div>\n          </div>\n\n          <div class=\"sg-tab-panel techprofiles hidden\">\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <h3>Technician profiles</h3>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12 bio\" id=\"user-techprofiles-container\">\n                \n              </div>\n            </div>\n          </div>\n\n          <div class=\"sg-tab-panel vans hidden\">\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <h3>Vans</h3>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12 bio\" id=\"user-vans-container\">\n                \n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
+	module.exports = "<div class=\"row sg-list-item\">\n    <div class=\"col-xs-2\">\n        <div class=\"sg-bg-image\"></div>\n    </div>\n    <div class=\"col-xs-8\">\n        <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\n    </div>\n    <div class=\"col-xs-2 bs-reset\">\n    \t<div class=\"button-container\">\n        \t<a href=\"#gearprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourgear-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view vanprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourvans\"></div>{{van_type}}</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card\">\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset van\">\n\t\t\t\t\t<div class=\"sg-icon icon-addvan-{{van_type}} sg-darkgray\"></div><span class=\"van-title\">{{model}}</span> <div class=\"social sg-gray\"><div class=\"sharethis\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"vanprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-book\">BOOK</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-edit\">EDIT</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h3>Description</h3>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t{{description}}\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\n\t\t\t\t\t\t\t<h3>Accessories</h3>\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\n\t\t\t\t\t\t\t{{location}}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\" row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t<div class=\"map\" id=\"vanprofile-map\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"row sg-list-item\">\n    <div class=\"col-xs-2\">\n        <div class=\"sg-bg-image text-center\"><div class=\"sg-icon icon-addtechprofile-{{icon}}\"></div></div>\n    </div>\n    <div class=\"col-xs-8\">\n        <div class=\"sg-list-item-text\">{{roadie_type}}</div>\n    </div>\n    <div class=\"col-xs-2 bs-reset\">\n    \t<div class=\"button-container\">\n        \t<a href=\"#techprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourtechprofile-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"searchform\">\n  <form class=\"form-inline\" id=\"vansearchform-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\n    <div class=\"form-group\">\n      <label class=\"sg-blue\">Find your van or bus</label>\n      <input type=\"search\" class=\"form-control\" id=\"vansearch-van\" placeholder=\"van, splitter, etc.\">\n      <div class=\"suggestion-box hidden\" id=\"vans-suggestions-box\"></div>\n    </div><div class=\"form-group\">\n      <label class=\"sg-blue\">Find a location</label>\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-location\" placeholder=\"\">\n    </div><div class=\"form-group search-pickup-container\">\n      <label class=\"sg-blue\">Pickup</label>\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-pickup\" placeholder=\"15/08/1969\" >\n    </div><div class=\"form-group search-return-container\">\n      <label class=\"sg-blue\">Delivery</label>\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-return\" placeholder=\"18/08/1969\" >\n    </div><div class=\"form-group submit-container\">\n      <input type=\"submit\" id=\"vansearchform-submit-btn\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\n    </div>\n  </form>\n</div>\n";
+	module.exports = "<div class=\"row sg-list-item\">\n    <div class=\"col-xs-2\">\n        <div class=\"sg-bg-image\"></div>\n    </div>\n    <div class=\"col-xs-8\">\n        <div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\n    </div>\n    <div class=\"col-xs-2 bs-reset\">\n    \t<div class=\"button-container\">\n        \t<a href=\"#vanprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourvan-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row bs-reset sg-list-item\">\n    <div class=\"col-xs-2 bs-reset\">\n        <div class=\"sg-bg-image\"></div>\n    </div>\n    <div class=\"col-xs-7\">\n        <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\n    </div>\n    <div class=\"col-xs-3 bs-reset\">\n        <div class=\"button-container\">\n            <a href=\"#gearprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourgear-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n        <div class=\"button-container\">\n            <button class=\"sg-btn-invisible sg-white yourgear-item-edit-btn\" data-yourgearid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view user sg-lightgray-bg\">\n  <div class=\"row sg-card bs-reset view-descriptor sg-no-mobile\">\n    <div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-profile\"></div> USER PROFILE</div>\n  </div>\n  <div class=\"row bs-reset\">\n    <div class=\"col-sm-4 bs-reset\">\n      <div class=\"row sg-card sg-card-follower\">\n        <div class=\"col-sm-12 bs-reset sg-white-bg\">\n          <div class=\"profile-pic-container sg-lightgray-bg\">\n            <div class=\"profile-pic\"></div>\n          </div>\n          <div class=\"name sg-darkergray text-center\">{{name}}</div>\n          <div class=\"tagline sg-gray text-center\">Sharingear first-mover</div>\n        </div>\n      </div>\n    </div>\n    <div class=\"col-sm-8 bs-reset\">\n      <div class=\"row sg-card sg-card-follower\">\n        <div class=\"col-sm-12 sg-white-bg\">\n          <ul class=\"sg-tabs sg-tabs-4\">\n            <li class=\"sg-blue active\" id=\"sg-tabs-info\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info\"></div></button></li>\n            <li class=\"sg-blue\" id=\"sg-tabs-gear\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear\"></div></button></li>\n            <li class=\"sg-blue\" id=\"sg-tabs-techprofiles\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile\"></div></button></li>\n            <li class=\"sg-blue\" id=\"sg-tabs-vans\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans\"></div></button></li>\n          </ul>\n\n          <div class=\"sg-tab-panel info\">\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <h3>Biography</h3>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12 bio\">\n                {{bio}}\n              </div>\n            </div>\n          </div>\n\n          <div class=\"sg-tab-panel gear hidden\">\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <h3>Gear</h3>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12 bio\" id=\"user-gear-container\">\n                \n              </div>\n            </div>\n          </div>\n\n          <div class=\"sg-tab-panel techprofiles hidden\">\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <h3>Technician profiles</h3>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12 bio\" id=\"user-techprofiles-container\">\n                \n              </div>\n            </div>\n          </div>\n\n          <div class=\"sg-tab-panel vans hidden\">\n            <div class=\"row\">\n              <div class=\"col-sm-12\">\n                <h3>Vans</h3>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col-sm-12 bio\" id=\"user-vans-container\">\n                \n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>";
 
 /***/ },
 /* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n  <div class=\"col-xs-2\">\n    <div class=\"sg-bg-image\"></div>\n  </div>\n  <div class=\"col-xs-8\">\n    <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\n  </div>\n  <div class=\"col-xs-2\">\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view vanprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourvans\"></div>{{van_type}}</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card\">\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset van\">\n\t\t\t\t\t<div class=\"sg-icon icon-addvan-{{van_type}} sg-darkgray\"></div><span class=\"van-title\">{{model}}</span> <div class=\"social sg-gray\"><div class=\"sharethis\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"vanprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-book\">BOOK</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-edit\">EDIT</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h3>Description</h3>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t{{description}}\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\n\t\t\t\t\t\t\t<h3>Accessories</h3>\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\n\t\t\t\t\t\t\t{{location}}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\" row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t<div class=\"map\" id=\"vanprofile-map\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n\t<div class=\"col-xs-2\">\n\t\t<div class=\"sg-bg-image\"></div>\n\t</div>\n\t<div class=\"col-xs-8\">\n\t\t<div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\n\t</div>\n\t<div class=\"col-xs-2\">\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"searchform\">\n  <form class=\"form-inline\" id=\"vansearchform-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\n    <div class=\"form-group\">\n      <label class=\"sg-blue\">Find your van or bus</label>\n      <input type=\"search\" class=\"form-control\" id=\"vansearch-van\" placeholder=\"van, splitter, etc.\">\n      <div class=\"suggestion-box hidden\" id=\"vans-suggestions-box\"></div>\n    </div><div class=\"form-group\">\n      <label class=\"sg-blue\">Find a location</label>\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-location\" placeholder=\"\">\n    </div><div class=\"form-group search-pickup-container\">\n      <label class=\"sg-blue\">Pickup</label>\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-pickup\" placeholder=\"15/08/1969\" >\n    </div><div class=\"form-group search-return-container\">\n      <label class=\"sg-blue\">Delivery</label>\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-return\" placeholder=\"18/08/1969\" >\n    </div><div class=\"form-group submit-container\">\n      <input type=\"submit\" id=\"vansearchform-submit-btn\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\n    </div>\n  </form>\n</div>\n";
 
 /***/ },
 /* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n  <div class=\"col-xs-2\">\n    <div class=\"sg-bg-image\"></div>\n  </div>\n  <div class=\"col-xs-8\">\n    <div class=\"sg-list-item-text\">{{roadie_type}}</div>\n  </div>\n  <div class=\"col-xs-2\">\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"row bs-reset sg-list-item\">\n    <div class=\"col-xs-2 bs-reset\">\n        <div class=\"sg-bg-image\"></div>\n    </div>\n    <div class=\"col-xs-7\">\n        <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\n    </div>\n    <div class=\"col-xs-3 bs-reset\">\n        <div class=\"button-container\">\n            <a href=\"#gearprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourgear-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n        <div class=\"button-container\">\n            <button class=\"sg-btn-invisible sg-white yourgear-item-edit-btn\" data-yourgearid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n\t<div class=\"col-xs-2\">\n\t\t<div class=\"sg-bg-image\"></div>\n\t</div>\n\t<div class=\"col-xs-8\">\n\t\t<div class=\"sg-list-item-text\">{{roadie_type}}</div>\n\t</div>\n\t<div class=\"col-xs-2\">\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"row sg-list-item\">\n  <div class=\"col-xs-2\">\n    <div class=\"sg-bg-image\"></div>\n  </div>\n  <div class=\"col-xs-8\">\n    <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\n  </div>\n  <div class=\"col-xs-2\">\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n  </div>\n</div>\n";
 
 /***/ },
 /* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row bs-reset sg-list-item\">\n    <div class=\"col-xs-2 bs-reset\">\n        <div class=\"sg-bg-image text-center\"><div class=\"sg-icon icon-addtechprofile-{{icon}}\"></div></div>\n    </div>\n    <div class=\"col-xs-7\">\n        <div class=\"sg-list-item-text\">{{roadie_type}}</div>\n    </div>\n    <div class=\"col-xs-3 bs-reset\">\n        <div class=\"button-container\">\n            <a href=\"#techprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourtechprofiles-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n        <div class=\"button-container\">\n            <button class=\"sg-btn-invisible sg-white yourtechprofiles-item-edit-btn\" data-yourtechprofileid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "<div class=\"row sg-list-item\">\n\t<div class=\"col-xs-2\">\n\t\t<div class=\"sg-bg-image\"></div>\n\t</div>\n\t<div class=\"col-xs-8\">\n\t\t<div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\n\t</div>\n\t<div class=\"col-xs-2\">\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n  <div class=\"col-xs-2\">\n    <div class=\"sg-bg-image\"></div>\n  </div>\n  <div class=\"col-xs-8\">\n    <div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\n  </div>\n  <div class=\"col-xs-2\">\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"row sg-list-item\">\n  <div class=\"col-xs-2\">\n    <div class=\"sg-bg-image\"></div>\n  </div>\n  <div class=\"col-xs-8\">\n    <div class=\"sg-list-item-text\">{{roadie_type}}</div>\n  </div>\n  <div class=\"col-xs-2\">\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n  </div>\n</div>\n";
 
 /***/ },
 /* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row sg-list-item\">\n\t<div class=\"col-xs-2\">\n\t\t<div class=\"sg-bg-image\"></div>\n\t</div>\n\t<div class=\"col-xs-8\">\n\t\t<div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\n\t</div>\n\t<div class=\"col-xs-2\">\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"row sg-list-item\">\n\t<div class=\"col-xs-2\">\n\t\t<div class=\"sg-bg-image\"></div>\n\t</div>\n\t<div class=\"col-xs-8\">\n\t\t<div class=\"sg-list-item-text\">{{roadie_type}}</div>\n\t</div>\n\t<div class=\"col-xs-2\">\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"row bs-reset sg-list-item\">\n    <div class=\"col-xs-2 bs-reset\">\n        <div class=\"sg-bg-image\"></div>\n    </div>\n    <div class=\"col-xs-7\">\n        <div class=\"sg-list-item-text\">{{model}}</div>\n    </div>\n    <div class=\"col-xs-3 bs-reset\">\n        <div class=\"button-container\">\n            <a href=\"#vanprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourvan-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n        <div class=\"button-container\">\n            <button class=\"sg-btn-invisible sg-white yourvan-item-edit-btn\" data-yourvanid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "<div class=\"row bs-reset sg-list-item\">\n    <div class=\"col-xs-2 bs-reset\">\n        <div class=\"sg-bg-image text-center\"><div class=\"sg-icon icon-addtechprofile-{{icon}}\"></div></div>\n    </div>\n    <div class=\"col-xs-7\">\n        <div class=\"sg-list-item-text\">{{roadie_type}}</div>\n    </div>\n    <div class=\"col-xs-3 bs-reset\">\n        <div class=\"button-container\">\n            <a href=\"#techprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourtechprofiles-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n        <div class=\"button-container\">\n            <button class=\"sg-btn-invisible sg-white yourtechprofiles-item-edit-btn\" data-yourtechprofileid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\n        </div>\n    </div>\n</div>\n";
 
 /***/ },
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var moment = module.exports = __webpack_require__(144);
-	moment.tz.load(__webpack_require__(147));
-
+	module.exports = "<div class=\"row sg-list-item\">\n  <div class=\"col-xs-2\">\n    <div class=\"sg-bg-image\"></div>\n  </div>\n  <div class=\"col-xs-8\">\n    <div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\n  </div>\n  <div class=\"col-xs-2\">\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n  </div>\n</div>\n";
 
 /***/ },
 /* 135 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div class=\"row sg-list-item\">\n\t<div class=\"col-xs-2\">\n\t\t<div class=\"sg-bg-image\"></div>\n\t</div>\n\t<div class=\"col-xs-8\">\n\t\t<div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\n\t</div>\n\t<div class=\"col-xs-2\">\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-request\"></div>\n    \t<div class=\"sg-btn-text\">Booking request</div>\n    </button>\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\n    </button>\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\n    \t<div class=\"sg-btn-text\">Booking denied</div>\n    </button>\n\t</div>\n</div>\n";
+
+/***/ },
+/* 136 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div class=\"row bs-reset sg-list-item\">\n    <div class=\"col-xs-2 bs-reset\">\n        <div class=\"sg-bg-image\"></div>\n    </div>\n    <div class=\"col-xs-7\">\n        <div class=\"sg-list-item-text\">{{model}}</div>\n    </div>\n    <div class=\"col-xs-3 bs-reset\">\n        <div class=\"button-container\">\n            <a href=\"#vanprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourvan-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\n        </div>\n        <div class=\"button-container\">\n            <button class=\"sg-btn-invisible sg-white yourvan-item-edit-btn\" data-yourvanid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\n        </div>\n    </div>\n</div>\n";
+
+/***/ },
+/* 137 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var moment = module.exports = __webpack_require__(147);
+	moment.tz.load(__webpack_require__(149));
+
+
+/***/ },
+/* 138 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	
+	    Model = __webpack_require__(18),
+	    App = __webpack_require__(1),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27456,7 +27874,7 @@
 	var _ = __webpack_require__(3),
 		
 		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(16),
+		Model = __webpack_require__(18),
 		App = __webpack_require__(1),
 		
 		didInitialize,
@@ -27688,201 +28106,7 @@
 
 
 /***/ },
-/* 136 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-	
-	    Model = __webpack_require__(16),
-	    App = __webpack_require__(1),
-	
-	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null
-	        };
-	    }
-	};
-	
-	createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
-/* 137 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27896,7 +28120,7 @@
 	var _ = __webpack_require__(3),
 		
 		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(16),
+		Model = __webpack_require__(18),
 		App = __webpack_require__(1),
 	
 		didInitialize,
@@ -28118,7 +28342,7 @@
 
 
 /***/ },
-/* 138 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28130,9 +28354,9 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    Moment = __webpack_require__(134),
+	    Moment = __webpack_require__(137),
 	
-	    Model = __webpack_require__(16),
+	    Model = __webpack_require__(18),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -28259,7 +28483,7 @@
 
 
 /***/ },
-/* 139 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28272,8 +28496,8 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(145),
-		SelectTimePopupTemplate = __webpack_require__(146),
+		PopupController = __webpack_require__(19),
+		SelectTimePopupTemplate = __webpack_require__(148),
 	
 		SelectTimePopup,
 	
@@ -28331,7 +28555,7 @@
 
 
 /***/ },
-/* 140 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28344,8 +28568,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-		Model = __webpack_require__(16),
-		Gear = __webpack_require__(135),
+		Model = __webpack_require__(18),
+		Gear = __webpack_require__(139),
 		
 		didInitialize,
 	
@@ -28474,7 +28698,7 @@
 
 
 /***/ },
-/* 141 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28486,8 +28710,8 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		Model = __webpack_require__(16),
-		TechProfile = __webpack_require__(136),
+		Model = __webpack_require__(18),
+		TechProfile = __webpack_require__(138),
 		
 		didInitialize,
 	
@@ -28616,7 +28840,7 @@
 
 
 /***/ },
-/* 142 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28629,8 +28853,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(16),
-	    Van = __webpack_require__(137),
+	    Model = __webpack_require__(18),
+	    Van = __webpack_require__(140),
 	
 	    didInitialize,
 	
@@ -28759,7 +28983,7 @@
 
 
 /***/ },
-/* 143 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28770,10 +28994,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var mangoPay = __webpack_require__(148),
+	var mangoPay = __webpack_require__(150),
 		
 		Config = __webpack_require__(5),
-		Model = __webpack_require__(16),
+		Model = __webpack_require__(18),
 	
 	    didInitialize,
 	    registerCard;
@@ -28818,7 +29042,7 @@
 
 
 /***/ },
-/* 144 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//! moment-timezone.js
@@ -28832,7 +29056,7 @@
 	
 		/*global define*/
 		if (true) {
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));                 // AMD
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));                 // AMD
 		} else if (typeof exports === 'object') {
 			module.exports = factory(require('moment')); // Node
 		} else {
@@ -29242,70 +29466,13 @@
 
 
 /***/ },
-/* 145 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General popup object that inherits from ViewController.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(18),
-	
-		$popupLightbox = $('#popup-lightbox'),
-	    inherit, show, hide, setTitle;
-	
-	show = function() {
-	    $popupLightbox.removeClass('hidden');
-	    this.templateParameters.title = this.title;
-	    this.render();
-	};
-	
-	hide = function() {
-	    $popupLightbox.addClass('hidden');
-	    this.close();
-	};
-	
-	setTitle = function(title) {
-	    this.title = title;
-	};
-	
-	inherit = function(inheritOptions) {
-	    var options = {
-	        $element: $('.popup-container', $popupLightbox),
-	        title: 'Popup',
-	
-	        show: show,
-	        hide: hide,
-	        setTitle: setTitle
-	    };
-	    _.extend(options, inheritOptions);
-	
-	    return {
-	        constructor: Utilities.inherit(ViewController.constructor, options)
-	    };
-	};
-	
-	module.exports = {
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 146 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-center\">\n\t\t\t<h2>{{title}}</h2>\n\t\t</div>\n\t</div>\n\t<form onsubmit=\"return false;\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Hours:</p></div>\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Minutes:</p></div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 text-center selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-hours\">\n\t\t\t\t\t<option>00</option>\n\t\t\t\t\t<option>01</option>\n\t\t\t\t\t<option>02</option>\n\t\t\t\t\t<option>03</option>\n\t\t\t\t\t<option>04</option>\n\t\t\t\t\t<option>05</option>\n\t\t\t\t\t<option>06</option>\n\t\t\t\t\t<option>07</option>\n\t\t\t\t\t<option>08</option>\n\t\t\t\t\t<option>09</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>11</option>\n\t\t\t\t\t<option selected=\"\">12</option>\n\t\t\t\t\t<option>13</option>\n\t\t\t\t\t<option>14</option>\n\t\t\t\t\t<option>15</option>\n\t\t\t\t\t<option>16</option>\n\t\t\t\t\t<option>17</option>\n\t\t\t\t\t<option>18</option>\n\t\t\t\t\t<option>19</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>21</option>\n\t\t\t\t\t<option>22</option>\n\t\t\t\t\t<option>23</option>\n\t\t\t\t</select> \n\t\t\t</div>\n\t\t\n\t\t\t<div class=\"col-xs-6 selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-minutes\">\n\t\t\t\t\t<option selected=\"\">00</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>30</option>\n\t\t\t\t\t<option>40</option>\n\t\t\t\t\t<option>50</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\t\t\n\t\t\t<div class=\"col-xs-12\">\n\t\t        <div class=\"col-xs-offset-1 col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n\t\t        </div>\n\t\t        <div class=\"col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square confirm-btn\">Confirm <i class=\"fa fa-check-circle\"></i></button>\n\t\t        </div>\n\t\t      </div>\n\t\t    </div>\n\t\t</div>\n\t</form>\n</div>";
 
 /***/ },
-/* 147 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -29899,7 +30066,7 @@
 	}
 
 /***/ },
-/* 148 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var mangoPay={cardRegistration:{baseURL:"https://api.sandbox.mangopay.com",clientId:"",init:function(a){this._cardRegisterData=a},registerCard:function(a,b,c){if(!mangoPay.browser.corsSupport()){c({"ResultCode":"009999","ResultMessage":"Browser does not support making cross-origin Ajax calls"});return}var d=mangoPay.cardRegistration._validateCardData(a);if(d!==true){c(d);return};mangoPay.cardRegistration._tokenizeCard(a,mangoPay.cardRegistration._finishRegistration,b,c)},_validateCardData:function(a){var b=mangoPay._validation._cardNumberValidator._validate(a.cardNumber);if(b!==true)return b;var c=mangoPay._validation._expirationDateValidator._validate(a.cardExpirationDate,new Date());if(c!==true)return c;var d=mangoPay._validation._cvvValidator._validate(a.cardCvx,a.cardType);if(d!==true)return d;return true},_tokenizeCard:function(c,d,e,f){mangoPay._networking._ajax({type:"post",url:this._cardRegisterData.cardRegistrationURL,crossDomain:true,data:{data:this._cardRegisterData.preregistrationData,accessKeyRef:this._cardRegisterData.accessKey,cardNumber:c.cardNumber,cardExpirationDate:c.cardExpirationDate,cardCvx:c.cardCvx},success:function(a){var b="";if(a===null){f({"ResultCode":"001599","ResultMessage":"Token processing error"});return}b={Id:mangoPay.cardRegistration._cardRegisterData.Id,RegistrationData:a};d(b,e,f)},error:function(a){f({"ResultCode":"001599","ResultMessage":"Token processing error"});return}})},_finishRegistration:function(d,e,f){mangoPay._networking._ajax({type:"post",crossDomain:true,url:mangoPay.cardRegistration.baseURL+'/v2/'+mangoPay.cardRegistration.clientId+'/CardRegistrations/'+d.Id,data:d,success:function(a){try{a=JSON.parse(a)}catch(err){f({"ResultCode":"101699","ResultMessage":"CardRegistration should return a valid JSON response"});return}if(a.ResultCode==="000000"){e(a)}else{f(a)}},error:function(a){var b="CardRegistration error";if(a.response){try{var c=JSON.parse(a.response);if(c.Message){b=c.Message}}catch(err){}}f({"ResultCode":"101699","ResultMessage":b})}})}},_validation:{_cvvValidator:{_validate:function(a,b){a=a?a.trim():"";b=b?b.trim():"";if(mangoPay._validation._helpers._validateNumericOnly(a)===true){if(b==="AMEX"&&(a.length===3||a.length===4)){return true}if(b==="CB_VISA_MASTERCARD"&&a.length===3){return true}}return{"ResultCode":"105204","ResultMessage":"CVV_FORMAT_ERROR"}}},_expirationDateValidator:{_validate:function(a,b){a=a?a.trim():"";if(a.length===4){var c=parseInt(a.substr(2,2))+2000;var d=parseInt(a.substr(0,2));if(d>0&&d<=12){var e=b.getFullYear();if(e<c)return true;if(e===c){var f=b.getMonth()+1;if(f<=d)return true}return{"ResultCode":"105203","ResultMessage":"PAST_EXPIRY_DATE_ERROR"}}}return{"ResultCode":"105203","ResultMessage":"EXPIRY_DATE_FORMAT_ERROR"}}},_cardNumberValidator:{_validate:function(a){a=a?a.trim():"";if(mangoPay._validation._helpers._validateNumericOnly(a)===false){return{"ResultCode":"105202","ResultMessage":"CARD_NUMBER_FORMAT_ERROR"}}if(this._validateCheckDigit(a)===false){return{"ResultCode":"105202","ResultMessage":"CARD_NUMBER_FORMAT_ERROR"}}return true},_validateCheckDigit:function(a){var b=0;var c=0;var d=false;var e=a.replace(/\D/g,"");for(var n=e.length-1;n>=0;n--){var f=e.charAt(n),c=parseInt(f,10);if(d){if((c*=2)>9)c-=9}b+=c;d=!d}return(b%10)===0},},_helpers:{_validateNumericOnly:function(a){var b=/^[0-9]+$/;if(a.match(b)){return true}return false}}},_networking:{_ajax:function(a){var b=new XMLHttpRequest();var c="";for(key in a.data){c+=(c.length>0?'&':'')+key+"="+encodeURIComponent(a.data[key])}var d=a.url;if(a.type==="get"){d=a.url+(a.url.indexOf("?")>-1?'&':'?')+c}if(a.crossDomain&&!("withCredentials"in b)&&window.XDomainRequest){xdr=new XDomainRequest();xdr.onerror=function(){a.error(xdr)};xdr.onload=function(){a.success(xdr.responseText)};xdr.open(a.type,d);xdr.send(a.type==="post"?c:null);return}b.onreadystatechange=function(){if(b.readyState==4){if(/^2[0-9][0-9]$/.test(b.status)){a.success(b.responseText)}else{a.error(b,b.status,b.statusText)}}};b.open(a.type,d,true);if(a.type==="post"){b.setRequestHeader("Content-type","application/x-www-form-urlencoded")}b.send(a.type==="post"?c:null)},},browser:{corsSupport:function(){if("withCredentials"in new XMLHttpRequest()){return true}if(window.XDomainRequest){return true}return false}}};if(!String.prototype.trim){String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g,'')}}
@@ -29908,7 +30075,7 @@
 	module.exports = mangoPay
 
 /***/ },
-/* 149 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {//! moment.js
@@ -30741,7 +30908,7 @@
 	        if (!locales[name] && hasModule) {
 	            try {
 	                oldLocale = moment.locale();
-	                __webpack_require__(150)("./" + name);
+	                __webpack_require__(152)("./" + name);
 	                // because defineLocale currently also sets the global locale, we want to undo that for lazy loaded locales
 	                moment.locale(oldLocale);
 	            } catch (e) { }
@@ -32955,173 +33122,173 @@
 	    }
 	}).call(this);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(231)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(233)(module)))
 
 /***/ },
-/* 150 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./af": 151,
-		"./af.js": 151,
-		"./ar": 155,
-		"./ar-ma": 152,
-		"./ar-ma.js": 152,
-		"./ar-sa": 153,
-		"./ar-sa.js": 153,
-		"./ar-tn": 154,
-		"./ar-tn.js": 154,
-		"./ar.js": 155,
-		"./az": 156,
-		"./az.js": 156,
-		"./be": 157,
-		"./be.js": 157,
-		"./bg": 158,
-		"./bg.js": 158,
-		"./bn": 159,
-		"./bn.js": 159,
-		"./bo": 160,
-		"./bo.js": 160,
-		"./br": 161,
-		"./br.js": 161,
-		"./bs": 162,
-		"./bs.js": 162,
-		"./ca": 163,
-		"./ca.js": 163,
-		"./cs": 164,
-		"./cs.js": 164,
-		"./cv": 165,
-		"./cv.js": 165,
-		"./cy": 166,
-		"./cy.js": 166,
-		"./da": 167,
-		"./da.js": 167,
-		"./de": 169,
-		"./de-at": 168,
-		"./de-at.js": 168,
-		"./de.js": 169,
-		"./el": 170,
-		"./el.js": 170,
-		"./en-au": 171,
-		"./en-au.js": 171,
-		"./en-ca": 172,
-		"./en-ca.js": 172,
-		"./en-gb": 173,
-		"./en-gb.js": 173,
-		"./eo": 174,
-		"./eo.js": 174,
-		"./es": 175,
-		"./es.js": 175,
-		"./et": 176,
-		"./et.js": 176,
-		"./eu": 177,
-		"./eu.js": 177,
-		"./fa": 178,
-		"./fa.js": 178,
-		"./fi": 179,
-		"./fi.js": 179,
-		"./fo": 180,
-		"./fo.js": 180,
-		"./fr": 182,
-		"./fr-ca": 181,
-		"./fr-ca.js": 181,
-		"./fr.js": 182,
-		"./fy": 183,
-		"./fy.js": 183,
-		"./gl": 184,
-		"./gl.js": 184,
-		"./he": 185,
-		"./he.js": 185,
-		"./hi": 186,
-		"./hi.js": 186,
-		"./hr": 187,
-		"./hr.js": 187,
-		"./hu": 188,
-		"./hu.js": 188,
-		"./hy-am": 189,
-		"./hy-am.js": 189,
-		"./id": 190,
-		"./id.js": 190,
-		"./is": 191,
-		"./is.js": 191,
-		"./it": 192,
-		"./it.js": 192,
-		"./ja": 193,
-		"./ja.js": 193,
-		"./ka": 194,
-		"./ka.js": 194,
-		"./km": 195,
-		"./km.js": 195,
-		"./ko": 196,
-		"./ko.js": 196,
-		"./lb": 197,
-		"./lb.js": 197,
-		"./lt": 198,
-		"./lt.js": 198,
-		"./lv": 199,
-		"./lv.js": 199,
-		"./mk": 200,
-		"./mk.js": 200,
-		"./ml": 201,
-		"./ml.js": 201,
-		"./mr": 202,
-		"./mr.js": 202,
-		"./ms-my": 203,
-		"./ms-my.js": 203,
-		"./my": 204,
-		"./my.js": 204,
-		"./nb": 205,
-		"./nb.js": 205,
-		"./ne": 206,
-		"./ne.js": 206,
-		"./nl": 207,
-		"./nl.js": 207,
-		"./nn": 208,
-		"./nn.js": 208,
-		"./pl": 209,
-		"./pl.js": 209,
-		"./pt": 211,
-		"./pt-br": 210,
-		"./pt-br.js": 210,
-		"./pt.js": 211,
-		"./ro": 212,
-		"./ro.js": 212,
-		"./ru": 213,
-		"./ru.js": 213,
-		"./sk": 214,
-		"./sk.js": 214,
-		"./sl": 215,
-		"./sl.js": 215,
-		"./sq": 216,
-		"./sq.js": 216,
-		"./sr": 218,
-		"./sr-cyrl": 217,
-		"./sr-cyrl.js": 217,
-		"./sr.js": 218,
-		"./sv": 219,
-		"./sv.js": 219,
-		"./ta": 220,
-		"./ta.js": 220,
-		"./th": 221,
-		"./th.js": 221,
-		"./tl-ph": 222,
-		"./tl-ph.js": 222,
-		"./tr": 223,
-		"./tr.js": 223,
-		"./tzm": 225,
-		"./tzm-latn": 224,
-		"./tzm-latn.js": 224,
-		"./tzm.js": 225,
-		"./uk": 226,
-		"./uk.js": 226,
-		"./uz": 227,
-		"./uz.js": 227,
-		"./vi": 228,
-		"./vi.js": 228,
-		"./zh-cn": 229,
-		"./zh-cn.js": 229,
-		"./zh-tw": 230,
-		"./zh-tw.js": 230
+		"./af": 153,
+		"./af.js": 153,
+		"./ar": 157,
+		"./ar-ma": 154,
+		"./ar-ma.js": 154,
+		"./ar-sa": 155,
+		"./ar-sa.js": 155,
+		"./ar-tn": 156,
+		"./ar-tn.js": 156,
+		"./ar.js": 157,
+		"./az": 158,
+		"./az.js": 158,
+		"./be": 159,
+		"./be.js": 159,
+		"./bg": 160,
+		"./bg.js": 160,
+		"./bn": 161,
+		"./bn.js": 161,
+		"./bo": 162,
+		"./bo.js": 162,
+		"./br": 163,
+		"./br.js": 163,
+		"./bs": 164,
+		"./bs.js": 164,
+		"./ca": 165,
+		"./ca.js": 165,
+		"./cs": 166,
+		"./cs.js": 166,
+		"./cv": 167,
+		"./cv.js": 167,
+		"./cy": 168,
+		"./cy.js": 168,
+		"./da": 169,
+		"./da.js": 169,
+		"./de": 171,
+		"./de-at": 170,
+		"./de-at.js": 170,
+		"./de.js": 171,
+		"./el": 172,
+		"./el.js": 172,
+		"./en-au": 173,
+		"./en-au.js": 173,
+		"./en-ca": 174,
+		"./en-ca.js": 174,
+		"./en-gb": 175,
+		"./en-gb.js": 175,
+		"./eo": 176,
+		"./eo.js": 176,
+		"./es": 177,
+		"./es.js": 177,
+		"./et": 178,
+		"./et.js": 178,
+		"./eu": 179,
+		"./eu.js": 179,
+		"./fa": 180,
+		"./fa.js": 180,
+		"./fi": 181,
+		"./fi.js": 181,
+		"./fo": 182,
+		"./fo.js": 182,
+		"./fr": 184,
+		"./fr-ca": 183,
+		"./fr-ca.js": 183,
+		"./fr.js": 184,
+		"./fy": 185,
+		"./fy.js": 185,
+		"./gl": 186,
+		"./gl.js": 186,
+		"./he": 187,
+		"./he.js": 187,
+		"./hi": 188,
+		"./hi.js": 188,
+		"./hr": 189,
+		"./hr.js": 189,
+		"./hu": 190,
+		"./hu.js": 190,
+		"./hy-am": 191,
+		"./hy-am.js": 191,
+		"./id": 192,
+		"./id.js": 192,
+		"./is": 193,
+		"./is.js": 193,
+		"./it": 194,
+		"./it.js": 194,
+		"./ja": 195,
+		"./ja.js": 195,
+		"./ka": 196,
+		"./ka.js": 196,
+		"./km": 197,
+		"./km.js": 197,
+		"./ko": 198,
+		"./ko.js": 198,
+		"./lb": 199,
+		"./lb.js": 199,
+		"./lt": 200,
+		"./lt.js": 200,
+		"./lv": 201,
+		"./lv.js": 201,
+		"./mk": 202,
+		"./mk.js": 202,
+		"./ml": 203,
+		"./ml.js": 203,
+		"./mr": 204,
+		"./mr.js": 204,
+		"./ms-my": 205,
+		"./ms-my.js": 205,
+		"./my": 206,
+		"./my.js": 206,
+		"./nb": 207,
+		"./nb.js": 207,
+		"./ne": 208,
+		"./ne.js": 208,
+		"./nl": 209,
+		"./nl.js": 209,
+		"./nn": 210,
+		"./nn.js": 210,
+		"./pl": 211,
+		"./pl.js": 211,
+		"./pt": 213,
+		"./pt-br": 212,
+		"./pt-br.js": 212,
+		"./pt.js": 213,
+		"./ro": 214,
+		"./ro.js": 214,
+		"./ru": 215,
+		"./ru.js": 215,
+		"./sk": 216,
+		"./sk.js": 216,
+		"./sl": 217,
+		"./sl.js": 217,
+		"./sq": 218,
+		"./sq.js": 218,
+		"./sr": 220,
+		"./sr-cyrl": 219,
+		"./sr-cyrl.js": 219,
+		"./sr.js": 220,
+		"./sv": 221,
+		"./sv.js": 221,
+		"./ta": 222,
+		"./ta.js": 222,
+		"./th": 223,
+		"./th.js": 223,
+		"./tl-ph": 224,
+		"./tl-ph.js": 224,
+		"./tr": 225,
+		"./tr.js": 225,
+		"./tzm": 227,
+		"./tzm-latn": 226,
+		"./tzm-latn.js": 226,
+		"./tzm.js": 227,
+		"./uk": 228,
+		"./uk.js": 228,
+		"./uz": 229,
+		"./uz.js": 229,
+		"./vi": 230,
+		"./vi.js": 230,
+		"./zh-cn": 231,
+		"./zh-cn.js": 231,
+		"./zh-tw": 232,
+		"./zh-tw.js": 232
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -33134,11 +33301,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 150;
+	webpackContext.id = 152;
 
 
 /***/ },
-/* 151 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33147,7 +33314,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -33215,7 +33382,7 @@
 
 
 /***/ },
-/* 152 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33225,7 +33392,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -33278,7 +33445,7 @@
 
 
 /***/ },
-/* 153 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33287,7 +33454,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -33385,7 +33552,7 @@
 
 
 /***/ },
-/* 154 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33393,7 +33560,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -33446,7 +33613,7 @@
 
 
 /***/ },
-/* 155 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33457,7 +33624,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -33586,7 +33753,7 @@
 
 
 /***/ },
-/* 156 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33595,7 +33762,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -33699,7 +33866,7 @@
 
 
 /***/ },
-/* 157 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33710,7 +33877,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -33859,7 +34026,7 @@
 
 
 /***/ },
-/* 158 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33868,7 +34035,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -33953,7 +34120,7 @@
 
 
 /***/ },
-/* 159 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -33962,7 +34129,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34070,7 +34237,7 @@
 
 
 /***/ },
-/* 160 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34079,7 +34246,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34184,7 +34351,7 @@
 
 
 /***/ },
-/* 161 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34193,7 +34360,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34299,7 +34466,7 @@
 
 
 /***/ },
-/* 162 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34309,7 +34476,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34445,7 +34612,7 @@
 
 
 /***/ },
-/* 163 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34454,7 +34621,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34528,7 +34695,7 @@
 
 
 /***/ },
-/* 164 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34537,7 +34704,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34691,7 +34858,7 @@
 
 
 /***/ },
-/* 165 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34700,7 +34867,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34758,7 +34925,7 @@
 
 
 /***/ },
-/* 166 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34767,7 +34934,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34843,7 +35010,7 @@
 
 
 /***/ },
-/* 167 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34852,7 +35019,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34907,7 +35074,7 @@
 
 
 /***/ },
-/* 168 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34918,7 +35085,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -34987,7 +35154,7 @@
 
 
 /***/ },
-/* 169 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -34997,7 +35164,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35066,7 +35233,7 @@
 
 
 /***/ },
-/* 170 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35075,7 +35242,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35166,7 +35333,7 @@
 
 
 /***/ },
-/* 171 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35174,7 +35341,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35236,7 +35403,7 @@
 
 
 /***/ },
-/* 172 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35245,7 +35412,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35303,7 +35470,7 @@
 
 
 /***/ },
-/* 173 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35312,7 +35479,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35374,7 +35541,7 @@
 
 
 /***/ },
-/* 174 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35385,7 +35552,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35451,7 +35618,7 @@
 
 
 /***/ },
-/* 175 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35460,7 +35627,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35534,7 +35701,7 @@
 
 
 /***/ },
-/* 176 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35544,7 +35711,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35618,7 +35785,7 @@
 
 
 /***/ },
-/* 177 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35627,7 +35794,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35686,7 +35853,7 @@
 
 
 /***/ },
-/* 178 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35695,7 +35862,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35795,7 +35962,7 @@
 
 
 /***/ },
-/* 179 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35804,7 +35971,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35908,7 +36075,7 @@
 
 
 /***/ },
-/* 180 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35917,7 +36084,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -35972,7 +36139,7 @@
 
 
 /***/ },
-/* 181 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -35981,7 +36148,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36034,7 +36201,7 @@
 
 
 /***/ },
-/* 182 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36043,7 +36210,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36100,7 +36267,7 @@
 
 
 /***/ },
-/* 183 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36109,7 +36276,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36175,7 +36342,7 @@
 
 
 /***/ },
-/* 184 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36184,7 +36351,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36254,7 +36421,7 @@
 
 
 /***/ },
-/* 185 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36265,7 +36432,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36340,7 +36507,7 @@
 
 
 /***/ },
-/* 186 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36349,7 +36516,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36467,7 +36634,7 @@
 
 
 /***/ },
-/* 187 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36478,7 +36645,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36614,7 +36781,7 @@
 
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36623,7 +36790,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36731,7 +36898,7 @@
 
 
 /***/ },
-/* 189 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36740,7 +36907,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36855,7 +37022,7 @@
 
 
 /***/ },
-/* 190 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36865,7 +37032,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -36942,7 +37109,7 @@
 
 
 /***/ },
-/* 191 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -36951,7 +37118,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37074,7 +37241,7 @@
 
 
 /***/ },
-/* 192 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37084,7 +37251,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37148,7 +37315,7 @@
 
 
 /***/ },
-/* 193 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37157,7 +37324,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37217,7 +37384,7 @@
 
 
 /***/ },
-/* 194 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37226,7 +37393,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37332,7 +37499,7 @@
 
 
 /***/ },
-/* 195 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37341,7 +37508,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37394,7 +37561,7 @@
 
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37406,7 +37573,7 @@
 	// - Jeeeyul Lee <jeeeyul@gmail.com>
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37465,7 +37632,7 @@
 
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37478,7 +37645,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37610,7 +37777,7 @@
 
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37619,7 +37786,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37736,7 +37903,7 @@
 
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37745,7 +37912,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37821,7 +37988,7 @@
 
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37830,7 +37997,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37915,7 +38082,7 @@
 
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37924,7 +38091,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37990,7 +38157,7 @@
 
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -37999,7 +38166,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38116,7 +38283,7 @@
 
 
 /***/ },
-/* 203 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38125,7 +38292,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38202,7 +38369,7 @@
 
 
 /***/ },
-/* 204 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38211,7 +38378,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38297,7 +38464,7 @@
 
 
 /***/ },
-/* 205 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38307,7 +38474,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38362,7 +38529,7 @@
 
 
 /***/ },
-/* 206 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38371,7 +38538,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38489,7 +38656,7 @@
 
 
 /***/ },
-/* 207 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38498,7 +38665,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38564,7 +38731,7 @@
 
 
 /***/ },
-/* 208 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38573,7 +38740,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38628,7 +38795,7 @@
 
 
 /***/ },
-/* 209 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38637,7 +38804,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38734,7 +38901,7 @@
 
 
 /***/ },
-/* 210 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38743,7 +38910,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38798,7 +38965,7 @@
 
 
 /***/ },
-/* 211 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38807,7 +38974,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38866,7 +39033,7 @@
 
 
 /***/ },
-/* 212 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38876,7 +39043,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38945,7 +39112,7 @@
 
 
 /***/ },
-/* 213 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -38955,7 +39122,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39127,7 +39294,7 @@
 
 
 /***/ },
-/* 214 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -39137,7 +39304,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39291,7 +39458,7 @@
 
 
 /***/ },
-/* 215 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -39300,7 +39467,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39443,7 +39610,7 @@
 
 
 /***/ },
-/* 216 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -39454,7 +39621,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39516,7 +39683,7 @@
 
 
 /***/ },
-/* 217 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -39525,7 +39692,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39629,7 +39796,7 @@
 
 
 /***/ },
-/* 218 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -39638,7 +39805,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39742,7 +39909,7 @@
 
 
 /***/ },
-/* 219 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -39751,7 +39918,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39813,7 +39980,7 @@
 
 
 /***/ },
-/* 220 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -39822,7 +39989,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39949,7 +40116,7 @@
 
 
 /***/ },
-/* 221 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -39958,7 +40125,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40018,7 +40185,7 @@
 
 
 /***/ },
-/* 222 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40027,7 +40194,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40084,7 +40251,7 @@
 
 
 /***/ },
-/* 223 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40094,7 +40261,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40184,7 +40351,7 @@
 
 
 /***/ },
-/* 224 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40193,7 +40360,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40246,7 +40413,7 @@
 
 
 /***/ },
-/* 225 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40255,7 +40422,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40308,7 +40475,7 @@
 
 
 /***/ },
-/* 226 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40318,7 +40485,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40477,7 +40644,7 @@
 
 
 /***/ },
-/* 227 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40486,7 +40653,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40539,7 +40706,7 @@
 
 
 /***/ },
-/* 228 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40548,7 +40715,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40609,7 +40776,7 @@
 
 
 /***/ },
-/* 229 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40619,7 +40786,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40740,7 +40907,7 @@
 
 
 /***/ },
-/* 230 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// moment.js locale configuration
@@ -40749,7 +40916,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(151)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40845,7 +41012,7 @@
 
 
 /***/ },
-/* 231 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module) {

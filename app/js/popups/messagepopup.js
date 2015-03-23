@@ -3,49 +3,52 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define([
-	'jquery', 'popupcontroller', 'text!popups/messagepopup.html'
-], function($, PopupController, MessagePopupTemplate) {
-	var MessagePopup,
+var $ = require('jquery'),
 
-		setMessage,
-		wasClosed,
-		didRender,
-		getWasClosed,
+	PopupController = require('../popupcontroller.js'),
 
-		handleCancel;
+	MessagePopupTemplate = require('./messagepopup.html'),
 
-	didRender = function() {
-		wasClosed = false;
-		this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
-	};
+	MessagePopup,
 
-	setMessage = function(message){
-		$('#popup-message', this.$element).html(message);
-	};
-	
-	getWasClosed = function(){
-		return wasClosed;
-	};
+    setMessage,
+    wasClosed,
+    didRender,
+    getWasClosed,
 
-	handleCancel = function(event) {
-		var view = event.data;
-		wasClosed = true;
-		view.hide();
-	};
+    handleCancel;
 
-	MessagePopup = PopupController.inherit({
-		template: MessagePopupTemplate,
+didRender = function() {
+    wasClosed = false;
+    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+};
 
-		didRender: didRender,
-		setMessage:setMessage,
-		
-		getWasClosed: getWasClosed,
-		handleCancel: handleCancel
-	});
+setMessage = function(message) {
+    $('#popup-message', this.$element).html(message);
+};
 
+getWasClosed = function() {
+    return wasClosed;
+};
 
-	return MessagePopup;
+handleCancel = function(event) {
+    var view = event.data;
+    wasClosed = true;
+    view.hide();
+};
+
+MessagePopup = PopupController.inherit({
+    template: MessagePopupTemplate,
+
+    didRender: didRender,
+    setMessage: setMessage,
+
+    getWasClosed: getWasClosed,
+    handleCancel: handleCancel
 });
+
+
+module.exports = MessagePopup;
