@@ -52,9 +52,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18);
+	var _ = __webpack_require__(15);
 	
-	__webpack_require__(15);
+	__webpack_require__(16);
 	
 	__webpack_require__(1);
 	__webpack_require__(3);
@@ -86,10 +86,10 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(2)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -113,7 +113,7 @@
 	'use strict';
 	
 	var chai = __webpack_require__(27),
-		$ = __webpack_require__(35),
+		$ = __webpack_require__(31),
 	
 		App = __webpack_require__(20),
 	
@@ -121,7 +121,7 @@
 	
 	expect = chai.expect;
 	
-	__webpack_require__(30);
+	__webpack_require__(29);
 	
 	describe('App', function() {
 	    beforeEach(function() {
@@ -199,10 +199,10 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(4)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -228,7 +228,7 @@
 	
 	var chai = __webpack_require__(27),
 		
-		Config = __webpack_require__(21),
+		Config = __webpack_require__(23),
 	
 		expect;
 	
@@ -255,10 +255,10 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(6)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -283,8 +283,8 @@
 	
 	var chai = __webpack_require__(27),
 	
-	    Router = __webpack_require__(22),
-	    ViewLoader = __webpack_require__(23),
+	    Router = __webpack_require__(21),
+	    ViewLoader = __webpack_require__(22),
 	
 	    expect;
 	
@@ -431,10 +431,10 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(8)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -458,16 +458,16 @@
 	'use strict';
 	
 	var chai = __webpack_require__(27),
-		$ = __webpack_require__(35),
+		$ = __webpack_require__(31),
 		GoogleMaps = __webpack_require__(19),
 	
-		Router = __webpack_require__(22),
-		ViewLoader = __webpack_require__(23),
+		Router = __webpack_require__(21),
+		ViewLoader = __webpack_require__(22),
 		App = __webpack_require__(20),
 	
 		expect;
 	
-	__webpack_require__(30);
+	__webpack_require__(29);
 	
 	expect = chai.expect;
 	
@@ -619,10 +619,10 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(10)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -647,8 +647,8 @@
 	
 	
 	var chai = __webpack_require__(27),
-		_ = __webpack_require__(18),
-		$ = __webpack_require__(35),
+		_ = __webpack_require__(15),
+		$ = __webpack_require__(31),
 	
 		ViewController = __webpack_require__(24),
 	
@@ -793,10 +793,10 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(12)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -821,7 +821,7 @@
 	
 	
 	var chai = __webpack_require__(27),
-		$ = __webpack_require__(35),
+		$ = __webpack_require__(31),
 	
 		Model = __webpack_require__(25),
 		App = __webpack_require__(20),
@@ -904,10 +904,10 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(14)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -932,9 +932,9 @@
 	
 	
 	var chai = __webpack_require__(27),
-		_ = __webpack_require__(18),
-		$ = __webpack_require__(35),
-		Moment = __webpack_require__(29),
+		_ = __webpack_require__(15),
+		$ = __webpack_require__(31),
+		Moment = __webpack_require__(30),
 		GoogleMaps = __webpack_require__(19),
 	
 		Utilities = __webpack_require__(26),
@@ -1058,54 +1058,6 @@
 
 /***/ },
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	if (typeof Function.prototype.bind != 'function') {
-	    Function.prototype.bind = function bind(obj) {
-	        var args = Array.prototype.slice.call(arguments, 1),
-	            self = this,
-	            nop = function() {
-	            },
-	            bound = function() {
-	                return self.apply(
-	                    this instanceof nop ? this : (obj || {}), args.concat(
-	                        Array.prototype.slice.call(arguments)
-	                    )
-	                );
-	            };
-	        nop.prototype = this.prototype || {};
-	        bound.prototype = new nop();
-	        return bound;
-	    };
-	}
-
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
-	
-	__webpack_require__(36);
-	__webpack_require__(28);
-
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
-		delete __webpack_require__.c[module.id];
-		if(typeof window !== "undefined" && window.mochaPhantomJS)
-			mochaPhantomJS.run();
-		else
-			mocha.run();
-	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
-
-/***/ },
-/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.2
@@ -2647,6 +2599,54 @@
 
 
 /***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	if (typeof Function.prototype.bind != 'function') {
+	    Function.prototype.bind = function bind(obj) {
+	        var args = Array.prototype.slice.call(arguments, 1),
+	            self = this,
+	            nop = function() {
+	            },
+	            bound = function() {
+	                return self.apply(
+	                    this instanceof nop ? this : (obj || {}), args.concat(
+	                        Array.prototype.slice.call(arguments)
+	                    )
+	                );
+	            };
+	        nop.prototype = this.prototype || {};
+	        bound.prototype = new nop();
+	        return bound;
+	    };
+	}
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
+	
+	__webpack_require__(36);
+	__webpack_require__(28);
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
+		delete __webpack_require__.c[module.id];
+		if(typeof window !== "undefined" && window.mochaPhantomJS)
+			mochaPhantomJS.run();
+		else
+			mocha.run();
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
+
+/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2664,11 +2664,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    Router = __webpack_require__(22),
+	    Config = __webpack_require__(23),
+	    Router = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
 	
 	    User = __webpack_require__(38),
@@ -2880,51 +2880,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Defines site configuration.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
-	    MIN_USER_AGE = 13,
-	    AVG_USER_AGE = 27,
-	    MIN_XP_START_YEAR = 1960,
-	    FB_APP_ID = '522375581240221',
-	    FB_STATUSCHECK_TIMEOUT = 5000,
-	    API_URL,
-	    isProduction;
-	
-	if (IS_PRODUCTION === true) {
-	    API_URL = 'https://prod-api.sharingear.com';
-	} else {
-	    API_URL = 'https://api.sharingear.com';
-	}
-	
-	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
-	
-	isProduction = function() {
-	    return (this.IS_PRODUCTION === true);
-	};
-	
-	module.exports = {
-	    IS_PRODUCTION: IS_PRODUCTION,
-	    API_URL: API_URL,
-	    MIN_USER_AGE: MIN_USER_AGE,
-	    AVG_USER_AGE: AVG_USER_AGE,
-	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
-	    FB_APP_ID: FB_APP_ID,
-	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
-	    isProduction: isProduction
-	};
-
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Handles routing.
 	 * @author: Chris Hjorth
 	 */
@@ -2932,9 +2887,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
+	var _ = __webpack_require__(15),
 	
-		ViewLoader = __webpack_require__(23),
+		ViewLoader = __webpack_require__(22),
 		Utilities = __webpack_require__(26);
 	
 	var Router,
@@ -3115,7 +3070,7 @@
 
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3127,8 +3082,8 @@
 	'use strict';
 	
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
 	    ViewLoader,
 	    mainViewContainer,
@@ -3354,6 +3309,51 @@
 
 
 /***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines site configuration.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
+	    MIN_USER_AGE = 13,
+	    AVG_USER_AGE = 27,
+	    MIN_XP_START_YEAR = 1960,
+	    FB_APP_ID = '522375581240221',
+	    FB_STATUSCHECK_TIMEOUT = 5000,
+	    API_URL,
+	    isProduction;
+	
+	if (IS_PRODUCTION === true) {
+	    API_URL = 'https://prod-api.sharingear.com';
+	} else {
+	    API_URL = 'https://api.sharingear.com';
+	}
+	
+	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+	
+	isProduction = function() {
+	    return (this.IS_PRODUCTION === true);
+	};
+	
+	module.exports = {
+	    IS_PRODUCTION: IS_PRODUCTION,
+	    API_URL: API_URL,
+	    MIN_USER_AGE: MIN_USER_AGE,
+	    AVG_USER_AGE: AVG_USER_AGE,
+	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
+	    FB_APP_ID: FB_APP_ID,
+	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
+	    isProduction: isProduction
+	};
+
+
+/***/ },
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3365,8 +3365,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
 	
 		Utilities = __webpack_require__(26),
 	
@@ -3541,8 +3541,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
 	
 		Utilities = __webpack_require__(26),
 	
@@ -3674,8 +3674,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
 		GoogleMaps = __webpack_require__(19),
 		
 		geocoder,
@@ -3843,115 +3843,24 @@
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(32)(__webpack_require__(33))
+	__webpack_require__(33)(__webpack_require__(34))
 
 /***/ },
 /* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var moment = module.exports = __webpack_require__(88);
-	moment.tz.load(__webpack_require__(167));
-
+	__webpack_require__(33)(__webpack_require__(35))
 
 /***/ },
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(32)(__webpack_require__(34))
+	var moment = module.exports = __webpack_require__(88);
+	moment.tz.load(__webpack_require__(168));
+
 
 /***/ },
 /* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// shim for using process in browser
-	
-	var process = module.exports = {};
-	var queue = [];
-	var draining = false;
-	
-	function drainQueue() {
-	    if (draining) {
-	        return;
-	    }
-	    draining = true;
-	    var currentQueue;
-	    var len = queue.length;
-	    while(len) {
-	        currentQueue = queue;
-	        queue = [];
-	        var i = -1;
-	        while (++i < len) {
-	            currentQueue[i]();
-	        }
-	        len = queue.length;
-	    }
-	    draining = false;
-	}
-	process.nextTick = function (fun) {
-	    queue.push(fun);
-	    if (!draining) {
-	        setTimeout(drainQueue, 0);
-	    }
-	};
-	
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-	process.version = ''; // empty string to avoid regexp issues
-	process.versions = {};
-	
-	function noop() {}
-	
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-	
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	};
-	
-	// TODO(shtylman)
-	process.cwd = function () { return '/' };
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-	process.umask = function() { return 0; };
-
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	module.exports = function(src) {
-		if (typeof execScript === "function")
-			execScript(src);
-		else
-			eval.call(null, src);
-	}
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = ";(function(){\n\n// CommonJS require()\n\nfunction require(p){\n    var path = require.resolve(p)\n      , mod = require.modules[path];\n    if (!mod) throw new Error('failed to require \"' + p + '\"');\n    if (!mod.exports) {\n      mod.exports = {};\n      mod.call(mod.exports, mod, mod.exports, require.relative(path));\n    }\n    return mod.exports;\n  }\n\nrequire.modules = {};\n\nrequire.resolve = function (path){\n    var orig = path\n      , reg = path + '.js'\n      , index = path + '/index.js';\n    return require.modules[reg] && reg\n      || require.modules[index] && index\n      || orig;\n  };\n\nrequire.register = function (path, fn){\n    require.modules[path] = fn;\n  };\n\nrequire.relative = function (parent) {\n    return function(p){\n      if ('.' != p.charAt(0)) return require(p);\n\n      var path = parent.split('/')\n        , segs = p.split('/');\n      path.pop();\n\n      for (var i = 0; i < segs.length; i++) {\n        var seg = segs[i];\n        if ('..' == seg) path.pop();\n        else if ('.' != seg) path.push(seg);\n      }\n\n      return require(path.join('/'));\n    };\n  };\n\n\nrequire.register(\"browser/debug.js\", function(module, exports, require){\nmodule.exports = function(type){\n  return function(){\n  }\n};\n\n}); // module: browser/debug.js\n\nrequire.register(\"browser/diff.js\", function(module, exports, require){\n/* See LICENSE file for terms of use */\n\n/*\n * Text diff implementation.\n *\n * This library supports the following APIS:\n * JsDiff.diffChars: Character by character diff\n * JsDiff.diffWords: Word (as defined by \\b regex) diff which ignores whitespace\n * JsDiff.diffLines: Line based diff\n *\n * JsDiff.diffCss: Diff targeted at CSS content\n *\n * These methods are based on the implementation proposed in\n * \"An O(ND) Difference Algorithm and its Variations\" (Myers, 1986).\n * http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.4.6927\n */\nvar JsDiff = (function() {\n  /*jshint maxparams: 5*/\n  function clonePath(path) {\n    return { newPos: path.newPos, components: path.components.slice(0) };\n  }\n  function removeEmpty(array) {\n    var ret = [];\n    for (var i = 0; i < array.length; i++) {\n      if (array[i]) {\n        ret.push(array[i]);\n      }\n    }\n    return ret;\n  }\n  function escapeHTML(s) {\n    var n = s;\n    n = n.replace(/&/g, '&amp;');\n    n = n.replace(/</g, '&lt;');\n    n = n.replace(/>/g, '&gt;');\n    n = n.replace(/\"/g, '&quot;');\n\n    return n;\n  }\n\n  var Diff = function(ignoreWhitespace) {\n    this.ignoreWhitespace = ignoreWhitespace;\n  };\n  Diff.prototype = {\n      diff: function(oldString, newString) {\n        // Handle the identity case (this is due to unrolling editLength == 0\n        if (newString === oldString) {\n          return [{ value: newString }];\n        }\n        if (!newString) {\n          return [{ value: oldString, removed: true }];\n        }\n        if (!oldString) {\n          return [{ value: newString, added: true }];\n        }\n\n        newString = this.tokenize(newString);\n        oldString = this.tokenize(oldString);\n\n        var newLen = newString.length, oldLen = oldString.length;\n        var maxEditLength = newLen + oldLen;\n        var bestPath = [{ newPos: -1, components: [] }];\n\n        // Seed editLength = 0\n        var oldPos = this.extractCommon(bestPath[0], newString, oldString, 0);\n        if (bestPath[0].newPos+1 >= newLen && oldPos+1 >= oldLen) {\n          return bestPath[0].components;\n        }\n\n        for (var editLength = 1; editLength <= maxEditLength; editLength++) {\n          for (var diagonalPath = -1*editLength; diagonalPath <= editLength; diagonalPath+=2) {\n            var basePath;\n            var addPath = bestPath[diagonalPath-1],\n                removePath = bestPath[diagonalPath+1];\n            oldPos = (removePath ? removePath.newPos : 0) - diagonalPath;\n            if (addPath) {\n              // No one else is going to attempt to use this value, clear it\n              bestPath[diagonalPath-1] = undefined;\n            }\n\n            var canAdd = addPath && addPath.newPos+1 < newLen;\n            var canRemove = removePath && 0 <= oldPos && oldPos < oldLen;\n            if (!canAdd && !canRemove) {\n              bestPath[diagonalPath] = undefined;\n              continue;\n            }\n\n            // Select the diagonal that we want to branch from. We select the prior\n            // path whose position in the new string is the farthest from the origin\n            // and does not pass the bounds of the diff graph\n            if (!canAdd || (canRemove && addPath.newPos < removePath.newPos)) {\n              basePath = clonePath(removePath);\n              this.pushComponent(basePath.components, oldString[oldPos], undefined, true);\n            } else {\n              basePath = clonePath(addPath);\n              basePath.newPos++;\n              this.pushComponent(basePath.components, newString[basePath.newPos], true, undefined);\n            }\n\n            var oldPos = this.extractCommon(basePath, newString, oldString, diagonalPath);\n\n            if (basePath.newPos+1 >= newLen && oldPos+1 >= oldLen) {\n              return basePath.components;\n            } else {\n              bestPath[diagonalPath] = basePath;\n            }\n          }\n        }\n      },\n\n      pushComponent: function(components, value, added, removed) {\n        var last = components[components.length-1];\n        if (last && last.added === added && last.removed === removed) {\n          // We need to clone here as the component clone operation is just\n          // as shallow array clone\n          components[components.length-1] =\n            {value: this.join(last.value, value), added: added, removed: removed };\n        } else {\n          components.push({value: value, added: added, removed: removed });\n        }\n      },\n      extractCommon: function(basePath, newString, oldString, diagonalPath) {\n        var newLen = newString.length,\n            oldLen = oldString.length,\n            newPos = basePath.newPos,\n            oldPos = newPos - diagonalPath;\n        while (newPos+1 < newLen && oldPos+1 < oldLen && this.equals(newString[newPos+1], oldString[oldPos+1])) {\n          newPos++;\n          oldPos++;\n\n          this.pushComponent(basePath.components, newString[newPos], undefined, undefined);\n        }\n        basePath.newPos = newPos;\n        return oldPos;\n      },\n\n      equals: function(left, right) {\n        var reWhitespace = /\\S/;\n        if (this.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right)) {\n          return true;\n        } else {\n          return left === right;\n        }\n      },\n      join: function(left, right) {\n        return left + right;\n      },\n      tokenize: function(value) {\n        return value;\n      }\n  };\n\n  var CharDiff = new Diff();\n\n  var WordDiff = new Diff(true);\n  var WordWithSpaceDiff = new Diff();\n  WordDiff.tokenize = WordWithSpaceDiff.tokenize = function(value) {\n    return removeEmpty(value.split(/(\\s+|\\b)/));\n  };\n\n  var CssDiff = new Diff(true);\n  CssDiff.tokenize = function(value) {\n    return removeEmpty(value.split(/([{}:;,]|\\s+)/));\n  };\n\n  var LineDiff = new Diff();\n  LineDiff.tokenize = function(value) {\n    var retLines = [],\n        lines = value.split(/^/m);\n\n    for(var i = 0; i < lines.length; i++) {\n      var line = lines[i],\n          lastLine = lines[i - 1];\n\n      // Merge lines that may contain windows new lines\n      if (line == '\\n' && lastLine && lastLine[lastLine.length - 1] === '\\r') {\n        retLines[retLines.length - 1] += '\\n';\n      } else if (line) {\n        retLines.push(line);\n      }\n    }\n\n    return retLines;\n  };\n\n  return {\n    Diff: Diff,\n\n    diffChars: function(oldStr, newStr) { return CharDiff.diff(oldStr, newStr); },\n    diffWords: function(oldStr, newStr) { return WordDiff.diff(oldStr, newStr); },\n    diffWordsWithSpace: function(oldStr, newStr) { return WordWithSpaceDiff.diff(oldStr, newStr); },\n    diffLines: function(oldStr, newStr) { return LineDiff.diff(oldStr, newStr); },\n\n    diffCss: function(oldStr, newStr) { return CssDiff.diff(oldStr, newStr); },\n\n    createPatch: function(fileName, oldStr, newStr, oldHeader, newHeader) {\n      var ret = [];\n\n      ret.push('Index: ' + fileName);\n      ret.push('===================================================================');\n      ret.push('--- ' + fileName + (typeof oldHeader === 'undefined' ? '' : '\\t' + oldHeader));\n      ret.push('+++ ' + fileName + (typeof newHeader === 'undefined' ? '' : '\\t' + newHeader));\n\n      var diff = LineDiff.diff(oldStr, newStr);\n      if (!diff[diff.length-1].value) {\n        diff.pop();   // Remove trailing newline add\n      }\n      diff.push({value: '', lines: []});   // Append an empty value to make cleanup easier\n\n      function contextLines(lines) {\n        return lines.map(function(entry) { return ' ' + entry; });\n      }\n      function eofNL(curRange, i, current) {\n        var last = diff[diff.length-2],\n            isLast = i === diff.length-2,\n            isLastOfType = i === diff.length-3 && (current.added !== last.added || current.removed !== last.removed);\n\n        // Figure out if this is the last line for the given file and missing NL\n        if (!/\\n$/.test(current.value) && (isLast || isLastOfType)) {\n          curRange.push('\\\\ No newline at end of file');\n        }\n      }\n\n      var oldRangeStart = 0, newRangeStart = 0, curRange = [],\n          oldLine = 1, newLine = 1;\n      for (var i = 0; i < diff.length; i++) {\n        var current = diff[i],\n            lines = current.lines || current.value.replace(/\\n$/, '').split('\\n');\n        current.lines = lines;\n\n        if (current.added || current.removed) {\n          if (!oldRangeStart) {\n            var prev = diff[i-1];\n            oldRangeStart = oldLine;\n            newRangeStart = newLine;\n\n            if (prev) {\n              curRange = contextLines(prev.lines.slice(-4));\n              oldRangeStart -= curRange.length;\n              newRangeStart -= curRange.length;\n            }\n          }\n          curRange.push.apply(curRange, lines.map(function(entry) { return (current.added?'+':'-') + entry; }));\n          eofNL(curRange, i, current);\n\n          if (current.added) {\n            newLine += lines.length;\n          } else {\n            oldLine += lines.length;\n          }\n        } else {\n          if (oldRangeStart) {\n            // Close out any changes that have been output (or join overlapping)\n            if (lines.length <= 8 && i < diff.length-2) {\n              // Overlapping\n              curRange.push.apply(curRange, contextLines(lines));\n            } else {\n              // end the range and output\n              var contextSize = Math.min(lines.length, 4);\n              ret.push(\n                  '@@ -' + oldRangeStart + ',' + (oldLine-oldRangeStart+contextSize)\n                  + ' +' + newRangeStart + ',' + (newLine-newRangeStart+contextSize)\n                  + ' @@');\n              ret.push.apply(ret, curRange);\n              ret.push.apply(ret, contextLines(lines.slice(0, contextSize)));\n              if (lines.length <= 4) {\n                eofNL(ret, i, current);\n              }\n\n              oldRangeStart = 0;  newRangeStart = 0; curRange = [];\n            }\n          }\n          oldLine += lines.length;\n          newLine += lines.length;\n        }\n      }\n\n      return ret.join('\\n') + '\\n';\n    },\n\n    applyPatch: function(oldStr, uniDiff) {\n      var diffstr = uniDiff.split('\\n');\n      var diff = [];\n      var remEOFNL = false,\n          addEOFNL = false;\n\n      for (var i = (diffstr[0][0]==='I'?4:0); i < diffstr.length; i++) {\n        if(diffstr[i][0] === '@') {\n          var meh = diffstr[i].split(/@@ -(\\d+),(\\d+) \\+(\\d+),(\\d+) @@/);\n          diff.unshift({\n            start:meh[3],\n            oldlength:meh[2],\n            oldlines:[],\n            newlength:meh[4],\n            newlines:[]\n          });\n        } else if(diffstr[i][0] === '+') {\n          diff[0].newlines.push(diffstr[i].substr(1));\n        } else if(diffstr[i][0] === '-') {\n          diff[0].oldlines.push(diffstr[i].substr(1));\n        } else if(diffstr[i][0] === ' ') {\n          diff[0].newlines.push(diffstr[i].substr(1));\n          diff[0].oldlines.push(diffstr[i].substr(1));\n        } else if(diffstr[i][0] === '\\\\') {\n          if (diffstr[i-1][0] === '+') {\n            remEOFNL = true;\n          } else if(diffstr[i-1][0] === '-') {\n            addEOFNL = true;\n          }\n        }\n      }\n\n      var str = oldStr.split('\\n');\n      for (var i = diff.length - 1; i >= 0; i--) {\n        var d = diff[i];\n        for (var j = 0; j < d.oldlength; j++) {\n          if(str[d.start-1+j] !== d.oldlines[j]) {\n            return false;\n          }\n        }\n        Array.prototype.splice.apply(str,[d.start-1,+d.oldlength].concat(d.newlines));\n      }\n\n      if (remEOFNL) {\n        while (!str[str.length-1]) {\n          str.pop();\n        }\n      } else if (addEOFNL) {\n        str.push('');\n      }\n      return str.join('\\n');\n    },\n\n    convertChangesToXML: function(changes){\n      var ret = [];\n      for ( var i = 0; i < changes.length; i++) {\n        var change = changes[i];\n        if (change.added) {\n          ret.push('<ins>');\n        } else if (change.removed) {\n          ret.push('<del>');\n        }\n\n        ret.push(escapeHTML(change.value));\n\n        if (change.added) {\n          ret.push('</ins>');\n        } else if (change.removed) {\n          ret.push('</del>');\n        }\n      }\n      return ret.join('');\n    },\n\n    // See: http://code.google.com/p/google-diff-match-patch/wiki/API\n    convertChangesToDMP: function(changes){\n      var ret = [], change;\n      for ( var i = 0; i < changes.length; i++) {\n        change = changes[i];\n        ret.push([(change.added ? 1 : change.removed ? -1 : 0), change.value]);\n      }\n      return ret;\n    }\n  };\n})();\n\nif (typeof module !== 'undefined') {\n    module.exports = JsDiff;\n}\n\n}); // module: browser/diff.js\n\nrequire.register(\"browser/escape-string-regexp.js\", function(module, exports, require){\n'use strict';\n\nvar matchOperatorsRe = /[|\\\\{}()[\\]^$+*?.]/g;\n\nmodule.exports = function (str) {\n  if (typeof str !== 'string') {\n    throw new TypeError('Expected a string');\n  }\n\n  return str.replace(matchOperatorsRe,  '\\\\$&');\n};\n\n}); // module: browser/escape-string-regexp.js\n\nrequire.register(\"browser/events.js\", function(module, exports, require){\n/**\n * Module exports.\n */\n\nexports.EventEmitter = EventEmitter;\n\n/**\n * Check if `obj` is an array.\n */\n\nfunction isArray(obj) {\n  return '[object Array]' == {}.toString.call(obj);\n}\n\n/**\n * Event emitter constructor.\n *\n * @api public\n */\n\nfunction EventEmitter(){};\n\n/**\n * Adds a listener.\n *\n * @api public\n */\n\nEventEmitter.prototype.on = function (name, fn) {\n  if (!this.$events) {\n    this.$events = {};\n  }\n\n  if (!this.$events[name]) {\n    this.$events[name] = fn;\n  } else if (isArray(this.$events[name])) {\n    this.$events[name].push(fn);\n  } else {\n    this.$events[name] = [this.$events[name], fn];\n  }\n\n  return this;\n};\n\nEventEmitter.prototype.addListener = EventEmitter.prototype.on;\n\n/**\n * Adds a volatile listener.\n *\n * @api public\n */\n\nEventEmitter.prototype.once = function (name, fn) {\n  var self = this;\n\n  function on () {\n    self.removeListener(name, on);\n    fn.apply(this, arguments);\n  };\n\n  on.listener = fn;\n  this.on(name, on);\n\n  return this;\n};\n\n/**\n * Removes a listener.\n *\n * @api public\n */\n\nEventEmitter.prototype.removeListener = function (name, fn) {\n  if (this.$events && this.$events[name]) {\n    var list = this.$events[name];\n\n    if (isArray(list)) {\n      var pos = -1;\n\n      for (var i = 0, l = list.length; i < l; i++) {\n        if (list[i] === fn || (list[i].listener && list[i].listener === fn)) {\n          pos = i;\n          break;\n        }\n      }\n\n      if (pos < 0) {\n        return this;\n      }\n\n      list.splice(pos, 1);\n\n      if (!list.length) {\n        delete this.$events[name];\n      }\n    } else if (list === fn || (list.listener && list.listener === fn)) {\n      delete this.$events[name];\n    }\n  }\n\n  return this;\n};\n\n/**\n * Removes all listeners for an event.\n *\n * @api public\n */\n\nEventEmitter.prototype.removeAllListeners = function (name) {\n  if (name === undefined) {\n    this.$events = {};\n    return this;\n  }\n\n  if (this.$events && this.$events[name]) {\n    this.$events[name] = null;\n  }\n\n  return this;\n};\n\n/**\n * Gets all listeners for a certain event.\n *\n * @api public\n */\n\nEventEmitter.prototype.listeners = function (name) {\n  if (!this.$events) {\n    this.$events = {};\n  }\n\n  if (!this.$events[name]) {\n    this.$events[name] = [];\n  }\n\n  if (!isArray(this.$events[name])) {\n    this.$events[name] = [this.$events[name]];\n  }\n\n  return this.$events[name];\n};\n\n/**\n * Emits an event.\n *\n * @api public\n */\n\nEventEmitter.prototype.emit = function (name) {\n  if (!this.$events) {\n    return false;\n  }\n\n  var handler = this.$events[name];\n\n  if (!handler) {\n    return false;\n  }\n\n  var args = [].slice.call(arguments, 1);\n\n  if ('function' == typeof handler) {\n    handler.apply(this, args);\n  } else if (isArray(handler)) {\n    var listeners = handler.slice();\n\n    for (var i = 0, l = listeners.length; i < l; i++) {\n      listeners[i].apply(this, args);\n    }\n  } else {\n    return false;\n  }\n\n  return true;\n};\n\n}); // module: browser/events.js\n\nrequire.register(\"browser/fs.js\", function(module, exports, require){\n\n}); // module: browser/fs.js\n\nrequire.register(\"browser/glob.js\", function(module, exports, require){\n\n}); // module: browser/glob.js\n\nrequire.register(\"browser/path.js\", function(module, exports, require){\n\n}); // module: browser/path.js\n\nrequire.register(\"browser/progress.js\", function(module, exports, require){\n/**\n * Expose `Progress`.\n */\n\nmodule.exports = Progress;\n\n/**\n * Initialize a new `Progress` indicator.\n */\n\nfunction Progress() {\n  this.percent = 0;\n  this.size(0);\n  this.fontSize(11);\n  this.font('helvetica, arial, sans-serif');\n}\n\n/**\n * Set progress size to `n`.\n *\n * @param {Number} n\n * @return {Progress} for chaining\n * @api public\n */\n\nProgress.prototype.size = function(n){\n  this._size = n;\n  return this;\n};\n\n/**\n * Set text to `str`.\n *\n * @param {String} str\n * @return {Progress} for chaining\n * @api public\n */\n\nProgress.prototype.text = function(str){\n  this._text = str;\n  return this;\n};\n\n/**\n * Set font size to `n`.\n *\n * @param {Number} n\n * @return {Progress} for chaining\n * @api public\n */\n\nProgress.prototype.fontSize = function(n){\n  this._fontSize = n;\n  return this;\n};\n\n/**\n * Set font `family`.\n *\n * @param {String} family\n * @return {Progress} for chaining\n */\n\nProgress.prototype.font = function(family){\n  this._font = family;\n  return this;\n};\n\n/**\n * Update percentage to `n`.\n *\n * @param {Number} n\n * @return {Progress} for chaining\n */\n\nProgress.prototype.update = function(n){\n  this.percent = n;\n  return this;\n};\n\n/**\n * Draw on `ctx`.\n *\n * @param {CanvasRenderingContext2d} ctx\n * @return {Progress} for chaining\n */\n\nProgress.prototype.draw = function(ctx){\n  try {\n    var percent = Math.min(this.percent, 100)\n      , size = this._size\n      , half = size / 2\n      , x = half\n      , y = half\n      , rad = half - 1\n      , fontSize = this._fontSize;\n\n    ctx.font = fontSize + 'px ' + this._font;\n\n    var angle = Math.PI * 2 * (percent / 100);\n    ctx.clearRect(0, 0, size, size);\n\n    // outer circle\n    ctx.strokeStyle = '#9f9f9f';\n    ctx.beginPath();\n    ctx.arc(x, y, rad, 0, angle, false);\n    ctx.stroke();\n\n    // inner circle\n    ctx.strokeStyle = '#eee';\n    ctx.beginPath();\n    ctx.arc(x, y, rad - 1, 0, angle, true);\n    ctx.stroke();\n\n    // text\n    var text = this._text || (percent | 0) + '%'\n      , w = ctx.measureText(text).width;\n\n    ctx.fillText(\n        text\n      , x - w / 2 + 1\n      , y + fontSize / 2 - 1);\n  } catch (ex) {} //don't fail if we can't render progress\n  return this;\n};\n\n}); // module: browser/progress.js\n\nrequire.register(\"browser/tty.js\", function(module, exports, require){\nexports.isatty = function(){\n  return true;\n};\n\nexports.getWindowSize = function(){\n  if ('innerHeight' in global) {\n    return [global.innerHeight, global.innerWidth];\n  } else {\n    // In a Web Worker, the DOM Window is not available.\n    return [640, 480];\n  }\n};\n\n}); // module: browser/tty.js\n\nrequire.register(\"context.js\", function(module, exports, require){\n/**\n * Expose `Context`.\n */\n\nmodule.exports = Context;\n\n/**\n * Initialize a new `Context`.\n *\n * @api private\n */\n\nfunction Context(){}\n\n/**\n * Set or get the context `Runnable` to `runnable`.\n *\n * @param {Runnable} runnable\n * @return {Context}\n * @api private\n */\n\nContext.prototype.runnable = function(runnable){\n  if (0 == arguments.length) return this._runnable;\n  this.test = this._runnable = runnable;\n  return this;\n};\n\n/**\n * Set test timeout `ms`.\n *\n * @param {Number} ms\n * @return {Context} self\n * @api private\n */\n\nContext.prototype.timeout = function(ms){\n  if (arguments.length === 0) return this.runnable().timeout();\n  this.runnable().timeout(ms);\n  return this;\n};\n\n/**\n * Set test timeout `enabled`.\n *\n * @param {Boolean} enabled\n * @return {Context} self\n * @api private\n */\n\nContext.prototype.enableTimeouts = function (enabled) {\n  this.runnable().enableTimeouts(enabled);\n  return this;\n};\n\n\n/**\n * Set test slowness threshold `ms`.\n *\n * @param {Number} ms\n * @return {Context} self\n * @api private\n */\n\nContext.prototype.slow = function(ms){\n  this.runnable().slow(ms);\n  return this;\n};\n\n/**\n * Mark a test as skipped.\n *\n * @return {Context} self\n * @api private\n */\n\nContext.prototype.skip = function(){\n    this.runnable().skip();\n    return this;\n};\n\n/**\n * Inspect the context void of `._runnable`.\n *\n * @return {String}\n * @api private\n */\n\nContext.prototype.inspect = function(){\n  return JSON.stringify(this, function(key, val){\n    if ('_runnable' == key) return;\n    if ('test' == key) return;\n    return val;\n  }, 2);\n};\n\n}); // module: context.js\n\nrequire.register(\"hook.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Runnable = require('./runnable');\n\n/**\n * Expose `Hook`.\n */\n\nmodule.exports = Hook;\n\n/**\n * Initialize a new `Hook` with the given `title` and callback `fn`.\n *\n * @param {String} title\n * @param {Function} fn\n * @api private\n */\n\nfunction Hook(title, fn) {\n  Runnable.call(this, title, fn);\n  this.type = 'hook';\n}\n\n/**\n * Inherit from `Runnable.prototype`.\n */\n\nfunction F(){};\nF.prototype = Runnable.prototype;\nHook.prototype = new F;\nHook.prototype.constructor = Hook;\n\n\n/**\n * Get or set the test `err`.\n *\n * @param {Error} err\n * @return {Error}\n * @api public\n */\n\nHook.prototype.error = function(err){\n  if (0 == arguments.length) {\n    var err = this._error;\n    this._error = null;\n    return err;\n  }\n\n  this._error = err;\n};\n\n}); // module: hook.js\n\nrequire.register(\"interfaces/bdd.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Suite = require('../suite')\n  , Test = require('../test')\n  , utils = require('../utils')\n  , escapeRe = require('browser/escape-string-regexp');\n\n/**\n * BDD-style interface:\n *\n *      describe('Array', function(){\n *        describe('#indexOf()', function(){\n *          it('should return -1 when not present', function(){\n *\n *          });\n *\n *          it('should return the index when present', function(){\n *\n *          });\n *        });\n *      });\n *\n */\n\nmodule.exports = function(suite){\n  var suites = [suite];\n\n  suite.on('pre-require', function(context, file, mocha){\n\n    var common = require('./common')(suites, context);\n\n    context.before = common.before;\n    context.after = common.after;\n    context.beforeEach = common.beforeEach;\n    context.afterEach = common.afterEach;\n    context.run = mocha.options.delay && common.runWithSuite(suite);\n    /**\n     * Describe a \"suite\" with the given `title`\n     * and callback `fn` containing nested suites\n     * and/or tests.\n     */\n\n    context.describe = context.context = function(title, fn){\n      var suite = Suite.create(suites[0], title);\n      suite.file = file;\n      suites.unshift(suite);\n      fn.call(suite);\n      suites.shift();\n      return suite;\n    };\n\n    /**\n     * Pending describe.\n     */\n\n    context.xdescribe =\n    context.xcontext =\n    context.describe.skip = function(title, fn){\n      var suite = Suite.create(suites[0], title);\n      suite.pending = true;\n      suites.unshift(suite);\n      fn.call(suite);\n      suites.shift();\n    };\n\n    /**\n     * Exclusive suite.\n     */\n\n    context.describe.only = function(title, fn){\n      var suite = context.describe(title, fn);\n      mocha.grep(suite.fullTitle());\n      return suite;\n    };\n\n    /**\n     * Describe a specification or test-case\n     * with the given `title` and callback `fn`\n     * acting as a thunk.\n     */\n\n    context.it = context.specify = function(title, fn){\n      var suite = suites[0];\n      if (suite.pending) fn = null;\n      var test = new Test(title, fn);\n      test.file = file;\n      suite.addTest(test);\n      return test;\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.it.only = function(title, fn){\n      var test = context.it(title, fn);\n      var reString = '^' + escapeRe(test.fullTitle()) + '$';\n      mocha.grep(new RegExp(reString));\n      return test;\n    };\n\n    /**\n     * Pending test case.\n     */\n\n    context.xit =\n    context.xspecify =\n    context.it.skip = function(title){\n      context.it(title);\n    };\n\n  });\n};\n\n}); // module: interfaces/bdd.js\n\nrequire.register(\"interfaces/common.js\", function(module, exports, require){\n/**\n * Functions common to more than one interface\n * @module lib/interfaces/common\n */\n\n'use strict';\n\nmodule.exports = function (suites, context) {\n\n  return {\n    /**\n     * This is only present if flag --delay is passed into Mocha.  It triggers\n     * root suite execution.  Returns a function which runs the root suite.\n     */\n    runWithSuite: function runWithSuite(suite) {\n      return function run() {\n        suite.run();\n      };\n    },\n\n    /**\n     * Execute before running tests.\n     */\n    before: function (name, fn) {\n      suites[0].beforeAll(name, fn);\n    },\n\n    /**\n     * Execute after running tests.\n     */\n    after: function (name, fn) {\n      suites[0].afterAll(name, fn);\n    },\n\n    /**\n     * Execute before each test case.\n     */\n    beforeEach: function (name, fn) {\n      suites[0].beforeEach(name, fn);\n    },\n\n    /**\n     * Execute after each test case.\n     */\n    afterEach: function (name, fn) {\n      suites[0].afterEach(name, fn);\n    },\n\n    test: {\n      /**\n       * Pending test case.\n       */\n      skip: function (title) {\n        context.test(title);\n      }\n    }\n  }\n};\n\n}); // module: interfaces/common.js\n\nrequire.register(\"interfaces/exports.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Suite = require('../suite')\n  , Test = require('../test');\n\n/**\n * TDD-style interface:\n *\n *     exports.Array = {\n *       '#indexOf()': {\n *         'should return -1 when the value is not present': function(){\n *\n *         },\n *\n *         'should return the correct index when the value is present': function(){\n *\n *         }\n *       }\n *     };\n *\n */\n\nmodule.exports = function(suite){\n  var suites = [suite];\n\n  suite.on('require', visit);\n\n  function visit(obj, file) {\n    var suite;\n    for (var key in obj) {\n      if ('function' == typeof obj[key]) {\n        var fn = obj[key];\n        switch (key) {\n          case 'before':\n            suites[0].beforeAll(fn);\n            break;\n          case 'after':\n            suites[0].afterAll(fn);\n            break;\n          case 'beforeEach':\n            suites[0].beforeEach(fn);\n            break;\n          case 'afterEach':\n            suites[0].afterEach(fn);\n            break;\n          default:\n            var test = new Test(key, fn);\n            test.file = file;\n            suites[0].addTest(test);\n        }\n      } else {\n        suite = Suite.create(suites[0], key);\n        suites.unshift(suite);\n        visit(obj[key]);\n        suites.shift();\n      }\n    }\n  }\n};\n\n}); // module: interfaces/exports.js\n\nrequire.register(\"interfaces/index.js\", function(module, exports, require){\nexports.bdd = require('./bdd');\nexports.tdd = require('./tdd');\nexports.qunit = require('./qunit');\nexports.exports = require('./exports');\n\n}); // module: interfaces/index.js\n\nrequire.register(\"interfaces/qunit.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Suite = require('../suite')\n  , Test = require('../test')\n  , escapeRe = require('browser/escape-string-regexp')\n  , utils = require('../utils');\n\n/**\n * QUnit-style interface:\n *\n *     suite('Array');\n *\n *     test('#length', function(){\n *       var arr = [1,2,3];\n *       ok(arr.length == 3);\n *     });\n *\n *     test('#indexOf()', function(){\n *       var arr = [1,2,3];\n *       ok(arr.indexOf(1) == 0);\n *       ok(arr.indexOf(2) == 1);\n *       ok(arr.indexOf(3) == 2);\n *     });\n *\n *     suite('String');\n *\n *     test('#length', function(){\n *       ok('foo'.length == 3);\n *     });\n *\n */\n\nmodule.exports = function(suite){\n  var suites = [suite];\n\n  suite.on('pre-require', function(context, file, mocha){\n\n    var common = require('./common')(suites, context);\n\n    context.before = common.before;\n    context.after = common.after;\n    context.beforeEach = common.beforeEach;\n    context.afterEach = common.afterEach;\n    context.run = mocha.options.delay && common.runWithSuite(suite);\n    /**\n     * Describe a \"suite\" with the given `title`.\n     */\n\n    context.suite = function(title){\n      if (suites.length > 1) suites.shift();\n      var suite = Suite.create(suites[0], title);\n      suite.file = file;\n      suites.unshift(suite);\n      return suite;\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.suite.only = function(title, fn){\n      var suite = context.suite(title, fn);\n      mocha.grep(suite.fullTitle());\n    };\n\n    /**\n     * Describe a specification or test-case\n     * with the given `title` and callback `fn`\n     * acting as a thunk.\n     */\n\n    context.test = function(title, fn){\n      var test = new Test(title, fn);\n      test.file = file;\n      suites[0].addTest(test);\n      return test;\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.test.only = function(title, fn){\n      var test = context.test(title, fn);\n      var reString = '^' + escapeRe(test.fullTitle()) + '$';\n      mocha.grep(new RegExp(reString));\n    };\n\n    context.test.skip = common.test.skip;\n\n  });\n};\n\n}); // module: interfaces/qunit.js\n\nrequire.register(\"interfaces/tdd.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Suite = require('../suite')\n  , Test = require('../test')\n  , escapeRe = require('browser/escape-string-regexp')\n  , utils = require('../utils');\n\n/**\n * TDD-style interface:\n *\n *      suite('Array', function(){\n *        suite('#indexOf()', function(){\n *          suiteSetup(function(){\n *\n *          });\n *\n *          test('should return -1 when not present', function(){\n *\n *          });\n *\n *          test('should return the index when present', function(){\n *\n *          });\n *\n *          suiteTeardown(function(){\n *\n *          });\n *        });\n *      });\n *\n */\n\nmodule.exports = function(suite){\n  var suites = [suite];\n\n  suite.on('pre-require', function(context, file, mocha){\n\n    var common = require('./common')(suites, context);\n\n    context.setup = common.beforeEach;\n    context.teardown = common.afterEach;\n    context.suiteSetup = common.before;\n    context.suiteTeardown = common.after;\n    context.run = mocha.options.delay && common.runWithSuite(suite);\n    /**\n     * Describe a \"suite\" with the given `title`\n     * and callback `fn` containing nested suites\n     * and/or tests.\n     */\n\n    context.suite = function(title, fn){\n      var suite = Suite.create(suites[0], title);\n      suite.file = file;\n      suites.unshift(suite);\n      fn.call(suite);\n      suites.shift();\n      return suite;\n    };\n\n    /**\n     * Pending suite.\n     */\n    context.suite.skip = function(title, fn) {\n      var suite = Suite.create(suites[0], title);\n      suite.pending = true;\n      suites.unshift(suite);\n      fn.call(suite);\n      suites.shift();\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.suite.only = function(title, fn){\n      var suite = context.suite(title, fn);\n      mocha.grep(suite.fullTitle());\n    };\n\n    /**\n     * Describe a specification or test-case\n     * with the given `title` and callback `fn`\n     * acting as a thunk.\n     */\n\n    context.test = function(title, fn){\n      var suite = suites[0];\n      if (suite.pending) fn = null;\n      var test = new Test(title, fn);\n      test.file = file;\n      suite.addTest(test);\n      return test;\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.test.only = function(title, fn){\n      var test = context.test(title, fn);\n      var reString = '^' + escapeRe(test.fullTitle()) + '$';\n      mocha.grep(new RegExp(reString));\n    };\n\n    context.test.skip = common.test.skip;\n  });\n};\n\n}); // module: interfaces/tdd.js\n\nrequire.register(\"mocha.js\", function(module, exports, require){\n/*!\n * mocha\n * Copyright(c) 2011 TJ Holowaychuk <tj@vision-media.ca>\n * MIT Licensed\n */\n\n/**\n * Module dependencies.\n */\n\nvar path = require('browser/path')\n  , escapeRe = require('browser/escape-string-regexp')\n  , utils = require('./utils');\n\n/**\n * Expose `Mocha`.\n */\n\nexports = module.exports = Mocha;\n\n/**\n * To require local UIs and reporters when running in node.\n */\n\nif (typeof process !== 'undefined' && typeof process.cwd === 'function') {\n  var join = path.join\n    , cwd = process.cwd();\n  module.paths.push(cwd, join(cwd, 'node_modules'));\n}\n\n/**\n * Expose internals.\n */\n\nexports.utils = utils;\nexports.interfaces = require('./interfaces');\nexports.reporters = require('./reporters');\nexports.Runnable = require('./runnable');\nexports.Context = require('./context');\nexports.Runner = require('./runner');\nexports.Suite = require('./suite');\nexports.Hook = require('./hook');\nexports.Test = require('./test');\n\n/**\n * Return image `name` path.\n *\n * @param {String} name\n * @return {String}\n * @api private\n */\n\nfunction image(name) {\n  return __dirname + '/../images/' + name + '.png';\n}\n\n/**\n * Setup mocha with `options`.\n *\n * Options:\n *\n *   - `ui` name \"bdd\", \"tdd\", \"exports\" etc\n *   - `reporter` reporter instance, defaults to `mocha.reporters.spec`\n *   - `globals` array of accepted globals\n *   - `timeout` timeout in milliseconds\n *   - `bail` bail on the first test failure\n *   - `slow` milliseconds to wait before considering a test slow\n *   - `ignoreLeaks` ignore global leaks\n *   - `grep` string or regexp to filter tests with\n *\n * @param {Object} options\n * @api public\n */\n\nfunction Mocha(options) {\n  options = options || {};\n  this.files = [];\n  this.options = options;\n  if (options.grep) this.grep(new RegExp(options.grep));\n  if (options.fgrep) this.grep(options.fgrep);\n  this.suite = new exports.Suite('', new exports.Context);\n  this.ui(options.ui);\n  this.bail(options.bail);\n  this.reporter(options.reporter, options.reporterOptions);\n  if (null != options.timeout) this.timeout(options.timeout);\n  this.useColors(options.useColors)\n  if (options.enableTimeouts !== null) this.enableTimeouts(options.enableTimeouts);\n  if (options.slow) this.slow(options.slow);\n\n  this.suite.on('pre-require', function (context) {\n    exports.afterEach = context.afterEach || context.teardown;\n    exports.after = context.after || context.suiteTeardown;\n    exports.beforeEach = context.beforeEach || context.setup;\n    exports.before = context.before || context.suiteSetup;\n    exports.describe = context.describe || context.suite;\n    exports.it = context.it || context.test;\n    exports.setup = context.setup || context.beforeEach;\n    exports.suiteSetup = context.suiteSetup || context.before;\n    exports.suiteTeardown = context.suiteTeardown || context.after;\n    exports.suite = context.suite || context.describe;\n    exports.teardown = context.teardown || context.afterEach;\n    exports.test = context.test || context.it;\n    exports.run = context.run;\n  });\n}\n\n/**\n * Enable or disable bailing on the first failure.\n *\n * @param {Boolean} [bail]\n * @api public\n */\n\nMocha.prototype.bail = function(bail){\n  if (0 == arguments.length) bail = true;\n  this.suite.bail(bail);\n  return this;\n};\n\n/**\n * Add test `file`.\n *\n * @param {String} file\n * @api public\n */\n\nMocha.prototype.addFile = function(file){\n  this.files.push(file);\n  return this;\n};\n\n/**\n * Set reporter to `reporter`, defaults to \"spec\".\n *\n * @param {String|Function} reporter name or constructor\n * @param {Object} reporterOptions optional options\n * @api public\n */\nMocha.prototype.reporter = function(reporter, reporterOptions){\n  if ('function' == typeof reporter) {\n    this._reporter = reporter;\n  } else {\n    reporter = reporter || 'spec';\n    var _reporter;\n    try { _reporter = require('./reporters/' + reporter); } catch (err) {};\n    if (!_reporter) try { _reporter = require(reporter); } catch (err) {};\n    if (!_reporter && reporter === 'teamcity')\n      console.warn('The Teamcity reporter was moved to a package named ' +\n        'mocha-teamcity-reporter ' +\n        '(https://npmjs.org/package/mocha-teamcity-reporter).');\n    if (!_reporter) throw new Error('invalid reporter \"' + reporter + '\"');\n    this._reporter = _reporter;\n  }\n  this.options.reporterOptions = reporterOptions;\n  return this;\n};\n\n/**\n * Set test UI `name`, defaults to \"bdd\".\n *\n * @param {String} bdd\n * @api public\n */\n\nMocha.prototype.ui = function(name){\n  name = name || 'bdd';\n  this._ui = exports.interfaces[name];\n  if (!this._ui) try { this._ui = require(name); } catch (err) {};\n  if (!this._ui) throw new Error('invalid interface \"' + name + '\"');\n  this._ui = this._ui(this.suite);\n  return this;\n};\n\n/**\n * Load registered files.\n *\n * @api private\n */\n\nMocha.prototype.loadFiles = function(fn){\n  var self = this;\n  var suite = this.suite;\n  var pending = this.files.length;\n  this.files.forEach(function(file){\n    file = path.resolve(file);\n    suite.emit('pre-require', global, file, self);\n    suite.emit('require', require(file), file, self);\n    suite.emit('post-require', global, file, self);\n    --pending || (fn && fn());\n  });\n};\n\n/**\n * Enable growl support.\n *\n * @api private\n */\n\nMocha.prototype._growl = function(runner, reporter) {\n  var notify = require('growl');\n\n  runner.on('end', function(){\n    var stats = reporter.stats;\n    if (stats.failures) {\n      var msg = stats.failures + ' of ' + runner.total + ' tests failed';\n      notify(msg, { name: 'mocha', title: 'Failed', image: image('error') });\n    } else {\n      notify(stats.passes + ' tests passed in ' + stats.duration + 'ms', {\n          name: 'mocha'\n        , title: 'Passed'\n        , image: image('ok')\n      });\n    }\n  });\n};\n\n/**\n * Add regexp to grep, if `re` is a string it is escaped.\n *\n * @param {RegExp|String} re\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.grep = function(re){\n  this.options.grep = 'string' == typeof re\n    ? new RegExp(escapeRe(re))\n    : re;\n  return this;\n};\n\n/**\n * Invert `.grep()` matches.\n *\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.invert = function(){\n  this.options.invert = true;\n  return this;\n};\n\n/**\n * Ignore global leaks.\n *\n * @param {Boolean} ignore\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.ignoreLeaks = function(ignore){\n  this.options.ignoreLeaks = !!ignore;\n  return this;\n};\n\n/**\n * Enable global leak checking.\n *\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.checkLeaks = function(){\n  this.options.ignoreLeaks = false;\n  return this;\n};\n\n/**\n * Enable growl support.\n *\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.growl = function(){\n  this.options.growl = true;\n  return this;\n};\n\n/**\n * Ignore `globals` array or string.\n *\n * @param {Array|String} globals\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.globals = function(globals){\n  this.options.globals = (this.options.globals || []).concat(globals);\n  return this;\n};\n\n/**\n * Emit color output.\n *\n * @param {Boolean} colors\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.useColors = function(colors){\n  if (colors !== undefined) {\n    this.options.useColors = colors;\n  }\n  return this;\n};\n\n/**\n * Use inline diffs rather than +/-.\n *\n * @param {Boolean} inlineDiffs\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.useInlineDiffs = function(inlineDiffs) {\n  this.options.useInlineDiffs = arguments.length && inlineDiffs != undefined\n  ? inlineDiffs\n  : false;\n  return this;\n};\n\n/**\n * Set the timeout in milliseconds.\n *\n * @param {Number} timeout\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.timeout = function(timeout){\n  this.suite.timeout(timeout);\n  return this;\n};\n\n/**\n * Set slowness threshold in milliseconds.\n *\n * @param {Number} slow\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.slow = function(slow){\n  this.suite.slow(slow);\n  return this;\n};\n\n/**\n * Enable timeouts.\n *\n * @param {Boolean} enabled\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.enableTimeouts = function(enabled) {\n  this.suite.enableTimeouts(arguments.length && enabled !== undefined\n    ? enabled\n    : true);\n  return this\n};\n\n/**\n * Makes all tests async (accepting a callback)\n *\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.asyncOnly = function(){\n  this.options.asyncOnly = true;\n  return this;\n};\n\n/**\n * Disable syntax highlighting (in browser).\n * @returns {Mocha}\n * @api public\n */\nMocha.prototype.noHighlighting = function() {\n  this.options.noHighlighting = true;\n  return this;\n};\n\n/**\n * Delay root suite execution.\n * @returns {Mocha}\n * @api public\n */\nMocha.prototype.delay = function delay() {\n  this.options.delay = true;\n  return this;\n};\n\n/**\n * Run tests and invoke `fn()` when complete.\n *\n * @param {Function} fn\n * @return {Runner}\n * @api public\n */\nMocha.prototype.run = function(fn){\n  if (this.files.length) this.loadFiles();\n  var suite = this.suite;\n  var options = this.options;\n  options.files = this.files;\n  var runner = new exports.Runner(suite, options.delay);\n  var reporter = new this._reporter(runner, options);\n  runner.ignoreLeaks = false !== options.ignoreLeaks;\n  runner.asyncOnly = options.asyncOnly;\n  if (options.grep) runner.grep(options.grep, options.invert);\n  if (options.globals) runner.globals(options.globals);\n  if (options.growl) this._growl(runner, reporter);\n  if (options.useColors !== undefined) {\n    exports.reporters.Base.useColors = options.useColors;\n  }\n  exports.reporters.Base.inlineDiffs = options.useInlineDiffs;\n\n  function done(failures) {\n      if (reporter.done) {\n          reporter.done(failures, fn);\n      } else fn && fn(failures);\n  }\n\n  return runner.run(done);\n};\n\n}); // module: mocha.js\n\nrequire.register(\"ms.js\", function(module, exports, require){\n/**\n * Helpers.\n */\n\nvar s = 1000;\nvar m = s * 60;\nvar h = m * 60;\nvar d = h * 24;\nvar y = d * 365.25;\n\n/**\n * Parse or format the given `val`.\n *\n * Options:\n *\n *  - `long` verbose formatting [false]\n *\n * @param {String|Number} val\n * @param {Object} options\n * @return {String|Number}\n * @api public\n */\n\nmodule.exports = function(val, options){\n  options = options || {};\n  if ('string' == typeof val) return parse(val);\n  return options['long'] ? longFormat(val) : shortFormat(val);\n};\n\n/**\n * Parse the given `str` and return milliseconds.\n *\n * @param {String} str\n * @return {Number}\n * @api private\n */\n\nfunction parse(str) {\n  var match = /^((?:\\d+)?\\.?\\d+) *(ms|seconds?|s|minutes?|m|hours?|h|days?|d|years?|y)?$/i.exec(str);\n  if (!match) return;\n  var n = parseFloat(match[1]);\n  var type = (match[2] || 'ms').toLowerCase();\n  switch (type) {\n    case 'years':\n    case 'year':\n    case 'y':\n      return n * y;\n    case 'days':\n    case 'day':\n    case 'd':\n      return n * d;\n    case 'hours':\n    case 'hour':\n    case 'h':\n      return n * h;\n    case 'minutes':\n    case 'minute':\n    case 'm':\n      return n * m;\n    case 'seconds':\n    case 'second':\n    case 's':\n      return n * s;\n    case 'ms':\n      return n;\n  }\n}\n\n/**\n * Short format for `ms`.\n *\n * @param {Number} ms\n * @return {String}\n * @api private\n */\n\nfunction shortFormat(ms) {\n  if (ms >= d) return Math.round(ms / d) + 'd';\n  if (ms >= h) return Math.round(ms / h) + 'h';\n  if (ms >= m) return Math.round(ms / m) + 'm';\n  if (ms >= s) return Math.round(ms / s) + 's';\n  return ms + 'ms';\n}\n\n/**\n * Long format for `ms`.\n *\n * @param {Number} ms\n * @return {String}\n * @api private\n */\n\nfunction longFormat(ms) {\n  return plural(ms, d, 'day')\n    || plural(ms, h, 'hour')\n    || plural(ms, m, 'minute')\n    || plural(ms, s, 'second')\n    || ms + ' ms';\n}\n\n/**\n * Pluralization helper.\n */\n\nfunction plural(ms, n, name) {\n  if (ms < n) return;\n  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;\n  return Math.ceil(ms / n) + ' ' + name + 's';\n}\n\n}); // module: ms.js\n\nrequire.register(\"pending.js\", function(module, exports, require){\n\n/**\n * Expose `Pending`.\n */\n\nmodule.exports = Pending;\n\n/**\n * Initialize a new `Pending` error with the given message.\n *\n * @param {String} message\n */\n\nfunction Pending(message) {\n    this.message = message;\n}\n\n}); // module: pending.js\n\nrequire.register(\"reporters/base.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar tty = require('browser/tty')\n  , diff = require('browser/diff')\n  , ms = require('../ms')\n  , utils = require('../utils')\n  , supportsColor = process.env ? require('supports-color') : null;\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date\n  , setTimeout = global.setTimeout\n  , setInterval = global.setInterval\n  , clearTimeout = global.clearTimeout\n  , clearInterval = global.clearInterval;\n\n/**\n * Check if both stdio streams are associated with a tty.\n */\n\nvar isatty = tty.isatty(1) && tty.isatty(2);\n\n/**\n * Expose `Base`.\n */\n\nexports = module.exports = Base;\n\n/**\n * Enable coloring by default, except in the browser interface.\n */\n\nexports.useColors = process.env\n  ? (supportsColor || (process.env.MOCHA_COLORS !== undefined))\n  : false;\n\n/**\n * Inline diffs instead of +/-\n */\n\nexports.inlineDiffs = false;\n\n/**\n * Default color map.\n */\n\nexports.colors = {\n    'pass': 90\n  , 'fail': 31\n  , 'bright pass': 92\n  , 'bright fail': 91\n  , 'bright yellow': 93\n  , 'pending': 36\n  , 'suite': 0\n  , 'error title': 0\n  , 'error message': 31\n  , 'error stack': 90\n  , 'checkmark': 32\n  , 'fast': 90\n  , 'medium': 33\n  , 'slow': 31\n  , 'green': 32\n  , 'light': 90\n  , 'diff gutter': 90\n  , 'diff added': 42\n  , 'diff removed': 41\n};\n\n/**\n * Default symbol map.\n */\n\nexports.symbols = {\n  ok: '✓',\n  err: '✖',\n  dot: '․'\n};\n\n// With node.js on Windows: use symbols available in terminal default fonts\nif ('win32' == process.platform) {\n  exports.symbols.ok = '\\u221A';\n  exports.symbols.err = '\\u00D7';\n  exports.symbols.dot = '.';\n}\n\n/**\n * Color `str` with the given `type`,\n * allowing colors to be disabled,\n * as well as user-defined color\n * schemes.\n *\n * @param {String} type\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nvar color = exports.color = function(type, str) {\n  if (!exports.useColors) return String(str);\n  return '\\u001b[' + exports.colors[type] + 'm' + str + '\\u001b[0m';\n};\n\n/**\n * Expose term window size, with some\n * defaults for when stderr is not a tty.\n */\n\nexports.window = {\n  width: isatty\n    ? process.stdout.getWindowSize\n      ? process.stdout.getWindowSize(1)[0]\n      : tty.getWindowSize()[1]\n    : 75\n};\n\n/**\n * Expose some basic cursor interactions\n * that are common among reporters.\n */\n\nexports.cursor = {\n  hide: function(){\n    isatty && process.stdout.write('\\u001b[?25l');\n  },\n\n  show: function(){\n    isatty && process.stdout.write('\\u001b[?25h');\n  },\n\n  deleteLine: function(){\n    isatty && process.stdout.write('\\u001b[2K');\n  },\n\n  beginningOfLine: function(){\n    isatty && process.stdout.write('\\u001b[0G');\n  },\n\n  CR: function(){\n    if (isatty) {\n      exports.cursor.deleteLine();\n      exports.cursor.beginningOfLine();\n    } else {\n      process.stdout.write('\\r');\n    }\n  }\n};\n\n/**\n * Outut the given `failures` as a list.\n *\n * @param {Array} failures\n * @api public\n */\n\nexports.list = function(failures){\n  console.log();\n  failures.forEach(function(test, i){\n    // format\n    var fmt = color('error title', '  %s) %s:\\n')\n      + color('error message', '     %s')\n      + color('error stack', '\\n%s\\n');\n\n    // msg\n    var err = test.err\n      , message = err.message || ''\n      , stack = err.stack || message\n      , index = stack.indexOf(message) + message.length\n      , msg = stack.slice(0, index)\n      , actual = err.actual\n      , expected = err.expected\n      , escape = true;\n\n    // uncaught\n    if (err.uncaught) {\n      msg = 'Uncaught ' + msg;\n    }\n    // explicitly show diff\n    if (err.showDiff && sameType(actual, expected)) {\n\n      if ('string' !== typeof actual) {\n        escape = false;\n        err.actual = actual = utils.stringify(actual);\n        err.expected = expected = utils.stringify(expected);\n      }\n\n      fmt = color('error title', '  %s) %s:\\n%s') + color('error stack', '\\n%s\\n');\n      var match = message.match(/^([^:]+): expected/);\n      msg = '\\n      ' + color('error message', match ? match[1] : msg);\n\n      if (exports.inlineDiffs) {\n        msg += inlineDiff(err, escape);\n      } else {\n        msg += unifiedDiff(err, escape);\n      }\n    }\n\n    // indent stack trace without msg\n    stack = stack.slice(index ? index + 1 : index)\n      .replace(/^/gm, '  ');\n\n    console.log(fmt, (i + 1), test.fullTitle(), msg, stack);\n  });\n};\n\n/**\n * Initialize a new `Base` reporter.\n *\n * All other reporters generally\n * inherit from this reporter, providing\n * stats such as test duration, number\n * of tests passed / failed etc.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Base(runner) {\n  var self = this\n    , stats = this.stats = { suites: 0, tests: 0, passes: 0, pending: 0, failures: 0 }\n    , failures = this.failures = [];\n\n  if (!runner) return;\n  this.runner = runner;\n\n  runner.stats = stats;\n\n  runner.on('start', function(){\n    stats.start = new Date;\n  });\n\n  runner.on('suite', function(suite){\n    stats.suites = stats.suites || 0;\n    suite.root || stats.suites++;\n  });\n\n  runner.on('test end', function(test){\n    stats.tests = stats.tests || 0;\n    stats.tests++;\n  });\n\n  runner.on('pass', function(test){\n    stats.passes = stats.passes || 0;\n\n    var medium = test.slow() / 2;\n    test.speed = test.duration > test.slow()\n      ? 'slow'\n      : test.duration > medium\n        ? 'medium'\n        : 'fast';\n\n    stats.passes++;\n  });\n\n  runner.on('fail', function(test, err){\n    stats.failures = stats.failures || 0;\n    stats.failures++;\n    test.err = err;\n    failures.push(test);\n  });\n\n  runner.on('end', function(){\n    stats.end = new Date;\n    stats.duration = new Date - stats.start;\n  });\n\n  runner.on('pending', function(){\n    stats.pending++;\n  });\n}\n\n/**\n * Output common epilogue used by many of\n * the bundled reporters.\n *\n * @api public\n */\n\nBase.prototype.epilogue = function(){\n  var stats = this.stats;\n  var tests;\n  var fmt;\n\n  console.log();\n\n  // passes\n  fmt = color('bright pass', ' ')\n    + color('green', ' %d passing')\n    + color('light', ' (%s)');\n\n  console.log(fmt,\n    stats.passes || 0,\n    ms(stats.duration));\n\n  // pending\n  if (stats.pending) {\n    fmt = color('pending', ' ')\n      + color('pending', ' %d pending');\n\n    console.log(fmt, stats.pending);\n  }\n\n  // failures\n  if (stats.failures) {\n    fmt = color('fail', '  %d failing');\n\n    console.log(fmt, stats.failures);\n\n    Base.list(this.failures);\n    console.log();\n  }\n\n  console.log();\n};\n\n/**\n * Pad the given `str` to `len`.\n *\n * @param {String} str\n * @param {String} len\n * @return {String}\n * @api private\n */\n\nfunction pad(str, len) {\n  str = String(str);\n  return Array(len - str.length + 1).join(' ') + str;\n}\n\n\n/**\n * Returns an inline diff between 2 strings with coloured ANSI output\n *\n * @param {Error} Error with actual/expected\n * @return {String} Diff\n * @api private\n */\n\nfunction inlineDiff(err, escape) {\n  var msg = errorDiff(err, 'WordsWithSpace', escape);\n\n  // linenos\n  var lines = msg.split('\\n');\n  if (lines.length > 4) {\n    var width = String(lines.length).length;\n    msg = lines.map(function(str, i){\n      return pad(++i, width) + ' |' + ' ' + str;\n    }).join('\\n');\n  }\n\n  // legend\n  msg = '\\n'\n    + color('diff removed', 'actual')\n    + ' '\n    + color('diff added', 'expected')\n    + '\\n\\n'\n    + msg\n    + '\\n';\n\n  // indent\n  msg = msg.replace(/^/gm, '      ');\n  return msg;\n}\n\n/**\n * Returns a unified diff between 2 strings\n *\n * @param {Error} Error with actual/expected\n * @return {String} Diff\n * @api private\n */\n\nfunction unifiedDiff(err, escape) {\n  var indent = '      ';\n  function cleanUp(line) {\n    if (escape) {\n      line = escapeInvisibles(line);\n    }\n    if (line[0] === '+') return indent + colorLines('diff added', line);\n    if (line[0] === '-') return indent + colorLines('diff removed', line);\n    if (line.match(/\\@\\@/)) return null;\n    if (line.match(/\\\\ No newline/)) return null;\n    else return indent + line;\n  }\n  function notBlank(line) {\n    return line != null;\n  }\n  var msg = diff.createPatch('string', err.actual, err.expected);\n  var lines = msg.split('\\n').splice(4);\n  return '\\n      '\n         + colorLines('diff added',   '+ expected') + ' '\n         + colorLines('diff removed', '- actual')\n         + '\\n\\n'\n         + lines.map(cleanUp).filter(notBlank).join('\\n');\n}\n\n/**\n * Return a character diff for `err`.\n *\n * @param {Error} err\n * @return {String}\n * @api private\n */\n\nfunction errorDiff(err, type, escape) {\n  var actual   = escape ? escapeInvisibles(err.actual)   : err.actual;\n  var expected = escape ? escapeInvisibles(err.expected) : err.expected;\n  return diff['diff' + type](actual, expected).map(function(str){\n    if (str.added) return colorLines('diff added', str.value);\n    if (str.removed) return colorLines('diff removed', str.value);\n    return str.value;\n  }).join('');\n}\n\n/**\n * Returns a string with all invisible characters in plain text\n *\n * @param {String} line\n * @return {String}\n * @api private\n */\nfunction escapeInvisibles(line) {\n    return line.replace(/\\t/g, '<tab>')\n               .replace(/\\r/g, '<CR>')\n               .replace(/\\n/g, '<LF>\\n');\n}\n\n/**\n * Color lines for `str`, using the color `name`.\n *\n * @param {String} name\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nfunction colorLines(name, str) {\n  return str.split('\\n').map(function(str){\n    return color(name, str);\n  }).join('\\n');\n}\n\n/**\n * Check that a / b have the same type.\n *\n * @param {Object} a\n * @param {Object} b\n * @return {Boolean}\n * @api private\n */\n\nfunction sameType(a, b) {\n  a = Object.prototype.toString.call(a);\n  b = Object.prototype.toString.call(b);\n  return a == b;\n}\n\n}); // module: reporters/base.js\n\nrequire.register(\"reporters/doc.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , utils = require('../utils');\n\n/**\n * Expose `Doc`.\n */\n\nexports = module.exports = Doc;\n\n/**\n * Initialize a new `Doc` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Doc(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , total = runner.total\n    , indents = 2;\n\n  function indent() {\n    return Array(indents).join('  ');\n  }\n\n  runner.on('suite', function(suite){\n    if (suite.root) return;\n    ++indents;\n    console.log('%s<section class=\"suite\">', indent());\n    ++indents;\n    console.log('%s<h1>%s</h1>', indent(), utils.escape(suite.title));\n    console.log('%s<dl>', indent());\n  });\n\n  runner.on('suite end', function(suite){\n    if (suite.root) return;\n    console.log('%s</dl>', indent());\n    --indents;\n    console.log('%s</section>', indent());\n    --indents;\n  });\n\n  runner.on('pass', function(test){\n    console.log('%s  <dt>%s</dt>', indent(), utils.escape(test.title));\n    var code = utils.escape(utils.clean(test.fn.toString()));\n    console.log('%s  <dd><pre><code>%s</code></pre></dd>', indent(), code);\n  });\n\n  runner.on('fail', function(test, err){\n    console.log('%s  <dt class=\"error\">%s</dt>', indent(), utils.escape(test.title));\n    var code = utils.escape(utils.clean(test.fn.toString()));\n    console.log('%s  <dd class=\"error\"><pre><code>%s</code></pre></dd>', indent(), code);\n    console.log('%s  <dd class=\"error\">%s</dd>', indent(), utils.escape(err));\n  });\n}\n\n}); // module: reporters/doc.js\n\nrequire.register(\"reporters/dot.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , color = Base.color;\n\n/**\n * Expose `Dot`.\n */\n\nexports = module.exports = Dot;\n\n/**\n * Initialize a new `Dot` matrix test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Dot(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , width = Base.window.width * .75 | 0\n    , n = -1;\n\n  runner.on('start', function(){\n    process.stdout.write('\\n  ');\n  });\n\n  runner.on('pending', function(test){\n    if (++n % width == 0) process.stdout.write('\\n  ');\n    process.stdout.write(color('pending', Base.symbols.dot));\n  });\n\n  runner.on('pass', function(test){\n    if (++n % width == 0) process.stdout.write('\\n  ');\n    if ('slow' == test.speed) {\n      process.stdout.write(color('bright yellow', Base.symbols.dot));\n    } else {\n      process.stdout.write(color(test.speed, Base.symbols.dot));\n    }\n  });\n\n  runner.on('fail', function(test, err){\n    if (++n % width == 0) process.stdout.write('\\n  ');\n    process.stdout.write(color('fail', Base.symbols.dot));\n  });\n\n  runner.on('end', function(){\n    console.log();\n    self.epilogue();\n  });\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nDot.prototype = new F;\nDot.prototype.constructor = Dot;\n\n\n}); // module: reporters/dot.js\n\nrequire.register(\"reporters/html-cov.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar JSONCov = require('./json-cov')\n  , fs = require('browser/fs');\n\n/**\n * Expose `HTMLCov`.\n */\n\nexports = module.exports = HTMLCov;\n\n/**\n * Initialize a new `JsCoverage` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction HTMLCov(runner) {\n  var jade = require('jade')\n    , file = __dirname + '/templates/coverage.jade'\n    , str = fs.readFileSync(file, 'utf8')\n    , fn = jade.compile(str, { filename: file })\n    , self = this;\n\n  JSONCov.call(this, runner, false);\n\n  runner.on('end', function(){\n    process.stdout.write(fn({\n        cov: self.cov\n      , coverageClass: coverageClass\n    }));\n  });\n}\n\n/**\n * Return coverage class for `n`.\n *\n * @return {String}\n * @api private\n */\n\nfunction coverageClass(n) {\n  if (n >= 75) return 'high';\n  if (n >= 50) return 'medium';\n  if (n >= 25) return 'low';\n  return 'terrible';\n}\n\n}); // module: reporters/html-cov.js\n\nrequire.register(\"reporters/html.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , utils = require('../utils')\n  , Progress = require('../browser/progress')\n  , escape = utils.escape;\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date\n  , setTimeout = global.setTimeout\n  , setInterval = global.setInterval\n  , clearTimeout = global.clearTimeout\n  , clearInterval = global.clearInterval;\n\n/**\n * Expose `HTML`.\n */\n\nexports = module.exports = HTML;\n\n/**\n * Stats template.\n */\n\nvar statsTemplate = '<ul id=\"mocha-stats\">'\n  + '<li class=\"progress\"><canvas width=\"40\" height=\"40\"></canvas></li>'\n  + '<li class=\"passes\"><a href=\"#\">passes:</a> <em>0</em></li>'\n  + '<li class=\"failures\"><a href=\"#\">failures:</a> <em>0</em></li>'\n  + '<li class=\"duration\">duration: <em>0</em>s</li>'\n  + '</ul>';\n\n/**\n * Initialize a new `HTML` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction HTML(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , total = runner.total\n    , stat = fragment(statsTemplate)\n    , items = stat.getElementsByTagName('li')\n    , passes = items[1].getElementsByTagName('em')[0]\n    , passesLink = items[1].getElementsByTagName('a')[0]\n    , failures = items[2].getElementsByTagName('em')[0]\n    , failuresLink = items[2].getElementsByTagName('a')[0]\n    , duration = items[3].getElementsByTagName('em')[0]\n    , canvas = stat.getElementsByTagName('canvas')[0]\n    , report = fragment('<ul id=\"mocha-report\"></ul>')\n    , stack = [report]\n    , progress\n    , ctx\n    , root = document.getElementById('mocha');\n\n  if (canvas.getContext) {\n    var ratio = window.devicePixelRatio || 1;\n    canvas.style.width = canvas.width;\n    canvas.style.height = canvas.height;\n    canvas.width *= ratio;\n    canvas.height *= ratio;\n    ctx = canvas.getContext('2d');\n    ctx.scale(ratio, ratio);\n    progress = new Progress;\n  }\n\n  if (!root) return error('#mocha div missing, add it to your document');\n\n  // pass toggle\n  on(passesLink, 'click', function(){\n    unhide();\n    var name = /pass/.test(report.className) ? '' : ' pass';\n    report.className = report.className.replace(/fail|pass/g, '') + name;\n    if (report.className.trim()) hideSuitesWithout('test pass');\n  });\n\n  // failure toggle\n  on(failuresLink, 'click', function(){\n    unhide();\n    var name = /fail/.test(report.className) ? '' : ' fail';\n    report.className = report.className.replace(/fail|pass/g, '') + name;\n    if (report.className.trim()) hideSuitesWithout('test fail');\n  });\n\n  root.appendChild(stat);\n  root.appendChild(report);\n\n  if (progress) progress.size(40);\n\n  runner.on('suite', function(suite){\n    if (suite.root) return;\n\n    // suite\n    var url = self.suiteURL(suite);\n    var el = fragment('<li class=\"suite\"><h1><a href=\"%s\">%s</a></h1></li>', url, escape(suite.title));\n\n    // container\n    stack[0].appendChild(el);\n    stack.unshift(document.createElement('ul'));\n    el.appendChild(stack[0]);\n  });\n\n  runner.on('suite end', function(suite){\n    if (suite.root) return;\n    stack.shift();\n  });\n\n  runner.on('fail', function(test, err){\n    if ('hook' == test.type) runner.emit('test end', test);\n  });\n\n  runner.on('test end', function(test){\n    // TODO: add to stats\n    var percent = stats.tests / this.total * 100 | 0;\n    if (progress) progress.update(percent).draw(ctx);\n\n    // update stats\n    var ms = new Date - stats.start;\n    text(passes, stats.passes);\n    text(failures, stats.failures);\n    text(duration, (ms / 1000).toFixed(2));\n\n    // test\n    if ('passed' == test.state) {\n      var url = self.testURL(test);\n      var el = fragment('<li class=\"test pass %e\"><h2>%e<span class=\"duration\">%ems</span> <a href=\"%s\" class=\"replay\">‣</a></h2></li>', test.speed, test.title, test.duration, url);\n    } else if (test.pending) {\n      var el = fragment('<li class=\"test pass pending\"><h2>%e</h2></li>', test.title);\n    } else {\n      var el = fragment('<li class=\"test fail\"><h2>%e <a href=\"%e\" class=\"replay\">‣</a></h2></li>', test.title, self.testURL(test));\n      var str = test.err.stack || test.err.toString();\n\n      // FF / Opera do not add the message\n      if (!~str.indexOf(test.err.message)) {\n        str = test.err.message + '\\n' + str;\n      }\n\n      // <=IE7 stringifies to [Object Error]. Since it can be overloaded, we\n      // check for the result of the stringifying.\n      if ('[object Error]' == str) str = test.err.message;\n\n      // Safari doesn't give you a stack. Let's at least provide a source line.\n      if (!test.err.stack && test.err.sourceURL && test.err.line !== undefined) {\n        str += \"\\n(\" + test.err.sourceURL + \":\" + test.err.line + \")\";\n      }\n\n      el.appendChild(fragment('<pre class=\"error\">%e</pre>', str));\n    }\n\n    // toggle code\n    // TODO: defer\n    if (!test.pending) {\n      var h2 = el.getElementsByTagName('h2')[0];\n\n      on(h2, 'click', function(){\n        pre.style.display = 'none' == pre.style.display\n          ? 'block'\n          : 'none';\n      });\n\n      var pre = fragment('<pre><code>%e</code></pre>', utils.clean(test.fn.toString()));\n      el.appendChild(pre);\n      pre.style.display = 'none';\n    }\n\n    // Don't call .appendChild if #mocha-report was already .shift()'ed off the stack.\n    if (stack[0]) stack[0].appendChild(el);\n  });\n}\n\n/**\n * Makes a URL, preserving querystring (\"search\") parameters.\n * @param {string} s\n * @returns {string} your new URL\n */\nvar makeUrl = function makeUrl(s) {\n  var search = window.location.search;\n\n  // Remove previous grep query parameter if present\n  if (search) {\n    search = search.replace(/[?&]grep=[^&\\s]*/g, '').replace(/^&/, '?');\n  }\n\n  return window.location.pathname + (search ? search + '&' : '?' ) + 'grep=' + encodeURIComponent(s);\n};\n\n/**\n * Provide suite URL\n *\n * @param {Object} [suite]\n */\nHTML.prototype.suiteURL = function(suite){\n  return makeUrl(suite.fullTitle());\n};\n\n/**\n * Provide test URL\n *\n * @param {Object} [test]\n */\n\nHTML.prototype.testURL = function(test){\n  return makeUrl(test.fullTitle());\n};\n\n/**\n * Display error `msg`.\n */\n\nfunction error(msg) {\n  document.body.appendChild(fragment('<div id=\"mocha-error\">%s</div>', msg));\n}\n\n/**\n * Return a DOM fragment from `html`.\n */\n\nfunction fragment(html) {\n  var args = arguments\n    , div = document.createElement('div')\n    , i = 1;\n\n  div.innerHTML = html.replace(/%([se])/g, function(_, type){\n    switch (type) {\n      case 's': return String(args[i++]);\n      case 'e': return escape(args[i++]);\n    }\n  });\n\n  return div.firstChild;\n}\n\n/**\n * Check for suites that do not have elements\n * with `classname`, and hide them.\n */\n\nfunction hideSuitesWithout(classname) {\n  var suites = document.getElementsByClassName('suite');\n  for (var i = 0; i < suites.length; i++) {\n    var els = suites[i].getElementsByClassName(classname);\n    if (0 == els.length) suites[i].className += ' hidden';\n  }\n}\n\n/**\n * Unhide .hidden suites.\n */\n\nfunction unhide() {\n  var els = document.getElementsByClassName('suite hidden');\n  for (var i = 0; i < els.length; ++i) {\n    els[i].className = els[i].className.replace('suite hidden', 'suite');\n  }\n}\n\n/**\n * Set `el` text to `str`.\n */\n\nfunction text(el, str) {\n  if (el.textContent) {\n    el.textContent = str;\n  } else {\n    el.innerText = str;\n  }\n}\n\n/**\n * Listen on `event` with callback `fn`.\n */\n\nfunction on(el, event, fn) {\n  if (el.addEventListener) {\n    el.addEventListener(event, fn, false);\n  } else {\n    el.attachEvent('on' + event, fn);\n  }\n}\n\n}); // module: reporters/html.js\n\nrequire.register(\"reporters/index.js\", function(module, exports, require){\nexports.Base = require('./base');\nexports.Dot = require('./dot');\nexports.Doc = require('./doc');\nexports.TAP = require('./tap');\nexports.JSON = require('./json');\nexports.HTML = require('./html');\nexports.List = require('./list');\nexports.Min = require('./min');\nexports.Spec = require('./spec');\nexports.Nyan = require('./nyan');\nexports.XUnit = require('./xunit');\nexports.Markdown = require('./markdown');\nexports.Progress = require('./progress');\nexports.Landing = require('./landing');\nexports.JSONCov = require('./json-cov');\nexports.HTMLCov = require('./html-cov');\nexports.JSONStream = require('./json-stream');\n\n}); // module: reporters/index.js\n\nrequire.register(\"reporters/json-cov.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base');\n\n/**\n * Expose `JSONCov`.\n */\n\nexports = module.exports = JSONCov;\n\n/**\n * Initialize a new `JsCoverage` reporter.\n *\n * @param {Runner} runner\n * @param {Boolean} output\n * @api public\n */\n\nfunction JSONCov(runner, output) {\n  var self = this\n    , output = 1 == arguments.length ? true : output;\n\n  Base.call(this, runner);\n\n  var tests = []\n    , failures = []\n    , passes = [];\n\n  runner.on('test end', function(test){\n    tests.push(test);\n  });\n\n  runner.on('pass', function(test){\n    passes.push(test);\n  });\n\n  runner.on('fail', function(test){\n    failures.push(test);\n  });\n\n  runner.on('end', function(){\n    var cov = global._$jscoverage || {};\n    var result = self.cov = map(cov);\n    result.stats = self.stats;\n    result.tests = tests.map(clean);\n    result.failures = failures.map(clean);\n    result.passes = passes.map(clean);\n    if (!output) return;\n    process.stdout.write(JSON.stringify(result, null, 2 ));\n  });\n}\n\n/**\n * Map jscoverage data to a JSON structure\n * suitable for reporting.\n *\n * @param {Object} cov\n * @return {Object}\n * @api private\n */\n\nfunction map(cov) {\n  var ret = {\n      instrumentation: 'node-jscoverage'\n    , sloc: 0\n    , hits: 0\n    , misses: 0\n    , coverage: 0\n    , files: []\n  };\n\n  for (var filename in cov) {\n    var data = coverage(filename, cov[filename]);\n    ret.files.push(data);\n    ret.hits += data.hits;\n    ret.misses += data.misses;\n    ret.sloc += data.sloc;\n  }\n\n  ret.files.sort(function(a, b) {\n    return a.filename.localeCompare(b.filename);\n  });\n\n  if (ret.sloc > 0) {\n    ret.coverage = (ret.hits / ret.sloc) * 100;\n  }\n\n  return ret;\n}\n\n/**\n * Map jscoverage data for a single source file\n * to a JSON structure suitable for reporting.\n *\n * @param {String} filename name of the source file\n * @param {Object} data jscoverage coverage data\n * @return {Object}\n * @api private\n */\n\nfunction coverage(filename, data) {\n  var ret = {\n    filename: filename,\n    coverage: 0,\n    hits: 0,\n    misses: 0,\n    sloc: 0,\n    source: {}\n  };\n\n  data.source.forEach(function(line, num){\n    num++;\n\n    if (data[num] === 0) {\n      ret.misses++;\n      ret.sloc++;\n    } else if (data[num] !== undefined) {\n      ret.hits++;\n      ret.sloc++;\n    }\n\n    ret.source[num] = {\n        source: line\n      , coverage: data[num] === undefined\n        ? ''\n        : data[num]\n    };\n  });\n\n  ret.coverage = ret.hits / ret.sloc * 100;\n\n  return ret;\n}\n\n/**\n * Return a plain-object representation of `test`\n * free of cyclic properties etc.\n *\n * @param {Object} test\n * @return {Object}\n * @api private\n */\n\nfunction clean(test) {\n  return {\n      title: test.title\n    , fullTitle: test.fullTitle()\n    , duration: test.duration\n  }\n}\n\n}); // module: reporters/json-cov.js\n\nrequire.register(\"reporters/json-stream.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , color = Base.color;\n\n/**\n * Expose `List`.\n */\n\nexports = module.exports = List;\n\n/**\n * Initialize a new `List` test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction List(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , total = runner.total;\n\n  runner.on('start', function(){\n    console.log(JSON.stringify(['start', { total: total }]));\n  });\n\n  runner.on('pass', function(test){\n    console.log(JSON.stringify(['pass', clean(test)]));\n  });\n\n  runner.on('fail', function(test, err){\n    test = clean(test);\n    test.err = err.message;\n    console.log(JSON.stringify(['fail', test]));\n  });\n\n  runner.on('end', function(){\n    process.stdout.write(JSON.stringify(['end', self.stats]));\n  });\n}\n\n/**\n * Return a plain-object representation of `test`\n * free of cyclic properties etc.\n *\n * @param {Object} test\n * @return {Object}\n * @api private\n */\n\nfunction clean(test) {\n  return {\n      title: test.title\n    , fullTitle: test.fullTitle()\n    , duration: test.duration\n  }\n}\n\n}); // module: reporters/json-stream.js\n\nrequire.register(\"reporters/json.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `JSON`.\n */\n\nexports = module.exports = JSONReporter;\n\n/**\n * Initialize a new `JSON` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction JSONReporter(runner) {\n  var self = this;\n  Base.call(this, runner);\n\n  var tests = []\n    , pending = []\n    , failures = []\n    , passes = [];\n\n  runner.on('test end', function(test){\n    tests.push(test);\n  });\n\n  runner.on('pass', function(test){\n    passes.push(test);\n  });\n\n  runner.on('fail', function(test){\n    failures.push(test);\n  });\n\n  runner.on('pending', function(test){\n    pending.push(test);\n  });\n\n  runner.on('end', function(){\n    var obj = {\n      stats: self.stats,\n      tests: tests.map(clean),\n      pending: pending.map(clean),\n      failures: failures.map(clean),\n      passes: passes.map(clean)\n    };\n\n    runner.testResults = obj;\n\n    process.stdout.write(JSON.stringify(obj, null, 2));\n  });\n}\n\n/**\n * Return a plain-object representation of `test`\n * free of cyclic properties etc.\n *\n * @param {Object} test\n * @return {Object}\n * @api private\n */\n\nfunction clean(test) {\n  return {\n    title: test.title,\n    fullTitle: test.fullTitle(),\n    duration: test.duration,\n    err: errorJSON(test.err || {})\n  }\n}\n\n/**\n * Transform `error` into a JSON object.\n * @param {Error} err\n * @return {Object}\n */\n\nfunction errorJSON(err) {\n  var res = {};\n  Object.getOwnPropertyNames(err).forEach(function(key) {\n    res[key] = err[key];\n  }, err);\n  return res;\n}\n\n}); // module: reporters/json.js\n\nrequire.register(\"reporters/landing.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `Landing`.\n */\n\nexports = module.exports = Landing;\n\n/**\n * Airplane color.\n */\n\nBase.colors.plane = 0;\n\n/**\n * Airplane crash color.\n */\n\nBase.colors['plane crash'] = 31;\n\n/**\n * Runway color.\n */\n\nBase.colors.runway = 90;\n\n/**\n * Initialize a new `Landing` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Landing(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , width = Base.window.width * .75 | 0\n    , total = runner.total\n    , stream = process.stdout\n    , plane = color('plane', '✈')\n    , crashed = -1\n    , n = 0;\n\n  function runway() {\n    var buf = Array(width).join('-');\n    return '  ' + color('runway', buf);\n  }\n\n  runner.on('start', function(){\n    stream.write('\\n\\n\\n  ');\n    cursor.hide();\n  });\n\n  runner.on('test end', function(test){\n    // check if the plane crashed\n    var col = -1 == crashed\n      ? width * ++n / total | 0\n      : crashed;\n\n    // show the crash\n    if ('failed' == test.state) {\n      plane = color('plane crash', '✈');\n      crashed = col;\n    }\n\n    // render landing strip\n    stream.write('\\u001b['+(width+1)+'D\\u001b[2A');\n    stream.write(runway());\n    stream.write('\\n  ');\n    stream.write(color('runway', Array(col).join('⋅')));\n    stream.write(plane)\n    stream.write(color('runway', Array(width - col).join('⋅') + '\\n'));\n    stream.write(runway());\n    stream.write('\\u001b[0m');\n  });\n\n  runner.on('end', function(){\n    cursor.show();\n    console.log();\n    self.epilogue();\n  });\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nLanding.prototype = new F;\nLanding.prototype.constructor = Landing;\n\n\n}); // module: reporters/landing.js\n\nrequire.register(\"reporters/list.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `List`.\n */\n\nexports = module.exports = List;\n\n/**\n * Initialize a new `List` test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction List(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , n = 0;\n\n  runner.on('start', function(){\n    console.log();\n  });\n\n  runner.on('test', function(test){\n    process.stdout.write(color('pass', '    ' + test.fullTitle() + ': '));\n  });\n\n  runner.on('pending', function(test){\n    var fmt = color('checkmark', '  -')\n      + color('pending', ' %s');\n    console.log(fmt, test.fullTitle());\n  });\n\n  runner.on('pass', function(test){\n    var fmt = color('checkmark', '  '+Base.symbols.dot)\n      + color('pass', ' %s: ')\n      + color(test.speed, '%dms');\n    cursor.CR();\n    console.log(fmt, test.fullTitle(), test.duration);\n  });\n\n  runner.on('fail', function(test, err){\n    cursor.CR();\n    console.log(color('fail', '  %d) %s'), ++n, test.fullTitle());\n  });\n\n  runner.on('end', self.epilogue.bind(self));\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nList.prototype = new F;\nList.prototype.constructor = List;\n\n\n}); // module: reporters/list.js\n\nrequire.register(\"reporters/markdown.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , utils = require('../utils');\n\n/**\n * Constants\n */\n\nvar SUITE_PREFIX = '$';\n\n/**\n * Expose `Markdown`.\n */\n\nexports = module.exports = Markdown;\n\n/**\n * Initialize a new `Markdown` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Markdown(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , level = 0\n    , buf = '';\n\n  function title(str) {\n    return Array(level).join('#') + ' ' + str;\n  }\n\n  function indent() {\n    return Array(level).join('  ');\n  }\n\n  function mapTOC(suite, obj) {\n    var ret = obj,\n        key = SUITE_PREFIX + suite.title;\n    obj = obj[key] = obj[key] || { suite: suite };\n    suite.suites.forEach(function(suite){\n      mapTOC(suite, obj);\n    });\n    return ret;\n  }\n\n  function stringifyTOC(obj, level) {\n    ++level;\n    var buf = '';\n    var link;\n    for (var key in obj) {\n      if ('suite' == key) continue;\n      if (key !== SUITE_PREFIX) {\n        link = ' - [' + key.substring(1) + ']';\n        link += '(#' + utils.slug(obj[key].suite.fullTitle()) + ')\\n';\n        buf += Array(level).join('  ') + link;\n      }\n      buf += stringifyTOC(obj[key], level);\n    }\n    return buf;\n  }\n\n  function generateTOC(suite) {\n    var obj = mapTOC(suite, {});\n    return stringifyTOC(obj, 0);\n  }\n\n  generateTOC(runner.suite);\n\n  runner.on('suite', function(suite){\n    ++level;\n    var slug = utils.slug(suite.fullTitle());\n    buf += '<a name=\"' + slug + '\"></a>' + '\\n';\n    buf += title(suite.title) + '\\n';\n  });\n\n  runner.on('suite end', function(suite){\n    --level;\n  });\n\n  runner.on('pass', function(test){\n    var code = utils.clean(test.fn.toString());\n    buf += test.title + '.\\n';\n    buf += '\\n```js\\n';\n    buf += code + '\\n';\n    buf += '```\\n\\n';\n  });\n\n  runner.on('end', function(){\n    process.stdout.write('# TOC\\n');\n    process.stdout.write(generateTOC(runner.suite));\n    process.stdout.write(buf);\n  });\n}\n\n}); // module: reporters/markdown.js\n\nrequire.register(\"reporters/min.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base');\n\n/**\n * Expose `Min`.\n */\n\nexports = module.exports = Min;\n\n/**\n * Initialize a new `Min` minimal test reporter (best used with --watch).\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Min(runner) {\n  Base.call(this, runner);\n\n  runner.on('start', function(){\n    // clear screen\n    process.stdout.write('\\u001b[2J');\n    // set cursor position\n    process.stdout.write('\\u001b[1;3H');\n  });\n\n  runner.on('end', this.epilogue.bind(this));\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nMin.prototype = new F;\nMin.prototype.constructor = Min;\n\n\n}); // module: reporters/min.js\n\nrequire.register(\"reporters/nyan.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base');\n\n/**\n * Expose `Dot`.\n */\n\nexports = module.exports = NyanCat;\n\n/**\n * Initialize a new `Dot` matrix test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction NyanCat(runner) {\n  Base.call(this, runner);\n  var self = this\n    , stats = this.stats\n    , width = Base.window.width * .75 | 0\n    , rainbowColors = this.rainbowColors = self.generateColors()\n    , colorIndex = this.colorIndex = 0\n    , numerOfLines = this.numberOfLines = 4\n    , trajectories = this.trajectories = [[], [], [], []]\n    , nyanCatWidth = this.nyanCatWidth = 11\n    , trajectoryWidthMax = this.trajectoryWidthMax = (width - nyanCatWidth)\n    , scoreboardWidth = this.scoreboardWidth = 5\n    , tick = this.tick = 0\n    , n = 0;\n\n  runner.on('start', function(){\n    Base.cursor.hide();\n    self.draw();\n  });\n\n  runner.on('pending', function(test){\n    self.draw();\n  });\n\n  runner.on('pass', function(test){\n    self.draw();\n  });\n\n  runner.on('fail', function(test, err){\n    self.draw();\n  });\n\n  runner.on('end', function(){\n    Base.cursor.show();\n    for (var i = 0; i < self.numberOfLines; i++) write('\\n');\n    self.epilogue();\n  });\n}\n\n/**\n * Draw the nyan cat\n *\n * @api private\n */\n\nNyanCat.prototype.draw = function(){\n  this.appendRainbow();\n  this.drawScoreboard();\n  this.drawRainbow();\n  this.drawNyanCat();\n  this.tick = !this.tick;\n};\n\n/**\n * Draw the \"scoreboard\" showing the number\n * of passes, failures and pending tests.\n *\n * @api private\n */\n\nNyanCat.prototype.drawScoreboard = function(){\n  var stats = this.stats;\n\n  function draw(type, n) {\n    write(' ');\n    write(Base.color(type, n));\n    write('\\n');\n  }\n\n  draw('green', stats.passes);\n  draw('fail', stats.failures);\n  draw('pending', stats.pending);\n  write('\\n');\n\n  this.cursorUp(this.numberOfLines);\n};\n\n/**\n * Append the rainbow.\n *\n * @api private\n */\n\nNyanCat.prototype.appendRainbow = function(){\n  var segment = this.tick ? '_' : '-';\n  var rainbowified = this.rainbowify(segment);\n\n  for (var index = 0; index < this.numberOfLines; index++) {\n    var trajectory = this.trajectories[index];\n    if (trajectory.length >= this.trajectoryWidthMax) trajectory.shift();\n    trajectory.push(rainbowified);\n  }\n};\n\n/**\n * Draw the rainbow.\n *\n * @api private\n */\n\nNyanCat.prototype.drawRainbow = function(){\n  var self = this;\n\n  this.trajectories.forEach(function(line, index) {\n    write('\\u001b[' + self.scoreboardWidth + 'C');\n    write(line.join(''));\n    write('\\n');\n  });\n\n  this.cursorUp(this.numberOfLines);\n};\n\n/**\n * Draw the nyan cat\n *\n * @api private\n */\n\nNyanCat.prototype.drawNyanCat = function() {\n  var self = this;\n  var startWidth = this.scoreboardWidth + this.trajectories[0].length;\n  var dist = '\\u001b[' + startWidth + 'C';\n  var padding = '';\n\n  write(dist);\n  write('_,------,');\n  write('\\n');\n\n  write(dist);\n  padding = self.tick ? '  ' : '   ';\n  write('_|' + padding + '/\\\\_/\\\\ ');\n  write('\\n');\n\n  write(dist);\n  padding = self.tick ? '_' : '__';\n  var tail = self.tick ? '~' : '^';\n  var face;\n  write(tail + '|' + padding + this.face() + ' ');\n  write('\\n');\n\n  write(dist);\n  padding = self.tick ? ' ' : '  ';\n  write(padding + '\"\"  \"\" ');\n  write('\\n');\n\n  this.cursorUp(this.numberOfLines);\n};\n\n/**\n * Draw nyan cat face.\n *\n * @return {String}\n * @api private\n */\n\nNyanCat.prototype.face = function() {\n  var stats = this.stats;\n  if (stats.failures) {\n    return '( x .x)';\n  } else if (stats.pending) {\n    return '( o .o)';\n  } else if(stats.passes) {\n    return '( ^ .^)';\n  } else {\n    return '( - .-)';\n  }\n};\n\n/**\n * Move cursor up `n`.\n *\n * @param {Number} n\n * @api private\n */\n\nNyanCat.prototype.cursorUp = function(n) {\n  write('\\u001b[' + n + 'A');\n};\n\n/**\n * Move cursor down `n`.\n *\n * @param {Number} n\n * @api private\n */\n\nNyanCat.prototype.cursorDown = function(n) {\n  write('\\u001b[' + n + 'B');\n};\n\n/**\n * Generate rainbow colors.\n *\n * @return {Array}\n * @api private\n */\n\nNyanCat.prototype.generateColors = function(){\n  var colors = [];\n\n  for (var i = 0; i < (6 * 7); i++) {\n    var pi3 = Math.floor(Math.PI / 3);\n    var n = (i * (1.0 / 6));\n    var r = Math.floor(3 * Math.sin(n) + 3);\n    var g = Math.floor(3 * Math.sin(n + 2 * pi3) + 3);\n    var b = Math.floor(3 * Math.sin(n + 4 * pi3) + 3);\n    colors.push(36 * r + 6 * g + b + 16);\n  }\n\n  return colors;\n};\n\n/**\n * Apply rainbow to the given `str`.\n *\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nNyanCat.prototype.rainbowify = function(str){\n  if (!Base.useColors)\n    return str;\n  var color = this.rainbowColors[this.colorIndex % this.rainbowColors.length];\n  this.colorIndex += 1;\n  return '\\u001b[38;5;' + color + 'm' + str + '\\u001b[0m';\n};\n\n/**\n * Stdout helper.\n */\n\nfunction write(string) {\n  process.stdout.write(string);\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nNyanCat.prototype = new F;\nNyanCat.prototype.constructor = NyanCat;\n\n\n}); // module: reporters/nyan.js\n\nrequire.register(\"reporters/progress.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `Progress`.\n */\n\nexports = module.exports = Progress;\n\n/**\n * General progress bar color.\n */\n\nBase.colors.progress = 90;\n\n/**\n * Initialize a new `Progress` bar test reporter.\n *\n * @param {Runner} runner\n * @param {Object} options\n * @api public\n */\n\nfunction Progress(runner, options) {\n  Base.call(this, runner);\n\n  var self = this\n    , options = options || {}\n    , stats = this.stats\n    , width = Base.window.width * .50 | 0\n    , total = runner.total\n    , complete = 0\n    , max = Math.max\n    , lastN = -1;\n\n  // default chars\n  options.open = options.open || '[';\n  options.complete = options.complete || '▬';\n  options.incomplete = options.incomplete || Base.symbols.dot;\n  options.close = options.close || ']';\n  options.verbose = false;\n\n  // tests started\n  runner.on('start', function(){\n    console.log();\n    cursor.hide();\n  });\n\n  // tests complete\n  runner.on('test end', function(){\n    complete++;\n    var incomplete = total - complete\n      , percent = complete / total\n      , n = width * percent | 0\n      , i = width - n;\n\n    if (lastN === n && !options.verbose) {\n      // Don't re-render the line if it hasn't changed\n      return;\n    }\n    lastN = n;\n\n    cursor.CR();\n    process.stdout.write('\\u001b[J');\n    process.stdout.write(color('progress', '  ' + options.open));\n    process.stdout.write(Array(n).join(options.complete));\n    process.stdout.write(Array(i).join(options.incomplete));\n    process.stdout.write(color('progress', options.close));\n    if (options.verbose) {\n      process.stdout.write(color('progress', ' ' + complete + ' of ' + total));\n    }\n  });\n\n  // tests are complete, output some stats\n  // and the failures if any\n  runner.on('end', function(){\n    cursor.show();\n    console.log();\n    self.epilogue();\n  });\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nProgress.prototype = new F;\nProgress.prototype.constructor = Progress;\n\n\n}); // module: reporters/progress.js\n\nrequire.register(\"reporters/spec.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `Spec`.\n */\n\nexports = module.exports = Spec;\n\n/**\n * Initialize a new `Spec` test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Spec(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , indents = 0\n    , n = 0;\n\n  function indent() {\n    return Array(indents).join('  ')\n  }\n\n  runner.on('start', function(){\n    console.log();\n  });\n\n  runner.on('suite', function(suite){\n    ++indents;\n    console.log(color('suite', '%s%s'), indent(), suite.title);\n  });\n\n  runner.on('suite end', function(suite){\n    --indents;\n    if (1 == indents) console.log();\n  });\n\n  runner.on('pending', function(test){\n    var fmt = indent() + color('pending', '  - %s');\n    console.log(fmt, test.title);\n  });\n\n  runner.on('pass', function(test){\n    if ('fast' == test.speed) {\n      var fmt = indent()\n        + color('checkmark', '  ' + Base.symbols.ok)\n        + color('pass', ' %s ');\n      cursor.CR();\n      console.log(fmt, test.title);\n    } else {\n      var fmt = indent()\n        + color('checkmark', '  ' + Base.symbols.ok)\n        + color('pass', ' %s ')\n        + color(test.speed, '(%dms)');\n      cursor.CR();\n      console.log(fmt, test.title, test.duration);\n    }\n  });\n\n  runner.on('fail', function(test, err){\n    cursor.CR();\n    console.log(indent() + color('fail', '  %d) %s'), ++n, test.title);\n  });\n\n  runner.on('end', self.epilogue.bind(self));\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nSpec.prototype = new F;\nSpec.prototype.constructor = Spec;\n\n\n}); // module: reporters/spec.js\n\nrequire.register(\"reporters/tap.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `TAP`.\n */\n\nexports = module.exports = TAP;\n\n/**\n * Initialize a new `TAP` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction TAP(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , n = 1\n    , passes = 0\n    , failures = 0;\n\n  runner.on('start', function(){\n    var total = runner.grepTotal(runner.suite);\n    console.log('%d..%d', 1, total);\n  });\n\n  runner.on('test end', function(){\n    ++n;\n  });\n\n  runner.on('pending', function(test){\n    console.log('ok %d %s # SKIP -', n, title(test));\n  });\n\n  runner.on('pass', function(test){\n    passes++;\n    console.log('ok %d %s', n, title(test));\n  });\n\n  runner.on('fail', function(test, err){\n    failures++;\n    console.log('not ok %d %s', n, title(test));\n    if (err.stack) console.log(err.stack.replace(/^/gm, '  '));\n  });\n\n  runner.on('end', function(){\n    console.log('# tests ' + (passes + failures));\n    console.log('# pass ' + passes);\n    console.log('# fail ' + failures);\n  });\n}\n\n/**\n * Return a TAP-safe title of `test`\n *\n * @param {Object} test\n * @return {String}\n * @api private\n */\n\nfunction title(test) {\n  return test.fullTitle().replace(/#/g, '');\n}\n\n}); // module: reporters/tap.js\n\nrequire.register(\"reporters/xunit.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , utils = require('../utils')\n  , fs = require('browser/fs')\n  , escape = utils.escape;\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date\n  , setTimeout = global.setTimeout\n  , setInterval = global.setInterval\n  , clearTimeout = global.clearTimeout\n  , clearInterval = global.clearInterval;\n\n/**\n * Expose `XUnit`.\n */\n\nexports = module.exports = XUnit;\n\n/**\n * Initialize a new `XUnit` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction XUnit(runner, options) {\n  Base.call(this, runner);\n  var stats = this.stats\n    , tests = []\n    , self = this;\n\n  if (options.reporterOptions && options.reporterOptions.output) {\n      if (! fs.createWriteStream) {\n          throw new Error('file output not supported in browser');\n      }\n      self.fileStream = fs.createWriteStream(options.reporterOptions.output);\n  }\n\n  runner.on('pending', function(test){\n    tests.push(test);\n  });\n\n  runner.on('pass', function(test){\n    tests.push(test);\n  });\n\n  runner.on('fail', function(test){\n    tests.push(test);\n  });\n\n  runner.on('end', function(){\n    self.write(tag('testsuite', {\n        name: 'Mocha Tests'\n      , tests: stats.tests\n      , failures: stats.failures\n      , errors: stats.failures\n      , skipped: stats.tests - stats.failures - stats.passes\n      , timestamp: (new Date).toUTCString()\n      , time: (stats.duration / 1000) || 0\n    }, false));\n\n    tests.forEach(function(t) { self.test(t); });\n    self.write('</testsuite>');\n  });\n}\n\n/**\n * Override done to close the stream (if it's a file).\n */\nXUnit.prototype.done = function(failures, fn) {\n    if (this.fileStream) {\n        this.fileStream.end(function() {\n            fn(failures);\n        });\n    } else {\n        fn(failures);\n    }\n};\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nXUnit.prototype = new F;\nXUnit.prototype.constructor = XUnit;\n\n\n/**\n * Write out the given line\n */\nXUnit.prototype.write = function(line) {\n    if (this.fileStream) {\n        this.fileStream.write(line + '\\n');\n    } else {\n        console.log(line);\n    }\n};\n\n/**\n * Output tag for the given `test.`\n */\n\nXUnit.prototype.test = function(test, ostream) {\n  var attrs = {\n      classname: test.parent.fullTitle()\n    , name: test.title\n    , time: (test.duration / 1000) || 0\n  };\n\n  if ('failed' == test.state) {\n    var err = test.err;\n    this.write(tag('testcase', attrs, false, tag('failure', {}, false, cdata(escape(err.message) + \"\\n\" + err.stack))));\n  } else if (test.pending) {\n    this.write(tag('testcase', attrs, false, tag('skipped', {}, true)));\n  } else {\n    this.write(tag('testcase', attrs, true) );\n  }\n};\n\n/**\n * HTML tag helper.\n */\n\nfunction tag(name, attrs, close, content) {\n  var end = close ? '/>' : '>'\n    , pairs = []\n    , tag;\n\n  for (var key in attrs) {\n    pairs.push(key + '=\"' + escape(attrs[key]) + '\"');\n  }\n\n  tag = '<' + name + (pairs.length ? ' ' + pairs.join(' ') : '') + end;\n  if (content) tag += content + '</' + name + end;\n  return tag;\n}\n\n/**\n * Return cdata escaped CDATA `str`.\n */\n\nfunction cdata(str) {\n  return '<![CDATA[' + escape(str) + ']]>';\n}\n\n}); // module: reporters/xunit.js\n\nrequire.register(\"runnable.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar EventEmitter = require('browser/events').EventEmitter\n  , debug = require('browser/debug')('mocha:runnable')\n  , Pending = require('./pending')\n  , milliseconds = require('./ms')\n  , utils = require('./utils');\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date\n  , setTimeout = global.setTimeout\n  , setInterval = global.setInterval\n  , clearTimeout = global.clearTimeout\n  , clearInterval = global.clearInterval;\n\n/**\n * Object#toString().\n */\n\nvar toString = Object.prototype.toString;\n\n/**\n * Expose `Runnable`.\n */\n\nmodule.exports = Runnable;\n\n/**\n * Initialize a new `Runnable` with the given `title` and callback `fn`.\n *\n * @param {String} title\n * @param {Function} fn\n * @api private\n */\n\nfunction Runnable(title, fn) {\n  this.title = title;\n  this.fn = fn;\n  this.async = fn && fn.length;\n  this.sync = ! this.async;\n  this._timeout = 2000;\n  this._slow = 75;\n  this._enableTimeouts = true;\n  this.timedOut = false;\n  this._trace = new Error('done() called multiple times')\n}\n\n/**\n * Inherit from `EventEmitter.prototype`.\n */\n\nfunction F(){};\nF.prototype = EventEmitter.prototype;\nRunnable.prototype = new F;\nRunnable.prototype.constructor = Runnable;\n\n\n/**\n * Set & get timeout `ms`.\n *\n * @param {Number|String} ms\n * @return {Runnable|Number} ms or self\n * @api private\n */\n\nRunnable.prototype.timeout = function(ms){\n  if (0 == arguments.length) return this._timeout;\n  if (ms === 0) this._enableTimeouts = false;\n  if ('string' == typeof ms) ms = milliseconds(ms);\n  debug('timeout %d', ms);\n  this._timeout = ms;\n  if (this.timer) this.resetTimeout();\n  return this;\n};\n\n/**\n * Set & get slow `ms`.\n *\n * @param {Number|String} ms\n * @return {Runnable|Number} ms or self\n * @api private\n */\n\nRunnable.prototype.slow = function(ms){\n  if (0 === arguments.length) return this._slow;\n  if ('string' == typeof ms) ms = milliseconds(ms);\n  debug('timeout %d', ms);\n  this._slow = ms;\n  return this;\n};\n\n/**\n * Set and & get timeout `enabled`.\n *\n * @param {Boolean} enabled\n * @return {Runnable|Boolean} enabled or self\n * @api private\n */\n\nRunnable.prototype.enableTimeouts = function(enabled){\n  if (arguments.length === 0) return this._enableTimeouts;\n  debug('enableTimeouts %s', enabled);\n  this._enableTimeouts = enabled;\n  return this;\n};\n\n/**\n * Halt and mark as pending.\n *\n * @api private\n */\n\nRunnable.prototype.skip = function(){\n    throw new Pending();\n};\n\n/**\n * Return the full title generated by recursively\n * concatenating the parent's full title.\n *\n * @return {String}\n * @api public\n */\n\nRunnable.prototype.fullTitle = function(){\n  return this.parent.fullTitle() + ' ' + this.title;\n};\n\n/**\n * Clear the timeout.\n *\n * @api private\n */\n\nRunnable.prototype.clearTimeout = function(){\n  clearTimeout(this.timer);\n};\n\n/**\n * Inspect the runnable void of private properties.\n *\n * @return {String}\n * @api private\n */\n\nRunnable.prototype.inspect = function(){\n  return JSON.stringify(this, function(key, val){\n    if ('_' == key[0]) return;\n    if ('parent' == key) return '#<Suite>';\n    if ('ctx' == key) return '#<Context>';\n    return val;\n  }, 2);\n};\n\n/**\n * Reset the timeout.\n *\n * @api private\n */\n\nRunnable.prototype.resetTimeout = function(){\n  var self = this;\n  var ms = this.timeout() || 1e9;\n\n  if (!this._enableTimeouts) return;\n  this.clearTimeout();\n  this.timer = setTimeout(function(){\n    if (!self._enableTimeouts) return;\n    self.callback(new Error('timeout of ' + ms + 'ms exceeded. Ensure the done() callback is being called in this test.'));\n    self.timedOut = true;\n  }, ms);\n};\n\n/**\n * Whitelist these globals for this test run\n *\n * @api private\n */\nRunnable.prototype.globals = function(arr){\n  var self = this;\n  this._allowedGlobals = arr;\n};\n\n/**\n * Run the test and invoke `fn(err)`.\n *\n * @param {Function} fn\n * @api private\n */\n\nRunnable.prototype.run = function(fn){\n  var self = this\n    , start = new Date\n    , ctx = this.ctx\n    , finished\n    , emitted;\n\n  // Some times the ctx exists but it is not runnable\n  if (ctx && ctx.runnable) ctx.runnable(this);\n\n  // called multiple times\n  function multiple(err) {\n    if (emitted) return;\n    emitted = true;\n    self.emit('error', err || new Error('done() called multiple times; stacktrace may be inaccurate'));\n  }\n\n  // finished\n  function done(err) {\n    var ms = self.timeout();\n    if (self.timedOut) return;\n    if (finished) return multiple(err || self._trace);\n\n    // Discard the resolution if this test has already failed asynchronously\n    if (self.state) return;\n\n    self.clearTimeout();\n    self.duration = new Date - start;\n    finished = true;\n    if (!err && self.duration > ms && self._enableTimeouts) err = new Error('timeout of ' + ms + 'ms exceeded. Ensure the done() callback is being called in this test.');\n    fn(err);\n  }\n\n  // for .resetTimeout()\n  this.callback = done;\n\n  // explicit async with `done` argument\n  if (this.async) {\n    this.resetTimeout();\n\n    try {\n      this.fn.call(ctx, function(err){\n        if (err instanceof Error || toString.call(err) === \"[object Error]\") return done(err);\n        if (null != err) {\n          if (Object.prototype.toString.call(err) === '[object Object]') {\n            return done(new Error('done() invoked with non-Error: ' + JSON.stringify(err)));\n          } else {\n            return done(new Error('done() invoked with non-Error: ' + err));\n          }\n        }\n        done();\n      });\n    } catch (err) {\n      done(utils.getError(err));\n    }\n    return;\n  }\n\n  if (this.asyncOnly) {\n    return done(new Error('--async-only option in use without declaring `done()`'));\n  }\n\n  // sync or promise-returning\n  try {\n    if (this.pending) {\n      done();\n    } else {\n      callFn(this.fn);\n    }\n  } catch (err) {\n    done(utils.getError(err));\n  }\n\n  function callFn(fn) {\n    var result = fn.call(ctx);\n    if (result && typeof result.then === 'function') {\n      self.resetTimeout();\n      result\n        .then(function() {\n          done()\n        },\n        function(reason) {\n          done(reason || new Error('Promise rejected with no or falsy reason'))\n        });\n    } else {\n      done();\n    }\n  }\n};\n\n}); // module: runnable.js\n\nrequire.register(\"runner.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar EventEmitter = require('browser/events').EventEmitter\n  , debug = require('browser/debug')('mocha:runner')\n  , Pending = require('./pending')\n  , Test = require('./test')\n  , utils = require('./utils')\n  , filter = utils.filter\n  , keys = utils.keys\n  , type = utils.type\n  , stringify = utils.stringify;\n\n/**\n * Non-enumerable globals.\n */\n\nvar globals = [\n  'setTimeout',\n  'clearTimeout',\n  'setInterval',\n  'clearInterval',\n  'XMLHttpRequest',\n  'Date',\n  'setImmediate',\n  'clearImmediate'\n];\n\n/**\n * Expose `Runner`.\n */\n\nmodule.exports = Runner;\n\n/**\n * Initialize a `Runner` for the given `suite`.\n *\n * Events:\n *\n *   - `start`  execution started\n *   - `end`  execution complete\n *   - `suite`  (suite) test suite execution started\n *   - `suite end`  (suite) all tests (and sub-suites) have finished\n *   - `test`  (test) test execution started\n *   - `test end`  (test) test completed\n *   - `hook`  (hook) hook execution started\n *   - `hook end`  (hook) hook complete\n *   - `pass`  (test) test passed\n *   - `fail`  (test, err) test failed\n *   - `pending`  (test) test pending\n *\n * @param {Suite} suite Root suite\n * @param {boolean} [delay] Whether or not to delay execution of root suite\n *   until ready.\n * @api public\n */\n\nfunction Runner(suite, delay) {\n  var self = this;\n  this._globals = [];\n  this._abort = false;\n  this._delay = delay;\n  this.suite = suite;\n  this.total = suite.total();\n  this.failures = 0;\n  this.on('test end', function(test){ self.checkGlobals(test); });\n  this.on('hook end', function(hook){ self.checkGlobals(hook); });\n  this.grep(/.*/);\n  this.globals(this.globalProps().concat(extraGlobals()));\n}\n\n/**\n * Wrapper for setImmediate, process.nextTick, or browser polyfill.\n *\n * @param {Function} fn\n * @api private\n */\n\nRunner.immediately = global.setImmediate || process.nextTick;\n\n/**\n * Inherit from `EventEmitter.prototype`.\n */\n\nfunction F(){};\nF.prototype = EventEmitter.prototype;\nRunner.prototype = new F;\nRunner.prototype.constructor = Runner;\n\n\n/**\n * Run tests with full titles matching `re`. Updates runner.total\n * with number of tests matched.\n *\n * @param {RegExp} re\n * @param {Boolean} invert\n * @return {Runner} for chaining\n * @api public\n */\n\nRunner.prototype.grep = function(re, invert){\n  debug('grep %s', re);\n  this._grep = re;\n  this._invert = invert;\n  this.total = this.grepTotal(this.suite);\n  return this;\n};\n\n/**\n * Returns the number of tests matching the grep search for the\n * given suite.\n *\n * @param {Suite} suite\n * @return {Number}\n * @api public\n */\n\nRunner.prototype.grepTotal = function(suite) {\n  var self = this;\n  var total = 0;\n\n  suite.eachTest(function(test){\n    var match = self._grep.test(test.fullTitle());\n    if (self._invert) match = !match;\n    if (match) total++;\n  });\n\n  return total;\n};\n\n/**\n * Return a list of global properties.\n *\n * @return {Array}\n * @api private\n */\n\nRunner.prototype.globalProps = function() {\n  var props = utils.keys(global);\n\n  // non-enumerables\n  for (var i = 0; i < globals.length; ++i) {\n    if (~utils.indexOf(props, globals[i])) continue;\n    props.push(globals[i]);\n  }\n\n  return props;\n};\n\n/**\n * Allow the given `arr` of globals.\n *\n * @param {Array} arr\n * @return {Runner} for chaining\n * @api public\n */\n\nRunner.prototype.globals = function(arr){\n  if (0 == arguments.length) return this._globals;\n  debug('globals %j', arr);\n  this._globals = this._globals.concat(arr);\n  return this;\n};\n\n/**\n * Check for global variable leaks.\n *\n * @api private\n */\n\nRunner.prototype.checkGlobals = function(test){\n  if (this.ignoreLeaks) return;\n  var ok = this._globals;\n\n  var globals = this.globalProps();\n  var leaks;\n\n  if (test) {\n    ok = ok.concat(test._allowedGlobals || []);\n  }\n\n  if(this.prevGlobalsLength == globals.length) return;\n  this.prevGlobalsLength = globals.length;\n\n  leaks = filterLeaks(ok, globals);\n  this._globals = this._globals.concat(leaks);\n\n  if (leaks.length > 1) {\n    this.fail(test, new Error('global leaks detected: ' + leaks.join(', ') + ''));\n  } else if (leaks.length) {\n    this.fail(test, new Error('global leak detected: ' + leaks[0]));\n  }\n};\n\n/**\n * Fail the given `test`.\n *\n * @param {Test} test\n * @param {Error} err\n * @api private\n */\n\nRunner.prototype.fail = function(test, err){\n  ++this.failures;\n  test.state = 'failed';\n\n  if ('string' == typeof err) {\n    err = new Error('the string \"' + err + '\" was thrown, throw an Error :)');\n  } else if (!(err instanceof Error)) {\n    err = new Error('the ' + type(err) + ' ' + stringify(err) + ' was thrown, throw an Error :)');\n  }\n\n  this.emit('fail', test, err);\n};\n\n/**\n * Fail the given `hook` with `err`.\n *\n * Hook failures work in the following pattern:\n * - If bail, then exit\n * - Failed `before` hook skips all tests in a suite and subsuites,\n *   but jumps to corresponding `after` hook\n * - Failed `before each` hook skips remaining tests in a\n *   suite and jumps to corresponding `after each` hook,\n *   which is run only once\n * - Failed `after` hook does not alter\n *   execution order\n * - Failed `after each` hook skips remaining tests in a\n *   suite and subsuites, but executes other `after each`\n *   hooks\n *\n * @param {Hook} hook\n * @param {Error} err\n * @api private\n */\n\nRunner.prototype.failHook = function(hook, err){\n  this.fail(hook, err);\n  if (this.suite.bail()) {\n    this.emit('end');\n  }\n};\n\n/**\n * Run hook `name` callbacks and then invoke `fn()`.\n *\n * @param {String} name\n * @param {Function} function\n * @api private\n */\n\nRunner.prototype.hook = function(name, fn){\n  var suite = this.suite\n    , hooks = suite['_' + name]\n    , self = this\n    , timer;\n\n  function next(i) {\n    var hook = hooks[i];\n    if (!hook) return fn();\n    self.currentRunnable = hook;\n\n    hook.ctx.currentTest = self.test;\n\n    self.emit('hook', hook);\n\n    hook.on('error', function(err){\n      self.failHook(hook, err);\n    });\n\n    hook.run(function(err){\n      hook.removeAllListeners('error');\n      var testError = hook.error();\n      if (testError) self.fail(self.test, testError);\n      if (err) {\n        if (err instanceof Pending) {\n          suite.pending = true;\n        } else {\n          self.failHook(hook, err);\n\n          // stop executing hooks, notify callee of hook err\n          return fn(err);\n        }\n      }\n      self.emit('hook end', hook);\n      delete hook.ctx.currentTest;\n      next(++i);\n    });\n  }\n\n  Runner.immediately(function(){\n    next(0);\n  });\n};\n\n/**\n * Run hook `name` for the given array of `suites`\n * in order, and callback `fn(err, errSuite)`.\n *\n * @param {String} name\n * @param {Array} suites\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.hooks = function(name, suites, fn){\n  var self = this\n    , orig = this.suite;\n\n  function next(suite) {\n    self.suite = suite;\n\n    if (!suite) {\n      self.suite = orig;\n      return fn();\n    }\n\n    self.hook(name, function(err){\n      if (err) {\n        var errSuite = self.suite;\n        self.suite = orig;\n        return fn(err, errSuite);\n      }\n\n      next(suites.pop());\n    });\n  }\n\n  next(suites.pop());\n};\n\n/**\n * Run hooks from the top level down.\n *\n * @param {String} name\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.hookUp = function(name, fn){\n  var suites = [this.suite].concat(this.parents()).reverse();\n  this.hooks(name, suites, fn);\n};\n\n/**\n * Run hooks from the bottom up.\n *\n * @param {String} name\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.hookDown = function(name, fn){\n  var suites = [this.suite].concat(this.parents());\n  this.hooks(name, suites, fn);\n};\n\n/**\n * Return an array of parent Suites from\n * closest to furthest.\n *\n * @return {Array}\n * @api private\n */\n\nRunner.prototype.parents = function(){\n  var suite = this.suite\n    , suites = [];\n  while (suite = suite.parent) suites.push(suite);\n  return suites;\n};\n\n/**\n * Run the current test and callback `fn(err)`.\n *\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.runTest = function(fn){\n  var test = this.test\n    , self = this;\n\n  if (this.asyncOnly) test.asyncOnly = true;\n\n  try {\n    test.on('error', function(err){\n      self.fail(test, err);\n    });\n    test.run(fn);\n  } catch (err) {\n    fn(err);\n  }\n};\n\n/**\n * Run tests in the given `suite` and invoke\n * the callback `fn()` when complete.\n *\n * @param {Suite} suite\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.runTests = function(suite, fn){\n  var self = this\n    , tests = suite.tests.slice()\n    , test;\n\n\n  function hookErr(err, errSuite, after) {\n    // before/after Each hook for errSuite failed:\n    var orig = self.suite;\n\n    // for failed 'after each' hook start from errSuite parent,\n    // otherwise start from errSuite itself\n    self.suite = after ? errSuite.parent : errSuite;\n\n    if (self.suite) {\n      // call hookUp afterEach\n      self.hookUp('afterEach', function(err2, errSuite2) {\n        self.suite = orig;\n        // some hooks may fail even now\n        if (err2) return hookErr(err2, errSuite2, true);\n        // report error suite\n        fn(errSuite);\n      });\n    } else {\n      // there is no need calling other 'after each' hooks\n      self.suite = orig;\n      fn(errSuite);\n    }\n  }\n\n  function next(err, errSuite) {\n    // if we bail after first err\n    if (self.failures && suite._bail) return fn();\n\n    if (self._abort) return fn();\n\n    if (err) return hookErr(err, errSuite, true);\n\n    // next test\n    test = tests.shift();\n\n    // all done\n    if (!test) return fn();\n\n    // grep\n    var match = self._grep.test(test.fullTitle());\n    if (self._invert) match = !match;\n    if (!match) return next();\n\n    // pending\n    if (test.pending) {\n      self.emit('pending', test);\n      self.emit('test end', test);\n      return next();\n    }\n\n    // execute test and hook(s)\n    self.emit('test', self.test = test);\n    self.hookDown('beforeEach', function(err, errSuite){\n\n      if (suite.pending) {\n        self.emit('pending', test);\n        self.emit('test end', test);\n        return next();\n      }\n      if (err) return hookErr(err, errSuite, false);\n\n      self.currentRunnable = self.test;\n      self.runTest(function(err){\n        test = self.test;\n\n        if (err) {\n          if (err instanceof Pending) {\n            self.emit('pending', test);\n          } else {\n            self.fail(test, err);\n          }\n          self.emit('test end', test);\n\n          if (err instanceof Pending) {\n            return next();\n          }\n\n          return self.hookUp('afterEach', next);\n        }\n\n        test.state = 'passed';\n        self.emit('pass', test);\n        self.emit('test end', test);\n        self.hookUp('afterEach', next);\n      });\n    });\n  }\n\n  this.next = next;\n  next();\n};\n\n/**\n * Run the given `suite` and invoke the\n * callback `fn()` when complete.\n *\n * @param {Suite} suite\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.runSuite = function(suite, fn){\n  var total = this.grepTotal(suite)\n    , self = this\n    , i = 0;\n\n  debug('run suite %s', suite.fullTitle());\n\n  if (!total) return fn();\n\n  this.emit('suite', this.suite = suite);\n\n  function next(errSuite) {\n    if (errSuite) {\n      // current suite failed on a hook from errSuite\n      if (errSuite == suite) {\n        // if errSuite is current suite\n        // continue to the next sibling suite\n        return done();\n      } else {\n        // errSuite is among the parents of current suite\n        // stop execution of errSuite and all sub-suites\n        return done(errSuite);\n      }\n    }\n\n    if (self._abort) return done();\n\n    var curr = suite.suites[i++];\n    if (!curr) return done();\n    self.runSuite(curr, next);\n  }\n\n  function done(errSuite) {\n    self.suite = suite;\n    self.hook('afterAll', function(){\n      self.emit('suite end', suite);\n      fn(errSuite);\n    });\n  }\n\n  this.hook('beforeAll', function(err){\n    if (err) return done();\n    self.runTests(suite, next);\n  });\n};\n\n/**\n * Handle uncaught exceptions.\n *\n * @param {Error} err\n * @api private\n */\n\nRunner.prototype.uncaught = function(err){\n  if (err) {\n    debug('uncaught exception %s', err !== function () {\n      return this;\n    }.call(err) ? err : ( err.message || err ));\n  } else {\n    debug('uncaught undefined exception');\n    err = utils.undefinedError();\n  }\n  err.uncaught = true;\n\n  var runnable = this.currentRunnable;\n  if (!runnable) return;\n\n  runnable.clearTimeout();\n\n  // Ignore errors if complete\n  if (runnable.state) return;\n  this.fail(runnable, err);\n\n  // recover from test\n  if ('test' == runnable.type) {\n    this.emit('test end', runnable);\n    this.hookUp('afterEach', this.next);\n    return;\n  }\n\n  // bail on hooks\n  this.emit('end');\n};\n\n/**\n * Run the root suite and invoke `fn(failures)`\n * on completion.\n *\n * @param {Function} fn\n * @return {Runner} for chaining\n * @api public\n */\n\nRunner.prototype.run = function(fn){\n  var self = this,\n    rootSuite = this.suite;\n\n  fn = fn || function(){};\n\n  function uncaught(err){\n    self.uncaught(err);\n  }\n\n  function start() {\n    self.emit('start');\n    self.runSuite(rootSuite, function(){\n      debug('finished running');\n      self.emit('end');\n    });\n  }\n\n  debug('start');\n\n  // callback\n  this.on('end', function(){\n    debug('end');\n    process.removeListener('uncaughtException', uncaught);\n    fn(self.failures);\n  });\n\n  // uncaught exception\n  process.on('uncaughtException', uncaught);\n\n  if (this._delay) {\n    // for reporters, I guess.\n    // might be nice to debounce some dots while we wait.\n    this.emit('waiting', rootSuite);\n    rootSuite.once('run', start);\n  }\n  else {\n    start();\n  }\n\n  return this;\n};\n\n/**\n * Cleanly abort execution\n *\n * @return {Runner} for chaining\n * @api public\n */\nRunner.prototype.abort = function(){\n  debug('aborting');\n  this._abort = true;\n};\n\n/**\n * Filter leaks with the given globals flagged as `ok`.\n *\n * @param {Array} ok\n * @param {Array} globals\n * @return {Array}\n * @api private\n */\n\nfunction filterLeaks(ok, globals) {\n  return filter(globals, function(key){\n    // Firefox and Chrome exposes iframes as index inside the window object\n    if (/^d+/.test(key)) return false;\n\n    // in firefox\n    // if runner runs in an iframe, this iframe's window.getInterface method not init at first\n    // it is assigned in some seconds\n    if (global.navigator && /^getInterface/.test(key)) return false;\n\n    // an iframe could be approached by window[iframeIndex]\n    // in ie6,7,8 and opera, iframeIndex is enumerable, this could cause leak\n    if (global.navigator && /^\\d+/.test(key)) return false;\n\n    // Opera and IE expose global variables for HTML element IDs (issue #243)\n    if (/^mocha-/.test(key)) return false;\n\n    var matched = filter(ok, function(ok){\n      if (~ok.indexOf('*')) return 0 == key.indexOf(ok.split('*')[0]);\n      return key == ok;\n    });\n    return matched.length == 0 && (!global.navigator || 'onerror' !== key);\n  });\n}\n\n/**\n * Array of globals dependent on the environment.\n *\n * @return {Array}\n * @api private\n */\n\n function extraGlobals() {\n  if (typeof(process) === 'object' &&\n      typeof(process.version) === 'string') {\n\n    var nodeVersion = process.version.split('.').reduce(function(a, v) {\n      return a << 8 | v;\n    });\n\n    // 'errno' was renamed to process._errno in v0.9.11.\n\n    if (nodeVersion < 0x00090B) {\n      return ['errno'];\n    }\n  }\n\n  return [];\n }\n\n}); // module: runner.js\n\nrequire.register(\"suite.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar EventEmitter = require('browser/events').EventEmitter\n  , debug = require('browser/debug')('mocha:suite')\n  , milliseconds = require('./ms')\n  , utils = require('./utils')\n  , Hook = require('./hook');\n\n/**\n * Expose `Suite`.\n */\n\nexports = module.exports = Suite;\n\n/**\n * Create a new `Suite` with the given `title`\n * and parent `Suite`. When a suite with the\n * same title is already present, that suite\n * is returned to provide nicer reporter\n * and more flexible meta-testing.\n *\n * @param {Suite} parent\n * @param {String} title\n * @return {Suite}\n * @api public\n */\n\nexports.create = function(parent, title){\n  var suite = new Suite(title, parent.ctx);\n  suite.parent = parent;\n  if (parent.pending) suite.pending = true;\n  title = suite.fullTitle();\n  parent.addSuite(suite);\n  return suite;\n};\n\n/**\n * Initialize a new `Suite` with the given\n * `title` and `ctx`.\n *\n * @param {String} title\n * @param {Context} ctx\n * @api private\n */\n\nfunction Suite(title, parentContext) {\n  this.title = title;\n  var context = function() {};\n  context.prototype = parentContext;\n  this.ctx = new context();\n  this.suites = [];\n  this.tests = [];\n  this.pending = false;\n  this._beforeEach = [];\n  this._beforeAll = [];\n  this._afterEach = [];\n  this._afterAll = [];\n  this.root = !title;\n  this._timeout = 2000;\n  this._enableTimeouts = true;\n  this._slow = 75;\n  this._bail = false;\n  this.delayed = false;\n}\n\n/**\n * Inherit from `EventEmitter.prototype`.\n */\n\nfunction F(){};\nF.prototype = EventEmitter.prototype;\nSuite.prototype = new F;\nSuite.prototype.constructor = Suite;\n\n\n/**\n * Return a clone of this `Suite`.\n *\n * @return {Suite}\n * @api private\n */\n\nSuite.prototype.clone = function(){\n  var suite = new Suite(this.title);\n  debug('clone');\n  suite.ctx = this.ctx;\n  suite.timeout(this.timeout());\n  suite.enableTimeouts(this.enableTimeouts());\n  suite.slow(this.slow());\n  suite.bail(this.bail());\n  return suite;\n};\n\n/**\n * Set timeout `ms` or short-hand such as \"2s\".\n *\n * @param {Number|String} ms\n * @return {Suite|Number} for chaining\n * @api private\n */\n\nSuite.prototype.timeout = function(ms){\n  if (0 == arguments.length) return this._timeout;\n  if (ms.toString() === '0') this._enableTimeouts = false;\n  if ('string' == typeof ms) ms = milliseconds(ms);\n  debug('timeout %d', ms);\n  this._timeout = parseInt(ms, 10);\n  return this;\n};\n\n/**\n  * Set timeout `enabled`.\n  *\n  * @param {Boolean} enabled\n  * @return {Suite|Boolean} self or enabled\n  * @api private\n  */\n\nSuite.prototype.enableTimeouts = function(enabled){\n  if (arguments.length === 0) return this._enableTimeouts;\n  debug('enableTimeouts %s', enabled);\n  this._enableTimeouts = enabled;\n  return this;\n};\n\n/**\n * Set slow `ms` or short-hand such as \"2s\".\n *\n * @param {Number|String} ms\n * @return {Suite|Number} for chaining\n * @api private\n */\n\nSuite.prototype.slow = function(ms){\n  if (0 === arguments.length) return this._slow;\n  if ('string' == typeof ms) ms = milliseconds(ms);\n  debug('slow %d', ms);\n  this._slow = ms;\n  return this;\n};\n\n/**\n * Sets whether to bail after first error.\n *\n * @param {Boolean} bail\n * @return {Suite|Number} for chaining\n * @api private\n */\n\nSuite.prototype.bail = function(bail){\n  if (0 == arguments.length) return this._bail;\n  debug('bail %s', bail);\n  this._bail = bail;\n  return this;\n};\n\n/**\n * Run `fn(test[, done])` before running tests.\n *\n * @param {Function} fn\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.beforeAll = function(title, fn){\n  if (this.pending) return this;\n  if ('function' === typeof title) {\n    fn = title;\n    title = fn.name;\n  }\n  title = '\"before all\" hook' + (title ? ': ' + title : '');\n\n  var hook = new Hook(title, fn);\n  hook.parent = this;\n  hook.timeout(this.timeout());\n  hook.enableTimeouts(this.enableTimeouts());\n  hook.slow(this.slow());\n  hook.ctx = this.ctx;\n  this._beforeAll.push(hook);\n  this.emit('beforeAll', hook);\n  return this;\n};\n\n/**\n * Run `fn(test[, done])` after running tests.\n *\n * @param {Function} fn\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.afterAll = function(title, fn){\n  if (this.pending) return this;\n  if ('function' === typeof title) {\n    fn = title;\n    title = fn.name;\n  }\n  title = '\"after all\" hook' + (title ? ': ' + title : '');\n\n  var hook = new Hook(title, fn);\n  hook.parent = this;\n  hook.timeout(this.timeout());\n  hook.enableTimeouts(this.enableTimeouts());\n  hook.slow(this.slow());\n  hook.ctx = this.ctx;\n  this._afterAll.push(hook);\n  this.emit('afterAll', hook);\n  return this;\n};\n\n/**\n * Run `fn(test[, done])` before each test case.\n *\n * @param {Function} fn\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.beforeEach = function(title, fn){\n  if (this.pending) return this;\n  if ('function' === typeof title) {\n    fn = title;\n    title = fn.name;\n  }\n  title = '\"before each\" hook' + (title ? ': ' + title : '');\n\n  var hook = new Hook(title, fn);\n  hook.parent = this;\n  hook.timeout(this.timeout());\n  hook.enableTimeouts(this.enableTimeouts());\n  hook.slow(this.slow());\n  hook.ctx = this.ctx;\n  this._beforeEach.push(hook);\n  this.emit('beforeEach', hook);\n  return this;\n};\n\n/**\n * Run `fn(test[, done])` after each test case.\n *\n * @param {Function} fn\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.afterEach = function(title, fn){\n  if (this.pending) return this;\n  if ('function' === typeof title) {\n    fn = title;\n    title = fn.name;\n  }\n  title = '\"after each\" hook' + (title ? ': ' + title : '');\n\n  var hook = new Hook(title, fn);\n  hook.parent = this;\n  hook.timeout(this.timeout());\n  hook.enableTimeouts(this.enableTimeouts());\n  hook.slow(this.slow());\n  hook.ctx = this.ctx;\n  this._afterEach.push(hook);\n  this.emit('afterEach', hook);\n  return this;\n};\n\n/**\n * Add a test `suite`.\n *\n * @param {Suite} suite\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.addSuite = function(suite){\n  suite.parent = this;\n  suite.timeout(this.timeout());\n  suite.enableTimeouts(this.enableTimeouts());\n  suite.slow(this.slow());\n  suite.bail(this.bail());\n  this.suites.push(suite);\n  this.emit('suite', suite);\n  return this;\n};\n\n/**\n * Add a `test` to this suite.\n *\n * @param {Test} test\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.addTest = function(test){\n  test.parent = this;\n  test.timeout(this.timeout());\n  test.enableTimeouts(this.enableTimeouts());\n  test.slow(this.slow());\n  test.ctx = this.ctx;\n  this.tests.push(test);\n  this.emit('test', test);\n  return this;\n};\n\n/**\n * Return the full title generated by recursively\n * concatenating the parent's full title.\n *\n * @return {String}\n * @api public\n */\n\nSuite.prototype.fullTitle = function(){\n  if (this.parent) {\n    var full = this.parent.fullTitle();\n    if (full) return full + ' ' + this.title;\n  }\n  return this.title;\n};\n\n/**\n * Return the total number of tests.\n *\n * @return {Number}\n * @api public\n */\n\nSuite.prototype.total = function(){\n  return utils.reduce(this.suites, function(sum, suite){\n    return sum + suite.total();\n  }, 0) + this.tests.length;\n};\n\n/**\n * Iterates through each suite recursively to find\n * all tests. Applies a function in the format\n * `fn(test)`.\n *\n * @param {Function} fn\n * @return {Suite}\n * @api private\n */\n\nSuite.prototype.eachTest = function(fn){\n  utils.forEach(this.tests, fn);\n  utils.forEach(this.suites, function(suite){\n    suite.eachTest(fn);\n  });\n  return this;\n};\n\n/**\n * This will run the root suite if we happen to be running in delayed mode.\n */\nSuite.prototype.run = function run() {\n  if (this.root) {\n    this.emit('run');\n  }\n};\n\n}); // module: suite.js\n\nrequire.register(\"test.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Runnable = require('./runnable');\n\n/**\n * Expose `Test`.\n */\n\nmodule.exports = Test;\n\n/**\n * Initialize a new `Test` with the given `title` and callback `fn`.\n *\n * @param {String} title\n * @param {Function} fn\n * @api private\n */\n\nfunction Test(title, fn) {\n  Runnable.call(this, title, fn);\n  this.pending = !fn;\n  this.type = 'test';\n}\n\n/**\n * Inherit from `Runnable.prototype`.\n */\n\nfunction F(){};\nF.prototype = Runnable.prototype;\nTest.prototype = new F;\nTest.prototype.constructor = Test;\n\n\n}); // module: test.js\n\nrequire.register(\"utils.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar fs = require('browser/fs')\n  , path = require('browser/path')\n  , basename = path.basename\n  , exists = fs.existsSync || path.existsSync\n  , glob = require('browser/glob')\n  , join = path.join\n  , debug = require('browser/debug')('mocha:watch');\n\n/**\n * Ignored directories.\n */\n\nvar ignore = ['node_modules', '.git'];\n\n/**\n * Escape special characters in the given string of html.\n *\n * @param  {String} html\n * @return {String}\n * @api private\n */\n\nexports.escape = function(html){\n  return String(html)\n    .replace(/&/g, '&amp;')\n    .replace(/\"/g, '&quot;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;');\n};\n\n/**\n * Array#forEach (<=IE8)\n *\n * @param {Array} array\n * @param {Function} fn\n * @param {Object} scope\n * @api private\n */\n\nexports.forEach = function(arr, fn, scope){\n  for (var i = 0, l = arr.length; i < l; i++)\n    fn.call(scope, arr[i], i);\n};\n\n/**\n * Array#map (<=IE8)\n *\n * @param {Array} array\n * @param {Function} fn\n * @param {Object} scope\n * @api private\n */\n\nexports.map = function(arr, fn, scope){\n  var result = [];\n  for (var i = 0, l = arr.length; i < l; i++)\n    result.push(fn.call(scope, arr[i], i, arr));\n  return result;\n};\n\n/**\n * Array#indexOf (<=IE8)\n *\n * @parma {Array} arr\n * @param {Object} obj to find index of\n * @param {Number} start\n * @api private\n */\n\nexports.indexOf = function(arr, obj, start){\n  for (var i = start || 0, l = arr.length; i < l; i++) {\n    if (arr[i] === obj)\n      return i;\n  }\n  return -1;\n};\n\n/**\n * Array#reduce (<=IE8)\n *\n * @param {Array} array\n * @param {Function} fn\n * @param {Object} initial value\n * @api private\n */\n\nexports.reduce = function(arr, fn, val){\n  var rval = val;\n\n  for (var i = 0, l = arr.length; i < l; i++) {\n    rval = fn(rval, arr[i], i, arr);\n  }\n\n  return rval;\n};\n\n/**\n * Array#filter (<=IE8)\n *\n * @param {Array} array\n * @param {Function} fn\n * @api private\n */\n\nexports.filter = function(arr, fn){\n  var ret = [];\n\n  for (var i = 0, l = arr.length; i < l; i++) {\n    var val = arr[i];\n    if (fn(val, i, arr)) ret.push(val);\n  }\n\n  return ret;\n};\n\n/**\n * Object.keys (<=IE8)\n *\n * @param {Object} obj\n * @return {Array} keys\n * @api private\n */\n\nexports.keys = Object.keys || function(obj) {\n  var keys = []\n    , has = Object.prototype.hasOwnProperty; // for `window` on <=IE8\n\n  for (var key in obj) {\n    if (has.call(obj, key)) {\n      keys.push(key);\n    }\n  }\n\n  return keys;\n};\n\n/**\n * Watch the given `files` for changes\n * and invoke `fn(file)` on modification.\n *\n * @param {Array} files\n * @param {Function} fn\n * @api private\n */\n\nexports.watch = function(files, fn){\n  var options = { interval: 100 };\n  files.forEach(function(file){\n    debug('file %s', file);\n    fs.watchFile(file, options, function(curr, prev){\n      if (prev.mtime < curr.mtime) fn(file);\n    });\n  });\n};\n\n/**\n * Array.isArray (<=IE8)\n *\n * @param {Object} obj\n * @return {Boolean}\n * @api private\n */\nvar isArray = Array.isArray || function (obj) {\n  return '[object Array]' == {}.toString.call(obj);\n};\n\n/**\n * @description\n * Buffer.prototype.toJSON polyfill\n * @type {Function}\n */\nif(typeof Buffer !== 'undefined' && Buffer.prototype) {\n  Buffer.prototype.toJSON = Buffer.prototype.toJSON || function () {\n    return Array.prototype.slice.call(this, 0);\n  };\n}\n\n/**\n * Ignored files.\n */\n\nfunction ignored(path){\n  return !~ignore.indexOf(path);\n}\n\n/**\n * Lookup files in the given `dir`.\n *\n * @return {Array}\n * @api private\n */\n\nexports.files = function(dir, ext, ret){\n  ret = ret || [];\n  ext = ext || ['js'];\n\n  var re = new RegExp('\\\\.(' + ext.join('|') + ')$');\n\n  fs.readdirSync(dir)\n    .filter(ignored)\n    .forEach(function(path){\n      path = join(dir, path);\n      if (fs.statSync(path).isDirectory()) {\n        exports.files(path, ext, ret);\n      } else if (path.match(re)) {\n        ret.push(path);\n      }\n    });\n\n  return ret;\n};\n\n/**\n * Compute a slug from the given `str`.\n *\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nexports.slug = function(str){\n  return str\n    .toLowerCase()\n    .replace(/ +/g, '-')\n    .replace(/[^-\\w]/g, '');\n};\n\n/**\n * Strip the function definition from `str`,\n * and re-indent for pre whitespace.\n */\n\nexports.clean = function(str) {\n  str = str\n    .replace(/\\r\\n?|[\\n\\u2028\\u2029]/g, \"\\n\").replace(/^\\uFEFF/, '')\n    .replace(/^function *\\(.*\\) *{|\\(.*\\) *=> *{?/, '')\n    .replace(/\\s+\\}$/, '');\n\n  var spaces = str.match(/^\\n?( *)/)[1].length\n    , tabs = str.match(/^\\n?(\\t*)/)[1].length\n    , re = new RegExp('^\\n?' + (tabs ? '\\t' : ' ') + '{' + (tabs ? tabs : spaces) + '}', 'gm');\n\n  str = str.replace(re, '');\n\n  return exports.trim(str);\n};\n\n/**\n * Trim the given `str`.\n *\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nexports.trim = function(str){\n  return str.replace(/^\\s+|\\s+$/g, '');\n};\n\n/**\n * Parse the given `qs`.\n *\n * @param {String} qs\n * @return {Object}\n * @api private\n */\n\nexports.parseQuery = function(qs){\n  return exports.reduce(qs.replace('?', '').split('&'), function(obj, pair){\n    var i = pair.indexOf('=')\n      , key = pair.slice(0, i)\n      , val = pair.slice(++i);\n\n    obj[key] = decodeURIComponent(val);\n    return obj;\n  }, {});\n};\n\n/**\n * Highlight the given string of `js`.\n *\n * @param {String} js\n * @return {String}\n * @api private\n */\n\nfunction highlight(js) {\n  return js\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;')\n    .replace(/\\/\\/(.*)/gm, '<span class=\"comment\">//$1</span>')\n    .replace(/('.*?')/gm, '<span class=\"string\">$1</span>')\n    .replace(/(\\d+\\.\\d+)/gm, '<span class=\"number\">$1</span>')\n    .replace(/(\\d+)/gm, '<span class=\"number\">$1</span>')\n    .replace(/\\bnew[ \\t]+(\\w+)/gm, '<span class=\"keyword\">new</span> <span class=\"init\">$1</span>')\n    .replace(/\\b(function|new|throw|return|var|if|else)\\b/gm, '<span class=\"keyword\">$1</span>')\n}\n\n/**\n * Highlight the contents of tag `name`.\n *\n * @param {String} name\n * @api private\n */\n\nexports.highlightTags = function(name) {\n  var code = document.getElementById('mocha').getElementsByTagName(name);\n  for (var i = 0, len = code.length; i < len; ++i) {\n    code[i].innerHTML = highlight(code[i].innerHTML);\n  }\n};\n\n/**\n * If a value could have properties, and has none, this function is called, which returns\n * a string representation of the empty value.\n *\n * Functions w/ no properties return `'[Function]'`\n * Arrays w/ length === 0 return `'[]'`\n * Objects w/ no properties return `'{}'`\n * All else: return result of `value.toString()`\n *\n * @param {*} value Value to inspect\n * @param {string} [type] The type of the value, if known.\n * @returns {string}\n */\nvar emptyRepresentation = function emptyRepresentation(value, type) {\n  type = type || exports.type(value);\n\n  switch(type) {\n    case 'function':\n      return '[Function]';\n    case 'object':\n      return '{}';\n    case 'array':\n      return '[]';\n    default:\n      return value.toString();\n  }\n};\n\n/**\n * Takes some variable and asks `{}.toString()` what it thinks it is.\n * @param {*} value Anything\n * @example\n * type({}) // 'object'\n * type([]) // 'array'\n * type(1) // 'number'\n * type(false) // 'boolean'\n * type(Infinity) // 'number'\n * type(null) // 'null'\n * type(new Date()) // 'date'\n * type(/foo/) // 'regexp'\n * type('type') // 'string'\n * type(global) // 'global'\n * @api private\n * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString\n * @returns {string}\n */\nexports.type = function type(value) {\n  if (typeof Buffer !== 'undefined' && Buffer.isBuffer(value)) {\n    return 'buffer';\n  }\n  return Object.prototype.toString.call(value)\n    .replace(/^\\[.+\\s(.+?)\\]$/, '$1')\n    .toLowerCase();\n};\n\n/**\n * @summary Stringify `value`.\n * @description Different behavior depending on type of value.\n * - If `value` is undefined or null, return `'[undefined]'` or `'[null]'`, respectively.\n * - If `value` is not an object, function or array, return result of `value.toString()` wrapped in double-quotes.\n * - If `value` is an *empty* object, function, or array, return result of function\n *   {@link emptyRepresentation}.\n * - If `value` has properties, call {@link exports.canonicalize} on it, then return result of\n *   JSON.stringify().\n *\n * @see exports.type\n * @param {*} value\n * @return {string}\n * @api private\n */\n\nexports.stringify = function(value) {\n  var type = exports.type(value);\n\n  if (!~exports.indexOf(['object', 'array', 'function'], type)) {\n    if(type != 'buffer') {\n      return jsonStringify(value);\n    }\n    var json = value.toJSON();\n    // Based on the toJSON result\n    return jsonStringify(json.data && json.type ? json.data : json, 2)\n      .replace(/,(\\n|$)/g, '$1');\n  }\n\n  for (var prop in value) {\n    if (Object.prototype.hasOwnProperty.call(value, prop)) {\n      return jsonStringify(exports.canonicalize(value), 2).replace(/,(\\n|$)/g, '$1');\n    }\n  }\n\n  return emptyRepresentation(value, type);\n};\n\n/**\n * @description\n * like JSON.stringify but more sense.\n * @param {Object}  object\n * @param {Number=} spaces\n * @param {number=} depth\n * @returns {*}\n * @private\n */\nfunction jsonStringify(object, spaces, depth) {\n  if(typeof spaces == 'undefined') return _stringify(object);  // primitive types\n\n  depth = depth || 1;\n  var space = spaces * depth\n    , str = isArray(object) ? '[' : '{'\n    , end = isArray(object) ? ']' : '}'\n    , length = object.length || exports.keys(object).length\n    , repeat = function(s, n) { return new Array(n).join(s); }; // `.repeat()` polyfill\n\n  function _stringify(val) {\n    switch (exports.type(val)) {\n      case 'null':\n      case 'undefined':\n        val = '[' + val + ']';\n        break;\n      case 'array':\n      case 'object':\n        val = jsonStringify(val, spaces, depth + 1);\n        break;\n      case 'boolean':\n      case 'regexp':\n      case 'number':\n        val = val === 0 && (1/val) === -Infinity // `-0`\n          ? '-0'\n          : val.toString();\n        break;\n      case 'date':\n        val = '[Date: ' + val.toISOString() + ']';\n        break;\n      case 'buffer':\n        var json = val.toJSON();\n        // Based on the toJSON result\n        json = json.data && json.type ? json.data : json;\n        val = '[Buffer: ' + jsonStringify(json, 2, depth + 1) + ']';\n        break;\n      default:\n        val = (val == '[Function]' || val == '[Circular]')\n          ? val\n          : '\"' + val + '\"'; //string\n    }\n    return val;\n  }\n\n  for(var i in object) {\n    if(!object.hasOwnProperty(i)) continue;        // not my business\n    --length;\n    str += '\\n ' + repeat(' ', space)\n      + (isArray(object) ? '' : '\"' + i + '\": ') // key\n      +  _stringify(object[i])                   // value\n      + (length ? ',' : '');                     // comma\n  }\n\n  return str + (str.length != 1                    // [], {}\n    ? '\\n' + repeat(' ', --space) + end\n    : end);\n}\n\n/**\n * Return if obj is a Buffer\n * @param {Object} arg\n * @return {Boolean}\n * @api private\n */\nexports.isBuffer = function (arg) {\n  return typeof Buffer !== 'undefined' && Buffer.isBuffer(arg);\n};\n\n/**\n * @summary Return a new Thing that has the keys in sorted order.  Recursive.\n * @description If the Thing...\n * - has already been seen, return string `'[Circular]'`\n * - is `undefined`, return string `'[undefined]'`\n * - is `null`, return value `null`\n * - is some other primitive, return the value\n * - is not a primitive or an `Array`, `Object`, or `Function`, return the value of the Thing's `toString()` method\n * - is a non-empty `Array`, `Object`, or `Function`, return the result of calling this function again.\n * - is an empty `Array`, `Object`, or `Function`, return the result of calling `emptyRepresentation()`\n *\n * @param {*} value Thing to inspect.  May or may not have properties.\n * @param {Array} [stack=[]] Stack of seen values\n * @return {(Object|Array|Function|string|undefined)}\n * @see {@link exports.stringify}\n * @api private\n */\n\nexports.canonicalize = function(value, stack) {\n  var canonicalizedObj,\n    type = exports.type(value),\n    prop,\n    withStack = function withStack(value, fn) {\n      stack.push(value);\n      fn();\n      stack.pop();\n    };\n\n  stack = stack || [];\n\n  if (exports.indexOf(stack, value) !== -1) {\n    return '[Circular]';\n  }\n\n  switch(type) {\n    case 'undefined':\n    case 'buffer':\n    case 'null':\n      canonicalizedObj = value;\n      break;\n    case 'array':\n      withStack(value, function () {\n        canonicalizedObj = exports.map(value, function (item) {\n          return exports.canonicalize(item, stack);\n        });\n      });\n      break;\n    case 'function':\n      for (prop in value) {\n        canonicalizedObj = {};\n        break;\n      }\n      if (!canonicalizedObj) {\n        canonicalizedObj = emptyRepresentation(value, type);\n        break;\n      }\n    /* falls through */\n    case 'object':\n      canonicalizedObj = canonicalizedObj || {};\n      withStack(value, function () {\n        exports.forEach(exports.keys(value).sort(), function (key) {\n          canonicalizedObj[key] = exports.canonicalize(value[key], stack);\n        });\n      });\n      break;\n    case 'date':\n    case 'number':\n    case 'regexp':\n    case 'boolean':\n      canonicalizedObj = value;\n      break;\n    default:\n      canonicalizedObj = value.toString();\n  }\n\n  return canonicalizedObj;\n};\n\n/**\n * Lookup file names at the given `path`.\n */\nexports.lookupFiles = function lookupFiles(path, extensions, recursive) {\n  var files = [];\n  var re = new RegExp('\\\\.(' + extensions.join('|') + ')$');\n\n  if (!exists(path)) {\n    if (exists(path + '.js')) {\n      path += '.js';\n    } else {\n      files = glob.sync(path);\n      if (!files.length) throw new Error(\"cannot resolve path (or pattern) '\" + path + \"'\");\n      return files;\n    }\n  }\n\n  try {\n    var stat = fs.statSync(path);\n    if (stat.isFile()) return path;\n  }\n  catch (ignored) {\n    return;\n  }\n\n  fs.readdirSync(path).forEach(function(file) {\n    file = join(path, file);\n    try {\n      var stat = fs.statSync(file);\n      if (stat.isDirectory()) {\n        if (recursive) {\n          files = files.concat(lookupFiles(file, extensions, recursive));\n        }\n        return;\n      }\n    }\n    catch (ignored) {\n      return;\n    }\n    if (!stat.isFile() || !re.test(file) || basename(file)[0] === '.') return;\n    files.push(file);\n  });\n\n  return files;\n};\n\n/**\n * Generate an undefined error with a message warning the user.\n *\n * @return {Error}\n */\n\nexports.undefinedError = function() {\n  return new Error('Caught undefined error, did you throw without specifying what?');\n};\n\n/**\n * Generate an undefined error if `err` is not defined.\n *\n * @param {Error} err\n * @return {Error}\n */\n\nexports.getError = function(err) {\n  return err || exports.undefinedError();\n};\n\n\n}); // module: utils.js\n// The global object is \"self\" in Web Workers.\nvar global = (function() { return this; })();\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date;\nvar setTimeout = global.setTimeout;\nvar setInterval = global.setInterval;\nvar clearTimeout = global.clearTimeout;\nvar clearInterval = global.clearInterval;\n\n/**\n * Node shims.\n *\n * These are meant only to allow\n * mocha.js to run untouched, not\n * to allow running node code in\n * the browser.\n */\n\nvar process = {};\nprocess.exit = function(status){};\nprocess.stdout = {};\n\nvar uncaughtExceptionHandlers = [];\n\nvar originalOnerrorHandler = global.onerror;\n\n/**\n * Remove uncaughtException listener.\n * Revert to original onerror handler if previously defined.\n */\n\nprocess.removeListener = function(e, fn){\n  if ('uncaughtException' == e) {\n    if (originalOnerrorHandler) {\n      global.onerror = originalOnerrorHandler;\n    } else {\n      global.onerror = function() {};\n    }\n    var i = Mocha.utils.indexOf(uncaughtExceptionHandlers, fn);\n    if (i != -1) { uncaughtExceptionHandlers.splice(i, 1); }\n  }\n};\n\n/**\n * Implements uncaughtException listener.\n */\n\nprocess.on = function(e, fn){\n  if ('uncaughtException' == e) {\n    global.onerror = function(err, url, line){\n      fn(new Error(err + ' (' + url + ':' + line + ')'));\n      return true;\n    };\n    uncaughtExceptionHandlers.push(fn);\n  }\n};\n\n/**\n * Expose mocha.\n */\n\nvar Mocha = global.Mocha = require('mocha'),\n    mocha = global.mocha = new Mocha({ reporter: 'html' });\n\n// The BDD UI is registered by default, but no UI will be functional in the\n// browser without an explicit call to the overridden `mocha.ui` (see below).\n// Ensure that this default UI does not expose its methods to the global scope.\nmocha.suite.removeAllListeners('pre-require');\n\nvar immediateQueue = []\n  , immediateTimeout;\n\nfunction timeslice() {\n  var immediateStart = new Date().getTime();\n  while (immediateQueue.length && (new Date().getTime() - immediateStart) < 100) {\n    immediateQueue.shift()();\n  }\n  if (immediateQueue.length) {\n    immediateTimeout = setTimeout(timeslice, 0);\n  } else {\n    immediateTimeout = null;\n  }\n}\n\n/**\n * High-performance override of Runner.immediately.\n */\n\nMocha.Runner.immediately = function(callback) {\n  immediateQueue.push(callback);\n  if (!immediateTimeout) {\n    immediateTimeout = setTimeout(timeslice, 0);\n  }\n};\n\n/**\n * Function to allow assertion libraries to throw errors directly into mocha.\n * This is useful when running tests in a browser because window.onerror will\n * only receive the 'message' attribute of the Error.\n */\nmocha.throwError = function(err) {\n  Mocha.utils.forEach(uncaughtExceptionHandlers, function (fn) {\n    fn(err);\n  });\n  throw err;\n};\n\n/**\n * Override ui to ensure that the ui functions are initialized.\n * Normally this would happen in Mocha.prototype.loadFiles.\n */\n\nmocha.ui = function(ui){\n  Mocha.prototype.ui.call(this, ui);\n  this.suite.emit('pre-require', global, null, this);\n  return this;\n};\n\n/**\n * Setup mocha with the given setting options.\n */\n\nmocha.setup = function(opts){\n  if ('string' == typeof opts) opts = { ui: opts };\n  for (var opt in opts) this[opt](opts[opt]);\n  return this;\n};\n\n/**\n * Run mocha, returning the Runner.\n */\n\nmocha.run = function(fn){\n  var options = mocha.options;\n  mocha.globals('location');\n\n  var query = Mocha.utils.parseQuery(global.location.search || '');\n  if (query.grep) mocha.grep(new RegExp(query.grep));\n  if (query.fgrep) mocha.grep(query.fgrep);\n  if (query.invert) mocha.invert();\n\n  return Mocha.prototype.run.call(mocha, function(err){\n    // The DOM Document is not available in Web Workers.\n    var document = global.document;\n    if (document && document.getElementById('mocha') && options.noHighlighting !== true) {\n      Mocha.utils.highlightTags('code');\n    }\n    if (fn) fn(err);\n  });\n};\n\n/**\n * Expose the process shim.\n */\n\nMocha.process = process;\n})();\n"
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "/**\n * Sinon.JS 1.14.1, 2015/03/16\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @author Contributors: https://github.com/cjohansen/Sinon.JS/blob/master/AUTHORS\n *\n * (The BSD License)\n * \n * Copyright (c) 2010-2014, Christian Johansen, christian@cjohansen.no\n * All rights reserved.\n * \n * Redistribution and use in source and binary forms, with or without modification,\n * are permitted provided that the following conditions are met:\n * \n *     * Redistributions of source code must retain the above copyright notice,\n *       this list of conditions and the following disclaimer.\n *     * Redistributions in binary form must reproduce the above copyright notice,\n *       this list of conditions and the following disclaimer in the documentation\n *       and/or other materials provided with the distribution.\n *     * Neither the name of Christian Johansen nor the names of his contributors\n *       may be used to endorse or promote products derived from this software\n *       without specific prior written permission.\n * \n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\n * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\n * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\n * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\n * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\n * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\n * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\n * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n */\n\n(function (root, factory) {\n  if (typeof define === 'function' && define.amd) {\n    define('sinon', [], function () {\n      return (root.sinon = factory());\n    });\n  } else if (typeof exports === 'object') {\n    module.exports = factory();\n  } else {\n    root.sinon = factory();\n  }\n}(this, function () {\n  var samsam, formatio;\n  (function () {\n                function define(mod, deps, fn) {\n                  if (mod == \"samsam\") {\n                    samsam = deps();\n                  } else if (typeof deps === \"function\" && mod.length === 0) {\n                    lolex = deps();\n                  } else if (typeof fn === \"function\") {\n                    formatio = fn(samsam);\n                  }\n                }\n    define.amd = {};\n((typeof define === \"function\" && define.amd && function (m) { define(\"samsam\", m); }) ||\n (typeof module === \"object\" &&\n      function (m) { module.exports = m(); }) || // Node\n function (m) { this.samsam = m(); } // Browser globals\n)(function () {\n    var o = Object.prototype;\n    var div = typeof document !== \"undefined\" && document.createElement(\"div\");\n\n    function isNaN(value) {\n        // Unlike global isNaN, this avoids type coercion\n        // typeof check avoids IE host object issues, hat tip to\n        // lodash\n        var val = value; // JsLint thinks value !== value is \"weird\"\n        return typeof value === \"number\" && value !== val;\n    }\n\n    function getClass(value) {\n        // Returns the internal [[Class]] by calling Object.prototype.toString\n        // with the provided value as this. Return value is a string, naming the\n        // internal class, e.g. \"Array\"\n        return o.toString.call(value).split(/[ \\]]/)[1];\n    }\n\n    /**\n     * @name samsam.isArguments\n     * @param Object object\n     *\n     * Returns ``true`` if ``object`` is an ``arguments`` object,\n     * ``false`` otherwise.\n     */\n    function isArguments(object) {\n        if (getClass(object) === 'Arguments') { return true; }\n        if (typeof object !== \"object\" || typeof object.length !== \"number\" ||\n                getClass(object) === \"Array\") {\n            return false;\n        }\n        if (typeof object.callee == \"function\") { return true; }\n        try {\n            object[object.length] = 6;\n            delete object[object.length];\n        } catch (e) {\n            return true;\n        }\n        return false;\n    }\n\n    /**\n     * @name samsam.isElement\n     * @param Object object\n     *\n     * Returns ``true`` if ``object`` is a DOM element node. Unlike\n     * Underscore.js/lodash, this function will return ``false`` if ``object``\n     * is an *element-like* object, i.e. a regular object with a ``nodeType``\n     * property that holds the value ``1``.\n     */\n    function isElement(object) {\n        if (!object || object.nodeType !== 1 || !div) { return false; }\n        try {\n            object.appendChild(div);\n            object.removeChild(div);\n        } catch (e) {\n            return false;\n        }\n        return true;\n    }\n\n    /**\n     * @name samsam.keys\n     * @param Object object\n     *\n     * Return an array of own property names.\n     */\n    function keys(object) {\n        var ks = [], prop;\n        for (prop in object) {\n            if (o.hasOwnProperty.call(object, prop)) { ks.push(prop); }\n        }\n        return ks;\n    }\n\n    /**\n     * @name samsam.isDate\n     * @param Object value\n     *\n     * Returns true if the object is a ``Date``, or *date-like*. Duck typing\n     * of date objects work by checking that the object has a ``getTime``\n     * function whose return value equals the return value from the object's\n     * ``valueOf``.\n     */\n    function isDate(value) {\n        return typeof value.getTime == \"function\" &&\n            value.getTime() == value.valueOf();\n    }\n\n    /**\n     * @name samsam.isNegZero\n     * @param Object value\n     *\n     * Returns ``true`` if ``value`` is ``-0``.\n     */\n    function isNegZero(value) {\n        return value === 0 && 1 / value === -Infinity;\n    }\n\n    /**\n     * @name samsam.equal\n     * @param Object obj1\n     * @param Object obj2\n     *\n     * Returns ``true`` if two objects are strictly equal. Compared to\n     * ``===`` there are two exceptions:\n     *\n     *   - NaN is considered equal to NaN\n     *   - -0 and +0 are not considered equal\n     */\n    function identical(obj1, obj2) {\n        if (obj1 === obj2 || (isNaN(obj1) && isNaN(obj2))) {\n            return obj1 !== 0 || isNegZero(obj1) === isNegZero(obj2);\n        }\n    }\n\n\n    /**\n     * @name samsam.deepEqual\n     * @param Object obj1\n     * @param Object obj2\n     *\n     * Deep equal comparison. Two values are \"deep equal\" if:\n     *\n     *   - They are equal, according to samsam.identical\n     *   - They are both date objects representing the same time\n     *   - They are both arrays containing elements that are all deepEqual\n     *   - They are objects with the same set of properties, and each property\n     *     in ``obj1`` is deepEqual to the corresponding property in ``obj2``\n     *\n     * Supports cyclic objects.\n     */\n    function deepEqualCyclic(obj1, obj2) {\n\n        // used for cyclic comparison\n        // contain already visited objects\n        var objects1 = [],\n            objects2 = [],\n        // contain pathes (position in the object structure)\n        // of the already visited objects\n        // indexes same as in objects arrays\n            paths1 = [],\n            paths2 = [],\n        // contains combinations of already compared objects\n        // in the manner: { \"$1['ref']$2['ref']\": true }\n            compared = {};\n\n        /**\n         * used to check, if the value of a property is an object\n         * (cyclic logic is only needed for objects)\n         * only needed for cyclic logic\n         */\n        function isObject(value) {\n\n            if (typeof value === 'object' && value !== null &&\n                    !(value instanceof Boolean) &&\n                    !(value instanceof Date)    &&\n                    !(value instanceof Number)  &&\n                    !(value instanceof RegExp)  &&\n                    !(value instanceof String)) {\n\n                return true;\n            }\n\n            return false;\n        }\n\n        /**\n         * returns the index of the given object in the\n         * given objects array, -1 if not contained\n         * only needed for cyclic logic\n         */\n        function getIndex(objects, obj) {\n\n            var i;\n            for (i = 0; i < objects.length; i++) {\n                if (objects[i] === obj) {\n                    return i;\n                }\n            }\n\n            return -1;\n        }\n\n        // does the recursion for the deep equal check\n        return (function deepEqual(obj1, obj2, path1, path2) {\n            var type1 = typeof obj1;\n            var type2 = typeof obj2;\n\n            // == null also matches undefined\n            if (obj1 === obj2 ||\n                    isNaN(obj1) || isNaN(obj2) ||\n                    obj1 == null || obj2 == null ||\n                    type1 !== \"object\" || type2 !== \"object\") {\n\n                return identical(obj1, obj2);\n            }\n\n            // Elements are only equal if identical(expected, actual)\n            if (isElement(obj1) || isElement(obj2)) { return false; }\n\n            var isDate1 = isDate(obj1), isDate2 = isDate(obj2);\n            if (isDate1 || isDate2) {\n                if (!isDate1 || !isDate2 || obj1.getTime() !== obj2.getTime()) {\n                    return false;\n                }\n            }\n\n            if (obj1 instanceof RegExp && obj2 instanceof RegExp) {\n                if (obj1.toString() !== obj2.toString()) { return false; }\n            }\n\n            var class1 = getClass(obj1);\n            var class2 = getClass(obj2);\n            var keys1 = keys(obj1);\n            var keys2 = keys(obj2);\n\n            if (isArguments(obj1) || isArguments(obj2)) {\n                if (obj1.length !== obj2.length) { return false; }\n            } else {\n                if (type1 !== type2 || class1 !== class2 ||\n                        keys1.length !== keys2.length) {\n                    return false;\n                }\n            }\n\n            var key, i, l,\n                // following vars are used for the cyclic logic\n                value1, value2,\n                isObject1, isObject2,\n                index1, index2,\n                newPath1, newPath2;\n\n            for (i = 0, l = keys1.length; i < l; i++) {\n                key = keys1[i];\n                if (!o.hasOwnProperty.call(obj2, key)) {\n                    return false;\n                }\n\n                // Start of the cyclic logic\n\n                value1 = obj1[key];\n                value2 = obj2[key];\n\n                isObject1 = isObject(value1);\n                isObject2 = isObject(value2);\n\n                // determine, if the objects were already visited\n                // (it's faster to check for isObject first, than to\n                // get -1 from getIndex for non objects)\n                index1 = isObject1 ? getIndex(objects1, value1) : -1;\n                index2 = isObject2 ? getIndex(objects2, value2) : -1;\n\n                // determine the new pathes of the objects\n                // - for non cyclic objects the current path will be extended\n                //   by current property name\n                // - for cyclic objects the stored path is taken\n                newPath1 = index1 !== -1\n                    ? paths1[index1]\n                    : path1 + '[' + JSON.stringify(key) + ']';\n                newPath2 = index2 !== -1\n                    ? paths2[index2]\n                    : path2 + '[' + JSON.stringify(key) + ']';\n\n                // stop recursion if current objects are already compared\n                if (compared[newPath1 + newPath2]) {\n                    return true;\n                }\n\n                // remember the current objects and their pathes\n                if (index1 === -1 && isObject1) {\n                    objects1.push(value1);\n                    paths1.push(newPath1);\n                }\n                if (index2 === -1 && isObject2) {\n                    objects2.push(value2);\n                    paths2.push(newPath2);\n                }\n\n                // remember that the current objects are already compared\n                if (isObject1 && isObject2) {\n                    compared[newPath1 + newPath2] = true;\n                }\n\n                // End of cyclic logic\n\n                // neither value1 nor value2 is a cycle\n                // continue with next level\n                if (!deepEqual(value1, value2, newPath1, newPath2)) {\n                    return false;\n                }\n            }\n\n            return true;\n\n        }(obj1, obj2, '$1', '$2'));\n    }\n\n    var match;\n\n    function arrayContains(array, subset) {\n        if (subset.length === 0) { return true; }\n        var i, l, j, k;\n        for (i = 0, l = array.length; i < l; ++i) {\n            if (match(array[i], subset[0])) {\n                for (j = 0, k = subset.length; j < k; ++j) {\n                    if (!match(array[i + j], subset[j])) { return false; }\n                }\n                return true;\n            }\n        }\n        return false;\n    }\n\n    /**\n     * @name samsam.match\n     * @param Object object\n     * @param Object matcher\n     *\n     * Compare arbitrary value ``object`` with matcher.\n     */\n    match = function match(object, matcher) {\n        if (matcher && typeof matcher.test === \"function\") {\n            return matcher.test(object);\n        }\n\n        if (typeof matcher === \"function\") {\n            return matcher(object) === true;\n        }\n\n        if (typeof matcher === \"string\") {\n            matcher = matcher.toLowerCase();\n            var notNull = typeof object === \"string\" || !!object;\n            return notNull &&\n                (String(object)).toLowerCase().indexOf(matcher) >= 0;\n        }\n\n        if (typeof matcher === \"number\") {\n            return matcher === object;\n        }\n\n        if (typeof matcher === \"boolean\") {\n            return matcher === object;\n        }\n\n        if (typeof(matcher) === \"undefined\") {\n            return typeof(object) === \"undefined\";\n        }\n\n        if (matcher === null) {\n            return object === null;\n        }\n\n        if (getClass(object) === \"Array\" && getClass(matcher) === \"Array\") {\n            return arrayContains(object, matcher);\n        }\n\n        if (matcher && typeof matcher === \"object\") {\n            if (matcher === object) {\n                return true;\n            }\n            var prop;\n            for (prop in matcher) {\n                var value = object[prop];\n                if (typeof value === \"undefined\" &&\n                        typeof object.getAttribute === \"function\") {\n                    value = object.getAttribute(prop);\n                }\n                if (matcher[prop] === null || typeof matcher[prop] === 'undefined') {\n                    if (value !== matcher[prop]) {\n                        return false;\n                    }\n                } else if (typeof  value === \"undefined\" || !match(value, matcher[prop])) {\n                    return false;\n                }\n            }\n            return true;\n        }\n\n        throw new Error(\"Matcher was not a string, a number, a \" +\n                        \"function, a boolean or an object\");\n    };\n\n    return {\n        isArguments: isArguments,\n        isElement: isElement,\n        isDate: isDate,\n        isNegZero: isNegZero,\n        identical: identical,\n        deepEqual: deepEqualCyclic,\n        match: match,\n        keys: keys\n    };\n});\n((typeof define === \"function\" && define.amd && function (m) {\n    define(\"formatio\", [\"samsam\"], m);\n}) || (typeof module === \"object\" && function (m) {\n    module.exports = m(require(\"samsam\"));\n}) || function (m) { this.formatio = m(this.samsam); }\n)(function (samsam) {\n    \n    var formatio = {\n        excludeConstructors: [\"Object\", /^.$/],\n        quoteStrings: true,\n        limitChildrenCount: 0\n    };\n\n    var hasOwn = Object.prototype.hasOwnProperty;\n\n    var specialObjects = [];\n    if (typeof global !== \"undefined\") {\n        specialObjects.push({ object: global, value: \"[object global]\" });\n    }\n    if (typeof document !== \"undefined\") {\n        specialObjects.push({\n            object: document,\n            value: \"[object HTMLDocument]\"\n        });\n    }\n    if (typeof window !== \"undefined\") {\n        specialObjects.push({ object: window, value: \"[object Window]\" });\n    }\n\n    function functionName(func) {\n        if (!func) { return \"\"; }\n        if (func.displayName) { return func.displayName; }\n        if (func.name) { return func.name; }\n        var matches = func.toString().match(/function\\s+([^\\(]+)/m);\n        return (matches && matches[1]) || \"\";\n    }\n\n    function constructorName(f, object) {\n        var name = functionName(object && object.constructor);\n        var excludes = f.excludeConstructors ||\n                formatio.excludeConstructors || [];\n\n        var i, l;\n        for (i = 0, l = excludes.length; i < l; ++i) {\n            if (typeof excludes[i] === \"string\" && excludes[i] === name) {\n                return \"\";\n            } else if (excludes[i].test && excludes[i].test(name)) {\n                return \"\";\n            }\n        }\n\n        return name;\n    }\n\n    function isCircular(object, objects) {\n        if (typeof object !== \"object\") { return false; }\n        var i, l;\n        for (i = 0, l = objects.length; i < l; ++i) {\n            if (objects[i] === object) { return true; }\n        }\n        return false;\n    }\n\n    function ascii(f, object, processed, indent) {\n        if (typeof object === \"string\") {\n            var qs = f.quoteStrings;\n            var quote = typeof qs !== \"boolean\" || qs;\n            return processed || quote ? '\"' + object + '\"' : object;\n        }\n\n        if (typeof object === \"function\" && !(object instanceof RegExp)) {\n            return ascii.func(object);\n        }\n\n        processed = processed || [];\n\n        if (isCircular(object, processed)) { return \"[Circular]\"; }\n\n        if (Object.prototype.toString.call(object) === \"[object Array]\") {\n            return ascii.array.call(f, object, processed);\n        }\n\n        if (!object) { return String((1/object) === -Infinity ? \"-0\" : object); }\n        if (samsam.isElement(object)) { return ascii.element(object); }\n\n        if (typeof object.toString === \"function\" &&\n                object.toString !== Object.prototype.toString) {\n            return object.toString();\n        }\n\n        var i, l;\n        for (i = 0, l = specialObjects.length; i < l; i++) {\n            if (object === specialObjects[i].object) {\n                return specialObjects[i].value;\n            }\n        }\n\n        return ascii.object.call(f, object, processed, indent);\n    }\n\n    ascii.func = function (func) {\n        return \"function \" + functionName(func) + \"() {}\";\n    };\n\n    ascii.array = function (array, processed) {\n        processed = processed || [];\n        processed.push(array);\n        var pieces = [];\n        var i, l;\n        l = (this.limitChildrenCount > 0) ? \n            Math.min(this.limitChildrenCount, array.length) : array.length;\n\n        for (i = 0; i < l; ++i) {\n            pieces.push(ascii(this, array[i], processed));\n        }\n\n        if(l < array.length)\n            pieces.push(\"[... \" + (array.length - l) + \" more elements]\");\n\n        return \"[\" + pieces.join(\", \") + \"]\";\n    };\n\n    ascii.object = function (object, processed, indent) {\n        processed = processed || [];\n        processed.push(object);\n        indent = indent || 0;\n        var pieces = [], properties = samsam.keys(object).sort();\n        var length = 3;\n        var prop, str, obj, i, k, l;\n        l = (this.limitChildrenCount > 0) ? \n            Math.min(this.limitChildrenCount, properties.length) : properties.length;\n\n        for (i = 0; i < l; ++i) {\n            prop = properties[i];\n            obj = object[prop];\n\n            if (isCircular(obj, processed)) {\n                str = \"[Circular]\";\n            } else {\n                str = ascii(this, obj, processed, indent + 2);\n            }\n\n            str = (/\\s/.test(prop) ? '\"' + prop + '\"' : prop) + \": \" + str;\n            length += str.length;\n            pieces.push(str);\n        }\n\n        var cons = constructorName(this, object);\n        var prefix = cons ? \"[\" + cons + \"] \" : \"\";\n        var is = \"\";\n        for (i = 0, k = indent; i < k; ++i) { is += \" \"; }\n\n        if(l < properties.length)\n            pieces.push(\"[... \" + (properties.length - l) + \" more elements]\");\n\n        if (length + indent > 80) {\n            return prefix + \"{\\n  \" + is + pieces.join(\",\\n  \" + is) + \"\\n\" +\n                is + \"}\";\n        }\n        return prefix + \"{ \" + pieces.join(\", \") + \" }\";\n    };\n\n    ascii.element = function (element) {\n        var tagName = element.tagName.toLowerCase();\n        var attrs = element.attributes, attr, pairs = [], attrName, i, l, val;\n\n        for (i = 0, l = attrs.length; i < l; ++i) {\n            attr = attrs.item(i);\n            attrName = attr.nodeName.toLowerCase().replace(\"html:\", \"\");\n            val = attr.nodeValue;\n            if (attrName !== \"contenteditable\" || val !== \"inherit\") {\n                if (!!val) { pairs.push(attrName + \"=\\\"\" + val + \"\\\"\"); }\n            }\n        }\n\n        var formatted = \"<\" + tagName + (pairs.length > 0 ? \" \" : \"\");\n        var content = element.innerHTML;\n\n        if (content.length > 20) {\n            content = content.substr(0, 20) + \"[...]\";\n        }\n\n        var res = formatted + pairs.join(\" \") + \">\" + content +\n                \"</\" + tagName + \">\";\n\n        return res.replace(/ contentEditable=\"inherit\"/, \"\");\n    };\n\n    function Formatio(options) {\n        for (var opt in options) {\n            this[opt] = options[opt];\n        }\n    }\n\n    Formatio.prototype = {\n        functionName: functionName,\n\n        configure: function (options) {\n            return new Formatio(options);\n        },\n\n        constructorName: function (object) {\n            return constructorName(this, object);\n        },\n\n        ascii: function (object, processed, indent) {\n            return ascii(this, object, processed, indent);\n        }\n    };\n\n    return Formatio.prototype;\n});\n!function(e){if(\"object\"==typeof exports&&\"undefined\"!=typeof module)module.exports=e();else if(\"function\"==typeof define&&define.amd)define([],e);else{var f;\"undefined\"!=typeof window?f=window:\"undefined\"!=typeof global?f=global:\"undefined\"!=typeof self&&(f=self),f.lolex=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require==\"function\"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error(\"Cannot find module '\"+o+\"'\");throw f.code=\"MODULE_NOT_FOUND\",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require==\"function\"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){\n(function (global){\n/*jslint eqeqeq: false, plusplus: false, evil: true, onevar: false, browser: true, forin: false*/\n/*global global*/\n/**\n * @author Christian Johansen (christian@cjohansen.no) and contributors\n * @license BSD\n *\n * Copyright (c) 2010-2014 Christian Johansen\n */\n\n// node expects setTimeout/setInterval to return a fn object w/ .ref()/.unref()\n// browsers, a number.\n// see https://github.com/cjohansen/Sinon.JS/pull/436\nvar timeoutResult = setTimeout(function() {}, 0);\nvar addTimerReturnsObject = typeof timeoutResult === \"object\";\nclearTimeout(timeoutResult);\n\nvar NativeDate = Date;\nvar id = 1;\n\n/**\n * Parse strings like \"01:10:00\" (meaning 1 hour, 10 minutes, 0 seconds) into\n * number of milliseconds. This is used to support human-readable strings passed\n * to clock.tick()\n */\nfunction parseTime(str) {\n    if (!str) {\n        return 0;\n    }\n\n    var strings = str.split(\":\");\n    var l = strings.length, i = l;\n    var ms = 0, parsed;\n\n    if (l > 3 || !/^(\\d\\d:){0,2}\\d\\d?$/.test(str)) {\n        throw new Error(\"tick only understands numbers and 'h:m:s'\");\n    }\n\n    while (i--) {\n        parsed = parseInt(strings[i], 10);\n\n        if (parsed >= 60) {\n            throw new Error(\"Invalid time \" + str);\n        }\n\n        ms += parsed * Math.pow(60, (l - i - 1));\n    }\n\n    return ms * 1000;\n}\n\n/**\n * Used to grok the `now` parameter to createClock.\n */\nfunction getEpoch(epoch) {\n    if (!epoch) { return 0; }\n    if (typeof epoch.getTime === \"function\") { return epoch.getTime(); }\n    if (typeof epoch === \"number\") { return epoch; }\n    throw new TypeError(\"now should be milliseconds since UNIX epoch\");\n}\n\nfunction inRange(from, to, timer) {\n    return timer && timer.callAt >= from && timer.callAt <= to;\n}\n\nfunction mirrorDateProperties(target, source) {\n    if (source.now) {\n        target.now = function now() {\n            return target.clock.now;\n        };\n    } else {\n        delete target.now;\n    }\n\n    if (source.toSource) {\n        target.toSource = function toSource() {\n            return source.toSource();\n        };\n    } else {\n        delete target.toSource;\n    }\n\n    target.toString = function toString() {\n        return source.toString();\n    };\n\n    target.prototype = source.prototype;\n    target.parse = source.parse;\n    target.UTC = source.UTC;\n    target.prototype.toUTCString = source.prototype.toUTCString;\n\n    for (var prop in source) {\n        if (source.hasOwnProperty(prop)) {\n            target[prop] = source[prop];\n        }\n    }\n\n    return target;\n}\n\nfunction createDate() {\n    function ClockDate(year, month, date, hour, minute, second, ms) {\n        // Defensive and verbose to avoid potential harm in passing\n        // explicit undefined when user does not pass argument\n        switch (arguments.length) {\n        case 0:\n            return new NativeDate(ClockDate.clock.now);\n        case 1:\n            return new NativeDate(year);\n        case 2:\n            return new NativeDate(year, month);\n        case 3:\n            return new NativeDate(year, month, date);\n        case 4:\n            return new NativeDate(year, month, date, hour);\n        case 5:\n            return new NativeDate(year, month, date, hour, minute);\n        case 6:\n            return new NativeDate(year, month, date, hour, minute, second);\n        default:\n            return new NativeDate(year, month, date, hour, minute, second, ms);\n        }\n    }\n\n    return mirrorDateProperties(ClockDate, NativeDate);\n}\n\nfunction addTimer(clock, timer) {\n    if (typeof timer.func === \"undefined\") {\n        throw new Error(\"Callback must be provided to timer calls\");\n    }\n\n    if (!clock.timers) {\n        clock.timers = {};\n    }\n\n    timer.id = id++;\n    timer.createdAt = clock.now;\n    timer.callAt = clock.now + (timer.delay || 0);\n\n    clock.timers[timer.id] = timer;\n\n    if (addTimerReturnsObject) {\n        return {\n            id: timer.id,\n            ref: function() {},\n            unref: function() {}\n        };\n    }\n    else {\n        return timer.id;\n    }\n}\n\nfunction firstTimerInRange(clock, from, to) {\n    var timers = clock.timers, timer = null;\n\n    for (var id in timers) {\n        if (!inRange(from, to, timers[id])) {\n            continue;\n        }\n\n        if (!timer || ~compareTimers(timer, timers[id])) {\n            timer = timers[id];\n        }\n    }\n\n    return timer;\n}\n\nfunction compareTimers(a, b) {\n    // Sort first by absolute timing\n    if (a.callAt < b.callAt) {\n        return -1;\n    }\n    if (a.callAt > b.callAt) {\n        return 1;\n    }\n\n    // Sort next by immediate, immediate timers take precedence\n    if (a.immediate && !b.immediate) {\n        return -1;\n    }\n    if (!a.immediate && b.immediate) {\n        return 1;\n    }\n\n    // Sort next by creation time, earlier-created timers take precedence\n    if (a.createdAt < b.createdAt) {\n        return -1;\n    }\n    if (a.createdAt > b.createdAt) {\n        return 1;\n    }\n\n    // Sort next by id, lower-id timers take precedence\n    if (a.id < b.id) {\n        return -1;\n    }\n    if (a.id > b.id) {\n        return 1;\n    }\n\n    // As timer ids are unique, no fallback `0` is necessary\n}\n\nfunction callTimer(clock, timer) {\n    if (typeof timer.interval == \"number\") {\n        clock.timers[timer.id].callAt += timer.interval;\n    } else {\n        delete clock.timers[timer.id];\n    }\n\n    try {\n        if (typeof timer.func == \"function\") {\n            timer.func.apply(null, timer.args);\n        } else {\n            eval(timer.func);\n        }\n    } catch (e) {\n        var exception = e;\n    }\n\n    if (!clock.timers[timer.id]) {\n        if (exception) {\n            throw exception;\n        }\n        return;\n    }\n\n    if (exception) {\n        throw exception;\n    }\n}\n\nfunction uninstall(clock, target) {\n    var method;\n\n    for (var i = 0, l = clock.methods.length; i < l; i++) {\n        method = clock.methods[i];\n\n        if (target[method].hadOwnProperty) {\n            target[method] = clock[\"_\" + method];\n        } else {\n            try {\n                delete target[method];\n            } catch (e) {}\n        }\n    }\n\n    // Prevent multiple executions which will completely remove these props\n    clock.methods = [];\n}\n\nfunction hijackMethod(target, method, clock) {\n    clock[method].hadOwnProperty = Object.prototype.hasOwnProperty.call(target, method);\n    clock[\"_\" + method] = target[method];\n\n    if (method == \"Date\") {\n        var date = mirrorDateProperties(clock[method], target[method]);\n        target[method] = date;\n    } else {\n        target[method] = function () {\n            return clock[method].apply(clock, arguments);\n        };\n\n        for (var prop in clock[method]) {\n            if (clock[method].hasOwnProperty(prop)) {\n                target[method][prop] = clock[method][prop];\n            }\n        }\n    }\n\n    target[method].clock = clock;\n}\n\nvar timers = {\n    setTimeout: setTimeout,\n    clearTimeout: clearTimeout,\n    setImmediate: (typeof setImmediate !== \"undefined\" ? setImmediate : undefined),\n    clearImmediate: (typeof clearImmediate !== \"undefined\" ? clearImmediate: undefined),\n    setInterval: setInterval,\n    clearInterval: clearInterval,\n    Date: Date\n};\n\nvar keys = Object.keys || function (obj) {\n    var ks = [];\n    for (var key in obj) {\n        ks.push(key);\n    }\n    return ks;\n};\n\nexports.timers = timers;\n\nvar createClock = exports.createClock = function (now) {\n    var clock = {\n        now: getEpoch(now),\n        timeouts: {},\n        Date: createDate()\n    };\n\n    clock.Date.clock = clock;\n\n    clock.setTimeout = function setTimeout(func, timeout) {\n        return addTimer(clock, {\n            func: func,\n            args: Array.prototype.slice.call(arguments, 2),\n            delay: timeout\n        });\n    };\n\n    clock.clearTimeout = function clearTimeout(timerId) {\n        if (!timerId) {\n            // null appears to be allowed in most browsers, and appears to be\n            // relied upon by some libraries, like Bootstrap carousel\n            return;\n        }\n        if (!clock.timers) {\n            clock.timers = [];\n        }\n        // in Node, timerId is an object with .ref()/.unref(), and\n        // its .id field is the actual timer id.\n        if (typeof timerId === \"object\") {\n            timerId = timerId.id\n        }\n        if (timerId in clock.timers) {\n            delete clock.timers[timerId];\n        }\n    };\n\n    clock.setInterval = function setInterval(func, timeout) {\n        return addTimer(clock, {\n            func: func,\n            args: Array.prototype.slice.call(arguments, 2),\n            delay: timeout,\n            interval: timeout\n        });\n    };\n\n    clock.clearInterval = function clearInterval(timerId) {\n        clock.clearTimeout(timerId);\n    };\n\n    clock.setImmediate = function setImmediate(func) {\n        return addTimer(clock, {\n            func: func,\n            args: Array.prototype.slice.call(arguments, 1),\n            immediate: true\n        });\n    };\n\n    clock.clearImmediate = function clearImmediate(timerId) {\n        clock.clearTimeout(timerId);\n    };\n\n    clock.tick = function tick(ms) {\n        ms = typeof ms == \"number\" ? ms : parseTime(ms);\n        var tickFrom = clock.now, tickTo = clock.now + ms, previous = clock.now;\n        var timer = firstTimerInRange(clock, tickFrom, tickTo);\n\n        var firstException;\n        while (timer && tickFrom <= tickTo) {\n            if (clock.timers[timer.id]) {\n                tickFrom = clock.now = timer.callAt;\n                try {\n                    callTimer(clock, timer);\n                } catch (e) {\n                    firstException = firstException || e;\n                }\n            }\n\n            timer = firstTimerInRange(clock, previous, tickTo);\n            previous = tickFrom;\n        }\n\n        clock.now = tickTo;\n\n        if (firstException) {\n            throw firstException;\n        }\n\n        return clock.now;\n    };\n\n    clock.reset = function reset() {\n        clock.timers = {};\n    };\n\n    return clock;\n};\n\nexports.install = function install(target, now, toFake) {\n    if (typeof target === \"number\") {\n        toFake = now;\n        now = target;\n        target = null;\n    }\n\n    if (!target) {\n        target = global;\n    }\n\n    var clock = createClock(now);\n\n    clock.uninstall = function () {\n        uninstall(clock, target);\n    };\n\n    clock.methods = toFake || [];\n\n    if (clock.methods.length === 0) {\n        clock.methods = keys(timers);\n    }\n\n    for (var i = 0, l = clock.methods.length; i < l; i++) {\n        hijackMethod(target, clock.methods[i], clock);\n    }\n\n    return clock;\n};\n\n}).call(this,typeof global !== \"undefined\" ? global : typeof self !== \"undefined\" ? self : typeof window !== \"undefined\" ? window : {})\n},{}]},{},[1])(1)\n});\n  })();\n  var define;\n/**\n * Sinon core utilities. For internal use only.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\nvar sinon = (function () {\n\"use strict\";\n\n    var sinon;\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require === \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        sinon = module.exports = require(\"./sinon/util/core\");\n        require(\"./sinon/extend\");\n        require(\"./sinon/typeOf\");\n        require(\"./sinon/times_in_words\");\n        require(\"./sinon/spy\");\n        require(\"./sinon/call\");\n        require(\"./sinon/behavior\");\n        require(\"./sinon/stub\");\n        require(\"./sinon/mock\");\n        require(\"./sinon/collection\");\n        require(\"./sinon/assert\");\n        require(\"./sinon/sandbox\");\n        require(\"./sinon/test\");\n        require(\"./sinon/test_case\");\n        require(\"./sinon/match\");\n        require(\"./sinon/format\");\n        require(\"./sinon/log_error\");\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n        sinon = module.exports;\n    } else {\n        sinon = {};\n    }\n\n    return sinon;\n}());\n\n/**\n * @depend ../../sinon.js\n */\n/**\n * Sinon core utilities. For internal use only.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    var div = typeof document != \"undefined\" && document.createElement(\"div\");\n    var hasOwn = Object.prototype.hasOwnProperty;\n\n    function isDOMNode(obj) {\n        var success = false;\n\n        try {\n            obj.appendChild(div);\n            success = div.parentNode == obj;\n        } catch (e) {\n            return false;\n        } finally {\n            try {\n                obj.removeChild(div);\n            } catch (e) {\n                // Remove failed, not much we can do about that\n            }\n        }\n\n        return success;\n    }\n\n    function isElement(obj) {\n        return div && obj && obj.nodeType === 1 && isDOMNode(obj);\n    }\n\n    function isFunction(obj) {\n        return typeof obj === \"function\" || !!(obj && obj.constructor && obj.call && obj.apply);\n    }\n\n    function isReallyNaN(val) {\n        return typeof val === \"number\" && isNaN(val);\n    }\n\n    function mirrorProperties(target, source) {\n        for (var prop in source) {\n            if (!hasOwn.call(target, prop)) {\n                target[prop] = source[prop];\n            }\n        }\n    }\n\n    function isRestorable(obj) {\n        return typeof obj === \"function\" && typeof obj.restore === \"function\" && obj.restore.sinon;\n    }\n\n    // Cheap way to detect if we have ES5 support.\n    var hasES5Support = \"keys\" in Object;\n\n    function makeApi(sinon) {\n        sinon.wrapMethod = function wrapMethod(object, property, method) {\n            if (!object) {\n                throw new TypeError(\"Should wrap property of object\");\n            }\n\n            if (typeof method != \"function\" && typeof method != \"object\") {\n                throw new TypeError(\"Method wrapper should be a function or a property descriptor\");\n            }\n\n            function checkWrappedMethod(wrappedMethod) {\n                if (!isFunction(wrappedMethod)) {\n                    error = new TypeError(\"Attempted to wrap \" + (typeof wrappedMethod) + \" property \" +\n                                        property + \" as function\");\n                } else if (wrappedMethod.restore && wrappedMethod.restore.sinon) {\n                    error = new TypeError(\"Attempted to wrap \" + property + \" which is already wrapped\");\n                } else if (wrappedMethod.calledBefore) {\n                    var verb = !!wrappedMethod.returns ? \"stubbed\" : \"spied on\";\n                    error = new TypeError(\"Attempted to wrap \" + property + \" which is already \" + verb);\n                }\n\n                if (error) {\n                    if (wrappedMethod && wrappedMethod.stackTrace) {\n                        error.stack += \"\\n--------------\\n\" + wrappedMethod.stackTrace;\n                    }\n                    throw error;\n                }\n            }\n\n            var error, wrappedMethod;\n\n            // IE 8 does not support hasOwnProperty on the window object and Firefox has a problem\n            // when using hasOwn.call on objects from other frames.\n            var owned = object.hasOwnProperty ? object.hasOwnProperty(property) : hasOwn.call(object, property);\n\n            if (hasES5Support) {\n                var methodDesc = (typeof method == \"function\") ? {value: method} : method,\n                    wrappedMethodDesc = sinon.getPropertyDescriptor(object, property),\n                    i;\n\n                if (!wrappedMethodDesc) {\n                    error = new TypeError(\"Attempted to wrap \" + (typeof wrappedMethod) + \" property \" +\n                                        property + \" as function\");\n                } else if (wrappedMethodDesc.restore && wrappedMethodDesc.restore.sinon) {\n                    error = new TypeError(\"Attempted to wrap \" + property + \" which is already wrapped\");\n                }\n                if (error) {\n                    if (wrappedMethodDesc && wrappedMethodDesc.stackTrace) {\n                        error.stack += \"\\n--------------\\n\" + wrappedMethodDesc.stackTrace;\n                    }\n                    throw error;\n                }\n\n                var types = sinon.objectKeys(methodDesc);\n                for (i = 0; i < types.length; i++) {\n                    wrappedMethod = wrappedMethodDesc[types[i]];\n                    checkWrappedMethod(wrappedMethod);\n                }\n\n                mirrorProperties(methodDesc, wrappedMethodDesc);\n                for (i = 0; i < types.length; i++) {\n                    mirrorProperties(methodDesc[types[i]], wrappedMethodDesc[types[i]]);\n                }\n                Object.defineProperty(object, property, methodDesc);\n            } else {\n                wrappedMethod = object[property];\n                checkWrappedMethod(wrappedMethod);\n                object[property] = method;\n                method.displayName = property;\n            }\n\n            method.displayName = property;\n\n            // Set up a stack trace which can be used later to find what line of\n            // code the original method was created on.\n            method.stackTrace = (new Error(\"Stack Trace for original\")).stack;\n\n            method.restore = function () {\n                // For prototype properties try to reset by delete first.\n                // If this fails (ex: localStorage on mobile safari) then force a reset\n                // via direct assignment.\n                if (!owned) {\n                    try {\n                        delete object[property];\n                    } catch (e) {}\n                    // For native code functions `delete` fails without throwing an error\n                    // on Chrome < 43, PhantomJS, etc.\n                    // Use strict equality comparison to check failures then force a reset\n                    // via direct assignment.\n                    if (object[property] === method) {\n                        object[property] = wrappedMethod;\n                    }\n                } else if (hasES5Support) {\n                    Object.defineProperty(object, property, wrappedMethodDesc);\n                }\n\n                if (!hasES5Support && object[property] === method) {\n                    object[property] = wrappedMethod;\n                }\n            };\n\n            method.restore.sinon = true;\n\n            if (!hasES5Support) {\n                mirrorProperties(method, wrappedMethod);\n            }\n\n            return method;\n        };\n\n        sinon.create = function create(proto) {\n            var F = function () {};\n            F.prototype = proto;\n            return new F();\n        };\n\n        sinon.deepEqual = function deepEqual(a, b) {\n            if (sinon.match && sinon.match.isMatcher(a)) {\n                return a.test(b);\n            }\n\n            if (typeof a != \"object\" || typeof b != \"object\") {\n                if (isReallyNaN(a) && isReallyNaN(b)) {\n                    return true;\n                } else {\n                    return a === b;\n                }\n            }\n\n            if (isElement(a) || isElement(b)) {\n                return a === b;\n            }\n\n            if (a === b) {\n                return true;\n            }\n\n            if ((a === null && b !== null) || (a !== null && b === null)) {\n                return false;\n            }\n\n            if (a instanceof RegExp && b instanceof RegExp) {\n                return (a.source === b.source) && (a.global === b.global) &&\n                    (a.ignoreCase === b.ignoreCase) && (a.multiline === b.multiline);\n            }\n\n            var aString = Object.prototype.toString.call(a);\n            if (aString != Object.prototype.toString.call(b)) {\n                return false;\n            }\n\n            if (aString == \"[object Date]\") {\n                return a.valueOf() === b.valueOf();\n            }\n\n            var prop, aLength = 0, bLength = 0;\n\n            if (aString == \"[object Array]\" && a.length !== b.length) {\n                return false;\n            }\n\n            for (prop in a) {\n                aLength += 1;\n\n                if (!(prop in b)) {\n                    return false;\n                }\n\n                if (!deepEqual(a[prop], b[prop])) {\n                    return false;\n                }\n            }\n\n            for (prop in b) {\n                bLength += 1;\n            }\n\n            return aLength == bLength;\n        };\n\n        sinon.functionName = function functionName(func) {\n            var name = func.displayName || func.name;\n\n            // Use function decomposition as a last resort to get function\n            // name. Does not rely on function decomposition to work - if it\n            // doesn't debugging will be slightly less informative\n            // (i.e. toString will say 'spy' rather than 'myFunc').\n            if (!name) {\n                var matches = func.toString().match(/function ([^\\s\\(]+)/);\n                name = matches && matches[1];\n            }\n\n            return name;\n        };\n\n        sinon.functionToString = function toString() {\n            if (this.getCall && this.callCount) {\n                var thisValue, prop, i = this.callCount;\n\n                while (i--) {\n                    thisValue = this.getCall(i).thisValue;\n\n                    for (prop in thisValue) {\n                        if (thisValue[prop] === this) {\n                            return prop;\n                        }\n                    }\n                }\n            }\n\n            return this.displayName || \"sinon fake\";\n        };\n\n        sinon.objectKeys = function objectKeys(obj) {\n            if (obj !== Object(obj)) {\n                throw new TypeError(\"sinon.objectKeys called on a non-object\");\n            }\n\n            var keys = [];\n            var key;\n            for (key in obj) {\n                if (hasOwn.call(obj, key)) {\n                    keys.push(key);\n                }\n            }\n\n            return keys;\n        };\n\n        sinon.getPropertyDescriptor = function getPropertyDescriptor(object, property) {\n            var proto = object, descriptor;\n            while (proto && !(descriptor = Object.getOwnPropertyDescriptor(proto, property))) {\n                proto = Object.getPrototypeOf(proto);\n            }\n            return descriptor;\n        }\n\n        sinon.getConfig = function (custom) {\n            var config = {};\n            custom = custom || {};\n            var defaults = sinon.defaultConfig;\n\n            for (var prop in defaults) {\n                if (defaults.hasOwnProperty(prop)) {\n                    config[prop] = custom.hasOwnProperty(prop) ? custom[prop] : defaults[prop];\n                }\n            }\n\n            return config;\n        };\n\n        sinon.defaultConfig = {\n            injectIntoThis: true,\n            injectInto: null,\n            properties: [\"spy\", \"stub\", \"mock\", \"clock\", \"server\", \"requests\"],\n            useFakeTimers: true,\n            useFakeServer: true\n        };\n\n        sinon.timesInWords = function timesInWords(count) {\n            return count == 1 && \"once\" ||\n                count == 2 && \"twice\" ||\n                count == 3 && \"thrice\" ||\n                (count || 0) + \" times\";\n        };\n\n        sinon.calledInOrder = function (spies) {\n            for (var i = 1, l = spies.length; i < l; i++) {\n                if (!spies[i - 1].calledBefore(spies[i]) || !spies[i].called) {\n                    return false;\n                }\n            }\n\n            return true;\n        };\n\n        sinon.orderByFirstCall = function (spies) {\n            return spies.sort(function (a, b) {\n                // uuid, won't ever be equal\n                var aCall = a.getCall(0);\n                var bCall = b.getCall(0);\n                var aId = aCall && aCall.callId || -1;\n                var bId = bCall && bCall.callId || -1;\n\n                return aId < bId ? -1 : 1;\n            });\n        };\n\n        sinon.createStubInstance = function (constructor) {\n            if (typeof constructor !== \"function\") {\n                throw new TypeError(\"The constructor should be a function.\");\n            }\n            return sinon.stub(sinon.create(constructor.prototype));\n        };\n\n        sinon.restore = function (object) {\n            if (object !== null && typeof object === \"object\") {\n                for (var prop in object) {\n                    if (isRestorable(object[prop])) {\n                        object[prop].restore();\n                    }\n                }\n            } else if (isRestorable(object)) {\n                object.restore();\n            }\n        };\n\n        return sinon;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports) {\n        makeApi(exports);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n\n        // Adapted from https://developer.mozilla.org/en/docs/ECMAScript_DontEnum_attribute#JScript_DontEnum_Bug\n        var hasDontEnumBug = (function () {\n            var obj = {\n                constructor: function () {\n                    return \"0\";\n                },\n                toString: function () {\n                    return \"1\";\n                },\n                valueOf: function () {\n                    return \"2\";\n                },\n                toLocaleString: function () {\n                    return \"3\";\n                },\n                prototype: function () {\n                    return \"4\";\n                },\n                isPrototypeOf: function () {\n                    return \"5\";\n                },\n                propertyIsEnumerable: function () {\n                    return \"6\";\n                },\n                hasOwnProperty: function () {\n                    return \"7\";\n                },\n                length: function () {\n                    return \"8\";\n                },\n                unique: function () {\n                    return \"9\"\n                }\n            };\n\n            var result = [];\n            for (var prop in obj) {\n                result.push(obj[prop]());\n            }\n            return result.join(\"\") !== \"0123456789\";\n        })();\n\n        /* Public: Extend target in place with all (own) properties from sources in-order. Thus, last source will\n         *         override properties in previous sources.\n         *\n         * target - The Object to extend\n         * sources - Objects to copy properties from.\n         *\n         * Returns the extended target\n         */\n        function extend(target /*, sources */) {\n            var sources = Array.prototype.slice.call(arguments, 1),\n                source, i, prop;\n\n            for (i = 0; i < sources.length; i++) {\n                source = sources[i];\n\n                for (prop in source) {\n                    if (source.hasOwnProperty(prop)) {\n                        target[prop] = source[prop];\n                    }\n                }\n\n                // Make sure we copy (own) toString method even when in JScript with DontEnum bug\n                // See https://developer.mozilla.org/en/docs/ECMAScript_DontEnum_attribute#JScript_DontEnum_Bug\n                if (hasDontEnumBug && source.hasOwnProperty(\"toString\") && source.toString !== target.toString) {\n                    target.toString = source.toString;\n                }\n            }\n\n            return target;\n        };\n\n        sinon.extend = extend;\n        return sinon.extend;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n\n        function timesInWords(count) {\n            switch (count) {\n                case 1:\n                    return \"once\";\n                case 2:\n                    return \"twice\";\n                case 3:\n                    return \"thrice\";\n                default:\n                    return (count || 0) + \" times\";\n            }\n        }\n\n        sinon.timesInWords = timesInWords;\n        return sinon.timesInWords;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n */\n/**\n * Format functions\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2014 Christian Johansen\n */\n\n(function (sinon, formatio) {\n    function makeApi(sinon) {\n        function typeOf(value) {\n            if (value === null) {\n                return \"null\";\n            } else if (value === undefined) {\n                return \"undefined\";\n            }\n            var string = Object.prototype.toString.call(value);\n            return string.substring(8, string.length - 1).toLowerCase();\n        };\n\n        sinon.typeOf = typeOf;\n        return sinon.typeOf;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(\n    (typeof sinon == \"object\" && sinon || null),\n    (typeof formatio == \"object\" && formatio)\n));\n\n/**\n * @depend util/core.js\n * @depend typeOf.js\n */\n/*jslint eqeqeq: false, onevar: false, plusplus: false*/\n/*global module, require, sinon*/\n/**\n * Match functions\n *\n * @author Maximilian Antoni (mail@maxantoni.de)\n * @license BSD\n *\n * Copyright (c) 2012 Maximilian Antoni\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        function assertType(value, type, name) {\n            var actual = sinon.typeOf(value);\n            if (actual !== type) {\n                throw new TypeError(\"Expected type of \" + name + \" to be \" +\n                    type + \", but was \" + actual);\n            }\n        }\n\n        var matcher = {\n            toString: function () {\n                return this.message;\n            }\n        };\n\n        function isMatcher(object) {\n            return matcher.isPrototypeOf(object);\n        }\n\n        function matchObject(expectation, actual) {\n            if (actual === null || actual === undefined) {\n                return false;\n            }\n            for (var key in expectation) {\n                if (expectation.hasOwnProperty(key)) {\n                    var exp = expectation[key];\n                    var act = actual[key];\n                    if (match.isMatcher(exp)) {\n                        if (!exp.test(act)) {\n                            return false;\n                        }\n                    } else if (sinon.typeOf(exp) === \"object\") {\n                        if (!matchObject(exp, act)) {\n                            return false;\n                        }\n                    } else if (!sinon.deepEqual(exp, act)) {\n                        return false;\n                    }\n                }\n            }\n            return true;\n        }\n\n        matcher.or = function (m2) {\n            if (!arguments.length) {\n                throw new TypeError(\"Matcher expected\");\n            } else if (!isMatcher(m2)) {\n                m2 = match(m2);\n            }\n            var m1 = this;\n            var or = sinon.create(matcher);\n            or.test = function (actual) {\n                return m1.test(actual) || m2.test(actual);\n            };\n            or.message = m1.message + \".or(\" + m2.message + \")\";\n            return or;\n        };\n\n        matcher.and = function (m2) {\n            if (!arguments.length) {\n                throw new TypeError(\"Matcher expected\");\n            } else if (!isMatcher(m2)) {\n                m2 = match(m2);\n            }\n            var m1 = this;\n            var and = sinon.create(matcher);\n            and.test = function (actual) {\n                return m1.test(actual) && m2.test(actual);\n            };\n            and.message = m1.message + \".and(\" + m2.message + \")\";\n            return and;\n        };\n\n        var match = function (expectation, message) {\n            var m = sinon.create(matcher);\n            var type = sinon.typeOf(expectation);\n            switch (type) {\n            case \"object\":\n                if (typeof expectation.test === \"function\") {\n                    m.test = function (actual) {\n                        return expectation.test(actual) === true;\n                    };\n                    m.message = \"match(\" + sinon.functionName(expectation.test) + \")\";\n                    return m;\n                }\n                var str = [];\n                for (var key in expectation) {\n                    if (expectation.hasOwnProperty(key)) {\n                        str.push(key + \": \" + expectation[key]);\n                    }\n                }\n                m.test = function (actual) {\n                    return matchObject(expectation, actual);\n                };\n                m.message = \"match(\" + str.join(\", \") + \")\";\n                break;\n            case \"number\":\n                m.test = function (actual) {\n                    return expectation == actual;\n                };\n                break;\n            case \"string\":\n                m.test = function (actual) {\n                    if (typeof actual !== \"string\") {\n                        return false;\n                    }\n                    return actual.indexOf(expectation) !== -1;\n                };\n                m.message = \"match(\\\"\" + expectation + \"\\\")\";\n                break;\n            case \"regexp\":\n                m.test = function (actual) {\n                    if (typeof actual !== \"string\") {\n                        return false;\n                    }\n                    return expectation.test(actual);\n                };\n                break;\n            case \"function\":\n                m.test = expectation;\n                if (message) {\n                    m.message = message;\n                } else {\n                    m.message = \"match(\" + sinon.functionName(expectation) + \")\";\n                }\n                break;\n            default:\n                m.test = function (actual) {\n                    return sinon.deepEqual(expectation, actual);\n                };\n            }\n            if (!m.message) {\n                m.message = \"match(\" + expectation + \")\";\n            }\n            return m;\n        };\n\n        match.isMatcher = isMatcher;\n\n        match.any = match(function () {\n            return true;\n        }, \"any\");\n\n        match.defined = match(function (actual) {\n            return actual !== null && actual !== undefined;\n        }, \"defined\");\n\n        match.truthy = match(function (actual) {\n            return !!actual;\n        }, \"truthy\");\n\n        match.falsy = match(function (actual) {\n            return !actual;\n        }, \"falsy\");\n\n        match.same = function (expectation) {\n            return match(function (actual) {\n                return expectation === actual;\n            }, \"same(\" + expectation + \")\");\n        };\n\n        match.typeOf = function (type) {\n            assertType(type, \"string\", \"type\");\n            return match(function (actual) {\n                return sinon.typeOf(actual) === type;\n            }, \"typeOf(\\\"\" + type + \"\\\")\");\n        };\n\n        match.instanceOf = function (type) {\n            assertType(type, \"function\", \"type\");\n            return match(function (actual) {\n                return actual instanceof type;\n            }, \"instanceOf(\" + sinon.functionName(type) + \")\");\n        };\n\n        function createPropertyMatcher(propertyTest, messagePrefix) {\n            return function (property, value) {\n                assertType(property, \"string\", \"property\");\n                var onlyProperty = arguments.length === 1;\n                var message = messagePrefix + \"(\\\"\" + property + \"\\\"\";\n                if (!onlyProperty) {\n                    message += \", \" + value;\n                }\n                message += \")\";\n                return match(function (actual) {\n                    if (actual === undefined || actual === null ||\n                            !propertyTest(actual, property)) {\n                        return false;\n                    }\n                    return onlyProperty || sinon.deepEqual(value, actual[property]);\n                }, message);\n            };\n        }\n\n        match.has = createPropertyMatcher(function (actual, property) {\n            if (typeof actual === \"object\") {\n                return property in actual;\n            }\n            return actual[property] !== undefined;\n        }, \"has\");\n\n        match.hasOwn = createPropertyMatcher(function (actual, property) {\n            return actual.hasOwnProperty(property);\n        }, \"hasOwn\");\n\n        match.bool = match.typeOf(\"boolean\");\n        match.number = match.typeOf(\"number\");\n        match.string = match.typeOf(\"string\");\n        match.object = match.typeOf(\"object\");\n        match.func = match.typeOf(\"function\");\n        match.array = match.typeOf(\"array\");\n        match.regexp = match.typeOf(\"regexp\");\n        match.date = match.typeOf(\"date\");\n\n        sinon.match = match;\n        return match;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./typeOf\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n */\n/**\n * Format functions\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2014 Christian Johansen\n */\n\n(function (sinon, formatio) {\n    function makeApi(sinon) {\n        function valueFormatter(value) {\n            return \"\" + value;\n        }\n\n        function getFormatioFormatter() {\n            var formatter = formatio.configure({\n                    quoteStrings: false,\n                    limitChildrenCount: 250\n                });\n\n            function format() {\n                return formatter.ascii.apply(formatter, arguments);\n            };\n\n            return format;\n        }\n\n        function getNodeFormatter(value) {\n            function format(value) {\n                return typeof value == \"object\" && value.toString === Object.prototype.toString ? util.inspect(value) : value;\n            };\n\n            try {\n                var util = require(\"util\");\n            } catch (e) {\n                /* Node, but no util module - would be very old, but better safe than sorry */\n            }\n\n            return util ? format : valueFormatter;\n        }\n\n        var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\",\n            formatter;\n\n        if (isNode) {\n            try {\n                formatio = require(\"formatio\");\n            } catch (e) {}\n        }\n\n        if (formatio) {\n            formatter = getFormatioFormatter()\n        } else if (isNode) {\n            formatter = getNodeFormatter();\n        } else {\n            formatter = valueFormatter;\n        }\n\n        sinon.format = formatter;\n        return sinon.format;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(\n    (typeof sinon == \"object\" && sinon || null),\n    (typeof formatio == \"object\" && formatio)\n));\n\n/**\n  * @depend util/core.js\n  * @depend match.js\n  * @depend format.js\n  */\n/**\n  * Spy calls\n  *\n  * @author Christian Johansen (christian@cjohansen.no)\n  * @author Maximilian Antoni (mail@maxantoni.de)\n  * @license BSD\n  *\n  * Copyright (c) 2010-2013 Christian Johansen\n  * Copyright (c) 2013 Maximilian Antoni\n  */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        function throwYieldError(proxy, text, args) {\n            var msg = sinon.functionName(proxy) + text;\n            if (args.length) {\n                msg += \" Received [\" + slice.call(args).join(\", \") + \"]\";\n            }\n            throw new Error(msg);\n        }\n\n        var slice = Array.prototype.slice;\n\n        var callProto = {\n            calledOn: function calledOn(thisValue) {\n                if (sinon.match && sinon.match.isMatcher(thisValue)) {\n                    return thisValue.test(this.thisValue);\n                }\n                return this.thisValue === thisValue;\n            },\n\n            calledWith: function calledWith() {\n                var l = arguments.length;\n                if (l > this.args.length) {\n                    return false;\n                }\n                for (var i = 0; i < l; i += 1) {\n                    if (!sinon.deepEqual(arguments[i], this.args[i])) {\n                        return false;\n                    }\n                }\n\n                return true;\n            },\n\n            calledWithMatch: function calledWithMatch() {\n                var l = arguments.length;\n                if (l > this.args.length) {\n                    return false;\n                }\n                for (var i = 0; i < l; i += 1) {\n                    var actual = this.args[i];\n                    var expectation = arguments[i];\n                    if (!sinon.match || !sinon.match(expectation).test(actual)) {\n                        return false;\n                    }\n                }\n                return true;\n            },\n\n            calledWithExactly: function calledWithExactly() {\n                return arguments.length == this.args.length &&\n                    this.calledWith.apply(this, arguments);\n            },\n\n            notCalledWith: function notCalledWith() {\n                return !this.calledWith.apply(this, arguments);\n            },\n\n            notCalledWithMatch: function notCalledWithMatch() {\n                return !this.calledWithMatch.apply(this, arguments);\n            },\n\n            returned: function returned(value) {\n                return sinon.deepEqual(value, this.returnValue);\n            },\n\n            threw: function threw(error) {\n                if (typeof error === \"undefined\" || !this.exception) {\n                    return !!this.exception;\n                }\n\n                return this.exception === error || this.exception.name === error;\n            },\n\n            calledWithNew: function calledWithNew() {\n                return this.proxy.prototype && this.thisValue instanceof this.proxy;\n            },\n\n            calledBefore: function (other) {\n                return this.callId < other.callId;\n            },\n\n            calledAfter: function (other) {\n                return this.callId > other.callId;\n            },\n\n            callArg: function (pos) {\n                this.args[pos]();\n            },\n\n            callArgOn: function (pos, thisValue) {\n                this.args[pos].apply(thisValue);\n            },\n\n            callArgWith: function (pos) {\n                this.callArgOnWith.apply(this, [pos, null].concat(slice.call(arguments, 1)));\n            },\n\n            callArgOnWith: function (pos, thisValue) {\n                var args = slice.call(arguments, 2);\n                this.args[pos].apply(thisValue, args);\n            },\n\n            yield: function () {\n                this.yieldOn.apply(this, [null].concat(slice.call(arguments, 0)));\n            },\n\n            yieldOn: function (thisValue) {\n                var args = this.args;\n                for (var i = 0, l = args.length; i < l; ++i) {\n                    if (typeof args[i] === \"function\") {\n                        args[i].apply(thisValue, slice.call(arguments, 1));\n                        return;\n                    }\n                }\n                throwYieldError(this.proxy, \" cannot yield since no callback was passed.\", args);\n            },\n\n            yieldTo: function (prop) {\n                this.yieldToOn.apply(this, [prop, null].concat(slice.call(arguments, 1)));\n            },\n\n            yieldToOn: function (prop, thisValue) {\n                var args = this.args;\n                for (var i = 0, l = args.length; i < l; ++i) {\n                    if (args[i] && typeof args[i][prop] === \"function\") {\n                        args[i][prop].apply(thisValue, slice.call(arguments, 2));\n                        return;\n                    }\n                }\n                throwYieldError(this.proxy, \" cannot yield to '\" + prop +\n                    \"' since no callback was passed.\", args);\n            },\n\n            toString: function () {\n                var callStr = this.proxy.toString() + \"(\";\n                var args = [];\n\n                for (var i = 0, l = this.args.length; i < l; ++i) {\n                    args.push(sinon.format(this.args[i]));\n                }\n\n                callStr = callStr + args.join(\", \") + \")\";\n\n                if (typeof this.returnValue != \"undefined\") {\n                    callStr += \" => \" + sinon.format(this.returnValue);\n                }\n\n                if (this.exception) {\n                    callStr += \" !\" + this.exception.name;\n\n                    if (this.exception.message) {\n                        callStr += \"(\" + this.exception.message + \")\";\n                    }\n                }\n\n                return callStr;\n            }\n        };\n\n        callProto.invokeCallback = callProto.yield;\n\n        function createSpyCall(spy, thisValue, args, returnValue, exception, id) {\n            if (typeof id !== \"number\") {\n                throw new TypeError(\"Call id is not a number\");\n            }\n            var proxyCall = sinon.create(callProto);\n            proxyCall.proxy = spy;\n            proxyCall.thisValue = thisValue;\n            proxyCall.args = args;\n            proxyCall.returnValue = returnValue;\n            proxyCall.exception = exception;\n            proxyCall.callId = id;\n\n            return proxyCall;\n        }\n        createSpyCall.toString = callProto.toString; // used by mocks\n\n        sinon.spyCall = createSpyCall;\n        return createSpyCall;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./match\");\n        require(\"./format\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n  * @depend times_in_words.js\n  * @depend util/core.js\n  * @depend extend.js\n  * @depend call.js\n  * @depend format.js\n  */\n/**\n  * Spy functions\n  *\n  * @author Christian Johansen (christian@cjohansen.no)\n  * @license BSD\n  *\n  * Copyright (c) 2010-2013 Christian Johansen\n  */\n\n(function (sinon) {\n\n    function makeApi(sinon) {\n        var push = Array.prototype.push;\n        var slice = Array.prototype.slice;\n        var callId = 0;\n\n        function spy(object, property, types) {\n            if (!property && typeof object == \"function\") {\n                return spy.create(object);\n            }\n\n            if (!object && !property) {\n                return spy.create(function () { });\n            }\n\n            if (types) {\n                var methodDesc = sinon.getPropertyDescriptor(object, property);\n                for (var i = 0; i < types.length; i++) {\n                    methodDesc[types[i]] = spy.create(methodDesc[types[i]]);\n                }\n                return sinon.wrapMethod(object, property, methodDesc);\n            } else {\n                var method = object[property];\n                return sinon.wrapMethod(object, property, spy.create(method));\n            }\n        }\n\n        function matchingFake(fakes, args, strict) {\n            if (!fakes) {\n                return;\n            }\n\n            for (var i = 0, l = fakes.length; i < l; i++) {\n                if (fakes[i].matches(args, strict)) {\n                    return fakes[i];\n                }\n            }\n        }\n\n        function incrementCallCount() {\n            this.called = true;\n            this.callCount += 1;\n            this.notCalled = false;\n            this.calledOnce = this.callCount == 1;\n            this.calledTwice = this.callCount == 2;\n            this.calledThrice = this.callCount == 3;\n        }\n\n        function createCallProperties() {\n            this.firstCall = this.getCall(0);\n            this.secondCall = this.getCall(1);\n            this.thirdCall = this.getCall(2);\n            this.lastCall = this.getCall(this.callCount - 1);\n        }\n\n        var vars = \"a,b,c,d,e,f,g,h,i,j,k,l\";\n        function createProxy(func, proxyLength) {\n            // Retain the function length:\n            var p;\n            if (proxyLength) {\n                eval(\"p = (function proxy(\" + vars.substring(0, proxyLength * 2 - 1) +\n                    \") { return p.invoke(func, this, slice.call(arguments)); });\");\n            } else {\n                p = function proxy() {\n                    return p.invoke(func, this, slice.call(arguments));\n                };\n            }\n            return p;\n        }\n\n        var uuid = 0;\n\n        // Public API\n        var spyApi = {\n            reset: function () {\n                if (this.invoking) {\n                    var err = new Error(\"Cannot reset Sinon function while invoking it. \" +\n                                        \"Move the call to .reset outside of the callback.\");\n                    err.name = \"InvalidResetException\";\n                    throw err;\n                }\n\n                this.called = false;\n                this.notCalled = true;\n                this.calledOnce = false;\n                this.calledTwice = false;\n                this.calledThrice = false;\n                this.callCount = 0;\n                this.firstCall = null;\n                this.secondCall = null;\n                this.thirdCall = null;\n                this.lastCall = null;\n                this.args = [];\n                this.returnValues = [];\n                this.thisValues = [];\n                this.exceptions = [];\n                this.callIds = [];\n                if (this.fakes) {\n                    for (var i = 0; i < this.fakes.length; i++) {\n                        this.fakes[i].reset();\n                    }\n                }\n\n                return this;\n            },\n\n            create: function create(func, spyLength) {\n                var name;\n\n                if (typeof func != \"function\") {\n                    func = function () { };\n                } else {\n                    name = sinon.functionName(func);\n                }\n\n                if (!spyLength) {\n                    spyLength = func.length;\n                }\n\n                var proxy = createProxy(func, spyLength);\n\n                sinon.extend(proxy, spy);\n                delete proxy.create;\n                sinon.extend(proxy, func);\n\n                proxy.reset();\n                proxy.prototype = func.prototype;\n                proxy.displayName = name || \"spy\";\n                proxy.toString = sinon.functionToString;\n                proxy.instantiateFake = sinon.spy.create;\n                proxy.id = \"spy#\" + uuid++;\n\n                return proxy;\n            },\n\n            invoke: function invoke(func, thisValue, args) {\n                var matching = matchingFake(this.fakes, args);\n                var exception, returnValue;\n\n                incrementCallCount.call(this);\n                push.call(this.thisValues, thisValue);\n                push.call(this.args, args);\n                push.call(this.callIds, callId++);\n\n                // Make call properties available from within the spied function:\n                createCallProperties.call(this);\n\n                try {\n                    this.invoking = true;\n\n                    if (matching) {\n                        returnValue = matching.invoke(func, thisValue, args);\n                    } else {\n                        returnValue = (this.func || func).apply(thisValue, args);\n                    }\n\n                    var thisCall = this.getCall(this.callCount - 1);\n                    if (thisCall.calledWithNew() && typeof returnValue !== \"object\") {\n                        returnValue = thisValue;\n                    }\n                } catch (e) {\n                    exception = e;\n                } finally {\n                    delete this.invoking;\n                }\n\n                push.call(this.exceptions, exception);\n                push.call(this.returnValues, returnValue);\n\n                // Make return value and exception available in the calls:\n                createCallProperties.call(this);\n\n                if (exception !== undefined) {\n                    throw exception;\n                }\n\n                return returnValue;\n            },\n\n            named: function named(name) {\n                this.displayName = name;\n                return this;\n            },\n\n            getCall: function getCall(i) {\n                if (i < 0 || i >= this.callCount) {\n                    return null;\n                }\n\n                return sinon.spyCall(this, this.thisValues[i], this.args[i],\n                                        this.returnValues[i], this.exceptions[i],\n                                        this.callIds[i]);\n            },\n\n            getCalls: function () {\n                var calls = [];\n                var i;\n\n                for (i = 0; i < this.callCount; i++) {\n                    calls.push(this.getCall(i));\n                }\n\n                return calls;\n            },\n\n            calledBefore: function calledBefore(spyFn) {\n                if (!this.called) {\n                    return false;\n                }\n\n                if (!spyFn.called) {\n                    return true;\n                }\n\n                return this.callIds[0] < spyFn.callIds[spyFn.callIds.length - 1];\n            },\n\n            calledAfter: function calledAfter(spyFn) {\n                if (!this.called || !spyFn.called) {\n                    return false;\n                }\n\n                return this.callIds[this.callCount - 1] > spyFn.callIds[spyFn.callCount - 1];\n            },\n\n            withArgs: function () {\n                var args = slice.call(arguments);\n\n                if (this.fakes) {\n                    var match = matchingFake(this.fakes, args, true);\n\n                    if (match) {\n                        return match;\n                    }\n                } else {\n                    this.fakes = [];\n                }\n\n                var original = this;\n                var fake = this.instantiateFake();\n                fake.matchingAguments = args;\n                fake.parent = this;\n                push.call(this.fakes, fake);\n\n                fake.withArgs = function () {\n                    return original.withArgs.apply(original, arguments);\n                };\n\n                for (var i = 0; i < this.args.length; i++) {\n                    if (fake.matches(this.args[i])) {\n                        incrementCallCount.call(fake);\n                        push.call(fake.thisValues, this.thisValues[i]);\n                        push.call(fake.args, this.args[i]);\n                        push.call(fake.returnValues, this.returnValues[i]);\n                        push.call(fake.exceptions, this.exceptions[i]);\n                        push.call(fake.callIds, this.callIds[i]);\n                    }\n                }\n                createCallProperties.call(fake);\n\n                return fake;\n            },\n\n            matches: function (args, strict) {\n                var margs = this.matchingAguments;\n\n                if (margs.length <= args.length &&\n                    sinon.deepEqual(margs, args.slice(0, margs.length))) {\n                    return !strict || margs.length == args.length;\n                }\n            },\n\n            printf: function (format) {\n                var spy = this;\n                var args = slice.call(arguments, 1);\n                var formatter;\n\n                return (format || \"\").replace(/%(.)/g, function (match, specifyer) {\n                    formatter = spyApi.formatters[specifyer];\n\n                    if (typeof formatter == \"function\") {\n                        return formatter.call(null, spy, args);\n                    } else if (!isNaN(parseInt(specifyer, 10))) {\n                        return sinon.format(args[specifyer - 1]);\n                    }\n\n                    return \"%\" + specifyer;\n                });\n            }\n        };\n\n        function delegateToCalls(method, matchAny, actual, notCalled) {\n            spyApi[method] = function () {\n                if (!this.called) {\n                    if (notCalled) {\n                        return notCalled.apply(this, arguments);\n                    }\n                    return false;\n                }\n\n                var currentCall;\n                var matches = 0;\n\n                for (var i = 0, l = this.callCount; i < l; i += 1) {\n                    currentCall = this.getCall(i);\n\n                    if (currentCall[actual || method].apply(currentCall, arguments)) {\n                        matches += 1;\n\n                        if (matchAny) {\n                            return true;\n                        }\n                    }\n                }\n\n                return matches === this.callCount;\n            };\n        }\n\n        delegateToCalls(\"calledOn\", true);\n        delegateToCalls(\"alwaysCalledOn\", false, \"calledOn\");\n        delegateToCalls(\"calledWith\", true);\n        delegateToCalls(\"calledWithMatch\", true);\n        delegateToCalls(\"alwaysCalledWith\", false, \"calledWith\");\n        delegateToCalls(\"alwaysCalledWithMatch\", false, \"calledWithMatch\");\n        delegateToCalls(\"calledWithExactly\", true);\n        delegateToCalls(\"alwaysCalledWithExactly\", false, \"calledWithExactly\");\n        delegateToCalls(\"neverCalledWith\", false, \"notCalledWith\",\n            function () { return true; });\n        delegateToCalls(\"neverCalledWithMatch\", false, \"notCalledWithMatch\",\n            function () { return true; });\n        delegateToCalls(\"threw\", true);\n        delegateToCalls(\"alwaysThrew\", false, \"threw\");\n        delegateToCalls(\"returned\", true);\n        delegateToCalls(\"alwaysReturned\", false, \"returned\");\n        delegateToCalls(\"calledWithNew\", true);\n        delegateToCalls(\"alwaysCalledWithNew\", false, \"calledWithNew\");\n        delegateToCalls(\"callArg\", false, \"callArgWith\", function () {\n            throw new Error(this.toString() + \" cannot call arg since it was not yet invoked.\");\n        });\n        spyApi.callArgWith = spyApi.callArg;\n        delegateToCalls(\"callArgOn\", false, \"callArgOnWith\", function () {\n            throw new Error(this.toString() + \" cannot call arg since it was not yet invoked.\");\n        });\n        spyApi.callArgOnWith = spyApi.callArgOn;\n        delegateToCalls(\"yield\", false, \"yield\", function () {\n            throw new Error(this.toString() + \" cannot yield since it was not yet invoked.\");\n        });\n        // \"invokeCallback\" is an alias for \"yield\" since \"yield\" is invalid in strict mode.\n        spyApi.invokeCallback = spyApi.yield;\n        delegateToCalls(\"yieldOn\", false, \"yieldOn\", function () {\n            throw new Error(this.toString() + \" cannot yield since it was not yet invoked.\");\n        });\n        delegateToCalls(\"yieldTo\", false, \"yieldTo\", function (property) {\n            throw new Error(this.toString() + \" cannot yield to '\" + property +\n                \"' since it was not yet invoked.\");\n        });\n        delegateToCalls(\"yieldToOn\", false, \"yieldToOn\", function (property) {\n            throw new Error(this.toString() + \" cannot yield to '\" + property +\n                \"' since it was not yet invoked.\");\n        });\n\n        spyApi.formatters = {\n            c: function (spy) {\n                return sinon.timesInWords(spy.callCount);\n            },\n\n            n: function (spy) {\n                return spy.toString();\n            },\n\n            C: function (spy) {\n                var calls = [];\n\n                for (var i = 0, l = spy.callCount; i < l; ++i) {\n                    var stringifiedCall = \"    \" + spy.getCall(i).toString();\n                    if (/\\n/.test(calls[i - 1])) {\n                        stringifiedCall = \"\\n\" + stringifiedCall;\n                    }\n                    push.call(calls, stringifiedCall);\n                }\n\n                return calls.length > 0 ? \"\\n\" + calls.join(\"\\n\") : \"\";\n            },\n\n            t: function (spy) {\n                var objects = [];\n\n                for (var i = 0, l = spy.callCount; i < l; ++i) {\n                    push.call(objects, sinon.format(spy.thisValues[i]));\n                }\n\n                return objects.join(\", \");\n            },\n\n            \"*\": function (spy, args) {\n                var formatted = [];\n\n                for (var i = 0, l = args.length; i < l; ++i) {\n                    push.call(formatted, sinon.format(args[i]));\n                }\n\n                return formatted.join(\", \");\n            }\n        };\n\n        sinon.extend(spy, spyApi);\n\n        spy.spyCall = sinon.spyCall;\n        sinon.spy = spy;\n\n        return spy;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./call\");\n        require(\"./extend\");\n        require(\"./times_in_words\");\n        require(\"./format\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n * @depend extend.js\n */\n/**\n * Stub behavior\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @author Tim Fischbach (mail@timfischbach.de)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    var slice = Array.prototype.slice;\n    var join = Array.prototype.join;\n    var useLeftMostCallback = -1;\n    var useRightMostCallback = -2;\n\n    var nextTick = (function () {\n        if (typeof process === \"object\" && typeof process.nextTick === \"function\") {\n            return process.nextTick;\n        } else if (typeof setImmediate === \"function\") {\n            return setImmediate;\n        } else {\n            return function (callback) {\n                setTimeout(callback, 0);\n            };\n        }\n    })();\n\n    function throwsException(error, message) {\n        if (typeof error == \"string\") {\n            this.exception = new Error(message || \"\");\n            this.exception.name = error;\n        } else if (!error) {\n            this.exception = new Error(\"Error\");\n        } else {\n            this.exception = error;\n        }\n\n        return this;\n    }\n\n    function getCallback(behavior, args) {\n        var callArgAt = behavior.callArgAt;\n\n        if (callArgAt >= 0) {\n            return args[callArgAt];\n        }\n\n        var argumentList;\n\n        if (callArgAt === useLeftMostCallback) {\n            argumentList = args;\n        }\n\n        if (callArgAt === useRightMostCallback) {\n            argumentList = slice.call(args).reverse();\n        }\n\n        var callArgProp = behavior.callArgProp;\n\n        for (var i = 0, l = argumentList.length; i < l; ++i) {\n            if (!callArgProp && typeof argumentList[i] == \"function\") {\n                return argumentList[i];\n            }\n\n            if (callArgProp && argumentList[i] &&\n                typeof argumentList[i][callArgProp] == \"function\") {\n                return argumentList[i][callArgProp];\n            }\n        }\n\n        return null;\n    }\n\n    function makeApi(sinon) {\n        function getCallbackError(behavior, func, args) {\n            if (behavior.callArgAt < 0) {\n                var msg;\n\n                if (behavior.callArgProp) {\n                    msg = sinon.functionName(behavior.stub) +\n                        \" expected to yield to '\" + behavior.callArgProp +\n                        \"', but no object with such a property was passed.\";\n                } else {\n                    msg = sinon.functionName(behavior.stub) +\n                        \" expected to yield, but no callback was passed.\";\n                }\n\n                if (args.length > 0) {\n                    msg += \" Received [\" + join.call(args, \", \") + \"]\";\n                }\n\n                return msg;\n            }\n\n            return \"argument at index \" + behavior.callArgAt + \" is not a function: \" + func;\n        }\n\n        function callCallback(behavior, args) {\n            if (typeof behavior.callArgAt == \"number\") {\n                var func = getCallback(behavior, args);\n\n                if (typeof func != \"function\") {\n                    throw new TypeError(getCallbackError(behavior, func, args));\n                }\n\n                if (behavior.callbackAsync) {\n                    nextTick(function () {\n                        func.apply(behavior.callbackContext, behavior.callbackArguments);\n                    });\n                } else {\n                    func.apply(behavior.callbackContext, behavior.callbackArguments);\n                }\n            }\n        }\n\n        var proto = {\n            create: function create(stub) {\n                var behavior = sinon.extend({}, sinon.behavior);\n                delete behavior.create;\n                behavior.stub = stub;\n\n                return behavior;\n            },\n\n            isPresent: function isPresent() {\n                return (typeof this.callArgAt == \"number\" ||\n                        this.exception ||\n                        typeof this.returnArgAt == \"number\" ||\n                        this.returnThis ||\n                        this.returnValueDefined);\n            },\n\n            invoke: function invoke(context, args) {\n                callCallback(this, args);\n\n                if (this.exception) {\n                    throw this.exception;\n                } else if (typeof this.returnArgAt == \"number\") {\n                    return args[this.returnArgAt];\n                } else if (this.returnThis) {\n                    return context;\n                }\n\n                return this.returnValue;\n            },\n\n            onCall: function onCall(index) {\n                return this.stub.onCall(index);\n            },\n\n            onFirstCall: function onFirstCall() {\n                return this.stub.onFirstCall();\n            },\n\n            onSecondCall: function onSecondCall() {\n                return this.stub.onSecondCall();\n            },\n\n            onThirdCall: function onThirdCall() {\n                return this.stub.onThirdCall();\n            },\n\n            withArgs: function withArgs(/* arguments */) {\n                throw new Error(\"Defining a stub by invoking \\\"stub.onCall(...).withArgs(...)\\\" is not supported. \" +\n                                \"Use \\\"stub.withArgs(...).onCall(...)\\\" to define sequential behavior for calls with certain arguments.\");\n            },\n\n            callsArg: function callsArg(pos) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n\n                this.callArgAt = pos;\n                this.callbackArguments = [];\n                this.callbackContext = undefined;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            callsArgOn: function callsArgOn(pos, context) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n                if (typeof context != \"object\") {\n                    throw new TypeError(\"argument context is not an object\");\n                }\n\n                this.callArgAt = pos;\n                this.callbackArguments = [];\n                this.callbackContext = context;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            callsArgWith: function callsArgWith(pos) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n\n                this.callArgAt = pos;\n                this.callbackArguments = slice.call(arguments, 1);\n                this.callbackContext = undefined;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            callsArgOnWith: function callsArgWith(pos, context) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n                if (typeof context != \"object\") {\n                    throw new TypeError(\"argument context is not an object\");\n                }\n\n                this.callArgAt = pos;\n                this.callbackArguments = slice.call(arguments, 2);\n                this.callbackContext = context;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yields: function () {\n                this.callArgAt = useLeftMostCallback;\n                this.callbackArguments = slice.call(arguments, 0);\n                this.callbackContext = undefined;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yieldsRight: function () {\n                this.callArgAt = useRightMostCallback;\n                this.callbackArguments = slice.call(arguments, 0);\n                this.callbackContext = undefined;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yieldsOn: function (context) {\n                if (typeof context != \"object\") {\n                    throw new TypeError(\"argument context is not an object\");\n                }\n\n                this.callArgAt = useLeftMostCallback;\n                this.callbackArguments = slice.call(arguments, 1);\n                this.callbackContext = context;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yieldsTo: function (prop) {\n                this.callArgAt = useLeftMostCallback;\n                this.callbackArguments = slice.call(arguments, 1);\n                this.callbackContext = undefined;\n                this.callArgProp = prop;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yieldsToOn: function (prop, context) {\n                if (typeof context != \"object\") {\n                    throw new TypeError(\"argument context is not an object\");\n                }\n\n                this.callArgAt = useLeftMostCallback;\n                this.callbackArguments = slice.call(arguments, 2);\n                this.callbackContext = context;\n                this.callArgProp = prop;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            throws: throwsException,\n            throwsException: throwsException,\n\n            returns: function returns(value) {\n                this.returnValue = value;\n                this.returnValueDefined = true;\n\n                return this;\n            },\n\n            returnsArg: function returnsArg(pos) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n\n                this.returnArgAt = pos;\n\n                return this;\n            },\n\n            returnsThis: function returnsThis() {\n                this.returnThis = true;\n\n                return this;\n            }\n        };\n\n        // create asynchronous versions of callsArg* and yields* methods\n        for (var method in proto) {\n            // need to avoid creating anotherasync versions of the newly added async methods\n            if (proto.hasOwnProperty(method) &&\n                method.match(/^(callsArg|yields)/) &&\n                !method.match(/Async/)) {\n                proto[method + \"Async\"] = (function (syncFnName) {\n                    return function () {\n                        var result = this[syncFnName].apply(this, arguments);\n                        this.callbackAsync = true;\n                        return result;\n                    };\n                })(method);\n            }\n        }\n\n        sinon.behavior = proto;\n        return proto;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./extend\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n * @depend extend.js\n * @depend spy.js\n * @depend behavior.js\n */\n/**\n * Stub functions\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        function stub(object, property, func) {\n            if (!!func && typeof func != \"function\" && typeof func != \"object\") {\n                throw new TypeError(\"Custom stub should be a function or a property descriptor\");\n            }\n\n            var wrapper;\n\n            if (func) {\n                if (typeof func == \"function\") {\n                    wrapper = sinon.spy && sinon.spy.create ? sinon.spy.create(func) : func;\n                } else {\n                    wrapper = func;\n                    if (sinon.spy && sinon.spy.create) {\n                        var types = sinon.objectKeys(wrapper);\n                        for (var i = 0; i < types.length; i++) {\n                            wrapper[types[i]] = sinon.spy.create(wrapper[types[i]]);\n                        }\n                    }\n                }\n            } else {\n                var stubLength = 0;\n                if (typeof object == \"object\" && typeof object[property] == \"function\") {\n                    stubLength = object[property].length;\n                }\n                wrapper = stub.create(stubLength);\n            }\n\n            if (!object && typeof property === \"undefined\") {\n                return sinon.stub.create();\n            }\n\n            if (typeof property === \"undefined\" && typeof object == \"object\") {\n                for (var prop in object) {\n                    if (typeof object[prop] === \"function\") {\n                        stub(object, prop);\n                    }\n                }\n\n                return object;\n            }\n\n            return sinon.wrapMethod(object, property, wrapper);\n        }\n\n        function getDefaultBehavior(stub) {\n            return stub.defaultBehavior || getParentBehaviour(stub) || sinon.behavior.create(stub);\n        }\n\n        function getParentBehaviour(stub) {\n            return (stub.parent && getCurrentBehavior(stub.parent));\n        }\n\n        function getCurrentBehavior(stub) {\n            var behavior = stub.behaviors[stub.callCount - 1];\n            return behavior && behavior.isPresent() ? behavior : getDefaultBehavior(stub);\n        }\n\n        var uuid = 0;\n\n        var proto = {\n            create: function create(stubLength) {\n                var functionStub = function () {\n                    return getCurrentBehavior(functionStub).invoke(this, arguments);\n                };\n\n                functionStub.id = \"stub#\" + uuid++;\n                var orig = functionStub;\n                functionStub = sinon.spy.create(functionStub, stubLength);\n                functionStub.func = orig;\n\n                sinon.extend(functionStub, stub);\n                functionStub.instantiateFake = sinon.stub.create;\n                functionStub.displayName = \"stub\";\n                functionStub.toString = sinon.functionToString;\n\n                functionStub.defaultBehavior = null;\n                functionStub.behaviors = [];\n\n                return functionStub;\n            },\n\n            resetBehavior: function () {\n                var i;\n\n                this.defaultBehavior = null;\n                this.behaviors = [];\n\n                delete this.returnValue;\n                delete this.returnArgAt;\n                this.returnThis = false;\n\n                if (this.fakes) {\n                    for (i = 0; i < this.fakes.length; i++) {\n                        this.fakes[i].resetBehavior();\n                    }\n                }\n            },\n\n            onCall: function onCall(index) {\n                if (!this.behaviors[index]) {\n                    this.behaviors[index] = sinon.behavior.create(this);\n                }\n\n                return this.behaviors[index];\n            },\n\n            onFirstCall: function onFirstCall() {\n                return this.onCall(0);\n            },\n\n            onSecondCall: function onSecondCall() {\n                return this.onCall(1);\n            },\n\n            onThirdCall: function onThirdCall() {\n                return this.onCall(2);\n            }\n        };\n\n        for (var method in sinon.behavior) {\n            if (sinon.behavior.hasOwnProperty(method) &&\n                !proto.hasOwnProperty(method) &&\n                method != \"create\" &&\n                method != \"withArgs\" &&\n                method != \"invoke\") {\n                proto[method] = (function (behaviorMethod) {\n                    return function () {\n                        this.defaultBehavior = this.defaultBehavior || sinon.behavior.create(this);\n                        this.defaultBehavior[behaviorMethod].apply(this.defaultBehavior, arguments);\n                        return this;\n                    };\n                }(method));\n            }\n        }\n\n        sinon.extend(stub, proto);\n        sinon.stub = stub;\n\n        return stub;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./behavior\");\n        require(\"./spy\");\n        require(\"./extend\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend times_in_words.js\n * @depend util/core.js\n * @depend call.js\n * @depend extend.js\n * @depend match.js\n * @depend spy.js\n * @depend stub.js\n * @depend format.js\n */\n/**\n * Mock functions.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        var push = [].push;\n        var match = sinon.match;\n\n        function mock(object) {\n            if (!object) {\n                return sinon.expectation.create(\"Anonymous mock\");\n            }\n\n            return mock.create(object);\n        }\n\n        function each(collection, callback) {\n            if (!collection) {\n                return;\n            }\n\n            for (var i = 0, l = collection.length; i < l; i += 1) {\n                callback(collection[i]);\n            }\n        }\n\n        sinon.extend(mock, {\n            create: function create(object) {\n                if (!object) {\n                    throw new TypeError(\"object is null\");\n                }\n\n                var mockObject = sinon.extend({}, mock);\n                mockObject.object = object;\n                delete mockObject.create;\n\n                return mockObject;\n            },\n\n            expects: function expects(method) {\n                if (!method) {\n                    throw new TypeError(\"method is falsy\");\n                }\n\n                if (!this.expectations) {\n                    this.expectations = {};\n                    this.proxies = [];\n                }\n\n                if (!this.expectations[method]) {\n                    this.expectations[method] = [];\n                    var mockObject = this;\n\n                    sinon.wrapMethod(this.object, method, function () {\n                        return mockObject.invokeMethod(method, this, arguments);\n                    });\n\n                    push.call(this.proxies, method);\n                }\n\n                var expectation = sinon.expectation.create(method);\n                push.call(this.expectations[method], expectation);\n\n                return expectation;\n            },\n\n            restore: function restore() {\n                var object = this.object;\n\n                each(this.proxies, function (proxy) {\n                    if (typeof object[proxy].restore == \"function\") {\n                        object[proxy].restore();\n                    }\n                });\n            },\n\n            verify: function verify() {\n                var expectations = this.expectations || {};\n                var messages = [], met = [];\n\n                each(this.proxies, function (proxy) {\n                    each(expectations[proxy], function (expectation) {\n                        if (!expectation.met()) {\n                            push.call(messages, expectation.toString());\n                        } else {\n                            push.call(met, expectation.toString());\n                        }\n                    });\n                });\n\n                this.restore();\n\n                if (messages.length > 0) {\n                    sinon.expectation.fail(messages.concat(met).join(\"\\n\"));\n                } else if (met.length > 0) {\n                    sinon.expectation.pass(messages.concat(met).join(\"\\n\"));\n                }\n\n                return true;\n            },\n\n            invokeMethod: function invokeMethod(method, thisValue, args) {\n                var expectations = this.expectations && this.expectations[method];\n                var length = expectations && expectations.length || 0, i;\n\n                for (i = 0; i < length; i += 1) {\n                    if (!expectations[i].met() &&\n                        expectations[i].allowsCall(thisValue, args)) {\n                        return expectations[i].apply(thisValue, args);\n                    }\n                }\n\n                var messages = [], available, exhausted = 0;\n\n                for (i = 0; i < length; i += 1) {\n                    if (expectations[i].allowsCall(thisValue, args)) {\n                        available = available || expectations[i];\n                    } else {\n                        exhausted += 1;\n                    }\n                    push.call(messages, \"    \" + expectations[i].toString());\n                }\n\n                if (exhausted === 0) {\n                    return available.apply(thisValue, args);\n                }\n\n                messages.unshift(\"Unexpected call: \" + sinon.spyCall.toString.call({\n                    proxy: method,\n                    args: args\n                }));\n\n                sinon.expectation.fail(messages.join(\"\\n\"));\n            }\n        });\n\n        var times = sinon.timesInWords;\n        var slice = Array.prototype.slice;\n\n        function callCountInWords(callCount) {\n            if (callCount == 0) {\n                return \"never called\";\n            } else {\n                return \"called \" + times(callCount);\n            }\n        }\n\n        function expectedCallCountInWords(expectation) {\n            var min = expectation.minCalls;\n            var max = expectation.maxCalls;\n\n            if (typeof min == \"number\" && typeof max == \"number\") {\n                var str = times(min);\n\n                if (min != max) {\n                    str = \"at least \" + str + \" and at most \" + times(max);\n                }\n\n                return str;\n            }\n\n            if (typeof min == \"number\") {\n                return \"at least \" + times(min);\n            }\n\n            return \"at most \" + times(max);\n        }\n\n        function receivedMinCalls(expectation) {\n            var hasMinLimit = typeof expectation.minCalls == \"number\";\n            return !hasMinLimit || expectation.callCount >= expectation.minCalls;\n        }\n\n        function receivedMaxCalls(expectation) {\n            if (typeof expectation.maxCalls != \"number\") {\n                return false;\n            }\n\n            return expectation.callCount == expectation.maxCalls;\n        }\n\n        function verifyMatcher(possibleMatcher, arg) {\n            if (match && match.isMatcher(possibleMatcher)) {\n                return possibleMatcher.test(arg);\n            } else {\n                return true;\n            }\n        }\n\n        sinon.expectation = {\n            minCalls: 1,\n            maxCalls: 1,\n\n            create: function create(methodName) {\n                var expectation = sinon.extend(sinon.stub.create(), sinon.expectation);\n                delete expectation.create;\n                expectation.method = methodName;\n\n                return expectation;\n            },\n\n            invoke: function invoke(func, thisValue, args) {\n                this.verifyCallAllowed(thisValue, args);\n\n                return sinon.spy.invoke.apply(this, arguments);\n            },\n\n            atLeast: function atLeast(num) {\n                if (typeof num != \"number\") {\n                    throw new TypeError(\"'\" + num + \"' is not number\");\n                }\n\n                if (!this.limitsSet) {\n                    this.maxCalls = null;\n                    this.limitsSet = true;\n                }\n\n                this.minCalls = num;\n\n                return this;\n            },\n\n            atMost: function atMost(num) {\n                if (typeof num != \"number\") {\n                    throw new TypeError(\"'\" + num + \"' is not number\");\n                }\n\n                if (!this.limitsSet) {\n                    this.minCalls = null;\n                    this.limitsSet = true;\n                }\n\n                this.maxCalls = num;\n\n                return this;\n            },\n\n            never: function never() {\n                return this.exactly(0);\n            },\n\n            once: function once() {\n                return this.exactly(1);\n            },\n\n            twice: function twice() {\n                return this.exactly(2);\n            },\n\n            thrice: function thrice() {\n                return this.exactly(3);\n            },\n\n            exactly: function exactly(num) {\n                if (typeof num != \"number\") {\n                    throw new TypeError(\"'\" + num + \"' is not a number\");\n                }\n\n                this.atLeast(num);\n                return this.atMost(num);\n            },\n\n            met: function met() {\n                return !this.failed && receivedMinCalls(this);\n            },\n\n            verifyCallAllowed: function verifyCallAllowed(thisValue, args) {\n                if (receivedMaxCalls(this)) {\n                    this.failed = true;\n                    sinon.expectation.fail(this.method + \" already called \" + times(this.maxCalls));\n                }\n\n                if (\"expectedThis\" in this && this.expectedThis !== thisValue) {\n                    sinon.expectation.fail(this.method + \" called with \" + thisValue + \" as thisValue, expected \" +\n                        this.expectedThis);\n                }\n\n                if (!(\"expectedArguments\" in this)) {\n                    return;\n                }\n\n                if (!args) {\n                    sinon.expectation.fail(this.method + \" received no arguments, expected \" +\n                        sinon.format(this.expectedArguments));\n                }\n\n                if (args.length < this.expectedArguments.length) {\n                    sinon.expectation.fail(this.method + \" received too few arguments (\" + sinon.format(args) +\n                        \"), expected \" + sinon.format(this.expectedArguments));\n                }\n\n                if (this.expectsExactArgCount &&\n                    args.length != this.expectedArguments.length) {\n                    sinon.expectation.fail(this.method + \" received too many arguments (\" + sinon.format(args) +\n                        \"), expected \" + sinon.format(this.expectedArguments));\n                }\n\n                for (var i = 0, l = this.expectedArguments.length; i < l; i += 1) {\n\n                    if (!verifyMatcher(this.expectedArguments[i], args[i])) {\n                        sinon.expectation.fail(this.method + \" received wrong arguments \" + sinon.format(args) +\n                            \", didn't match \" + this.expectedArguments.toString());\n                    }\n\n                    if (!sinon.deepEqual(this.expectedArguments[i], args[i])) {\n                        sinon.expectation.fail(this.method + \" received wrong arguments \" + sinon.format(args) +\n                            \", expected \" + sinon.format(this.expectedArguments));\n                    }\n                }\n            },\n\n            allowsCall: function allowsCall(thisValue, args) {\n                if (this.met() && receivedMaxCalls(this)) {\n                    return false;\n                }\n\n                if (\"expectedThis\" in this && this.expectedThis !== thisValue) {\n                    return false;\n                }\n\n                if (!(\"expectedArguments\" in this)) {\n                    return true;\n                }\n\n                args = args || [];\n\n                if (args.length < this.expectedArguments.length) {\n                    return false;\n                }\n\n                if (this.expectsExactArgCount &&\n                    args.length != this.expectedArguments.length) {\n                    return false;\n                }\n\n                for (var i = 0, l = this.expectedArguments.length; i < l; i += 1) {\n                    if (!verifyMatcher(this.expectedArguments[i], args[i])) {\n                        return false;\n                    }\n\n                    if (!sinon.deepEqual(this.expectedArguments[i], args[i])) {\n                        return false;\n                    }\n                }\n\n                return true;\n            },\n\n            withArgs: function withArgs() {\n                this.expectedArguments = slice.call(arguments);\n                return this;\n            },\n\n            withExactArgs: function withExactArgs() {\n                this.withArgs.apply(this, arguments);\n                this.expectsExactArgCount = true;\n                return this;\n            },\n\n            on: function on(thisValue) {\n                this.expectedThis = thisValue;\n                return this;\n            },\n\n            toString: function () {\n                var args = (this.expectedArguments || []).slice();\n\n                if (!this.expectsExactArgCount) {\n                    push.call(args, \"[...]\");\n                }\n\n                var callStr = sinon.spyCall.toString.call({\n                    proxy: this.method || \"anonymous mock expectation\",\n                    args: args\n                });\n\n                var message = callStr.replace(\", [...\", \"[, ...\") + \" \" +\n                    expectedCallCountInWords(this);\n\n                if (this.met()) {\n                    return \"Expectation met: \" + message;\n                }\n\n                return \"Expected \" + message + \" (\" +\n                    callCountInWords(this.callCount) + \")\";\n            },\n\n            verify: function verify() {\n                if (!this.met()) {\n                    sinon.expectation.fail(this.toString());\n                } else {\n                    sinon.expectation.pass(this.toString());\n                }\n\n                return true;\n            },\n\n            pass: function pass(message) {\n                sinon.assert.pass(message);\n            },\n\n            fail: function fail(message) {\n                var exception = new Error(message);\n                exception.name = \"ExpectationError\";\n\n                throw exception;\n            }\n        };\n\n        sinon.mock = mock;\n        return mock;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./times_in_words\");\n        require(\"./call\");\n        require(\"./extend\");\n        require(\"./match\");\n        require(\"./spy\");\n        require(\"./stub\");\n        require(\"./format\");\n\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n * @depend spy.js\n * @depend stub.js\n * @depend mock.js\n */\n/**\n * Collections of stubs, spies and mocks.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    var push = [].push;\n    var hasOwnProperty = Object.prototype.hasOwnProperty;\n\n    function getFakes(fakeCollection) {\n        if (!fakeCollection.fakes) {\n            fakeCollection.fakes = [];\n        }\n\n        return fakeCollection.fakes;\n    }\n\n    function each(fakeCollection, method) {\n        var fakes = getFakes(fakeCollection);\n\n        for (var i = 0, l = fakes.length; i < l; i += 1) {\n            if (typeof fakes[i][method] == \"function\") {\n                fakes[i][method]();\n            }\n        }\n    }\n\n    function compact(fakeCollection) {\n        var fakes = getFakes(fakeCollection);\n        var i = 0;\n        while (i < fakes.length) {\n            fakes.splice(i, 1);\n        }\n    }\n\n    function makeApi(sinon) {\n        var collection = {\n            verify: function resolve() {\n                each(this, \"verify\");\n            },\n\n            restore: function restore() {\n                each(this, \"restore\");\n                compact(this);\n            },\n\n            reset: function restore() {\n                each(this, \"reset\");\n            },\n\n            verifyAndRestore: function verifyAndRestore() {\n                var exception;\n\n                try {\n                    this.verify();\n                } catch (e) {\n                    exception = e;\n                }\n\n                this.restore();\n\n                if (exception) {\n                    throw exception;\n                }\n            },\n\n            add: function add(fake) {\n                push.call(getFakes(this), fake);\n                return fake;\n            },\n\n            spy: function spy() {\n                return this.add(sinon.spy.apply(sinon, arguments));\n            },\n\n            stub: function stub(object, property, value) {\n                if (property) {\n                    var original = object[property];\n\n                    if (typeof original != \"function\") {\n                        if (!hasOwnProperty.call(object, property)) {\n                            throw new TypeError(\"Cannot stub non-existent own property \" + property);\n                        }\n\n                        object[property] = value;\n\n                        return this.add({\n                            restore: function () {\n                                object[property] = original;\n                            }\n                        });\n                    }\n                }\n                if (!property && !!object && typeof object == \"object\") {\n                    var stubbedObj = sinon.stub.apply(sinon, arguments);\n\n                    for (var prop in stubbedObj) {\n                        if (typeof stubbedObj[prop] === \"function\") {\n                            this.add(stubbedObj[prop]);\n                        }\n                    }\n\n                    return stubbedObj;\n                }\n\n                return this.add(sinon.stub.apply(sinon, arguments));\n            },\n\n            mock: function mock() {\n                return this.add(sinon.mock.apply(sinon, arguments));\n            },\n\n            inject: function inject(obj) {\n                var col = this;\n\n                obj.spy = function () {\n                    return col.spy.apply(col, arguments);\n                };\n\n                obj.stub = function () {\n                    return col.stub.apply(col, arguments);\n                };\n\n                obj.mock = function () {\n                    return col.mock.apply(col, arguments);\n                };\n\n                return obj;\n            }\n        };\n\n        sinon.collection = collection;\n        return collection;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./mock\");\n        require(\"./spy\");\n        require(\"./stub\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/*global lolex */\n\n/**\n * Fake timer API\n * setTimeout\n * setInterval\n * clearTimeout\n * clearInterval\n * tick\n * reset\n * Date\n *\n * Inspired by jsUnitMockTimeOut from JsUnit\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\nif (typeof sinon == \"undefined\") {\n    var sinon = {};\n}\n\n(function (global) {\n    function makeApi(sinon, lol) {\n        var llx = typeof lolex !== \"undefined\" ? lolex : lol;\n\n        sinon.useFakeTimers = function () {\n            var now, methods = Array.prototype.slice.call(arguments);\n\n            if (typeof methods[0] === \"string\") {\n                now = 0;\n            } else {\n                now = methods.shift();\n            }\n\n            var clock = llx.install(now || 0, methods);\n            clock.restore = clock.uninstall;\n            return clock;\n        };\n\n        sinon.clock = {\n            create: function (now) {\n                return llx.createClock(now);\n            }\n        };\n\n        sinon.timers = {\n            setTimeout: setTimeout,\n            clearTimeout: clearTimeout,\n            setImmediate: (typeof setImmediate !== \"undefined\" ? setImmediate : undefined),\n            clearImmediate: (typeof clearImmediate !== \"undefined\" ? clearImmediate : undefined),\n            setInterval: setInterval,\n            clearInterval: clearInterval,\n            Date: Date\n        };\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, epxorts, module, lolex) {\n        var sinon = require(\"./core\");\n        makeApi(sinon, lolex);\n        module.exports = sinon;\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module, require(\"lolex\"));\n    } else {\n        makeApi(sinon);\n    }\n}(typeof global != \"undefined\" && typeof global !== \"function\" ? global : this));\n\n/**\n * Minimal Event interface implementation\n *\n * Original implementation by Sven Fuchs: https://gist.github.com/995028\n * Modifications and tests by Christian Johansen.\n *\n * @author Sven Fuchs (svenfuchs@artweb-design.de)\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2011 Sven Fuchs, Christian Johansen\n */\n\nif (typeof sinon == \"undefined\") {\n    this.sinon = {};\n}\n\n(function () {\n    var push = [].push;\n\n    function makeApi(sinon) {\n        sinon.Event = function Event(type, bubbles, cancelable, target) {\n            this.initEvent(type, bubbles, cancelable, target);\n        };\n\n        sinon.Event.prototype = {\n            initEvent: function (type, bubbles, cancelable, target) {\n                this.type = type;\n                this.bubbles = bubbles;\n                this.cancelable = cancelable;\n                this.target = target;\n            },\n\n            stopPropagation: function () {},\n\n            preventDefault: function () {\n                this.defaultPrevented = true;\n            }\n        };\n\n        sinon.ProgressEvent = function ProgressEvent(type, progressEventRaw, target) {\n            this.initEvent(type, false, false, target);\n            this.loaded = progressEventRaw.loaded || null;\n            this.total = progressEventRaw.total || null;\n            this.lengthComputable = !!progressEventRaw.total;\n        };\n\n        sinon.ProgressEvent.prototype = new sinon.Event();\n\n        sinon.ProgressEvent.prototype.constructor =  sinon.ProgressEvent;\n\n        sinon.CustomEvent = function CustomEvent(type, customData, target) {\n            this.initEvent(type, false, false, target);\n            this.detail = customData.detail || null;\n        };\n\n        sinon.CustomEvent.prototype = new sinon.Event();\n\n        sinon.CustomEvent.prototype.constructor =  sinon.CustomEvent;\n\n        sinon.EventTarget = {\n            addEventListener: function addEventListener(event, listener) {\n                this.eventListeners = this.eventListeners || {};\n                this.eventListeners[event] = this.eventListeners[event] || [];\n                push.call(this.eventListeners[event], listener);\n            },\n\n            removeEventListener: function removeEventListener(event, listener) {\n                var listeners = this.eventListeners && this.eventListeners[event] || [];\n\n                for (var i = 0, l = listeners.length; i < l; ++i) {\n                    if (listeners[i] == listener) {\n                        return listeners.splice(i, 1);\n                    }\n                }\n            },\n\n            dispatchEvent: function dispatchEvent(event) {\n                var type = event.type;\n                var listeners = this.eventListeners && this.eventListeners[type] || [];\n\n                for (var i = 0; i < listeners.length; i++) {\n                    if (typeof listeners[i] == \"function\") {\n                        listeners[i].call(this, event);\n                    } else {\n                        listeners[i].handleEvent(event);\n                    }\n                }\n\n                return !!event.defaultPrevented;\n            }\n        };\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require) {\n        var sinon = require(\"./core\");\n        makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require);\n    } else {\n        makeApi(sinon);\n    }\n}());\n\n/**\n * @depend util/core.js\n */\n/**\n * Logs errors\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2014 Christian Johansen\n */\n\n(function (sinon) {\n    // cache a reference to setTimeout, so that our reference won't be stubbed out\n    // when using fake timers and errors will still get logged\n    // https://github.com/cjohansen/Sinon.JS/issues/381\n    var realSetTimeout = setTimeout;\n\n    function makeApi(sinon) {\n\n        function log() {}\n\n        function logError(label, err) {\n            var msg = label + \" threw exception: \";\n\n            sinon.log(msg + \"[\" + err.name + \"] \" + err.message);\n\n            if (err.stack) {\n                sinon.log(err.stack);\n            }\n\n            logError.setTimeout(function () {\n                err.message = msg + err.message;\n                throw err;\n            }, 0);\n        };\n\n        // wrap realSetTimeout with something we can stub in tests\n        logError.setTimeout = function (func, timeout) {\n            realSetTimeout(func, timeout);\n        }\n\n        var exports = {};\n        exports.log = sinon.log = log;\n        exports.logError = sinon.logError = logError;\n\n        return exports;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend core.js\n * @depend ../extend.js\n * @depend event.js\n * @depend ../log_error.js\n */\n/**\n * Fake XDomainRequest object\n */\n\nif (typeof sinon == \"undefined\") {\n    this.sinon = {};\n}\n\n// wrapper for global\n(function (global) {\n    var xdr = { XDomainRequest: global.XDomainRequest };\n    xdr.GlobalXDomainRequest = global.XDomainRequest;\n    xdr.supportsXDR = typeof xdr.GlobalXDomainRequest != \"undefined\";\n    xdr.workingXDR = xdr.supportsXDR ? xdr.GlobalXDomainRequest :  false;\n\n    function makeApi(sinon) {\n        sinon.xdr = xdr;\n\n        function FakeXDomainRequest() {\n            this.readyState = FakeXDomainRequest.UNSENT;\n            this.requestBody = null;\n            this.requestHeaders = {};\n            this.status = 0;\n            this.timeout = null;\n\n            if (typeof FakeXDomainRequest.onCreate == \"function\") {\n                FakeXDomainRequest.onCreate(this);\n            }\n        }\n\n        function verifyState(xdr) {\n            if (xdr.readyState !== FakeXDomainRequest.OPENED) {\n                throw new Error(\"INVALID_STATE_ERR\");\n            }\n\n            if (xdr.sendFlag) {\n                throw new Error(\"INVALID_STATE_ERR\");\n            }\n        }\n\n        function verifyRequestSent(xdr) {\n            if (xdr.readyState == FakeXDomainRequest.UNSENT) {\n                throw new Error(\"Request not sent\");\n            }\n            if (xdr.readyState == FakeXDomainRequest.DONE) {\n                throw new Error(\"Request done\");\n            }\n        }\n\n        function verifyResponseBodyType(body) {\n            if (typeof body != \"string\") {\n                var error = new Error(\"Attempted to respond to fake XDomainRequest with \" +\n                                    body + \", which is not a string.\");\n                error.name = \"InvalidBodyException\";\n                throw error;\n            }\n        }\n\n        sinon.extend(FakeXDomainRequest.prototype, sinon.EventTarget, {\n            open: function open(method, url) {\n                this.method = method;\n                this.url = url;\n\n                this.responseText = null;\n                this.sendFlag = false;\n\n                this.readyStateChange(FakeXDomainRequest.OPENED);\n            },\n\n            readyStateChange: function readyStateChange(state) {\n                this.readyState = state;\n                var eventName = \"\";\n                switch (this.readyState) {\n                case FakeXDomainRequest.UNSENT:\n                    break;\n                case FakeXDomainRequest.OPENED:\n                    break;\n                case FakeXDomainRequest.LOADING:\n                    if (this.sendFlag) {\n                        //raise the progress event\n                        eventName = \"onprogress\";\n                    }\n                    break;\n                case FakeXDomainRequest.DONE:\n                    if (this.isTimeout) {\n                        eventName = \"ontimeout\"\n                    } else if (this.errorFlag || (this.status < 200 || this.status > 299)) {\n                        eventName = \"onerror\";\n                    } else {\n                        eventName = \"onload\"\n                    }\n                    break;\n                }\n\n                // raising event (if defined)\n                if (eventName) {\n                    if (typeof this[eventName] == \"function\") {\n                        try {\n                            this[eventName]();\n                        } catch (e) {\n                            sinon.logError(\"Fake XHR \" + eventName + \" handler\", e);\n                        }\n                    }\n                }\n            },\n\n            send: function send(data) {\n                verifyState(this);\n\n                if (!/^(get|head)$/i.test(this.method)) {\n                    this.requestBody = data;\n                }\n                this.requestHeaders[\"Content-Type\"] = \"text/plain;charset=utf-8\";\n\n                this.errorFlag = false;\n                this.sendFlag = true;\n                this.readyStateChange(FakeXDomainRequest.OPENED);\n\n                if (typeof this.onSend == \"function\") {\n                    this.onSend(this);\n                }\n            },\n\n            abort: function abort() {\n                this.aborted = true;\n                this.responseText = null;\n                this.errorFlag = true;\n\n                if (this.readyState > sinon.FakeXDomainRequest.UNSENT && this.sendFlag) {\n                    this.readyStateChange(sinon.FakeXDomainRequest.DONE);\n                    this.sendFlag = false;\n                }\n            },\n\n            setResponseBody: function setResponseBody(body) {\n                verifyRequestSent(this);\n                verifyResponseBodyType(body);\n\n                var chunkSize = this.chunkSize || 10;\n                var index = 0;\n                this.responseText = \"\";\n\n                do {\n                    this.readyStateChange(FakeXDomainRequest.LOADING);\n                    this.responseText += body.substring(index, index + chunkSize);\n                    index += chunkSize;\n                } while (index < body.length);\n\n                this.readyStateChange(FakeXDomainRequest.DONE);\n            },\n\n            respond: function respond(status, contentType, body) {\n                // content-type ignored, since XDomainRequest does not carry this\n                // we keep the same syntax for respond(...) as for FakeXMLHttpRequest to ease\n                // test integration across browsers\n                this.status = typeof status == \"number\" ? status : 200;\n                this.setResponseBody(body || \"\");\n            },\n\n            simulatetimeout: function simulatetimeout() {\n                this.status = 0;\n                this.isTimeout = true;\n                // Access to this should actually throw an error\n                this.responseText = undefined;\n                this.readyStateChange(FakeXDomainRequest.DONE);\n            }\n        });\n\n        sinon.extend(FakeXDomainRequest, {\n            UNSENT: 0,\n            OPENED: 1,\n            LOADING: 3,\n            DONE: 4\n        });\n\n        sinon.useFakeXDomainRequest = function useFakeXDomainRequest() {\n            sinon.FakeXDomainRequest.restore = function restore(keepOnCreate) {\n                if (xdr.supportsXDR) {\n                    global.XDomainRequest = xdr.GlobalXDomainRequest;\n                }\n\n                delete sinon.FakeXDomainRequest.restore;\n\n                if (keepOnCreate !== true) {\n                    delete sinon.FakeXDomainRequest.onCreate;\n                }\n            };\n            if (xdr.supportsXDR) {\n                global.XDomainRequest = sinon.FakeXDomainRequest;\n            }\n            return sinon.FakeXDomainRequest;\n        };\n\n        sinon.FakeXDomainRequest = FakeXDomainRequest;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./core\");\n        require(\"../extend\");\n        require(\"./event\");\n        require(\"../log_error\");\n        makeApi(sinon);\n        module.exports = sinon;\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else {\n        makeApi(sinon);\n    }\n})(this);\n\n/**\n * @depend core.js\n * @depend ../extend.js\n * @depend event.js\n * @depend ../log_error.js\n */\n/**\n * Fake XMLHttpRequest object\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (global) {\n\n    var supportsProgress = typeof ProgressEvent !== \"undefined\";\n    var supportsCustomEvent = typeof CustomEvent !== \"undefined\";\n    var sinonXhr = { XMLHttpRequest: global.XMLHttpRequest };\n    sinonXhr.GlobalXMLHttpRequest = global.XMLHttpRequest;\n    sinonXhr.GlobalActiveXObject = global.ActiveXObject;\n    sinonXhr.supportsActiveX = typeof sinonXhr.GlobalActiveXObject != \"undefined\";\n    sinonXhr.supportsXHR = typeof sinonXhr.GlobalXMLHttpRequest != \"undefined\";\n    sinonXhr.workingXHR = sinonXhr.supportsXHR ? sinonXhr.GlobalXMLHttpRequest : sinonXhr.supportsActiveX\n                                     ? function () { return new sinonXhr.GlobalActiveXObject(\"MSXML2.XMLHTTP.3.0\") } : false;\n    sinonXhr.supportsCORS = sinonXhr.supportsXHR && \"withCredentials\" in (new sinonXhr.GlobalXMLHttpRequest());\n\n    /*jsl:ignore*/\n    var unsafeHeaders = {\n        \"Accept-Charset\": true,\n        \"Accept-Encoding\": true,\n        Connection: true,\n        \"Content-Length\": true,\n        Cookie: true,\n        Cookie2: true,\n        \"Content-Transfer-Encoding\": true,\n        Date: true,\n        Expect: true,\n        Host: true,\n        \"Keep-Alive\": true,\n        Referer: true,\n        TE: true,\n        Trailer: true,\n        \"Transfer-Encoding\": true,\n        Upgrade: true,\n        \"User-Agent\": true,\n        Via: true\n    };\n    /*jsl:end*/\n\n    function FakeXMLHttpRequest() {\n        this.readyState = FakeXMLHttpRequest.UNSENT;\n        this.requestHeaders = {};\n        this.requestBody = null;\n        this.status = 0;\n        this.statusText = \"\";\n        this.upload = new UploadProgress();\n        if (sinonXhr.supportsCORS) {\n            this.withCredentials = false;\n        }\n\n        var xhr = this;\n        var events = [\"loadstart\", \"load\", \"abort\", \"loadend\"];\n\n        function addEventListener(eventName) {\n            xhr.addEventListener(eventName, function (event) {\n                var listener = xhr[\"on\" + eventName];\n\n                if (listener && typeof listener == \"function\") {\n                    listener.call(this, event);\n                }\n            });\n        }\n\n        for (var i = events.length - 1; i >= 0; i--) {\n            addEventListener(events[i]);\n        }\n\n        if (typeof FakeXMLHttpRequest.onCreate == \"function\") {\n            FakeXMLHttpRequest.onCreate(this);\n        }\n    }\n\n    // An upload object is created for each\n    // FakeXMLHttpRequest and allows upload\n    // events to be simulated using uploadProgress\n    // and uploadError.\n    function UploadProgress() {\n        this.eventListeners = {\n            progress: [],\n            load: [],\n            abort: [],\n            error: []\n        }\n    }\n\n    UploadProgress.prototype.addEventListener = function addEventListener(event, listener) {\n        this.eventListeners[event].push(listener);\n    };\n\n    UploadProgress.prototype.removeEventListener = function removeEventListener(event, listener) {\n        var listeners = this.eventListeners[event] || [];\n\n        for (var i = 0, l = listeners.length; i < l; ++i) {\n            if (listeners[i] == listener) {\n                return listeners.splice(i, 1);\n            }\n        }\n    };\n\n    UploadProgress.prototype.dispatchEvent = function dispatchEvent(event) {\n        var listeners = this.eventListeners[event.type] || [];\n\n        for (var i = 0, listener; (listener = listeners[i]) != null; i++) {\n            listener(event);\n        }\n    };\n\n    function verifyState(xhr) {\n        if (xhr.readyState !== FakeXMLHttpRequest.OPENED) {\n            throw new Error(\"INVALID_STATE_ERR\");\n        }\n\n        if (xhr.sendFlag) {\n            throw new Error(\"INVALID_STATE_ERR\");\n        }\n    }\n\n    function getHeader(headers, header) {\n        header = header.toLowerCase();\n\n        for (var h in headers) {\n            if (h.toLowerCase() == header) {\n                return h;\n            }\n        }\n\n        return null;\n    }\n\n    // filtering to enable a white-list version of Sinon FakeXhr,\n    // where whitelisted requests are passed through to real XHR\n    function each(collection, callback) {\n        if (!collection) {\n            return;\n        }\n\n        for (var i = 0, l = collection.length; i < l; i += 1) {\n            callback(collection[i]);\n        }\n    }\n    function some(collection, callback) {\n        for (var index = 0; index < collection.length; index++) {\n            if (callback(collection[index]) === true) {\n                return true;\n            }\n        }\n        return false;\n    }\n    // largest arity in XHR is 5 - XHR#open\n    var apply = function (obj, method, args) {\n        switch (args.length) {\n        case 0: return obj[method]();\n        case 1: return obj[method](args[0]);\n        case 2: return obj[method](args[0], args[1]);\n        case 3: return obj[method](args[0], args[1], args[2]);\n        case 4: return obj[method](args[0], args[1], args[2], args[3]);\n        case 5: return obj[method](args[0], args[1], args[2], args[3], args[4]);\n        }\n    };\n\n    FakeXMLHttpRequest.filters = [];\n    FakeXMLHttpRequest.addFilter = function addFilter(fn) {\n        this.filters.push(fn)\n    };\n    var IE6Re = /MSIE 6/;\n    FakeXMLHttpRequest.defake = function defake(fakeXhr, xhrArgs) {\n        var xhr = new sinonXhr.workingXHR();\n        each([\n            \"open\",\n            \"setRequestHeader\",\n            \"send\",\n            \"abort\",\n            \"getResponseHeader\",\n            \"getAllResponseHeaders\",\n            \"addEventListener\",\n            \"overrideMimeType\",\n            \"removeEventListener\"\n        ], function (method) {\n            fakeXhr[method] = function () {\n                return apply(xhr, method, arguments);\n            };\n        });\n\n        var copyAttrs = function (args) {\n            each(args, function (attr) {\n                try {\n                    fakeXhr[attr] = xhr[attr]\n                } catch (e) {\n                    if (!IE6Re.test(navigator.userAgent)) {\n                        throw e;\n                    }\n                }\n            });\n        };\n\n        var stateChange = function stateChange() {\n            fakeXhr.readyState = xhr.readyState;\n            if (xhr.readyState >= FakeXMLHttpRequest.HEADERS_RECEIVED) {\n                copyAttrs([\"status\", \"statusText\"]);\n            }\n            if (xhr.readyState >= FakeXMLHttpRequest.LOADING) {\n                copyAttrs([\"responseText\", \"response\"]);\n            }\n            if (xhr.readyState === FakeXMLHttpRequest.DONE) {\n                copyAttrs([\"responseXML\"]);\n            }\n            if (fakeXhr.onreadystatechange) {\n                fakeXhr.onreadystatechange.call(fakeXhr, { target: fakeXhr });\n            }\n        };\n\n        if (xhr.addEventListener) {\n            for (var event in fakeXhr.eventListeners) {\n                if (fakeXhr.eventListeners.hasOwnProperty(event)) {\n                    each(fakeXhr.eventListeners[event], function (handler) {\n                        xhr.addEventListener(event, handler);\n                    });\n                }\n            }\n            xhr.addEventListener(\"readystatechange\", stateChange);\n        } else {\n            xhr.onreadystatechange = stateChange;\n        }\n        apply(xhr, \"open\", xhrArgs);\n    };\n    FakeXMLHttpRequest.useFilters = false;\n\n    function verifyRequestOpened(xhr) {\n        if (xhr.readyState != FakeXMLHttpRequest.OPENED) {\n            throw new Error(\"INVALID_STATE_ERR - \" + xhr.readyState);\n        }\n    }\n\n    function verifyRequestSent(xhr) {\n        if (xhr.readyState == FakeXMLHttpRequest.DONE) {\n            throw new Error(\"Request done\");\n        }\n    }\n\n    function verifyHeadersReceived(xhr) {\n        if (xhr.async && xhr.readyState != FakeXMLHttpRequest.HEADERS_RECEIVED) {\n            throw new Error(\"No headers received\");\n        }\n    }\n\n    function verifyResponseBodyType(body) {\n        if (typeof body != \"string\") {\n            var error = new Error(\"Attempted to respond to fake XMLHttpRequest with \" +\n                                 body + \", which is not a string.\");\n            error.name = \"InvalidBodyException\";\n            throw error;\n        }\n    }\n\n    FakeXMLHttpRequest.parseXML = function parseXML(text) {\n        var xmlDoc;\n\n        if (typeof DOMParser != \"undefined\") {\n            var parser = new DOMParser();\n            xmlDoc = parser.parseFromString(text, \"text/xml\");\n        } else {\n            xmlDoc = new ActiveXObject(\"Microsoft.XMLDOM\");\n            xmlDoc.async = \"false\";\n            xmlDoc.loadXML(text);\n        }\n\n        return xmlDoc;\n    };\n\n    FakeXMLHttpRequest.statusCodes = {\n        100: \"Continue\",\n        101: \"Switching Protocols\",\n        200: \"OK\",\n        201: \"Created\",\n        202: \"Accepted\",\n        203: \"Non-Authoritative Information\",\n        204: \"No Content\",\n        205: \"Reset Content\",\n        206: \"Partial Content\",\n        207: \"Multi-Status\",\n        300: \"Multiple Choice\",\n        301: \"Moved Permanently\",\n        302: \"Found\",\n        303: \"See Other\",\n        304: \"Not Modified\",\n        305: \"Use Proxy\",\n        307: \"Temporary Redirect\",\n        400: \"Bad Request\",\n        401: \"Unauthorized\",\n        402: \"Payment Required\",\n        403: \"Forbidden\",\n        404: \"Not Found\",\n        405: \"Method Not Allowed\",\n        406: \"Not Acceptable\",\n        407: \"Proxy Authentication Required\",\n        408: \"Request Timeout\",\n        409: \"Conflict\",\n        410: \"Gone\",\n        411: \"Length Required\",\n        412: \"Precondition Failed\",\n        413: \"Request Entity Too Large\",\n        414: \"Request-URI Too Long\",\n        415: \"Unsupported Media Type\",\n        416: \"Requested Range Not Satisfiable\",\n        417: \"Expectation Failed\",\n        422: \"Unprocessable Entity\",\n        500: \"Internal Server Error\",\n        501: \"Not Implemented\",\n        502: \"Bad Gateway\",\n        503: \"Service Unavailable\",\n        504: \"Gateway Timeout\",\n        505: \"HTTP Version Not Supported\"\n    };\n\n    function makeApi(sinon) {\n        sinon.xhr = sinonXhr;\n\n        sinon.extend(FakeXMLHttpRequest.prototype, sinon.EventTarget, {\n            async: true,\n\n            open: function open(method, url, async, username, password) {\n                this.method = method;\n                this.url = url;\n                this.async = typeof async == \"boolean\" ? async : true;\n                this.username = username;\n                this.password = password;\n                this.responseText = null;\n                this.responseXML = null;\n                this.requestHeaders = {};\n                this.sendFlag = false;\n\n                if (FakeXMLHttpRequest.useFilters === true) {\n                    var xhrArgs = arguments;\n                    var defake = some(FakeXMLHttpRequest.filters, function (filter) {\n                        return filter.apply(this, xhrArgs)\n                    });\n                    if (defake) {\n                        return FakeXMLHttpRequest.defake(this, arguments);\n                    }\n                }\n                this.readyStateChange(FakeXMLHttpRequest.OPENED);\n            },\n\n            readyStateChange: function readyStateChange(state) {\n                this.readyState = state;\n\n                if (typeof this.onreadystatechange == \"function\") {\n                    try {\n                        this.onreadystatechange();\n                    } catch (e) {\n                        sinon.logError(\"Fake XHR onreadystatechange handler\", e);\n                    }\n                }\n\n                this.dispatchEvent(new sinon.Event(\"readystatechange\"));\n\n                switch (this.readyState) {\n                    case FakeXMLHttpRequest.DONE:\n                        this.dispatchEvent(new sinon.Event(\"load\", false, false, this));\n                        this.dispatchEvent(new sinon.Event(\"loadend\", false, false, this));\n                        this.upload.dispatchEvent(new sinon.Event(\"load\", false, false, this));\n                        if (supportsProgress) {\n                            this.upload.dispatchEvent(new sinon.ProgressEvent(\"progress\", {loaded: 100, total: 100}));\n                            this.dispatchEvent(new sinon.ProgressEvent(\"progress\", {loaded: 100, total: 100}));\n                        }\n                        break;\n                }\n            },\n\n            setRequestHeader: function setRequestHeader(header, value) {\n                verifyState(this);\n\n                if (unsafeHeaders[header] || /^(Sec-|Proxy-)/.test(header)) {\n                    throw new Error(\"Refused to set unsafe header \\\"\" + header + \"\\\"\");\n                }\n\n                if (this.requestHeaders[header]) {\n                    this.requestHeaders[header] += \",\" + value;\n                } else {\n                    this.requestHeaders[header] = value;\n                }\n            },\n\n            // Helps testing\n            setResponseHeaders: function setResponseHeaders(headers) {\n                verifyRequestOpened(this);\n                this.responseHeaders = {};\n\n                for (var header in headers) {\n                    if (headers.hasOwnProperty(header)) {\n                        this.responseHeaders[header] = headers[header];\n                    }\n                }\n\n                if (this.async) {\n                    this.readyStateChange(FakeXMLHttpRequest.HEADERS_RECEIVED);\n                } else {\n                    this.readyState = FakeXMLHttpRequest.HEADERS_RECEIVED;\n                }\n            },\n\n            // Currently treats ALL data as a DOMString (i.e. no Document)\n            send: function send(data) {\n                verifyState(this);\n\n                if (!/^(get|head)$/i.test(this.method)) {\n                    var contentType = getHeader(this.requestHeaders, \"Content-Type\");\n                    if (this.requestHeaders[contentType]) {\n                        var value = this.requestHeaders[contentType].split(\";\");\n                        this.requestHeaders[contentType] = value[0] + \";charset=utf-8\";\n                    } else if (!(data instanceof FormData)) {\n                        this.requestHeaders[\"Content-Type\"] = \"text/plain;charset=utf-8\";\n                    }\n\n                    this.requestBody = data;\n                }\n\n                this.errorFlag = false;\n                this.sendFlag = this.async;\n                this.readyStateChange(FakeXMLHttpRequest.OPENED);\n\n                if (typeof this.onSend == \"function\") {\n                    this.onSend(this);\n                }\n\n                this.dispatchEvent(new sinon.Event(\"loadstart\", false, false, this));\n            },\n\n            abort: function abort() {\n                this.aborted = true;\n                this.responseText = null;\n                this.errorFlag = true;\n                this.requestHeaders = {};\n\n                if (this.readyState > FakeXMLHttpRequest.UNSENT && this.sendFlag) {\n                    this.readyStateChange(FakeXMLHttpRequest.DONE);\n                    this.sendFlag = false;\n                }\n\n                this.readyState = FakeXMLHttpRequest.UNSENT;\n\n                this.dispatchEvent(new sinon.Event(\"abort\", false, false, this));\n\n                this.upload.dispatchEvent(new sinon.Event(\"abort\", false, false, this));\n\n                if (typeof this.onerror === \"function\") {\n                    this.onerror();\n                }\n            },\n\n            getResponseHeader: function getResponseHeader(header) {\n                if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) {\n                    return null;\n                }\n\n                if (/^Set-Cookie2?$/i.test(header)) {\n                    return null;\n                }\n\n                header = getHeader(this.responseHeaders, header);\n\n                return this.responseHeaders[header] || null;\n            },\n\n            getAllResponseHeaders: function getAllResponseHeaders() {\n                if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) {\n                    return \"\";\n                }\n\n                var headers = \"\";\n\n                for (var header in this.responseHeaders) {\n                    if (this.responseHeaders.hasOwnProperty(header) &&\n                        !/^Set-Cookie2?$/i.test(header)) {\n                        headers += header + \": \" + this.responseHeaders[header] + \"\\r\\n\";\n                    }\n                }\n\n                return headers;\n            },\n\n            setResponseBody: function setResponseBody(body) {\n                verifyRequestSent(this);\n                verifyHeadersReceived(this);\n                verifyResponseBodyType(body);\n\n                var chunkSize = this.chunkSize || 10;\n                var index = 0;\n                this.responseText = \"\";\n\n                do {\n                    if (this.async) {\n                        this.readyStateChange(FakeXMLHttpRequest.LOADING);\n                    }\n\n                    this.responseText += body.substring(index, index + chunkSize);\n                    index += chunkSize;\n                } while (index < body.length);\n\n                var type = this.getResponseHeader(\"Content-Type\");\n\n                if (this.responseText &&\n                    (!type || /(text\\/xml)|(application\\/xml)|(\\+xml)/.test(type))) {\n                    try {\n                        this.responseXML = FakeXMLHttpRequest.parseXML(this.responseText);\n                    } catch (e) {\n                        // Unable to parse XML - no biggie\n                    }\n                }\n\n                this.readyStateChange(FakeXMLHttpRequest.DONE);\n            },\n\n            respond: function respond(status, headers, body) {\n                this.status = typeof status == \"number\" ? status : 200;\n                this.statusText = FakeXMLHttpRequest.statusCodes[this.status];\n                this.setResponseHeaders(headers || {});\n                this.setResponseBody(body || \"\");\n            },\n\n            uploadProgress: function uploadProgress(progressEventRaw) {\n                if (supportsProgress) {\n                    this.upload.dispatchEvent(new sinon.ProgressEvent(\"progress\", progressEventRaw));\n                }\n            },\n\n            downloadProgress: function downloadProgress(progressEventRaw) {\n                if (supportsProgress) {\n                    this.dispatchEvent(new sinon.ProgressEvent(\"progress\", progressEventRaw));\n                }\n            },\n\n            uploadError: function uploadError(error) {\n                if (supportsCustomEvent) {\n                    this.upload.dispatchEvent(new sinon.CustomEvent(\"error\", {detail: error}));\n                }\n            }\n        });\n\n        sinon.extend(FakeXMLHttpRequest, {\n            UNSENT: 0,\n            OPENED: 1,\n            HEADERS_RECEIVED: 2,\n            LOADING: 3,\n            DONE: 4\n        });\n\n        sinon.useFakeXMLHttpRequest = function () {\n            FakeXMLHttpRequest.restore = function restore(keepOnCreate) {\n                if (sinonXhr.supportsXHR) {\n                    global.XMLHttpRequest = sinonXhr.GlobalXMLHttpRequest;\n                }\n\n                if (sinonXhr.supportsActiveX) {\n                    global.ActiveXObject = sinonXhr.GlobalActiveXObject;\n                }\n\n                delete FakeXMLHttpRequest.restore;\n\n                if (keepOnCreate !== true) {\n                    delete FakeXMLHttpRequest.onCreate;\n                }\n            };\n            if (sinonXhr.supportsXHR) {\n                global.XMLHttpRequest = FakeXMLHttpRequest;\n            }\n\n            if (sinonXhr.supportsActiveX) {\n                global.ActiveXObject = function ActiveXObject(objId) {\n                    if (objId == \"Microsoft.XMLHTTP\" || /^Msxml2\\.XMLHTTP/i.test(objId)) {\n\n                        return new FakeXMLHttpRequest();\n                    }\n\n                    return new sinonXhr.GlobalActiveXObject(objId);\n                };\n            }\n\n            return FakeXMLHttpRequest;\n        };\n\n        sinon.FakeXMLHttpRequest = FakeXMLHttpRequest;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./core\");\n        require(\"../extend\");\n        require(\"./event\");\n        require(\"../log_error\");\n        makeApi(sinon);\n        module.exports = sinon;\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (typeof sinon === \"undefined\") {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n\n})(typeof global !== \"undefined\" ? global : this);\n\n/**\n * @depend fake_xdomain_request.js\n * @depend fake_xml_http_request.js\n * @depend ../format.js\n * @depend ../log_error.js\n */\n/**\n * The Sinon \"server\" mimics a web server that receives requests from\n * sinon.FakeXMLHttpRequest and provides an API to respond to those requests,\n * both synchronously and asynchronously. To respond synchronuously, canned\n * answers have to be provided upfront.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\nif (typeof sinon == \"undefined\") {\n    var sinon = {};\n}\n\n(function () {\n    var push = [].push;\n    function F() {}\n\n    function create(proto) {\n        F.prototype = proto;\n        return new F();\n    }\n\n    function responseArray(handler) {\n        var response = handler;\n\n        if (Object.prototype.toString.call(handler) != \"[object Array]\") {\n            response = [200, {}, handler];\n        }\n\n        if (typeof response[2] != \"string\") {\n            throw new TypeError(\"Fake server response body should be string, but was \" +\n                                typeof response[2]);\n        }\n\n        return response;\n    }\n\n    var wloc = typeof window !== \"undefined\" ? window.location : {};\n    var rCurrLoc = new RegExp(\"^\" + wloc.protocol + \"//\" + wloc.host);\n\n    function matchOne(response, reqMethod, reqUrl) {\n        var rmeth = response.method;\n        var matchMethod = !rmeth || rmeth.toLowerCase() == reqMethod.toLowerCase();\n        var url = response.url;\n        var matchUrl = !url || url == reqUrl || (typeof url.test == \"function\" && url.test(reqUrl));\n\n        return matchMethod && matchUrl;\n    }\n\n    function match(response, request) {\n        var requestUrl = request.url;\n\n        if (!/^https?:\\/\\//.test(requestUrl) || rCurrLoc.test(requestUrl)) {\n            requestUrl = requestUrl.replace(rCurrLoc, \"\");\n        }\n\n        if (matchOne(response, this.getHTTPMethod(request), requestUrl)) {\n            if (typeof response.response == \"function\") {\n                var ru = response.url;\n                var args = [request].concat(ru && typeof ru.exec == \"function\" ? ru.exec(requestUrl).slice(1) : []);\n                return response.response.apply(response, args);\n            }\n\n            return true;\n        }\n\n        return false;\n    }\n\n    function makeApi(sinon) {\n        sinon.fakeServer = {\n            create: function () {\n                var server = create(this);\n                if (!sinon.xhr.supportsCORS) {\n                    this.xhr = sinon.useFakeXDomainRequest();\n                } else {\n                    this.xhr = sinon.useFakeXMLHttpRequest();\n                }\n                server.requests = [];\n\n                this.xhr.onCreate = function (xhrObj) {\n                    server.addRequest(xhrObj);\n                };\n\n                return server;\n            },\n\n            addRequest: function addRequest(xhrObj) {\n                var server = this;\n                push.call(this.requests, xhrObj);\n\n                xhrObj.onSend = function () {\n                    server.handleRequest(this);\n\n                    if (server.respondImmediately) {\n                        server.respond();\n                    } else if (server.autoRespond && !server.responding) {\n                        setTimeout(function () {\n                            server.responding = false;\n                            server.respond();\n                        }, server.autoRespondAfter || 10);\n\n                        server.responding = true;\n                    }\n                };\n            },\n\n            getHTTPMethod: function getHTTPMethod(request) {\n                if (this.fakeHTTPMethods && /post/i.test(request.method)) {\n                    var matches = (request.requestBody || \"\").match(/_method=([^\\b;]+)/);\n                    return !!matches ? matches[1] : request.method;\n                }\n\n                return request.method;\n            },\n\n            handleRequest: function handleRequest(xhr) {\n                if (xhr.async) {\n                    if (!this.queue) {\n                        this.queue = [];\n                    }\n\n                    push.call(this.queue, xhr);\n                } else {\n                    this.processRequest(xhr);\n                }\n            },\n\n            log: function log(response, request) {\n                var str;\n\n                str =  \"Request:\\n\"  + sinon.format(request)  + \"\\n\\n\";\n                str += \"Response:\\n\" + sinon.format(response) + \"\\n\\n\";\n\n                sinon.log(str);\n            },\n\n            respondWith: function respondWith(method, url, body) {\n                if (arguments.length == 1 && typeof method != \"function\") {\n                    this.response = responseArray(method);\n                    return;\n                }\n\n                if (!this.responses) { this.responses = []; }\n\n                if (arguments.length == 1) {\n                    body = method;\n                    url = method = null;\n                }\n\n                if (arguments.length == 2) {\n                    body = url;\n                    url = method;\n                    method = null;\n                }\n\n                push.call(this.responses, {\n                    method: method,\n                    url: url,\n                    response: typeof body == \"function\" ? body : responseArray(body)\n                });\n            },\n\n            respond: function respond() {\n                if (arguments.length > 0) {\n                    this.respondWith.apply(this, arguments);\n                }\n\n                var queue = this.queue || [];\n                var requests = queue.splice(0, queue.length);\n                var request;\n\n                while (request = requests.shift()) {\n                    this.processRequest(request);\n                }\n            },\n\n            processRequest: function processRequest(request) {\n                try {\n                    if (request.aborted) {\n                        return;\n                    }\n\n                    var response = this.response || [404, {}, \"\"];\n\n                    if (this.responses) {\n                        for (var l = this.responses.length, i = l - 1; i >= 0; i--) {\n                            if (match.call(this, this.responses[i], request)) {\n                                response = this.responses[i].response;\n                                break;\n                            }\n                        }\n                    }\n\n                    if (request.readyState != 4) {\n                        this.log(response, request);\n\n                        request.respond(response[0], response[1], response[2]);\n                    }\n                } catch (e) {\n                    sinon.logError(\"Fake server request processing\", e);\n                }\n            },\n\n            restore: function restore() {\n                return this.xhr.restore && this.xhr.restore.apply(this.xhr, arguments);\n            }\n        };\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./core\");\n        require(\"./fake_xdomain_request\");\n        require(\"./fake_xml_http_request\");\n        require(\"../format\");\n        makeApi(sinon);\n        module.exports = sinon;\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else {\n        makeApi(sinon);\n    }\n}());\n\n/**\n * @depend fake_server.js\n * @depend fake_timers.js\n */\n/**\n * Add-on for sinon.fakeServer that automatically handles a fake timer along with\n * the FakeXMLHttpRequest. The direct inspiration for this add-on is jQuery\n * 1.3.x, which does not use xhr object's onreadystatehandler at all - instead,\n * it polls the object for completion with setInterval. Dispite the direct\n * motivation, there is nothing jQuery-specific in this file, so it can be used\n * in any environment where the ajax implementation depends on setInterval or\n * setTimeout.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function () {\n    function makeApi(sinon) {\n        function Server() {}\n        Server.prototype = sinon.fakeServer;\n\n        sinon.fakeServerWithClock = new Server();\n\n        sinon.fakeServerWithClock.addRequest = function addRequest(xhr) {\n            if (xhr.async) {\n                if (typeof setTimeout.clock == \"object\") {\n                    this.clock = setTimeout.clock;\n                } else {\n                    this.clock = sinon.useFakeTimers();\n                    this.resetClock = true;\n                }\n\n                if (!this.longestTimeout) {\n                    var clockSetTimeout = this.clock.setTimeout;\n                    var clockSetInterval = this.clock.setInterval;\n                    var server = this;\n\n                    this.clock.setTimeout = function (fn, timeout) {\n                        server.longestTimeout = Math.max(timeout, server.longestTimeout || 0);\n\n                        return clockSetTimeout.apply(this, arguments);\n                    };\n\n                    this.clock.setInterval = function (fn, timeout) {\n                        server.longestTimeout = Math.max(timeout, server.longestTimeout || 0);\n\n                        return clockSetInterval.apply(this, arguments);\n                    };\n                }\n            }\n\n            return sinon.fakeServer.addRequest.call(this, xhr);\n        };\n\n        sinon.fakeServerWithClock.respond = function respond() {\n            var returnVal = sinon.fakeServer.respond.apply(this, arguments);\n\n            if (this.clock) {\n                this.clock.tick(this.longestTimeout || 0);\n                this.longestTimeout = 0;\n\n                if (this.resetClock) {\n                    this.clock.restore();\n                    this.resetClock = false;\n                }\n            }\n\n            return returnVal;\n        };\n\n        sinon.fakeServerWithClock.restore = function restore() {\n            if (this.clock) {\n                this.clock.restore();\n            }\n\n            return sinon.fakeServer.restore.apply(this, arguments);\n        };\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require) {\n        var sinon = require(\"./core\");\n        require(\"./fake_server\");\n        require(\"./fake_timers\");\n        makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require);\n    } else {\n        makeApi(sinon);\n    }\n}());\n\n/**\n * @depend util/core.js\n * @depend extend.js\n * @depend collection.js\n * @depend util/fake_timers.js\n * @depend util/fake_server_with_clock.js\n */\n/**\n * Manages fake collections as well as fake utilities such as Sinon's\n * timers and fake XHR implementation in one convenient object.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function () {\n    function makeApi(sinon) {\n        var push = [].push;\n\n        function exposeValue(sandbox, config, key, value) {\n            if (!value) {\n                return;\n            }\n\n            if (config.injectInto && !(key in config.injectInto)) {\n                config.injectInto[key] = value;\n                sandbox.injectedKeys.push(key);\n            } else {\n                push.call(sandbox.args, value);\n            }\n        }\n\n        function prepareSandboxFromConfig(config) {\n            var sandbox = sinon.create(sinon.sandbox);\n\n            if (config.useFakeServer) {\n                if (typeof config.useFakeServer == \"object\") {\n                    sandbox.serverPrototype = config.useFakeServer;\n                }\n\n                sandbox.useFakeServer();\n            }\n\n            if (config.useFakeTimers) {\n                if (typeof config.useFakeTimers == \"object\") {\n                    sandbox.useFakeTimers.apply(sandbox, config.useFakeTimers);\n                } else {\n                    sandbox.useFakeTimers();\n                }\n            }\n\n            return sandbox;\n        }\n\n        sinon.sandbox = sinon.extend(sinon.create(sinon.collection), {\n            useFakeTimers: function useFakeTimers() {\n                this.clock = sinon.useFakeTimers.apply(sinon, arguments);\n\n                return this.add(this.clock);\n            },\n\n            serverPrototype: sinon.fakeServer,\n\n            useFakeServer: function useFakeServer() {\n                var proto = this.serverPrototype || sinon.fakeServer;\n\n                if (!proto || !proto.create) {\n                    return null;\n                }\n\n                this.server = proto.create();\n                return this.add(this.server);\n            },\n\n            inject: function (obj) {\n                sinon.collection.inject.call(this, obj);\n\n                if (this.clock) {\n                    obj.clock = this.clock;\n                }\n\n                if (this.server) {\n                    obj.server = this.server;\n                    obj.requests = this.server.requests;\n                }\n\n                obj.match = sinon.match;\n\n                return obj;\n            },\n\n            restore: function () {\n                sinon.collection.restore.apply(this, arguments);\n                this.restoreContext();\n            },\n\n            restoreContext: function () {\n                if (this.injectedKeys) {\n                    for (var i = 0, j = this.injectedKeys.length; i < j; i++) {\n                        delete this.injectInto[this.injectedKeys[i]];\n                    }\n                    this.injectedKeys = [];\n                }\n            },\n\n            create: function (config) {\n                if (!config) {\n                    return sinon.create(sinon.sandbox);\n                }\n\n                var sandbox = prepareSandboxFromConfig(config);\n                sandbox.args = sandbox.args || [];\n                sandbox.injectedKeys = [];\n                sandbox.injectInto = config.injectInto;\n                var prop, value, exposed = sandbox.inject({});\n\n                if (config.properties) {\n                    for (var i = 0, l = config.properties.length; i < l; i++) {\n                        prop = config.properties[i];\n                        value = exposed[prop] || prop == \"sandbox\" && sandbox;\n                        exposeValue(sandbox, config, prop, value);\n                    }\n                } else {\n                    exposeValue(sandbox, config, \"sandbox\", value);\n                }\n\n                return sandbox;\n            },\n\n            match: sinon.match\n        });\n\n        sinon.sandbox.useFakeXMLHttpRequest = sinon.sandbox.useFakeServer;\n\n        return sinon.sandbox;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./extend\");\n        require(\"./util/fake_server_with_clock\");\n        require(\"./util/fake_timers\");\n        require(\"./collection\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}());\n\n/**\n * @depend util/core.js\n * @depend sandbox.js\n */\n/**\n * Test function, sandboxes fakes\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        var slice = Array.prototype.slice;\n\n        function test(callback) {\n            var type = typeof callback;\n\n            if (type != \"function\") {\n                throw new TypeError(\"sinon.test needs to wrap a test function, got \" + type);\n            }\n\n            function sinonSandboxedTest() {\n                var config = sinon.getConfig(sinon.config);\n                config.injectInto = config.injectIntoThis && this || config.injectInto;\n                var sandbox = sinon.sandbox.create(config);\n                var args = slice.call(arguments);\n                var oldDone = args.length && args[args.length - 1];\n                var exception, result;\n\n                if (typeof oldDone == \"function\") {\n                    args[args.length - 1] = function sinonDone(result) {\n                        if (result) {\n                            sandbox.restore();\n                            throw exception;\n                        } else {\n                            sandbox.verifyAndRestore();\n                        }\n                        oldDone(result);\n                    };\n                }\n\n                try {\n                    result = callback.apply(this, args.concat(sandbox.args));\n                } catch (e) {\n                    exception = e;\n                }\n\n                if (typeof oldDone != \"function\") {\n                    if (typeof exception !== \"undefined\") {\n                        sandbox.restore();\n                        throw exception;\n                    } else {\n                        sandbox.verifyAndRestore();\n                    }\n                }\n\n                return result;\n            }\n\n            if (callback.length) {\n                return function sinonAsyncSandboxedTest(callback) {\n                    return sinonSandboxedTest.apply(this, arguments);\n                };\n            }\n\n            return sinonSandboxedTest;\n        }\n\n        test.config = {\n            injectIntoThis: true,\n            injectInto: null,\n            properties: [\"spy\", \"stub\", \"mock\", \"clock\", \"server\", \"requests\"],\n            useFakeTimers: true,\n            useFakeServer: true\n        };\n\n        sinon.test = test;\n        return test;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./sandbox\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (sinon) {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n * @depend test.js\n */\n/**\n * Test case, sandboxes all test functions\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    function createTest(property, setUp, tearDown) {\n        return function () {\n            if (setUp) {\n                setUp.apply(this, arguments);\n            }\n\n            var exception, result;\n\n            try {\n                result = property.apply(this, arguments);\n            } catch (e) {\n                exception = e;\n            }\n\n            if (tearDown) {\n                tearDown.apply(this, arguments);\n            }\n\n            if (exception) {\n                throw exception;\n            }\n\n            return result;\n        };\n    }\n\n    function makeApi(sinon) {\n        function testCase(tests, prefix) {\n            /*jsl:ignore*/\n            if (!tests || typeof tests != \"object\") {\n                throw new TypeError(\"sinon.testCase needs an object with test functions\");\n            }\n            /*jsl:end*/\n\n            prefix = prefix || \"test\";\n            var rPrefix = new RegExp(\"^\" + prefix);\n            var methods = {}, testName, property, method;\n            var setUp = tests.setUp;\n            var tearDown = tests.tearDown;\n\n            for (testName in tests) {\n                if (tests.hasOwnProperty(testName)) {\n                    property = tests[testName];\n\n                    if (/^(setUp|tearDown)$/.test(testName)) {\n                        continue;\n                    }\n\n                    if (typeof property == \"function\" && rPrefix.test(testName)) {\n                        method = property;\n\n                        if (setUp || tearDown) {\n                            method = createTest(property, setUp, tearDown);\n                        }\n\n                        methods[testName] = sinon.test(method);\n                    } else {\n                        methods[testName] = tests[testName];\n                    }\n                }\n            }\n\n            return methods;\n        }\n\n        sinon.testCase = testCase;\n        return testCase;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./test\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend times_in_words.js\n * @depend util/core.js\n * @depend match.js\n * @depend format.js\n */\n/**\n * Assertions matching the test spy retrieval interface.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon, global) {\n    var slice = Array.prototype.slice;\n\n    function makeApi(sinon) {\n        var assert;\n\n        function verifyIsStub() {\n            var method;\n\n            for (var i = 0, l = arguments.length; i < l; ++i) {\n                method = arguments[i];\n\n                if (!method) {\n                    assert.fail(\"fake is not a spy\");\n                }\n\n                if (method.proxy) {\n                    verifyIsStub(method.proxy);\n                } else {\n                    if (typeof method != \"function\") {\n                        assert.fail(method + \" is not a function\");\n                    }\n\n                    if (typeof method.getCall != \"function\") {\n                        assert.fail(method + \" is not stubbed\");\n                    }\n                }\n\n            }\n        }\n\n        function failAssertion(object, msg) {\n            object = object || global;\n            var failMethod = object.fail || assert.fail;\n            failMethod.call(object, msg);\n        }\n\n        function mirrorPropAsAssertion(name, method, message) {\n            if (arguments.length == 2) {\n                message = method;\n                method = name;\n            }\n\n            assert[name] = function (fake) {\n                verifyIsStub(fake);\n\n                var args = slice.call(arguments, 1);\n                var failed = false;\n\n                if (typeof method == \"function\") {\n                    failed = !method(fake);\n                } else {\n                    failed = typeof fake[method] == \"function\" ?\n                        !fake[method].apply(fake, args) : !fake[method];\n                }\n\n                if (failed) {\n                    failAssertion(this, (fake.printf || fake.proxy.printf).apply(fake, [message].concat(args)));\n                } else {\n                    assert.pass(name);\n                }\n            };\n        }\n\n        function exposedName(prefix, prop) {\n            return !prefix || /^fail/.test(prop) ? prop :\n                prefix + prop.slice(0, 1).toUpperCase() + prop.slice(1);\n        }\n\n        assert = {\n            failException: \"AssertError\",\n\n            fail: function fail(message) {\n                var error = new Error(message);\n                error.name = this.failException || assert.failException;\n\n                throw error;\n            },\n\n            pass: function pass(assertion) {},\n\n            callOrder: function assertCallOrder() {\n                verifyIsStub.apply(null, arguments);\n                var expected = \"\", actual = \"\";\n\n                if (!sinon.calledInOrder(arguments)) {\n                    try {\n                        expected = [].join.call(arguments, \", \");\n                        var calls = slice.call(arguments);\n                        var i = calls.length;\n                        while (i) {\n                            if (!calls[--i].called) {\n                                calls.splice(i, 1);\n                            }\n                        }\n                        actual = sinon.orderByFirstCall(calls).join(\", \");\n                    } catch (e) {\n                        // If this fails, we'll just fall back to the blank string\n                    }\n\n                    failAssertion(this, \"expected \" + expected + \" to be \" +\n                                \"called in order but were called as \" + actual);\n                } else {\n                    assert.pass(\"callOrder\");\n                }\n            },\n\n            callCount: function assertCallCount(method, count) {\n                verifyIsStub(method);\n\n                if (method.callCount != count) {\n                    var msg = \"expected %n to be called \" + sinon.timesInWords(count) +\n                        \" but was called %c%C\";\n                    failAssertion(this, method.printf(msg));\n                } else {\n                    assert.pass(\"callCount\");\n                }\n            },\n\n            expose: function expose(target, options) {\n                if (!target) {\n                    throw new TypeError(\"target is null or undefined\");\n                }\n\n                var o = options || {};\n                var prefix = typeof o.prefix == \"undefined\" && \"assert\" || o.prefix;\n                var includeFail = typeof o.includeFail == \"undefined\" || !!o.includeFail;\n\n                for (var method in this) {\n                    if (method != \"expose\" && (includeFail || !/^(fail)/.test(method))) {\n                        target[exposedName(prefix, method)] = this[method];\n                    }\n                }\n\n                return target;\n            },\n\n            match: function match(actual, expectation) {\n                var matcher = sinon.match(expectation);\n                if (matcher.test(actual)) {\n                    assert.pass(\"match\");\n                } else {\n                    var formatted = [\n                        \"expected value to match\",\n                        \"    expected = \" + sinon.format(expectation),\n                        \"    actual = \" + sinon.format(actual)\n                    ]\n                    failAssertion(this, formatted.join(\"\\n\"));\n                }\n            }\n        };\n\n        mirrorPropAsAssertion(\"called\", \"expected %n to have been called at least once but was never called\");\n        mirrorPropAsAssertion(\"notCalled\", function (spy) { return !spy.called; },\n                            \"expected %n to not have been called but was called %c%C\");\n        mirrorPropAsAssertion(\"calledOnce\", \"expected %n to be called once but was called %c%C\");\n        mirrorPropAsAssertion(\"calledTwice\", \"expected %n to be called twice but was called %c%C\");\n        mirrorPropAsAssertion(\"calledThrice\", \"expected %n to be called thrice but was called %c%C\");\n        mirrorPropAsAssertion(\"calledOn\", \"expected %n to be called with %1 as this but was called with %t\");\n        mirrorPropAsAssertion(\"alwaysCalledOn\", \"expected %n to always be called with %1 as this but was called with %t\");\n        mirrorPropAsAssertion(\"calledWithNew\", \"expected %n to be called with new\");\n        mirrorPropAsAssertion(\"alwaysCalledWithNew\", \"expected %n to always be called with new\");\n        mirrorPropAsAssertion(\"calledWith\", \"expected %n to be called with arguments %*%C\");\n        mirrorPropAsAssertion(\"calledWithMatch\", \"expected %n to be called with match %*%C\");\n        mirrorPropAsAssertion(\"alwaysCalledWith\", \"expected %n to always be called with arguments %*%C\");\n        mirrorPropAsAssertion(\"alwaysCalledWithMatch\", \"expected %n to always be called with match %*%C\");\n        mirrorPropAsAssertion(\"calledWithExactly\", \"expected %n to be called with exact arguments %*%C\");\n        mirrorPropAsAssertion(\"alwaysCalledWithExactly\", \"expected %n to always be called with exact arguments %*%C\");\n        mirrorPropAsAssertion(\"neverCalledWith\", \"expected %n to never be called with arguments %*%C\");\n        mirrorPropAsAssertion(\"neverCalledWithMatch\", \"expected %n to never be called with match %*%C\");\n        mirrorPropAsAssertion(\"threw\", \"%n did not throw exception%C\");\n        mirrorPropAsAssertion(\"alwaysThrew\", \"%n did not always throw exception%C\");\n\n        sinon.assert = assert;\n        return assert;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./match\");\n        require(\"./format\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n\n}(typeof sinon == \"object\" && sinon || null, typeof window != \"undefined\" ? window : (typeof self != \"undefined\") ? self : global));\n\n  return sinon;\n}));\n"
-
-/***/ },
-/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -13162,6 +13071,97 @@
 
 
 /***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// shim for using process in browser
+	
+	var process = module.exports = {};
+	var queue = [];
+	var draining = false;
+	
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    draining = true;
+	    var currentQueue;
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        var i = -1;
+	        while (++i < len) {
+	            currentQueue[i]();
+	        }
+	        len = queue.length;
+	    }
+	    draining = false;
+	}
+	process.nextTick = function (fun) {
+	    queue.push(fun);
+	    if (!draining) {
+	        setTimeout(drainQueue, 0);
+	    }
+	};
+	
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+	
+	function noop() {}
+	
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+	
+	// TODO(shtylman)
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	module.exports = function(src) {
+		if (typeof execScript === "function")
+			execScript(src);
+		else
+			eval.call(null, src);
+	}
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = ";(function(){\n\n// CommonJS require()\n\nfunction require(p){\n    var path = require.resolve(p)\n      , mod = require.modules[path];\n    if (!mod) throw new Error('failed to require \"' + p + '\"');\n    if (!mod.exports) {\n      mod.exports = {};\n      mod.call(mod.exports, mod, mod.exports, require.relative(path));\n    }\n    return mod.exports;\n  }\n\nrequire.modules = {};\n\nrequire.resolve = function (path){\n    var orig = path\n      , reg = path + '.js'\n      , index = path + '/index.js';\n    return require.modules[reg] && reg\n      || require.modules[index] && index\n      || orig;\n  };\n\nrequire.register = function (path, fn){\n    require.modules[path] = fn;\n  };\n\nrequire.relative = function (parent) {\n    return function(p){\n      if ('.' != p.charAt(0)) return require(p);\n\n      var path = parent.split('/')\n        , segs = p.split('/');\n      path.pop();\n\n      for (var i = 0; i < segs.length; i++) {\n        var seg = segs[i];\n        if ('..' == seg) path.pop();\n        else if ('.' != seg) path.push(seg);\n      }\n\n      return require(path.join('/'));\n    };\n  };\n\n\nrequire.register(\"browser/debug.js\", function(module, exports, require){\nmodule.exports = function(type){\n  return function(){\n  }\n};\n\n}); // module: browser/debug.js\n\nrequire.register(\"browser/diff.js\", function(module, exports, require){\n/* See LICENSE file for terms of use */\n\n/*\n * Text diff implementation.\n *\n * This library supports the following APIS:\n * JsDiff.diffChars: Character by character diff\n * JsDiff.diffWords: Word (as defined by \\b regex) diff which ignores whitespace\n * JsDiff.diffLines: Line based diff\n *\n * JsDiff.diffCss: Diff targeted at CSS content\n *\n * These methods are based on the implementation proposed in\n * \"An O(ND) Difference Algorithm and its Variations\" (Myers, 1986).\n * http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.4.6927\n */\nvar JsDiff = (function() {\n  /*jshint maxparams: 5*/\n  function clonePath(path) {\n    return { newPos: path.newPos, components: path.components.slice(0) };\n  }\n  function removeEmpty(array) {\n    var ret = [];\n    for (var i = 0; i < array.length; i++) {\n      if (array[i]) {\n        ret.push(array[i]);\n      }\n    }\n    return ret;\n  }\n  function escapeHTML(s) {\n    var n = s;\n    n = n.replace(/&/g, '&amp;');\n    n = n.replace(/</g, '&lt;');\n    n = n.replace(/>/g, '&gt;');\n    n = n.replace(/\"/g, '&quot;');\n\n    return n;\n  }\n\n  var Diff = function(ignoreWhitespace) {\n    this.ignoreWhitespace = ignoreWhitespace;\n  };\n  Diff.prototype = {\n      diff: function(oldString, newString) {\n        // Handle the identity case (this is due to unrolling editLength == 0\n        if (newString === oldString) {\n          return [{ value: newString }];\n        }\n        if (!newString) {\n          return [{ value: oldString, removed: true }];\n        }\n        if (!oldString) {\n          return [{ value: newString, added: true }];\n        }\n\n        newString = this.tokenize(newString);\n        oldString = this.tokenize(oldString);\n\n        var newLen = newString.length, oldLen = oldString.length;\n        var maxEditLength = newLen + oldLen;\n        var bestPath = [{ newPos: -1, components: [] }];\n\n        // Seed editLength = 0\n        var oldPos = this.extractCommon(bestPath[0], newString, oldString, 0);\n        if (bestPath[0].newPos+1 >= newLen && oldPos+1 >= oldLen) {\n          return bestPath[0].components;\n        }\n\n        for (var editLength = 1; editLength <= maxEditLength; editLength++) {\n          for (var diagonalPath = -1*editLength; diagonalPath <= editLength; diagonalPath+=2) {\n            var basePath;\n            var addPath = bestPath[diagonalPath-1],\n                removePath = bestPath[diagonalPath+1];\n            oldPos = (removePath ? removePath.newPos : 0) - diagonalPath;\n            if (addPath) {\n              // No one else is going to attempt to use this value, clear it\n              bestPath[diagonalPath-1] = undefined;\n            }\n\n            var canAdd = addPath && addPath.newPos+1 < newLen;\n            var canRemove = removePath && 0 <= oldPos && oldPos < oldLen;\n            if (!canAdd && !canRemove) {\n              bestPath[diagonalPath] = undefined;\n              continue;\n            }\n\n            // Select the diagonal that we want to branch from. We select the prior\n            // path whose position in the new string is the farthest from the origin\n            // and does not pass the bounds of the diff graph\n            if (!canAdd || (canRemove && addPath.newPos < removePath.newPos)) {\n              basePath = clonePath(removePath);\n              this.pushComponent(basePath.components, oldString[oldPos], undefined, true);\n            } else {\n              basePath = clonePath(addPath);\n              basePath.newPos++;\n              this.pushComponent(basePath.components, newString[basePath.newPos], true, undefined);\n            }\n\n            var oldPos = this.extractCommon(basePath, newString, oldString, diagonalPath);\n\n            if (basePath.newPos+1 >= newLen && oldPos+1 >= oldLen) {\n              return basePath.components;\n            } else {\n              bestPath[diagonalPath] = basePath;\n            }\n          }\n        }\n      },\n\n      pushComponent: function(components, value, added, removed) {\n        var last = components[components.length-1];\n        if (last && last.added === added && last.removed === removed) {\n          // We need to clone here as the component clone operation is just\n          // as shallow array clone\n          components[components.length-1] =\n            {value: this.join(last.value, value), added: added, removed: removed };\n        } else {\n          components.push({value: value, added: added, removed: removed });\n        }\n      },\n      extractCommon: function(basePath, newString, oldString, diagonalPath) {\n        var newLen = newString.length,\n            oldLen = oldString.length,\n            newPos = basePath.newPos,\n            oldPos = newPos - diagonalPath;\n        while (newPos+1 < newLen && oldPos+1 < oldLen && this.equals(newString[newPos+1], oldString[oldPos+1])) {\n          newPos++;\n          oldPos++;\n\n          this.pushComponent(basePath.components, newString[newPos], undefined, undefined);\n        }\n        basePath.newPos = newPos;\n        return oldPos;\n      },\n\n      equals: function(left, right) {\n        var reWhitespace = /\\S/;\n        if (this.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right)) {\n          return true;\n        } else {\n          return left === right;\n        }\n      },\n      join: function(left, right) {\n        return left + right;\n      },\n      tokenize: function(value) {\n        return value;\n      }\n  };\n\n  var CharDiff = new Diff();\n\n  var WordDiff = new Diff(true);\n  var WordWithSpaceDiff = new Diff();\n  WordDiff.tokenize = WordWithSpaceDiff.tokenize = function(value) {\n    return removeEmpty(value.split(/(\\s+|\\b)/));\n  };\n\n  var CssDiff = new Diff(true);\n  CssDiff.tokenize = function(value) {\n    return removeEmpty(value.split(/([{}:;,]|\\s+)/));\n  };\n\n  var LineDiff = new Diff();\n  LineDiff.tokenize = function(value) {\n    var retLines = [],\n        lines = value.split(/^/m);\n\n    for(var i = 0; i < lines.length; i++) {\n      var line = lines[i],\n          lastLine = lines[i - 1];\n\n      // Merge lines that may contain windows new lines\n      if (line == '\\n' && lastLine && lastLine[lastLine.length - 1] === '\\r') {\n        retLines[retLines.length - 1] += '\\n';\n      } else if (line) {\n        retLines.push(line);\n      }\n    }\n\n    return retLines;\n  };\n\n  return {\n    Diff: Diff,\n\n    diffChars: function(oldStr, newStr) { return CharDiff.diff(oldStr, newStr); },\n    diffWords: function(oldStr, newStr) { return WordDiff.diff(oldStr, newStr); },\n    diffWordsWithSpace: function(oldStr, newStr) { return WordWithSpaceDiff.diff(oldStr, newStr); },\n    diffLines: function(oldStr, newStr) { return LineDiff.diff(oldStr, newStr); },\n\n    diffCss: function(oldStr, newStr) { return CssDiff.diff(oldStr, newStr); },\n\n    createPatch: function(fileName, oldStr, newStr, oldHeader, newHeader) {\n      var ret = [];\n\n      ret.push('Index: ' + fileName);\n      ret.push('===================================================================');\n      ret.push('--- ' + fileName + (typeof oldHeader === 'undefined' ? '' : '\\t' + oldHeader));\n      ret.push('+++ ' + fileName + (typeof newHeader === 'undefined' ? '' : '\\t' + newHeader));\n\n      var diff = LineDiff.diff(oldStr, newStr);\n      if (!diff[diff.length-1].value) {\n        diff.pop();   // Remove trailing newline add\n      }\n      diff.push({value: '', lines: []});   // Append an empty value to make cleanup easier\n\n      function contextLines(lines) {\n        return lines.map(function(entry) { return ' ' + entry; });\n      }\n      function eofNL(curRange, i, current) {\n        var last = diff[diff.length-2],\n            isLast = i === diff.length-2,\n            isLastOfType = i === diff.length-3 && (current.added !== last.added || current.removed !== last.removed);\n\n        // Figure out if this is the last line for the given file and missing NL\n        if (!/\\n$/.test(current.value) && (isLast || isLastOfType)) {\n          curRange.push('\\\\ No newline at end of file');\n        }\n      }\n\n      var oldRangeStart = 0, newRangeStart = 0, curRange = [],\n          oldLine = 1, newLine = 1;\n      for (var i = 0; i < diff.length; i++) {\n        var current = diff[i],\n            lines = current.lines || current.value.replace(/\\n$/, '').split('\\n');\n        current.lines = lines;\n\n        if (current.added || current.removed) {\n          if (!oldRangeStart) {\n            var prev = diff[i-1];\n            oldRangeStart = oldLine;\n            newRangeStart = newLine;\n\n            if (prev) {\n              curRange = contextLines(prev.lines.slice(-4));\n              oldRangeStart -= curRange.length;\n              newRangeStart -= curRange.length;\n            }\n          }\n          curRange.push.apply(curRange, lines.map(function(entry) { return (current.added?'+':'-') + entry; }));\n          eofNL(curRange, i, current);\n\n          if (current.added) {\n            newLine += lines.length;\n          } else {\n            oldLine += lines.length;\n          }\n        } else {\n          if (oldRangeStart) {\n            // Close out any changes that have been output (or join overlapping)\n            if (lines.length <= 8 && i < diff.length-2) {\n              // Overlapping\n              curRange.push.apply(curRange, contextLines(lines));\n            } else {\n              // end the range and output\n              var contextSize = Math.min(lines.length, 4);\n              ret.push(\n                  '@@ -' + oldRangeStart + ',' + (oldLine-oldRangeStart+contextSize)\n                  + ' +' + newRangeStart + ',' + (newLine-newRangeStart+contextSize)\n                  + ' @@');\n              ret.push.apply(ret, curRange);\n              ret.push.apply(ret, contextLines(lines.slice(0, contextSize)));\n              if (lines.length <= 4) {\n                eofNL(ret, i, current);\n              }\n\n              oldRangeStart = 0;  newRangeStart = 0; curRange = [];\n            }\n          }\n          oldLine += lines.length;\n          newLine += lines.length;\n        }\n      }\n\n      return ret.join('\\n') + '\\n';\n    },\n\n    applyPatch: function(oldStr, uniDiff) {\n      var diffstr = uniDiff.split('\\n');\n      var diff = [];\n      var remEOFNL = false,\n          addEOFNL = false;\n\n      for (var i = (diffstr[0][0]==='I'?4:0); i < diffstr.length; i++) {\n        if(diffstr[i][0] === '@') {\n          var meh = diffstr[i].split(/@@ -(\\d+),(\\d+) \\+(\\d+),(\\d+) @@/);\n          diff.unshift({\n            start:meh[3],\n            oldlength:meh[2],\n            oldlines:[],\n            newlength:meh[4],\n            newlines:[]\n          });\n        } else if(diffstr[i][0] === '+') {\n          diff[0].newlines.push(diffstr[i].substr(1));\n        } else if(diffstr[i][0] === '-') {\n          diff[0].oldlines.push(diffstr[i].substr(1));\n        } else if(diffstr[i][0] === ' ') {\n          diff[0].newlines.push(diffstr[i].substr(1));\n          diff[0].oldlines.push(diffstr[i].substr(1));\n        } else if(diffstr[i][0] === '\\\\') {\n          if (diffstr[i-1][0] === '+') {\n            remEOFNL = true;\n          } else if(diffstr[i-1][0] === '-') {\n            addEOFNL = true;\n          }\n        }\n      }\n\n      var str = oldStr.split('\\n');\n      for (var i = diff.length - 1; i >= 0; i--) {\n        var d = diff[i];\n        for (var j = 0; j < d.oldlength; j++) {\n          if(str[d.start-1+j] !== d.oldlines[j]) {\n            return false;\n          }\n        }\n        Array.prototype.splice.apply(str,[d.start-1,+d.oldlength].concat(d.newlines));\n      }\n\n      if (remEOFNL) {\n        while (!str[str.length-1]) {\n          str.pop();\n        }\n      } else if (addEOFNL) {\n        str.push('');\n      }\n      return str.join('\\n');\n    },\n\n    convertChangesToXML: function(changes){\n      var ret = [];\n      for ( var i = 0; i < changes.length; i++) {\n        var change = changes[i];\n        if (change.added) {\n          ret.push('<ins>');\n        } else if (change.removed) {\n          ret.push('<del>');\n        }\n\n        ret.push(escapeHTML(change.value));\n\n        if (change.added) {\n          ret.push('</ins>');\n        } else if (change.removed) {\n          ret.push('</del>');\n        }\n      }\n      return ret.join('');\n    },\n\n    // See: http://code.google.com/p/google-diff-match-patch/wiki/API\n    convertChangesToDMP: function(changes){\n      var ret = [], change;\n      for ( var i = 0; i < changes.length; i++) {\n        change = changes[i];\n        ret.push([(change.added ? 1 : change.removed ? -1 : 0), change.value]);\n      }\n      return ret;\n    }\n  };\n})();\n\nif (typeof module !== 'undefined') {\n    module.exports = JsDiff;\n}\n\n}); // module: browser/diff.js\n\nrequire.register(\"browser/escape-string-regexp.js\", function(module, exports, require){\n'use strict';\n\nvar matchOperatorsRe = /[|\\\\{}()[\\]^$+*?.]/g;\n\nmodule.exports = function (str) {\n  if (typeof str !== 'string') {\n    throw new TypeError('Expected a string');\n  }\n\n  return str.replace(matchOperatorsRe,  '\\\\$&');\n};\n\n}); // module: browser/escape-string-regexp.js\n\nrequire.register(\"browser/events.js\", function(module, exports, require){\n/**\n * Module exports.\n */\n\nexports.EventEmitter = EventEmitter;\n\n/**\n * Check if `obj` is an array.\n */\n\nfunction isArray(obj) {\n  return '[object Array]' == {}.toString.call(obj);\n}\n\n/**\n * Event emitter constructor.\n *\n * @api public\n */\n\nfunction EventEmitter(){};\n\n/**\n * Adds a listener.\n *\n * @api public\n */\n\nEventEmitter.prototype.on = function (name, fn) {\n  if (!this.$events) {\n    this.$events = {};\n  }\n\n  if (!this.$events[name]) {\n    this.$events[name] = fn;\n  } else if (isArray(this.$events[name])) {\n    this.$events[name].push(fn);\n  } else {\n    this.$events[name] = [this.$events[name], fn];\n  }\n\n  return this;\n};\n\nEventEmitter.prototype.addListener = EventEmitter.prototype.on;\n\n/**\n * Adds a volatile listener.\n *\n * @api public\n */\n\nEventEmitter.prototype.once = function (name, fn) {\n  var self = this;\n\n  function on () {\n    self.removeListener(name, on);\n    fn.apply(this, arguments);\n  };\n\n  on.listener = fn;\n  this.on(name, on);\n\n  return this;\n};\n\n/**\n * Removes a listener.\n *\n * @api public\n */\n\nEventEmitter.prototype.removeListener = function (name, fn) {\n  if (this.$events && this.$events[name]) {\n    var list = this.$events[name];\n\n    if (isArray(list)) {\n      var pos = -1;\n\n      for (var i = 0, l = list.length; i < l; i++) {\n        if (list[i] === fn || (list[i].listener && list[i].listener === fn)) {\n          pos = i;\n          break;\n        }\n      }\n\n      if (pos < 0) {\n        return this;\n      }\n\n      list.splice(pos, 1);\n\n      if (!list.length) {\n        delete this.$events[name];\n      }\n    } else if (list === fn || (list.listener && list.listener === fn)) {\n      delete this.$events[name];\n    }\n  }\n\n  return this;\n};\n\n/**\n * Removes all listeners for an event.\n *\n * @api public\n */\n\nEventEmitter.prototype.removeAllListeners = function (name) {\n  if (name === undefined) {\n    this.$events = {};\n    return this;\n  }\n\n  if (this.$events && this.$events[name]) {\n    this.$events[name] = null;\n  }\n\n  return this;\n};\n\n/**\n * Gets all listeners for a certain event.\n *\n * @api public\n */\n\nEventEmitter.prototype.listeners = function (name) {\n  if (!this.$events) {\n    this.$events = {};\n  }\n\n  if (!this.$events[name]) {\n    this.$events[name] = [];\n  }\n\n  if (!isArray(this.$events[name])) {\n    this.$events[name] = [this.$events[name]];\n  }\n\n  return this.$events[name];\n};\n\n/**\n * Emits an event.\n *\n * @api public\n */\n\nEventEmitter.prototype.emit = function (name) {\n  if (!this.$events) {\n    return false;\n  }\n\n  var handler = this.$events[name];\n\n  if (!handler) {\n    return false;\n  }\n\n  var args = [].slice.call(arguments, 1);\n\n  if ('function' == typeof handler) {\n    handler.apply(this, args);\n  } else if (isArray(handler)) {\n    var listeners = handler.slice();\n\n    for (var i = 0, l = listeners.length; i < l; i++) {\n      listeners[i].apply(this, args);\n    }\n  } else {\n    return false;\n  }\n\n  return true;\n};\n\n}); // module: browser/events.js\n\nrequire.register(\"browser/fs.js\", function(module, exports, require){\n\n}); // module: browser/fs.js\n\nrequire.register(\"browser/glob.js\", function(module, exports, require){\n\n}); // module: browser/glob.js\n\nrequire.register(\"browser/path.js\", function(module, exports, require){\n\n}); // module: browser/path.js\n\nrequire.register(\"browser/progress.js\", function(module, exports, require){\n/**\n * Expose `Progress`.\n */\n\nmodule.exports = Progress;\n\n/**\n * Initialize a new `Progress` indicator.\n */\n\nfunction Progress() {\n  this.percent = 0;\n  this.size(0);\n  this.fontSize(11);\n  this.font('helvetica, arial, sans-serif');\n}\n\n/**\n * Set progress size to `n`.\n *\n * @param {Number} n\n * @return {Progress} for chaining\n * @api public\n */\n\nProgress.prototype.size = function(n){\n  this._size = n;\n  return this;\n};\n\n/**\n * Set text to `str`.\n *\n * @param {String} str\n * @return {Progress} for chaining\n * @api public\n */\n\nProgress.prototype.text = function(str){\n  this._text = str;\n  return this;\n};\n\n/**\n * Set font size to `n`.\n *\n * @param {Number} n\n * @return {Progress} for chaining\n * @api public\n */\n\nProgress.prototype.fontSize = function(n){\n  this._fontSize = n;\n  return this;\n};\n\n/**\n * Set font `family`.\n *\n * @param {String} family\n * @return {Progress} for chaining\n */\n\nProgress.prototype.font = function(family){\n  this._font = family;\n  return this;\n};\n\n/**\n * Update percentage to `n`.\n *\n * @param {Number} n\n * @return {Progress} for chaining\n */\n\nProgress.prototype.update = function(n){\n  this.percent = n;\n  return this;\n};\n\n/**\n * Draw on `ctx`.\n *\n * @param {CanvasRenderingContext2d} ctx\n * @return {Progress} for chaining\n */\n\nProgress.prototype.draw = function(ctx){\n  try {\n    var percent = Math.min(this.percent, 100)\n      , size = this._size\n      , half = size / 2\n      , x = half\n      , y = half\n      , rad = half - 1\n      , fontSize = this._fontSize;\n\n    ctx.font = fontSize + 'px ' + this._font;\n\n    var angle = Math.PI * 2 * (percent / 100);\n    ctx.clearRect(0, 0, size, size);\n\n    // outer circle\n    ctx.strokeStyle = '#9f9f9f';\n    ctx.beginPath();\n    ctx.arc(x, y, rad, 0, angle, false);\n    ctx.stroke();\n\n    // inner circle\n    ctx.strokeStyle = '#eee';\n    ctx.beginPath();\n    ctx.arc(x, y, rad - 1, 0, angle, true);\n    ctx.stroke();\n\n    // text\n    var text = this._text || (percent | 0) + '%'\n      , w = ctx.measureText(text).width;\n\n    ctx.fillText(\n        text\n      , x - w / 2 + 1\n      , y + fontSize / 2 - 1);\n  } catch (ex) {} //don't fail if we can't render progress\n  return this;\n};\n\n}); // module: browser/progress.js\n\nrequire.register(\"browser/tty.js\", function(module, exports, require){\nexports.isatty = function(){\n  return true;\n};\n\nexports.getWindowSize = function(){\n  if ('innerHeight' in global) {\n    return [global.innerHeight, global.innerWidth];\n  } else {\n    // In a Web Worker, the DOM Window is not available.\n    return [640, 480];\n  }\n};\n\n}); // module: browser/tty.js\n\nrequire.register(\"context.js\", function(module, exports, require){\n/**\n * Expose `Context`.\n */\n\nmodule.exports = Context;\n\n/**\n * Initialize a new `Context`.\n *\n * @api private\n */\n\nfunction Context(){}\n\n/**\n * Set or get the context `Runnable` to `runnable`.\n *\n * @param {Runnable} runnable\n * @return {Context}\n * @api private\n */\n\nContext.prototype.runnable = function(runnable){\n  if (0 == arguments.length) return this._runnable;\n  this.test = this._runnable = runnable;\n  return this;\n};\n\n/**\n * Set test timeout `ms`.\n *\n * @param {Number} ms\n * @return {Context} self\n * @api private\n */\n\nContext.prototype.timeout = function(ms){\n  if (arguments.length === 0) return this.runnable().timeout();\n  this.runnable().timeout(ms);\n  return this;\n};\n\n/**\n * Set test timeout `enabled`.\n *\n * @param {Boolean} enabled\n * @return {Context} self\n * @api private\n */\n\nContext.prototype.enableTimeouts = function (enabled) {\n  this.runnable().enableTimeouts(enabled);\n  return this;\n};\n\n\n/**\n * Set test slowness threshold `ms`.\n *\n * @param {Number} ms\n * @return {Context} self\n * @api private\n */\n\nContext.prototype.slow = function(ms){\n  this.runnable().slow(ms);\n  return this;\n};\n\n/**\n * Mark a test as skipped.\n *\n * @return {Context} self\n * @api private\n */\n\nContext.prototype.skip = function(){\n    this.runnable().skip();\n    return this;\n};\n\n/**\n * Inspect the context void of `._runnable`.\n *\n * @return {String}\n * @api private\n */\n\nContext.prototype.inspect = function(){\n  return JSON.stringify(this, function(key, val){\n    if ('_runnable' == key) return;\n    if ('test' == key) return;\n    return val;\n  }, 2);\n};\n\n}); // module: context.js\n\nrequire.register(\"hook.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Runnable = require('./runnable');\n\n/**\n * Expose `Hook`.\n */\n\nmodule.exports = Hook;\n\n/**\n * Initialize a new `Hook` with the given `title` and callback `fn`.\n *\n * @param {String} title\n * @param {Function} fn\n * @api private\n */\n\nfunction Hook(title, fn) {\n  Runnable.call(this, title, fn);\n  this.type = 'hook';\n}\n\n/**\n * Inherit from `Runnable.prototype`.\n */\n\nfunction F(){};\nF.prototype = Runnable.prototype;\nHook.prototype = new F;\nHook.prototype.constructor = Hook;\n\n\n/**\n * Get or set the test `err`.\n *\n * @param {Error} err\n * @return {Error}\n * @api public\n */\n\nHook.prototype.error = function(err){\n  if (0 == arguments.length) {\n    var err = this._error;\n    this._error = null;\n    return err;\n  }\n\n  this._error = err;\n};\n\n}); // module: hook.js\n\nrequire.register(\"interfaces/bdd.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Suite = require('../suite')\n  , Test = require('../test')\n  , utils = require('../utils')\n  , escapeRe = require('browser/escape-string-regexp');\n\n/**\n * BDD-style interface:\n *\n *      describe('Array', function(){\n *        describe('#indexOf()', function(){\n *          it('should return -1 when not present', function(){\n *\n *          });\n *\n *          it('should return the index when present', function(){\n *\n *          });\n *        });\n *      });\n *\n */\n\nmodule.exports = function(suite){\n  var suites = [suite];\n\n  suite.on('pre-require', function(context, file, mocha){\n\n    var common = require('./common')(suites, context);\n\n    context.before = common.before;\n    context.after = common.after;\n    context.beforeEach = common.beforeEach;\n    context.afterEach = common.afterEach;\n    context.run = mocha.options.delay && common.runWithSuite(suite);\n    /**\n     * Describe a \"suite\" with the given `title`\n     * and callback `fn` containing nested suites\n     * and/or tests.\n     */\n\n    context.describe = context.context = function(title, fn){\n      var suite = Suite.create(suites[0], title);\n      suite.file = file;\n      suites.unshift(suite);\n      fn.call(suite);\n      suites.shift();\n      return suite;\n    };\n\n    /**\n     * Pending describe.\n     */\n\n    context.xdescribe =\n    context.xcontext =\n    context.describe.skip = function(title, fn){\n      var suite = Suite.create(suites[0], title);\n      suite.pending = true;\n      suites.unshift(suite);\n      fn.call(suite);\n      suites.shift();\n    };\n\n    /**\n     * Exclusive suite.\n     */\n\n    context.describe.only = function(title, fn){\n      var suite = context.describe(title, fn);\n      mocha.grep(suite.fullTitle());\n      return suite;\n    };\n\n    /**\n     * Describe a specification or test-case\n     * with the given `title` and callback `fn`\n     * acting as a thunk.\n     */\n\n    context.it = context.specify = function(title, fn){\n      var suite = suites[0];\n      if (suite.pending) fn = null;\n      var test = new Test(title, fn);\n      test.file = file;\n      suite.addTest(test);\n      return test;\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.it.only = function(title, fn){\n      var test = context.it(title, fn);\n      var reString = '^' + escapeRe(test.fullTitle()) + '$';\n      mocha.grep(new RegExp(reString));\n      return test;\n    };\n\n    /**\n     * Pending test case.\n     */\n\n    context.xit =\n    context.xspecify =\n    context.it.skip = function(title){\n      context.it(title);\n    };\n\n  });\n};\n\n}); // module: interfaces/bdd.js\n\nrequire.register(\"interfaces/common.js\", function(module, exports, require){\n/**\n * Functions common to more than one interface\n * @module lib/interfaces/common\n */\n\n'use strict';\n\nmodule.exports = function (suites, context) {\n\n  return {\n    /**\n     * This is only present if flag --delay is passed into Mocha.  It triggers\n     * root suite execution.  Returns a function which runs the root suite.\n     */\n    runWithSuite: function runWithSuite(suite) {\n      return function run() {\n        suite.run();\n      };\n    },\n\n    /**\n     * Execute before running tests.\n     */\n    before: function (name, fn) {\n      suites[0].beforeAll(name, fn);\n    },\n\n    /**\n     * Execute after running tests.\n     */\n    after: function (name, fn) {\n      suites[0].afterAll(name, fn);\n    },\n\n    /**\n     * Execute before each test case.\n     */\n    beforeEach: function (name, fn) {\n      suites[0].beforeEach(name, fn);\n    },\n\n    /**\n     * Execute after each test case.\n     */\n    afterEach: function (name, fn) {\n      suites[0].afterEach(name, fn);\n    },\n\n    test: {\n      /**\n       * Pending test case.\n       */\n      skip: function (title) {\n        context.test(title);\n      }\n    }\n  }\n};\n\n}); // module: interfaces/common.js\n\nrequire.register(\"interfaces/exports.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Suite = require('../suite')\n  , Test = require('../test');\n\n/**\n * TDD-style interface:\n *\n *     exports.Array = {\n *       '#indexOf()': {\n *         'should return -1 when the value is not present': function(){\n *\n *         },\n *\n *         'should return the correct index when the value is present': function(){\n *\n *         }\n *       }\n *     };\n *\n */\n\nmodule.exports = function(suite){\n  var suites = [suite];\n\n  suite.on('require', visit);\n\n  function visit(obj, file) {\n    var suite;\n    for (var key in obj) {\n      if ('function' == typeof obj[key]) {\n        var fn = obj[key];\n        switch (key) {\n          case 'before':\n            suites[0].beforeAll(fn);\n            break;\n          case 'after':\n            suites[0].afterAll(fn);\n            break;\n          case 'beforeEach':\n            suites[0].beforeEach(fn);\n            break;\n          case 'afterEach':\n            suites[0].afterEach(fn);\n            break;\n          default:\n            var test = new Test(key, fn);\n            test.file = file;\n            suites[0].addTest(test);\n        }\n      } else {\n        suite = Suite.create(suites[0], key);\n        suites.unshift(suite);\n        visit(obj[key]);\n        suites.shift();\n      }\n    }\n  }\n};\n\n}); // module: interfaces/exports.js\n\nrequire.register(\"interfaces/index.js\", function(module, exports, require){\nexports.bdd = require('./bdd');\nexports.tdd = require('./tdd');\nexports.qunit = require('./qunit');\nexports.exports = require('./exports');\n\n}); // module: interfaces/index.js\n\nrequire.register(\"interfaces/qunit.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Suite = require('../suite')\n  , Test = require('../test')\n  , escapeRe = require('browser/escape-string-regexp')\n  , utils = require('../utils');\n\n/**\n * QUnit-style interface:\n *\n *     suite('Array');\n *\n *     test('#length', function(){\n *       var arr = [1,2,3];\n *       ok(arr.length == 3);\n *     });\n *\n *     test('#indexOf()', function(){\n *       var arr = [1,2,3];\n *       ok(arr.indexOf(1) == 0);\n *       ok(arr.indexOf(2) == 1);\n *       ok(arr.indexOf(3) == 2);\n *     });\n *\n *     suite('String');\n *\n *     test('#length', function(){\n *       ok('foo'.length == 3);\n *     });\n *\n */\n\nmodule.exports = function(suite){\n  var suites = [suite];\n\n  suite.on('pre-require', function(context, file, mocha){\n\n    var common = require('./common')(suites, context);\n\n    context.before = common.before;\n    context.after = common.after;\n    context.beforeEach = common.beforeEach;\n    context.afterEach = common.afterEach;\n    context.run = mocha.options.delay && common.runWithSuite(suite);\n    /**\n     * Describe a \"suite\" with the given `title`.\n     */\n\n    context.suite = function(title){\n      if (suites.length > 1) suites.shift();\n      var suite = Suite.create(suites[0], title);\n      suite.file = file;\n      suites.unshift(suite);\n      return suite;\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.suite.only = function(title, fn){\n      var suite = context.suite(title, fn);\n      mocha.grep(suite.fullTitle());\n    };\n\n    /**\n     * Describe a specification or test-case\n     * with the given `title` and callback `fn`\n     * acting as a thunk.\n     */\n\n    context.test = function(title, fn){\n      var test = new Test(title, fn);\n      test.file = file;\n      suites[0].addTest(test);\n      return test;\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.test.only = function(title, fn){\n      var test = context.test(title, fn);\n      var reString = '^' + escapeRe(test.fullTitle()) + '$';\n      mocha.grep(new RegExp(reString));\n    };\n\n    context.test.skip = common.test.skip;\n\n  });\n};\n\n}); // module: interfaces/qunit.js\n\nrequire.register(\"interfaces/tdd.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Suite = require('../suite')\n  , Test = require('../test')\n  , escapeRe = require('browser/escape-string-regexp')\n  , utils = require('../utils');\n\n/**\n * TDD-style interface:\n *\n *      suite('Array', function(){\n *        suite('#indexOf()', function(){\n *          suiteSetup(function(){\n *\n *          });\n *\n *          test('should return -1 when not present', function(){\n *\n *          });\n *\n *          test('should return the index when present', function(){\n *\n *          });\n *\n *          suiteTeardown(function(){\n *\n *          });\n *        });\n *      });\n *\n */\n\nmodule.exports = function(suite){\n  var suites = [suite];\n\n  suite.on('pre-require', function(context, file, mocha){\n\n    var common = require('./common')(suites, context);\n\n    context.setup = common.beforeEach;\n    context.teardown = common.afterEach;\n    context.suiteSetup = common.before;\n    context.suiteTeardown = common.after;\n    context.run = mocha.options.delay && common.runWithSuite(suite);\n    /**\n     * Describe a \"suite\" with the given `title`\n     * and callback `fn` containing nested suites\n     * and/or tests.\n     */\n\n    context.suite = function(title, fn){\n      var suite = Suite.create(suites[0], title);\n      suite.file = file;\n      suites.unshift(suite);\n      fn.call(suite);\n      suites.shift();\n      return suite;\n    };\n\n    /**\n     * Pending suite.\n     */\n    context.suite.skip = function(title, fn) {\n      var suite = Suite.create(suites[0], title);\n      suite.pending = true;\n      suites.unshift(suite);\n      fn.call(suite);\n      suites.shift();\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.suite.only = function(title, fn){\n      var suite = context.suite(title, fn);\n      mocha.grep(suite.fullTitle());\n    };\n\n    /**\n     * Describe a specification or test-case\n     * with the given `title` and callback `fn`\n     * acting as a thunk.\n     */\n\n    context.test = function(title, fn){\n      var suite = suites[0];\n      if (suite.pending) fn = null;\n      var test = new Test(title, fn);\n      test.file = file;\n      suite.addTest(test);\n      return test;\n    };\n\n    /**\n     * Exclusive test-case.\n     */\n\n    context.test.only = function(title, fn){\n      var test = context.test(title, fn);\n      var reString = '^' + escapeRe(test.fullTitle()) + '$';\n      mocha.grep(new RegExp(reString));\n    };\n\n    context.test.skip = common.test.skip;\n  });\n};\n\n}); // module: interfaces/tdd.js\n\nrequire.register(\"mocha.js\", function(module, exports, require){\n/*!\n * mocha\n * Copyright(c) 2011 TJ Holowaychuk <tj@vision-media.ca>\n * MIT Licensed\n */\n\n/**\n * Module dependencies.\n */\n\nvar path = require('browser/path')\n  , escapeRe = require('browser/escape-string-regexp')\n  , utils = require('./utils');\n\n/**\n * Expose `Mocha`.\n */\n\nexports = module.exports = Mocha;\n\n/**\n * To require local UIs and reporters when running in node.\n */\n\nif (typeof process !== 'undefined' && typeof process.cwd === 'function') {\n  var join = path.join\n    , cwd = process.cwd();\n  module.paths.push(cwd, join(cwd, 'node_modules'));\n}\n\n/**\n * Expose internals.\n */\n\nexports.utils = utils;\nexports.interfaces = require('./interfaces');\nexports.reporters = require('./reporters');\nexports.Runnable = require('./runnable');\nexports.Context = require('./context');\nexports.Runner = require('./runner');\nexports.Suite = require('./suite');\nexports.Hook = require('./hook');\nexports.Test = require('./test');\n\n/**\n * Return image `name` path.\n *\n * @param {String} name\n * @return {String}\n * @api private\n */\n\nfunction image(name) {\n  return __dirname + '/../images/' + name + '.png';\n}\n\n/**\n * Setup mocha with `options`.\n *\n * Options:\n *\n *   - `ui` name \"bdd\", \"tdd\", \"exports\" etc\n *   - `reporter` reporter instance, defaults to `mocha.reporters.spec`\n *   - `globals` array of accepted globals\n *   - `timeout` timeout in milliseconds\n *   - `bail` bail on the first test failure\n *   - `slow` milliseconds to wait before considering a test slow\n *   - `ignoreLeaks` ignore global leaks\n *   - `grep` string or regexp to filter tests with\n *\n * @param {Object} options\n * @api public\n */\n\nfunction Mocha(options) {\n  options = options || {};\n  this.files = [];\n  this.options = options;\n  if (options.grep) this.grep(new RegExp(options.grep));\n  if (options.fgrep) this.grep(options.fgrep);\n  this.suite = new exports.Suite('', new exports.Context);\n  this.ui(options.ui);\n  this.bail(options.bail);\n  this.reporter(options.reporter, options.reporterOptions);\n  if (null != options.timeout) this.timeout(options.timeout);\n  this.useColors(options.useColors)\n  if (options.enableTimeouts !== null) this.enableTimeouts(options.enableTimeouts);\n  if (options.slow) this.slow(options.slow);\n\n  this.suite.on('pre-require', function (context) {\n    exports.afterEach = context.afterEach || context.teardown;\n    exports.after = context.after || context.suiteTeardown;\n    exports.beforeEach = context.beforeEach || context.setup;\n    exports.before = context.before || context.suiteSetup;\n    exports.describe = context.describe || context.suite;\n    exports.it = context.it || context.test;\n    exports.setup = context.setup || context.beforeEach;\n    exports.suiteSetup = context.suiteSetup || context.before;\n    exports.suiteTeardown = context.suiteTeardown || context.after;\n    exports.suite = context.suite || context.describe;\n    exports.teardown = context.teardown || context.afterEach;\n    exports.test = context.test || context.it;\n    exports.run = context.run;\n  });\n}\n\n/**\n * Enable or disable bailing on the first failure.\n *\n * @param {Boolean} [bail]\n * @api public\n */\n\nMocha.prototype.bail = function(bail){\n  if (0 == arguments.length) bail = true;\n  this.suite.bail(bail);\n  return this;\n};\n\n/**\n * Add test `file`.\n *\n * @param {String} file\n * @api public\n */\n\nMocha.prototype.addFile = function(file){\n  this.files.push(file);\n  return this;\n};\n\n/**\n * Set reporter to `reporter`, defaults to \"spec\".\n *\n * @param {String|Function} reporter name or constructor\n * @param {Object} reporterOptions optional options\n * @api public\n */\nMocha.prototype.reporter = function(reporter, reporterOptions){\n  if ('function' == typeof reporter) {\n    this._reporter = reporter;\n  } else {\n    reporter = reporter || 'spec';\n    var _reporter;\n    try { _reporter = require('./reporters/' + reporter); } catch (err) {};\n    if (!_reporter) try { _reporter = require(reporter); } catch (err) {};\n    if (!_reporter && reporter === 'teamcity')\n      console.warn('The Teamcity reporter was moved to a package named ' +\n        'mocha-teamcity-reporter ' +\n        '(https://npmjs.org/package/mocha-teamcity-reporter).');\n    if (!_reporter) throw new Error('invalid reporter \"' + reporter + '\"');\n    this._reporter = _reporter;\n  }\n  this.options.reporterOptions = reporterOptions;\n  return this;\n};\n\n/**\n * Set test UI `name`, defaults to \"bdd\".\n *\n * @param {String} bdd\n * @api public\n */\n\nMocha.prototype.ui = function(name){\n  name = name || 'bdd';\n  this._ui = exports.interfaces[name];\n  if (!this._ui) try { this._ui = require(name); } catch (err) {};\n  if (!this._ui) throw new Error('invalid interface \"' + name + '\"');\n  this._ui = this._ui(this.suite);\n  return this;\n};\n\n/**\n * Load registered files.\n *\n * @api private\n */\n\nMocha.prototype.loadFiles = function(fn){\n  var self = this;\n  var suite = this.suite;\n  var pending = this.files.length;\n  this.files.forEach(function(file){\n    file = path.resolve(file);\n    suite.emit('pre-require', global, file, self);\n    suite.emit('require', require(file), file, self);\n    suite.emit('post-require', global, file, self);\n    --pending || (fn && fn());\n  });\n};\n\n/**\n * Enable growl support.\n *\n * @api private\n */\n\nMocha.prototype._growl = function(runner, reporter) {\n  var notify = require('growl');\n\n  runner.on('end', function(){\n    var stats = reporter.stats;\n    if (stats.failures) {\n      var msg = stats.failures + ' of ' + runner.total + ' tests failed';\n      notify(msg, { name: 'mocha', title: 'Failed', image: image('error') });\n    } else {\n      notify(stats.passes + ' tests passed in ' + stats.duration + 'ms', {\n          name: 'mocha'\n        , title: 'Passed'\n        , image: image('ok')\n      });\n    }\n  });\n};\n\n/**\n * Add regexp to grep, if `re` is a string it is escaped.\n *\n * @param {RegExp|String} re\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.grep = function(re){\n  this.options.grep = 'string' == typeof re\n    ? new RegExp(escapeRe(re))\n    : re;\n  return this;\n};\n\n/**\n * Invert `.grep()` matches.\n *\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.invert = function(){\n  this.options.invert = true;\n  return this;\n};\n\n/**\n * Ignore global leaks.\n *\n * @param {Boolean} ignore\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.ignoreLeaks = function(ignore){\n  this.options.ignoreLeaks = !!ignore;\n  return this;\n};\n\n/**\n * Enable global leak checking.\n *\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.checkLeaks = function(){\n  this.options.ignoreLeaks = false;\n  return this;\n};\n\n/**\n * Enable growl support.\n *\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.growl = function(){\n  this.options.growl = true;\n  return this;\n};\n\n/**\n * Ignore `globals` array or string.\n *\n * @param {Array|String} globals\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.globals = function(globals){\n  this.options.globals = (this.options.globals || []).concat(globals);\n  return this;\n};\n\n/**\n * Emit color output.\n *\n * @param {Boolean} colors\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.useColors = function(colors){\n  if (colors !== undefined) {\n    this.options.useColors = colors;\n  }\n  return this;\n};\n\n/**\n * Use inline diffs rather than +/-.\n *\n * @param {Boolean} inlineDiffs\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.useInlineDiffs = function(inlineDiffs) {\n  this.options.useInlineDiffs = arguments.length && inlineDiffs != undefined\n  ? inlineDiffs\n  : false;\n  return this;\n};\n\n/**\n * Set the timeout in milliseconds.\n *\n * @param {Number} timeout\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.timeout = function(timeout){\n  this.suite.timeout(timeout);\n  return this;\n};\n\n/**\n * Set slowness threshold in milliseconds.\n *\n * @param {Number} slow\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.slow = function(slow){\n  this.suite.slow(slow);\n  return this;\n};\n\n/**\n * Enable timeouts.\n *\n * @param {Boolean} enabled\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.enableTimeouts = function(enabled) {\n  this.suite.enableTimeouts(arguments.length && enabled !== undefined\n    ? enabled\n    : true);\n  return this\n};\n\n/**\n * Makes all tests async (accepting a callback)\n *\n * @return {Mocha}\n * @api public\n */\n\nMocha.prototype.asyncOnly = function(){\n  this.options.asyncOnly = true;\n  return this;\n};\n\n/**\n * Disable syntax highlighting (in browser).\n * @returns {Mocha}\n * @api public\n */\nMocha.prototype.noHighlighting = function() {\n  this.options.noHighlighting = true;\n  return this;\n};\n\n/**\n * Delay root suite execution.\n * @returns {Mocha}\n * @api public\n */\nMocha.prototype.delay = function delay() {\n  this.options.delay = true;\n  return this;\n};\n\n/**\n * Run tests and invoke `fn()` when complete.\n *\n * @param {Function} fn\n * @return {Runner}\n * @api public\n */\nMocha.prototype.run = function(fn){\n  if (this.files.length) this.loadFiles();\n  var suite = this.suite;\n  var options = this.options;\n  options.files = this.files;\n  var runner = new exports.Runner(suite, options.delay);\n  var reporter = new this._reporter(runner, options);\n  runner.ignoreLeaks = false !== options.ignoreLeaks;\n  runner.asyncOnly = options.asyncOnly;\n  if (options.grep) runner.grep(options.grep, options.invert);\n  if (options.globals) runner.globals(options.globals);\n  if (options.growl) this._growl(runner, reporter);\n  if (options.useColors !== undefined) {\n    exports.reporters.Base.useColors = options.useColors;\n  }\n  exports.reporters.Base.inlineDiffs = options.useInlineDiffs;\n\n  function done(failures) {\n      if (reporter.done) {\n          reporter.done(failures, fn);\n      } else fn && fn(failures);\n  }\n\n  return runner.run(done);\n};\n\n}); // module: mocha.js\n\nrequire.register(\"ms.js\", function(module, exports, require){\n/**\n * Helpers.\n */\n\nvar s = 1000;\nvar m = s * 60;\nvar h = m * 60;\nvar d = h * 24;\nvar y = d * 365.25;\n\n/**\n * Parse or format the given `val`.\n *\n * Options:\n *\n *  - `long` verbose formatting [false]\n *\n * @param {String|Number} val\n * @param {Object} options\n * @return {String|Number}\n * @api public\n */\n\nmodule.exports = function(val, options){\n  options = options || {};\n  if ('string' == typeof val) return parse(val);\n  return options['long'] ? longFormat(val) : shortFormat(val);\n};\n\n/**\n * Parse the given `str` and return milliseconds.\n *\n * @param {String} str\n * @return {Number}\n * @api private\n */\n\nfunction parse(str) {\n  var match = /^((?:\\d+)?\\.?\\d+) *(ms|seconds?|s|minutes?|m|hours?|h|days?|d|years?|y)?$/i.exec(str);\n  if (!match) return;\n  var n = parseFloat(match[1]);\n  var type = (match[2] || 'ms').toLowerCase();\n  switch (type) {\n    case 'years':\n    case 'year':\n    case 'y':\n      return n * y;\n    case 'days':\n    case 'day':\n    case 'd':\n      return n * d;\n    case 'hours':\n    case 'hour':\n    case 'h':\n      return n * h;\n    case 'minutes':\n    case 'minute':\n    case 'm':\n      return n * m;\n    case 'seconds':\n    case 'second':\n    case 's':\n      return n * s;\n    case 'ms':\n      return n;\n  }\n}\n\n/**\n * Short format for `ms`.\n *\n * @param {Number} ms\n * @return {String}\n * @api private\n */\n\nfunction shortFormat(ms) {\n  if (ms >= d) return Math.round(ms / d) + 'd';\n  if (ms >= h) return Math.round(ms / h) + 'h';\n  if (ms >= m) return Math.round(ms / m) + 'm';\n  if (ms >= s) return Math.round(ms / s) + 's';\n  return ms + 'ms';\n}\n\n/**\n * Long format for `ms`.\n *\n * @param {Number} ms\n * @return {String}\n * @api private\n */\n\nfunction longFormat(ms) {\n  return plural(ms, d, 'day')\n    || plural(ms, h, 'hour')\n    || plural(ms, m, 'minute')\n    || plural(ms, s, 'second')\n    || ms + ' ms';\n}\n\n/**\n * Pluralization helper.\n */\n\nfunction plural(ms, n, name) {\n  if (ms < n) return;\n  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;\n  return Math.ceil(ms / n) + ' ' + name + 's';\n}\n\n}); // module: ms.js\n\nrequire.register(\"pending.js\", function(module, exports, require){\n\n/**\n * Expose `Pending`.\n */\n\nmodule.exports = Pending;\n\n/**\n * Initialize a new `Pending` error with the given message.\n *\n * @param {String} message\n */\n\nfunction Pending(message) {\n    this.message = message;\n}\n\n}); // module: pending.js\n\nrequire.register(\"reporters/base.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar tty = require('browser/tty')\n  , diff = require('browser/diff')\n  , ms = require('../ms')\n  , utils = require('../utils')\n  , supportsColor = process.env ? require('supports-color') : null;\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date\n  , setTimeout = global.setTimeout\n  , setInterval = global.setInterval\n  , clearTimeout = global.clearTimeout\n  , clearInterval = global.clearInterval;\n\n/**\n * Check if both stdio streams are associated with a tty.\n */\n\nvar isatty = tty.isatty(1) && tty.isatty(2);\n\n/**\n * Expose `Base`.\n */\n\nexports = module.exports = Base;\n\n/**\n * Enable coloring by default, except in the browser interface.\n */\n\nexports.useColors = process.env\n  ? (supportsColor || (process.env.MOCHA_COLORS !== undefined))\n  : false;\n\n/**\n * Inline diffs instead of +/-\n */\n\nexports.inlineDiffs = false;\n\n/**\n * Default color map.\n */\n\nexports.colors = {\n    'pass': 90\n  , 'fail': 31\n  , 'bright pass': 92\n  , 'bright fail': 91\n  , 'bright yellow': 93\n  , 'pending': 36\n  , 'suite': 0\n  , 'error title': 0\n  , 'error message': 31\n  , 'error stack': 90\n  , 'checkmark': 32\n  , 'fast': 90\n  , 'medium': 33\n  , 'slow': 31\n  , 'green': 32\n  , 'light': 90\n  , 'diff gutter': 90\n  , 'diff added': 42\n  , 'diff removed': 41\n};\n\n/**\n * Default symbol map.\n */\n\nexports.symbols = {\n  ok: '✓',\n  err: '✖',\n  dot: '․'\n};\n\n// With node.js on Windows: use symbols available in terminal default fonts\nif ('win32' == process.platform) {\n  exports.symbols.ok = '\\u221A';\n  exports.symbols.err = '\\u00D7';\n  exports.symbols.dot = '.';\n}\n\n/**\n * Color `str` with the given `type`,\n * allowing colors to be disabled,\n * as well as user-defined color\n * schemes.\n *\n * @param {String} type\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nvar color = exports.color = function(type, str) {\n  if (!exports.useColors) return String(str);\n  return '\\u001b[' + exports.colors[type] + 'm' + str + '\\u001b[0m';\n};\n\n/**\n * Expose term window size, with some\n * defaults for when stderr is not a tty.\n */\n\nexports.window = {\n  width: isatty\n    ? process.stdout.getWindowSize\n      ? process.stdout.getWindowSize(1)[0]\n      : tty.getWindowSize()[1]\n    : 75\n};\n\n/**\n * Expose some basic cursor interactions\n * that are common among reporters.\n */\n\nexports.cursor = {\n  hide: function(){\n    isatty && process.stdout.write('\\u001b[?25l');\n  },\n\n  show: function(){\n    isatty && process.stdout.write('\\u001b[?25h');\n  },\n\n  deleteLine: function(){\n    isatty && process.stdout.write('\\u001b[2K');\n  },\n\n  beginningOfLine: function(){\n    isatty && process.stdout.write('\\u001b[0G');\n  },\n\n  CR: function(){\n    if (isatty) {\n      exports.cursor.deleteLine();\n      exports.cursor.beginningOfLine();\n    } else {\n      process.stdout.write('\\r');\n    }\n  }\n};\n\n/**\n * Outut the given `failures` as a list.\n *\n * @param {Array} failures\n * @api public\n */\n\nexports.list = function(failures){\n  console.log();\n  failures.forEach(function(test, i){\n    // format\n    var fmt = color('error title', '  %s) %s:\\n')\n      + color('error message', '     %s')\n      + color('error stack', '\\n%s\\n');\n\n    // msg\n    var err = test.err\n      , message = err.message || ''\n      , stack = err.stack || message\n      , index = stack.indexOf(message) + message.length\n      , msg = stack.slice(0, index)\n      , actual = err.actual\n      , expected = err.expected\n      , escape = true;\n\n    // uncaught\n    if (err.uncaught) {\n      msg = 'Uncaught ' + msg;\n    }\n    // explicitly show diff\n    if (err.showDiff && sameType(actual, expected)) {\n\n      if ('string' !== typeof actual) {\n        escape = false;\n        err.actual = actual = utils.stringify(actual);\n        err.expected = expected = utils.stringify(expected);\n      }\n\n      fmt = color('error title', '  %s) %s:\\n%s') + color('error stack', '\\n%s\\n');\n      var match = message.match(/^([^:]+): expected/);\n      msg = '\\n      ' + color('error message', match ? match[1] : msg);\n\n      if (exports.inlineDiffs) {\n        msg += inlineDiff(err, escape);\n      } else {\n        msg += unifiedDiff(err, escape);\n      }\n    }\n\n    // indent stack trace without msg\n    stack = stack.slice(index ? index + 1 : index)\n      .replace(/^/gm, '  ');\n\n    console.log(fmt, (i + 1), test.fullTitle(), msg, stack);\n  });\n};\n\n/**\n * Initialize a new `Base` reporter.\n *\n * All other reporters generally\n * inherit from this reporter, providing\n * stats such as test duration, number\n * of tests passed / failed etc.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Base(runner) {\n  var self = this\n    , stats = this.stats = { suites: 0, tests: 0, passes: 0, pending: 0, failures: 0 }\n    , failures = this.failures = [];\n\n  if (!runner) return;\n  this.runner = runner;\n\n  runner.stats = stats;\n\n  runner.on('start', function(){\n    stats.start = new Date;\n  });\n\n  runner.on('suite', function(suite){\n    stats.suites = stats.suites || 0;\n    suite.root || stats.suites++;\n  });\n\n  runner.on('test end', function(test){\n    stats.tests = stats.tests || 0;\n    stats.tests++;\n  });\n\n  runner.on('pass', function(test){\n    stats.passes = stats.passes || 0;\n\n    var medium = test.slow() / 2;\n    test.speed = test.duration > test.slow()\n      ? 'slow'\n      : test.duration > medium\n        ? 'medium'\n        : 'fast';\n\n    stats.passes++;\n  });\n\n  runner.on('fail', function(test, err){\n    stats.failures = stats.failures || 0;\n    stats.failures++;\n    test.err = err;\n    failures.push(test);\n  });\n\n  runner.on('end', function(){\n    stats.end = new Date;\n    stats.duration = new Date - stats.start;\n  });\n\n  runner.on('pending', function(){\n    stats.pending++;\n  });\n}\n\n/**\n * Output common epilogue used by many of\n * the bundled reporters.\n *\n * @api public\n */\n\nBase.prototype.epilogue = function(){\n  var stats = this.stats;\n  var tests;\n  var fmt;\n\n  console.log();\n\n  // passes\n  fmt = color('bright pass', ' ')\n    + color('green', ' %d passing')\n    + color('light', ' (%s)');\n\n  console.log(fmt,\n    stats.passes || 0,\n    ms(stats.duration));\n\n  // pending\n  if (stats.pending) {\n    fmt = color('pending', ' ')\n      + color('pending', ' %d pending');\n\n    console.log(fmt, stats.pending);\n  }\n\n  // failures\n  if (stats.failures) {\n    fmt = color('fail', '  %d failing');\n\n    console.log(fmt, stats.failures);\n\n    Base.list(this.failures);\n    console.log();\n  }\n\n  console.log();\n};\n\n/**\n * Pad the given `str` to `len`.\n *\n * @param {String} str\n * @param {String} len\n * @return {String}\n * @api private\n */\n\nfunction pad(str, len) {\n  str = String(str);\n  return Array(len - str.length + 1).join(' ') + str;\n}\n\n\n/**\n * Returns an inline diff between 2 strings with coloured ANSI output\n *\n * @param {Error} Error with actual/expected\n * @return {String} Diff\n * @api private\n */\n\nfunction inlineDiff(err, escape) {\n  var msg = errorDiff(err, 'WordsWithSpace', escape);\n\n  // linenos\n  var lines = msg.split('\\n');\n  if (lines.length > 4) {\n    var width = String(lines.length).length;\n    msg = lines.map(function(str, i){\n      return pad(++i, width) + ' |' + ' ' + str;\n    }).join('\\n');\n  }\n\n  // legend\n  msg = '\\n'\n    + color('diff removed', 'actual')\n    + ' '\n    + color('diff added', 'expected')\n    + '\\n\\n'\n    + msg\n    + '\\n';\n\n  // indent\n  msg = msg.replace(/^/gm, '      ');\n  return msg;\n}\n\n/**\n * Returns a unified diff between 2 strings\n *\n * @param {Error} Error with actual/expected\n * @return {String} Diff\n * @api private\n */\n\nfunction unifiedDiff(err, escape) {\n  var indent = '      ';\n  function cleanUp(line) {\n    if (escape) {\n      line = escapeInvisibles(line);\n    }\n    if (line[0] === '+') return indent + colorLines('diff added', line);\n    if (line[0] === '-') return indent + colorLines('diff removed', line);\n    if (line.match(/\\@\\@/)) return null;\n    if (line.match(/\\\\ No newline/)) return null;\n    else return indent + line;\n  }\n  function notBlank(line) {\n    return line != null;\n  }\n  var msg = diff.createPatch('string', err.actual, err.expected);\n  var lines = msg.split('\\n').splice(4);\n  return '\\n      '\n         + colorLines('diff added',   '+ expected') + ' '\n         + colorLines('diff removed', '- actual')\n         + '\\n\\n'\n         + lines.map(cleanUp).filter(notBlank).join('\\n');\n}\n\n/**\n * Return a character diff for `err`.\n *\n * @param {Error} err\n * @return {String}\n * @api private\n */\n\nfunction errorDiff(err, type, escape) {\n  var actual   = escape ? escapeInvisibles(err.actual)   : err.actual;\n  var expected = escape ? escapeInvisibles(err.expected) : err.expected;\n  return diff['diff' + type](actual, expected).map(function(str){\n    if (str.added) return colorLines('diff added', str.value);\n    if (str.removed) return colorLines('diff removed', str.value);\n    return str.value;\n  }).join('');\n}\n\n/**\n * Returns a string with all invisible characters in plain text\n *\n * @param {String} line\n * @return {String}\n * @api private\n */\nfunction escapeInvisibles(line) {\n    return line.replace(/\\t/g, '<tab>')\n               .replace(/\\r/g, '<CR>')\n               .replace(/\\n/g, '<LF>\\n');\n}\n\n/**\n * Color lines for `str`, using the color `name`.\n *\n * @param {String} name\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nfunction colorLines(name, str) {\n  return str.split('\\n').map(function(str){\n    return color(name, str);\n  }).join('\\n');\n}\n\n/**\n * Check that a / b have the same type.\n *\n * @param {Object} a\n * @param {Object} b\n * @return {Boolean}\n * @api private\n */\n\nfunction sameType(a, b) {\n  a = Object.prototype.toString.call(a);\n  b = Object.prototype.toString.call(b);\n  return a == b;\n}\n\n}); // module: reporters/base.js\n\nrequire.register(\"reporters/doc.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , utils = require('../utils');\n\n/**\n * Expose `Doc`.\n */\n\nexports = module.exports = Doc;\n\n/**\n * Initialize a new `Doc` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Doc(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , total = runner.total\n    , indents = 2;\n\n  function indent() {\n    return Array(indents).join('  ');\n  }\n\n  runner.on('suite', function(suite){\n    if (suite.root) return;\n    ++indents;\n    console.log('%s<section class=\"suite\">', indent());\n    ++indents;\n    console.log('%s<h1>%s</h1>', indent(), utils.escape(suite.title));\n    console.log('%s<dl>', indent());\n  });\n\n  runner.on('suite end', function(suite){\n    if (suite.root) return;\n    console.log('%s</dl>', indent());\n    --indents;\n    console.log('%s</section>', indent());\n    --indents;\n  });\n\n  runner.on('pass', function(test){\n    console.log('%s  <dt>%s</dt>', indent(), utils.escape(test.title));\n    var code = utils.escape(utils.clean(test.fn.toString()));\n    console.log('%s  <dd><pre><code>%s</code></pre></dd>', indent(), code);\n  });\n\n  runner.on('fail', function(test, err){\n    console.log('%s  <dt class=\"error\">%s</dt>', indent(), utils.escape(test.title));\n    var code = utils.escape(utils.clean(test.fn.toString()));\n    console.log('%s  <dd class=\"error\"><pre><code>%s</code></pre></dd>', indent(), code);\n    console.log('%s  <dd class=\"error\">%s</dd>', indent(), utils.escape(err));\n  });\n}\n\n}); // module: reporters/doc.js\n\nrequire.register(\"reporters/dot.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , color = Base.color;\n\n/**\n * Expose `Dot`.\n */\n\nexports = module.exports = Dot;\n\n/**\n * Initialize a new `Dot` matrix test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Dot(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , width = Base.window.width * .75 | 0\n    , n = -1;\n\n  runner.on('start', function(){\n    process.stdout.write('\\n  ');\n  });\n\n  runner.on('pending', function(test){\n    if (++n % width == 0) process.stdout.write('\\n  ');\n    process.stdout.write(color('pending', Base.symbols.dot));\n  });\n\n  runner.on('pass', function(test){\n    if (++n % width == 0) process.stdout.write('\\n  ');\n    if ('slow' == test.speed) {\n      process.stdout.write(color('bright yellow', Base.symbols.dot));\n    } else {\n      process.stdout.write(color(test.speed, Base.symbols.dot));\n    }\n  });\n\n  runner.on('fail', function(test, err){\n    if (++n % width == 0) process.stdout.write('\\n  ');\n    process.stdout.write(color('fail', Base.symbols.dot));\n  });\n\n  runner.on('end', function(){\n    console.log();\n    self.epilogue();\n  });\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nDot.prototype = new F;\nDot.prototype.constructor = Dot;\n\n\n}); // module: reporters/dot.js\n\nrequire.register(\"reporters/html-cov.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar JSONCov = require('./json-cov')\n  , fs = require('browser/fs');\n\n/**\n * Expose `HTMLCov`.\n */\n\nexports = module.exports = HTMLCov;\n\n/**\n * Initialize a new `JsCoverage` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction HTMLCov(runner) {\n  var jade = require('jade')\n    , file = __dirname + '/templates/coverage.jade'\n    , str = fs.readFileSync(file, 'utf8')\n    , fn = jade.compile(str, { filename: file })\n    , self = this;\n\n  JSONCov.call(this, runner, false);\n\n  runner.on('end', function(){\n    process.stdout.write(fn({\n        cov: self.cov\n      , coverageClass: coverageClass\n    }));\n  });\n}\n\n/**\n * Return coverage class for `n`.\n *\n * @return {String}\n * @api private\n */\n\nfunction coverageClass(n) {\n  if (n >= 75) return 'high';\n  if (n >= 50) return 'medium';\n  if (n >= 25) return 'low';\n  return 'terrible';\n}\n\n}); // module: reporters/html-cov.js\n\nrequire.register(\"reporters/html.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , utils = require('../utils')\n  , Progress = require('../browser/progress')\n  , escape = utils.escape;\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date\n  , setTimeout = global.setTimeout\n  , setInterval = global.setInterval\n  , clearTimeout = global.clearTimeout\n  , clearInterval = global.clearInterval;\n\n/**\n * Expose `HTML`.\n */\n\nexports = module.exports = HTML;\n\n/**\n * Stats template.\n */\n\nvar statsTemplate = '<ul id=\"mocha-stats\">'\n  + '<li class=\"progress\"><canvas width=\"40\" height=\"40\"></canvas></li>'\n  + '<li class=\"passes\"><a href=\"#\">passes:</a> <em>0</em></li>'\n  + '<li class=\"failures\"><a href=\"#\">failures:</a> <em>0</em></li>'\n  + '<li class=\"duration\">duration: <em>0</em>s</li>'\n  + '</ul>';\n\n/**\n * Initialize a new `HTML` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction HTML(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , total = runner.total\n    , stat = fragment(statsTemplate)\n    , items = stat.getElementsByTagName('li')\n    , passes = items[1].getElementsByTagName('em')[0]\n    , passesLink = items[1].getElementsByTagName('a')[0]\n    , failures = items[2].getElementsByTagName('em')[0]\n    , failuresLink = items[2].getElementsByTagName('a')[0]\n    , duration = items[3].getElementsByTagName('em')[0]\n    , canvas = stat.getElementsByTagName('canvas')[0]\n    , report = fragment('<ul id=\"mocha-report\"></ul>')\n    , stack = [report]\n    , progress\n    , ctx\n    , root = document.getElementById('mocha');\n\n  if (canvas.getContext) {\n    var ratio = window.devicePixelRatio || 1;\n    canvas.style.width = canvas.width;\n    canvas.style.height = canvas.height;\n    canvas.width *= ratio;\n    canvas.height *= ratio;\n    ctx = canvas.getContext('2d');\n    ctx.scale(ratio, ratio);\n    progress = new Progress;\n  }\n\n  if (!root) return error('#mocha div missing, add it to your document');\n\n  // pass toggle\n  on(passesLink, 'click', function(){\n    unhide();\n    var name = /pass/.test(report.className) ? '' : ' pass';\n    report.className = report.className.replace(/fail|pass/g, '') + name;\n    if (report.className.trim()) hideSuitesWithout('test pass');\n  });\n\n  // failure toggle\n  on(failuresLink, 'click', function(){\n    unhide();\n    var name = /fail/.test(report.className) ? '' : ' fail';\n    report.className = report.className.replace(/fail|pass/g, '') + name;\n    if (report.className.trim()) hideSuitesWithout('test fail');\n  });\n\n  root.appendChild(stat);\n  root.appendChild(report);\n\n  if (progress) progress.size(40);\n\n  runner.on('suite', function(suite){\n    if (suite.root) return;\n\n    // suite\n    var url = self.suiteURL(suite);\n    var el = fragment('<li class=\"suite\"><h1><a href=\"%s\">%s</a></h1></li>', url, escape(suite.title));\n\n    // container\n    stack[0].appendChild(el);\n    stack.unshift(document.createElement('ul'));\n    el.appendChild(stack[0]);\n  });\n\n  runner.on('suite end', function(suite){\n    if (suite.root) return;\n    stack.shift();\n  });\n\n  runner.on('fail', function(test, err){\n    if ('hook' == test.type) runner.emit('test end', test);\n  });\n\n  runner.on('test end', function(test){\n    // TODO: add to stats\n    var percent = stats.tests / this.total * 100 | 0;\n    if (progress) progress.update(percent).draw(ctx);\n\n    // update stats\n    var ms = new Date - stats.start;\n    text(passes, stats.passes);\n    text(failures, stats.failures);\n    text(duration, (ms / 1000).toFixed(2));\n\n    // test\n    if ('passed' == test.state) {\n      var url = self.testURL(test);\n      var el = fragment('<li class=\"test pass %e\"><h2>%e<span class=\"duration\">%ems</span> <a href=\"%s\" class=\"replay\">‣</a></h2></li>', test.speed, test.title, test.duration, url);\n    } else if (test.pending) {\n      var el = fragment('<li class=\"test pass pending\"><h2>%e</h2></li>', test.title);\n    } else {\n      var el = fragment('<li class=\"test fail\"><h2>%e <a href=\"%e\" class=\"replay\">‣</a></h2></li>', test.title, self.testURL(test));\n      var str = test.err.stack || test.err.toString();\n\n      // FF / Opera do not add the message\n      if (!~str.indexOf(test.err.message)) {\n        str = test.err.message + '\\n' + str;\n      }\n\n      // <=IE7 stringifies to [Object Error]. Since it can be overloaded, we\n      // check for the result of the stringifying.\n      if ('[object Error]' == str) str = test.err.message;\n\n      // Safari doesn't give you a stack. Let's at least provide a source line.\n      if (!test.err.stack && test.err.sourceURL && test.err.line !== undefined) {\n        str += \"\\n(\" + test.err.sourceURL + \":\" + test.err.line + \")\";\n      }\n\n      el.appendChild(fragment('<pre class=\"error\">%e</pre>', str));\n    }\n\n    // toggle code\n    // TODO: defer\n    if (!test.pending) {\n      var h2 = el.getElementsByTagName('h2')[0];\n\n      on(h2, 'click', function(){\n        pre.style.display = 'none' == pre.style.display\n          ? 'block'\n          : 'none';\n      });\n\n      var pre = fragment('<pre><code>%e</code></pre>', utils.clean(test.fn.toString()));\n      el.appendChild(pre);\n      pre.style.display = 'none';\n    }\n\n    // Don't call .appendChild if #mocha-report was already .shift()'ed off the stack.\n    if (stack[0]) stack[0].appendChild(el);\n  });\n}\n\n/**\n * Makes a URL, preserving querystring (\"search\") parameters.\n * @param {string} s\n * @returns {string} your new URL\n */\nvar makeUrl = function makeUrl(s) {\n  var search = window.location.search;\n\n  // Remove previous grep query parameter if present\n  if (search) {\n    search = search.replace(/[?&]grep=[^&\\s]*/g, '').replace(/^&/, '?');\n  }\n\n  return window.location.pathname + (search ? search + '&' : '?' ) + 'grep=' + encodeURIComponent(s);\n};\n\n/**\n * Provide suite URL\n *\n * @param {Object} [suite]\n */\nHTML.prototype.suiteURL = function(suite){\n  return makeUrl(suite.fullTitle());\n};\n\n/**\n * Provide test URL\n *\n * @param {Object} [test]\n */\n\nHTML.prototype.testURL = function(test){\n  return makeUrl(test.fullTitle());\n};\n\n/**\n * Display error `msg`.\n */\n\nfunction error(msg) {\n  document.body.appendChild(fragment('<div id=\"mocha-error\">%s</div>', msg));\n}\n\n/**\n * Return a DOM fragment from `html`.\n */\n\nfunction fragment(html) {\n  var args = arguments\n    , div = document.createElement('div')\n    , i = 1;\n\n  div.innerHTML = html.replace(/%([se])/g, function(_, type){\n    switch (type) {\n      case 's': return String(args[i++]);\n      case 'e': return escape(args[i++]);\n    }\n  });\n\n  return div.firstChild;\n}\n\n/**\n * Check for suites that do not have elements\n * with `classname`, and hide them.\n */\n\nfunction hideSuitesWithout(classname) {\n  var suites = document.getElementsByClassName('suite');\n  for (var i = 0; i < suites.length; i++) {\n    var els = suites[i].getElementsByClassName(classname);\n    if (0 == els.length) suites[i].className += ' hidden';\n  }\n}\n\n/**\n * Unhide .hidden suites.\n */\n\nfunction unhide() {\n  var els = document.getElementsByClassName('suite hidden');\n  for (var i = 0; i < els.length; ++i) {\n    els[i].className = els[i].className.replace('suite hidden', 'suite');\n  }\n}\n\n/**\n * Set `el` text to `str`.\n */\n\nfunction text(el, str) {\n  if (el.textContent) {\n    el.textContent = str;\n  } else {\n    el.innerText = str;\n  }\n}\n\n/**\n * Listen on `event` with callback `fn`.\n */\n\nfunction on(el, event, fn) {\n  if (el.addEventListener) {\n    el.addEventListener(event, fn, false);\n  } else {\n    el.attachEvent('on' + event, fn);\n  }\n}\n\n}); // module: reporters/html.js\n\nrequire.register(\"reporters/index.js\", function(module, exports, require){\nexports.Base = require('./base');\nexports.Dot = require('./dot');\nexports.Doc = require('./doc');\nexports.TAP = require('./tap');\nexports.JSON = require('./json');\nexports.HTML = require('./html');\nexports.List = require('./list');\nexports.Min = require('./min');\nexports.Spec = require('./spec');\nexports.Nyan = require('./nyan');\nexports.XUnit = require('./xunit');\nexports.Markdown = require('./markdown');\nexports.Progress = require('./progress');\nexports.Landing = require('./landing');\nexports.JSONCov = require('./json-cov');\nexports.HTMLCov = require('./html-cov');\nexports.JSONStream = require('./json-stream');\n\n}); // module: reporters/index.js\n\nrequire.register(\"reporters/json-cov.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base');\n\n/**\n * Expose `JSONCov`.\n */\n\nexports = module.exports = JSONCov;\n\n/**\n * Initialize a new `JsCoverage` reporter.\n *\n * @param {Runner} runner\n * @param {Boolean} output\n * @api public\n */\n\nfunction JSONCov(runner, output) {\n  var self = this\n    , output = 1 == arguments.length ? true : output;\n\n  Base.call(this, runner);\n\n  var tests = []\n    , failures = []\n    , passes = [];\n\n  runner.on('test end', function(test){\n    tests.push(test);\n  });\n\n  runner.on('pass', function(test){\n    passes.push(test);\n  });\n\n  runner.on('fail', function(test){\n    failures.push(test);\n  });\n\n  runner.on('end', function(){\n    var cov = global._$jscoverage || {};\n    var result = self.cov = map(cov);\n    result.stats = self.stats;\n    result.tests = tests.map(clean);\n    result.failures = failures.map(clean);\n    result.passes = passes.map(clean);\n    if (!output) return;\n    process.stdout.write(JSON.stringify(result, null, 2 ));\n  });\n}\n\n/**\n * Map jscoverage data to a JSON structure\n * suitable for reporting.\n *\n * @param {Object} cov\n * @return {Object}\n * @api private\n */\n\nfunction map(cov) {\n  var ret = {\n      instrumentation: 'node-jscoverage'\n    , sloc: 0\n    , hits: 0\n    , misses: 0\n    , coverage: 0\n    , files: []\n  };\n\n  for (var filename in cov) {\n    var data = coverage(filename, cov[filename]);\n    ret.files.push(data);\n    ret.hits += data.hits;\n    ret.misses += data.misses;\n    ret.sloc += data.sloc;\n  }\n\n  ret.files.sort(function(a, b) {\n    return a.filename.localeCompare(b.filename);\n  });\n\n  if (ret.sloc > 0) {\n    ret.coverage = (ret.hits / ret.sloc) * 100;\n  }\n\n  return ret;\n}\n\n/**\n * Map jscoverage data for a single source file\n * to a JSON structure suitable for reporting.\n *\n * @param {String} filename name of the source file\n * @param {Object} data jscoverage coverage data\n * @return {Object}\n * @api private\n */\n\nfunction coverage(filename, data) {\n  var ret = {\n    filename: filename,\n    coverage: 0,\n    hits: 0,\n    misses: 0,\n    sloc: 0,\n    source: {}\n  };\n\n  data.source.forEach(function(line, num){\n    num++;\n\n    if (data[num] === 0) {\n      ret.misses++;\n      ret.sloc++;\n    } else if (data[num] !== undefined) {\n      ret.hits++;\n      ret.sloc++;\n    }\n\n    ret.source[num] = {\n        source: line\n      , coverage: data[num] === undefined\n        ? ''\n        : data[num]\n    };\n  });\n\n  ret.coverage = ret.hits / ret.sloc * 100;\n\n  return ret;\n}\n\n/**\n * Return a plain-object representation of `test`\n * free of cyclic properties etc.\n *\n * @param {Object} test\n * @return {Object}\n * @api private\n */\n\nfunction clean(test) {\n  return {\n      title: test.title\n    , fullTitle: test.fullTitle()\n    , duration: test.duration\n  }\n}\n\n}); // module: reporters/json-cov.js\n\nrequire.register(\"reporters/json-stream.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , color = Base.color;\n\n/**\n * Expose `List`.\n */\n\nexports = module.exports = List;\n\n/**\n * Initialize a new `List` test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction List(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , total = runner.total;\n\n  runner.on('start', function(){\n    console.log(JSON.stringify(['start', { total: total }]));\n  });\n\n  runner.on('pass', function(test){\n    console.log(JSON.stringify(['pass', clean(test)]));\n  });\n\n  runner.on('fail', function(test, err){\n    test = clean(test);\n    test.err = err.message;\n    console.log(JSON.stringify(['fail', test]));\n  });\n\n  runner.on('end', function(){\n    process.stdout.write(JSON.stringify(['end', self.stats]));\n  });\n}\n\n/**\n * Return a plain-object representation of `test`\n * free of cyclic properties etc.\n *\n * @param {Object} test\n * @return {Object}\n * @api private\n */\n\nfunction clean(test) {\n  return {\n      title: test.title\n    , fullTitle: test.fullTitle()\n    , duration: test.duration\n  }\n}\n\n}); // module: reporters/json-stream.js\n\nrequire.register(\"reporters/json.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `JSON`.\n */\n\nexports = module.exports = JSONReporter;\n\n/**\n * Initialize a new `JSON` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction JSONReporter(runner) {\n  var self = this;\n  Base.call(this, runner);\n\n  var tests = []\n    , pending = []\n    , failures = []\n    , passes = [];\n\n  runner.on('test end', function(test){\n    tests.push(test);\n  });\n\n  runner.on('pass', function(test){\n    passes.push(test);\n  });\n\n  runner.on('fail', function(test){\n    failures.push(test);\n  });\n\n  runner.on('pending', function(test){\n    pending.push(test);\n  });\n\n  runner.on('end', function(){\n    var obj = {\n      stats: self.stats,\n      tests: tests.map(clean),\n      pending: pending.map(clean),\n      failures: failures.map(clean),\n      passes: passes.map(clean)\n    };\n\n    runner.testResults = obj;\n\n    process.stdout.write(JSON.stringify(obj, null, 2));\n  });\n}\n\n/**\n * Return a plain-object representation of `test`\n * free of cyclic properties etc.\n *\n * @param {Object} test\n * @return {Object}\n * @api private\n */\n\nfunction clean(test) {\n  return {\n    title: test.title,\n    fullTitle: test.fullTitle(),\n    duration: test.duration,\n    err: errorJSON(test.err || {})\n  }\n}\n\n/**\n * Transform `error` into a JSON object.\n * @param {Error} err\n * @return {Object}\n */\n\nfunction errorJSON(err) {\n  var res = {};\n  Object.getOwnPropertyNames(err).forEach(function(key) {\n    res[key] = err[key];\n  }, err);\n  return res;\n}\n\n}); // module: reporters/json.js\n\nrequire.register(\"reporters/landing.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `Landing`.\n */\n\nexports = module.exports = Landing;\n\n/**\n * Airplane color.\n */\n\nBase.colors.plane = 0;\n\n/**\n * Airplane crash color.\n */\n\nBase.colors['plane crash'] = 31;\n\n/**\n * Runway color.\n */\n\nBase.colors.runway = 90;\n\n/**\n * Initialize a new `Landing` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Landing(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , width = Base.window.width * .75 | 0\n    , total = runner.total\n    , stream = process.stdout\n    , plane = color('plane', '✈')\n    , crashed = -1\n    , n = 0;\n\n  function runway() {\n    var buf = Array(width).join('-');\n    return '  ' + color('runway', buf);\n  }\n\n  runner.on('start', function(){\n    stream.write('\\n\\n\\n  ');\n    cursor.hide();\n  });\n\n  runner.on('test end', function(test){\n    // check if the plane crashed\n    var col = -1 == crashed\n      ? width * ++n / total | 0\n      : crashed;\n\n    // show the crash\n    if ('failed' == test.state) {\n      plane = color('plane crash', '✈');\n      crashed = col;\n    }\n\n    // render landing strip\n    stream.write('\\u001b['+(width+1)+'D\\u001b[2A');\n    stream.write(runway());\n    stream.write('\\n  ');\n    stream.write(color('runway', Array(col).join('⋅')));\n    stream.write(plane)\n    stream.write(color('runway', Array(width - col).join('⋅') + '\\n'));\n    stream.write(runway());\n    stream.write('\\u001b[0m');\n  });\n\n  runner.on('end', function(){\n    cursor.show();\n    console.log();\n    self.epilogue();\n  });\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nLanding.prototype = new F;\nLanding.prototype.constructor = Landing;\n\n\n}); // module: reporters/landing.js\n\nrequire.register(\"reporters/list.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `List`.\n */\n\nexports = module.exports = List;\n\n/**\n * Initialize a new `List` test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction List(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , n = 0;\n\n  runner.on('start', function(){\n    console.log();\n  });\n\n  runner.on('test', function(test){\n    process.stdout.write(color('pass', '    ' + test.fullTitle() + ': '));\n  });\n\n  runner.on('pending', function(test){\n    var fmt = color('checkmark', '  -')\n      + color('pending', ' %s');\n    console.log(fmt, test.fullTitle());\n  });\n\n  runner.on('pass', function(test){\n    var fmt = color('checkmark', '  '+Base.symbols.dot)\n      + color('pass', ' %s: ')\n      + color(test.speed, '%dms');\n    cursor.CR();\n    console.log(fmt, test.fullTitle(), test.duration);\n  });\n\n  runner.on('fail', function(test, err){\n    cursor.CR();\n    console.log(color('fail', '  %d) %s'), ++n, test.fullTitle());\n  });\n\n  runner.on('end', self.epilogue.bind(self));\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nList.prototype = new F;\nList.prototype.constructor = List;\n\n\n}); // module: reporters/list.js\n\nrequire.register(\"reporters/markdown.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , utils = require('../utils');\n\n/**\n * Constants\n */\n\nvar SUITE_PREFIX = '$';\n\n/**\n * Expose `Markdown`.\n */\n\nexports = module.exports = Markdown;\n\n/**\n * Initialize a new `Markdown` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Markdown(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , level = 0\n    , buf = '';\n\n  function title(str) {\n    return Array(level).join('#') + ' ' + str;\n  }\n\n  function indent() {\n    return Array(level).join('  ');\n  }\n\n  function mapTOC(suite, obj) {\n    var ret = obj,\n        key = SUITE_PREFIX + suite.title;\n    obj = obj[key] = obj[key] || { suite: suite };\n    suite.suites.forEach(function(suite){\n      mapTOC(suite, obj);\n    });\n    return ret;\n  }\n\n  function stringifyTOC(obj, level) {\n    ++level;\n    var buf = '';\n    var link;\n    for (var key in obj) {\n      if ('suite' == key) continue;\n      if (key !== SUITE_PREFIX) {\n        link = ' - [' + key.substring(1) + ']';\n        link += '(#' + utils.slug(obj[key].suite.fullTitle()) + ')\\n';\n        buf += Array(level).join('  ') + link;\n      }\n      buf += stringifyTOC(obj[key], level);\n    }\n    return buf;\n  }\n\n  function generateTOC(suite) {\n    var obj = mapTOC(suite, {});\n    return stringifyTOC(obj, 0);\n  }\n\n  generateTOC(runner.suite);\n\n  runner.on('suite', function(suite){\n    ++level;\n    var slug = utils.slug(suite.fullTitle());\n    buf += '<a name=\"' + slug + '\"></a>' + '\\n';\n    buf += title(suite.title) + '\\n';\n  });\n\n  runner.on('suite end', function(suite){\n    --level;\n  });\n\n  runner.on('pass', function(test){\n    var code = utils.clean(test.fn.toString());\n    buf += test.title + '.\\n';\n    buf += '\\n```js\\n';\n    buf += code + '\\n';\n    buf += '```\\n\\n';\n  });\n\n  runner.on('end', function(){\n    process.stdout.write('# TOC\\n');\n    process.stdout.write(generateTOC(runner.suite));\n    process.stdout.write(buf);\n  });\n}\n\n}); // module: reporters/markdown.js\n\nrequire.register(\"reporters/min.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base');\n\n/**\n * Expose `Min`.\n */\n\nexports = module.exports = Min;\n\n/**\n * Initialize a new `Min` minimal test reporter (best used with --watch).\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Min(runner) {\n  Base.call(this, runner);\n\n  runner.on('start', function(){\n    // clear screen\n    process.stdout.write('\\u001b[2J');\n    // set cursor position\n    process.stdout.write('\\u001b[1;3H');\n  });\n\n  runner.on('end', this.epilogue.bind(this));\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nMin.prototype = new F;\nMin.prototype.constructor = Min;\n\n\n}); // module: reporters/min.js\n\nrequire.register(\"reporters/nyan.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base');\n\n/**\n * Expose `Dot`.\n */\n\nexports = module.exports = NyanCat;\n\n/**\n * Initialize a new `Dot` matrix test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction NyanCat(runner) {\n  Base.call(this, runner);\n  var self = this\n    , stats = this.stats\n    , width = Base.window.width * .75 | 0\n    , rainbowColors = this.rainbowColors = self.generateColors()\n    , colorIndex = this.colorIndex = 0\n    , numerOfLines = this.numberOfLines = 4\n    , trajectories = this.trajectories = [[], [], [], []]\n    , nyanCatWidth = this.nyanCatWidth = 11\n    , trajectoryWidthMax = this.trajectoryWidthMax = (width - nyanCatWidth)\n    , scoreboardWidth = this.scoreboardWidth = 5\n    , tick = this.tick = 0\n    , n = 0;\n\n  runner.on('start', function(){\n    Base.cursor.hide();\n    self.draw();\n  });\n\n  runner.on('pending', function(test){\n    self.draw();\n  });\n\n  runner.on('pass', function(test){\n    self.draw();\n  });\n\n  runner.on('fail', function(test, err){\n    self.draw();\n  });\n\n  runner.on('end', function(){\n    Base.cursor.show();\n    for (var i = 0; i < self.numberOfLines; i++) write('\\n');\n    self.epilogue();\n  });\n}\n\n/**\n * Draw the nyan cat\n *\n * @api private\n */\n\nNyanCat.prototype.draw = function(){\n  this.appendRainbow();\n  this.drawScoreboard();\n  this.drawRainbow();\n  this.drawNyanCat();\n  this.tick = !this.tick;\n};\n\n/**\n * Draw the \"scoreboard\" showing the number\n * of passes, failures and pending tests.\n *\n * @api private\n */\n\nNyanCat.prototype.drawScoreboard = function(){\n  var stats = this.stats;\n\n  function draw(type, n) {\n    write(' ');\n    write(Base.color(type, n));\n    write('\\n');\n  }\n\n  draw('green', stats.passes);\n  draw('fail', stats.failures);\n  draw('pending', stats.pending);\n  write('\\n');\n\n  this.cursorUp(this.numberOfLines);\n};\n\n/**\n * Append the rainbow.\n *\n * @api private\n */\n\nNyanCat.prototype.appendRainbow = function(){\n  var segment = this.tick ? '_' : '-';\n  var rainbowified = this.rainbowify(segment);\n\n  for (var index = 0; index < this.numberOfLines; index++) {\n    var trajectory = this.trajectories[index];\n    if (trajectory.length >= this.trajectoryWidthMax) trajectory.shift();\n    trajectory.push(rainbowified);\n  }\n};\n\n/**\n * Draw the rainbow.\n *\n * @api private\n */\n\nNyanCat.prototype.drawRainbow = function(){\n  var self = this;\n\n  this.trajectories.forEach(function(line, index) {\n    write('\\u001b[' + self.scoreboardWidth + 'C');\n    write(line.join(''));\n    write('\\n');\n  });\n\n  this.cursorUp(this.numberOfLines);\n};\n\n/**\n * Draw the nyan cat\n *\n * @api private\n */\n\nNyanCat.prototype.drawNyanCat = function() {\n  var self = this;\n  var startWidth = this.scoreboardWidth + this.trajectories[0].length;\n  var dist = '\\u001b[' + startWidth + 'C';\n  var padding = '';\n\n  write(dist);\n  write('_,------,');\n  write('\\n');\n\n  write(dist);\n  padding = self.tick ? '  ' : '   ';\n  write('_|' + padding + '/\\\\_/\\\\ ');\n  write('\\n');\n\n  write(dist);\n  padding = self.tick ? '_' : '__';\n  var tail = self.tick ? '~' : '^';\n  var face;\n  write(tail + '|' + padding + this.face() + ' ');\n  write('\\n');\n\n  write(dist);\n  padding = self.tick ? ' ' : '  ';\n  write(padding + '\"\"  \"\" ');\n  write('\\n');\n\n  this.cursorUp(this.numberOfLines);\n};\n\n/**\n * Draw nyan cat face.\n *\n * @return {String}\n * @api private\n */\n\nNyanCat.prototype.face = function() {\n  var stats = this.stats;\n  if (stats.failures) {\n    return '( x .x)';\n  } else if (stats.pending) {\n    return '( o .o)';\n  } else if(stats.passes) {\n    return '( ^ .^)';\n  } else {\n    return '( - .-)';\n  }\n};\n\n/**\n * Move cursor up `n`.\n *\n * @param {Number} n\n * @api private\n */\n\nNyanCat.prototype.cursorUp = function(n) {\n  write('\\u001b[' + n + 'A');\n};\n\n/**\n * Move cursor down `n`.\n *\n * @param {Number} n\n * @api private\n */\n\nNyanCat.prototype.cursorDown = function(n) {\n  write('\\u001b[' + n + 'B');\n};\n\n/**\n * Generate rainbow colors.\n *\n * @return {Array}\n * @api private\n */\n\nNyanCat.prototype.generateColors = function(){\n  var colors = [];\n\n  for (var i = 0; i < (6 * 7); i++) {\n    var pi3 = Math.floor(Math.PI / 3);\n    var n = (i * (1.0 / 6));\n    var r = Math.floor(3 * Math.sin(n) + 3);\n    var g = Math.floor(3 * Math.sin(n + 2 * pi3) + 3);\n    var b = Math.floor(3 * Math.sin(n + 4 * pi3) + 3);\n    colors.push(36 * r + 6 * g + b + 16);\n  }\n\n  return colors;\n};\n\n/**\n * Apply rainbow to the given `str`.\n *\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nNyanCat.prototype.rainbowify = function(str){\n  if (!Base.useColors)\n    return str;\n  var color = this.rainbowColors[this.colorIndex % this.rainbowColors.length];\n  this.colorIndex += 1;\n  return '\\u001b[38;5;' + color + 'm' + str + '\\u001b[0m';\n};\n\n/**\n * Stdout helper.\n */\n\nfunction write(string) {\n  process.stdout.write(string);\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nNyanCat.prototype = new F;\nNyanCat.prototype.constructor = NyanCat;\n\n\n}); // module: reporters/nyan.js\n\nrequire.register(\"reporters/progress.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `Progress`.\n */\n\nexports = module.exports = Progress;\n\n/**\n * General progress bar color.\n */\n\nBase.colors.progress = 90;\n\n/**\n * Initialize a new `Progress` bar test reporter.\n *\n * @param {Runner} runner\n * @param {Object} options\n * @api public\n */\n\nfunction Progress(runner, options) {\n  Base.call(this, runner);\n\n  var self = this\n    , options = options || {}\n    , stats = this.stats\n    , width = Base.window.width * .50 | 0\n    , total = runner.total\n    , complete = 0\n    , max = Math.max\n    , lastN = -1;\n\n  // default chars\n  options.open = options.open || '[';\n  options.complete = options.complete || '▬';\n  options.incomplete = options.incomplete || Base.symbols.dot;\n  options.close = options.close || ']';\n  options.verbose = false;\n\n  // tests started\n  runner.on('start', function(){\n    console.log();\n    cursor.hide();\n  });\n\n  // tests complete\n  runner.on('test end', function(){\n    complete++;\n    var incomplete = total - complete\n      , percent = complete / total\n      , n = width * percent | 0\n      , i = width - n;\n\n    if (lastN === n && !options.verbose) {\n      // Don't re-render the line if it hasn't changed\n      return;\n    }\n    lastN = n;\n\n    cursor.CR();\n    process.stdout.write('\\u001b[J');\n    process.stdout.write(color('progress', '  ' + options.open));\n    process.stdout.write(Array(n).join(options.complete));\n    process.stdout.write(Array(i).join(options.incomplete));\n    process.stdout.write(color('progress', options.close));\n    if (options.verbose) {\n      process.stdout.write(color('progress', ' ' + complete + ' of ' + total));\n    }\n  });\n\n  // tests are complete, output some stats\n  // and the failures if any\n  runner.on('end', function(){\n    cursor.show();\n    console.log();\n    self.epilogue();\n  });\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nProgress.prototype = new F;\nProgress.prototype.constructor = Progress;\n\n\n}); // module: reporters/progress.js\n\nrequire.register(\"reporters/spec.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `Spec`.\n */\n\nexports = module.exports = Spec;\n\n/**\n * Initialize a new `Spec` test reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction Spec(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , indents = 0\n    , n = 0;\n\n  function indent() {\n    return Array(indents).join('  ')\n  }\n\n  runner.on('start', function(){\n    console.log();\n  });\n\n  runner.on('suite', function(suite){\n    ++indents;\n    console.log(color('suite', '%s%s'), indent(), suite.title);\n  });\n\n  runner.on('suite end', function(suite){\n    --indents;\n    if (1 == indents) console.log();\n  });\n\n  runner.on('pending', function(test){\n    var fmt = indent() + color('pending', '  - %s');\n    console.log(fmt, test.title);\n  });\n\n  runner.on('pass', function(test){\n    if ('fast' == test.speed) {\n      var fmt = indent()\n        + color('checkmark', '  ' + Base.symbols.ok)\n        + color('pass', ' %s ');\n      cursor.CR();\n      console.log(fmt, test.title);\n    } else {\n      var fmt = indent()\n        + color('checkmark', '  ' + Base.symbols.ok)\n        + color('pass', ' %s ')\n        + color(test.speed, '(%dms)');\n      cursor.CR();\n      console.log(fmt, test.title, test.duration);\n    }\n  });\n\n  runner.on('fail', function(test, err){\n    cursor.CR();\n    console.log(indent() + color('fail', '  %d) %s'), ++n, test.title);\n  });\n\n  runner.on('end', self.epilogue.bind(self));\n}\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nSpec.prototype = new F;\nSpec.prototype.constructor = Spec;\n\n\n}); // module: reporters/spec.js\n\nrequire.register(\"reporters/tap.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , cursor = Base.cursor\n  , color = Base.color;\n\n/**\n * Expose `TAP`.\n */\n\nexports = module.exports = TAP;\n\n/**\n * Initialize a new `TAP` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction TAP(runner) {\n  Base.call(this, runner);\n\n  var self = this\n    , stats = this.stats\n    , n = 1\n    , passes = 0\n    , failures = 0;\n\n  runner.on('start', function(){\n    var total = runner.grepTotal(runner.suite);\n    console.log('%d..%d', 1, total);\n  });\n\n  runner.on('test end', function(){\n    ++n;\n  });\n\n  runner.on('pending', function(test){\n    console.log('ok %d %s # SKIP -', n, title(test));\n  });\n\n  runner.on('pass', function(test){\n    passes++;\n    console.log('ok %d %s', n, title(test));\n  });\n\n  runner.on('fail', function(test, err){\n    failures++;\n    console.log('not ok %d %s', n, title(test));\n    if (err.stack) console.log(err.stack.replace(/^/gm, '  '));\n  });\n\n  runner.on('end', function(){\n    console.log('# tests ' + (passes + failures));\n    console.log('# pass ' + passes);\n    console.log('# fail ' + failures);\n  });\n}\n\n/**\n * Return a TAP-safe title of `test`\n *\n * @param {Object} test\n * @return {String}\n * @api private\n */\n\nfunction title(test) {\n  return test.fullTitle().replace(/#/g, '');\n}\n\n}); // module: reporters/tap.js\n\nrequire.register(\"reporters/xunit.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Base = require('./base')\n  , utils = require('../utils')\n  , fs = require('browser/fs')\n  , escape = utils.escape;\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date\n  , setTimeout = global.setTimeout\n  , setInterval = global.setInterval\n  , clearTimeout = global.clearTimeout\n  , clearInterval = global.clearInterval;\n\n/**\n * Expose `XUnit`.\n */\n\nexports = module.exports = XUnit;\n\n/**\n * Initialize a new `XUnit` reporter.\n *\n * @param {Runner} runner\n * @api public\n */\n\nfunction XUnit(runner, options) {\n  Base.call(this, runner);\n  var stats = this.stats\n    , tests = []\n    , self = this;\n\n  if (options.reporterOptions && options.reporterOptions.output) {\n      if (! fs.createWriteStream) {\n          throw new Error('file output not supported in browser');\n      }\n      self.fileStream = fs.createWriteStream(options.reporterOptions.output);\n  }\n\n  runner.on('pending', function(test){\n    tests.push(test);\n  });\n\n  runner.on('pass', function(test){\n    tests.push(test);\n  });\n\n  runner.on('fail', function(test){\n    tests.push(test);\n  });\n\n  runner.on('end', function(){\n    self.write(tag('testsuite', {\n        name: 'Mocha Tests'\n      , tests: stats.tests\n      , failures: stats.failures\n      , errors: stats.failures\n      , skipped: stats.tests - stats.failures - stats.passes\n      , timestamp: (new Date).toUTCString()\n      , time: (stats.duration / 1000) || 0\n    }, false));\n\n    tests.forEach(function(t) { self.test(t); });\n    self.write('</testsuite>');\n  });\n}\n\n/**\n * Override done to close the stream (if it's a file).\n */\nXUnit.prototype.done = function(failures, fn) {\n    if (this.fileStream) {\n        this.fileStream.end(function() {\n            fn(failures);\n        });\n    } else {\n        fn(failures);\n    }\n};\n\n/**\n * Inherit from `Base.prototype`.\n */\n\nfunction F(){};\nF.prototype = Base.prototype;\nXUnit.prototype = new F;\nXUnit.prototype.constructor = XUnit;\n\n\n/**\n * Write out the given line\n */\nXUnit.prototype.write = function(line) {\n    if (this.fileStream) {\n        this.fileStream.write(line + '\\n');\n    } else {\n        console.log(line);\n    }\n};\n\n/**\n * Output tag for the given `test.`\n */\n\nXUnit.prototype.test = function(test, ostream) {\n  var attrs = {\n      classname: test.parent.fullTitle()\n    , name: test.title\n    , time: (test.duration / 1000) || 0\n  };\n\n  if ('failed' == test.state) {\n    var err = test.err;\n    this.write(tag('testcase', attrs, false, tag('failure', {}, false, cdata(escape(err.message) + \"\\n\" + err.stack))));\n  } else if (test.pending) {\n    this.write(tag('testcase', attrs, false, tag('skipped', {}, true)));\n  } else {\n    this.write(tag('testcase', attrs, true) );\n  }\n};\n\n/**\n * HTML tag helper.\n */\n\nfunction tag(name, attrs, close, content) {\n  var end = close ? '/>' : '>'\n    , pairs = []\n    , tag;\n\n  for (var key in attrs) {\n    pairs.push(key + '=\"' + escape(attrs[key]) + '\"');\n  }\n\n  tag = '<' + name + (pairs.length ? ' ' + pairs.join(' ') : '') + end;\n  if (content) tag += content + '</' + name + end;\n  return tag;\n}\n\n/**\n * Return cdata escaped CDATA `str`.\n */\n\nfunction cdata(str) {\n  return '<![CDATA[' + escape(str) + ']]>';\n}\n\n}); // module: reporters/xunit.js\n\nrequire.register(\"runnable.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar EventEmitter = require('browser/events').EventEmitter\n  , debug = require('browser/debug')('mocha:runnable')\n  , Pending = require('./pending')\n  , milliseconds = require('./ms')\n  , utils = require('./utils');\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date\n  , setTimeout = global.setTimeout\n  , setInterval = global.setInterval\n  , clearTimeout = global.clearTimeout\n  , clearInterval = global.clearInterval;\n\n/**\n * Object#toString().\n */\n\nvar toString = Object.prototype.toString;\n\n/**\n * Expose `Runnable`.\n */\n\nmodule.exports = Runnable;\n\n/**\n * Initialize a new `Runnable` with the given `title` and callback `fn`.\n *\n * @param {String} title\n * @param {Function} fn\n * @api private\n */\n\nfunction Runnable(title, fn) {\n  this.title = title;\n  this.fn = fn;\n  this.async = fn && fn.length;\n  this.sync = ! this.async;\n  this._timeout = 2000;\n  this._slow = 75;\n  this._enableTimeouts = true;\n  this.timedOut = false;\n  this._trace = new Error('done() called multiple times')\n}\n\n/**\n * Inherit from `EventEmitter.prototype`.\n */\n\nfunction F(){};\nF.prototype = EventEmitter.prototype;\nRunnable.prototype = new F;\nRunnable.prototype.constructor = Runnable;\n\n\n/**\n * Set & get timeout `ms`.\n *\n * @param {Number|String} ms\n * @return {Runnable|Number} ms or self\n * @api private\n */\n\nRunnable.prototype.timeout = function(ms){\n  if (0 == arguments.length) return this._timeout;\n  if (ms === 0) this._enableTimeouts = false;\n  if ('string' == typeof ms) ms = milliseconds(ms);\n  debug('timeout %d', ms);\n  this._timeout = ms;\n  if (this.timer) this.resetTimeout();\n  return this;\n};\n\n/**\n * Set & get slow `ms`.\n *\n * @param {Number|String} ms\n * @return {Runnable|Number} ms or self\n * @api private\n */\n\nRunnable.prototype.slow = function(ms){\n  if (0 === arguments.length) return this._slow;\n  if ('string' == typeof ms) ms = milliseconds(ms);\n  debug('timeout %d', ms);\n  this._slow = ms;\n  return this;\n};\n\n/**\n * Set and & get timeout `enabled`.\n *\n * @param {Boolean} enabled\n * @return {Runnable|Boolean} enabled or self\n * @api private\n */\n\nRunnable.prototype.enableTimeouts = function(enabled){\n  if (arguments.length === 0) return this._enableTimeouts;\n  debug('enableTimeouts %s', enabled);\n  this._enableTimeouts = enabled;\n  return this;\n};\n\n/**\n * Halt and mark as pending.\n *\n * @api private\n */\n\nRunnable.prototype.skip = function(){\n    throw new Pending();\n};\n\n/**\n * Return the full title generated by recursively\n * concatenating the parent's full title.\n *\n * @return {String}\n * @api public\n */\n\nRunnable.prototype.fullTitle = function(){\n  return this.parent.fullTitle() + ' ' + this.title;\n};\n\n/**\n * Clear the timeout.\n *\n * @api private\n */\n\nRunnable.prototype.clearTimeout = function(){\n  clearTimeout(this.timer);\n};\n\n/**\n * Inspect the runnable void of private properties.\n *\n * @return {String}\n * @api private\n */\n\nRunnable.prototype.inspect = function(){\n  return JSON.stringify(this, function(key, val){\n    if ('_' == key[0]) return;\n    if ('parent' == key) return '#<Suite>';\n    if ('ctx' == key) return '#<Context>';\n    return val;\n  }, 2);\n};\n\n/**\n * Reset the timeout.\n *\n * @api private\n */\n\nRunnable.prototype.resetTimeout = function(){\n  var self = this;\n  var ms = this.timeout() || 1e9;\n\n  if (!this._enableTimeouts) return;\n  this.clearTimeout();\n  this.timer = setTimeout(function(){\n    if (!self._enableTimeouts) return;\n    self.callback(new Error('timeout of ' + ms + 'ms exceeded. Ensure the done() callback is being called in this test.'));\n    self.timedOut = true;\n  }, ms);\n};\n\n/**\n * Whitelist these globals for this test run\n *\n * @api private\n */\nRunnable.prototype.globals = function(arr){\n  var self = this;\n  this._allowedGlobals = arr;\n};\n\n/**\n * Run the test and invoke `fn(err)`.\n *\n * @param {Function} fn\n * @api private\n */\n\nRunnable.prototype.run = function(fn){\n  var self = this\n    , start = new Date\n    , ctx = this.ctx\n    , finished\n    , emitted;\n\n  // Some times the ctx exists but it is not runnable\n  if (ctx && ctx.runnable) ctx.runnable(this);\n\n  // called multiple times\n  function multiple(err) {\n    if (emitted) return;\n    emitted = true;\n    self.emit('error', err || new Error('done() called multiple times; stacktrace may be inaccurate'));\n  }\n\n  // finished\n  function done(err) {\n    var ms = self.timeout();\n    if (self.timedOut) return;\n    if (finished) return multiple(err || self._trace);\n\n    // Discard the resolution if this test has already failed asynchronously\n    if (self.state) return;\n\n    self.clearTimeout();\n    self.duration = new Date - start;\n    finished = true;\n    if (!err && self.duration > ms && self._enableTimeouts) err = new Error('timeout of ' + ms + 'ms exceeded. Ensure the done() callback is being called in this test.');\n    fn(err);\n  }\n\n  // for .resetTimeout()\n  this.callback = done;\n\n  // explicit async with `done` argument\n  if (this.async) {\n    this.resetTimeout();\n\n    try {\n      this.fn.call(ctx, function(err){\n        if (err instanceof Error || toString.call(err) === \"[object Error]\") return done(err);\n        if (null != err) {\n          if (Object.prototype.toString.call(err) === '[object Object]') {\n            return done(new Error('done() invoked with non-Error: ' + JSON.stringify(err)));\n          } else {\n            return done(new Error('done() invoked with non-Error: ' + err));\n          }\n        }\n        done();\n      });\n    } catch (err) {\n      done(utils.getError(err));\n    }\n    return;\n  }\n\n  if (this.asyncOnly) {\n    return done(new Error('--async-only option in use without declaring `done()`'));\n  }\n\n  // sync or promise-returning\n  try {\n    if (this.pending) {\n      done();\n    } else {\n      callFn(this.fn);\n    }\n  } catch (err) {\n    done(utils.getError(err));\n  }\n\n  function callFn(fn) {\n    var result = fn.call(ctx);\n    if (result && typeof result.then === 'function') {\n      self.resetTimeout();\n      result\n        .then(function() {\n          done()\n        },\n        function(reason) {\n          done(reason || new Error('Promise rejected with no or falsy reason'))\n        });\n    } else {\n      done();\n    }\n  }\n};\n\n}); // module: runnable.js\n\nrequire.register(\"runner.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar EventEmitter = require('browser/events').EventEmitter\n  , debug = require('browser/debug')('mocha:runner')\n  , Pending = require('./pending')\n  , Test = require('./test')\n  , utils = require('./utils')\n  , filter = utils.filter\n  , keys = utils.keys\n  , type = utils.type\n  , stringify = utils.stringify;\n\n/**\n * Non-enumerable globals.\n */\n\nvar globals = [\n  'setTimeout',\n  'clearTimeout',\n  'setInterval',\n  'clearInterval',\n  'XMLHttpRequest',\n  'Date',\n  'setImmediate',\n  'clearImmediate'\n];\n\n/**\n * Expose `Runner`.\n */\n\nmodule.exports = Runner;\n\n/**\n * Initialize a `Runner` for the given `suite`.\n *\n * Events:\n *\n *   - `start`  execution started\n *   - `end`  execution complete\n *   - `suite`  (suite) test suite execution started\n *   - `suite end`  (suite) all tests (and sub-suites) have finished\n *   - `test`  (test) test execution started\n *   - `test end`  (test) test completed\n *   - `hook`  (hook) hook execution started\n *   - `hook end`  (hook) hook complete\n *   - `pass`  (test) test passed\n *   - `fail`  (test, err) test failed\n *   - `pending`  (test) test pending\n *\n * @param {Suite} suite Root suite\n * @param {boolean} [delay] Whether or not to delay execution of root suite\n *   until ready.\n * @api public\n */\n\nfunction Runner(suite, delay) {\n  var self = this;\n  this._globals = [];\n  this._abort = false;\n  this._delay = delay;\n  this.suite = suite;\n  this.total = suite.total();\n  this.failures = 0;\n  this.on('test end', function(test){ self.checkGlobals(test); });\n  this.on('hook end', function(hook){ self.checkGlobals(hook); });\n  this.grep(/.*/);\n  this.globals(this.globalProps().concat(extraGlobals()));\n}\n\n/**\n * Wrapper for setImmediate, process.nextTick, or browser polyfill.\n *\n * @param {Function} fn\n * @api private\n */\n\nRunner.immediately = global.setImmediate || process.nextTick;\n\n/**\n * Inherit from `EventEmitter.prototype`.\n */\n\nfunction F(){};\nF.prototype = EventEmitter.prototype;\nRunner.prototype = new F;\nRunner.prototype.constructor = Runner;\n\n\n/**\n * Run tests with full titles matching `re`. Updates runner.total\n * with number of tests matched.\n *\n * @param {RegExp} re\n * @param {Boolean} invert\n * @return {Runner} for chaining\n * @api public\n */\n\nRunner.prototype.grep = function(re, invert){\n  debug('grep %s', re);\n  this._grep = re;\n  this._invert = invert;\n  this.total = this.grepTotal(this.suite);\n  return this;\n};\n\n/**\n * Returns the number of tests matching the grep search for the\n * given suite.\n *\n * @param {Suite} suite\n * @return {Number}\n * @api public\n */\n\nRunner.prototype.grepTotal = function(suite) {\n  var self = this;\n  var total = 0;\n\n  suite.eachTest(function(test){\n    var match = self._grep.test(test.fullTitle());\n    if (self._invert) match = !match;\n    if (match) total++;\n  });\n\n  return total;\n};\n\n/**\n * Return a list of global properties.\n *\n * @return {Array}\n * @api private\n */\n\nRunner.prototype.globalProps = function() {\n  var props = utils.keys(global);\n\n  // non-enumerables\n  for (var i = 0; i < globals.length; ++i) {\n    if (~utils.indexOf(props, globals[i])) continue;\n    props.push(globals[i]);\n  }\n\n  return props;\n};\n\n/**\n * Allow the given `arr` of globals.\n *\n * @param {Array} arr\n * @return {Runner} for chaining\n * @api public\n */\n\nRunner.prototype.globals = function(arr){\n  if (0 == arguments.length) return this._globals;\n  debug('globals %j', arr);\n  this._globals = this._globals.concat(arr);\n  return this;\n};\n\n/**\n * Check for global variable leaks.\n *\n * @api private\n */\n\nRunner.prototype.checkGlobals = function(test){\n  if (this.ignoreLeaks) return;\n  var ok = this._globals;\n\n  var globals = this.globalProps();\n  var leaks;\n\n  if (test) {\n    ok = ok.concat(test._allowedGlobals || []);\n  }\n\n  if(this.prevGlobalsLength == globals.length) return;\n  this.prevGlobalsLength = globals.length;\n\n  leaks = filterLeaks(ok, globals);\n  this._globals = this._globals.concat(leaks);\n\n  if (leaks.length > 1) {\n    this.fail(test, new Error('global leaks detected: ' + leaks.join(', ') + ''));\n  } else if (leaks.length) {\n    this.fail(test, new Error('global leak detected: ' + leaks[0]));\n  }\n};\n\n/**\n * Fail the given `test`.\n *\n * @param {Test} test\n * @param {Error} err\n * @api private\n */\n\nRunner.prototype.fail = function(test, err){\n  ++this.failures;\n  test.state = 'failed';\n\n  if ('string' == typeof err) {\n    err = new Error('the string \"' + err + '\" was thrown, throw an Error :)');\n  } else if (!(err instanceof Error)) {\n    err = new Error('the ' + type(err) + ' ' + stringify(err) + ' was thrown, throw an Error :)');\n  }\n\n  this.emit('fail', test, err);\n};\n\n/**\n * Fail the given `hook` with `err`.\n *\n * Hook failures work in the following pattern:\n * - If bail, then exit\n * - Failed `before` hook skips all tests in a suite and subsuites,\n *   but jumps to corresponding `after` hook\n * - Failed `before each` hook skips remaining tests in a\n *   suite and jumps to corresponding `after each` hook,\n *   which is run only once\n * - Failed `after` hook does not alter\n *   execution order\n * - Failed `after each` hook skips remaining tests in a\n *   suite and subsuites, but executes other `after each`\n *   hooks\n *\n * @param {Hook} hook\n * @param {Error} err\n * @api private\n */\n\nRunner.prototype.failHook = function(hook, err){\n  this.fail(hook, err);\n  if (this.suite.bail()) {\n    this.emit('end');\n  }\n};\n\n/**\n * Run hook `name` callbacks and then invoke `fn()`.\n *\n * @param {String} name\n * @param {Function} function\n * @api private\n */\n\nRunner.prototype.hook = function(name, fn){\n  var suite = this.suite\n    , hooks = suite['_' + name]\n    , self = this\n    , timer;\n\n  function next(i) {\n    var hook = hooks[i];\n    if (!hook) return fn();\n    self.currentRunnable = hook;\n\n    hook.ctx.currentTest = self.test;\n\n    self.emit('hook', hook);\n\n    hook.on('error', function(err){\n      self.failHook(hook, err);\n    });\n\n    hook.run(function(err){\n      hook.removeAllListeners('error');\n      var testError = hook.error();\n      if (testError) self.fail(self.test, testError);\n      if (err) {\n        if (err instanceof Pending) {\n          suite.pending = true;\n        } else {\n          self.failHook(hook, err);\n\n          // stop executing hooks, notify callee of hook err\n          return fn(err);\n        }\n      }\n      self.emit('hook end', hook);\n      delete hook.ctx.currentTest;\n      next(++i);\n    });\n  }\n\n  Runner.immediately(function(){\n    next(0);\n  });\n};\n\n/**\n * Run hook `name` for the given array of `suites`\n * in order, and callback `fn(err, errSuite)`.\n *\n * @param {String} name\n * @param {Array} suites\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.hooks = function(name, suites, fn){\n  var self = this\n    , orig = this.suite;\n\n  function next(suite) {\n    self.suite = suite;\n\n    if (!suite) {\n      self.suite = orig;\n      return fn();\n    }\n\n    self.hook(name, function(err){\n      if (err) {\n        var errSuite = self.suite;\n        self.suite = orig;\n        return fn(err, errSuite);\n      }\n\n      next(suites.pop());\n    });\n  }\n\n  next(suites.pop());\n};\n\n/**\n * Run hooks from the top level down.\n *\n * @param {String} name\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.hookUp = function(name, fn){\n  var suites = [this.suite].concat(this.parents()).reverse();\n  this.hooks(name, suites, fn);\n};\n\n/**\n * Run hooks from the bottom up.\n *\n * @param {String} name\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.hookDown = function(name, fn){\n  var suites = [this.suite].concat(this.parents());\n  this.hooks(name, suites, fn);\n};\n\n/**\n * Return an array of parent Suites from\n * closest to furthest.\n *\n * @return {Array}\n * @api private\n */\n\nRunner.prototype.parents = function(){\n  var suite = this.suite\n    , suites = [];\n  while (suite = suite.parent) suites.push(suite);\n  return suites;\n};\n\n/**\n * Run the current test and callback `fn(err)`.\n *\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.runTest = function(fn){\n  var test = this.test\n    , self = this;\n\n  if (this.asyncOnly) test.asyncOnly = true;\n\n  try {\n    test.on('error', function(err){\n      self.fail(test, err);\n    });\n    test.run(fn);\n  } catch (err) {\n    fn(err);\n  }\n};\n\n/**\n * Run tests in the given `suite` and invoke\n * the callback `fn()` when complete.\n *\n * @param {Suite} suite\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.runTests = function(suite, fn){\n  var self = this\n    , tests = suite.tests.slice()\n    , test;\n\n\n  function hookErr(err, errSuite, after) {\n    // before/after Each hook for errSuite failed:\n    var orig = self.suite;\n\n    // for failed 'after each' hook start from errSuite parent,\n    // otherwise start from errSuite itself\n    self.suite = after ? errSuite.parent : errSuite;\n\n    if (self.suite) {\n      // call hookUp afterEach\n      self.hookUp('afterEach', function(err2, errSuite2) {\n        self.suite = orig;\n        // some hooks may fail even now\n        if (err2) return hookErr(err2, errSuite2, true);\n        // report error suite\n        fn(errSuite);\n      });\n    } else {\n      // there is no need calling other 'after each' hooks\n      self.suite = orig;\n      fn(errSuite);\n    }\n  }\n\n  function next(err, errSuite) {\n    // if we bail after first err\n    if (self.failures && suite._bail) return fn();\n\n    if (self._abort) return fn();\n\n    if (err) return hookErr(err, errSuite, true);\n\n    // next test\n    test = tests.shift();\n\n    // all done\n    if (!test) return fn();\n\n    // grep\n    var match = self._grep.test(test.fullTitle());\n    if (self._invert) match = !match;\n    if (!match) return next();\n\n    // pending\n    if (test.pending) {\n      self.emit('pending', test);\n      self.emit('test end', test);\n      return next();\n    }\n\n    // execute test and hook(s)\n    self.emit('test', self.test = test);\n    self.hookDown('beforeEach', function(err, errSuite){\n\n      if (suite.pending) {\n        self.emit('pending', test);\n        self.emit('test end', test);\n        return next();\n      }\n      if (err) return hookErr(err, errSuite, false);\n\n      self.currentRunnable = self.test;\n      self.runTest(function(err){\n        test = self.test;\n\n        if (err) {\n          if (err instanceof Pending) {\n            self.emit('pending', test);\n          } else {\n            self.fail(test, err);\n          }\n          self.emit('test end', test);\n\n          if (err instanceof Pending) {\n            return next();\n          }\n\n          return self.hookUp('afterEach', next);\n        }\n\n        test.state = 'passed';\n        self.emit('pass', test);\n        self.emit('test end', test);\n        self.hookUp('afterEach', next);\n      });\n    });\n  }\n\n  this.next = next;\n  next();\n};\n\n/**\n * Run the given `suite` and invoke the\n * callback `fn()` when complete.\n *\n * @param {Suite} suite\n * @param {Function} fn\n * @api private\n */\n\nRunner.prototype.runSuite = function(suite, fn){\n  var total = this.grepTotal(suite)\n    , self = this\n    , i = 0;\n\n  debug('run suite %s', suite.fullTitle());\n\n  if (!total) return fn();\n\n  this.emit('suite', this.suite = suite);\n\n  function next(errSuite) {\n    if (errSuite) {\n      // current suite failed on a hook from errSuite\n      if (errSuite == suite) {\n        // if errSuite is current suite\n        // continue to the next sibling suite\n        return done();\n      } else {\n        // errSuite is among the parents of current suite\n        // stop execution of errSuite and all sub-suites\n        return done(errSuite);\n      }\n    }\n\n    if (self._abort) return done();\n\n    var curr = suite.suites[i++];\n    if (!curr) return done();\n    self.runSuite(curr, next);\n  }\n\n  function done(errSuite) {\n    self.suite = suite;\n    self.hook('afterAll', function(){\n      self.emit('suite end', suite);\n      fn(errSuite);\n    });\n  }\n\n  this.hook('beforeAll', function(err){\n    if (err) return done();\n    self.runTests(suite, next);\n  });\n};\n\n/**\n * Handle uncaught exceptions.\n *\n * @param {Error} err\n * @api private\n */\n\nRunner.prototype.uncaught = function(err){\n  if (err) {\n    debug('uncaught exception %s', err !== function () {\n      return this;\n    }.call(err) ? err : ( err.message || err ));\n  } else {\n    debug('uncaught undefined exception');\n    err = utils.undefinedError();\n  }\n  err.uncaught = true;\n\n  var runnable = this.currentRunnable;\n  if (!runnable) return;\n\n  runnable.clearTimeout();\n\n  // Ignore errors if complete\n  if (runnable.state) return;\n  this.fail(runnable, err);\n\n  // recover from test\n  if ('test' == runnable.type) {\n    this.emit('test end', runnable);\n    this.hookUp('afterEach', this.next);\n    return;\n  }\n\n  // bail on hooks\n  this.emit('end');\n};\n\n/**\n * Run the root suite and invoke `fn(failures)`\n * on completion.\n *\n * @param {Function} fn\n * @return {Runner} for chaining\n * @api public\n */\n\nRunner.prototype.run = function(fn){\n  var self = this,\n    rootSuite = this.suite;\n\n  fn = fn || function(){};\n\n  function uncaught(err){\n    self.uncaught(err);\n  }\n\n  function start() {\n    self.emit('start');\n    self.runSuite(rootSuite, function(){\n      debug('finished running');\n      self.emit('end');\n    });\n  }\n\n  debug('start');\n\n  // callback\n  this.on('end', function(){\n    debug('end');\n    process.removeListener('uncaughtException', uncaught);\n    fn(self.failures);\n  });\n\n  // uncaught exception\n  process.on('uncaughtException', uncaught);\n\n  if (this._delay) {\n    // for reporters, I guess.\n    // might be nice to debounce some dots while we wait.\n    this.emit('waiting', rootSuite);\n    rootSuite.once('run', start);\n  }\n  else {\n    start();\n  }\n\n  return this;\n};\n\n/**\n * Cleanly abort execution\n *\n * @return {Runner} for chaining\n * @api public\n */\nRunner.prototype.abort = function(){\n  debug('aborting');\n  this._abort = true;\n};\n\n/**\n * Filter leaks with the given globals flagged as `ok`.\n *\n * @param {Array} ok\n * @param {Array} globals\n * @return {Array}\n * @api private\n */\n\nfunction filterLeaks(ok, globals) {\n  return filter(globals, function(key){\n    // Firefox and Chrome exposes iframes as index inside the window object\n    if (/^d+/.test(key)) return false;\n\n    // in firefox\n    // if runner runs in an iframe, this iframe's window.getInterface method not init at first\n    // it is assigned in some seconds\n    if (global.navigator && /^getInterface/.test(key)) return false;\n\n    // an iframe could be approached by window[iframeIndex]\n    // in ie6,7,8 and opera, iframeIndex is enumerable, this could cause leak\n    if (global.navigator && /^\\d+/.test(key)) return false;\n\n    // Opera and IE expose global variables for HTML element IDs (issue #243)\n    if (/^mocha-/.test(key)) return false;\n\n    var matched = filter(ok, function(ok){\n      if (~ok.indexOf('*')) return 0 == key.indexOf(ok.split('*')[0]);\n      return key == ok;\n    });\n    return matched.length == 0 && (!global.navigator || 'onerror' !== key);\n  });\n}\n\n/**\n * Array of globals dependent on the environment.\n *\n * @return {Array}\n * @api private\n */\n\n function extraGlobals() {\n  if (typeof(process) === 'object' &&\n      typeof(process.version) === 'string') {\n\n    var nodeVersion = process.version.split('.').reduce(function(a, v) {\n      return a << 8 | v;\n    });\n\n    // 'errno' was renamed to process._errno in v0.9.11.\n\n    if (nodeVersion < 0x00090B) {\n      return ['errno'];\n    }\n  }\n\n  return [];\n }\n\n}); // module: runner.js\n\nrequire.register(\"suite.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar EventEmitter = require('browser/events').EventEmitter\n  , debug = require('browser/debug')('mocha:suite')\n  , milliseconds = require('./ms')\n  , utils = require('./utils')\n  , Hook = require('./hook');\n\n/**\n * Expose `Suite`.\n */\n\nexports = module.exports = Suite;\n\n/**\n * Create a new `Suite` with the given `title`\n * and parent `Suite`. When a suite with the\n * same title is already present, that suite\n * is returned to provide nicer reporter\n * and more flexible meta-testing.\n *\n * @param {Suite} parent\n * @param {String} title\n * @return {Suite}\n * @api public\n */\n\nexports.create = function(parent, title){\n  var suite = new Suite(title, parent.ctx);\n  suite.parent = parent;\n  if (parent.pending) suite.pending = true;\n  title = suite.fullTitle();\n  parent.addSuite(suite);\n  return suite;\n};\n\n/**\n * Initialize a new `Suite` with the given\n * `title` and `ctx`.\n *\n * @param {String} title\n * @param {Context} ctx\n * @api private\n */\n\nfunction Suite(title, parentContext) {\n  this.title = title;\n  var context = function() {};\n  context.prototype = parentContext;\n  this.ctx = new context();\n  this.suites = [];\n  this.tests = [];\n  this.pending = false;\n  this._beforeEach = [];\n  this._beforeAll = [];\n  this._afterEach = [];\n  this._afterAll = [];\n  this.root = !title;\n  this._timeout = 2000;\n  this._enableTimeouts = true;\n  this._slow = 75;\n  this._bail = false;\n  this.delayed = false;\n}\n\n/**\n * Inherit from `EventEmitter.prototype`.\n */\n\nfunction F(){};\nF.prototype = EventEmitter.prototype;\nSuite.prototype = new F;\nSuite.prototype.constructor = Suite;\n\n\n/**\n * Return a clone of this `Suite`.\n *\n * @return {Suite}\n * @api private\n */\n\nSuite.prototype.clone = function(){\n  var suite = new Suite(this.title);\n  debug('clone');\n  suite.ctx = this.ctx;\n  suite.timeout(this.timeout());\n  suite.enableTimeouts(this.enableTimeouts());\n  suite.slow(this.slow());\n  suite.bail(this.bail());\n  return suite;\n};\n\n/**\n * Set timeout `ms` or short-hand such as \"2s\".\n *\n * @param {Number|String} ms\n * @return {Suite|Number} for chaining\n * @api private\n */\n\nSuite.prototype.timeout = function(ms){\n  if (0 == arguments.length) return this._timeout;\n  if (ms.toString() === '0') this._enableTimeouts = false;\n  if ('string' == typeof ms) ms = milliseconds(ms);\n  debug('timeout %d', ms);\n  this._timeout = parseInt(ms, 10);\n  return this;\n};\n\n/**\n  * Set timeout `enabled`.\n  *\n  * @param {Boolean} enabled\n  * @return {Suite|Boolean} self or enabled\n  * @api private\n  */\n\nSuite.prototype.enableTimeouts = function(enabled){\n  if (arguments.length === 0) return this._enableTimeouts;\n  debug('enableTimeouts %s', enabled);\n  this._enableTimeouts = enabled;\n  return this;\n};\n\n/**\n * Set slow `ms` or short-hand such as \"2s\".\n *\n * @param {Number|String} ms\n * @return {Suite|Number} for chaining\n * @api private\n */\n\nSuite.prototype.slow = function(ms){\n  if (0 === arguments.length) return this._slow;\n  if ('string' == typeof ms) ms = milliseconds(ms);\n  debug('slow %d', ms);\n  this._slow = ms;\n  return this;\n};\n\n/**\n * Sets whether to bail after first error.\n *\n * @param {Boolean} bail\n * @return {Suite|Number} for chaining\n * @api private\n */\n\nSuite.prototype.bail = function(bail){\n  if (0 == arguments.length) return this._bail;\n  debug('bail %s', bail);\n  this._bail = bail;\n  return this;\n};\n\n/**\n * Run `fn(test[, done])` before running tests.\n *\n * @param {Function} fn\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.beforeAll = function(title, fn){\n  if (this.pending) return this;\n  if ('function' === typeof title) {\n    fn = title;\n    title = fn.name;\n  }\n  title = '\"before all\" hook' + (title ? ': ' + title : '');\n\n  var hook = new Hook(title, fn);\n  hook.parent = this;\n  hook.timeout(this.timeout());\n  hook.enableTimeouts(this.enableTimeouts());\n  hook.slow(this.slow());\n  hook.ctx = this.ctx;\n  this._beforeAll.push(hook);\n  this.emit('beforeAll', hook);\n  return this;\n};\n\n/**\n * Run `fn(test[, done])` after running tests.\n *\n * @param {Function} fn\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.afterAll = function(title, fn){\n  if (this.pending) return this;\n  if ('function' === typeof title) {\n    fn = title;\n    title = fn.name;\n  }\n  title = '\"after all\" hook' + (title ? ': ' + title : '');\n\n  var hook = new Hook(title, fn);\n  hook.parent = this;\n  hook.timeout(this.timeout());\n  hook.enableTimeouts(this.enableTimeouts());\n  hook.slow(this.slow());\n  hook.ctx = this.ctx;\n  this._afterAll.push(hook);\n  this.emit('afterAll', hook);\n  return this;\n};\n\n/**\n * Run `fn(test[, done])` before each test case.\n *\n * @param {Function} fn\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.beforeEach = function(title, fn){\n  if (this.pending) return this;\n  if ('function' === typeof title) {\n    fn = title;\n    title = fn.name;\n  }\n  title = '\"before each\" hook' + (title ? ': ' + title : '');\n\n  var hook = new Hook(title, fn);\n  hook.parent = this;\n  hook.timeout(this.timeout());\n  hook.enableTimeouts(this.enableTimeouts());\n  hook.slow(this.slow());\n  hook.ctx = this.ctx;\n  this._beforeEach.push(hook);\n  this.emit('beforeEach', hook);\n  return this;\n};\n\n/**\n * Run `fn(test[, done])` after each test case.\n *\n * @param {Function} fn\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.afterEach = function(title, fn){\n  if (this.pending) return this;\n  if ('function' === typeof title) {\n    fn = title;\n    title = fn.name;\n  }\n  title = '\"after each\" hook' + (title ? ': ' + title : '');\n\n  var hook = new Hook(title, fn);\n  hook.parent = this;\n  hook.timeout(this.timeout());\n  hook.enableTimeouts(this.enableTimeouts());\n  hook.slow(this.slow());\n  hook.ctx = this.ctx;\n  this._afterEach.push(hook);\n  this.emit('afterEach', hook);\n  return this;\n};\n\n/**\n * Add a test `suite`.\n *\n * @param {Suite} suite\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.addSuite = function(suite){\n  suite.parent = this;\n  suite.timeout(this.timeout());\n  suite.enableTimeouts(this.enableTimeouts());\n  suite.slow(this.slow());\n  suite.bail(this.bail());\n  this.suites.push(suite);\n  this.emit('suite', suite);\n  return this;\n};\n\n/**\n * Add a `test` to this suite.\n *\n * @param {Test} test\n * @return {Suite} for chaining\n * @api private\n */\n\nSuite.prototype.addTest = function(test){\n  test.parent = this;\n  test.timeout(this.timeout());\n  test.enableTimeouts(this.enableTimeouts());\n  test.slow(this.slow());\n  test.ctx = this.ctx;\n  this.tests.push(test);\n  this.emit('test', test);\n  return this;\n};\n\n/**\n * Return the full title generated by recursively\n * concatenating the parent's full title.\n *\n * @return {String}\n * @api public\n */\n\nSuite.prototype.fullTitle = function(){\n  if (this.parent) {\n    var full = this.parent.fullTitle();\n    if (full) return full + ' ' + this.title;\n  }\n  return this.title;\n};\n\n/**\n * Return the total number of tests.\n *\n * @return {Number}\n * @api public\n */\n\nSuite.prototype.total = function(){\n  return utils.reduce(this.suites, function(sum, suite){\n    return sum + suite.total();\n  }, 0) + this.tests.length;\n};\n\n/**\n * Iterates through each suite recursively to find\n * all tests. Applies a function in the format\n * `fn(test)`.\n *\n * @param {Function} fn\n * @return {Suite}\n * @api private\n */\n\nSuite.prototype.eachTest = function(fn){\n  utils.forEach(this.tests, fn);\n  utils.forEach(this.suites, function(suite){\n    suite.eachTest(fn);\n  });\n  return this;\n};\n\n/**\n * This will run the root suite if we happen to be running in delayed mode.\n */\nSuite.prototype.run = function run() {\n  if (this.root) {\n    this.emit('run');\n  }\n};\n\n}); // module: suite.js\n\nrequire.register(\"test.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar Runnable = require('./runnable');\n\n/**\n * Expose `Test`.\n */\n\nmodule.exports = Test;\n\n/**\n * Initialize a new `Test` with the given `title` and callback `fn`.\n *\n * @param {String} title\n * @param {Function} fn\n * @api private\n */\n\nfunction Test(title, fn) {\n  Runnable.call(this, title, fn);\n  this.pending = !fn;\n  this.type = 'test';\n}\n\n/**\n * Inherit from `Runnable.prototype`.\n */\n\nfunction F(){};\nF.prototype = Runnable.prototype;\nTest.prototype = new F;\nTest.prototype.constructor = Test;\n\n\n}); // module: test.js\n\nrequire.register(\"utils.js\", function(module, exports, require){\n/**\n * Module dependencies.\n */\n\nvar fs = require('browser/fs')\n  , path = require('browser/path')\n  , basename = path.basename\n  , exists = fs.existsSync || path.existsSync\n  , glob = require('browser/glob')\n  , join = path.join\n  , debug = require('browser/debug')('mocha:watch');\n\n/**\n * Ignored directories.\n */\n\nvar ignore = ['node_modules', '.git'];\n\n/**\n * Escape special characters in the given string of html.\n *\n * @param  {String} html\n * @return {String}\n * @api private\n */\n\nexports.escape = function(html){\n  return String(html)\n    .replace(/&/g, '&amp;')\n    .replace(/\"/g, '&quot;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;');\n};\n\n/**\n * Array#forEach (<=IE8)\n *\n * @param {Array} array\n * @param {Function} fn\n * @param {Object} scope\n * @api private\n */\n\nexports.forEach = function(arr, fn, scope){\n  for (var i = 0, l = arr.length; i < l; i++)\n    fn.call(scope, arr[i], i);\n};\n\n/**\n * Array#map (<=IE8)\n *\n * @param {Array} array\n * @param {Function} fn\n * @param {Object} scope\n * @api private\n */\n\nexports.map = function(arr, fn, scope){\n  var result = [];\n  for (var i = 0, l = arr.length; i < l; i++)\n    result.push(fn.call(scope, arr[i], i, arr));\n  return result;\n};\n\n/**\n * Array#indexOf (<=IE8)\n *\n * @parma {Array} arr\n * @param {Object} obj to find index of\n * @param {Number} start\n * @api private\n */\n\nexports.indexOf = function(arr, obj, start){\n  for (var i = start || 0, l = arr.length; i < l; i++) {\n    if (arr[i] === obj)\n      return i;\n  }\n  return -1;\n};\n\n/**\n * Array#reduce (<=IE8)\n *\n * @param {Array} array\n * @param {Function} fn\n * @param {Object} initial value\n * @api private\n */\n\nexports.reduce = function(arr, fn, val){\n  var rval = val;\n\n  for (var i = 0, l = arr.length; i < l; i++) {\n    rval = fn(rval, arr[i], i, arr);\n  }\n\n  return rval;\n};\n\n/**\n * Array#filter (<=IE8)\n *\n * @param {Array} array\n * @param {Function} fn\n * @api private\n */\n\nexports.filter = function(arr, fn){\n  var ret = [];\n\n  for (var i = 0, l = arr.length; i < l; i++) {\n    var val = arr[i];\n    if (fn(val, i, arr)) ret.push(val);\n  }\n\n  return ret;\n};\n\n/**\n * Object.keys (<=IE8)\n *\n * @param {Object} obj\n * @return {Array} keys\n * @api private\n */\n\nexports.keys = Object.keys || function(obj) {\n  var keys = []\n    , has = Object.prototype.hasOwnProperty; // for `window` on <=IE8\n\n  for (var key in obj) {\n    if (has.call(obj, key)) {\n      keys.push(key);\n    }\n  }\n\n  return keys;\n};\n\n/**\n * Watch the given `files` for changes\n * and invoke `fn(file)` on modification.\n *\n * @param {Array} files\n * @param {Function} fn\n * @api private\n */\n\nexports.watch = function(files, fn){\n  var options = { interval: 100 };\n  files.forEach(function(file){\n    debug('file %s', file);\n    fs.watchFile(file, options, function(curr, prev){\n      if (prev.mtime < curr.mtime) fn(file);\n    });\n  });\n};\n\n/**\n * Array.isArray (<=IE8)\n *\n * @param {Object} obj\n * @return {Boolean}\n * @api private\n */\nvar isArray = Array.isArray || function (obj) {\n  return '[object Array]' == {}.toString.call(obj);\n};\n\n/**\n * @description\n * Buffer.prototype.toJSON polyfill\n * @type {Function}\n */\nif(typeof Buffer !== 'undefined' && Buffer.prototype) {\n  Buffer.prototype.toJSON = Buffer.prototype.toJSON || function () {\n    return Array.prototype.slice.call(this, 0);\n  };\n}\n\n/**\n * Ignored files.\n */\n\nfunction ignored(path){\n  return !~ignore.indexOf(path);\n}\n\n/**\n * Lookup files in the given `dir`.\n *\n * @return {Array}\n * @api private\n */\n\nexports.files = function(dir, ext, ret){\n  ret = ret || [];\n  ext = ext || ['js'];\n\n  var re = new RegExp('\\\\.(' + ext.join('|') + ')$');\n\n  fs.readdirSync(dir)\n    .filter(ignored)\n    .forEach(function(path){\n      path = join(dir, path);\n      if (fs.statSync(path).isDirectory()) {\n        exports.files(path, ext, ret);\n      } else if (path.match(re)) {\n        ret.push(path);\n      }\n    });\n\n  return ret;\n};\n\n/**\n * Compute a slug from the given `str`.\n *\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nexports.slug = function(str){\n  return str\n    .toLowerCase()\n    .replace(/ +/g, '-')\n    .replace(/[^-\\w]/g, '');\n};\n\n/**\n * Strip the function definition from `str`,\n * and re-indent for pre whitespace.\n */\n\nexports.clean = function(str) {\n  str = str\n    .replace(/\\r\\n?|[\\n\\u2028\\u2029]/g, \"\\n\").replace(/^\\uFEFF/, '')\n    .replace(/^function *\\(.*\\) *{|\\(.*\\) *=> *{?/, '')\n    .replace(/\\s+\\}$/, '');\n\n  var spaces = str.match(/^\\n?( *)/)[1].length\n    , tabs = str.match(/^\\n?(\\t*)/)[1].length\n    , re = new RegExp('^\\n?' + (tabs ? '\\t' : ' ') + '{' + (tabs ? tabs : spaces) + '}', 'gm');\n\n  str = str.replace(re, '');\n\n  return exports.trim(str);\n};\n\n/**\n * Trim the given `str`.\n *\n * @param {String} str\n * @return {String}\n * @api private\n */\n\nexports.trim = function(str){\n  return str.replace(/^\\s+|\\s+$/g, '');\n};\n\n/**\n * Parse the given `qs`.\n *\n * @param {String} qs\n * @return {Object}\n * @api private\n */\n\nexports.parseQuery = function(qs){\n  return exports.reduce(qs.replace('?', '').split('&'), function(obj, pair){\n    var i = pair.indexOf('=')\n      , key = pair.slice(0, i)\n      , val = pair.slice(++i);\n\n    obj[key] = decodeURIComponent(val);\n    return obj;\n  }, {});\n};\n\n/**\n * Highlight the given string of `js`.\n *\n * @param {String} js\n * @return {String}\n * @api private\n */\n\nfunction highlight(js) {\n  return js\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;')\n    .replace(/\\/\\/(.*)/gm, '<span class=\"comment\">//$1</span>')\n    .replace(/('.*?')/gm, '<span class=\"string\">$1</span>')\n    .replace(/(\\d+\\.\\d+)/gm, '<span class=\"number\">$1</span>')\n    .replace(/(\\d+)/gm, '<span class=\"number\">$1</span>')\n    .replace(/\\bnew[ \\t]+(\\w+)/gm, '<span class=\"keyword\">new</span> <span class=\"init\">$1</span>')\n    .replace(/\\b(function|new|throw|return|var|if|else)\\b/gm, '<span class=\"keyword\">$1</span>')\n}\n\n/**\n * Highlight the contents of tag `name`.\n *\n * @param {String} name\n * @api private\n */\n\nexports.highlightTags = function(name) {\n  var code = document.getElementById('mocha').getElementsByTagName(name);\n  for (var i = 0, len = code.length; i < len; ++i) {\n    code[i].innerHTML = highlight(code[i].innerHTML);\n  }\n};\n\n/**\n * If a value could have properties, and has none, this function is called, which returns\n * a string representation of the empty value.\n *\n * Functions w/ no properties return `'[Function]'`\n * Arrays w/ length === 0 return `'[]'`\n * Objects w/ no properties return `'{}'`\n * All else: return result of `value.toString()`\n *\n * @param {*} value Value to inspect\n * @param {string} [type] The type of the value, if known.\n * @returns {string}\n */\nvar emptyRepresentation = function emptyRepresentation(value, type) {\n  type = type || exports.type(value);\n\n  switch(type) {\n    case 'function':\n      return '[Function]';\n    case 'object':\n      return '{}';\n    case 'array':\n      return '[]';\n    default:\n      return value.toString();\n  }\n};\n\n/**\n * Takes some variable and asks `{}.toString()` what it thinks it is.\n * @param {*} value Anything\n * @example\n * type({}) // 'object'\n * type([]) // 'array'\n * type(1) // 'number'\n * type(false) // 'boolean'\n * type(Infinity) // 'number'\n * type(null) // 'null'\n * type(new Date()) // 'date'\n * type(/foo/) // 'regexp'\n * type('type') // 'string'\n * type(global) // 'global'\n * @api private\n * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString\n * @returns {string}\n */\nexports.type = function type(value) {\n  if (typeof Buffer !== 'undefined' && Buffer.isBuffer(value)) {\n    return 'buffer';\n  }\n  return Object.prototype.toString.call(value)\n    .replace(/^\\[.+\\s(.+?)\\]$/, '$1')\n    .toLowerCase();\n};\n\n/**\n * @summary Stringify `value`.\n * @description Different behavior depending on type of value.\n * - If `value` is undefined or null, return `'[undefined]'` or `'[null]'`, respectively.\n * - If `value` is not an object, function or array, return result of `value.toString()` wrapped in double-quotes.\n * - If `value` is an *empty* object, function, or array, return result of function\n *   {@link emptyRepresentation}.\n * - If `value` has properties, call {@link exports.canonicalize} on it, then return result of\n *   JSON.stringify().\n *\n * @see exports.type\n * @param {*} value\n * @return {string}\n * @api private\n */\n\nexports.stringify = function(value) {\n  var type = exports.type(value);\n\n  if (!~exports.indexOf(['object', 'array', 'function'], type)) {\n    if(type != 'buffer') {\n      return jsonStringify(value);\n    }\n    var json = value.toJSON();\n    // Based on the toJSON result\n    return jsonStringify(json.data && json.type ? json.data : json, 2)\n      .replace(/,(\\n|$)/g, '$1');\n  }\n\n  for (var prop in value) {\n    if (Object.prototype.hasOwnProperty.call(value, prop)) {\n      return jsonStringify(exports.canonicalize(value), 2).replace(/,(\\n|$)/g, '$1');\n    }\n  }\n\n  return emptyRepresentation(value, type);\n};\n\n/**\n * @description\n * like JSON.stringify but more sense.\n * @param {Object}  object\n * @param {Number=} spaces\n * @param {number=} depth\n * @returns {*}\n * @private\n */\nfunction jsonStringify(object, spaces, depth) {\n  if(typeof spaces == 'undefined') return _stringify(object);  // primitive types\n\n  depth = depth || 1;\n  var space = spaces * depth\n    , str = isArray(object) ? '[' : '{'\n    , end = isArray(object) ? ']' : '}'\n    , length = object.length || exports.keys(object).length\n    , repeat = function(s, n) { return new Array(n).join(s); }; // `.repeat()` polyfill\n\n  function _stringify(val) {\n    switch (exports.type(val)) {\n      case 'null':\n      case 'undefined':\n        val = '[' + val + ']';\n        break;\n      case 'array':\n      case 'object':\n        val = jsonStringify(val, spaces, depth + 1);\n        break;\n      case 'boolean':\n      case 'regexp':\n      case 'number':\n        val = val === 0 && (1/val) === -Infinity // `-0`\n          ? '-0'\n          : val.toString();\n        break;\n      case 'date':\n        val = '[Date: ' + val.toISOString() + ']';\n        break;\n      case 'buffer':\n        var json = val.toJSON();\n        // Based on the toJSON result\n        json = json.data && json.type ? json.data : json;\n        val = '[Buffer: ' + jsonStringify(json, 2, depth + 1) + ']';\n        break;\n      default:\n        val = (val == '[Function]' || val == '[Circular]')\n          ? val\n          : '\"' + val + '\"'; //string\n    }\n    return val;\n  }\n\n  for(var i in object) {\n    if(!object.hasOwnProperty(i)) continue;        // not my business\n    --length;\n    str += '\\n ' + repeat(' ', space)\n      + (isArray(object) ? '' : '\"' + i + '\": ') // key\n      +  _stringify(object[i])                   // value\n      + (length ? ',' : '');                     // comma\n  }\n\n  return str + (str.length != 1                    // [], {}\n    ? '\\n' + repeat(' ', --space) + end\n    : end);\n}\n\n/**\n * Return if obj is a Buffer\n * @param {Object} arg\n * @return {Boolean}\n * @api private\n */\nexports.isBuffer = function (arg) {\n  return typeof Buffer !== 'undefined' && Buffer.isBuffer(arg);\n};\n\n/**\n * @summary Return a new Thing that has the keys in sorted order.  Recursive.\n * @description If the Thing...\n * - has already been seen, return string `'[Circular]'`\n * - is `undefined`, return string `'[undefined]'`\n * - is `null`, return value `null`\n * - is some other primitive, return the value\n * - is not a primitive or an `Array`, `Object`, or `Function`, return the value of the Thing's `toString()` method\n * - is a non-empty `Array`, `Object`, or `Function`, return the result of calling this function again.\n * - is an empty `Array`, `Object`, or `Function`, return the result of calling `emptyRepresentation()`\n *\n * @param {*} value Thing to inspect.  May or may not have properties.\n * @param {Array} [stack=[]] Stack of seen values\n * @return {(Object|Array|Function|string|undefined)}\n * @see {@link exports.stringify}\n * @api private\n */\n\nexports.canonicalize = function(value, stack) {\n  var canonicalizedObj,\n    type = exports.type(value),\n    prop,\n    withStack = function withStack(value, fn) {\n      stack.push(value);\n      fn();\n      stack.pop();\n    };\n\n  stack = stack || [];\n\n  if (exports.indexOf(stack, value) !== -1) {\n    return '[Circular]';\n  }\n\n  switch(type) {\n    case 'undefined':\n    case 'buffer':\n    case 'null':\n      canonicalizedObj = value;\n      break;\n    case 'array':\n      withStack(value, function () {\n        canonicalizedObj = exports.map(value, function (item) {\n          return exports.canonicalize(item, stack);\n        });\n      });\n      break;\n    case 'function':\n      for (prop in value) {\n        canonicalizedObj = {};\n        break;\n      }\n      if (!canonicalizedObj) {\n        canonicalizedObj = emptyRepresentation(value, type);\n        break;\n      }\n    /* falls through */\n    case 'object':\n      canonicalizedObj = canonicalizedObj || {};\n      withStack(value, function () {\n        exports.forEach(exports.keys(value).sort(), function (key) {\n          canonicalizedObj[key] = exports.canonicalize(value[key], stack);\n        });\n      });\n      break;\n    case 'date':\n    case 'number':\n    case 'regexp':\n    case 'boolean':\n      canonicalizedObj = value;\n      break;\n    default:\n      canonicalizedObj = value.toString();\n  }\n\n  return canonicalizedObj;\n};\n\n/**\n * Lookup file names at the given `path`.\n */\nexports.lookupFiles = function lookupFiles(path, extensions, recursive) {\n  var files = [];\n  var re = new RegExp('\\\\.(' + extensions.join('|') + ')$');\n\n  if (!exists(path)) {\n    if (exists(path + '.js')) {\n      path += '.js';\n    } else {\n      files = glob.sync(path);\n      if (!files.length) throw new Error(\"cannot resolve path (or pattern) '\" + path + \"'\");\n      return files;\n    }\n  }\n\n  try {\n    var stat = fs.statSync(path);\n    if (stat.isFile()) return path;\n  }\n  catch (ignored) {\n    return;\n  }\n\n  fs.readdirSync(path).forEach(function(file) {\n    file = join(path, file);\n    try {\n      var stat = fs.statSync(file);\n      if (stat.isDirectory()) {\n        if (recursive) {\n          files = files.concat(lookupFiles(file, extensions, recursive));\n        }\n        return;\n      }\n    }\n    catch (ignored) {\n      return;\n    }\n    if (!stat.isFile() || !re.test(file) || basename(file)[0] === '.') return;\n    files.push(file);\n  });\n\n  return files;\n};\n\n/**\n * Generate an undefined error with a message warning the user.\n *\n * @return {Error}\n */\n\nexports.undefinedError = function() {\n  return new Error('Caught undefined error, did you throw without specifying what?');\n};\n\n/**\n * Generate an undefined error if `err` is not defined.\n *\n * @param {Error} err\n * @return {Error}\n */\n\nexports.getError = function(err) {\n  return err || exports.undefinedError();\n};\n\n\n}); // module: utils.js\n// The global object is \"self\" in Web Workers.\nvar global = (function() { return this; })();\n\n/**\n * Save timer references to avoid Sinon interfering (see GH-237).\n */\n\nvar Date = global.Date;\nvar setTimeout = global.setTimeout;\nvar setInterval = global.setInterval;\nvar clearTimeout = global.clearTimeout;\nvar clearInterval = global.clearInterval;\n\n/**\n * Node shims.\n *\n * These are meant only to allow\n * mocha.js to run untouched, not\n * to allow running node code in\n * the browser.\n */\n\nvar process = {};\nprocess.exit = function(status){};\nprocess.stdout = {};\n\nvar uncaughtExceptionHandlers = [];\n\nvar originalOnerrorHandler = global.onerror;\n\n/**\n * Remove uncaughtException listener.\n * Revert to original onerror handler if previously defined.\n */\n\nprocess.removeListener = function(e, fn){\n  if ('uncaughtException' == e) {\n    if (originalOnerrorHandler) {\n      global.onerror = originalOnerrorHandler;\n    } else {\n      global.onerror = function() {};\n    }\n    var i = Mocha.utils.indexOf(uncaughtExceptionHandlers, fn);\n    if (i != -1) { uncaughtExceptionHandlers.splice(i, 1); }\n  }\n};\n\n/**\n * Implements uncaughtException listener.\n */\n\nprocess.on = function(e, fn){\n  if ('uncaughtException' == e) {\n    global.onerror = function(err, url, line){\n      fn(new Error(err + ' (' + url + ':' + line + ')'));\n      return true;\n    };\n    uncaughtExceptionHandlers.push(fn);\n  }\n};\n\n/**\n * Expose mocha.\n */\n\nvar Mocha = global.Mocha = require('mocha'),\n    mocha = global.mocha = new Mocha({ reporter: 'html' });\n\n// The BDD UI is registered by default, but no UI will be functional in the\n// browser without an explicit call to the overridden `mocha.ui` (see below).\n// Ensure that this default UI does not expose its methods to the global scope.\nmocha.suite.removeAllListeners('pre-require');\n\nvar immediateQueue = []\n  , immediateTimeout;\n\nfunction timeslice() {\n  var immediateStart = new Date().getTime();\n  while (immediateQueue.length && (new Date().getTime() - immediateStart) < 100) {\n    immediateQueue.shift()();\n  }\n  if (immediateQueue.length) {\n    immediateTimeout = setTimeout(timeslice, 0);\n  } else {\n    immediateTimeout = null;\n  }\n}\n\n/**\n * High-performance override of Runner.immediately.\n */\n\nMocha.Runner.immediately = function(callback) {\n  immediateQueue.push(callback);\n  if (!immediateTimeout) {\n    immediateTimeout = setTimeout(timeslice, 0);\n  }\n};\n\n/**\n * Function to allow assertion libraries to throw errors directly into mocha.\n * This is useful when running tests in a browser because window.onerror will\n * only receive the 'message' attribute of the Error.\n */\nmocha.throwError = function(err) {\n  Mocha.utils.forEach(uncaughtExceptionHandlers, function (fn) {\n    fn(err);\n  });\n  throw err;\n};\n\n/**\n * Override ui to ensure that the ui functions are initialized.\n * Normally this would happen in Mocha.prototype.loadFiles.\n */\n\nmocha.ui = function(ui){\n  Mocha.prototype.ui.call(this, ui);\n  this.suite.emit('pre-require', global, null, this);\n  return this;\n};\n\n/**\n * Setup mocha with the given setting options.\n */\n\nmocha.setup = function(opts){\n  if ('string' == typeof opts) opts = { ui: opts };\n  for (var opt in opts) this[opt](opts[opt]);\n  return this;\n};\n\n/**\n * Run mocha, returning the Runner.\n */\n\nmocha.run = function(fn){\n  var options = mocha.options;\n  mocha.globals('location');\n\n  var query = Mocha.utils.parseQuery(global.location.search || '');\n  if (query.grep) mocha.grep(new RegExp(query.grep));\n  if (query.fgrep) mocha.grep(query.fgrep);\n  if (query.invert) mocha.invert();\n\n  return Mocha.prototype.run.call(mocha, function(err){\n    // The DOM Document is not available in Web Workers.\n    var document = global.document;\n    if (document && document.getElementById('mocha') && options.noHighlighting !== true) {\n      Mocha.utils.highlightTags('code');\n    }\n    if (fn) fn(err);\n  });\n};\n\n/**\n * Expose the process shim.\n */\n\nMocha.process = process;\n})();\n"
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "/**\n * Sinon.JS 1.14.1, 2015/03/16\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @author Contributors: https://github.com/cjohansen/Sinon.JS/blob/master/AUTHORS\n *\n * (The BSD License)\n * \n * Copyright (c) 2010-2014, Christian Johansen, christian@cjohansen.no\n * All rights reserved.\n * \n * Redistribution and use in source and binary forms, with or without modification,\n * are permitted provided that the following conditions are met:\n * \n *     * Redistributions of source code must retain the above copyright notice,\n *       this list of conditions and the following disclaimer.\n *     * Redistributions in binary form must reproduce the above copyright notice,\n *       this list of conditions and the following disclaimer in the documentation\n *       and/or other materials provided with the distribution.\n *     * Neither the name of Christian Johansen nor the names of his contributors\n *       may be used to endorse or promote products derived from this software\n *       without specific prior written permission.\n * \n * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\n * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\n * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\n * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\n * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\n * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\n * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\n * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF\n * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n */\n\n(function (root, factory) {\n  if (typeof define === 'function' && define.amd) {\n    define('sinon', [], function () {\n      return (root.sinon = factory());\n    });\n  } else if (typeof exports === 'object') {\n    module.exports = factory();\n  } else {\n    root.sinon = factory();\n  }\n}(this, function () {\n  var samsam, formatio;\n  (function () {\n                function define(mod, deps, fn) {\n                  if (mod == \"samsam\") {\n                    samsam = deps();\n                  } else if (typeof deps === \"function\" && mod.length === 0) {\n                    lolex = deps();\n                  } else if (typeof fn === \"function\") {\n                    formatio = fn(samsam);\n                  }\n                }\n    define.amd = {};\n((typeof define === \"function\" && define.amd && function (m) { define(\"samsam\", m); }) ||\n (typeof module === \"object\" &&\n      function (m) { module.exports = m(); }) || // Node\n function (m) { this.samsam = m(); } // Browser globals\n)(function () {\n    var o = Object.prototype;\n    var div = typeof document !== \"undefined\" && document.createElement(\"div\");\n\n    function isNaN(value) {\n        // Unlike global isNaN, this avoids type coercion\n        // typeof check avoids IE host object issues, hat tip to\n        // lodash\n        var val = value; // JsLint thinks value !== value is \"weird\"\n        return typeof value === \"number\" && value !== val;\n    }\n\n    function getClass(value) {\n        // Returns the internal [[Class]] by calling Object.prototype.toString\n        // with the provided value as this. Return value is a string, naming the\n        // internal class, e.g. \"Array\"\n        return o.toString.call(value).split(/[ \\]]/)[1];\n    }\n\n    /**\n     * @name samsam.isArguments\n     * @param Object object\n     *\n     * Returns ``true`` if ``object`` is an ``arguments`` object,\n     * ``false`` otherwise.\n     */\n    function isArguments(object) {\n        if (getClass(object) === 'Arguments') { return true; }\n        if (typeof object !== \"object\" || typeof object.length !== \"number\" ||\n                getClass(object) === \"Array\") {\n            return false;\n        }\n        if (typeof object.callee == \"function\") { return true; }\n        try {\n            object[object.length] = 6;\n            delete object[object.length];\n        } catch (e) {\n            return true;\n        }\n        return false;\n    }\n\n    /**\n     * @name samsam.isElement\n     * @param Object object\n     *\n     * Returns ``true`` if ``object`` is a DOM element node. Unlike\n     * Underscore.js/lodash, this function will return ``false`` if ``object``\n     * is an *element-like* object, i.e. a regular object with a ``nodeType``\n     * property that holds the value ``1``.\n     */\n    function isElement(object) {\n        if (!object || object.nodeType !== 1 || !div) { return false; }\n        try {\n            object.appendChild(div);\n            object.removeChild(div);\n        } catch (e) {\n            return false;\n        }\n        return true;\n    }\n\n    /**\n     * @name samsam.keys\n     * @param Object object\n     *\n     * Return an array of own property names.\n     */\n    function keys(object) {\n        var ks = [], prop;\n        for (prop in object) {\n            if (o.hasOwnProperty.call(object, prop)) { ks.push(prop); }\n        }\n        return ks;\n    }\n\n    /**\n     * @name samsam.isDate\n     * @param Object value\n     *\n     * Returns true if the object is a ``Date``, or *date-like*. Duck typing\n     * of date objects work by checking that the object has a ``getTime``\n     * function whose return value equals the return value from the object's\n     * ``valueOf``.\n     */\n    function isDate(value) {\n        return typeof value.getTime == \"function\" &&\n            value.getTime() == value.valueOf();\n    }\n\n    /**\n     * @name samsam.isNegZero\n     * @param Object value\n     *\n     * Returns ``true`` if ``value`` is ``-0``.\n     */\n    function isNegZero(value) {\n        return value === 0 && 1 / value === -Infinity;\n    }\n\n    /**\n     * @name samsam.equal\n     * @param Object obj1\n     * @param Object obj2\n     *\n     * Returns ``true`` if two objects are strictly equal. Compared to\n     * ``===`` there are two exceptions:\n     *\n     *   - NaN is considered equal to NaN\n     *   - -0 and +0 are not considered equal\n     */\n    function identical(obj1, obj2) {\n        if (obj1 === obj2 || (isNaN(obj1) && isNaN(obj2))) {\n            return obj1 !== 0 || isNegZero(obj1) === isNegZero(obj2);\n        }\n    }\n\n\n    /**\n     * @name samsam.deepEqual\n     * @param Object obj1\n     * @param Object obj2\n     *\n     * Deep equal comparison. Two values are \"deep equal\" if:\n     *\n     *   - They are equal, according to samsam.identical\n     *   - They are both date objects representing the same time\n     *   - They are both arrays containing elements that are all deepEqual\n     *   - They are objects with the same set of properties, and each property\n     *     in ``obj1`` is deepEqual to the corresponding property in ``obj2``\n     *\n     * Supports cyclic objects.\n     */\n    function deepEqualCyclic(obj1, obj2) {\n\n        // used for cyclic comparison\n        // contain already visited objects\n        var objects1 = [],\n            objects2 = [],\n        // contain pathes (position in the object structure)\n        // of the already visited objects\n        // indexes same as in objects arrays\n            paths1 = [],\n            paths2 = [],\n        // contains combinations of already compared objects\n        // in the manner: { \"$1['ref']$2['ref']\": true }\n            compared = {};\n\n        /**\n         * used to check, if the value of a property is an object\n         * (cyclic logic is only needed for objects)\n         * only needed for cyclic logic\n         */\n        function isObject(value) {\n\n            if (typeof value === 'object' && value !== null &&\n                    !(value instanceof Boolean) &&\n                    !(value instanceof Date)    &&\n                    !(value instanceof Number)  &&\n                    !(value instanceof RegExp)  &&\n                    !(value instanceof String)) {\n\n                return true;\n            }\n\n            return false;\n        }\n\n        /**\n         * returns the index of the given object in the\n         * given objects array, -1 if not contained\n         * only needed for cyclic logic\n         */\n        function getIndex(objects, obj) {\n\n            var i;\n            for (i = 0; i < objects.length; i++) {\n                if (objects[i] === obj) {\n                    return i;\n                }\n            }\n\n            return -1;\n        }\n\n        // does the recursion for the deep equal check\n        return (function deepEqual(obj1, obj2, path1, path2) {\n            var type1 = typeof obj1;\n            var type2 = typeof obj2;\n\n            // == null also matches undefined\n            if (obj1 === obj2 ||\n                    isNaN(obj1) || isNaN(obj2) ||\n                    obj1 == null || obj2 == null ||\n                    type1 !== \"object\" || type2 !== \"object\") {\n\n                return identical(obj1, obj2);\n            }\n\n            // Elements are only equal if identical(expected, actual)\n            if (isElement(obj1) || isElement(obj2)) { return false; }\n\n            var isDate1 = isDate(obj1), isDate2 = isDate(obj2);\n            if (isDate1 || isDate2) {\n                if (!isDate1 || !isDate2 || obj1.getTime() !== obj2.getTime()) {\n                    return false;\n                }\n            }\n\n            if (obj1 instanceof RegExp && obj2 instanceof RegExp) {\n                if (obj1.toString() !== obj2.toString()) { return false; }\n            }\n\n            var class1 = getClass(obj1);\n            var class2 = getClass(obj2);\n            var keys1 = keys(obj1);\n            var keys2 = keys(obj2);\n\n            if (isArguments(obj1) || isArguments(obj2)) {\n                if (obj1.length !== obj2.length) { return false; }\n            } else {\n                if (type1 !== type2 || class1 !== class2 ||\n                        keys1.length !== keys2.length) {\n                    return false;\n                }\n            }\n\n            var key, i, l,\n                // following vars are used for the cyclic logic\n                value1, value2,\n                isObject1, isObject2,\n                index1, index2,\n                newPath1, newPath2;\n\n            for (i = 0, l = keys1.length; i < l; i++) {\n                key = keys1[i];\n                if (!o.hasOwnProperty.call(obj2, key)) {\n                    return false;\n                }\n\n                // Start of the cyclic logic\n\n                value1 = obj1[key];\n                value2 = obj2[key];\n\n                isObject1 = isObject(value1);\n                isObject2 = isObject(value2);\n\n                // determine, if the objects were already visited\n                // (it's faster to check for isObject first, than to\n                // get -1 from getIndex for non objects)\n                index1 = isObject1 ? getIndex(objects1, value1) : -1;\n                index2 = isObject2 ? getIndex(objects2, value2) : -1;\n\n                // determine the new pathes of the objects\n                // - for non cyclic objects the current path will be extended\n                //   by current property name\n                // - for cyclic objects the stored path is taken\n                newPath1 = index1 !== -1\n                    ? paths1[index1]\n                    : path1 + '[' + JSON.stringify(key) + ']';\n                newPath2 = index2 !== -1\n                    ? paths2[index2]\n                    : path2 + '[' + JSON.stringify(key) + ']';\n\n                // stop recursion if current objects are already compared\n                if (compared[newPath1 + newPath2]) {\n                    return true;\n                }\n\n                // remember the current objects and their pathes\n                if (index1 === -1 && isObject1) {\n                    objects1.push(value1);\n                    paths1.push(newPath1);\n                }\n                if (index2 === -1 && isObject2) {\n                    objects2.push(value2);\n                    paths2.push(newPath2);\n                }\n\n                // remember that the current objects are already compared\n                if (isObject1 && isObject2) {\n                    compared[newPath1 + newPath2] = true;\n                }\n\n                // End of cyclic logic\n\n                // neither value1 nor value2 is a cycle\n                // continue with next level\n                if (!deepEqual(value1, value2, newPath1, newPath2)) {\n                    return false;\n                }\n            }\n\n            return true;\n\n        }(obj1, obj2, '$1', '$2'));\n    }\n\n    var match;\n\n    function arrayContains(array, subset) {\n        if (subset.length === 0) { return true; }\n        var i, l, j, k;\n        for (i = 0, l = array.length; i < l; ++i) {\n            if (match(array[i], subset[0])) {\n                for (j = 0, k = subset.length; j < k; ++j) {\n                    if (!match(array[i + j], subset[j])) { return false; }\n                }\n                return true;\n            }\n        }\n        return false;\n    }\n\n    /**\n     * @name samsam.match\n     * @param Object object\n     * @param Object matcher\n     *\n     * Compare arbitrary value ``object`` with matcher.\n     */\n    match = function match(object, matcher) {\n        if (matcher && typeof matcher.test === \"function\") {\n            return matcher.test(object);\n        }\n\n        if (typeof matcher === \"function\") {\n            return matcher(object) === true;\n        }\n\n        if (typeof matcher === \"string\") {\n            matcher = matcher.toLowerCase();\n            var notNull = typeof object === \"string\" || !!object;\n            return notNull &&\n                (String(object)).toLowerCase().indexOf(matcher) >= 0;\n        }\n\n        if (typeof matcher === \"number\") {\n            return matcher === object;\n        }\n\n        if (typeof matcher === \"boolean\") {\n            return matcher === object;\n        }\n\n        if (typeof(matcher) === \"undefined\") {\n            return typeof(object) === \"undefined\";\n        }\n\n        if (matcher === null) {\n            return object === null;\n        }\n\n        if (getClass(object) === \"Array\" && getClass(matcher) === \"Array\") {\n            return arrayContains(object, matcher);\n        }\n\n        if (matcher && typeof matcher === \"object\") {\n            if (matcher === object) {\n                return true;\n            }\n            var prop;\n            for (prop in matcher) {\n                var value = object[prop];\n                if (typeof value === \"undefined\" &&\n                        typeof object.getAttribute === \"function\") {\n                    value = object.getAttribute(prop);\n                }\n                if (matcher[prop] === null || typeof matcher[prop] === 'undefined') {\n                    if (value !== matcher[prop]) {\n                        return false;\n                    }\n                } else if (typeof  value === \"undefined\" || !match(value, matcher[prop])) {\n                    return false;\n                }\n            }\n            return true;\n        }\n\n        throw new Error(\"Matcher was not a string, a number, a \" +\n                        \"function, a boolean or an object\");\n    };\n\n    return {\n        isArguments: isArguments,\n        isElement: isElement,\n        isDate: isDate,\n        isNegZero: isNegZero,\n        identical: identical,\n        deepEqual: deepEqualCyclic,\n        match: match,\n        keys: keys\n    };\n});\n((typeof define === \"function\" && define.amd && function (m) {\n    define(\"formatio\", [\"samsam\"], m);\n}) || (typeof module === \"object\" && function (m) {\n    module.exports = m(require(\"samsam\"));\n}) || function (m) { this.formatio = m(this.samsam); }\n)(function (samsam) {\n    \n    var formatio = {\n        excludeConstructors: [\"Object\", /^.$/],\n        quoteStrings: true,\n        limitChildrenCount: 0\n    };\n\n    var hasOwn = Object.prototype.hasOwnProperty;\n\n    var specialObjects = [];\n    if (typeof global !== \"undefined\") {\n        specialObjects.push({ object: global, value: \"[object global]\" });\n    }\n    if (typeof document !== \"undefined\") {\n        specialObjects.push({\n            object: document,\n            value: \"[object HTMLDocument]\"\n        });\n    }\n    if (typeof window !== \"undefined\") {\n        specialObjects.push({ object: window, value: \"[object Window]\" });\n    }\n\n    function functionName(func) {\n        if (!func) { return \"\"; }\n        if (func.displayName) { return func.displayName; }\n        if (func.name) { return func.name; }\n        var matches = func.toString().match(/function\\s+([^\\(]+)/m);\n        return (matches && matches[1]) || \"\";\n    }\n\n    function constructorName(f, object) {\n        var name = functionName(object && object.constructor);\n        var excludes = f.excludeConstructors ||\n                formatio.excludeConstructors || [];\n\n        var i, l;\n        for (i = 0, l = excludes.length; i < l; ++i) {\n            if (typeof excludes[i] === \"string\" && excludes[i] === name) {\n                return \"\";\n            } else if (excludes[i].test && excludes[i].test(name)) {\n                return \"\";\n            }\n        }\n\n        return name;\n    }\n\n    function isCircular(object, objects) {\n        if (typeof object !== \"object\") { return false; }\n        var i, l;\n        for (i = 0, l = objects.length; i < l; ++i) {\n            if (objects[i] === object) { return true; }\n        }\n        return false;\n    }\n\n    function ascii(f, object, processed, indent) {\n        if (typeof object === \"string\") {\n            var qs = f.quoteStrings;\n            var quote = typeof qs !== \"boolean\" || qs;\n            return processed || quote ? '\"' + object + '\"' : object;\n        }\n\n        if (typeof object === \"function\" && !(object instanceof RegExp)) {\n            return ascii.func(object);\n        }\n\n        processed = processed || [];\n\n        if (isCircular(object, processed)) { return \"[Circular]\"; }\n\n        if (Object.prototype.toString.call(object) === \"[object Array]\") {\n            return ascii.array.call(f, object, processed);\n        }\n\n        if (!object) { return String((1/object) === -Infinity ? \"-0\" : object); }\n        if (samsam.isElement(object)) { return ascii.element(object); }\n\n        if (typeof object.toString === \"function\" &&\n                object.toString !== Object.prototype.toString) {\n            return object.toString();\n        }\n\n        var i, l;\n        for (i = 0, l = specialObjects.length; i < l; i++) {\n            if (object === specialObjects[i].object) {\n                return specialObjects[i].value;\n            }\n        }\n\n        return ascii.object.call(f, object, processed, indent);\n    }\n\n    ascii.func = function (func) {\n        return \"function \" + functionName(func) + \"() {}\";\n    };\n\n    ascii.array = function (array, processed) {\n        processed = processed || [];\n        processed.push(array);\n        var pieces = [];\n        var i, l;\n        l = (this.limitChildrenCount > 0) ? \n            Math.min(this.limitChildrenCount, array.length) : array.length;\n\n        for (i = 0; i < l; ++i) {\n            pieces.push(ascii(this, array[i], processed));\n        }\n\n        if(l < array.length)\n            pieces.push(\"[... \" + (array.length - l) + \" more elements]\");\n\n        return \"[\" + pieces.join(\", \") + \"]\";\n    };\n\n    ascii.object = function (object, processed, indent) {\n        processed = processed || [];\n        processed.push(object);\n        indent = indent || 0;\n        var pieces = [], properties = samsam.keys(object).sort();\n        var length = 3;\n        var prop, str, obj, i, k, l;\n        l = (this.limitChildrenCount > 0) ? \n            Math.min(this.limitChildrenCount, properties.length) : properties.length;\n\n        for (i = 0; i < l; ++i) {\n            prop = properties[i];\n            obj = object[prop];\n\n            if (isCircular(obj, processed)) {\n                str = \"[Circular]\";\n            } else {\n                str = ascii(this, obj, processed, indent + 2);\n            }\n\n            str = (/\\s/.test(prop) ? '\"' + prop + '\"' : prop) + \": \" + str;\n            length += str.length;\n            pieces.push(str);\n        }\n\n        var cons = constructorName(this, object);\n        var prefix = cons ? \"[\" + cons + \"] \" : \"\";\n        var is = \"\";\n        for (i = 0, k = indent; i < k; ++i) { is += \" \"; }\n\n        if(l < properties.length)\n            pieces.push(\"[... \" + (properties.length - l) + \" more elements]\");\n\n        if (length + indent > 80) {\n            return prefix + \"{\\n  \" + is + pieces.join(\",\\n  \" + is) + \"\\n\" +\n                is + \"}\";\n        }\n        return prefix + \"{ \" + pieces.join(\", \") + \" }\";\n    };\n\n    ascii.element = function (element) {\n        var tagName = element.tagName.toLowerCase();\n        var attrs = element.attributes, attr, pairs = [], attrName, i, l, val;\n\n        for (i = 0, l = attrs.length; i < l; ++i) {\n            attr = attrs.item(i);\n            attrName = attr.nodeName.toLowerCase().replace(\"html:\", \"\");\n            val = attr.nodeValue;\n            if (attrName !== \"contenteditable\" || val !== \"inherit\") {\n                if (!!val) { pairs.push(attrName + \"=\\\"\" + val + \"\\\"\"); }\n            }\n        }\n\n        var formatted = \"<\" + tagName + (pairs.length > 0 ? \" \" : \"\");\n        var content = element.innerHTML;\n\n        if (content.length > 20) {\n            content = content.substr(0, 20) + \"[...]\";\n        }\n\n        var res = formatted + pairs.join(\" \") + \">\" + content +\n                \"</\" + tagName + \">\";\n\n        return res.replace(/ contentEditable=\"inherit\"/, \"\");\n    };\n\n    function Formatio(options) {\n        for (var opt in options) {\n            this[opt] = options[opt];\n        }\n    }\n\n    Formatio.prototype = {\n        functionName: functionName,\n\n        configure: function (options) {\n            return new Formatio(options);\n        },\n\n        constructorName: function (object) {\n            return constructorName(this, object);\n        },\n\n        ascii: function (object, processed, indent) {\n            return ascii(this, object, processed, indent);\n        }\n    };\n\n    return Formatio.prototype;\n});\n!function(e){if(\"object\"==typeof exports&&\"undefined\"!=typeof module)module.exports=e();else if(\"function\"==typeof define&&define.amd)define([],e);else{var f;\"undefined\"!=typeof window?f=window:\"undefined\"!=typeof global?f=global:\"undefined\"!=typeof self&&(f=self),f.lolex=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require==\"function\"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error(\"Cannot find module '\"+o+\"'\");throw f.code=\"MODULE_NOT_FOUND\",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require==\"function\"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){\n(function (global){\n/*jslint eqeqeq: false, plusplus: false, evil: true, onevar: false, browser: true, forin: false*/\n/*global global*/\n/**\n * @author Christian Johansen (christian@cjohansen.no) and contributors\n * @license BSD\n *\n * Copyright (c) 2010-2014 Christian Johansen\n */\n\n// node expects setTimeout/setInterval to return a fn object w/ .ref()/.unref()\n// browsers, a number.\n// see https://github.com/cjohansen/Sinon.JS/pull/436\nvar timeoutResult = setTimeout(function() {}, 0);\nvar addTimerReturnsObject = typeof timeoutResult === \"object\";\nclearTimeout(timeoutResult);\n\nvar NativeDate = Date;\nvar id = 1;\n\n/**\n * Parse strings like \"01:10:00\" (meaning 1 hour, 10 minutes, 0 seconds) into\n * number of milliseconds. This is used to support human-readable strings passed\n * to clock.tick()\n */\nfunction parseTime(str) {\n    if (!str) {\n        return 0;\n    }\n\n    var strings = str.split(\":\");\n    var l = strings.length, i = l;\n    var ms = 0, parsed;\n\n    if (l > 3 || !/^(\\d\\d:){0,2}\\d\\d?$/.test(str)) {\n        throw new Error(\"tick only understands numbers and 'h:m:s'\");\n    }\n\n    while (i--) {\n        parsed = parseInt(strings[i], 10);\n\n        if (parsed >= 60) {\n            throw new Error(\"Invalid time \" + str);\n        }\n\n        ms += parsed * Math.pow(60, (l - i - 1));\n    }\n\n    return ms * 1000;\n}\n\n/**\n * Used to grok the `now` parameter to createClock.\n */\nfunction getEpoch(epoch) {\n    if (!epoch) { return 0; }\n    if (typeof epoch.getTime === \"function\") { return epoch.getTime(); }\n    if (typeof epoch === \"number\") { return epoch; }\n    throw new TypeError(\"now should be milliseconds since UNIX epoch\");\n}\n\nfunction inRange(from, to, timer) {\n    return timer && timer.callAt >= from && timer.callAt <= to;\n}\n\nfunction mirrorDateProperties(target, source) {\n    if (source.now) {\n        target.now = function now() {\n            return target.clock.now;\n        };\n    } else {\n        delete target.now;\n    }\n\n    if (source.toSource) {\n        target.toSource = function toSource() {\n            return source.toSource();\n        };\n    } else {\n        delete target.toSource;\n    }\n\n    target.toString = function toString() {\n        return source.toString();\n    };\n\n    target.prototype = source.prototype;\n    target.parse = source.parse;\n    target.UTC = source.UTC;\n    target.prototype.toUTCString = source.prototype.toUTCString;\n\n    for (var prop in source) {\n        if (source.hasOwnProperty(prop)) {\n            target[prop] = source[prop];\n        }\n    }\n\n    return target;\n}\n\nfunction createDate() {\n    function ClockDate(year, month, date, hour, minute, second, ms) {\n        // Defensive and verbose to avoid potential harm in passing\n        // explicit undefined when user does not pass argument\n        switch (arguments.length) {\n        case 0:\n            return new NativeDate(ClockDate.clock.now);\n        case 1:\n            return new NativeDate(year);\n        case 2:\n            return new NativeDate(year, month);\n        case 3:\n            return new NativeDate(year, month, date);\n        case 4:\n            return new NativeDate(year, month, date, hour);\n        case 5:\n            return new NativeDate(year, month, date, hour, minute);\n        case 6:\n            return new NativeDate(year, month, date, hour, minute, second);\n        default:\n            return new NativeDate(year, month, date, hour, minute, second, ms);\n        }\n    }\n\n    return mirrorDateProperties(ClockDate, NativeDate);\n}\n\nfunction addTimer(clock, timer) {\n    if (typeof timer.func === \"undefined\") {\n        throw new Error(\"Callback must be provided to timer calls\");\n    }\n\n    if (!clock.timers) {\n        clock.timers = {};\n    }\n\n    timer.id = id++;\n    timer.createdAt = clock.now;\n    timer.callAt = clock.now + (timer.delay || 0);\n\n    clock.timers[timer.id] = timer;\n\n    if (addTimerReturnsObject) {\n        return {\n            id: timer.id,\n            ref: function() {},\n            unref: function() {}\n        };\n    }\n    else {\n        return timer.id;\n    }\n}\n\nfunction firstTimerInRange(clock, from, to) {\n    var timers = clock.timers, timer = null;\n\n    for (var id in timers) {\n        if (!inRange(from, to, timers[id])) {\n            continue;\n        }\n\n        if (!timer || ~compareTimers(timer, timers[id])) {\n            timer = timers[id];\n        }\n    }\n\n    return timer;\n}\n\nfunction compareTimers(a, b) {\n    // Sort first by absolute timing\n    if (a.callAt < b.callAt) {\n        return -1;\n    }\n    if (a.callAt > b.callAt) {\n        return 1;\n    }\n\n    // Sort next by immediate, immediate timers take precedence\n    if (a.immediate && !b.immediate) {\n        return -1;\n    }\n    if (!a.immediate && b.immediate) {\n        return 1;\n    }\n\n    // Sort next by creation time, earlier-created timers take precedence\n    if (a.createdAt < b.createdAt) {\n        return -1;\n    }\n    if (a.createdAt > b.createdAt) {\n        return 1;\n    }\n\n    // Sort next by id, lower-id timers take precedence\n    if (a.id < b.id) {\n        return -1;\n    }\n    if (a.id > b.id) {\n        return 1;\n    }\n\n    // As timer ids are unique, no fallback `0` is necessary\n}\n\nfunction callTimer(clock, timer) {\n    if (typeof timer.interval == \"number\") {\n        clock.timers[timer.id].callAt += timer.interval;\n    } else {\n        delete clock.timers[timer.id];\n    }\n\n    try {\n        if (typeof timer.func == \"function\") {\n            timer.func.apply(null, timer.args);\n        } else {\n            eval(timer.func);\n        }\n    } catch (e) {\n        var exception = e;\n    }\n\n    if (!clock.timers[timer.id]) {\n        if (exception) {\n            throw exception;\n        }\n        return;\n    }\n\n    if (exception) {\n        throw exception;\n    }\n}\n\nfunction uninstall(clock, target) {\n    var method;\n\n    for (var i = 0, l = clock.methods.length; i < l; i++) {\n        method = clock.methods[i];\n\n        if (target[method].hadOwnProperty) {\n            target[method] = clock[\"_\" + method];\n        } else {\n            try {\n                delete target[method];\n            } catch (e) {}\n        }\n    }\n\n    // Prevent multiple executions which will completely remove these props\n    clock.methods = [];\n}\n\nfunction hijackMethod(target, method, clock) {\n    clock[method].hadOwnProperty = Object.prototype.hasOwnProperty.call(target, method);\n    clock[\"_\" + method] = target[method];\n\n    if (method == \"Date\") {\n        var date = mirrorDateProperties(clock[method], target[method]);\n        target[method] = date;\n    } else {\n        target[method] = function () {\n            return clock[method].apply(clock, arguments);\n        };\n\n        for (var prop in clock[method]) {\n            if (clock[method].hasOwnProperty(prop)) {\n                target[method][prop] = clock[method][prop];\n            }\n        }\n    }\n\n    target[method].clock = clock;\n}\n\nvar timers = {\n    setTimeout: setTimeout,\n    clearTimeout: clearTimeout,\n    setImmediate: (typeof setImmediate !== \"undefined\" ? setImmediate : undefined),\n    clearImmediate: (typeof clearImmediate !== \"undefined\" ? clearImmediate: undefined),\n    setInterval: setInterval,\n    clearInterval: clearInterval,\n    Date: Date\n};\n\nvar keys = Object.keys || function (obj) {\n    var ks = [];\n    for (var key in obj) {\n        ks.push(key);\n    }\n    return ks;\n};\n\nexports.timers = timers;\n\nvar createClock = exports.createClock = function (now) {\n    var clock = {\n        now: getEpoch(now),\n        timeouts: {},\n        Date: createDate()\n    };\n\n    clock.Date.clock = clock;\n\n    clock.setTimeout = function setTimeout(func, timeout) {\n        return addTimer(clock, {\n            func: func,\n            args: Array.prototype.slice.call(arguments, 2),\n            delay: timeout\n        });\n    };\n\n    clock.clearTimeout = function clearTimeout(timerId) {\n        if (!timerId) {\n            // null appears to be allowed in most browsers, and appears to be\n            // relied upon by some libraries, like Bootstrap carousel\n            return;\n        }\n        if (!clock.timers) {\n            clock.timers = [];\n        }\n        // in Node, timerId is an object with .ref()/.unref(), and\n        // its .id field is the actual timer id.\n        if (typeof timerId === \"object\") {\n            timerId = timerId.id\n        }\n        if (timerId in clock.timers) {\n            delete clock.timers[timerId];\n        }\n    };\n\n    clock.setInterval = function setInterval(func, timeout) {\n        return addTimer(clock, {\n            func: func,\n            args: Array.prototype.slice.call(arguments, 2),\n            delay: timeout,\n            interval: timeout\n        });\n    };\n\n    clock.clearInterval = function clearInterval(timerId) {\n        clock.clearTimeout(timerId);\n    };\n\n    clock.setImmediate = function setImmediate(func) {\n        return addTimer(clock, {\n            func: func,\n            args: Array.prototype.slice.call(arguments, 1),\n            immediate: true\n        });\n    };\n\n    clock.clearImmediate = function clearImmediate(timerId) {\n        clock.clearTimeout(timerId);\n    };\n\n    clock.tick = function tick(ms) {\n        ms = typeof ms == \"number\" ? ms : parseTime(ms);\n        var tickFrom = clock.now, tickTo = clock.now + ms, previous = clock.now;\n        var timer = firstTimerInRange(clock, tickFrom, tickTo);\n\n        var firstException;\n        while (timer && tickFrom <= tickTo) {\n            if (clock.timers[timer.id]) {\n                tickFrom = clock.now = timer.callAt;\n                try {\n                    callTimer(clock, timer);\n                } catch (e) {\n                    firstException = firstException || e;\n                }\n            }\n\n            timer = firstTimerInRange(clock, previous, tickTo);\n            previous = tickFrom;\n        }\n\n        clock.now = tickTo;\n\n        if (firstException) {\n            throw firstException;\n        }\n\n        return clock.now;\n    };\n\n    clock.reset = function reset() {\n        clock.timers = {};\n    };\n\n    return clock;\n};\n\nexports.install = function install(target, now, toFake) {\n    if (typeof target === \"number\") {\n        toFake = now;\n        now = target;\n        target = null;\n    }\n\n    if (!target) {\n        target = global;\n    }\n\n    var clock = createClock(now);\n\n    clock.uninstall = function () {\n        uninstall(clock, target);\n    };\n\n    clock.methods = toFake || [];\n\n    if (clock.methods.length === 0) {\n        clock.methods = keys(timers);\n    }\n\n    for (var i = 0, l = clock.methods.length; i < l; i++) {\n        hijackMethod(target, clock.methods[i], clock);\n    }\n\n    return clock;\n};\n\n}).call(this,typeof global !== \"undefined\" ? global : typeof self !== \"undefined\" ? self : typeof window !== \"undefined\" ? window : {})\n},{}]},{},[1])(1)\n});\n  })();\n  var define;\n/**\n * Sinon core utilities. For internal use only.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\nvar sinon = (function () {\n\"use strict\";\n\n    var sinon;\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require === \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        sinon = module.exports = require(\"./sinon/util/core\");\n        require(\"./sinon/extend\");\n        require(\"./sinon/typeOf\");\n        require(\"./sinon/times_in_words\");\n        require(\"./sinon/spy\");\n        require(\"./sinon/call\");\n        require(\"./sinon/behavior\");\n        require(\"./sinon/stub\");\n        require(\"./sinon/mock\");\n        require(\"./sinon/collection\");\n        require(\"./sinon/assert\");\n        require(\"./sinon/sandbox\");\n        require(\"./sinon/test\");\n        require(\"./sinon/test_case\");\n        require(\"./sinon/match\");\n        require(\"./sinon/format\");\n        require(\"./sinon/log_error\");\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n        sinon = module.exports;\n    } else {\n        sinon = {};\n    }\n\n    return sinon;\n}());\n\n/**\n * @depend ../../sinon.js\n */\n/**\n * Sinon core utilities. For internal use only.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    var div = typeof document != \"undefined\" && document.createElement(\"div\");\n    var hasOwn = Object.prototype.hasOwnProperty;\n\n    function isDOMNode(obj) {\n        var success = false;\n\n        try {\n            obj.appendChild(div);\n            success = div.parentNode == obj;\n        } catch (e) {\n            return false;\n        } finally {\n            try {\n                obj.removeChild(div);\n            } catch (e) {\n                // Remove failed, not much we can do about that\n            }\n        }\n\n        return success;\n    }\n\n    function isElement(obj) {\n        return div && obj && obj.nodeType === 1 && isDOMNode(obj);\n    }\n\n    function isFunction(obj) {\n        return typeof obj === \"function\" || !!(obj && obj.constructor && obj.call && obj.apply);\n    }\n\n    function isReallyNaN(val) {\n        return typeof val === \"number\" && isNaN(val);\n    }\n\n    function mirrorProperties(target, source) {\n        for (var prop in source) {\n            if (!hasOwn.call(target, prop)) {\n                target[prop] = source[prop];\n            }\n        }\n    }\n\n    function isRestorable(obj) {\n        return typeof obj === \"function\" && typeof obj.restore === \"function\" && obj.restore.sinon;\n    }\n\n    // Cheap way to detect if we have ES5 support.\n    var hasES5Support = \"keys\" in Object;\n\n    function makeApi(sinon) {\n        sinon.wrapMethod = function wrapMethod(object, property, method) {\n            if (!object) {\n                throw new TypeError(\"Should wrap property of object\");\n            }\n\n            if (typeof method != \"function\" && typeof method != \"object\") {\n                throw new TypeError(\"Method wrapper should be a function or a property descriptor\");\n            }\n\n            function checkWrappedMethod(wrappedMethod) {\n                if (!isFunction(wrappedMethod)) {\n                    error = new TypeError(\"Attempted to wrap \" + (typeof wrappedMethod) + \" property \" +\n                                        property + \" as function\");\n                } else if (wrappedMethod.restore && wrappedMethod.restore.sinon) {\n                    error = new TypeError(\"Attempted to wrap \" + property + \" which is already wrapped\");\n                } else if (wrappedMethod.calledBefore) {\n                    var verb = !!wrappedMethod.returns ? \"stubbed\" : \"spied on\";\n                    error = new TypeError(\"Attempted to wrap \" + property + \" which is already \" + verb);\n                }\n\n                if (error) {\n                    if (wrappedMethod && wrappedMethod.stackTrace) {\n                        error.stack += \"\\n--------------\\n\" + wrappedMethod.stackTrace;\n                    }\n                    throw error;\n                }\n            }\n\n            var error, wrappedMethod;\n\n            // IE 8 does not support hasOwnProperty on the window object and Firefox has a problem\n            // when using hasOwn.call on objects from other frames.\n            var owned = object.hasOwnProperty ? object.hasOwnProperty(property) : hasOwn.call(object, property);\n\n            if (hasES5Support) {\n                var methodDesc = (typeof method == \"function\") ? {value: method} : method,\n                    wrappedMethodDesc = sinon.getPropertyDescriptor(object, property),\n                    i;\n\n                if (!wrappedMethodDesc) {\n                    error = new TypeError(\"Attempted to wrap \" + (typeof wrappedMethod) + \" property \" +\n                                        property + \" as function\");\n                } else if (wrappedMethodDesc.restore && wrappedMethodDesc.restore.sinon) {\n                    error = new TypeError(\"Attempted to wrap \" + property + \" which is already wrapped\");\n                }\n                if (error) {\n                    if (wrappedMethodDesc && wrappedMethodDesc.stackTrace) {\n                        error.stack += \"\\n--------------\\n\" + wrappedMethodDesc.stackTrace;\n                    }\n                    throw error;\n                }\n\n                var types = sinon.objectKeys(methodDesc);\n                for (i = 0; i < types.length; i++) {\n                    wrappedMethod = wrappedMethodDesc[types[i]];\n                    checkWrappedMethod(wrappedMethod);\n                }\n\n                mirrorProperties(methodDesc, wrappedMethodDesc);\n                for (i = 0; i < types.length; i++) {\n                    mirrorProperties(methodDesc[types[i]], wrappedMethodDesc[types[i]]);\n                }\n                Object.defineProperty(object, property, methodDesc);\n            } else {\n                wrappedMethod = object[property];\n                checkWrappedMethod(wrappedMethod);\n                object[property] = method;\n                method.displayName = property;\n            }\n\n            method.displayName = property;\n\n            // Set up a stack trace which can be used later to find what line of\n            // code the original method was created on.\n            method.stackTrace = (new Error(\"Stack Trace for original\")).stack;\n\n            method.restore = function () {\n                // For prototype properties try to reset by delete first.\n                // If this fails (ex: localStorage on mobile safari) then force a reset\n                // via direct assignment.\n                if (!owned) {\n                    try {\n                        delete object[property];\n                    } catch (e) {}\n                    // For native code functions `delete` fails without throwing an error\n                    // on Chrome < 43, PhantomJS, etc.\n                    // Use strict equality comparison to check failures then force a reset\n                    // via direct assignment.\n                    if (object[property] === method) {\n                        object[property] = wrappedMethod;\n                    }\n                } else if (hasES5Support) {\n                    Object.defineProperty(object, property, wrappedMethodDesc);\n                }\n\n                if (!hasES5Support && object[property] === method) {\n                    object[property] = wrappedMethod;\n                }\n            };\n\n            method.restore.sinon = true;\n\n            if (!hasES5Support) {\n                mirrorProperties(method, wrappedMethod);\n            }\n\n            return method;\n        };\n\n        sinon.create = function create(proto) {\n            var F = function () {};\n            F.prototype = proto;\n            return new F();\n        };\n\n        sinon.deepEqual = function deepEqual(a, b) {\n            if (sinon.match && sinon.match.isMatcher(a)) {\n                return a.test(b);\n            }\n\n            if (typeof a != \"object\" || typeof b != \"object\") {\n                if (isReallyNaN(a) && isReallyNaN(b)) {\n                    return true;\n                } else {\n                    return a === b;\n                }\n            }\n\n            if (isElement(a) || isElement(b)) {\n                return a === b;\n            }\n\n            if (a === b) {\n                return true;\n            }\n\n            if ((a === null && b !== null) || (a !== null && b === null)) {\n                return false;\n            }\n\n            if (a instanceof RegExp && b instanceof RegExp) {\n                return (a.source === b.source) && (a.global === b.global) &&\n                    (a.ignoreCase === b.ignoreCase) && (a.multiline === b.multiline);\n            }\n\n            var aString = Object.prototype.toString.call(a);\n            if (aString != Object.prototype.toString.call(b)) {\n                return false;\n            }\n\n            if (aString == \"[object Date]\") {\n                return a.valueOf() === b.valueOf();\n            }\n\n            var prop, aLength = 0, bLength = 0;\n\n            if (aString == \"[object Array]\" && a.length !== b.length) {\n                return false;\n            }\n\n            for (prop in a) {\n                aLength += 1;\n\n                if (!(prop in b)) {\n                    return false;\n                }\n\n                if (!deepEqual(a[prop], b[prop])) {\n                    return false;\n                }\n            }\n\n            for (prop in b) {\n                bLength += 1;\n            }\n\n            return aLength == bLength;\n        };\n\n        sinon.functionName = function functionName(func) {\n            var name = func.displayName || func.name;\n\n            // Use function decomposition as a last resort to get function\n            // name. Does not rely on function decomposition to work - if it\n            // doesn't debugging will be slightly less informative\n            // (i.e. toString will say 'spy' rather than 'myFunc').\n            if (!name) {\n                var matches = func.toString().match(/function ([^\\s\\(]+)/);\n                name = matches && matches[1];\n            }\n\n            return name;\n        };\n\n        sinon.functionToString = function toString() {\n            if (this.getCall && this.callCount) {\n                var thisValue, prop, i = this.callCount;\n\n                while (i--) {\n                    thisValue = this.getCall(i).thisValue;\n\n                    for (prop in thisValue) {\n                        if (thisValue[prop] === this) {\n                            return prop;\n                        }\n                    }\n                }\n            }\n\n            return this.displayName || \"sinon fake\";\n        };\n\n        sinon.objectKeys = function objectKeys(obj) {\n            if (obj !== Object(obj)) {\n                throw new TypeError(\"sinon.objectKeys called on a non-object\");\n            }\n\n            var keys = [];\n            var key;\n            for (key in obj) {\n                if (hasOwn.call(obj, key)) {\n                    keys.push(key);\n                }\n            }\n\n            return keys;\n        };\n\n        sinon.getPropertyDescriptor = function getPropertyDescriptor(object, property) {\n            var proto = object, descriptor;\n            while (proto && !(descriptor = Object.getOwnPropertyDescriptor(proto, property))) {\n                proto = Object.getPrototypeOf(proto);\n            }\n            return descriptor;\n        }\n\n        sinon.getConfig = function (custom) {\n            var config = {};\n            custom = custom || {};\n            var defaults = sinon.defaultConfig;\n\n            for (var prop in defaults) {\n                if (defaults.hasOwnProperty(prop)) {\n                    config[prop] = custom.hasOwnProperty(prop) ? custom[prop] : defaults[prop];\n                }\n            }\n\n            return config;\n        };\n\n        sinon.defaultConfig = {\n            injectIntoThis: true,\n            injectInto: null,\n            properties: [\"spy\", \"stub\", \"mock\", \"clock\", \"server\", \"requests\"],\n            useFakeTimers: true,\n            useFakeServer: true\n        };\n\n        sinon.timesInWords = function timesInWords(count) {\n            return count == 1 && \"once\" ||\n                count == 2 && \"twice\" ||\n                count == 3 && \"thrice\" ||\n                (count || 0) + \" times\";\n        };\n\n        sinon.calledInOrder = function (spies) {\n            for (var i = 1, l = spies.length; i < l; i++) {\n                if (!spies[i - 1].calledBefore(spies[i]) || !spies[i].called) {\n                    return false;\n                }\n            }\n\n            return true;\n        };\n\n        sinon.orderByFirstCall = function (spies) {\n            return spies.sort(function (a, b) {\n                // uuid, won't ever be equal\n                var aCall = a.getCall(0);\n                var bCall = b.getCall(0);\n                var aId = aCall && aCall.callId || -1;\n                var bId = bCall && bCall.callId || -1;\n\n                return aId < bId ? -1 : 1;\n            });\n        };\n\n        sinon.createStubInstance = function (constructor) {\n            if (typeof constructor !== \"function\") {\n                throw new TypeError(\"The constructor should be a function.\");\n            }\n            return sinon.stub(sinon.create(constructor.prototype));\n        };\n\n        sinon.restore = function (object) {\n            if (object !== null && typeof object === \"object\") {\n                for (var prop in object) {\n                    if (isRestorable(object[prop])) {\n                        object[prop].restore();\n                    }\n                }\n            } else if (isRestorable(object)) {\n                object.restore();\n            }\n        };\n\n        return sinon;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports) {\n        makeApi(exports);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n\n        // Adapted from https://developer.mozilla.org/en/docs/ECMAScript_DontEnum_attribute#JScript_DontEnum_Bug\n        var hasDontEnumBug = (function () {\n            var obj = {\n                constructor: function () {\n                    return \"0\";\n                },\n                toString: function () {\n                    return \"1\";\n                },\n                valueOf: function () {\n                    return \"2\";\n                },\n                toLocaleString: function () {\n                    return \"3\";\n                },\n                prototype: function () {\n                    return \"4\";\n                },\n                isPrototypeOf: function () {\n                    return \"5\";\n                },\n                propertyIsEnumerable: function () {\n                    return \"6\";\n                },\n                hasOwnProperty: function () {\n                    return \"7\";\n                },\n                length: function () {\n                    return \"8\";\n                },\n                unique: function () {\n                    return \"9\"\n                }\n            };\n\n            var result = [];\n            for (var prop in obj) {\n                result.push(obj[prop]());\n            }\n            return result.join(\"\") !== \"0123456789\";\n        })();\n\n        /* Public: Extend target in place with all (own) properties from sources in-order. Thus, last source will\n         *         override properties in previous sources.\n         *\n         * target - The Object to extend\n         * sources - Objects to copy properties from.\n         *\n         * Returns the extended target\n         */\n        function extend(target /*, sources */) {\n            var sources = Array.prototype.slice.call(arguments, 1),\n                source, i, prop;\n\n            for (i = 0; i < sources.length; i++) {\n                source = sources[i];\n\n                for (prop in source) {\n                    if (source.hasOwnProperty(prop)) {\n                        target[prop] = source[prop];\n                    }\n                }\n\n                // Make sure we copy (own) toString method even when in JScript with DontEnum bug\n                // See https://developer.mozilla.org/en/docs/ECMAScript_DontEnum_attribute#JScript_DontEnum_Bug\n                if (hasDontEnumBug && source.hasOwnProperty(\"toString\") && source.toString !== target.toString) {\n                    target.toString = source.toString;\n                }\n            }\n\n            return target;\n        };\n\n        sinon.extend = extend;\n        return sinon.extend;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n\n        function timesInWords(count) {\n            switch (count) {\n                case 1:\n                    return \"once\";\n                case 2:\n                    return \"twice\";\n                case 3:\n                    return \"thrice\";\n                default:\n                    return (count || 0) + \" times\";\n            }\n        }\n\n        sinon.timesInWords = timesInWords;\n        return sinon.timesInWords;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n */\n/**\n * Format functions\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2014 Christian Johansen\n */\n\n(function (sinon, formatio) {\n    function makeApi(sinon) {\n        function typeOf(value) {\n            if (value === null) {\n                return \"null\";\n            } else if (value === undefined) {\n                return \"undefined\";\n            }\n            var string = Object.prototype.toString.call(value);\n            return string.substring(8, string.length - 1).toLowerCase();\n        };\n\n        sinon.typeOf = typeOf;\n        return sinon.typeOf;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(\n    (typeof sinon == \"object\" && sinon || null),\n    (typeof formatio == \"object\" && formatio)\n));\n\n/**\n * @depend util/core.js\n * @depend typeOf.js\n */\n/*jslint eqeqeq: false, onevar: false, plusplus: false*/\n/*global module, require, sinon*/\n/**\n * Match functions\n *\n * @author Maximilian Antoni (mail@maxantoni.de)\n * @license BSD\n *\n * Copyright (c) 2012 Maximilian Antoni\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        function assertType(value, type, name) {\n            var actual = sinon.typeOf(value);\n            if (actual !== type) {\n                throw new TypeError(\"Expected type of \" + name + \" to be \" +\n                    type + \", but was \" + actual);\n            }\n        }\n\n        var matcher = {\n            toString: function () {\n                return this.message;\n            }\n        };\n\n        function isMatcher(object) {\n            return matcher.isPrototypeOf(object);\n        }\n\n        function matchObject(expectation, actual) {\n            if (actual === null || actual === undefined) {\n                return false;\n            }\n            for (var key in expectation) {\n                if (expectation.hasOwnProperty(key)) {\n                    var exp = expectation[key];\n                    var act = actual[key];\n                    if (match.isMatcher(exp)) {\n                        if (!exp.test(act)) {\n                            return false;\n                        }\n                    } else if (sinon.typeOf(exp) === \"object\") {\n                        if (!matchObject(exp, act)) {\n                            return false;\n                        }\n                    } else if (!sinon.deepEqual(exp, act)) {\n                        return false;\n                    }\n                }\n            }\n            return true;\n        }\n\n        matcher.or = function (m2) {\n            if (!arguments.length) {\n                throw new TypeError(\"Matcher expected\");\n            } else if (!isMatcher(m2)) {\n                m2 = match(m2);\n            }\n            var m1 = this;\n            var or = sinon.create(matcher);\n            or.test = function (actual) {\n                return m1.test(actual) || m2.test(actual);\n            };\n            or.message = m1.message + \".or(\" + m2.message + \")\";\n            return or;\n        };\n\n        matcher.and = function (m2) {\n            if (!arguments.length) {\n                throw new TypeError(\"Matcher expected\");\n            } else if (!isMatcher(m2)) {\n                m2 = match(m2);\n            }\n            var m1 = this;\n            var and = sinon.create(matcher);\n            and.test = function (actual) {\n                return m1.test(actual) && m2.test(actual);\n            };\n            and.message = m1.message + \".and(\" + m2.message + \")\";\n            return and;\n        };\n\n        var match = function (expectation, message) {\n            var m = sinon.create(matcher);\n            var type = sinon.typeOf(expectation);\n            switch (type) {\n            case \"object\":\n                if (typeof expectation.test === \"function\") {\n                    m.test = function (actual) {\n                        return expectation.test(actual) === true;\n                    };\n                    m.message = \"match(\" + sinon.functionName(expectation.test) + \")\";\n                    return m;\n                }\n                var str = [];\n                for (var key in expectation) {\n                    if (expectation.hasOwnProperty(key)) {\n                        str.push(key + \": \" + expectation[key]);\n                    }\n                }\n                m.test = function (actual) {\n                    return matchObject(expectation, actual);\n                };\n                m.message = \"match(\" + str.join(\", \") + \")\";\n                break;\n            case \"number\":\n                m.test = function (actual) {\n                    return expectation == actual;\n                };\n                break;\n            case \"string\":\n                m.test = function (actual) {\n                    if (typeof actual !== \"string\") {\n                        return false;\n                    }\n                    return actual.indexOf(expectation) !== -1;\n                };\n                m.message = \"match(\\\"\" + expectation + \"\\\")\";\n                break;\n            case \"regexp\":\n                m.test = function (actual) {\n                    if (typeof actual !== \"string\") {\n                        return false;\n                    }\n                    return expectation.test(actual);\n                };\n                break;\n            case \"function\":\n                m.test = expectation;\n                if (message) {\n                    m.message = message;\n                } else {\n                    m.message = \"match(\" + sinon.functionName(expectation) + \")\";\n                }\n                break;\n            default:\n                m.test = function (actual) {\n                    return sinon.deepEqual(expectation, actual);\n                };\n            }\n            if (!m.message) {\n                m.message = \"match(\" + expectation + \")\";\n            }\n            return m;\n        };\n\n        match.isMatcher = isMatcher;\n\n        match.any = match(function () {\n            return true;\n        }, \"any\");\n\n        match.defined = match(function (actual) {\n            return actual !== null && actual !== undefined;\n        }, \"defined\");\n\n        match.truthy = match(function (actual) {\n            return !!actual;\n        }, \"truthy\");\n\n        match.falsy = match(function (actual) {\n            return !actual;\n        }, \"falsy\");\n\n        match.same = function (expectation) {\n            return match(function (actual) {\n                return expectation === actual;\n            }, \"same(\" + expectation + \")\");\n        };\n\n        match.typeOf = function (type) {\n            assertType(type, \"string\", \"type\");\n            return match(function (actual) {\n                return sinon.typeOf(actual) === type;\n            }, \"typeOf(\\\"\" + type + \"\\\")\");\n        };\n\n        match.instanceOf = function (type) {\n            assertType(type, \"function\", \"type\");\n            return match(function (actual) {\n                return actual instanceof type;\n            }, \"instanceOf(\" + sinon.functionName(type) + \")\");\n        };\n\n        function createPropertyMatcher(propertyTest, messagePrefix) {\n            return function (property, value) {\n                assertType(property, \"string\", \"property\");\n                var onlyProperty = arguments.length === 1;\n                var message = messagePrefix + \"(\\\"\" + property + \"\\\"\";\n                if (!onlyProperty) {\n                    message += \", \" + value;\n                }\n                message += \")\";\n                return match(function (actual) {\n                    if (actual === undefined || actual === null ||\n                            !propertyTest(actual, property)) {\n                        return false;\n                    }\n                    return onlyProperty || sinon.deepEqual(value, actual[property]);\n                }, message);\n            };\n        }\n\n        match.has = createPropertyMatcher(function (actual, property) {\n            if (typeof actual === \"object\") {\n                return property in actual;\n            }\n            return actual[property] !== undefined;\n        }, \"has\");\n\n        match.hasOwn = createPropertyMatcher(function (actual, property) {\n            return actual.hasOwnProperty(property);\n        }, \"hasOwn\");\n\n        match.bool = match.typeOf(\"boolean\");\n        match.number = match.typeOf(\"number\");\n        match.string = match.typeOf(\"string\");\n        match.object = match.typeOf(\"object\");\n        match.func = match.typeOf(\"function\");\n        match.array = match.typeOf(\"array\");\n        match.regexp = match.typeOf(\"regexp\");\n        match.date = match.typeOf(\"date\");\n\n        sinon.match = match;\n        return match;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./typeOf\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n */\n/**\n * Format functions\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2014 Christian Johansen\n */\n\n(function (sinon, formatio) {\n    function makeApi(sinon) {\n        function valueFormatter(value) {\n            return \"\" + value;\n        }\n\n        function getFormatioFormatter() {\n            var formatter = formatio.configure({\n                    quoteStrings: false,\n                    limitChildrenCount: 250\n                });\n\n            function format() {\n                return formatter.ascii.apply(formatter, arguments);\n            };\n\n            return format;\n        }\n\n        function getNodeFormatter(value) {\n            function format(value) {\n                return typeof value == \"object\" && value.toString === Object.prototype.toString ? util.inspect(value) : value;\n            };\n\n            try {\n                var util = require(\"util\");\n            } catch (e) {\n                /* Node, but no util module - would be very old, but better safe than sorry */\n            }\n\n            return util ? format : valueFormatter;\n        }\n\n        var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\",\n            formatter;\n\n        if (isNode) {\n            try {\n                formatio = require(\"formatio\");\n            } catch (e) {}\n        }\n\n        if (formatio) {\n            formatter = getFormatioFormatter()\n        } else if (isNode) {\n            formatter = getNodeFormatter();\n        } else {\n            formatter = valueFormatter;\n        }\n\n        sinon.format = formatter;\n        return sinon.format;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(\n    (typeof sinon == \"object\" && sinon || null),\n    (typeof formatio == \"object\" && formatio)\n));\n\n/**\n  * @depend util/core.js\n  * @depend match.js\n  * @depend format.js\n  */\n/**\n  * Spy calls\n  *\n  * @author Christian Johansen (christian@cjohansen.no)\n  * @author Maximilian Antoni (mail@maxantoni.de)\n  * @license BSD\n  *\n  * Copyright (c) 2010-2013 Christian Johansen\n  * Copyright (c) 2013 Maximilian Antoni\n  */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        function throwYieldError(proxy, text, args) {\n            var msg = sinon.functionName(proxy) + text;\n            if (args.length) {\n                msg += \" Received [\" + slice.call(args).join(\", \") + \"]\";\n            }\n            throw new Error(msg);\n        }\n\n        var slice = Array.prototype.slice;\n\n        var callProto = {\n            calledOn: function calledOn(thisValue) {\n                if (sinon.match && sinon.match.isMatcher(thisValue)) {\n                    return thisValue.test(this.thisValue);\n                }\n                return this.thisValue === thisValue;\n            },\n\n            calledWith: function calledWith() {\n                var l = arguments.length;\n                if (l > this.args.length) {\n                    return false;\n                }\n                for (var i = 0; i < l; i += 1) {\n                    if (!sinon.deepEqual(arguments[i], this.args[i])) {\n                        return false;\n                    }\n                }\n\n                return true;\n            },\n\n            calledWithMatch: function calledWithMatch() {\n                var l = arguments.length;\n                if (l > this.args.length) {\n                    return false;\n                }\n                for (var i = 0; i < l; i += 1) {\n                    var actual = this.args[i];\n                    var expectation = arguments[i];\n                    if (!sinon.match || !sinon.match(expectation).test(actual)) {\n                        return false;\n                    }\n                }\n                return true;\n            },\n\n            calledWithExactly: function calledWithExactly() {\n                return arguments.length == this.args.length &&\n                    this.calledWith.apply(this, arguments);\n            },\n\n            notCalledWith: function notCalledWith() {\n                return !this.calledWith.apply(this, arguments);\n            },\n\n            notCalledWithMatch: function notCalledWithMatch() {\n                return !this.calledWithMatch.apply(this, arguments);\n            },\n\n            returned: function returned(value) {\n                return sinon.deepEqual(value, this.returnValue);\n            },\n\n            threw: function threw(error) {\n                if (typeof error === \"undefined\" || !this.exception) {\n                    return !!this.exception;\n                }\n\n                return this.exception === error || this.exception.name === error;\n            },\n\n            calledWithNew: function calledWithNew() {\n                return this.proxy.prototype && this.thisValue instanceof this.proxy;\n            },\n\n            calledBefore: function (other) {\n                return this.callId < other.callId;\n            },\n\n            calledAfter: function (other) {\n                return this.callId > other.callId;\n            },\n\n            callArg: function (pos) {\n                this.args[pos]();\n            },\n\n            callArgOn: function (pos, thisValue) {\n                this.args[pos].apply(thisValue);\n            },\n\n            callArgWith: function (pos) {\n                this.callArgOnWith.apply(this, [pos, null].concat(slice.call(arguments, 1)));\n            },\n\n            callArgOnWith: function (pos, thisValue) {\n                var args = slice.call(arguments, 2);\n                this.args[pos].apply(thisValue, args);\n            },\n\n            yield: function () {\n                this.yieldOn.apply(this, [null].concat(slice.call(arguments, 0)));\n            },\n\n            yieldOn: function (thisValue) {\n                var args = this.args;\n                for (var i = 0, l = args.length; i < l; ++i) {\n                    if (typeof args[i] === \"function\") {\n                        args[i].apply(thisValue, slice.call(arguments, 1));\n                        return;\n                    }\n                }\n                throwYieldError(this.proxy, \" cannot yield since no callback was passed.\", args);\n            },\n\n            yieldTo: function (prop) {\n                this.yieldToOn.apply(this, [prop, null].concat(slice.call(arguments, 1)));\n            },\n\n            yieldToOn: function (prop, thisValue) {\n                var args = this.args;\n                for (var i = 0, l = args.length; i < l; ++i) {\n                    if (args[i] && typeof args[i][prop] === \"function\") {\n                        args[i][prop].apply(thisValue, slice.call(arguments, 2));\n                        return;\n                    }\n                }\n                throwYieldError(this.proxy, \" cannot yield to '\" + prop +\n                    \"' since no callback was passed.\", args);\n            },\n\n            toString: function () {\n                var callStr = this.proxy.toString() + \"(\";\n                var args = [];\n\n                for (var i = 0, l = this.args.length; i < l; ++i) {\n                    args.push(sinon.format(this.args[i]));\n                }\n\n                callStr = callStr + args.join(\", \") + \")\";\n\n                if (typeof this.returnValue != \"undefined\") {\n                    callStr += \" => \" + sinon.format(this.returnValue);\n                }\n\n                if (this.exception) {\n                    callStr += \" !\" + this.exception.name;\n\n                    if (this.exception.message) {\n                        callStr += \"(\" + this.exception.message + \")\";\n                    }\n                }\n\n                return callStr;\n            }\n        };\n\n        callProto.invokeCallback = callProto.yield;\n\n        function createSpyCall(spy, thisValue, args, returnValue, exception, id) {\n            if (typeof id !== \"number\") {\n                throw new TypeError(\"Call id is not a number\");\n            }\n            var proxyCall = sinon.create(callProto);\n            proxyCall.proxy = spy;\n            proxyCall.thisValue = thisValue;\n            proxyCall.args = args;\n            proxyCall.returnValue = returnValue;\n            proxyCall.exception = exception;\n            proxyCall.callId = id;\n\n            return proxyCall;\n        }\n        createSpyCall.toString = callProto.toString; // used by mocks\n\n        sinon.spyCall = createSpyCall;\n        return createSpyCall;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./match\");\n        require(\"./format\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n  * @depend times_in_words.js\n  * @depend util/core.js\n  * @depend extend.js\n  * @depend call.js\n  * @depend format.js\n  */\n/**\n  * Spy functions\n  *\n  * @author Christian Johansen (christian@cjohansen.no)\n  * @license BSD\n  *\n  * Copyright (c) 2010-2013 Christian Johansen\n  */\n\n(function (sinon) {\n\n    function makeApi(sinon) {\n        var push = Array.prototype.push;\n        var slice = Array.prototype.slice;\n        var callId = 0;\n\n        function spy(object, property, types) {\n            if (!property && typeof object == \"function\") {\n                return spy.create(object);\n            }\n\n            if (!object && !property) {\n                return spy.create(function () { });\n            }\n\n            if (types) {\n                var methodDesc = sinon.getPropertyDescriptor(object, property);\n                for (var i = 0; i < types.length; i++) {\n                    methodDesc[types[i]] = spy.create(methodDesc[types[i]]);\n                }\n                return sinon.wrapMethod(object, property, methodDesc);\n            } else {\n                var method = object[property];\n                return sinon.wrapMethod(object, property, spy.create(method));\n            }\n        }\n\n        function matchingFake(fakes, args, strict) {\n            if (!fakes) {\n                return;\n            }\n\n            for (var i = 0, l = fakes.length; i < l; i++) {\n                if (fakes[i].matches(args, strict)) {\n                    return fakes[i];\n                }\n            }\n        }\n\n        function incrementCallCount() {\n            this.called = true;\n            this.callCount += 1;\n            this.notCalled = false;\n            this.calledOnce = this.callCount == 1;\n            this.calledTwice = this.callCount == 2;\n            this.calledThrice = this.callCount == 3;\n        }\n\n        function createCallProperties() {\n            this.firstCall = this.getCall(0);\n            this.secondCall = this.getCall(1);\n            this.thirdCall = this.getCall(2);\n            this.lastCall = this.getCall(this.callCount - 1);\n        }\n\n        var vars = \"a,b,c,d,e,f,g,h,i,j,k,l\";\n        function createProxy(func, proxyLength) {\n            // Retain the function length:\n            var p;\n            if (proxyLength) {\n                eval(\"p = (function proxy(\" + vars.substring(0, proxyLength * 2 - 1) +\n                    \") { return p.invoke(func, this, slice.call(arguments)); });\");\n            } else {\n                p = function proxy() {\n                    return p.invoke(func, this, slice.call(arguments));\n                };\n            }\n            return p;\n        }\n\n        var uuid = 0;\n\n        // Public API\n        var spyApi = {\n            reset: function () {\n                if (this.invoking) {\n                    var err = new Error(\"Cannot reset Sinon function while invoking it. \" +\n                                        \"Move the call to .reset outside of the callback.\");\n                    err.name = \"InvalidResetException\";\n                    throw err;\n                }\n\n                this.called = false;\n                this.notCalled = true;\n                this.calledOnce = false;\n                this.calledTwice = false;\n                this.calledThrice = false;\n                this.callCount = 0;\n                this.firstCall = null;\n                this.secondCall = null;\n                this.thirdCall = null;\n                this.lastCall = null;\n                this.args = [];\n                this.returnValues = [];\n                this.thisValues = [];\n                this.exceptions = [];\n                this.callIds = [];\n                if (this.fakes) {\n                    for (var i = 0; i < this.fakes.length; i++) {\n                        this.fakes[i].reset();\n                    }\n                }\n\n                return this;\n            },\n\n            create: function create(func, spyLength) {\n                var name;\n\n                if (typeof func != \"function\") {\n                    func = function () { };\n                } else {\n                    name = sinon.functionName(func);\n                }\n\n                if (!spyLength) {\n                    spyLength = func.length;\n                }\n\n                var proxy = createProxy(func, spyLength);\n\n                sinon.extend(proxy, spy);\n                delete proxy.create;\n                sinon.extend(proxy, func);\n\n                proxy.reset();\n                proxy.prototype = func.prototype;\n                proxy.displayName = name || \"spy\";\n                proxy.toString = sinon.functionToString;\n                proxy.instantiateFake = sinon.spy.create;\n                proxy.id = \"spy#\" + uuid++;\n\n                return proxy;\n            },\n\n            invoke: function invoke(func, thisValue, args) {\n                var matching = matchingFake(this.fakes, args);\n                var exception, returnValue;\n\n                incrementCallCount.call(this);\n                push.call(this.thisValues, thisValue);\n                push.call(this.args, args);\n                push.call(this.callIds, callId++);\n\n                // Make call properties available from within the spied function:\n                createCallProperties.call(this);\n\n                try {\n                    this.invoking = true;\n\n                    if (matching) {\n                        returnValue = matching.invoke(func, thisValue, args);\n                    } else {\n                        returnValue = (this.func || func).apply(thisValue, args);\n                    }\n\n                    var thisCall = this.getCall(this.callCount - 1);\n                    if (thisCall.calledWithNew() && typeof returnValue !== \"object\") {\n                        returnValue = thisValue;\n                    }\n                } catch (e) {\n                    exception = e;\n                } finally {\n                    delete this.invoking;\n                }\n\n                push.call(this.exceptions, exception);\n                push.call(this.returnValues, returnValue);\n\n                // Make return value and exception available in the calls:\n                createCallProperties.call(this);\n\n                if (exception !== undefined) {\n                    throw exception;\n                }\n\n                return returnValue;\n            },\n\n            named: function named(name) {\n                this.displayName = name;\n                return this;\n            },\n\n            getCall: function getCall(i) {\n                if (i < 0 || i >= this.callCount) {\n                    return null;\n                }\n\n                return sinon.spyCall(this, this.thisValues[i], this.args[i],\n                                        this.returnValues[i], this.exceptions[i],\n                                        this.callIds[i]);\n            },\n\n            getCalls: function () {\n                var calls = [];\n                var i;\n\n                for (i = 0; i < this.callCount; i++) {\n                    calls.push(this.getCall(i));\n                }\n\n                return calls;\n            },\n\n            calledBefore: function calledBefore(spyFn) {\n                if (!this.called) {\n                    return false;\n                }\n\n                if (!spyFn.called) {\n                    return true;\n                }\n\n                return this.callIds[0] < spyFn.callIds[spyFn.callIds.length - 1];\n            },\n\n            calledAfter: function calledAfter(spyFn) {\n                if (!this.called || !spyFn.called) {\n                    return false;\n                }\n\n                return this.callIds[this.callCount - 1] > spyFn.callIds[spyFn.callCount - 1];\n            },\n\n            withArgs: function () {\n                var args = slice.call(arguments);\n\n                if (this.fakes) {\n                    var match = matchingFake(this.fakes, args, true);\n\n                    if (match) {\n                        return match;\n                    }\n                } else {\n                    this.fakes = [];\n                }\n\n                var original = this;\n                var fake = this.instantiateFake();\n                fake.matchingAguments = args;\n                fake.parent = this;\n                push.call(this.fakes, fake);\n\n                fake.withArgs = function () {\n                    return original.withArgs.apply(original, arguments);\n                };\n\n                for (var i = 0; i < this.args.length; i++) {\n                    if (fake.matches(this.args[i])) {\n                        incrementCallCount.call(fake);\n                        push.call(fake.thisValues, this.thisValues[i]);\n                        push.call(fake.args, this.args[i]);\n                        push.call(fake.returnValues, this.returnValues[i]);\n                        push.call(fake.exceptions, this.exceptions[i]);\n                        push.call(fake.callIds, this.callIds[i]);\n                    }\n                }\n                createCallProperties.call(fake);\n\n                return fake;\n            },\n\n            matches: function (args, strict) {\n                var margs = this.matchingAguments;\n\n                if (margs.length <= args.length &&\n                    sinon.deepEqual(margs, args.slice(0, margs.length))) {\n                    return !strict || margs.length == args.length;\n                }\n            },\n\n            printf: function (format) {\n                var spy = this;\n                var args = slice.call(arguments, 1);\n                var formatter;\n\n                return (format || \"\").replace(/%(.)/g, function (match, specifyer) {\n                    formatter = spyApi.formatters[specifyer];\n\n                    if (typeof formatter == \"function\") {\n                        return formatter.call(null, spy, args);\n                    } else if (!isNaN(parseInt(specifyer, 10))) {\n                        return sinon.format(args[specifyer - 1]);\n                    }\n\n                    return \"%\" + specifyer;\n                });\n            }\n        };\n\n        function delegateToCalls(method, matchAny, actual, notCalled) {\n            spyApi[method] = function () {\n                if (!this.called) {\n                    if (notCalled) {\n                        return notCalled.apply(this, arguments);\n                    }\n                    return false;\n                }\n\n                var currentCall;\n                var matches = 0;\n\n                for (var i = 0, l = this.callCount; i < l; i += 1) {\n                    currentCall = this.getCall(i);\n\n                    if (currentCall[actual || method].apply(currentCall, arguments)) {\n                        matches += 1;\n\n                        if (matchAny) {\n                            return true;\n                        }\n                    }\n                }\n\n                return matches === this.callCount;\n            };\n        }\n\n        delegateToCalls(\"calledOn\", true);\n        delegateToCalls(\"alwaysCalledOn\", false, \"calledOn\");\n        delegateToCalls(\"calledWith\", true);\n        delegateToCalls(\"calledWithMatch\", true);\n        delegateToCalls(\"alwaysCalledWith\", false, \"calledWith\");\n        delegateToCalls(\"alwaysCalledWithMatch\", false, \"calledWithMatch\");\n        delegateToCalls(\"calledWithExactly\", true);\n        delegateToCalls(\"alwaysCalledWithExactly\", false, \"calledWithExactly\");\n        delegateToCalls(\"neverCalledWith\", false, \"notCalledWith\",\n            function () { return true; });\n        delegateToCalls(\"neverCalledWithMatch\", false, \"notCalledWithMatch\",\n            function () { return true; });\n        delegateToCalls(\"threw\", true);\n        delegateToCalls(\"alwaysThrew\", false, \"threw\");\n        delegateToCalls(\"returned\", true);\n        delegateToCalls(\"alwaysReturned\", false, \"returned\");\n        delegateToCalls(\"calledWithNew\", true);\n        delegateToCalls(\"alwaysCalledWithNew\", false, \"calledWithNew\");\n        delegateToCalls(\"callArg\", false, \"callArgWith\", function () {\n            throw new Error(this.toString() + \" cannot call arg since it was not yet invoked.\");\n        });\n        spyApi.callArgWith = spyApi.callArg;\n        delegateToCalls(\"callArgOn\", false, \"callArgOnWith\", function () {\n            throw new Error(this.toString() + \" cannot call arg since it was not yet invoked.\");\n        });\n        spyApi.callArgOnWith = spyApi.callArgOn;\n        delegateToCalls(\"yield\", false, \"yield\", function () {\n            throw new Error(this.toString() + \" cannot yield since it was not yet invoked.\");\n        });\n        // \"invokeCallback\" is an alias for \"yield\" since \"yield\" is invalid in strict mode.\n        spyApi.invokeCallback = spyApi.yield;\n        delegateToCalls(\"yieldOn\", false, \"yieldOn\", function () {\n            throw new Error(this.toString() + \" cannot yield since it was not yet invoked.\");\n        });\n        delegateToCalls(\"yieldTo\", false, \"yieldTo\", function (property) {\n            throw new Error(this.toString() + \" cannot yield to '\" + property +\n                \"' since it was not yet invoked.\");\n        });\n        delegateToCalls(\"yieldToOn\", false, \"yieldToOn\", function (property) {\n            throw new Error(this.toString() + \" cannot yield to '\" + property +\n                \"' since it was not yet invoked.\");\n        });\n\n        spyApi.formatters = {\n            c: function (spy) {\n                return sinon.timesInWords(spy.callCount);\n            },\n\n            n: function (spy) {\n                return spy.toString();\n            },\n\n            C: function (spy) {\n                var calls = [];\n\n                for (var i = 0, l = spy.callCount; i < l; ++i) {\n                    var stringifiedCall = \"    \" + spy.getCall(i).toString();\n                    if (/\\n/.test(calls[i - 1])) {\n                        stringifiedCall = \"\\n\" + stringifiedCall;\n                    }\n                    push.call(calls, stringifiedCall);\n                }\n\n                return calls.length > 0 ? \"\\n\" + calls.join(\"\\n\") : \"\";\n            },\n\n            t: function (spy) {\n                var objects = [];\n\n                for (var i = 0, l = spy.callCount; i < l; ++i) {\n                    push.call(objects, sinon.format(spy.thisValues[i]));\n                }\n\n                return objects.join(\", \");\n            },\n\n            \"*\": function (spy, args) {\n                var formatted = [];\n\n                for (var i = 0, l = args.length; i < l; ++i) {\n                    push.call(formatted, sinon.format(args[i]));\n                }\n\n                return formatted.join(\", \");\n            }\n        };\n\n        sinon.extend(spy, spyApi);\n\n        spy.spyCall = sinon.spyCall;\n        sinon.spy = spy;\n\n        return spy;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./call\");\n        require(\"./extend\");\n        require(\"./times_in_words\");\n        require(\"./format\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n * @depend extend.js\n */\n/**\n * Stub behavior\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @author Tim Fischbach (mail@timfischbach.de)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    var slice = Array.prototype.slice;\n    var join = Array.prototype.join;\n    var useLeftMostCallback = -1;\n    var useRightMostCallback = -2;\n\n    var nextTick = (function () {\n        if (typeof process === \"object\" && typeof process.nextTick === \"function\") {\n            return process.nextTick;\n        } else if (typeof setImmediate === \"function\") {\n            return setImmediate;\n        } else {\n            return function (callback) {\n                setTimeout(callback, 0);\n            };\n        }\n    })();\n\n    function throwsException(error, message) {\n        if (typeof error == \"string\") {\n            this.exception = new Error(message || \"\");\n            this.exception.name = error;\n        } else if (!error) {\n            this.exception = new Error(\"Error\");\n        } else {\n            this.exception = error;\n        }\n\n        return this;\n    }\n\n    function getCallback(behavior, args) {\n        var callArgAt = behavior.callArgAt;\n\n        if (callArgAt >= 0) {\n            return args[callArgAt];\n        }\n\n        var argumentList;\n\n        if (callArgAt === useLeftMostCallback) {\n            argumentList = args;\n        }\n\n        if (callArgAt === useRightMostCallback) {\n            argumentList = slice.call(args).reverse();\n        }\n\n        var callArgProp = behavior.callArgProp;\n\n        for (var i = 0, l = argumentList.length; i < l; ++i) {\n            if (!callArgProp && typeof argumentList[i] == \"function\") {\n                return argumentList[i];\n            }\n\n            if (callArgProp && argumentList[i] &&\n                typeof argumentList[i][callArgProp] == \"function\") {\n                return argumentList[i][callArgProp];\n            }\n        }\n\n        return null;\n    }\n\n    function makeApi(sinon) {\n        function getCallbackError(behavior, func, args) {\n            if (behavior.callArgAt < 0) {\n                var msg;\n\n                if (behavior.callArgProp) {\n                    msg = sinon.functionName(behavior.stub) +\n                        \" expected to yield to '\" + behavior.callArgProp +\n                        \"', but no object with such a property was passed.\";\n                } else {\n                    msg = sinon.functionName(behavior.stub) +\n                        \" expected to yield, but no callback was passed.\";\n                }\n\n                if (args.length > 0) {\n                    msg += \" Received [\" + join.call(args, \", \") + \"]\";\n                }\n\n                return msg;\n            }\n\n            return \"argument at index \" + behavior.callArgAt + \" is not a function: \" + func;\n        }\n\n        function callCallback(behavior, args) {\n            if (typeof behavior.callArgAt == \"number\") {\n                var func = getCallback(behavior, args);\n\n                if (typeof func != \"function\") {\n                    throw new TypeError(getCallbackError(behavior, func, args));\n                }\n\n                if (behavior.callbackAsync) {\n                    nextTick(function () {\n                        func.apply(behavior.callbackContext, behavior.callbackArguments);\n                    });\n                } else {\n                    func.apply(behavior.callbackContext, behavior.callbackArguments);\n                }\n            }\n        }\n\n        var proto = {\n            create: function create(stub) {\n                var behavior = sinon.extend({}, sinon.behavior);\n                delete behavior.create;\n                behavior.stub = stub;\n\n                return behavior;\n            },\n\n            isPresent: function isPresent() {\n                return (typeof this.callArgAt == \"number\" ||\n                        this.exception ||\n                        typeof this.returnArgAt == \"number\" ||\n                        this.returnThis ||\n                        this.returnValueDefined);\n            },\n\n            invoke: function invoke(context, args) {\n                callCallback(this, args);\n\n                if (this.exception) {\n                    throw this.exception;\n                } else if (typeof this.returnArgAt == \"number\") {\n                    return args[this.returnArgAt];\n                } else if (this.returnThis) {\n                    return context;\n                }\n\n                return this.returnValue;\n            },\n\n            onCall: function onCall(index) {\n                return this.stub.onCall(index);\n            },\n\n            onFirstCall: function onFirstCall() {\n                return this.stub.onFirstCall();\n            },\n\n            onSecondCall: function onSecondCall() {\n                return this.stub.onSecondCall();\n            },\n\n            onThirdCall: function onThirdCall() {\n                return this.stub.onThirdCall();\n            },\n\n            withArgs: function withArgs(/* arguments */) {\n                throw new Error(\"Defining a stub by invoking \\\"stub.onCall(...).withArgs(...)\\\" is not supported. \" +\n                                \"Use \\\"stub.withArgs(...).onCall(...)\\\" to define sequential behavior for calls with certain arguments.\");\n            },\n\n            callsArg: function callsArg(pos) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n\n                this.callArgAt = pos;\n                this.callbackArguments = [];\n                this.callbackContext = undefined;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            callsArgOn: function callsArgOn(pos, context) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n                if (typeof context != \"object\") {\n                    throw new TypeError(\"argument context is not an object\");\n                }\n\n                this.callArgAt = pos;\n                this.callbackArguments = [];\n                this.callbackContext = context;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            callsArgWith: function callsArgWith(pos) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n\n                this.callArgAt = pos;\n                this.callbackArguments = slice.call(arguments, 1);\n                this.callbackContext = undefined;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            callsArgOnWith: function callsArgWith(pos, context) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n                if (typeof context != \"object\") {\n                    throw new TypeError(\"argument context is not an object\");\n                }\n\n                this.callArgAt = pos;\n                this.callbackArguments = slice.call(arguments, 2);\n                this.callbackContext = context;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yields: function () {\n                this.callArgAt = useLeftMostCallback;\n                this.callbackArguments = slice.call(arguments, 0);\n                this.callbackContext = undefined;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yieldsRight: function () {\n                this.callArgAt = useRightMostCallback;\n                this.callbackArguments = slice.call(arguments, 0);\n                this.callbackContext = undefined;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yieldsOn: function (context) {\n                if (typeof context != \"object\") {\n                    throw new TypeError(\"argument context is not an object\");\n                }\n\n                this.callArgAt = useLeftMostCallback;\n                this.callbackArguments = slice.call(arguments, 1);\n                this.callbackContext = context;\n                this.callArgProp = undefined;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yieldsTo: function (prop) {\n                this.callArgAt = useLeftMostCallback;\n                this.callbackArguments = slice.call(arguments, 1);\n                this.callbackContext = undefined;\n                this.callArgProp = prop;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            yieldsToOn: function (prop, context) {\n                if (typeof context != \"object\") {\n                    throw new TypeError(\"argument context is not an object\");\n                }\n\n                this.callArgAt = useLeftMostCallback;\n                this.callbackArguments = slice.call(arguments, 2);\n                this.callbackContext = context;\n                this.callArgProp = prop;\n                this.callbackAsync = false;\n\n                return this;\n            },\n\n            throws: throwsException,\n            throwsException: throwsException,\n\n            returns: function returns(value) {\n                this.returnValue = value;\n                this.returnValueDefined = true;\n\n                return this;\n            },\n\n            returnsArg: function returnsArg(pos) {\n                if (typeof pos != \"number\") {\n                    throw new TypeError(\"argument index is not number\");\n                }\n\n                this.returnArgAt = pos;\n\n                return this;\n            },\n\n            returnsThis: function returnsThis() {\n                this.returnThis = true;\n\n                return this;\n            }\n        };\n\n        // create asynchronous versions of callsArg* and yields* methods\n        for (var method in proto) {\n            // need to avoid creating anotherasync versions of the newly added async methods\n            if (proto.hasOwnProperty(method) &&\n                method.match(/^(callsArg|yields)/) &&\n                !method.match(/Async/)) {\n                proto[method + \"Async\"] = (function (syncFnName) {\n                    return function () {\n                        var result = this[syncFnName].apply(this, arguments);\n                        this.callbackAsync = true;\n                        return result;\n                    };\n                })(method);\n            }\n        }\n\n        sinon.behavior = proto;\n        return proto;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./extend\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n * @depend extend.js\n * @depend spy.js\n * @depend behavior.js\n */\n/**\n * Stub functions\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        function stub(object, property, func) {\n            if (!!func && typeof func != \"function\" && typeof func != \"object\") {\n                throw new TypeError(\"Custom stub should be a function or a property descriptor\");\n            }\n\n            var wrapper;\n\n            if (func) {\n                if (typeof func == \"function\") {\n                    wrapper = sinon.spy && sinon.spy.create ? sinon.spy.create(func) : func;\n                } else {\n                    wrapper = func;\n                    if (sinon.spy && sinon.spy.create) {\n                        var types = sinon.objectKeys(wrapper);\n                        for (var i = 0; i < types.length; i++) {\n                            wrapper[types[i]] = sinon.spy.create(wrapper[types[i]]);\n                        }\n                    }\n                }\n            } else {\n                var stubLength = 0;\n                if (typeof object == \"object\" && typeof object[property] == \"function\") {\n                    stubLength = object[property].length;\n                }\n                wrapper = stub.create(stubLength);\n            }\n\n            if (!object && typeof property === \"undefined\") {\n                return sinon.stub.create();\n            }\n\n            if (typeof property === \"undefined\" && typeof object == \"object\") {\n                for (var prop in object) {\n                    if (typeof object[prop] === \"function\") {\n                        stub(object, prop);\n                    }\n                }\n\n                return object;\n            }\n\n            return sinon.wrapMethod(object, property, wrapper);\n        }\n\n        function getDefaultBehavior(stub) {\n            return stub.defaultBehavior || getParentBehaviour(stub) || sinon.behavior.create(stub);\n        }\n\n        function getParentBehaviour(stub) {\n            return (stub.parent && getCurrentBehavior(stub.parent));\n        }\n\n        function getCurrentBehavior(stub) {\n            var behavior = stub.behaviors[stub.callCount - 1];\n            return behavior && behavior.isPresent() ? behavior : getDefaultBehavior(stub);\n        }\n\n        var uuid = 0;\n\n        var proto = {\n            create: function create(stubLength) {\n                var functionStub = function () {\n                    return getCurrentBehavior(functionStub).invoke(this, arguments);\n                };\n\n                functionStub.id = \"stub#\" + uuid++;\n                var orig = functionStub;\n                functionStub = sinon.spy.create(functionStub, stubLength);\n                functionStub.func = orig;\n\n                sinon.extend(functionStub, stub);\n                functionStub.instantiateFake = sinon.stub.create;\n                functionStub.displayName = \"stub\";\n                functionStub.toString = sinon.functionToString;\n\n                functionStub.defaultBehavior = null;\n                functionStub.behaviors = [];\n\n                return functionStub;\n            },\n\n            resetBehavior: function () {\n                var i;\n\n                this.defaultBehavior = null;\n                this.behaviors = [];\n\n                delete this.returnValue;\n                delete this.returnArgAt;\n                this.returnThis = false;\n\n                if (this.fakes) {\n                    for (i = 0; i < this.fakes.length; i++) {\n                        this.fakes[i].resetBehavior();\n                    }\n                }\n            },\n\n            onCall: function onCall(index) {\n                if (!this.behaviors[index]) {\n                    this.behaviors[index] = sinon.behavior.create(this);\n                }\n\n                return this.behaviors[index];\n            },\n\n            onFirstCall: function onFirstCall() {\n                return this.onCall(0);\n            },\n\n            onSecondCall: function onSecondCall() {\n                return this.onCall(1);\n            },\n\n            onThirdCall: function onThirdCall() {\n                return this.onCall(2);\n            }\n        };\n\n        for (var method in sinon.behavior) {\n            if (sinon.behavior.hasOwnProperty(method) &&\n                !proto.hasOwnProperty(method) &&\n                method != \"create\" &&\n                method != \"withArgs\" &&\n                method != \"invoke\") {\n                proto[method] = (function (behaviorMethod) {\n                    return function () {\n                        this.defaultBehavior = this.defaultBehavior || sinon.behavior.create(this);\n                        this.defaultBehavior[behaviorMethod].apply(this.defaultBehavior, arguments);\n                        return this;\n                    };\n                }(method));\n            }\n        }\n\n        sinon.extend(stub, proto);\n        sinon.stub = stub;\n\n        return stub;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./behavior\");\n        require(\"./spy\");\n        require(\"./extend\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend times_in_words.js\n * @depend util/core.js\n * @depend call.js\n * @depend extend.js\n * @depend match.js\n * @depend spy.js\n * @depend stub.js\n * @depend format.js\n */\n/**\n * Mock functions.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        var push = [].push;\n        var match = sinon.match;\n\n        function mock(object) {\n            if (!object) {\n                return sinon.expectation.create(\"Anonymous mock\");\n            }\n\n            return mock.create(object);\n        }\n\n        function each(collection, callback) {\n            if (!collection) {\n                return;\n            }\n\n            for (var i = 0, l = collection.length; i < l; i += 1) {\n                callback(collection[i]);\n            }\n        }\n\n        sinon.extend(mock, {\n            create: function create(object) {\n                if (!object) {\n                    throw new TypeError(\"object is null\");\n                }\n\n                var mockObject = sinon.extend({}, mock);\n                mockObject.object = object;\n                delete mockObject.create;\n\n                return mockObject;\n            },\n\n            expects: function expects(method) {\n                if (!method) {\n                    throw new TypeError(\"method is falsy\");\n                }\n\n                if (!this.expectations) {\n                    this.expectations = {};\n                    this.proxies = [];\n                }\n\n                if (!this.expectations[method]) {\n                    this.expectations[method] = [];\n                    var mockObject = this;\n\n                    sinon.wrapMethod(this.object, method, function () {\n                        return mockObject.invokeMethod(method, this, arguments);\n                    });\n\n                    push.call(this.proxies, method);\n                }\n\n                var expectation = sinon.expectation.create(method);\n                push.call(this.expectations[method], expectation);\n\n                return expectation;\n            },\n\n            restore: function restore() {\n                var object = this.object;\n\n                each(this.proxies, function (proxy) {\n                    if (typeof object[proxy].restore == \"function\") {\n                        object[proxy].restore();\n                    }\n                });\n            },\n\n            verify: function verify() {\n                var expectations = this.expectations || {};\n                var messages = [], met = [];\n\n                each(this.proxies, function (proxy) {\n                    each(expectations[proxy], function (expectation) {\n                        if (!expectation.met()) {\n                            push.call(messages, expectation.toString());\n                        } else {\n                            push.call(met, expectation.toString());\n                        }\n                    });\n                });\n\n                this.restore();\n\n                if (messages.length > 0) {\n                    sinon.expectation.fail(messages.concat(met).join(\"\\n\"));\n                } else if (met.length > 0) {\n                    sinon.expectation.pass(messages.concat(met).join(\"\\n\"));\n                }\n\n                return true;\n            },\n\n            invokeMethod: function invokeMethod(method, thisValue, args) {\n                var expectations = this.expectations && this.expectations[method];\n                var length = expectations && expectations.length || 0, i;\n\n                for (i = 0; i < length; i += 1) {\n                    if (!expectations[i].met() &&\n                        expectations[i].allowsCall(thisValue, args)) {\n                        return expectations[i].apply(thisValue, args);\n                    }\n                }\n\n                var messages = [], available, exhausted = 0;\n\n                for (i = 0; i < length; i += 1) {\n                    if (expectations[i].allowsCall(thisValue, args)) {\n                        available = available || expectations[i];\n                    } else {\n                        exhausted += 1;\n                    }\n                    push.call(messages, \"    \" + expectations[i].toString());\n                }\n\n                if (exhausted === 0) {\n                    return available.apply(thisValue, args);\n                }\n\n                messages.unshift(\"Unexpected call: \" + sinon.spyCall.toString.call({\n                    proxy: method,\n                    args: args\n                }));\n\n                sinon.expectation.fail(messages.join(\"\\n\"));\n            }\n        });\n\n        var times = sinon.timesInWords;\n        var slice = Array.prototype.slice;\n\n        function callCountInWords(callCount) {\n            if (callCount == 0) {\n                return \"never called\";\n            } else {\n                return \"called \" + times(callCount);\n            }\n        }\n\n        function expectedCallCountInWords(expectation) {\n            var min = expectation.minCalls;\n            var max = expectation.maxCalls;\n\n            if (typeof min == \"number\" && typeof max == \"number\") {\n                var str = times(min);\n\n                if (min != max) {\n                    str = \"at least \" + str + \" and at most \" + times(max);\n                }\n\n                return str;\n            }\n\n            if (typeof min == \"number\") {\n                return \"at least \" + times(min);\n            }\n\n            return \"at most \" + times(max);\n        }\n\n        function receivedMinCalls(expectation) {\n            var hasMinLimit = typeof expectation.minCalls == \"number\";\n            return !hasMinLimit || expectation.callCount >= expectation.minCalls;\n        }\n\n        function receivedMaxCalls(expectation) {\n            if (typeof expectation.maxCalls != \"number\") {\n                return false;\n            }\n\n            return expectation.callCount == expectation.maxCalls;\n        }\n\n        function verifyMatcher(possibleMatcher, arg) {\n            if (match && match.isMatcher(possibleMatcher)) {\n                return possibleMatcher.test(arg);\n            } else {\n                return true;\n            }\n        }\n\n        sinon.expectation = {\n            minCalls: 1,\n            maxCalls: 1,\n\n            create: function create(methodName) {\n                var expectation = sinon.extend(sinon.stub.create(), sinon.expectation);\n                delete expectation.create;\n                expectation.method = methodName;\n\n                return expectation;\n            },\n\n            invoke: function invoke(func, thisValue, args) {\n                this.verifyCallAllowed(thisValue, args);\n\n                return sinon.spy.invoke.apply(this, arguments);\n            },\n\n            atLeast: function atLeast(num) {\n                if (typeof num != \"number\") {\n                    throw new TypeError(\"'\" + num + \"' is not number\");\n                }\n\n                if (!this.limitsSet) {\n                    this.maxCalls = null;\n                    this.limitsSet = true;\n                }\n\n                this.minCalls = num;\n\n                return this;\n            },\n\n            atMost: function atMost(num) {\n                if (typeof num != \"number\") {\n                    throw new TypeError(\"'\" + num + \"' is not number\");\n                }\n\n                if (!this.limitsSet) {\n                    this.minCalls = null;\n                    this.limitsSet = true;\n                }\n\n                this.maxCalls = num;\n\n                return this;\n            },\n\n            never: function never() {\n                return this.exactly(0);\n            },\n\n            once: function once() {\n                return this.exactly(1);\n            },\n\n            twice: function twice() {\n                return this.exactly(2);\n            },\n\n            thrice: function thrice() {\n                return this.exactly(3);\n            },\n\n            exactly: function exactly(num) {\n                if (typeof num != \"number\") {\n                    throw new TypeError(\"'\" + num + \"' is not a number\");\n                }\n\n                this.atLeast(num);\n                return this.atMost(num);\n            },\n\n            met: function met() {\n                return !this.failed && receivedMinCalls(this);\n            },\n\n            verifyCallAllowed: function verifyCallAllowed(thisValue, args) {\n                if (receivedMaxCalls(this)) {\n                    this.failed = true;\n                    sinon.expectation.fail(this.method + \" already called \" + times(this.maxCalls));\n                }\n\n                if (\"expectedThis\" in this && this.expectedThis !== thisValue) {\n                    sinon.expectation.fail(this.method + \" called with \" + thisValue + \" as thisValue, expected \" +\n                        this.expectedThis);\n                }\n\n                if (!(\"expectedArguments\" in this)) {\n                    return;\n                }\n\n                if (!args) {\n                    sinon.expectation.fail(this.method + \" received no arguments, expected \" +\n                        sinon.format(this.expectedArguments));\n                }\n\n                if (args.length < this.expectedArguments.length) {\n                    sinon.expectation.fail(this.method + \" received too few arguments (\" + sinon.format(args) +\n                        \"), expected \" + sinon.format(this.expectedArguments));\n                }\n\n                if (this.expectsExactArgCount &&\n                    args.length != this.expectedArguments.length) {\n                    sinon.expectation.fail(this.method + \" received too many arguments (\" + sinon.format(args) +\n                        \"), expected \" + sinon.format(this.expectedArguments));\n                }\n\n                for (var i = 0, l = this.expectedArguments.length; i < l; i += 1) {\n\n                    if (!verifyMatcher(this.expectedArguments[i], args[i])) {\n                        sinon.expectation.fail(this.method + \" received wrong arguments \" + sinon.format(args) +\n                            \", didn't match \" + this.expectedArguments.toString());\n                    }\n\n                    if (!sinon.deepEqual(this.expectedArguments[i], args[i])) {\n                        sinon.expectation.fail(this.method + \" received wrong arguments \" + sinon.format(args) +\n                            \", expected \" + sinon.format(this.expectedArguments));\n                    }\n                }\n            },\n\n            allowsCall: function allowsCall(thisValue, args) {\n                if (this.met() && receivedMaxCalls(this)) {\n                    return false;\n                }\n\n                if (\"expectedThis\" in this && this.expectedThis !== thisValue) {\n                    return false;\n                }\n\n                if (!(\"expectedArguments\" in this)) {\n                    return true;\n                }\n\n                args = args || [];\n\n                if (args.length < this.expectedArguments.length) {\n                    return false;\n                }\n\n                if (this.expectsExactArgCount &&\n                    args.length != this.expectedArguments.length) {\n                    return false;\n                }\n\n                for (var i = 0, l = this.expectedArguments.length; i < l; i += 1) {\n                    if (!verifyMatcher(this.expectedArguments[i], args[i])) {\n                        return false;\n                    }\n\n                    if (!sinon.deepEqual(this.expectedArguments[i], args[i])) {\n                        return false;\n                    }\n                }\n\n                return true;\n            },\n\n            withArgs: function withArgs() {\n                this.expectedArguments = slice.call(arguments);\n                return this;\n            },\n\n            withExactArgs: function withExactArgs() {\n                this.withArgs.apply(this, arguments);\n                this.expectsExactArgCount = true;\n                return this;\n            },\n\n            on: function on(thisValue) {\n                this.expectedThis = thisValue;\n                return this;\n            },\n\n            toString: function () {\n                var args = (this.expectedArguments || []).slice();\n\n                if (!this.expectsExactArgCount) {\n                    push.call(args, \"[...]\");\n                }\n\n                var callStr = sinon.spyCall.toString.call({\n                    proxy: this.method || \"anonymous mock expectation\",\n                    args: args\n                });\n\n                var message = callStr.replace(\", [...\", \"[, ...\") + \" \" +\n                    expectedCallCountInWords(this);\n\n                if (this.met()) {\n                    return \"Expectation met: \" + message;\n                }\n\n                return \"Expected \" + message + \" (\" +\n                    callCountInWords(this.callCount) + \")\";\n            },\n\n            verify: function verify() {\n                if (!this.met()) {\n                    sinon.expectation.fail(this.toString());\n                } else {\n                    sinon.expectation.pass(this.toString());\n                }\n\n                return true;\n            },\n\n            pass: function pass(message) {\n                sinon.assert.pass(message);\n            },\n\n            fail: function fail(message) {\n                var exception = new Error(message);\n                exception.name = \"ExpectationError\";\n\n                throw exception;\n            }\n        };\n\n        sinon.mock = mock;\n        return mock;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./times_in_words\");\n        require(\"./call\");\n        require(\"./extend\");\n        require(\"./match\");\n        require(\"./spy\");\n        require(\"./stub\");\n        require(\"./format\");\n\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n * @depend spy.js\n * @depend stub.js\n * @depend mock.js\n */\n/**\n * Collections of stubs, spies and mocks.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    var push = [].push;\n    var hasOwnProperty = Object.prototype.hasOwnProperty;\n\n    function getFakes(fakeCollection) {\n        if (!fakeCollection.fakes) {\n            fakeCollection.fakes = [];\n        }\n\n        return fakeCollection.fakes;\n    }\n\n    function each(fakeCollection, method) {\n        var fakes = getFakes(fakeCollection);\n\n        for (var i = 0, l = fakes.length; i < l; i += 1) {\n            if (typeof fakes[i][method] == \"function\") {\n                fakes[i][method]();\n            }\n        }\n    }\n\n    function compact(fakeCollection) {\n        var fakes = getFakes(fakeCollection);\n        var i = 0;\n        while (i < fakes.length) {\n            fakes.splice(i, 1);\n        }\n    }\n\n    function makeApi(sinon) {\n        var collection = {\n            verify: function resolve() {\n                each(this, \"verify\");\n            },\n\n            restore: function restore() {\n                each(this, \"restore\");\n                compact(this);\n            },\n\n            reset: function restore() {\n                each(this, \"reset\");\n            },\n\n            verifyAndRestore: function verifyAndRestore() {\n                var exception;\n\n                try {\n                    this.verify();\n                } catch (e) {\n                    exception = e;\n                }\n\n                this.restore();\n\n                if (exception) {\n                    throw exception;\n                }\n            },\n\n            add: function add(fake) {\n                push.call(getFakes(this), fake);\n                return fake;\n            },\n\n            spy: function spy() {\n                return this.add(sinon.spy.apply(sinon, arguments));\n            },\n\n            stub: function stub(object, property, value) {\n                if (property) {\n                    var original = object[property];\n\n                    if (typeof original != \"function\") {\n                        if (!hasOwnProperty.call(object, property)) {\n                            throw new TypeError(\"Cannot stub non-existent own property \" + property);\n                        }\n\n                        object[property] = value;\n\n                        return this.add({\n                            restore: function () {\n                                object[property] = original;\n                            }\n                        });\n                    }\n                }\n                if (!property && !!object && typeof object == \"object\") {\n                    var stubbedObj = sinon.stub.apply(sinon, arguments);\n\n                    for (var prop in stubbedObj) {\n                        if (typeof stubbedObj[prop] === \"function\") {\n                            this.add(stubbedObj[prop]);\n                        }\n                    }\n\n                    return stubbedObj;\n                }\n\n                return this.add(sinon.stub.apply(sinon, arguments));\n            },\n\n            mock: function mock() {\n                return this.add(sinon.mock.apply(sinon, arguments));\n            },\n\n            inject: function inject(obj) {\n                var col = this;\n\n                obj.spy = function () {\n                    return col.spy.apply(col, arguments);\n                };\n\n                obj.stub = function () {\n                    return col.stub.apply(col, arguments);\n                };\n\n                obj.mock = function () {\n                    return col.mock.apply(col, arguments);\n                };\n\n                return obj;\n            }\n        };\n\n        sinon.collection = collection;\n        return collection;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./mock\");\n        require(\"./spy\");\n        require(\"./stub\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/*global lolex */\n\n/**\n * Fake timer API\n * setTimeout\n * setInterval\n * clearTimeout\n * clearInterval\n * tick\n * reset\n * Date\n *\n * Inspired by jsUnitMockTimeOut from JsUnit\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\nif (typeof sinon == \"undefined\") {\n    var sinon = {};\n}\n\n(function (global) {\n    function makeApi(sinon, lol) {\n        var llx = typeof lolex !== \"undefined\" ? lolex : lol;\n\n        sinon.useFakeTimers = function () {\n            var now, methods = Array.prototype.slice.call(arguments);\n\n            if (typeof methods[0] === \"string\") {\n                now = 0;\n            } else {\n                now = methods.shift();\n            }\n\n            var clock = llx.install(now || 0, methods);\n            clock.restore = clock.uninstall;\n            return clock;\n        };\n\n        sinon.clock = {\n            create: function (now) {\n                return llx.createClock(now);\n            }\n        };\n\n        sinon.timers = {\n            setTimeout: setTimeout,\n            clearTimeout: clearTimeout,\n            setImmediate: (typeof setImmediate !== \"undefined\" ? setImmediate : undefined),\n            clearImmediate: (typeof clearImmediate !== \"undefined\" ? clearImmediate : undefined),\n            setInterval: setInterval,\n            clearInterval: clearInterval,\n            Date: Date\n        };\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, epxorts, module, lolex) {\n        var sinon = require(\"./core\");\n        makeApi(sinon, lolex);\n        module.exports = sinon;\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module, require(\"lolex\"));\n    } else {\n        makeApi(sinon);\n    }\n}(typeof global != \"undefined\" && typeof global !== \"function\" ? global : this));\n\n/**\n * Minimal Event interface implementation\n *\n * Original implementation by Sven Fuchs: https://gist.github.com/995028\n * Modifications and tests by Christian Johansen.\n *\n * @author Sven Fuchs (svenfuchs@artweb-design.de)\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2011 Sven Fuchs, Christian Johansen\n */\n\nif (typeof sinon == \"undefined\") {\n    this.sinon = {};\n}\n\n(function () {\n    var push = [].push;\n\n    function makeApi(sinon) {\n        sinon.Event = function Event(type, bubbles, cancelable, target) {\n            this.initEvent(type, bubbles, cancelable, target);\n        };\n\n        sinon.Event.prototype = {\n            initEvent: function (type, bubbles, cancelable, target) {\n                this.type = type;\n                this.bubbles = bubbles;\n                this.cancelable = cancelable;\n                this.target = target;\n            },\n\n            stopPropagation: function () {},\n\n            preventDefault: function () {\n                this.defaultPrevented = true;\n            }\n        };\n\n        sinon.ProgressEvent = function ProgressEvent(type, progressEventRaw, target) {\n            this.initEvent(type, false, false, target);\n            this.loaded = progressEventRaw.loaded || null;\n            this.total = progressEventRaw.total || null;\n            this.lengthComputable = !!progressEventRaw.total;\n        };\n\n        sinon.ProgressEvent.prototype = new sinon.Event();\n\n        sinon.ProgressEvent.prototype.constructor =  sinon.ProgressEvent;\n\n        sinon.CustomEvent = function CustomEvent(type, customData, target) {\n            this.initEvent(type, false, false, target);\n            this.detail = customData.detail || null;\n        };\n\n        sinon.CustomEvent.prototype = new sinon.Event();\n\n        sinon.CustomEvent.prototype.constructor =  sinon.CustomEvent;\n\n        sinon.EventTarget = {\n            addEventListener: function addEventListener(event, listener) {\n                this.eventListeners = this.eventListeners || {};\n                this.eventListeners[event] = this.eventListeners[event] || [];\n                push.call(this.eventListeners[event], listener);\n            },\n\n            removeEventListener: function removeEventListener(event, listener) {\n                var listeners = this.eventListeners && this.eventListeners[event] || [];\n\n                for (var i = 0, l = listeners.length; i < l; ++i) {\n                    if (listeners[i] == listener) {\n                        return listeners.splice(i, 1);\n                    }\n                }\n            },\n\n            dispatchEvent: function dispatchEvent(event) {\n                var type = event.type;\n                var listeners = this.eventListeners && this.eventListeners[type] || [];\n\n                for (var i = 0; i < listeners.length; i++) {\n                    if (typeof listeners[i] == \"function\") {\n                        listeners[i].call(this, event);\n                    } else {\n                        listeners[i].handleEvent(event);\n                    }\n                }\n\n                return !!event.defaultPrevented;\n            }\n        };\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require) {\n        var sinon = require(\"./core\");\n        makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require);\n    } else {\n        makeApi(sinon);\n    }\n}());\n\n/**\n * @depend util/core.js\n */\n/**\n * Logs errors\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2014 Christian Johansen\n */\n\n(function (sinon) {\n    // cache a reference to setTimeout, so that our reference won't be stubbed out\n    // when using fake timers and errors will still get logged\n    // https://github.com/cjohansen/Sinon.JS/issues/381\n    var realSetTimeout = setTimeout;\n\n    function makeApi(sinon) {\n\n        function log() {}\n\n        function logError(label, err) {\n            var msg = label + \" threw exception: \";\n\n            sinon.log(msg + \"[\" + err.name + \"] \" + err.message);\n\n            if (err.stack) {\n                sinon.log(err.stack);\n            }\n\n            logError.setTimeout(function () {\n                err.message = msg + err.message;\n                throw err;\n            }, 0);\n        };\n\n        // wrap realSetTimeout with something we can stub in tests\n        logError.setTimeout = function (func, timeout) {\n            realSetTimeout(func, timeout);\n        }\n\n        var exports = {};\n        exports.log = sinon.log = log;\n        exports.logError = sinon.logError = logError;\n\n        return exports;\n    }\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        module.exports = makeApi(sinon);\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend core.js\n * @depend ../extend.js\n * @depend event.js\n * @depend ../log_error.js\n */\n/**\n * Fake XDomainRequest object\n */\n\nif (typeof sinon == \"undefined\") {\n    this.sinon = {};\n}\n\n// wrapper for global\n(function (global) {\n    var xdr = { XDomainRequest: global.XDomainRequest };\n    xdr.GlobalXDomainRequest = global.XDomainRequest;\n    xdr.supportsXDR = typeof xdr.GlobalXDomainRequest != \"undefined\";\n    xdr.workingXDR = xdr.supportsXDR ? xdr.GlobalXDomainRequest :  false;\n\n    function makeApi(sinon) {\n        sinon.xdr = xdr;\n\n        function FakeXDomainRequest() {\n            this.readyState = FakeXDomainRequest.UNSENT;\n            this.requestBody = null;\n            this.requestHeaders = {};\n            this.status = 0;\n            this.timeout = null;\n\n            if (typeof FakeXDomainRequest.onCreate == \"function\") {\n                FakeXDomainRequest.onCreate(this);\n            }\n        }\n\n        function verifyState(xdr) {\n            if (xdr.readyState !== FakeXDomainRequest.OPENED) {\n                throw new Error(\"INVALID_STATE_ERR\");\n            }\n\n            if (xdr.sendFlag) {\n                throw new Error(\"INVALID_STATE_ERR\");\n            }\n        }\n\n        function verifyRequestSent(xdr) {\n            if (xdr.readyState == FakeXDomainRequest.UNSENT) {\n                throw new Error(\"Request not sent\");\n            }\n            if (xdr.readyState == FakeXDomainRequest.DONE) {\n                throw new Error(\"Request done\");\n            }\n        }\n\n        function verifyResponseBodyType(body) {\n            if (typeof body != \"string\") {\n                var error = new Error(\"Attempted to respond to fake XDomainRequest with \" +\n                                    body + \", which is not a string.\");\n                error.name = \"InvalidBodyException\";\n                throw error;\n            }\n        }\n\n        sinon.extend(FakeXDomainRequest.prototype, sinon.EventTarget, {\n            open: function open(method, url) {\n                this.method = method;\n                this.url = url;\n\n                this.responseText = null;\n                this.sendFlag = false;\n\n                this.readyStateChange(FakeXDomainRequest.OPENED);\n            },\n\n            readyStateChange: function readyStateChange(state) {\n                this.readyState = state;\n                var eventName = \"\";\n                switch (this.readyState) {\n                case FakeXDomainRequest.UNSENT:\n                    break;\n                case FakeXDomainRequest.OPENED:\n                    break;\n                case FakeXDomainRequest.LOADING:\n                    if (this.sendFlag) {\n                        //raise the progress event\n                        eventName = \"onprogress\";\n                    }\n                    break;\n                case FakeXDomainRequest.DONE:\n                    if (this.isTimeout) {\n                        eventName = \"ontimeout\"\n                    } else if (this.errorFlag || (this.status < 200 || this.status > 299)) {\n                        eventName = \"onerror\";\n                    } else {\n                        eventName = \"onload\"\n                    }\n                    break;\n                }\n\n                // raising event (if defined)\n                if (eventName) {\n                    if (typeof this[eventName] == \"function\") {\n                        try {\n                            this[eventName]();\n                        } catch (e) {\n                            sinon.logError(\"Fake XHR \" + eventName + \" handler\", e);\n                        }\n                    }\n                }\n            },\n\n            send: function send(data) {\n                verifyState(this);\n\n                if (!/^(get|head)$/i.test(this.method)) {\n                    this.requestBody = data;\n                }\n                this.requestHeaders[\"Content-Type\"] = \"text/plain;charset=utf-8\";\n\n                this.errorFlag = false;\n                this.sendFlag = true;\n                this.readyStateChange(FakeXDomainRequest.OPENED);\n\n                if (typeof this.onSend == \"function\") {\n                    this.onSend(this);\n                }\n            },\n\n            abort: function abort() {\n                this.aborted = true;\n                this.responseText = null;\n                this.errorFlag = true;\n\n                if (this.readyState > sinon.FakeXDomainRequest.UNSENT && this.sendFlag) {\n                    this.readyStateChange(sinon.FakeXDomainRequest.DONE);\n                    this.sendFlag = false;\n                }\n            },\n\n            setResponseBody: function setResponseBody(body) {\n                verifyRequestSent(this);\n                verifyResponseBodyType(body);\n\n                var chunkSize = this.chunkSize || 10;\n                var index = 0;\n                this.responseText = \"\";\n\n                do {\n                    this.readyStateChange(FakeXDomainRequest.LOADING);\n                    this.responseText += body.substring(index, index + chunkSize);\n                    index += chunkSize;\n                } while (index < body.length);\n\n                this.readyStateChange(FakeXDomainRequest.DONE);\n            },\n\n            respond: function respond(status, contentType, body) {\n                // content-type ignored, since XDomainRequest does not carry this\n                // we keep the same syntax for respond(...) as for FakeXMLHttpRequest to ease\n                // test integration across browsers\n                this.status = typeof status == \"number\" ? status : 200;\n                this.setResponseBody(body || \"\");\n            },\n\n            simulatetimeout: function simulatetimeout() {\n                this.status = 0;\n                this.isTimeout = true;\n                // Access to this should actually throw an error\n                this.responseText = undefined;\n                this.readyStateChange(FakeXDomainRequest.DONE);\n            }\n        });\n\n        sinon.extend(FakeXDomainRequest, {\n            UNSENT: 0,\n            OPENED: 1,\n            LOADING: 3,\n            DONE: 4\n        });\n\n        sinon.useFakeXDomainRequest = function useFakeXDomainRequest() {\n            sinon.FakeXDomainRequest.restore = function restore(keepOnCreate) {\n                if (xdr.supportsXDR) {\n                    global.XDomainRequest = xdr.GlobalXDomainRequest;\n                }\n\n                delete sinon.FakeXDomainRequest.restore;\n\n                if (keepOnCreate !== true) {\n                    delete sinon.FakeXDomainRequest.onCreate;\n                }\n            };\n            if (xdr.supportsXDR) {\n                global.XDomainRequest = sinon.FakeXDomainRequest;\n            }\n            return sinon.FakeXDomainRequest;\n        };\n\n        sinon.FakeXDomainRequest = FakeXDomainRequest;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./core\");\n        require(\"../extend\");\n        require(\"./event\");\n        require(\"../log_error\");\n        makeApi(sinon);\n        module.exports = sinon;\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else {\n        makeApi(sinon);\n    }\n})(this);\n\n/**\n * @depend core.js\n * @depend ../extend.js\n * @depend event.js\n * @depend ../log_error.js\n */\n/**\n * Fake XMLHttpRequest object\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (global) {\n\n    var supportsProgress = typeof ProgressEvent !== \"undefined\";\n    var supportsCustomEvent = typeof CustomEvent !== \"undefined\";\n    var sinonXhr = { XMLHttpRequest: global.XMLHttpRequest };\n    sinonXhr.GlobalXMLHttpRequest = global.XMLHttpRequest;\n    sinonXhr.GlobalActiveXObject = global.ActiveXObject;\n    sinonXhr.supportsActiveX = typeof sinonXhr.GlobalActiveXObject != \"undefined\";\n    sinonXhr.supportsXHR = typeof sinonXhr.GlobalXMLHttpRequest != \"undefined\";\n    sinonXhr.workingXHR = sinonXhr.supportsXHR ? sinonXhr.GlobalXMLHttpRequest : sinonXhr.supportsActiveX\n                                     ? function () { return new sinonXhr.GlobalActiveXObject(\"MSXML2.XMLHTTP.3.0\") } : false;\n    sinonXhr.supportsCORS = sinonXhr.supportsXHR && \"withCredentials\" in (new sinonXhr.GlobalXMLHttpRequest());\n\n    /*jsl:ignore*/\n    var unsafeHeaders = {\n        \"Accept-Charset\": true,\n        \"Accept-Encoding\": true,\n        Connection: true,\n        \"Content-Length\": true,\n        Cookie: true,\n        Cookie2: true,\n        \"Content-Transfer-Encoding\": true,\n        Date: true,\n        Expect: true,\n        Host: true,\n        \"Keep-Alive\": true,\n        Referer: true,\n        TE: true,\n        Trailer: true,\n        \"Transfer-Encoding\": true,\n        Upgrade: true,\n        \"User-Agent\": true,\n        Via: true\n    };\n    /*jsl:end*/\n\n    function FakeXMLHttpRequest() {\n        this.readyState = FakeXMLHttpRequest.UNSENT;\n        this.requestHeaders = {};\n        this.requestBody = null;\n        this.status = 0;\n        this.statusText = \"\";\n        this.upload = new UploadProgress();\n        if (sinonXhr.supportsCORS) {\n            this.withCredentials = false;\n        }\n\n        var xhr = this;\n        var events = [\"loadstart\", \"load\", \"abort\", \"loadend\"];\n\n        function addEventListener(eventName) {\n            xhr.addEventListener(eventName, function (event) {\n                var listener = xhr[\"on\" + eventName];\n\n                if (listener && typeof listener == \"function\") {\n                    listener.call(this, event);\n                }\n            });\n        }\n\n        for (var i = events.length - 1; i >= 0; i--) {\n            addEventListener(events[i]);\n        }\n\n        if (typeof FakeXMLHttpRequest.onCreate == \"function\") {\n            FakeXMLHttpRequest.onCreate(this);\n        }\n    }\n\n    // An upload object is created for each\n    // FakeXMLHttpRequest and allows upload\n    // events to be simulated using uploadProgress\n    // and uploadError.\n    function UploadProgress() {\n        this.eventListeners = {\n            progress: [],\n            load: [],\n            abort: [],\n            error: []\n        }\n    }\n\n    UploadProgress.prototype.addEventListener = function addEventListener(event, listener) {\n        this.eventListeners[event].push(listener);\n    };\n\n    UploadProgress.prototype.removeEventListener = function removeEventListener(event, listener) {\n        var listeners = this.eventListeners[event] || [];\n\n        for (var i = 0, l = listeners.length; i < l; ++i) {\n            if (listeners[i] == listener) {\n                return listeners.splice(i, 1);\n            }\n        }\n    };\n\n    UploadProgress.prototype.dispatchEvent = function dispatchEvent(event) {\n        var listeners = this.eventListeners[event.type] || [];\n\n        for (var i = 0, listener; (listener = listeners[i]) != null; i++) {\n            listener(event);\n        }\n    };\n\n    function verifyState(xhr) {\n        if (xhr.readyState !== FakeXMLHttpRequest.OPENED) {\n            throw new Error(\"INVALID_STATE_ERR\");\n        }\n\n        if (xhr.sendFlag) {\n            throw new Error(\"INVALID_STATE_ERR\");\n        }\n    }\n\n    function getHeader(headers, header) {\n        header = header.toLowerCase();\n\n        for (var h in headers) {\n            if (h.toLowerCase() == header) {\n                return h;\n            }\n        }\n\n        return null;\n    }\n\n    // filtering to enable a white-list version of Sinon FakeXhr,\n    // where whitelisted requests are passed through to real XHR\n    function each(collection, callback) {\n        if (!collection) {\n            return;\n        }\n\n        for (var i = 0, l = collection.length; i < l; i += 1) {\n            callback(collection[i]);\n        }\n    }\n    function some(collection, callback) {\n        for (var index = 0; index < collection.length; index++) {\n            if (callback(collection[index]) === true) {\n                return true;\n            }\n        }\n        return false;\n    }\n    // largest arity in XHR is 5 - XHR#open\n    var apply = function (obj, method, args) {\n        switch (args.length) {\n        case 0: return obj[method]();\n        case 1: return obj[method](args[0]);\n        case 2: return obj[method](args[0], args[1]);\n        case 3: return obj[method](args[0], args[1], args[2]);\n        case 4: return obj[method](args[0], args[1], args[2], args[3]);\n        case 5: return obj[method](args[0], args[1], args[2], args[3], args[4]);\n        }\n    };\n\n    FakeXMLHttpRequest.filters = [];\n    FakeXMLHttpRequest.addFilter = function addFilter(fn) {\n        this.filters.push(fn)\n    };\n    var IE6Re = /MSIE 6/;\n    FakeXMLHttpRequest.defake = function defake(fakeXhr, xhrArgs) {\n        var xhr = new sinonXhr.workingXHR();\n        each([\n            \"open\",\n            \"setRequestHeader\",\n            \"send\",\n            \"abort\",\n            \"getResponseHeader\",\n            \"getAllResponseHeaders\",\n            \"addEventListener\",\n            \"overrideMimeType\",\n            \"removeEventListener\"\n        ], function (method) {\n            fakeXhr[method] = function () {\n                return apply(xhr, method, arguments);\n            };\n        });\n\n        var copyAttrs = function (args) {\n            each(args, function (attr) {\n                try {\n                    fakeXhr[attr] = xhr[attr]\n                } catch (e) {\n                    if (!IE6Re.test(navigator.userAgent)) {\n                        throw e;\n                    }\n                }\n            });\n        };\n\n        var stateChange = function stateChange() {\n            fakeXhr.readyState = xhr.readyState;\n            if (xhr.readyState >= FakeXMLHttpRequest.HEADERS_RECEIVED) {\n                copyAttrs([\"status\", \"statusText\"]);\n            }\n            if (xhr.readyState >= FakeXMLHttpRequest.LOADING) {\n                copyAttrs([\"responseText\", \"response\"]);\n            }\n            if (xhr.readyState === FakeXMLHttpRequest.DONE) {\n                copyAttrs([\"responseXML\"]);\n            }\n            if (fakeXhr.onreadystatechange) {\n                fakeXhr.onreadystatechange.call(fakeXhr, { target: fakeXhr });\n            }\n        };\n\n        if (xhr.addEventListener) {\n            for (var event in fakeXhr.eventListeners) {\n                if (fakeXhr.eventListeners.hasOwnProperty(event)) {\n                    each(fakeXhr.eventListeners[event], function (handler) {\n                        xhr.addEventListener(event, handler);\n                    });\n                }\n            }\n            xhr.addEventListener(\"readystatechange\", stateChange);\n        } else {\n            xhr.onreadystatechange = stateChange;\n        }\n        apply(xhr, \"open\", xhrArgs);\n    };\n    FakeXMLHttpRequest.useFilters = false;\n\n    function verifyRequestOpened(xhr) {\n        if (xhr.readyState != FakeXMLHttpRequest.OPENED) {\n            throw new Error(\"INVALID_STATE_ERR - \" + xhr.readyState);\n        }\n    }\n\n    function verifyRequestSent(xhr) {\n        if (xhr.readyState == FakeXMLHttpRequest.DONE) {\n            throw new Error(\"Request done\");\n        }\n    }\n\n    function verifyHeadersReceived(xhr) {\n        if (xhr.async && xhr.readyState != FakeXMLHttpRequest.HEADERS_RECEIVED) {\n            throw new Error(\"No headers received\");\n        }\n    }\n\n    function verifyResponseBodyType(body) {\n        if (typeof body != \"string\") {\n            var error = new Error(\"Attempted to respond to fake XMLHttpRequest with \" +\n                                 body + \", which is not a string.\");\n            error.name = \"InvalidBodyException\";\n            throw error;\n        }\n    }\n\n    FakeXMLHttpRequest.parseXML = function parseXML(text) {\n        var xmlDoc;\n\n        if (typeof DOMParser != \"undefined\") {\n            var parser = new DOMParser();\n            xmlDoc = parser.parseFromString(text, \"text/xml\");\n        } else {\n            xmlDoc = new ActiveXObject(\"Microsoft.XMLDOM\");\n            xmlDoc.async = \"false\";\n            xmlDoc.loadXML(text);\n        }\n\n        return xmlDoc;\n    };\n\n    FakeXMLHttpRequest.statusCodes = {\n        100: \"Continue\",\n        101: \"Switching Protocols\",\n        200: \"OK\",\n        201: \"Created\",\n        202: \"Accepted\",\n        203: \"Non-Authoritative Information\",\n        204: \"No Content\",\n        205: \"Reset Content\",\n        206: \"Partial Content\",\n        207: \"Multi-Status\",\n        300: \"Multiple Choice\",\n        301: \"Moved Permanently\",\n        302: \"Found\",\n        303: \"See Other\",\n        304: \"Not Modified\",\n        305: \"Use Proxy\",\n        307: \"Temporary Redirect\",\n        400: \"Bad Request\",\n        401: \"Unauthorized\",\n        402: \"Payment Required\",\n        403: \"Forbidden\",\n        404: \"Not Found\",\n        405: \"Method Not Allowed\",\n        406: \"Not Acceptable\",\n        407: \"Proxy Authentication Required\",\n        408: \"Request Timeout\",\n        409: \"Conflict\",\n        410: \"Gone\",\n        411: \"Length Required\",\n        412: \"Precondition Failed\",\n        413: \"Request Entity Too Large\",\n        414: \"Request-URI Too Long\",\n        415: \"Unsupported Media Type\",\n        416: \"Requested Range Not Satisfiable\",\n        417: \"Expectation Failed\",\n        422: \"Unprocessable Entity\",\n        500: \"Internal Server Error\",\n        501: \"Not Implemented\",\n        502: \"Bad Gateway\",\n        503: \"Service Unavailable\",\n        504: \"Gateway Timeout\",\n        505: \"HTTP Version Not Supported\"\n    };\n\n    function makeApi(sinon) {\n        sinon.xhr = sinonXhr;\n\n        sinon.extend(FakeXMLHttpRequest.prototype, sinon.EventTarget, {\n            async: true,\n\n            open: function open(method, url, async, username, password) {\n                this.method = method;\n                this.url = url;\n                this.async = typeof async == \"boolean\" ? async : true;\n                this.username = username;\n                this.password = password;\n                this.responseText = null;\n                this.responseXML = null;\n                this.requestHeaders = {};\n                this.sendFlag = false;\n\n                if (FakeXMLHttpRequest.useFilters === true) {\n                    var xhrArgs = arguments;\n                    var defake = some(FakeXMLHttpRequest.filters, function (filter) {\n                        return filter.apply(this, xhrArgs)\n                    });\n                    if (defake) {\n                        return FakeXMLHttpRequest.defake(this, arguments);\n                    }\n                }\n                this.readyStateChange(FakeXMLHttpRequest.OPENED);\n            },\n\n            readyStateChange: function readyStateChange(state) {\n                this.readyState = state;\n\n                if (typeof this.onreadystatechange == \"function\") {\n                    try {\n                        this.onreadystatechange();\n                    } catch (e) {\n                        sinon.logError(\"Fake XHR onreadystatechange handler\", e);\n                    }\n                }\n\n                this.dispatchEvent(new sinon.Event(\"readystatechange\"));\n\n                switch (this.readyState) {\n                    case FakeXMLHttpRequest.DONE:\n                        this.dispatchEvent(new sinon.Event(\"load\", false, false, this));\n                        this.dispatchEvent(new sinon.Event(\"loadend\", false, false, this));\n                        this.upload.dispatchEvent(new sinon.Event(\"load\", false, false, this));\n                        if (supportsProgress) {\n                            this.upload.dispatchEvent(new sinon.ProgressEvent(\"progress\", {loaded: 100, total: 100}));\n                            this.dispatchEvent(new sinon.ProgressEvent(\"progress\", {loaded: 100, total: 100}));\n                        }\n                        break;\n                }\n            },\n\n            setRequestHeader: function setRequestHeader(header, value) {\n                verifyState(this);\n\n                if (unsafeHeaders[header] || /^(Sec-|Proxy-)/.test(header)) {\n                    throw new Error(\"Refused to set unsafe header \\\"\" + header + \"\\\"\");\n                }\n\n                if (this.requestHeaders[header]) {\n                    this.requestHeaders[header] += \",\" + value;\n                } else {\n                    this.requestHeaders[header] = value;\n                }\n            },\n\n            // Helps testing\n            setResponseHeaders: function setResponseHeaders(headers) {\n                verifyRequestOpened(this);\n                this.responseHeaders = {};\n\n                for (var header in headers) {\n                    if (headers.hasOwnProperty(header)) {\n                        this.responseHeaders[header] = headers[header];\n                    }\n                }\n\n                if (this.async) {\n                    this.readyStateChange(FakeXMLHttpRequest.HEADERS_RECEIVED);\n                } else {\n                    this.readyState = FakeXMLHttpRequest.HEADERS_RECEIVED;\n                }\n            },\n\n            // Currently treats ALL data as a DOMString (i.e. no Document)\n            send: function send(data) {\n                verifyState(this);\n\n                if (!/^(get|head)$/i.test(this.method)) {\n                    var contentType = getHeader(this.requestHeaders, \"Content-Type\");\n                    if (this.requestHeaders[contentType]) {\n                        var value = this.requestHeaders[contentType].split(\";\");\n                        this.requestHeaders[contentType] = value[0] + \";charset=utf-8\";\n                    } else if (!(data instanceof FormData)) {\n                        this.requestHeaders[\"Content-Type\"] = \"text/plain;charset=utf-8\";\n                    }\n\n                    this.requestBody = data;\n                }\n\n                this.errorFlag = false;\n                this.sendFlag = this.async;\n                this.readyStateChange(FakeXMLHttpRequest.OPENED);\n\n                if (typeof this.onSend == \"function\") {\n                    this.onSend(this);\n                }\n\n                this.dispatchEvent(new sinon.Event(\"loadstart\", false, false, this));\n            },\n\n            abort: function abort() {\n                this.aborted = true;\n                this.responseText = null;\n                this.errorFlag = true;\n                this.requestHeaders = {};\n\n                if (this.readyState > FakeXMLHttpRequest.UNSENT && this.sendFlag) {\n                    this.readyStateChange(FakeXMLHttpRequest.DONE);\n                    this.sendFlag = false;\n                }\n\n                this.readyState = FakeXMLHttpRequest.UNSENT;\n\n                this.dispatchEvent(new sinon.Event(\"abort\", false, false, this));\n\n                this.upload.dispatchEvent(new sinon.Event(\"abort\", false, false, this));\n\n                if (typeof this.onerror === \"function\") {\n                    this.onerror();\n                }\n            },\n\n            getResponseHeader: function getResponseHeader(header) {\n                if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) {\n                    return null;\n                }\n\n                if (/^Set-Cookie2?$/i.test(header)) {\n                    return null;\n                }\n\n                header = getHeader(this.responseHeaders, header);\n\n                return this.responseHeaders[header] || null;\n            },\n\n            getAllResponseHeaders: function getAllResponseHeaders() {\n                if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) {\n                    return \"\";\n                }\n\n                var headers = \"\";\n\n                for (var header in this.responseHeaders) {\n                    if (this.responseHeaders.hasOwnProperty(header) &&\n                        !/^Set-Cookie2?$/i.test(header)) {\n                        headers += header + \": \" + this.responseHeaders[header] + \"\\r\\n\";\n                    }\n                }\n\n                return headers;\n            },\n\n            setResponseBody: function setResponseBody(body) {\n                verifyRequestSent(this);\n                verifyHeadersReceived(this);\n                verifyResponseBodyType(body);\n\n                var chunkSize = this.chunkSize || 10;\n                var index = 0;\n                this.responseText = \"\";\n\n                do {\n                    if (this.async) {\n                        this.readyStateChange(FakeXMLHttpRequest.LOADING);\n                    }\n\n                    this.responseText += body.substring(index, index + chunkSize);\n                    index += chunkSize;\n                } while (index < body.length);\n\n                var type = this.getResponseHeader(\"Content-Type\");\n\n                if (this.responseText &&\n                    (!type || /(text\\/xml)|(application\\/xml)|(\\+xml)/.test(type))) {\n                    try {\n                        this.responseXML = FakeXMLHttpRequest.parseXML(this.responseText);\n                    } catch (e) {\n                        // Unable to parse XML - no biggie\n                    }\n                }\n\n                this.readyStateChange(FakeXMLHttpRequest.DONE);\n            },\n\n            respond: function respond(status, headers, body) {\n                this.status = typeof status == \"number\" ? status : 200;\n                this.statusText = FakeXMLHttpRequest.statusCodes[this.status];\n                this.setResponseHeaders(headers || {});\n                this.setResponseBody(body || \"\");\n            },\n\n            uploadProgress: function uploadProgress(progressEventRaw) {\n                if (supportsProgress) {\n                    this.upload.dispatchEvent(new sinon.ProgressEvent(\"progress\", progressEventRaw));\n                }\n            },\n\n            downloadProgress: function downloadProgress(progressEventRaw) {\n                if (supportsProgress) {\n                    this.dispatchEvent(new sinon.ProgressEvent(\"progress\", progressEventRaw));\n                }\n            },\n\n            uploadError: function uploadError(error) {\n                if (supportsCustomEvent) {\n                    this.upload.dispatchEvent(new sinon.CustomEvent(\"error\", {detail: error}));\n                }\n            }\n        });\n\n        sinon.extend(FakeXMLHttpRequest, {\n            UNSENT: 0,\n            OPENED: 1,\n            HEADERS_RECEIVED: 2,\n            LOADING: 3,\n            DONE: 4\n        });\n\n        sinon.useFakeXMLHttpRequest = function () {\n            FakeXMLHttpRequest.restore = function restore(keepOnCreate) {\n                if (sinonXhr.supportsXHR) {\n                    global.XMLHttpRequest = sinonXhr.GlobalXMLHttpRequest;\n                }\n\n                if (sinonXhr.supportsActiveX) {\n                    global.ActiveXObject = sinonXhr.GlobalActiveXObject;\n                }\n\n                delete FakeXMLHttpRequest.restore;\n\n                if (keepOnCreate !== true) {\n                    delete FakeXMLHttpRequest.onCreate;\n                }\n            };\n            if (sinonXhr.supportsXHR) {\n                global.XMLHttpRequest = FakeXMLHttpRequest;\n            }\n\n            if (sinonXhr.supportsActiveX) {\n                global.ActiveXObject = function ActiveXObject(objId) {\n                    if (objId == \"Microsoft.XMLHTTP\" || /^Msxml2\\.XMLHTTP/i.test(objId)) {\n\n                        return new FakeXMLHttpRequest();\n                    }\n\n                    return new sinonXhr.GlobalActiveXObject(objId);\n                };\n            }\n\n            return FakeXMLHttpRequest;\n        };\n\n        sinon.FakeXMLHttpRequest = FakeXMLHttpRequest;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./core\");\n        require(\"../extend\");\n        require(\"./event\");\n        require(\"../log_error\");\n        makeApi(sinon);\n        module.exports = sinon;\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (typeof sinon === \"undefined\") {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n\n})(typeof global !== \"undefined\" ? global : this);\n\n/**\n * @depend fake_xdomain_request.js\n * @depend fake_xml_http_request.js\n * @depend ../format.js\n * @depend ../log_error.js\n */\n/**\n * The Sinon \"server\" mimics a web server that receives requests from\n * sinon.FakeXMLHttpRequest and provides an API to respond to those requests,\n * both synchronously and asynchronously. To respond synchronuously, canned\n * answers have to be provided upfront.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\nif (typeof sinon == \"undefined\") {\n    var sinon = {};\n}\n\n(function () {\n    var push = [].push;\n    function F() {}\n\n    function create(proto) {\n        F.prototype = proto;\n        return new F();\n    }\n\n    function responseArray(handler) {\n        var response = handler;\n\n        if (Object.prototype.toString.call(handler) != \"[object Array]\") {\n            response = [200, {}, handler];\n        }\n\n        if (typeof response[2] != \"string\") {\n            throw new TypeError(\"Fake server response body should be string, but was \" +\n                                typeof response[2]);\n        }\n\n        return response;\n    }\n\n    var wloc = typeof window !== \"undefined\" ? window.location : {};\n    var rCurrLoc = new RegExp(\"^\" + wloc.protocol + \"//\" + wloc.host);\n\n    function matchOne(response, reqMethod, reqUrl) {\n        var rmeth = response.method;\n        var matchMethod = !rmeth || rmeth.toLowerCase() == reqMethod.toLowerCase();\n        var url = response.url;\n        var matchUrl = !url || url == reqUrl || (typeof url.test == \"function\" && url.test(reqUrl));\n\n        return matchMethod && matchUrl;\n    }\n\n    function match(response, request) {\n        var requestUrl = request.url;\n\n        if (!/^https?:\\/\\//.test(requestUrl) || rCurrLoc.test(requestUrl)) {\n            requestUrl = requestUrl.replace(rCurrLoc, \"\");\n        }\n\n        if (matchOne(response, this.getHTTPMethod(request), requestUrl)) {\n            if (typeof response.response == \"function\") {\n                var ru = response.url;\n                var args = [request].concat(ru && typeof ru.exec == \"function\" ? ru.exec(requestUrl).slice(1) : []);\n                return response.response.apply(response, args);\n            }\n\n            return true;\n        }\n\n        return false;\n    }\n\n    function makeApi(sinon) {\n        sinon.fakeServer = {\n            create: function () {\n                var server = create(this);\n                if (!sinon.xhr.supportsCORS) {\n                    this.xhr = sinon.useFakeXDomainRequest();\n                } else {\n                    this.xhr = sinon.useFakeXMLHttpRequest();\n                }\n                server.requests = [];\n\n                this.xhr.onCreate = function (xhrObj) {\n                    server.addRequest(xhrObj);\n                };\n\n                return server;\n            },\n\n            addRequest: function addRequest(xhrObj) {\n                var server = this;\n                push.call(this.requests, xhrObj);\n\n                xhrObj.onSend = function () {\n                    server.handleRequest(this);\n\n                    if (server.respondImmediately) {\n                        server.respond();\n                    } else if (server.autoRespond && !server.responding) {\n                        setTimeout(function () {\n                            server.responding = false;\n                            server.respond();\n                        }, server.autoRespondAfter || 10);\n\n                        server.responding = true;\n                    }\n                };\n            },\n\n            getHTTPMethod: function getHTTPMethod(request) {\n                if (this.fakeHTTPMethods && /post/i.test(request.method)) {\n                    var matches = (request.requestBody || \"\").match(/_method=([^\\b;]+)/);\n                    return !!matches ? matches[1] : request.method;\n                }\n\n                return request.method;\n            },\n\n            handleRequest: function handleRequest(xhr) {\n                if (xhr.async) {\n                    if (!this.queue) {\n                        this.queue = [];\n                    }\n\n                    push.call(this.queue, xhr);\n                } else {\n                    this.processRequest(xhr);\n                }\n            },\n\n            log: function log(response, request) {\n                var str;\n\n                str =  \"Request:\\n\"  + sinon.format(request)  + \"\\n\\n\";\n                str += \"Response:\\n\" + sinon.format(response) + \"\\n\\n\";\n\n                sinon.log(str);\n            },\n\n            respondWith: function respondWith(method, url, body) {\n                if (arguments.length == 1 && typeof method != \"function\") {\n                    this.response = responseArray(method);\n                    return;\n                }\n\n                if (!this.responses) { this.responses = []; }\n\n                if (arguments.length == 1) {\n                    body = method;\n                    url = method = null;\n                }\n\n                if (arguments.length == 2) {\n                    body = url;\n                    url = method;\n                    method = null;\n                }\n\n                push.call(this.responses, {\n                    method: method,\n                    url: url,\n                    response: typeof body == \"function\" ? body : responseArray(body)\n                });\n            },\n\n            respond: function respond() {\n                if (arguments.length > 0) {\n                    this.respondWith.apply(this, arguments);\n                }\n\n                var queue = this.queue || [];\n                var requests = queue.splice(0, queue.length);\n                var request;\n\n                while (request = requests.shift()) {\n                    this.processRequest(request);\n                }\n            },\n\n            processRequest: function processRequest(request) {\n                try {\n                    if (request.aborted) {\n                        return;\n                    }\n\n                    var response = this.response || [404, {}, \"\"];\n\n                    if (this.responses) {\n                        for (var l = this.responses.length, i = l - 1; i >= 0; i--) {\n                            if (match.call(this, this.responses[i], request)) {\n                                response = this.responses[i].response;\n                                break;\n                            }\n                        }\n                    }\n\n                    if (request.readyState != 4) {\n                        this.log(response, request);\n\n                        request.respond(response[0], response[1], response[2]);\n                    }\n                } catch (e) {\n                    sinon.logError(\"Fake server request processing\", e);\n                }\n            },\n\n            restore: function restore() {\n                return this.xhr.restore && this.xhr.restore.apply(this.xhr, arguments);\n            }\n        };\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./core\");\n        require(\"./fake_xdomain_request\");\n        require(\"./fake_xml_http_request\");\n        require(\"../format\");\n        makeApi(sinon);\n        module.exports = sinon;\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else {\n        makeApi(sinon);\n    }\n}());\n\n/**\n * @depend fake_server.js\n * @depend fake_timers.js\n */\n/**\n * Add-on for sinon.fakeServer that automatically handles a fake timer along with\n * the FakeXMLHttpRequest. The direct inspiration for this add-on is jQuery\n * 1.3.x, which does not use xhr object's onreadystatehandler at all - instead,\n * it polls the object for completion with setInterval. Dispite the direct\n * motivation, there is nothing jQuery-specific in this file, so it can be used\n * in any environment where the ajax implementation depends on setInterval or\n * setTimeout.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function () {\n    function makeApi(sinon) {\n        function Server() {}\n        Server.prototype = sinon.fakeServer;\n\n        sinon.fakeServerWithClock = new Server();\n\n        sinon.fakeServerWithClock.addRequest = function addRequest(xhr) {\n            if (xhr.async) {\n                if (typeof setTimeout.clock == \"object\") {\n                    this.clock = setTimeout.clock;\n                } else {\n                    this.clock = sinon.useFakeTimers();\n                    this.resetClock = true;\n                }\n\n                if (!this.longestTimeout) {\n                    var clockSetTimeout = this.clock.setTimeout;\n                    var clockSetInterval = this.clock.setInterval;\n                    var server = this;\n\n                    this.clock.setTimeout = function (fn, timeout) {\n                        server.longestTimeout = Math.max(timeout, server.longestTimeout || 0);\n\n                        return clockSetTimeout.apply(this, arguments);\n                    };\n\n                    this.clock.setInterval = function (fn, timeout) {\n                        server.longestTimeout = Math.max(timeout, server.longestTimeout || 0);\n\n                        return clockSetInterval.apply(this, arguments);\n                    };\n                }\n            }\n\n            return sinon.fakeServer.addRequest.call(this, xhr);\n        };\n\n        sinon.fakeServerWithClock.respond = function respond() {\n            var returnVal = sinon.fakeServer.respond.apply(this, arguments);\n\n            if (this.clock) {\n                this.clock.tick(this.longestTimeout || 0);\n                this.longestTimeout = 0;\n\n                if (this.resetClock) {\n                    this.clock.restore();\n                    this.resetClock = false;\n                }\n            }\n\n            return returnVal;\n        };\n\n        sinon.fakeServerWithClock.restore = function restore() {\n            if (this.clock) {\n                this.clock.restore();\n            }\n\n            return sinon.fakeServer.restore.apply(this, arguments);\n        };\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require) {\n        var sinon = require(\"./core\");\n        require(\"./fake_server\");\n        require(\"./fake_timers\");\n        makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require);\n    } else {\n        makeApi(sinon);\n    }\n}());\n\n/**\n * @depend util/core.js\n * @depend extend.js\n * @depend collection.js\n * @depend util/fake_timers.js\n * @depend util/fake_server_with_clock.js\n */\n/**\n * Manages fake collections as well as fake utilities such as Sinon's\n * timers and fake XHR implementation in one convenient object.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function () {\n    function makeApi(sinon) {\n        var push = [].push;\n\n        function exposeValue(sandbox, config, key, value) {\n            if (!value) {\n                return;\n            }\n\n            if (config.injectInto && !(key in config.injectInto)) {\n                config.injectInto[key] = value;\n                sandbox.injectedKeys.push(key);\n            } else {\n                push.call(sandbox.args, value);\n            }\n        }\n\n        function prepareSandboxFromConfig(config) {\n            var sandbox = sinon.create(sinon.sandbox);\n\n            if (config.useFakeServer) {\n                if (typeof config.useFakeServer == \"object\") {\n                    sandbox.serverPrototype = config.useFakeServer;\n                }\n\n                sandbox.useFakeServer();\n            }\n\n            if (config.useFakeTimers) {\n                if (typeof config.useFakeTimers == \"object\") {\n                    sandbox.useFakeTimers.apply(sandbox, config.useFakeTimers);\n                } else {\n                    sandbox.useFakeTimers();\n                }\n            }\n\n            return sandbox;\n        }\n\n        sinon.sandbox = sinon.extend(sinon.create(sinon.collection), {\n            useFakeTimers: function useFakeTimers() {\n                this.clock = sinon.useFakeTimers.apply(sinon, arguments);\n\n                return this.add(this.clock);\n            },\n\n            serverPrototype: sinon.fakeServer,\n\n            useFakeServer: function useFakeServer() {\n                var proto = this.serverPrototype || sinon.fakeServer;\n\n                if (!proto || !proto.create) {\n                    return null;\n                }\n\n                this.server = proto.create();\n                return this.add(this.server);\n            },\n\n            inject: function (obj) {\n                sinon.collection.inject.call(this, obj);\n\n                if (this.clock) {\n                    obj.clock = this.clock;\n                }\n\n                if (this.server) {\n                    obj.server = this.server;\n                    obj.requests = this.server.requests;\n                }\n\n                obj.match = sinon.match;\n\n                return obj;\n            },\n\n            restore: function () {\n                sinon.collection.restore.apply(this, arguments);\n                this.restoreContext();\n            },\n\n            restoreContext: function () {\n                if (this.injectedKeys) {\n                    for (var i = 0, j = this.injectedKeys.length; i < j; i++) {\n                        delete this.injectInto[this.injectedKeys[i]];\n                    }\n                    this.injectedKeys = [];\n                }\n            },\n\n            create: function (config) {\n                if (!config) {\n                    return sinon.create(sinon.sandbox);\n                }\n\n                var sandbox = prepareSandboxFromConfig(config);\n                sandbox.args = sandbox.args || [];\n                sandbox.injectedKeys = [];\n                sandbox.injectInto = config.injectInto;\n                var prop, value, exposed = sandbox.inject({});\n\n                if (config.properties) {\n                    for (var i = 0, l = config.properties.length; i < l; i++) {\n                        prop = config.properties[i];\n                        value = exposed[prop] || prop == \"sandbox\" && sandbox;\n                        exposeValue(sandbox, config, prop, value);\n                    }\n                } else {\n                    exposeValue(sandbox, config, \"sandbox\", value);\n                }\n\n                return sandbox;\n            },\n\n            match: sinon.match\n        });\n\n        sinon.sandbox.useFakeXMLHttpRequest = sinon.sandbox.useFakeServer;\n\n        return sinon.sandbox;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./extend\");\n        require(\"./util/fake_server_with_clock\");\n        require(\"./util/fake_timers\");\n        require(\"./collection\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}());\n\n/**\n * @depend util/core.js\n * @depend sandbox.js\n */\n/**\n * Test function, sandboxes fakes\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    function makeApi(sinon) {\n        var slice = Array.prototype.slice;\n\n        function test(callback) {\n            var type = typeof callback;\n\n            if (type != \"function\") {\n                throw new TypeError(\"sinon.test needs to wrap a test function, got \" + type);\n            }\n\n            function sinonSandboxedTest() {\n                var config = sinon.getConfig(sinon.config);\n                config.injectInto = config.injectIntoThis && this || config.injectInto;\n                var sandbox = sinon.sandbox.create(config);\n                var args = slice.call(arguments);\n                var oldDone = args.length && args[args.length - 1];\n                var exception, result;\n\n                if (typeof oldDone == \"function\") {\n                    args[args.length - 1] = function sinonDone(result) {\n                        if (result) {\n                            sandbox.restore();\n                            throw exception;\n                        } else {\n                            sandbox.verifyAndRestore();\n                        }\n                        oldDone(result);\n                    };\n                }\n\n                try {\n                    result = callback.apply(this, args.concat(sandbox.args));\n                } catch (e) {\n                    exception = e;\n                }\n\n                if (typeof oldDone != \"function\") {\n                    if (typeof exception !== \"undefined\") {\n                        sandbox.restore();\n                        throw exception;\n                    } else {\n                        sandbox.verifyAndRestore();\n                    }\n                }\n\n                return result;\n            }\n\n            if (callback.length) {\n                return function sinonAsyncSandboxedTest(callback) {\n                    return sinonSandboxedTest.apply(this, arguments);\n                };\n            }\n\n            return sinonSandboxedTest;\n        }\n\n        test.config = {\n            injectIntoThis: true,\n            injectInto: null,\n            properties: [\"spy\", \"stub\", \"mock\", \"clock\", \"server\", \"requests\"],\n            useFakeTimers: true,\n            useFakeServer: true\n        };\n\n        sinon.test = test;\n        return test;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./sandbox\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (sinon) {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend util/core.js\n * @depend test.js\n */\n/**\n * Test case, sandboxes all test functions\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon) {\n    function createTest(property, setUp, tearDown) {\n        return function () {\n            if (setUp) {\n                setUp.apply(this, arguments);\n            }\n\n            var exception, result;\n\n            try {\n                result = property.apply(this, arguments);\n            } catch (e) {\n                exception = e;\n            }\n\n            if (tearDown) {\n                tearDown.apply(this, arguments);\n            }\n\n            if (exception) {\n                throw exception;\n            }\n\n            return result;\n        };\n    }\n\n    function makeApi(sinon) {\n        function testCase(tests, prefix) {\n            /*jsl:ignore*/\n            if (!tests || typeof tests != \"object\") {\n                throw new TypeError(\"sinon.testCase needs an object with test functions\");\n            }\n            /*jsl:end*/\n\n            prefix = prefix || \"test\";\n            var rPrefix = new RegExp(\"^\" + prefix);\n            var methods = {}, testName, property, method;\n            var setUp = tests.setUp;\n            var tearDown = tests.tearDown;\n\n            for (testName in tests) {\n                if (tests.hasOwnProperty(testName)) {\n                    property = tests[testName];\n\n                    if (/^(setUp|tearDown)$/.test(testName)) {\n                        continue;\n                    }\n\n                    if (typeof property == \"function\" && rPrefix.test(testName)) {\n                        method = property;\n\n                        if (setUp || tearDown) {\n                            method = createTest(property, setUp, tearDown);\n                        }\n\n                        methods[testName] = sinon.test(method);\n                    } else {\n                        methods[testName] = tests[testName];\n                    }\n                }\n            }\n\n            return methods;\n        }\n\n        sinon.testCase = testCase;\n        return testCase;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./test\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n}(typeof sinon == \"object\" && sinon || null));\n\n/**\n * @depend times_in_words.js\n * @depend util/core.js\n * @depend match.js\n * @depend format.js\n */\n/**\n * Assertions matching the test spy retrieval interface.\n *\n * @author Christian Johansen (christian@cjohansen.no)\n * @license BSD\n *\n * Copyright (c) 2010-2013 Christian Johansen\n */\n\n(function (sinon, global) {\n    var slice = Array.prototype.slice;\n\n    function makeApi(sinon) {\n        var assert;\n\n        function verifyIsStub() {\n            var method;\n\n            for (var i = 0, l = arguments.length; i < l; ++i) {\n                method = arguments[i];\n\n                if (!method) {\n                    assert.fail(\"fake is not a spy\");\n                }\n\n                if (method.proxy) {\n                    verifyIsStub(method.proxy);\n                } else {\n                    if (typeof method != \"function\") {\n                        assert.fail(method + \" is not a function\");\n                    }\n\n                    if (typeof method.getCall != \"function\") {\n                        assert.fail(method + \" is not stubbed\");\n                    }\n                }\n\n            }\n        }\n\n        function failAssertion(object, msg) {\n            object = object || global;\n            var failMethod = object.fail || assert.fail;\n            failMethod.call(object, msg);\n        }\n\n        function mirrorPropAsAssertion(name, method, message) {\n            if (arguments.length == 2) {\n                message = method;\n                method = name;\n            }\n\n            assert[name] = function (fake) {\n                verifyIsStub(fake);\n\n                var args = slice.call(arguments, 1);\n                var failed = false;\n\n                if (typeof method == \"function\") {\n                    failed = !method(fake);\n                } else {\n                    failed = typeof fake[method] == \"function\" ?\n                        !fake[method].apply(fake, args) : !fake[method];\n                }\n\n                if (failed) {\n                    failAssertion(this, (fake.printf || fake.proxy.printf).apply(fake, [message].concat(args)));\n                } else {\n                    assert.pass(name);\n                }\n            };\n        }\n\n        function exposedName(prefix, prop) {\n            return !prefix || /^fail/.test(prop) ? prop :\n                prefix + prop.slice(0, 1).toUpperCase() + prop.slice(1);\n        }\n\n        assert = {\n            failException: \"AssertError\",\n\n            fail: function fail(message) {\n                var error = new Error(message);\n                error.name = this.failException || assert.failException;\n\n                throw error;\n            },\n\n            pass: function pass(assertion) {},\n\n            callOrder: function assertCallOrder() {\n                verifyIsStub.apply(null, arguments);\n                var expected = \"\", actual = \"\";\n\n                if (!sinon.calledInOrder(arguments)) {\n                    try {\n                        expected = [].join.call(arguments, \", \");\n                        var calls = slice.call(arguments);\n                        var i = calls.length;\n                        while (i) {\n                            if (!calls[--i].called) {\n                                calls.splice(i, 1);\n                            }\n                        }\n                        actual = sinon.orderByFirstCall(calls).join(\", \");\n                    } catch (e) {\n                        // If this fails, we'll just fall back to the blank string\n                    }\n\n                    failAssertion(this, \"expected \" + expected + \" to be \" +\n                                \"called in order but were called as \" + actual);\n                } else {\n                    assert.pass(\"callOrder\");\n                }\n            },\n\n            callCount: function assertCallCount(method, count) {\n                verifyIsStub(method);\n\n                if (method.callCount != count) {\n                    var msg = \"expected %n to be called \" + sinon.timesInWords(count) +\n                        \" but was called %c%C\";\n                    failAssertion(this, method.printf(msg));\n                } else {\n                    assert.pass(\"callCount\");\n                }\n            },\n\n            expose: function expose(target, options) {\n                if (!target) {\n                    throw new TypeError(\"target is null or undefined\");\n                }\n\n                var o = options || {};\n                var prefix = typeof o.prefix == \"undefined\" && \"assert\" || o.prefix;\n                var includeFail = typeof o.includeFail == \"undefined\" || !!o.includeFail;\n\n                for (var method in this) {\n                    if (method != \"expose\" && (includeFail || !/^(fail)/.test(method))) {\n                        target[exposedName(prefix, method)] = this[method];\n                    }\n                }\n\n                return target;\n            },\n\n            match: function match(actual, expectation) {\n                var matcher = sinon.match(expectation);\n                if (matcher.test(actual)) {\n                    assert.pass(\"match\");\n                } else {\n                    var formatted = [\n                        \"expected value to match\",\n                        \"    expected = \" + sinon.format(expectation),\n                        \"    actual = \" + sinon.format(actual)\n                    ]\n                    failAssertion(this, formatted.join(\"\\n\"));\n                }\n            }\n        };\n\n        mirrorPropAsAssertion(\"called\", \"expected %n to have been called at least once but was never called\");\n        mirrorPropAsAssertion(\"notCalled\", function (spy) { return !spy.called; },\n                            \"expected %n to not have been called but was called %c%C\");\n        mirrorPropAsAssertion(\"calledOnce\", \"expected %n to be called once but was called %c%C\");\n        mirrorPropAsAssertion(\"calledTwice\", \"expected %n to be called twice but was called %c%C\");\n        mirrorPropAsAssertion(\"calledThrice\", \"expected %n to be called thrice but was called %c%C\");\n        mirrorPropAsAssertion(\"calledOn\", \"expected %n to be called with %1 as this but was called with %t\");\n        mirrorPropAsAssertion(\"alwaysCalledOn\", \"expected %n to always be called with %1 as this but was called with %t\");\n        mirrorPropAsAssertion(\"calledWithNew\", \"expected %n to be called with new\");\n        mirrorPropAsAssertion(\"alwaysCalledWithNew\", \"expected %n to always be called with new\");\n        mirrorPropAsAssertion(\"calledWith\", \"expected %n to be called with arguments %*%C\");\n        mirrorPropAsAssertion(\"calledWithMatch\", \"expected %n to be called with match %*%C\");\n        mirrorPropAsAssertion(\"alwaysCalledWith\", \"expected %n to always be called with arguments %*%C\");\n        mirrorPropAsAssertion(\"alwaysCalledWithMatch\", \"expected %n to always be called with match %*%C\");\n        mirrorPropAsAssertion(\"calledWithExactly\", \"expected %n to be called with exact arguments %*%C\");\n        mirrorPropAsAssertion(\"alwaysCalledWithExactly\", \"expected %n to always be called with exact arguments %*%C\");\n        mirrorPropAsAssertion(\"neverCalledWith\", \"expected %n to never be called with arguments %*%C\");\n        mirrorPropAsAssertion(\"neverCalledWithMatch\", \"expected %n to never be called with match %*%C\");\n        mirrorPropAsAssertion(\"threw\", \"%n did not throw exception%C\");\n        mirrorPropAsAssertion(\"alwaysThrew\", \"%n did not always throw exception%C\");\n\n        sinon.assert = assert;\n        return assert;\n    }\n\n    var isNode = typeof module !== \"undefined\" && module.exports && typeof require == \"function\";\n    var isAMD = typeof define === \"function\" && typeof define.amd === \"object\" && define.amd;\n\n    function loadDependencies(require, exports, module) {\n        var sinon = require(\"./util/core\");\n        require(\"./match\");\n        require(\"./format\");\n        module.exports = makeApi(sinon);\n    }\n\n    if (isAMD) {\n        define(loadDependencies);\n    } else if (isNode) {\n        loadDependencies(require, module.exports, module);\n    } else if (!sinon) {\n        return;\n    } else {\n        makeApi(sinon);\n    }\n\n}(typeof sinon == \"object\" && sinon || null, typeof window != \"undefined\" ? window : (typeof self != \"undefined\") ? self : global));\n\n  return sinon;\n}));\n"
+
+/***/ },
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -13203,9 +13203,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    FB = __webpack_require__(91),
-	    Localization = __webpack_require__(92),
+	var _ = __webpack_require__(15),
+	    FB = __webpack_require__(90),
+	    Localization = __webpack_require__(91),
 	    Model = __webpack_require__(25),
 	    Utilities = __webpack_require__(26),
 	
@@ -13244,8 +13244,6 @@
 	            time_zone: 'UTC'
 	        };
 	    }
-	    console.log('user');
-	    console.log(this.data);
 	};
 	
 	getLoginStatus = function(callback) {
@@ -13257,7 +13255,6 @@
 	        return;
 	    }
 	    FB.getLoginStatus(function(response) {
-	        //console.log(response);
 	        user.fbStatus = response.status;
 	        if (callback && typeof callback === 'function') {
 	            callback(response);
@@ -13330,8 +13327,6 @@
 	        if (user.data === null) {
 	            user.data = {};
 	        }
-	        console.log('LOGGED IN!');
-	        console.log(data);
 	        _.extend(user.data, data);
 	
 	        //Enable Google Analytics user tracking
@@ -13354,8 +13349,6 @@
 	            callback(error);
 	            return;
 	        }
-	        console.log('GOT DATA');
-	        console.log(data);
 	        _.extend(user.data, data);
 	        Localization.setCurrentTimeZone(user.data.time_zone);
 	        callback(null);
@@ -13369,8 +13362,6 @@
 	            callback('Error updating user: ' + error);
 	            return;
 	        }
-	        console.log('GOT UPDATE');
-	        console.log(data);
 	        _.extend(user.data, data);
 	        Localization.setCurrentTimeZone(user.data.time_zone);
 	        callback(null);
@@ -13423,8 +13414,6 @@
 	            callback(error);
 	            return;
 	        }
-	        console.log('GOT PUB INFO');
-	        console.log(user);
 	        _.extend(model.data, user);
 	        callback(null);
 	    });
@@ -13501,7 +13490,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
+	var _ = __webpack_require__(15),
 	
 	    Model = __webpack_require__(25),
 	
@@ -13553,9 +13542,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 	
-		PopupController = __webpack_require__(90),
+		PopupController = __webpack_require__(92),
 	
 		MessagePopupTemplate = __webpack_require__(151),
 	
@@ -13967,7 +13956,7 @@
 	 * Utils for plugins (not exported)
 	 */
 	
-	var util = __webpack_require__(168);
+	var util = __webpack_require__(167);
 	
 	/**
 	 * # .use(function)
@@ -13998,42 +13987,42 @@
 	 * Configuration
 	 */
 	
-	var config = __webpack_require__(152);
+	var config = __webpack_require__(158);
 	exports.config = config;
 	
 	/*!
 	 * Primary `Assertion` prototype
 	 */
 	
-	var assertion = __webpack_require__(153);
+	var assertion = __webpack_require__(159);
 	exports.use(assertion);
 	
 	/*!
 	 * Core Assertions
 	 */
 	
-	var core = __webpack_require__(154);
+	var core = __webpack_require__(160);
 	exports.use(core);
 	
 	/*!
 	 * Expect interface
 	 */
 	
-	var expect = __webpack_require__(155);
+	var expect = __webpack_require__(161);
 	exports.use(expect);
 	
 	/*!
 	 * Should interface
 	 */
 	
-	var should = __webpack_require__(156);
+	var should = __webpack_require__(162);
 	exports.use(should);
 	
 	/*!
 	 * Assert interface
 	 */
 	
-	var assert = __webpack_require__(157);
+	var assert = __webpack_require__(163);
 	exports.use(assert);
 
 
@@ -14049,8 +14038,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
 	
 	    ViewController = __webpack_require__(24),
@@ -14191,17 +14180,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(29),
+	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
-	    Gear = __webpack_require__(159),
+	    Localization = __webpack_require__(91),
+	    Gear = __webpack_require__(152),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -14786,7 +14775,9 @@
 	        name: 'availabilitycalendar',
 	        $element: $calendarContainer,
 	        template: calendarVT,
-	        passedData: view.newGear
+	        passedData: {
+	            gear: view.newGear
+	        }
 	    });
 	    view.calendarVC.initialize();
 	    view.newGear.getAvailability(App.user.data.id, function(error, result) {
@@ -14995,17 +14986,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(29),
+	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
-	    TechProfile = __webpack_require__(158),
+	    Localization = __webpack_require__(91),
+	    TechProfile = __webpack_require__(154),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -15427,7 +15418,9 @@
 	        name: 'availabilitycalendar',
 	        $element: $calendarContainer,
 	        template: calendarVT,
-	        passedData: view.newTechProfile
+	        passedData: {
+	            technician: view.newTechProfile
+	        }
 	    });
 	    view.calendarVC.initialize();
 	    view.newTechProfile.getAvailability(function(error, result) {
@@ -15629,17 +15622,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(29),
+	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
-	    Van = __webpack_require__(160),
+	    Localization = __webpack_require__(91),
+	    Van = __webpack_require__(153),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -16136,7 +16129,9 @@
 	        name: 'availabilitycalendar',
 	        $element: $calendarContainer,
 	        template: calendarVT,
-	        passedData: view.newVan
+	        passedData: {
+	            van: view.newVan
+	        }
 	    });
 	    view.calendarVC.initialize();
 	    view.newVan.getAvailability(function(error, result) {
@@ -16341,13 +16336,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
-	    Moment = __webpack_require__(29),
-	    
+	var $ = __webpack_require__(31),
+	    Moment = __webpack_require__(30),
+	
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
+	    Localization = __webpack_require__(91),
 	
 	    didInitialize,
 	    didRender,
@@ -16376,7 +16371,8 @@
 	    getAlwaysFlag;
 	
 	didInitialize = function() {
-	    var view = this;
+	    var view = this,
+	        handleAvailability;
 	
 	    Moment.locale('en-custom', {
 	        week: {
@@ -16385,12 +16381,14 @@
 	        }
 	    });
 	
-	    this.gear = this.passedData;
+	    this.gear = this.passedData.gear;
+	    this.technician = this.passedData.technician;
+	    this.van = this.passedData.van;
 	    this.shownMoment = new Moment.tz(Localization.getCurrentTimeZone());
 	    this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
 	    this.alwaysFlag = 0;
 	
-	    this.gear.getAvailability(App.user.data.id, function(error, result) {
+	    handleAvailability = function(error, result) {
 	        var availabilityArray = result.availabilityArray,
 	            i, startMoment, endMoment;
 	
@@ -16416,7 +16414,15 @@
 	        //console.log(view.alwaysFlag);
 	        //console.log(view.selections);
 	        view.renderSelections();
-	    });
+	    };
+	
+	    if (this.gear) {
+	        this.gear.getAvailability(App.user.data.id, handleAvailability);
+	    } else if (this.technician) {
+	        this.technician.getAvailability(handleAvailability);
+	    } else {
+	        this.van.getAvailability(handleAvailability);
+	    }
 	};
 	
 	didRender = function() {
@@ -16843,17 +16849,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
-	    Moment = __webpack_require__(29),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
+	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
+	    Localization = __webpack_require__(91),
 	    User = __webpack_require__(38),
-	    Booking = __webpack_require__(161),
+	    Booking = __webpack_require__(155),
 	
 	    didInitialize,
 	    didRender,
@@ -17142,17 +17148,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
-	    Moment = __webpack_require__(29),
+	var $ = __webpack_require__(31),
+	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
-	    Booking = __webpack_require__(161),
+	    Localization = __webpack_require__(91),
+	    Booking = __webpack_require__(155),
 	
-	    SelectTimePopup = __webpack_require__(162),
+	    SelectTimePopup = __webpack_require__(156),
 	
 	    didInitialize,
 	    didRender,
@@ -17387,7 +17393,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 		
 		ViewController = __webpack_require__(24),
 		
@@ -17433,15 +17439,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
-	    Moment = __webpack_require__(29),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
+	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
+	    Localization = __webpack_require__(91),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -17758,12 +17764,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 		
 		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 	
 		didInitialize,
 	    didRender,
@@ -17846,14 +17852,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    GearList = __webpack_require__(163),
+	    GearList = __webpack_require__(157),
 	
 	    gearBlockID,
 	
@@ -17968,14 +17974,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    GearList = __webpack_require__(163),
+	    GearList = __webpack_require__(157),
 	
 	    gearBlockID,
 	
@@ -18117,14 +18123,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    GearList = __webpack_require__(163),
+	    GearList = __webpack_require__(157),
 	
 	    reservationBlockID,
 	
@@ -18262,10 +18268,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
@@ -18407,10 +18413,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
@@ -18550,10 +18556,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
@@ -18657,10 +18663,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
@@ -18802,10 +18808,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
@@ -18945,10 +18951,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
@@ -19064,7 +19070,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 	
 		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
@@ -19148,14 +19154,14 @@
 	'use strict';
 	
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
-	    Moment = __webpack_require__(29),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
+	    Moment = __webpack_require__(30),
 	    GoogleMaps = __webpack_require__(19),
 	
 	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(92),
+	    Localization = __webpack_require__(91),
 	
 	    geocoder,
 	
@@ -19311,7 +19317,9 @@
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
 	            template: calendarVT,
-	            passedData: view.gear
+	            passedData: {
+	                gear: view.gear
+	            }
 	        });
 	        view.calendarVC.initialize();
 	        view.calendarVC.render();
@@ -19781,15 +19789,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(29),
+	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(92),
+	    Localization = __webpack_require__(91),
 	
 	    geocoder,
 	
@@ -19899,7 +19907,9 @@
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
 	            template: calendarVT,
-	            passedData: view.techProfile
+	            passedData: {
+	                technician: view.techProfile
+	            }
 	        });
 	        view.calendarVC.initialize();
 	        view.calendarVC.render();
@@ -20292,14 +20302,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(29),
+	    Moment = __webpack_require__(30),
 	
 	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(92),
+	    Localization = __webpack_require__(91),
 	
 	    geocoder,
 	
@@ -20448,7 +20458,9 @@
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
 	            template: calendarVT,
-	            passedData: view.van
+	            passedData: {
+	                van: view.van
+	            }
 	        });
 	        view.calendarVC.initialize();
 	        view.calendarVC.render();
@@ -20869,11 +20881,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Moment = __webpack_require__(29),
+	var Moment = __webpack_require__(30),
 		
 		ViewController = __webpack_require__(24),
 	
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 	
 		didInitialize;
 	
@@ -20902,17 +20914,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
-		FB = __webpack_require__(91),
+	var $ = __webpack_require__(31),
+		FB = __webpack_require__(90),
 		GoogleMaps = __webpack_require__(19),
 	
-		Config = __webpack_require__(21),
+		Config = __webpack_require__(23),
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(92),
-		Gear = __webpack_require__(159),
+		Localization = __webpack_require__(91),
+		Gear = __webpack_require__(152),
 		User = __webpack_require__(38),
 	
 		paymentSuccessModalOpen = false,
@@ -21277,16 +21289,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
 		GoogleMaps = __webpack_require__(19),
-		Moment = __webpack_require__(29),
+		Moment = __webpack_require__(30),
 	
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -21691,7 +21703,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 	
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
@@ -21834,7 +21846,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 	
 	    ViewController = __webpack_require__(24),
 	
@@ -21878,7 +21890,7 @@
 	'use strict';
 	
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 	
 	    ViewController = __webpack_require__(24),
 	    Utilities = __webpack_require__(26),
@@ -22102,15 +22114,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
-		Moment = __webpack_require__(29),
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
+		Moment = __webpack_require__(30),
 	
-		Config = __webpack_require__(21),
+		Config = __webpack_require__(23),
 		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 		Card = __webpack_require__(166),
 	
 		didInitialize,
@@ -22542,15 +22554,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
-		Moment = __webpack_require__(29),
+	var $ = __webpack_require__(31),
+		Moment = __webpack_require__(30),
 	
-		Config = __webpack_require__(21),
+		Config = __webpack_require__(23),
 		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 		ViewController = __webpack_require__(24),
-		Booking = __webpack_require__(161),
+		Booking = __webpack_require__(155),
 	
 		didInitialize,
 	    didRender,
@@ -22682,14 +22694,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
-		Moment = __webpack_require__(29),
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
+		Moment = __webpack_require__(30),
 	
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
 	
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -23137,7 +23149,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 		
 		ViewController = __webpack_require__(24),
 	
@@ -23181,18 +23193,18 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
-	    FB = __webpack_require__(91),
+	    FB = __webpack_require__(90),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    Utilities = __webpack_require__(26),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
-	    GearList = __webpack_require__(163),
+	    Localization = __webpack_require__(91),
+	    GearList = __webpack_require__(157),
 	    TechProfileList = __webpack_require__(164),
 	    VanList = __webpack_require__(165),
 	
@@ -23709,15 +23721,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(29),
+	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(92),
+	    Localization = __webpack_require__(91),
 	    MessagePopup = __webpack_require__(40),
 	
 	    geocoder,
@@ -24084,17 +24096,17 @@
 	'use strict';
 	
 	
-	var $ = __webpack_require__(35),
+	var $ = __webpack_require__(31),
 		GoogleMaps = __webpack_require__(19),
-		FB = __webpack_require__(91),
+		FB = __webpack_require__(90),
 		
-		Config = __webpack_require__(21),
+		Config = __webpack_require__(23),
 		Utilities = __webpack_require__(26),
 		App = __webpack_require__(20),
 		ViewController = __webpack_require__(24),
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 		User = __webpack_require__(38),
-		TechProfile = __webpack_require__(158),
+		TechProfile = __webpack_require__(154),
 	
 		paymentSuccessModalOpen = false,
 	
@@ -24438,16 +24450,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
 		GoogleMaps = __webpack_require__(19),
-		Moment = __webpack_require__(29),
+		Moment = __webpack_require__(30),
 	
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -24855,14 +24867,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-	    $ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    ViewController = __webpack_require__(24),
 	
 	    User = __webpack_require__(38),
-	    GearList = __webpack_require__(163),
+	    GearList = __webpack_require__(157),
 	    TechProfileList = __webpack_require__(164),
 	    VanList = __webpack_require__(165),
 	
@@ -25121,18 +25133,18 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(35),
-	    FB = __webpack_require__(91),
+	var $ = __webpack_require__(31),
+	    FB = __webpack_require__(90),
 	    GoogleMaps = __webpack_require__(19),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    Utilities = __webpack_require__(26),
 	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(92),
+	    Localization = __webpack_require__(91),
 	    User = __webpack_require__(38),
-	    Van = __webpack_require__(160),
+	    Van = __webpack_require__(153),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -25491,16 +25503,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
 		GoogleMaps = __webpack_require__(19),
-		Moment = __webpack_require__(29),
+		Moment = __webpack_require__(30),
 	
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(92),
+		Localization = __webpack_require__(91),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -25895,7 +25907,7 @@
 	
 		/*global define*/
 		if (true) {
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));                 // AMD
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));                 // AMD
 		} else if (typeof exports === 'object') {
 			module.exports = factory(require('moment')); // Node
 		} else {
@@ -26329,63 +26341,6 @@
 /* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * General popup object that inherits from ViewController.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(18),
-		$ = __webpack_require__(35),
-	
-		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(24),
-	
-		$popupLightbox = $('#popup-lightbox'),
-	    inherit, show, hide, setTitle;
-	
-	show = function() {
-	    $popupLightbox.removeClass('hidden');
-	    this.templateParameters.title = this.title;
-	    this.render();
-	};
-	
-	hide = function() {
-	    $popupLightbox.addClass('hidden');
-	    this.close();
-	};
-	
-	setTitle = function(title) {
-	    this.title = title;
-	};
-	
-	inherit = function(inheritOptions) {
-	    var options = {
-	        $element: $('.popup-container', $popupLightbox),
-	        title: 'Popup',
-	
-	        show: show,
-	        hide: hide,
-	        setTitle: setTitle
-	    };
-	    _.extend(options, inheritOptions);
-	
-	    return {
-	        constructor: Utilities.inherit(ViewController.constructor, options)
-	    };
-	};
-	
-	module.exports = {
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/*jslint node: true */
 	'use strict';
 	
@@ -26448,7 +26403,7 @@
 
 
 /***/ },
-/* 92 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26459,9 +26414,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Moment = __webpack_require__(29),
+	var Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(23),
 	    Model = __webpack_require__(25),
 	    XChangeRates = __webpack_require__(169),
 	    Localization,
@@ -26645,6 +26600,63 @@
 	Localization.fetch();
 	
 	module.exports = Localization;
+
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General popup object that inherits from ViewController.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
+	
+		Utilities = __webpack_require__(26),
+		ViewController = __webpack_require__(24),
+	
+		$popupLightbox = $('#popup-lightbox'),
+	    inherit, show, hide, setTitle;
+	
+	show = function() {
+	    $popupLightbox.removeClass('hidden');
+	    this.templateParameters.title = this.title;
+	    this.render();
+	};
+	
+	hide = function() {
+	    $popupLightbox.addClass('hidden');
+	    this.close();
+	};
+	
+	setTitle = function(title) {
+	    this.title = title;
+	};
+	
+	inherit = function(inheritOptions) {
+	    var options = {
+	        $element: $('.popup-container', $popupLightbox),
+	        title: 'Popup',
+	
+	        show: show,
+	        hide: hide,
+	        setTitle: setTitle
+	    };
+	    _.extend(options, inheritOptions);
+	
+	    return {
+	        constructor: Utilities.inherit(ViewController.constructor, options)
+	    };
+	};
+	
+	module.exports = {
+	    inherit: inherit
+	};
 
 
 /***/ },
@@ -27005,6 +27017,1043 @@
 /* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Defines a gear item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+		
+		Utilities = __webpack_require__(26),
+		Model = __webpack_require__(25),
+		App = __webpack_require__(20),
+		
+		didInitialize,
+	    createGear,
+	    uploadImage,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            gear_type: '',
+	            subtype: '',
+	            brand: '',
+	            model: '',
+	            description: '',
+	            images: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            delivery_price: '',
+	            delivery_distance: '',
+	            accessories: null,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null
+	        };
+	    }
+	};
+	
+	createGear = function createGear(user, callback) {
+	    var model = this,
+	        newGear = this.data,
+	        postData;
+	
+	    postData = {
+	        gear_type: newGear.gear_type,
+	        subtype: newGear.subtype,
+	        brand: newGear.brand,
+	        model: newGear.model,
+	        description: newGear.description,
+	        images: newGear.images,
+	        accessories: newGear.accessories,
+	        price_a: newGear.price_a,
+	        price_b: newGear.price_b,
+	        price_c: newGear.price_c,
+	        currency: newGear.currency,
+	        delivery_price: newGear.delivery_price,
+	        delivery_distance: newGear.delivery_distance,
+	        address: newGear.address,
+	        postal_code: newGear.postal_code,
+	        city: newGear.city,
+	        region: newGear.region,
+	        country: newGear.country,
+	        latitude: newGear.latitude,
+	        longitude: newGear.longitude,
+	        owner_id: user.data.id
+	    };
+	
+	    this.post('/gear', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	/**
+	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
+	 * @param filename: The name of the file
+	 */
+	uploadImage = function(file, filename, userID, callback) {
+	    var model = this;
+	    //Get filename and secret from backend
+	    console.log('Get filename from backend');
+	    this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error getting filename: ' + error);
+	            }
+	            return;
+	        }
+	        console.log('got filename data:');
+	        console.log(data);
+	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+	            var postData;
+	            if (error) {
+	                if (callback && typeof callback === 'function') {
+	                    callback('Error uploading file: ' + error);
+	                }
+	                return;
+	            }
+	            //Add image url to backend
+	            postData = {
+	                user_id: userID,
+	                gear_id: model.data.id,
+	                image_url: data.url
+	            };
+	            console.log('File upload success. Add url to backend:');
+	            console.log(postData);
+	            model.post('/gear/image', postData, function(error, images) {
+	                if (error) {
+	                    //TODO: In this case the image should be deleted from the server
+	                    if (callback && typeof callback === 'function') {
+	                        callback('Error uploading file: ' + error);
+	                    }
+	                    return;
+	                }
+	                console.log('Upload complete:');
+	                console.log(images);
+	                model.data.images = images.images;
+	                callback(null, data.url);
+	            });
+	        });
+	    });
+	};
+	
+	save = function(userID, callback) {
+	    var saveData = {
+	        subtype: this.data.subtype,
+	        brand: this.data.brand,
+	        model: this.data.model,
+	        description: this.data.description,
+	        images: this.data.images,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        delivery_price: this.data.delivery_price,
+	        delivery_distance: this.data.delivery_distance,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        accessories: JSON.stringify(this.data.accessories)
+	    };
+	
+	    this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/gear/' + this.data.id, function(error, gear) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, gear);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(userID, callback) {
+	    if (userID === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createGear: createGear,
+	    uploadImage: uploadImage,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a van item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+		
+		Utilities = __webpack_require__(26),
+		Model = __webpack_require__(25),
+		App = __webpack_require__(20),
+	
+		didInitialize,
+	    createVan,
+	    uploadImage,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            van_type: '',
+	            model: '',
+	            description: '',
+	            images: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            accessories: null,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null
+	        };
+	    }
+	};
+	
+	createVan = function createGear(callback) {
+	    var model = this,
+	        newVan = this.data,
+	        postData;
+	
+	    postData = {
+	        van_type: newVan.van_type,
+	        model: newVan.model,
+	        description: newVan.description,
+	        images: newVan.images,
+	        accessories: newVan.accessories,
+	        price_a: newVan.price_a,
+	        price_b: newVan.price_b,
+	        price_c: newVan.price_c,
+	        currency: newVan.currency,
+	        address: newVan.address,
+	        postal_code: newVan.postal_code,
+	        city: newVan.city,
+	        region: newVan.region,
+	        country: newVan.country,
+	        latitude: newVan.latitude,
+	        longitude: newVan.longitude,
+	        owner_id: App.user.data.id
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	/**
+	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
+	 * @param filename: The name of the file
+	 */
+	uploadImage = function(file, filename, callback) {
+	    var model = this;
+	    //Get filename and secret from backend
+	    console.log('Get filename from backend');
+	    this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error getting filename: ' + error);
+	            }
+	            return;
+	        }
+	        console.log('got filename data:');
+	        console.log(data);
+	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+	            var postData;
+	            if (error) {
+	                if (callback && typeof callback === 'function') {
+	                    callback('Error uploading file: ' + error);
+	                }
+	                return;
+	            }
+	            //Add image url to backend
+	            postData = {
+	                image_url: data.url
+	            };
+	            console.log('File upload success. Add url to backend:');
+	            console.log(postData);
+	            model.post('/users/' + App.user.data.id + '/vans/' + model.data.id + '/image', postData, function(error, images) {
+	                if (error) {
+	                    //TODO: In this case the image should be deleted from the server
+	                    if (callback && typeof callback === 'function') {
+	                        callback('Error uploading file: ' + error);
+	                    }
+	                    return;
+	                }
+	                console.log('Upload complete:');
+	                console.log(images);
+	                model.data.images = images.images;
+	                callback(null, data.url);
+	            });
+	        });
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        subtype: this.data.subtype,
+	        brand: this.data.brand,
+	        model: this.data.model,
+	        description: this.data.description,
+	        images: this.data.images,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        delivery_price: this.data.delivery_price,
+	        delivery_distance: this.data.delivery_distance,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        accessories: JSON.stringify(this.data.accessories)
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/vans/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/vans/' + this.data.id, function(error, vans) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, vans);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createVan: createVan,
+	    uploadImage: uploadImage,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 154 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(15),
+	
+	    App = __webpack_require__(20),
+	    Model = __webpack_require__(25),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 155 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a booking item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+	    Moment = __webpack_require__(30),
+	
+	    Model = __webpack_require__(25),
+	    App = __webpack_require__(20),
+	
+	    didInitialize,
+	    createBooking,
+	    getBookingInfo,
+	    update;
+	
+	didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = {
+	            //The non-null id property determines the booking type
+	            gear_id: null,
+	            van_id: null,
+	            techprofile_id: null,
+	            item_name: '', //Displayed name of the booked item
+	            price_a: 0,
+	            price_b: 0,
+	            price_c: 0,
+	            currency: 0,
+	            start_time: null,
+	            end_time: null,
+	            cardId: null,
+	            returnURL: null
+	        };
+	    }
+	};
+	
+	// POST: /users/:user_id/gear/:gear_id/bookings
+	createBooking = function(cardId, callback) {
+	    var model = this,
+	        newBooking = this.data,
+	        url,
+	        postData;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
+	    }
+	    if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
+	    } else {
+	        url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';
+	    }
+	
+	    postData = {
+	        start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+	        end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+	        cardId: cardId,
+	        returnURL: window.location.href
+	    };
+	
+	    this.post(url, postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        callback(null);
+	    });
+	};
+	
+	getBookingInfo = function(userID, callback) {
+	    var model = this,
+	        url;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+	    } else {
+	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+	    }
+	
+	    this.get(url, function(error, booking) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, booking);
+	
+	        model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+	        model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+	
+	        callback(null);
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this,
+	        url, updateData;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+	    } else {
+	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+	    }
+	
+	    updateData = {
+	        booking_status: model.data.booking_status,
+	        preauth_id: model.data.preauth_id
+	    };
+	
+	    this.put(url, updateData, function(error, booking) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	
+	        _.extend(model.data, booking);
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createBooking: createBooking,
+	    getBookingInfo: getBookingInfo,
+	    update: update
+	});
+
+
+/***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Popup that requests a time.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var $ = __webpack_require__(31),
+	
+		PopupController = __webpack_require__(92),
+		SelectTimePopupTemplate = __webpack_require__(171),
+	
+		SelectTimePopup,
+	
+	    wasClosed,
+	    didRender,
+	    getSelectedTime,
+	    getWasClosed,
+	
+	    handleCancel,
+	    handleConfirm;
+	
+	didRender = function() {
+	    wasClosed = false;
+	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+	    this.setupEvent('click', '.confirm-btn', this, this.handleConfirm);
+	};
+	
+	getSelectedTime = function() {
+	    return {
+	        hours: parseInt($('#selecttimepopup-hours', this.$element).val(), 10),
+	        minutes: parseInt($('#selecttimepopup-minutes', this.$element).val(), 10)
+	    };
+	};
+	
+	getWasClosed = function() {
+	    return wasClosed;
+	};
+	
+	handleConfirm = function(event) {
+	    var view = event.data;
+	    wasClosed = false;
+	    view.hide();
+	};
+	
+	handleCancel = function(event) {
+	    var view = event.data;
+	    wasClosed = true;
+	    $('#selecttimepopup-hours', this.$element).val('12');
+	    $('#selecttimepopup-minutes', this.$element).val('00');
+	    view.hide();
+	};
+	
+	SelectTimePopup = PopupController.inherit({
+	    template: SelectTimePopupTemplate,
+	
+	    didRender: didRender,
+	    getSelectedTime: getSelectedTime,
+	    getWasClosed: getWasClosed,
+	    handleConfirm: handleConfirm,
+	    handleCancel: handleCancel
+	});
+	
+	
+	module.exports = SelectTimePopup;
+
+
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a list of gear.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+	
+		Model = __webpack_require__(25),
+		Gear = __webpack_require__(152),
+		
+		didInitialize,
+	
+	    search,
+	    getUserGear,
+	    getUserRentals,
+	    getUserReservations,
+	    getGearItem,
+	    isEmpty,
+	    updateGearItem,
+	    loadFromArray;
+	
+	didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	search = function(location, gear, daterange, callback) {
+	    var view = this;
+	
+	    if (location === null || location === '') {
+	        location = 'all';
+	    }
+	    this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(searchResults);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserGear = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/gear', function(error, userGear) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userGear);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserRentals = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userRentals);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserReservations = function(userID, callback) {
+	    var view = this;
+	
+	    view.get('/users/' + userID + '/gearreservations', function(error, userReservations) {
+	        if (error) {
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userReservations);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getGearItem = function(property, key) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].data[property] === key) {
+	            return this.data[i];
+	        }
+	    }
+	    return null;
+	};
+	
+	isEmpty = function() {
+	    return this.data.length <= 0;
+	};
+	
+	updateGearItem = function(gearItem) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].id === gearItem.data.id) {
+	            this.data[i] = gearItem.data;
+	            return;
+	        }
+	    }
+	};
+	
+	loadFromArray = function(gearArray) {
+	    var i, gearItem;
+	
+	    this.data = [];
+	
+	    for (i = 0; i < gearArray.length; i++) {
+	        gearItem = new Gear.constructor({
+	            rootURL: this.rootURL
+	        });
+	        gearItem.initialize();
+	        _.extend(gearItem.data, gearArray[i]);
+	        this.data.push(gearItem);
+	    }
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	
+	    search: search,
+	    getUserGear: getUserGear,
+	    getUserRentals: getUserRentals,
+	    getUserReservations: getUserReservations,
+	    getGearItem: getGearItem,
+	    isEmpty: isEmpty,
+	    updateGearItem: updateGearItem,
+	    loadFromArray: loadFromArray
+	});
+
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
 	module.exports = {
 	
 	  /**
@@ -27063,7 +28112,7 @@
 
 
 /***/ },
-/* 153 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -27073,7 +28122,7 @@
 	 * MIT Licensed
 	 */
 	
-	var config = __webpack_require__(152);
+	var config = __webpack_require__(158);
 	
 	module.exports = function (_chai, util) {
 	  /*!
@@ -27200,7 +28249,7 @@
 
 
 /***/ },
-/* 154 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -28740,7 +29789,7 @@
 
 
 /***/ },
-/* 155 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -28779,7 +29828,7 @@
 
 
 /***/ },
-/* 156 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -28883,7 +29932,7 @@
 
 
 /***/ },
-/* 157 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -30152,1043 +31201,6 @@
 
 
 /***/ },
-/* 158 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(18),
-	
-	    App = __webpack_require__(20),
-	    Model = __webpack_require__(25),
-	
-	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
-	        };
-	    }
-	};
-	
-	createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
-/* 159 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a gear item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(18),
-		
-		Utilities = __webpack_require__(26),
-		Model = __webpack_require__(25),
-		App = __webpack_require__(20),
-		
-		didInitialize,
-	    createGear,
-	    uploadImage,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            gear_type: '',
-	            subtype: '',
-	            brand: '',
-	            model: '',
-	            description: '',
-	            images: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            delivery_price: '',
-	            delivery_distance: '',
-	            accessories: null,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null
-	        };
-	    }
-	};
-	
-	createGear = function createGear(user, callback) {
-	    var model = this,
-	        newGear = this.data,
-	        postData;
-	
-	    postData = {
-	        gear_type: newGear.gear_type,
-	        subtype: newGear.subtype,
-	        brand: newGear.brand,
-	        model: newGear.model,
-	        description: newGear.description,
-	        images: newGear.images,
-	        accessories: newGear.accessories,
-	        price_a: newGear.price_a,
-	        price_b: newGear.price_b,
-	        price_c: newGear.price_c,
-	        currency: newGear.currency,
-	        delivery_price: newGear.delivery_price,
-	        delivery_distance: newGear.delivery_distance,
-	        address: newGear.address,
-	        postal_code: newGear.postal_code,
-	        city: newGear.city,
-	        region: newGear.region,
-	        country: newGear.country,
-	        latitude: newGear.latitude,
-	        longitude: newGear.longitude,
-	        owner_id: user.data.id
-	    };
-	
-	    this.post('/gear', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	/**
-	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
-	 * @param filename: The name of the file
-	 */
-	uploadImage = function(file, filename, userID, callback) {
-	    var model = this;
-	    //Get filename and secret from backend
-	    console.log('Get filename from backend');
-	    this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error getting filename: ' + error);
-	            }
-	            return;
-	        }
-	        console.log('got filename data:');
-	        console.log(data);
-	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
-	            var postData;
-	            if (error) {
-	                if (callback && typeof callback === 'function') {
-	                    callback('Error uploading file: ' + error);
-	                }
-	                return;
-	            }
-	            //Add image url to backend
-	            postData = {
-	                user_id: userID,
-	                gear_id: model.data.id,
-	                image_url: data.url
-	            };
-	            console.log('File upload success. Add url to backend:');
-	            console.log(postData);
-	            model.post('/gear/image', postData, function(error, images) {
-	                if (error) {
-	                    //TODO: In this case the image should be deleted from the server
-	                    if (callback && typeof callback === 'function') {
-	                        callback('Error uploading file: ' + error);
-	                    }
-	                    return;
-	                }
-	                console.log('Upload complete:');
-	                console.log(images);
-	                model.data.images = images.images;
-	                callback(null, data.url);
-	            });
-	        });
-	    });
-	};
-	
-	save = function(userID, callback) {
-	    var saveData = {
-	        subtype: this.data.subtype,
-	        brand: this.data.brand,
-	        model: this.data.model,
-	        description: this.data.description,
-	        images: this.data.images,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        delivery_price: this.data.delivery_price,
-	        delivery_distance: this.data.delivery_distance,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        accessories: JSON.stringify(this.data.accessories)
-	    };
-	
-	    this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/gear/' + this.data.id, function(error, gear) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, gear);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(userID, callback) {
-	    if (userID === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createGear: createGear,
-	    uploadImage: uploadImage,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
-/* 160 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a van item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(18),
-		
-		Utilities = __webpack_require__(26),
-		Model = __webpack_require__(25),
-		App = __webpack_require__(20),
-	
-		didInitialize,
-	    createVan,
-	    uploadImage,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            van_type: '',
-	            model: '',
-	            description: '',
-	            images: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            accessories: null,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null
-	        };
-	    }
-	};
-	
-	createVan = function createGear(callback) {
-	    var model = this,
-	        newVan = this.data,
-	        postData;
-	
-	    postData = {
-	        van_type: newVan.van_type,
-	        model: newVan.model,
-	        description: newVan.description,
-	        images: newVan.images,
-	        accessories: newVan.accessories,
-	        price_a: newVan.price_a,
-	        price_b: newVan.price_b,
-	        price_c: newVan.price_c,
-	        currency: newVan.currency,
-	        address: newVan.address,
-	        postal_code: newVan.postal_code,
-	        city: newVan.city,
-	        region: newVan.region,
-	        country: newVan.country,
-	        latitude: newVan.latitude,
-	        longitude: newVan.longitude,
-	        owner_id: App.user.data.id
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	/**
-	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
-	 * @param filename: The name of the file
-	 */
-	uploadImage = function(file, filename, callback) {
-	    var model = this;
-	    //Get filename and secret from backend
-	    console.log('Get filename from backend');
-	    this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error getting filename: ' + error);
-	            }
-	            return;
-	        }
-	        console.log('got filename data:');
-	        console.log(data);
-	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
-	            var postData;
-	            if (error) {
-	                if (callback && typeof callback === 'function') {
-	                    callback('Error uploading file: ' + error);
-	                }
-	                return;
-	            }
-	            //Add image url to backend
-	            postData = {
-	                image_url: data.url
-	            };
-	            console.log('File upload success. Add url to backend:');
-	            console.log(postData);
-	            model.post('/users/' + App.user.data.id + '/vans/' + model.data.id + '/image', postData, function(error, images) {
-	                if (error) {
-	                    //TODO: In this case the image should be deleted from the server
-	                    if (callback && typeof callback === 'function') {
-	                        callback('Error uploading file: ' + error);
-	                    }
-	                    return;
-	                }
-	                console.log('Upload complete:');
-	                console.log(images);
-	                model.data.images = images.images;
-	                callback(null, data.url);
-	            });
-	        });
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        subtype: this.data.subtype,
-	        brand: this.data.brand,
-	        model: this.data.model,
-	        description: this.data.description,
-	        images: this.data.images,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        delivery_price: this.data.delivery_price,
-	        delivery_distance: this.data.delivery_distance,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        accessories: JSON.stringify(this.data.accessories)
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/vans/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/vans/' + this.data.id, function(error, vans) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, vans);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createVan: createVan,
-	    uploadImage: uploadImage,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
-/* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a booking item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(18),
-	    Moment = __webpack_require__(29),
-	
-	    Model = __webpack_require__(25),
-	    App = __webpack_require__(20),
-	
-	    didInitialize,
-	    createBooking,
-	    getBookingInfo,
-	    update;
-	
-	didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = {
-	            //The non-null id property determines the booking type
-	            gear_id: null,
-	            van_id: null,
-	            techprofile_id: null,
-	            item_name: '', //Displayed name of the booked item
-	            price_a: 0,
-	            price_b: 0,
-	            price_c: 0,
-	            currency: 0,
-	            start_time: null,
-	            end_time: null,
-	            cardId: null,
-	            returnURL: null
-	        };
-	    }
-	};
-	
-	// POST: /users/:user_id/gear/:gear_id/bookings
-	createBooking = function(cardId, callback) {
-	    var model = this,
-	        newBooking = this.data,
-	        url,
-	        postData;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
-	    }
-	    if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
-	    } else {
-	        url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';
-	    }
-	
-	    postData = {
-	        start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-	        end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-	        cardId: cardId,
-	        returnURL: window.location.href
-	    };
-	
-	    this.post(url, postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        callback(null);
-	    });
-	};
-	
-	getBookingInfo = function(userID, callback) {
-	    var model = this,
-	        url;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
-	    } else {
-	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
-	    }
-	
-	    this.get(url, function(error, booking) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, booking);
-	
-	        model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
-	        model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
-	
-	        callback(null);
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this,
-	        url, updateData;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
-	    } else {
-	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
-	    }
-	
-	    updateData = {
-	        booking_status: model.data.booking_status,
-	        preauth_id: model.data.preauth_id
-	    };
-	
-	    this.put(url, updateData, function(error, booking) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	
-	        _.extend(model.data, booking);
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createBooking: createBooking,
-	    getBookingInfo: getBookingInfo,
-	    update: update
-	});
-
-
-/***/ },
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Popup that requests a time.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var $ = __webpack_require__(35),
-	
-		PopupController = __webpack_require__(90),
-		SelectTimePopupTemplate = __webpack_require__(172),
-	
-		SelectTimePopup,
-	
-	    wasClosed,
-	    didRender,
-	    getSelectedTime,
-	    getWasClosed,
-	
-	    handleCancel,
-	    handleConfirm;
-	
-	didRender = function() {
-	    wasClosed = false;
-	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
-	    this.setupEvent('click', '.confirm-btn', this, this.handleConfirm);
-	};
-	
-	getSelectedTime = function() {
-	    return {
-	        hours: parseInt($('#selecttimepopup-hours', this.$element).val(), 10),
-	        minutes: parseInt($('#selecttimepopup-minutes', this.$element).val(), 10)
-	    };
-	};
-	
-	getWasClosed = function() {
-	    return wasClosed;
-	};
-	
-	handleConfirm = function(event) {
-	    var view = event.data;
-	    wasClosed = false;
-	    view.hide();
-	};
-	
-	handleCancel = function(event) {
-	    var view = event.data;
-	    wasClosed = true;
-	    $('#selecttimepopup-hours', this.$element).val('12');
-	    $('#selecttimepopup-minutes', this.$element).val('00');
-	    view.hide();
-	};
-	
-	SelectTimePopup = PopupController.inherit({
-	    template: SelectTimePopupTemplate,
-	
-	    didRender: didRender,
-	    getSelectedTime: getSelectedTime,
-	    getWasClosed: getWasClosed,
-	    handleConfirm: handleConfirm,
-	    handleCancel: handleCancel
-	});
-	
-	
-	module.exports = SelectTimePopup;
-
-
-/***/ },
-/* 163 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a list of gear.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(18),
-	
-		Model = __webpack_require__(25),
-		Gear = __webpack_require__(159),
-		
-		didInitialize,
-	
-	    search,
-	    getUserGear,
-	    getUserRentals,
-	    getUserReservations,
-	    getGearItem,
-	    isEmpty,
-	    updateGearItem,
-	    loadFromArray;
-	
-	didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	search = function(location, gear, daterange, callback) {
-	    var view = this;
-	
-	    if (location === null || location === '') {
-	        location = 'all';
-	    }
-	    this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(searchResults);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserGear = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/gear', function(error, userGear) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userGear);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserRentals = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userRentals);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserReservations = function(userID, callback) {
-	    var view = this;
-	
-	    view.get('/users/' + userID + '/gearreservations', function(error, userReservations) {
-	        if (error) {
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userReservations);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getGearItem = function(property, key) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].data[property] === key) {
-	            return this.data[i];
-	        }
-	    }
-	    return null;
-	};
-	
-	isEmpty = function() {
-	    return this.data.length <= 0;
-	};
-	
-	updateGearItem = function(gearItem) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].id === gearItem.data.id) {
-	            this.data[i] = gearItem.data;
-	            return;
-	        }
-	    }
-	};
-	
-	loadFromArray = function(gearArray) {
-	    var i, gearItem;
-	
-	    this.data = [];
-	
-	    for (i = 0; i < gearArray.length; i++) {
-	        gearItem = new Gear.constructor({
-	            rootURL: this.rootURL
-	        });
-	        gearItem.initialize();
-	        _.extend(gearItem.data, gearArray[i]);
-	        this.data.push(gearItem);
-	    }
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	
-	    search: search,
-	    getUserGear: getUserGear,
-	    getUserRentals: getUserRentals,
-	    getUserReservations: getUserReservations,
-	    getGearItem: getGearItem,
-	    isEmpty: isEmpty,
-	    updateGearItem: updateGearItem,
-	    loadFromArray: loadFromArray
-	});
-
-
-/***/ },
 /* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31200,9 +31212,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
+	var _ = __webpack_require__(15),
 		Model = __webpack_require__(25),
-		TechProfile = __webpack_require__(158),
+		TechProfile = __webpack_require__(154),
 		
 		didInitialize,
 	
@@ -31342,10 +31354,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(18),
+	var _ = __webpack_require__(15),
 	
 	    Model = __webpack_require__(25),
-	    Van = __webpack_require__(160),
+	    Van = __webpack_require__(153),
 	
 	    didInitialize,
 	
@@ -31487,7 +31499,7 @@
 	
 	var mangoPay = __webpack_require__(191),
 		
-		Config = __webpack_require__(21),
+		Config = __webpack_require__(23),
 		Model = __webpack_require__(25),
 	
 	    didInitialize,
@@ -31534,6 +31546,138 @@
 
 /***/ },
 /* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*!
+	 * chai
+	 * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
+	 * MIT Licensed
+	 */
+	
+	/*!
+	 * Main exports
+	 */
+	
+	var exports = module.exports = {};
+	
+	/*!
+	 * test utility
+	 */
+	
+	exports.test = __webpack_require__(173);
+	
+	/*!
+	 * type utility
+	 */
+	
+	exports.type = __webpack_require__(174);
+	
+	/*!
+	 * message utility
+	 */
+	
+	exports.getMessage = __webpack_require__(175);
+	
+	/*!
+	 * actual utility
+	 */
+	
+	exports.getActual = __webpack_require__(176);
+	
+	/*!
+	 * Inspect util
+	 */
+	
+	exports.inspect = __webpack_require__(177);
+	
+	/*!
+	 * Object Display util
+	 */
+	
+	exports.objDisplay = __webpack_require__(178);
+	
+	/*!
+	 * Flag utility
+	 */
+	
+	exports.flag = __webpack_require__(179);
+	
+	/*!
+	 * Flag transferring utility
+	 */
+	
+	exports.transferFlags = __webpack_require__(180);
+	
+	/*!
+	 * Deep equal utility
+	 */
+	
+	exports.eql = __webpack_require__(192);
+	
+	/*!
+	 * Deep path value
+	 */
+	
+	exports.getPathValue = __webpack_require__(181);
+	
+	/*!
+	 * Deep path info
+	 */
+	
+	exports.getPathInfo = __webpack_require__(182);
+	
+	/*!
+	 * Check if a property exists
+	 */
+	
+	exports.hasProperty = __webpack_require__(183);
+	
+	/*!
+	 * Function name
+	 */
+	
+	exports.getName = __webpack_require__(184);
+	
+	/*!
+	 * add Property
+	 */
+	
+	exports.addProperty = __webpack_require__(185);
+	
+	/*!
+	 * add Method
+	 */
+	
+	exports.addMethod = __webpack_require__(186);
+	
+	/*!
+	 * overwrite Property
+	 */
+	
+	exports.overwriteProperty = __webpack_require__(187);
+	
+	/*!
+	 * overwrite Method
+	 */
+	
+	exports.overwriteMethod = __webpack_require__(188);
+	
+	/*!
+	 * Add a chainable method
+	 */
+	
+	exports.addChainableMethod = __webpack_require__(189);
+	
+	/*!
+	 * Overwrite chainable method
+	 */
+	
+	exports.overwriteChainableMethod = __webpack_require__(190);
+	
+
+
+/***/ },
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -32127,138 +32271,6 @@
 	}
 
 /***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*!
-	 * chai
-	 * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
-	 * MIT Licensed
-	 */
-	
-	/*!
-	 * Main exports
-	 */
-	
-	var exports = module.exports = {};
-	
-	/*!
-	 * test utility
-	 */
-	
-	exports.test = __webpack_require__(173);
-	
-	/*!
-	 * type utility
-	 */
-	
-	exports.type = __webpack_require__(174);
-	
-	/*!
-	 * message utility
-	 */
-	
-	exports.getMessage = __webpack_require__(175);
-	
-	/*!
-	 * actual utility
-	 */
-	
-	exports.getActual = __webpack_require__(176);
-	
-	/*!
-	 * Inspect util
-	 */
-	
-	exports.inspect = __webpack_require__(177);
-	
-	/*!
-	 * Object Display util
-	 */
-	
-	exports.objDisplay = __webpack_require__(178);
-	
-	/*!
-	 * Flag utility
-	 */
-	
-	exports.flag = __webpack_require__(179);
-	
-	/*!
-	 * Flag transferring utility
-	 */
-	
-	exports.transferFlags = __webpack_require__(180);
-	
-	/*!
-	 * Deep equal utility
-	 */
-	
-	exports.eql = __webpack_require__(192);
-	
-	/*!
-	 * Deep path value
-	 */
-	
-	exports.getPathValue = __webpack_require__(181);
-	
-	/*!
-	 * Deep path info
-	 */
-	
-	exports.getPathInfo = __webpack_require__(182);
-	
-	/*!
-	 * Check if a property exists
-	 */
-	
-	exports.hasProperty = __webpack_require__(183);
-	
-	/*!
-	 * Function name
-	 */
-	
-	exports.getName = __webpack_require__(184);
-	
-	/*!
-	 * add Property
-	 */
-	
-	exports.addProperty = __webpack_require__(185);
-	
-	/*!
-	 * add Method
-	 */
-	
-	exports.addMethod = __webpack_require__(186);
-	
-	/*!
-	 * overwrite Property
-	 */
-	
-	exports.overwriteProperty = __webpack_require__(187);
-	
-	/*!
-	 * overwrite Method
-	 */
-	
-	exports.overwriteMethod = __webpack_require__(188);
-	
-	/*!
-	 * Add a chainable method
-	 */
-	
-	exports.addChainableMethod = __webpack_require__(189);
-	
-	/*!
-	 * Overwrite chainable method
-	 */
-	
-	exports.overwriteChainableMethod = __webpack_require__(190);
-	
-
-
-/***/ },
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32270,7 +32282,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Config = __webpack_require__(21),
+	var Config = __webpack_require__(23),
 		Model = __webpack_require__(25),
 	
 		currencies = {},
@@ -32421,6 +32433,12 @@
 
 /***/ },
 /* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-center\">\n\t\t\t<h2>{{title}}</h2>\n\t\t</div>\n\t</div>\n\t<form onsubmit=\"return false;\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Hours:</p></div>\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Minutes:</p></div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 text-center selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-hours\">\n\t\t\t\t\t<option>00</option>\n\t\t\t\t\t<option>01</option>\n\t\t\t\t\t<option>02</option>\n\t\t\t\t\t<option>03</option>\n\t\t\t\t\t<option>04</option>\n\t\t\t\t\t<option>05</option>\n\t\t\t\t\t<option>06</option>\n\t\t\t\t\t<option>07</option>\n\t\t\t\t\t<option>08</option>\n\t\t\t\t\t<option>09</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>11</option>\n\t\t\t\t\t<option selected=\"\">12</option>\n\t\t\t\t\t<option>13</option>\n\t\t\t\t\t<option>14</option>\n\t\t\t\t\t<option>15</option>\n\t\t\t\t\t<option>16</option>\n\t\t\t\t\t<option>17</option>\n\t\t\t\t\t<option>18</option>\n\t\t\t\t\t<option>19</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>21</option>\n\t\t\t\t\t<option>22</option>\n\t\t\t\t\t<option>23</option>\n\t\t\t\t</select> \n\t\t\t</div>\n\t\t\n\t\t\t<div class=\"col-xs-6 selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-minutes\">\n\t\t\t\t\t<option selected=\"\">00</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>30</option>\n\t\t\t\t\t<option>40</option>\n\t\t\t\t\t<option>50</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\t\t\n\t\t\t<div class=\"col-xs-12\">\n\t\t        <div class=\"col-xs-offset-1 col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n\t\t        </div>\n\t\t        <div class=\"col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square confirm-btn\">Confirm <i class=\"fa fa-check-circle\"></i></button>\n\t\t        </div>\n\t\t      </div>\n\t\t    </div>\n\t\t</div>\n\t</form>\n</div>";
+
+/***/ },
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {//! moment.js
@@ -35470,12 +35488,6 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(276)(module)))
 
 /***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-center\">\n\t\t\t<h2>{{title}}</h2>\n\t\t</div>\n\t</div>\n\t<form onsubmit=\"return false;\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Hours:</p></div>\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Minutes:</p></div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 text-center selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-hours\">\n\t\t\t\t\t<option>00</option>\n\t\t\t\t\t<option>01</option>\n\t\t\t\t\t<option>02</option>\n\t\t\t\t\t<option>03</option>\n\t\t\t\t\t<option>04</option>\n\t\t\t\t\t<option>05</option>\n\t\t\t\t\t<option>06</option>\n\t\t\t\t\t<option>07</option>\n\t\t\t\t\t<option>08</option>\n\t\t\t\t\t<option>09</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>11</option>\n\t\t\t\t\t<option selected=\"\">12</option>\n\t\t\t\t\t<option>13</option>\n\t\t\t\t\t<option>14</option>\n\t\t\t\t\t<option>15</option>\n\t\t\t\t\t<option>16</option>\n\t\t\t\t\t<option>17</option>\n\t\t\t\t\t<option>18</option>\n\t\t\t\t\t<option>19</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>21</option>\n\t\t\t\t\t<option>22</option>\n\t\t\t\t\t<option>23</option>\n\t\t\t\t</select> \n\t\t\t</div>\n\t\t\n\t\t\t<div class=\"col-xs-6 selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-minutes\">\n\t\t\t\t\t<option selected=\"\">00</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>30</option>\n\t\t\t\t\t<option>40</option>\n\t\t\t\t\t<option>50</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\t\t\n\t\t\t<div class=\"col-xs-12\">\n\t\t        <div class=\"col-xs-offset-1 col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n\t\t        </div>\n\t\t        <div class=\"col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square confirm-btn\">Confirm <i class=\"fa fa-check-circle\"></i></button>\n\t\t        </div>\n\t\t      </div>\n\t\t    </div>\n\t\t</div>\n\t</form>\n</div>";
-
-/***/ },
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -35992,7 +36004,7 @@
 	 */
 	
 	var inspect = __webpack_require__(177);
-	var config = __webpack_require__(152);
+	var config = __webpack_require__(158);
 	
 	/**
 	 * ### .objDisplay (object)
@@ -36434,7 +36446,7 @@
 	 * MIT Licensed
 	 */
 	
-	var config = __webpack_require__(152);
+	var config = __webpack_require__(158);
 	
 	/**
 	 * ### .addMethod (ctx, name, method)
@@ -36606,7 +36618,7 @@
 	
 	var transferFlags = __webpack_require__(180);
 	var flag = __webpack_require__(179);
-	var config = __webpack_require__(152);
+	var config = __webpack_require__(158);
 	
 	/*!
 	 * Module variables
@@ -37044,7 +37056,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37122,7 +37134,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37184,7 +37196,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37290,7 +37302,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37354,7 +37366,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37492,7 +37504,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37607,7 +37619,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37765,7 +37777,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37859,7 +37871,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37976,7 +37988,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38090,7 +38102,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38206,7 +38218,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38351,7 +38363,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38434,7 +38446,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38597,7 +38609,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38664,7 +38676,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38749,7 +38761,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38815,7 +38827,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38894,7 +38906,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38972,7 +38984,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39071,7 +39083,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39142,7 +39154,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39209,7 +39221,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39282,7 +39294,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39357,7 +39369,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39441,7 +39453,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39524,7 +39536,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39592,7 +39604,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39701,7 +39713,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39814,7 +39826,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39878,7 +39890,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39940,7 +39952,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40006,7 +40018,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40081,7 +40093,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40162,7 +40174,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40246,7 +40258,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40375,7 +40387,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40520,7 +40532,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40637,7 +40649,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40762,7 +40774,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40848,7 +40860,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40981,7 +40993,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41054,7 +41066,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41123,7 +41135,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41238,7 +41250,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41303,7 +41315,7 @@
 	// - Jeeeyul Lee <jeeeyul@gmail.com>
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41375,7 +41387,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41516,7 +41528,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41642,7 +41654,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41727,7 +41739,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41821,7 +41833,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41896,7 +41908,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42022,7 +42034,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42108,7 +42120,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42204,7 +42216,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42268,7 +42280,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42395,7 +42407,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42470,7 +42482,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42534,7 +42546,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42640,7 +42652,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42704,7 +42716,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42773,7 +42785,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42852,7 +42864,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43034,7 +43046,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43197,7 +43209,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43351,7 +43363,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43422,7 +43434,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43535,7 +43547,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43648,7 +43660,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43719,7 +43731,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43855,7 +43867,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43924,7 +43936,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43991,7 +44003,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44090,7 +44102,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44152,7 +44164,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44215,7 +44227,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44383,7 +44395,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44445,7 +44457,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44516,7 +44528,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44646,7 +44658,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {

@@ -3,8 +3,6 @@
 #Add node modules to PATH
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
-git stash -q --keep-index
-
 #Build app
 cd app/js
 webpack
@@ -13,8 +11,15 @@ webpack
 cd ../test/js
 webpack
 
+#Stage build
+cd ../../../
+git add --refresh -A
+git add -A
+
+git stash -q --keep-index
+
 #Run test
-cd ..
+cd app/test
 mocha-phantomjs ./index.html
 RETVAL=$?
 cd ../../
