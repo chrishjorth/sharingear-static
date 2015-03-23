@@ -6,8 +6,8 @@
 'use strict';
 
 define(
-	['underscore', 'jquery', 'config', 'router', 'utilities', 'models/user', 'models/contentclassification', 'models/localization'],
-	function(_, $, Config, Router, Utilities, User, ContentClassification) {
+	['underscore', 'jquery', 'config', 'router', 'utilities', 'models/user', 'models/contentclassification', 'models/localization','popups/messagepopup'],
+	function(_, $, Config, Router, Utilities, User, ContentClassification, Localization, MessagePopup) {
 		var App,
 
 			run,
@@ -124,6 +124,18 @@ define(
 				});
 
 				console.log('Sharingear loaded and ready.');
+
+				if (!window.history.pushState) {
+				
+				//show message if pushState is not defined
+					var messagePopup = new MessagePopup.constructor(),
+					message = "Your browser is outdated and doesn't support some important features. Please dowload the latest version of your browser of preference.";
+					
+					messagePopup.initialize();
+					messagePopup.show();
+					messagePopup.setMessage(message);
+				
+				}
 
 				if(_.isFunction(callback)) {
 					callback();
