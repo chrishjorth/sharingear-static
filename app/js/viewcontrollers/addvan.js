@@ -513,7 +513,9 @@ renderAvailability = function() {
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
-        passedData: view.newVan
+        passedData: {
+            van: view.newVan
+        }
     });
     view.calendarVC.initialize();
     view.newVan.getAvailability(function(error, result) {

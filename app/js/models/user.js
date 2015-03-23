@@ -47,8 +47,6 @@ didInitialize = function() {
             time_zone: 'UTC'
         };
     }
-    console.log('user');
-    console.log(this.data);
 };
 
 getLoginStatus = function(callback) {
@@ -60,7 +58,6 @@ getLoginStatus = function(callback) {
         return;
     }
     FB.getLoginStatus(function(response) {
-        //console.log(response);
         user.fbStatus = response.status;
         if (callback && typeof callback === 'function') {
             callback(response);
@@ -133,8 +130,6 @@ loginToBackend = function(FBResponse, callback) {
         if (user.data === null) {
             user.data = {};
         }
-        console.log('LOGGED IN!');
-        console.log(data);
         _.extend(user.data, data);
 
         //Enable Google Analytics user tracking
@@ -157,8 +152,6 @@ fetch = function(callback) {
             callback(error);
             return;
         }
-        console.log('GOT DATA');
-        console.log(data);
         _.extend(user.data, data);
         Localization.setCurrentTimeZone(user.data.time_zone);
         callback(null);
@@ -172,8 +165,6 @@ update = function(callback) {
             callback('Error updating user: ' + error);
             return;
         }
-        console.log('GOT UPDATE');
-        console.log(data);
         _.extend(user.data, data);
         Localization.setCurrentTimeZone(user.data.time_zone);
         callback(null);
@@ -226,8 +217,6 @@ getPublicInfo = function(callback) {
             callback(error);
             return;
         }
-        console.log('GOT PUB INFO');
-        console.log(user);
         _.extend(model.data, user);
         callback(null);
     });

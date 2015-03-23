@@ -438,7 +438,9 @@ renderAvailability = function() {
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
-        passedData: view.newTechProfile
+        passedData: {
+            technician: view.newTechProfile
+        }
     });
     view.calendarVC.initialize();
     view.newTechProfile.getAvailability(function(error, result) {

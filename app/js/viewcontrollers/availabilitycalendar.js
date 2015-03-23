@@ -8,7 +8,7 @@
 
 var $ = require('jquery'),
     Moment = require('moment-timezone'),
-    
+
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
 
@@ -41,7 +41,8 @@ var $ = require('jquery'),
     getAlwaysFlag;
 
 didInitialize = function() {
-    var view = this;
+    var view = this,
+        handleAvailability;
 
     Moment.locale('en-custom', {
         week: {
@@ -50,12 +51,14 @@ didInitialize = function() {
         }
     });
 
-    this.gear = this.passedData;
+    this.gear = this.passedData.gear;
+    this.technician = this.passedData.technician;
+    this.van = this.passedData.van;
     this.shownMoment = new Moment.tz(Localization.getCurrentTimeZone());
     this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
     this.alwaysFlag = 0;
 
-    this.gear.getAvailability(App.user.data.id, function(error, result) {
+    handleAvailability = function(error, result) {
         var availabilityArray = result.availabilityArray,
             i, startMoment, endMoment;
 
@@ -81,7 +84,15 @@ didInitialize = function() {
         //console.log(view.alwaysFlag);
         //console.log(view.selections);
         view.renderSelections();
-    });
+    };
+
+    if (this.gear) {
+        this.gear.getAvailability(App.user.data.id, handleAvailability);
+    } else if (this.technician) {
+        this.technician.getAvailability(handleAvailability);
+    } else {
+        this.van.getAvailability(handleAvailability);
+    }
 };
 
 didRender = function() {

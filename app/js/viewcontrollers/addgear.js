@@ -601,7 +601,9 @@ renderAvailability = function() {
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
-        passedData: view.newGear
+        passedData: {
+            gear: view.newGear
+        }
     });
     view.calendarVC.initialize();
     view.newGear.getAvailability(App.user.data.id, function(error, result) {
