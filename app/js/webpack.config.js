@@ -1,12 +1,21 @@
 /*jslint node: true */
 'use strict';
 
-var WebPack = require('webpack');
+var WebPack = require('webpack'),
+    IS_PRODUCTION = true,
+    path = __dirname + '/build/';
+
+if(IS_PRODUCTION === true) {
+    path = path + 'production/';
+}
+else {
+    path = path + 'development/';
+}
 
 module.exports = {
     entry: './main.js',
     output: {
-        path: __dirname,
+        path: path,
         filename: 'bundle.js',
         publicPath: 'https://www.sharingear.com/'
     },
