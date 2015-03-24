@@ -11916,7 +11916,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(20),
+		PopupController = __webpack_require__(19),
 	
 		MessagePopupTemplate = __webpack_require__(22),
 	
@@ -11977,7 +11977,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    Utilities = __webpack_require__(7),
 	    App = __webpack_require__(1),
 	
@@ -12892,6 +12892,63 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * General popup object that inherits from ViewController.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+	
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(20),
+	
+		$popupLightbox = $('#popup-lightbox'),
+	    inherit, show, hide, setTitle;
+	
+	show = function() {
+	    $popupLightbox.removeClass('hidden');
+	    this.templateParameters.title = this.title;
+	    this.render();
+	};
+	
+	hide = function() {
+	    $popupLightbox.addClass('hidden');
+	    this.close();
+	};
+	
+	setTitle = function(title) {
+	    this.title = title;
+	};
+	
+	inherit = function(inheritOptions) {
+	    var options = {
+	        $element: $('.popup-container', $popupLightbox),
+	        title: 'Popup',
+	
+	        show: show,
+	        hide: hide,
+	        setTitle: setTitle
+	    };
+	    _.extend(options, inheritOptions);
+	
+	    return {
+	        constructor: Utilities.inherit(ViewController.constructor, options)
+	    };
+	};
+	
+	module.exports = {
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * General view object with support for jQuery event autounbinding and localization.
 	 * @author: Chris Hjorth
 	 */
@@ -13059,63 +13116,6 @@
 	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
 	module.exports = {
 	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General popup object that inherits from ViewController.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(19),
-	
-		$popupLightbox = $('#popup-lightbox'),
-	    inherit, show, hide, setTitle;
-	
-	show = function() {
-	    $popupLightbox.removeClass('hidden');
-	    this.templateParameters.title = this.title;
-	    this.render();
-	};
-	
-	hide = function() {
-	    $popupLightbox.addClass('hidden');
-	    this.close();
-	};
-	
-	setTitle = function(title) {
-	    this.title = title;
-	};
-	
-	inherit = function(inheritOptions) {
-	    var options = {
-	        $element: $('.popup-container', $popupLightbox),
-	        title: 'Popup',
-	
-	        show: show,
-	        hide: hide,
-	        setTitle: setTitle
-	    };
-	    _.extend(options, inheritOptions);
-	
-	    return {
-	        constructor: Utilities.inherit(ViewController.constructor, options)
-	    };
-	};
-	
-	module.exports = {
 	    inherit: inherit
 	};
 
@@ -15718,7 +15718,7 @@
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	
 	    testimonials,
 	
@@ -15862,7 +15862,7 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -16668,7 +16668,7 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -17304,7 +17304,7 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -18015,7 +18015,7 @@
 	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -18530,7 +18530,7 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -18828,7 +18828,7 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -19052,7 +19052,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(19);
+	var ViewController = __webpack_require__(20);
 	
 	module.exports = ViewController.inherit({});
 
@@ -19071,7 +19071,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 		
 	    didRender,
 	    loadFooter;
@@ -19120,7 +19120,7 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -19443,7 +19443,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
 		Localization = __webpack_require__(17),
@@ -19533,7 +19533,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19655,7 +19655,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19804,7 +19804,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19949,7 +19949,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20094,7 +20094,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20237,7 +20237,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20344,7 +20344,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20489,7 +20489,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20632,7 +20632,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20749,7 +20749,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    subViewContainerID,
@@ -20837,7 +20837,7 @@
 	    GoogleMaps = __webpack_require__(13),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    Localization = __webpack_require__(17),
 	
 	    geocoder,
@@ -21473,7 +21473,7 @@
 	
 	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    Localization = __webpack_require__(17),
 	
 	    geocoder,
@@ -21985,7 +21985,7 @@
 	    Moment = __webpack_require__(137),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    Localization = __webpack_require__(17),
 	
 	    geocoder,
@@ -22542,7 +22542,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(19);
+	var ViewController = __webpack_require__(20);
 	module.exports = ViewController.inherit();
 
 
@@ -22560,7 +22560,7 @@
 	
 	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 	
 		Localization = __webpack_require__(17),
 	
@@ -22598,7 +22598,7 @@
 	
 		Config = __webpack_require__(5),
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
 		Localization = __webpack_require__(17),
@@ -22977,7 +22977,7 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
 		Localization = __webpack_require__(17),
@@ -23387,7 +23387,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23530,7 +23530,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	
 	    didRender,
 	    loadFooter;
@@ -23576,7 +23576,7 @@
 		Moment = __webpack_require__(137),
 	
 		Config = __webpack_require__(5),
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
 		Localization = __webpack_require__(17),
@@ -24017,7 +24017,7 @@
 		App = __webpack_require__(1),
 	
 		Localization = __webpack_require__(17),
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 		Booking = __webpack_require__(141),
 	
 		didInitialize,
@@ -24155,7 +24155,7 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 	
 		Localization = __webpack_require__(17),
 	
@@ -24607,7 +24607,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 	
 	    didRender,
 	    loadFooter;
@@ -24656,7 +24656,7 @@
 	
 	    Config = __webpack_require__(5),
 	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -25184,7 +25184,7 @@
 	
 	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    Localization = __webpack_require__(17),
 	    MessagePopup = __webpack_require__(10),
 	
@@ -25560,7 +25560,7 @@
 	    Config = __webpack_require__(5),
 	    Utilities = __webpack_require__(7),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    Localization = __webpack_require__(17),
 	    User = __webpack_require__(8),
 	    TechProfile = __webpack_require__(139),
@@ -25917,7 +25917,7 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
 		Localization = __webpack_require__(17),
@@ -26311,7 +26311,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(19);
+	var ViewController = __webpack_require__(20);
 	
 	module.exports = ViewController;
 
@@ -26332,7 +26332,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	
 	    User = __webpack_require__(8),
 	    GearList = __webpack_require__(143),
@@ -26601,7 +26601,7 @@
 	
 	    Config = __webpack_require__(5),
 	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
@@ -26975,7 +26975,7 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(19),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
 		Localization = __webpack_require__(17),
@@ -28543,7 +28543,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(20),
+		PopupController = __webpack_require__(19),
 		SelectTimePopupTemplate = __webpack_require__(148),
 	
 		SelectTimePopup,

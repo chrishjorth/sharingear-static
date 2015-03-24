@@ -98,13 +98,13 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    Router = __webpack_require__(7),
-	    Utilities = __webpack_require__(8),
+	    Config = __webpack_require__(5),
+	    Router = __webpack_require__(6),
+	    Utilities = __webpack_require__(7),
 	
-	    User = __webpack_require__(9),
-	    ContentClassification = __webpack_require__(10),
-	    MessagePopup = __webpack_require__(11),
+	    User = __webpack_require__(8),
+	    ContentClassification = __webpack_require__(9),
+	    MessagePopup = __webpack_require__(10),
 	
 	    App,
 	
@@ -323,7 +323,7 @@
 	
 		App = __webpack_require__(1),
 	
-		HeaderController = __webpack_require__(5),
+		HeaderController = __webpack_require__(11),
 	    HeaderTemplate = __webpack_require__(14),
 	
 	    initialize,
@@ -331,7 +331,7 @@
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(17);
+	__webpack_require__(21);
 	__webpack_require__(12);
 	
 	initialize = function() {
@@ -11159,229 +11159,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Controller for the Sharingear header with navigation view.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var $ = __webpack_require__(4),
-	
-	    ViewController = __webpack_require__(15),
-	    Utilities = __webpack_require__(8),
-	    App = __webpack_require__(1),
-	
-	    defaultTitle,
-	
-	    didInitialize,
-	    didRender,
-	    didResize,
-	    populateMainMenu,
-	    renderProfilePicture,
-	    handleNavbarToggle,
-	    handleLogin,
-	    setTitle,
-	    _updateTitle,
-	    changeActiveState;
-	
-	/* Static variables */
-	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	
-	didInitialize = function() {
-	    this.isMobile = false;
-	    this.title = defaultTitle;
-	};
-	
-	didRender = function() {
-	    this._updateTitle();
-	    this.populateMainMenu();
-	    this.renderProfilePicture();
-	
-	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
-	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
-	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
-	};
-	
-	didResize = function(event) {
-	    var view = event.data;
-	    if (Utilities.isMobile() !== view.isMobile) {
-	        view.populateMainMenu();
-	    }
-	    view._updateTitle();
-	};
-	
-	populateMainMenu = function() {
-	    var html = '',
-	        $slideMenu, $dropdownMenu, $menuList;
-	
-	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
-	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
-	
-	    if (Utilities.isMobile() === true) {
-	        this.isMobile = true;
-	        $slideMenu.removeClass('hidden');
-	        if ($dropdownMenu.hasClass('hidden') === false) {
-	            $dropdownMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $slideMenu);
-	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	    } else {
-	        this.isMobile = false;
-	        $dropdownMenu.removeClass('hidden');
-	        if ($slideMenu.hasClass('hidden') === false) {
-	            $slideMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $dropdownMenu);
-	    }
-	
-	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
-	
-	    if (App.user && App.user.data.id !== null) {
-	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
-	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
-	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
-	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
-	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
-	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
-	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
-	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
-	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
-	    } else {
-	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
-	    }
-	
-	    $menuList.html(html);
-	};
-	
-	renderProfilePicture = function() {
-	    var view = this,
-	        img;
-	    if (App.user && App.user.data.image_url) {
-	        img = new Image();
-	        img.onload = function() {
-	            var isVertical, backgroundSize;
-	            isVertical = img.width < img.height;
-	            if (isVertical === true) {
-	                backgroundSize = '30px auto';
-	            } else {
-	                backgroundSize = 'auto 30px';
-	            }
-	            $('.profile-pic', view.$element).css({
-	                'background-image': 'url(' + img.src + ')',
-	                'background-size': backgroundSize
-	            });
-	        };
-	        img.src = App.user.data.image_url;
-	    }
-	};
-	
-	handleNavbarToggle = function(event) {
-	    var view = event.data,
-	        $this = $(this),
-	        $viewContainer = $('.view-container'),
-	        $navbar, $tabbar, handleTransition;
-	
-	    handleTransition = function() {
-	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
-	        $this.removeClass('sliding-right');
-	    };
-	
-	    $navbar = $('.sg-navbar', view.$element);
-	    $tabbar = $('.sg-tabbar-container', $viewContainer);
-	    if ($tabbar.css('position') !== 'fixed') {
-	        //We are not in a mobile situation
-	        $tabbar = $('');
-	    }
-	
-	    $navbar.addClass('sliding-right');
-	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $viewContainer.addClass('sliding-right');
-	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $tabbar.addClass('sliding-right');
-	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	
-	    if ($navbar.hasClass('slide-right') === true) {
-	        $navbar.removeClass('slide-right');
-	        $viewContainer.removeClass('slide-right');
-	        $tabbar.removeClass('slide-right');
-	    } else {
-	        $navbar.addClass('slide-right');
-	        $viewContainer.addClass('slide-right');
-	        $tabbar.addClass('slide-right');
-	    }
-	
-	    //Handle selection display
-	    if ($this.hasClass('list-group-item') === true) {
-	        view.changeActiveState($this);
-	    }
-	};
-	
-	handleLogin = function(event, callback) {
-	    var view = event.data,
-	        user = App.user;
-	
-	    user.login(function(error) {
-	        if (!error) {
-	            App.router.navigateTo('dashboard');
-	            view.render();
-	        } else {
-	            alert('Could not connect to Facebook.');
-	            console.log(error);
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback();
-	        }
-	    });
-	};
-	
-	/**
-	 * @param title: the text to display as title, if null title is set to default
-	 */
-	setTitle = function(title) {
-	    if (!title || title === null) {
-	        title = defaultTitle;
-	    }
-	    this.title = title;
-	    this._updateTitle();
-	};
-	
-	_updateTitle = function() {
-	    if (Utilities.isMobile() === true) {
-	        $('.sg-navbar-brand', this.$element).html(this.title);
-	    } else {
-	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
-	    }
-	};
-	
-	changeActiveState = function($menuItem) {
-	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
-	    $menuItem.addClass('list-group-item-selected');
-	};
-	
-	module.exports = ViewController.inherit({
-	    didInitialize: didInitialize,
-	    didRender: didRender,
-	    didResize: didResize,
-	    populateMainMenu: populateMainMenu,
-	    renderProfilePicture: renderProfilePicture,
-	    handleNavbarToggle: handleNavbarToggle,
-	    handleLogin: handleLogin,
-	    setTitle: setTitle,
-	    _updateTitle: _updateTitle,
-	    changeActiveState: changeActiveState
-	});
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Defines site configuration.
 	 * @author: Chris Hjorth
 	 */
@@ -11423,7 +11200,7 @@
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11436,8 +11213,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-		ViewLoader = __webpack_require__(16),
-		Utilities = __webpack_require__(8);
+		ViewLoader = __webpack_require__(15),
+		Utilities = __webpack_require__(7);
 	
 	var Router,
 				
@@ -11617,7 +11394,7 @@
 
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11787,7 +11564,7 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11799,10 +11576,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    FB = __webpack_require__(18),
-	    Localization = __webpack_require__(19),
-	    Model = __webpack_require__(20),
-	    Utilities = __webpack_require__(8),
+	    FB = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
+	    Model = __webpack_require__(18),
+	    Utilities = __webpack_require__(7),
 	
 	    didInitialize,
 	    getLoginStatus,
@@ -12073,7 +11850,7 @@
 
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12087,7 +11864,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(20),
+	    Model = __webpack_require__(18),
 	
 	    didInitialize,
 	    getClassification;
@@ -12126,7 +11903,7 @@
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12139,7 +11916,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(21),
+		PopupController = __webpack_require__(19),
 	
 		MessagePopupTemplate = __webpack_require__(22),
 	
@@ -12183,6 +11960,229 @@
 	
 	
 	module.exports = MessagePopup;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Controller for the Sharingear header with navigation view.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var $ = __webpack_require__(4),
+	
+	    ViewController = __webpack_require__(20),
+	    Utilities = __webpack_require__(7),
+	    App = __webpack_require__(1),
+	
+	    defaultTitle,
+	
+	    didInitialize,
+	    didRender,
+	    didResize,
+	    populateMainMenu,
+	    renderProfilePicture,
+	    handleNavbarToggle,
+	    handleLogin,
+	    setTitle,
+	    _updateTitle,
+	    changeActiveState;
+	
+	/* Static variables */
+	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	
+	didInitialize = function() {
+	    this.isMobile = false;
+	    this.title = defaultTitle;
+	};
+	
+	didRender = function() {
+	    this._updateTitle();
+	    this.populateMainMenu();
+	    this.renderProfilePicture();
+	
+	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
+	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
+	};
+	
+	didResize = function(event) {
+	    var view = event.data;
+	    if (Utilities.isMobile() !== view.isMobile) {
+	        view.populateMainMenu();
+	    }
+	    view._updateTitle();
+	};
+	
+	populateMainMenu = function() {
+	    var html = '',
+	        $slideMenu, $dropdownMenu, $menuList;
+	
+	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
+	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
+	
+	    if (Utilities.isMobile() === true) {
+	        this.isMobile = true;
+	        $slideMenu.removeClass('hidden');
+	        if ($dropdownMenu.hasClass('hidden') === false) {
+	            $dropdownMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $slideMenu);
+	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	    } else {
+	        this.isMobile = false;
+	        $dropdownMenu.removeClass('hidden');
+	        if ($slideMenu.hasClass('hidden') === false) {
+	            $slideMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $dropdownMenu);
+	    }
+	
+	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
+	
+	    if (App.user && App.user.data.id !== null) {
+	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
+	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
+	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
+	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
+	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
+	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
+	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
+	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
+	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
+	    } else {
+	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
+	    }
+	
+	    $menuList.html(html);
+	};
+	
+	renderProfilePicture = function() {
+	    var view = this,
+	        img;
+	    if (App.user && App.user.data.image_url) {
+	        img = new Image();
+	        img.onload = function() {
+	            var isVertical, backgroundSize;
+	            isVertical = img.width < img.height;
+	            if (isVertical === true) {
+	                backgroundSize = '30px auto';
+	            } else {
+	                backgroundSize = 'auto 30px';
+	            }
+	            $('.profile-pic', view.$element).css({
+	                'background-image': 'url(' + img.src + ')',
+	                'background-size': backgroundSize
+	            });
+	        };
+	        img.src = App.user.data.image_url;
+	    }
+	};
+	
+	handleNavbarToggle = function(event) {
+	    var view = event.data,
+	        $this = $(this),
+	        $viewContainer = $('.view-container'),
+	        $navbar, $tabbar, handleTransition;
+	
+	    handleTransition = function() {
+	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
+	        $this.removeClass('sliding-right');
+	    };
+	
+	    $navbar = $('.sg-navbar', view.$element);
+	    $tabbar = $('.sg-tabbar-container', $viewContainer);
+	    if ($tabbar.css('position') !== 'fixed') {
+	        //We are not in a mobile situation
+	        $tabbar = $('');
+	    }
+	
+	    $navbar.addClass('sliding-right');
+	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $viewContainer.addClass('sliding-right');
+	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $tabbar.addClass('sliding-right');
+	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	
+	    if ($navbar.hasClass('slide-right') === true) {
+	        $navbar.removeClass('slide-right');
+	        $viewContainer.removeClass('slide-right');
+	        $tabbar.removeClass('slide-right');
+	    } else {
+	        $navbar.addClass('slide-right');
+	        $viewContainer.addClass('slide-right');
+	        $tabbar.addClass('slide-right');
+	    }
+	
+	    //Handle selection display
+	    if ($this.hasClass('list-group-item') === true) {
+	        view.changeActiveState($this);
+	    }
+	};
+	
+	handleLogin = function(event, callback) {
+	    var view = event.data,
+	        user = App.user;
+	
+	    user.login(function(error) {
+	        if (!error) {
+	            App.router.navigateTo('dashboard');
+	            view.render();
+	        } else {
+	            alert('Could not connect to Facebook.');
+	            console.log(error);
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback();
+	        }
+	    });
+	};
+	
+	/**
+	 * @param title: the text to display as title, if null title is set to default
+	 */
+	setTitle = function(title) {
+	    if (!title || title === null) {
+	        title = defaultTitle;
+	    }
+	    this.title = title;
+	    this._updateTitle();
+	};
+	
+	_updateTitle = function() {
+	    if (Utilities.isMobile() === true) {
+	        $('.sg-navbar-brand', this.$element).html(this.title);
+	    } else {
+	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
+	    }
+	};
+	
+	changeActiveState = function($menuItem) {
+	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
+	    $menuItem.addClass('list-group-item-selected');
+	};
+	
+	module.exports = ViewController.inherit({
+	    didInitialize: didInitialize,
+	    didRender: didRender,
+	    didResize: didResize,
+	    populateMainMenu: populateMainMenu,
+	    renderProfilePicture: renderProfilePicture,
+	    handleNavbarToggle: handleNavbarToggle,
+	    handleLogin: handleLogin,
+	    setTitle: setTitle,
+	    _updateTitle: _updateTitle,
+	    changeActiveState: changeActiveState
+	});
 
 
 /***/ },
@@ -12252,182 +12252,6 @@
 
 /***/ },
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General view object with support for jQuery event autounbinding and localization.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-	
-		Utilities = __webpack_require__(8),
-	
-		initialize,
-	    render,
-	    setSubPath,
-	    _close,
-	    setupEvent,
-	    unbindEvents,
-	    on,
-	
-	    constructor, inherit;
-	
-	/**
-	 * Allows reinitializing a views data.
-	 */
-	initialize = function() {
-	    this.setSubPath();
-	    this.userEvents = [];
-	    this.events = {
-	        close: []
-	    };
-	
-	    if (_.isFunction(this.didInitialize) === true) {
-	        this.didInitialize();
-	    }
-	};
-	
-	render = function(callback) {
-	    var template = this.template(this.templateParameters);
-	
-	    //Unbind events to avoid double ups on multiple renders
-	    this.unbindEvents();
-	    if (_.isFunction(this.didResize) === true) {
-	        $(window).off('resize', this.didResize);
-	    }
-	
-	    this.$element.html(template);
-	
-	    //Did render event must be called before the callback so inheriting objects get the possibility to complete setup
-	    if (_.isFunction(this.didRender) === true) {
-	        this.didRender();
-	    }
-	
-	    if (_.isFunction(callback) === true) {
-	        callback();
-	    }
-	
-	    if (_.isFunction(this.didResize) === true) {
-	        $(window).on('resize', null, this, this.didResize);
-	    }
-	};
-	
-	setSubPath = function() {
-	    var slashIndex = -1;
-	    slashIndex = this.path.indexOf('/');
-	    if (slashIndex >= 0) {
-	        this.subPath = this.path.substring(slashIndex + 1);
-	    }
-	};
-	
-	/*function localize($containerElement) {
-			var $localizeElement = this.$element,
-				key, $element;
-			if($containerElement) {
-				$localizeElement = $containerElement;
-			}
-			for(key in this.labels) {
-				if(this.labels.hasOwnProperty(key)) {
-					$element = $('#' + key, $localizeElement);
-					if($element.is('input')) {
-						$element.attr('placeholder', this.labels[key]);
-					}
-					else {
-						$element.html(this.labels[key]);
-					}
-				}
-			}
-		}*/
-	
-	_close = function() {
-	    var i;
-	    for (i = 0; i < this.events.close.length; i++) {
-	        this.events.close[i](this);
-	    }
-	    this.unbindEvents();
-	    this.$element.empty();
-	    if (_.isFunction(this.didClose) === true) {
-	        this.didClose();
-	    }
-	};
-	
-	//A wrapper for jQuery events that allows automatic unbinding on view disposal
-	setupEvent = function(eventType, element, data, callback) {
-	    this.$element.on(eventType, element, data, callback);
-	    this.userEvents.push({
-	        eventType: eventType,
-	        element: element,
-	        callback: callback
-	    });
-	};
-	
-	unbindEvents = function() {
-	    var i, userEvent;
-	    for (i = this.userEvents.length - 1; i >= 0; i--) {
-	        userEvent = this.userEvents[i];
-	        this.$element.off(userEvent.eventType, userEvent.element, userEvent.callback);
-	        this.userEvents.pop();
-	    }
-	};
-	
-	on = function(eventType, callback) {
-	    switch (eventType) {
-	        case 'close':
-	            this.events.close.push(callback);
-	            break;
-	    }
-	};
-	
-	constructor = function(options) {
-	    var defaults = {
-	        name: '',
-	        $element: $(''),
-	        template: '', //A template string
-	        templateParameters: {},
-	        labels: {},
-	        path: '', //URL path in the following form mainView/subView fx dashboard/profile
-	        hasSubviews: false,
-	        $subViewContainer: $(''),
-	        subPath: '',
-	        passedData: {}, //stores extra data passed to the view
-	        ready: true,
-	
-	        initialize: initialize,
-	        render: render,
-	        setSubPath: setSubPath,
-	        //localize: localize,
-	        close: _close,
-	        setupEvent: setupEvent,
-	        unbindEvents: unbindEvents,
-	        on: on
-	    };
-	
-	    _.extend(this, defaults, options);
-	
-	    this.template = _.template(this.template);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12666,25 +12490,7 @@
 
 
 /***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(25)
-	__webpack_require__(26)
-	__webpack_require__(27)
-	__webpack_require__(28)
-	__webpack_require__(29)
-	__webpack_require__(30)
-	__webpack_require__(31)
-	__webpack_require__(32)
-	__webpack_require__(33)
-	__webpack_require__(34)
-	__webpack_require__(35)
-	__webpack_require__(36)
-
-/***/ },
-/* 18 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*jslint node: true */
@@ -12749,7 +12555,7 @@
 
 
 /***/ },
-/* 19 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12762,9 +12568,9 @@
 	
 	var Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    Model = __webpack_require__(20),
-	    XChangeRates = __webpack_require__(37),
+	    Config = __webpack_require__(5),
+	    Model = __webpack_require__(18),
+	    XChangeRates = __webpack_require__(25),
 	    Localization,
 	
 	    didInitialize,
@@ -12949,7 +12755,7 @@
 
 
 /***/ },
-/* 20 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12963,7 +12769,7 @@
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
 	
-		Utilities = __webpack_require__(8),
+		Utilities = __webpack_require__(7),
 	
 		initialize,
 	    get,
@@ -13082,7 +12888,7 @@
 
 
 /***/ },
-/* 21 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13096,8 +12902,8 @@
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(15),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(20),
 	
 		$popupLightbox = $('#popup-lightbox'),
 	    inherit, show, hide, setTitle;
@@ -13137,6 +12943,200 @@
 	    inherit: inherit
 	};
 
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General view object with support for jQuery event autounbinding and localization.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+	
+		Utilities = __webpack_require__(7),
+	
+		initialize,
+	    render,
+	    setSubPath,
+	    _close,
+	    setupEvent,
+	    unbindEvents,
+	    on,
+	
+	    constructor, inherit;
+	
+	/**
+	 * Allows reinitializing a views data.
+	 */
+	initialize = function() {
+	    this.setSubPath();
+	    this.userEvents = [];
+	    this.events = {
+	        close: []
+	    };
+	
+	    if (_.isFunction(this.didInitialize) === true) {
+	        this.didInitialize();
+	    }
+	};
+	
+	render = function(callback) {
+	    var template = this.template(this.templateParameters);
+	
+	    //Unbind events to avoid double ups on multiple renders
+	    this.unbindEvents();
+	    if (_.isFunction(this.didResize) === true) {
+	        $(window).off('resize', this.didResize);
+	    }
+	
+	    this.$element.html(template);
+	
+	    //Did render event must be called before the callback so inheriting objects get the possibility to complete setup
+	    if (_.isFunction(this.didRender) === true) {
+	        this.didRender();
+	    }
+	
+	    if (_.isFunction(callback) === true) {
+	        callback();
+	    }
+	
+	    if (_.isFunction(this.didResize) === true) {
+	        $(window).on('resize', null, this, this.didResize);
+	    }
+	};
+	
+	setSubPath = function() {
+	    var slashIndex = -1;
+	    slashIndex = this.path.indexOf('/');
+	    if (slashIndex >= 0) {
+	        this.subPath = this.path.substring(slashIndex + 1);
+	    }
+	};
+	
+	/*function localize($containerElement) {
+			var $localizeElement = this.$element,
+				key, $element;
+			if($containerElement) {
+				$localizeElement = $containerElement;
+			}
+			for(key in this.labels) {
+				if(this.labels.hasOwnProperty(key)) {
+					$element = $('#' + key, $localizeElement);
+					if($element.is('input')) {
+						$element.attr('placeholder', this.labels[key]);
+					}
+					else {
+						$element.html(this.labels[key]);
+					}
+				}
+			}
+		}*/
+	
+	_close = function() {
+	    var i;
+	    for (i = 0; i < this.events.close.length; i++) {
+	        this.events.close[i](this);
+	    }
+	    this.unbindEvents();
+	    this.$element.empty();
+	    if (_.isFunction(this.didClose) === true) {
+	        this.didClose();
+	    }
+	};
+	
+	//A wrapper for jQuery events that allows automatic unbinding on view disposal
+	setupEvent = function(eventType, element, data, callback) {
+	    this.$element.on(eventType, element, data, callback);
+	    this.userEvents.push({
+	        eventType: eventType,
+	        element: element,
+	        callback: callback
+	    });
+	};
+	
+	unbindEvents = function() {
+	    var i, userEvent;
+	    for (i = this.userEvents.length - 1; i >= 0; i--) {
+	        userEvent = this.userEvents[i];
+	        this.$element.off(userEvent.eventType, userEvent.element, userEvent.callback);
+	        this.userEvents.pop();
+	    }
+	};
+	
+	on = function(eventType, callback) {
+	    switch (eventType) {
+	        case 'close':
+	            this.events.close.push(callback);
+	            break;
+	    }
+	};
+	
+	constructor = function(options) {
+	    var defaults = {
+	        name: '',
+	        $element: $(''),
+	        template: '', //A template string
+	        templateParameters: {},
+	        labels: {},
+	        path: '', //URL path in the following form mainView/subView fx dashboard/profile
+	        hasSubviews: false,
+	        $subViewContainer: $(''),
+	        subPath: '',
+	        passedData: {}, //stores extra data passed to the view
+	        ready: true,
+	
+	        initialize: initialize,
+	        render: render,
+	        setSubPath: setSubPath,
+	        //localize: localize,
+	        close: _close,
+	        setupEvent: setupEvent,
+	        unbindEvents: unbindEvents,
+	        on: on
+	    };
+	
+	    _.extend(this, defaults, options);
+	
+	    this.template = _.template(this.template);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
+	__webpack_require__(26)
+	__webpack_require__(27)
+	__webpack_require__(28)
+	__webpack_require__(29)
+	__webpack_require__(30)
+	__webpack_require__(31)
+	__webpack_require__(32)
+	__webpack_require__(33)
+	__webpack_require__(34)
+	__webpack_require__(35)
+	__webpack_require__(36)
+	__webpack_require__(37)
 
 /***/ },
 /* 22 */
@@ -13179,7 +13179,7 @@
 		"./gearsearchform.js": 65,
 		"./home.js": 66,
 		"./insurance.js": 67,
-		"./navigation-header.js": 5,
+		"./navigation-header.js": 11,
 		"./payment.js": 68,
 		"./paymentsuccessful.js": 69,
 		"./pickupdeliverycalendar.js": 70,
@@ -13289,6 +13289,51 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Defines a currency conversion model.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var Config = __webpack_require__(5),
+		Model = __webpack_require__(18),
+	
+		currencies = {},
+	    XChangeRates,
+	
+	    getRate;
+	
+	getRate = function(fromCurrency, toCurrency, callback) {
+	    var code = fromCurrency + toCurrency;
+	    if (currencies[code]) {
+	        callback(null, currencies[code]);
+	        return;
+	    }
+	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        currencies[code] = data.rate;
+	        callback(null, data.rate);
+	    });
+	};
+	
+	XChangeRates = Model.inherit({
+	    getRate: getRate
+	});
+	XChangeRates = new XChangeRates.constructor({
+	    rootURL: Config.API_URL
+	});
+	module.exports = XChangeRates;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
 	 * Bootstrap: transition.js v3.3.4
 	 * http://getbootstrap.com/javascript/#transitions
@@ -13352,7 +13397,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13453,7 +13498,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13576,7 +13621,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13820,7 +13865,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14038,7 +14083,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14206,7 +14251,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14552,7 +14597,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15035,7 +15080,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15150,7 +15195,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15329,7 +15374,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15489,7 +15534,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15658,51 +15703,6 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a currency conversion model.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var Config = __webpack_require__(6),
-		Model = __webpack_require__(20),
-	
-		currencies = {},
-	    XChangeRates,
-	
-	    getRate;
-	
-	getRate = function(fromCurrency, toCurrency, callback) {
-	    var code = fromCurrency + toCurrency;
-	    if (currencies[code]) {
-	        callback(null, currencies[code]);
-	        return;
-	    }
-	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        currencies[code] = data.rate;
-	        callback(null, data.rate);
-	    });
-	};
-	
-	XChangeRates = Model.inherit({
-	    getRate: getRate
-	});
-	XChangeRates = new XChangeRates.constructor({
-	    rootURL: Config.API_URL
-	});
-	module.exports = XChangeRates;
-
-
-/***/ },
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -15718,7 +15718,7 @@
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(15),
+	    ViewController = __webpack_require__(20),
 	
 	    testimonials,
 	
@@ -15861,12 +15861,12 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
-	    Gear = __webpack_require__(139),
+	    Localization = __webpack_require__(17),
+	    Gear = __webpack_require__(138),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -16667,12 +16667,12 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
-	    TechProfile = __webpack_require__(141),
+	    Localization = __webpack_require__(17),
+	    TechProfile = __webpack_require__(139),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -17303,12 +17303,12 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
-	    Van = __webpack_require__(138),
+	    Localization = __webpack_require__(17),
+	    Van = __webpack_require__(140),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -18015,10 +18015,10 @@
 	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(15),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
+	    Localization = __webpack_require__(17),
 	
 	    didInitialize,
 	    didRender,
@@ -18529,13 +18529,13 @@
 	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
-	    User = __webpack_require__(9),
-	    Booking = __webpack_require__(140),
+	    Localization = __webpack_require__(17),
+	    User = __webpack_require__(8),
+	    Booking = __webpack_require__(141),
 	
 	    didInitialize,
 	    didRender,
@@ -18827,12 +18827,12 @@
 	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
-	    Booking = __webpack_require__(140),
+	    Localization = __webpack_require__(17),
+	    Booking = __webpack_require__(141),
 	
 	    SelectTimePopup = __webpack_require__(142),
 	
@@ -19052,7 +19052,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(15);
+	var ViewController = __webpack_require__(20);
 	
 	module.exports = ViewController.inherit({});
 
@@ -19071,7 +19071,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(15),
+		ViewController = __webpack_require__(20),
 		
 	    didRender,
 	    loadFooter;
@@ -19119,11 +19119,11 @@
 	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
+	    Localization = __webpack_require__(17),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -19443,10 +19443,10 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(15),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(19),
+		Localization = __webpack_require__(17),
 	
 		didInitialize,
 	    didRender,
@@ -19532,8 +19532,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19654,8 +19654,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19803,8 +19803,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19948,8 +19948,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20093,8 +20093,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20236,8 +20236,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20343,8 +20343,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20488,8 +20488,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20631,8 +20631,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20749,7 +20749,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(15),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    subViewContainerID,
@@ -20837,8 +20837,8 @@
 	    GoogleMaps = __webpack_require__(13),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(15),
-	    Localization = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -21471,10 +21471,10 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
+	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(15),
-	    Localization = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -21985,8 +21985,8 @@
 	    Moment = __webpack_require__(137),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(15),
-	    Localization = __webpack_require__(19),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -22542,7 +22542,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(15);
+	var ViewController = __webpack_require__(20);
 	module.exports = ViewController.inherit();
 
 
@@ -22560,9 +22560,9 @@
 	
 	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(15),
+		ViewController = __webpack_require__(20),
 	
-		Localization = __webpack_require__(19),
+		Localization = __webpack_require__(17),
 	
 		didInitialize;
 	
@@ -22593,17 +22593,17 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-		FB = __webpack_require__(18),
+		FB = __webpack_require__(16),
 		GoogleMaps = __webpack_require__(13),
 	
-		Config = __webpack_require__(6),
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(15),
+		Config = __webpack_require__(5),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(19),
-		Gear = __webpack_require__(139),
-		User = __webpack_require__(9),
+		Localization = __webpack_require__(17),
+		Gear = __webpack_require__(138),
+		User = __webpack_require__(8),
 	
 		paymentSuccessModalOpen = false,
 	
@@ -22976,11 +22976,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(15),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(19),
+		Localization = __webpack_require__(17),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -23387,7 +23387,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(15),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23530,7 +23530,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(15),
+	    ViewController = __webpack_require__(20),
 	
 	    didRender,
 	    loadFooter;
@@ -23575,11 +23575,11 @@
 		$ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(6),
-		ViewController = __webpack_require__(15),
+		Config = __webpack_require__(5),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(19),
+		Localization = __webpack_require__(17),
 		Card = __webpack_require__(146),
 	
 		didInitialize,
@@ -24013,12 +24013,12 @@
 	var $ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(6),
+		Config = __webpack_require__(5),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(19),
-		ViewController = __webpack_require__(15),
-		Booking = __webpack_require__(140),
+		Localization = __webpack_require__(17),
+		ViewController = __webpack_require__(20),
+		Booking = __webpack_require__(141),
 	
 		didInitialize,
 	    didRender,
@@ -24154,10 +24154,10 @@
 		$ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(15),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(20),
 	
-		Localization = __webpack_require__(19),
+		Localization = __webpack_require__(17),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -24607,7 +24607,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(15),
+		ViewController = __webpack_require__(20),
 	
 	    didRender,
 	    loadFooter;
@@ -24652,14 +24652,14 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(18),
+	    FB = __webpack_require__(16),
 	
-	    Config = __webpack_require__(6),
-	    Utilities = __webpack_require__(8),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    Utilities = __webpack_require__(7),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
+	    Localization = __webpack_require__(17),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -25182,11 +25182,11 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
+	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(15),
-	    Localization = __webpack_require__(19),
-	    MessagePopup = __webpack_require__(11),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
+	    MessagePopup = __webpack_require__(10),
 	
 	    geocoder,
 	
@@ -25555,15 +25555,15 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(18),
+	    FB = __webpack_require__(16),
 	
-	    Config = __webpack_require__(6),
-	    Utilities = __webpack_require__(8),
+	    Config = __webpack_require__(5),
+	    Utilities = __webpack_require__(7),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(15),
-	    Localization = __webpack_require__(19),
-	    User = __webpack_require__(9),
-	    TechProfile = __webpack_require__(141),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(17),
+	    User = __webpack_require__(8),
+	    TechProfile = __webpack_require__(139),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -25916,11 +25916,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(15),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(19),
+		Localization = __webpack_require__(17),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -26311,7 +26311,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(15);
+	var ViewController = __webpack_require__(20);
 	
 	module.exports = ViewController;
 
@@ -26331,10 +26331,10 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(20),
 	
-	    User = __webpack_require__(9),
+	    User = __webpack_require__(8),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -26596,17 +26596,17 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    FB = __webpack_require__(18),
+	    FB = __webpack_require__(16),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    Config = __webpack_require__(6),
-	    Utilities = __webpack_require__(8),
-	    ViewController = __webpack_require__(15),
+	    Config = __webpack_require__(5),
+	    Utilities = __webpack_require__(7),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(19),
-	    User = __webpack_require__(9),
-	    Van = __webpack_require__(138),
+	    Localization = __webpack_require__(17),
+	    User = __webpack_require__(8),
+	    Van = __webpack_require__(140),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -26974,11 +26974,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(15),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(19),
+		Localization = __webpack_require__(17),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -27713,242 +27713,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Defines a van item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		
-		Utilities = __webpack_require__(8),
-		Model = __webpack_require__(20),
-		App = __webpack_require__(1),
-	
-		didInitialize,
-	    createVan,
-	    uploadImage,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            van_type: '',
-	            model: '',
-	            description: '',
-	            images: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            accessories: null,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null
-	        };
-	    }
-	};
-	
-	createVan = function createGear(callback) {
-	    var model = this,
-	        newVan = this.data,
-	        postData;
-	
-	    postData = {
-	        van_type: newVan.van_type,
-	        model: newVan.model,
-	        description: newVan.description,
-	        images: newVan.images,
-	        accessories: newVan.accessories,
-	        price_a: newVan.price_a,
-	        price_b: newVan.price_b,
-	        price_c: newVan.price_c,
-	        currency: newVan.currency,
-	        address: newVan.address,
-	        postal_code: newVan.postal_code,
-	        city: newVan.city,
-	        region: newVan.region,
-	        country: newVan.country,
-	        latitude: newVan.latitude,
-	        longitude: newVan.longitude,
-	        owner_id: App.user.data.id
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	/**
-	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
-	 * @param filename: The name of the file
-	 */
-	uploadImage = function(file, filename, callback) {
-	    var model = this;
-	    //Get filename and secret from backend
-	    console.log('Get filename from backend');
-	    this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error getting filename: ' + error);
-	            }
-	            return;
-	        }
-	        console.log('got filename data:');
-	        console.log(data);
-	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
-	            var postData;
-	            if (error) {
-	                if (callback && typeof callback === 'function') {
-	                    callback('Error uploading file: ' + error);
-	                }
-	                return;
-	            }
-	            //Add image url to backend
-	            postData = {
-	                image_url: data.url
-	            };
-	            console.log('File upload success. Add url to backend:');
-	            console.log(postData);
-	            model.post('/users/' + App.user.data.id + '/vans/' + model.data.id + '/image', postData, function(error, images) {
-	                if (error) {
-	                    //TODO: In this case the image should be deleted from the server
-	                    if (callback && typeof callback === 'function') {
-	                        callback('Error uploading file: ' + error);
-	                    }
-	                    return;
-	                }
-	                console.log('Upload complete:');
-	                console.log(images);
-	                model.data.images = images.images;
-	                callback(null, data.url);
-	            });
-	        });
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        subtype: this.data.subtype,
-	        brand: this.data.brand,
-	        model: this.data.model,
-	        description: this.data.description,
-	        images: this.data.images,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        delivery_price: this.data.delivery_price,
-	        delivery_distance: this.data.delivery_distance,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        accessories: JSON.stringify(this.data.accessories)
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/vans/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/vans/' + this.data.id, function(error, vans) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, vans);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createVan: createVan,
-	    uploadImage: uploadImage,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
-/* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Defines a gear item.
 	 * @author: Chris Hjorth
 	 */
@@ -27958,8 +27722,8 @@
 	
 	var _ = __webpack_require__(3),
 		
-		Utilities = __webpack_require__(8),
-		Model = __webpack_require__(20),
+		Utilities = __webpack_require__(7),
+		Model = __webpack_require__(18),
 		App = __webpack_require__(1),
 		
 		didInitialize,
@@ -28191,147 +27955,7 @@
 
 
 /***/ },
-/* 140 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a booking item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-	    Moment = __webpack_require__(137),
-	
-	    Model = __webpack_require__(20),
-	    App = __webpack_require__(1),
-	
-	    didInitialize,
-	    createBooking,
-	    getBookingInfo,
-	    update;
-	
-	didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = {
-	            //The non-null id property determines the booking type
-	            gear_id: null,
-	            van_id: null,
-	            techprofile_id: null,
-	            item_name: '', //Displayed name of the booked item
-	            price_a: 0,
-	            price_b: 0,
-	            price_c: 0,
-	            currency: 0,
-	            start_time: null,
-	            end_time: null,
-	            cardId: null,
-	            returnURL: null
-	        };
-	    }
-	};
-	
-	// POST: /users/:user_id/gear/:gear_id/bookings
-	createBooking = function(cardId, callback) {
-	    var model = this,
-	        newBooking = this.data,
-	        url,
-	        postData;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
-	    } else {
-	        url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';
-	    }
-	
-	    postData = {
-	        start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-	        end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-	        cardId: cardId,
-	        returnURL: window.location.href
-	    };
-	
-	    this.post(url, postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        callback(null);
-	    });
-	};
-	
-	getBookingInfo = function(userID, callback) {
-	    var model = this,
-	        url;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
-	    } else {
-	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
-	    }
-	
-	    this.get(url, function(error, booking) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, booking);
-	
-	        model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
-	        model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
-	
-	        callback(null);
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this,
-	        url, updateData;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
-	    } else {
-	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
-	    }
-	
-	    updateData = {
-	        booking_status: model.data.booking_status,
-	        preauth_id: model.data.preauth_id
-	    };
-	
-	    this.put(url, updateData, function(error, booking) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	
-	        _.extend(model.data, booking);
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createBooking: createBooking,
-	    getBookingInfo: getBookingInfo,
-	    update: update
-	});
-
-
-/***/ },
-/* 141 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28346,7 +27970,7 @@
 	var _ = __webpack_require__(3),
 	
 	    App = __webpack_require__(1),
-	    Model = __webpack_require__(20),
+	    Model = __webpack_require__(18),
 	
 	    didInitialize,
 	    createTechProfile,
@@ -28530,6 +28154,382 @@
 
 
 /***/ },
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a van item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		
+		Utilities = __webpack_require__(7),
+		Model = __webpack_require__(18),
+		App = __webpack_require__(1),
+	
+		didInitialize,
+	    createVan,
+	    uploadImage,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            van_type: '',
+	            model: '',
+	            description: '',
+	            images: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            accessories: null,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null
+	        };
+	    }
+	};
+	
+	createVan = function createGear(callback) {
+	    var model = this,
+	        newVan = this.data,
+	        postData;
+	
+	    postData = {
+	        van_type: newVan.van_type,
+	        model: newVan.model,
+	        description: newVan.description,
+	        images: newVan.images,
+	        accessories: newVan.accessories,
+	        price_a: newVan.price_a,
+	        price_b: newVan.price_b,
+	        price_c: newVan.price_c,
+	        currency: newVan.currency,
+	        address: newVan.address,
+	        postal_code: newVan.postal_code,
+	        city: newVan.city,
+	        region: newVan.region,
+	        country: newVan.country,
+	        latitude: newVan.latitude,
+	        longitude: newVan.longitude,
+	        owner_id: App.user.data.id
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	/**
+	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
+	 * @param filename: The name of the file
+	 */
+	uploadImage = function(file, filename, callback) {
+	    var model = this;
+	    //Get filename and secret from backend
+	    console.log('Get filename from backend');
+	    this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error getting filename: ' + error);
+	            }
+	            return;
+	        }
+	        console.log('got filename data:');
+	        console.log(data);
+	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+	            var postData;
+	            if (error) {
+	                if (callback && typeof callback === 'function') {
+	                    callback('Error uploading file: ' + error);
+	                }
+	                return;
+	            }
+	            //Add image url to backend
+	            postData = {
+	                image_url: data.url
+	            };
+	            console.log('File upload success. Add url to backend:');
+	            console.log(postData);
+	            model.post('/users/' + App.user.data.id + '/vans/' + model.data.id + '/image', postData, function(error, images) {
+	                if (error) {
+	                    //TODO: In this case the image should be deleted from the server
+	                    if (callback && typeof callback === 'function') {
+	                        callback('Error uploading file: ' + error);
+	                    }
+	                    return;
+	                }
+	                console.log('Upload complete:');
+	                console.log(images);
+	                model.data.images = images.images;
+	                callback(null, data.url);
+	            });
+	        });
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        subtype: this.data.subtype,
+	        brand: this.data.brand,
+	        model: this.data.model,
+	        description: this.data.description,
+	        images: this.data.images,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        delivery_price: this.data.delivery_price,
+	        delivery_distance: this.data.delivery_distance,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        accessories: JSON.stringify(this.data.accessories)
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/vans/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/vans/' + this.data.id, function(error, vans) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, vans);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createVan: createVan,
+	    uploadImage: uploadImage,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a booking item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	    Moment = __webpack_require__(137),
+	
+	    Model = __webpack_require__(18),
+	    App = __webpack_require__(1),
+	
+	    didInitialize,
+	    createBooking,
+	    getBookingInfo,
+	    update;
+	
+	didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = {
+	            //The non-null id property determines the booking type
+	            gear_id: null,
+	            van_id: null,
+	            techprofile_id: null,
+	            item_name: '', //Displayed name of the booked item
+	            price_a: 0,
+	            price_b: 0,
+	            price_c: 0,
+	            currency: 0,
+	            start_time: null,
+	            end_time: null,
+	            cardId: null,
+	            returnURL: null
+	        };
+	    }
+	};
+	
+	// POST: /users/:user_id/gear/:gear_id/bookings
+	createBooking = function(cardId, callback) {
+	    var model = this,
+	        newBooking = this.data,
+	        url,
+	        postData;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
+	    } else {
+	        url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';
+	    }
+	
+	    postData = {
+	        start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+	        end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+	        cardId: cardId,
+	        returnURL: window.location.href
+	    };
+	
+	    this.post(url, postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        callback(null);
+	    });
+	};
+	
+	getBookingInfo = function(userID, callback) {
+	    var model = this,
+	        url;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+	    } else {
+	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+	    }
+	
+	    this.get(url, function(error, booking) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, booking);
+	
+	        model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+	        model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+	
+	        callback(null);
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this,
+	        url, updateData;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+	    } else {
+	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+	    }
+	
+	    updateData = {
+	        booking_status: model.data.booking_status,
+	        preauth_id: model.data.preauth_id
+	    };
+	
+	    this.put(url, updateData, function(error, booking) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	
+	        _.extend(model.data, booking);
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createBooking: createBooking,
+	    getBookingInfo: getBookingInfo,
+	    update: update
+	});
+
+
+/***/ },
 /* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28543,7 +28543,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(21),
+		PopupController = __webpack_require__(19),
 		SelectTimePopupTemplate = __webpack_require__(148),
 	
 		SelectTimePopup,
@@ -28615,8 +28615,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-		Model = __webpack_require__(20),
-		Gear = __webpack_require__(139),
+		Model = __webpack_require__(18),
+		Gear = __webpack_require__(138),
 		
 		didInitialize,
 	
@@ -28757,8 +28757,8 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		Model = __webpack_require__(20),
-		TechProfile = __webpack_require__(141),
+		Model = __webpack_require__(18),
+		TechProfile = __webpack_require__(139),
 		
 		didInitialize,
 	
@@ -28900,8 +28900,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(20),
-	    Van = __webpack_require__(138),
+	    Model = __webpack_require__(18),
+	    Van = __webpack_require__(140),
 	
 	    didInitialize,
 	
@@ -29043,8 +29043,8 @@
 	
 	var mangoPay = __webpack_require__(150),
 		
-		Config = __webpack_require__(6),
-		Model = __webpack_require__(20),
+		Config = __webpack_require__(5),
+		Model = __webpack_require__(18),
 	
 	    didInitialize,
 	    registerCard;
