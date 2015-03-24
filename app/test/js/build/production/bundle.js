@@ -44795,14 +44795,14 @@
 	 * Module dependencies
 	 */
 	
-	var type = __webpack_require__(279);
+	var type = __webpack_require__(278);
 	
 	/*!
 	 * Buffer.isBuffer browser shim
 	 */
 	
 	var Buffer;
-	try { Buffer = __webpack_require__(278).Buffer; }
+	try { Buffer = __webpack_require__(279).Buffer; }
 	catch(ex) {
 	  Buffer = {};
 	  Buffer.isBuffer = function() { return false; }
@@ -45046,6 +45046,13 @@
 
 /***/ },
 /* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(280);
+
+
+/***/ },
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/*!
@@ -46383,14 +46390,7 @@
 	  }
 	}
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(278).Buffer))
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(280);
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(279).Buffer))
 
 /***/ },
 /* 280 */
