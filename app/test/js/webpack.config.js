@@ -2,7 +2,7 @@
 'use strict';
 
 var WebPack = require('webpack'),
-    IS_PRODUCTION = false,
+    IS_PRODUCTION = true,
     path = __dirname + '/build/';
 
 if(IS_PRODUCTION === true) {
