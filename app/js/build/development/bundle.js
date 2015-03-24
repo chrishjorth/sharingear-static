@@ -60,7 +60,7 @@
 	}
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
 	    app = __webpack_require__(1),
 	    rootVC = __webpack_require__(2);
@@ -96,15 +96,15 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    Router = __webpack_require__(5),
-	    Utilities = __webpack_require__(6),
+	    Config = __webpack_require__(5),
+	    Router = __webpack_require__(6),
+	    Utilities = __webpack_require__(7),
 	
-	    User = __webpack_require__(7),
-	    ContentClassification = __webpack_require__(8),
-	    MessagePopup = __webpack_require__(9),
+	    User = __webpack_require__(8),
+	    ContentClassification = __webpack_require__(9),
+	    MessagePopup = __webpack_require__(10),
 	
 	    App,
 	
@@ -319,11 +319,11 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
+		$ = __webpack_require__(4),
 	
 		App = __webpack_require__(1),
 	
-		HeaderController = __webpack_require__(10),
+		HeaderController = __webpack_require__(11),
 	    HeaderTemplate = __webpack_require__(14),
 	
 	    initialize,
@@ -331,7 +331,7 @@
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(21);
+	__webpack_require__(20);
 	__webpack_require__(12);
 	
 	initialize = function() {
@@ -1945,1037 +1945,6 @@
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines site configuration.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
-	    MIN_USER_AGE = 13,
-	    AVG_USER_AGE = 27,
-	    MIN_XP_START_YEAR = 1960,
-	    FB_APP_ID = '522375581240221',
-	    FB_STATUSCHECK_TIMEOUT = 5000,
-	    API_URL,
-	    isProduction;
-	
-	if (IS_PRODUCTION === true) {
-	    API_URL = 'https://prod-api.sharingear.com';
-	} else {
-	    API_URL = 'https://api.sharingear.com';
-	}
-	
-	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
-	
-	isProduction = function() {
-	    return (this.IS_PRODUCTION === true);
-	};
-	
-	module.exports = {
-	    IS_PRODUCTION: IS_PRODUCTION,
-	    API_URL: API_URL,
-	    MIN_USER_AGE: MIN_USER_AGE,
-	    AVG_USER_AGE: AVG_USER_AGE,
-	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
-	    FB_APP_ID: FB_APP_ID,
-	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
-	    isProduction: isProduction
-	};
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Handles routing.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-	
-		ViewLoader = __webpack_require__(15),
-		Utilities = __webpack_require__(6);
-	
-	var Router,
-				
-		hashUpdated,
-	
-		addRoutes,
-		getRoute,
-		routeExists,
-		handleHashChange,
-		navigateTo,
-		openModalView,
-		openModalSiblingView,
-		closeModalView,
-		setQueryString;
-			
-	hashUpdated = false; //Semaphore variable
-	
-	addRoutes = function() {
-		var i;
-		for(i = 0; i < arguments.length; i++) {
-			this.routes.push(arguments[i]);
-		}
-	};
-	
-	/**
-	 * Validates the route and returns error if route does not exist.
-	 */
-	getRoute = function(route) {
-		//Extract route root
-		var routeRoot = route.substring(0, route.indexOf('/'));
-		if(routeRoot.length <= 0) {
-			routeRoot = route;
-		}
-	
-		if(this.routeExists(routeRoot) === false) {
-			console.log('Error: no view for route "' + routeRoot + '".');
-			routeRoot = 'error';
-		}
-	
-		return routeRoot;
-	};
-	
-	/**
-	 * @return true if the route exists, false in all other cases.
-	 */
-	routeExists = function(route) {
-		var i = 0;
-		while(i < this.routes.length) {
-			if(route === this.routes[i]) {
-				return true;
-			}
-			i++;
-		}
-		return false;
-	};
-	
-	/**
-	 * NOTE: This function is triggered when the hash in the URL changes, no matter wether it is by code or by user interaction.
-	 */
-	handleHashChange = function() {
-		hashUpdated = true;
-		Router.navigateTo(window.location.hash.substring(1));
-	};
-	
-	navigateTo = function(route, data, callback) {
-		var router = this,
-			queryIndex, newLocation, queryString;
-		if(hashUpdated === false) {
-			//Hash change event not fired
-			//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
-			if(window.location.hash !== '#' + route) {
-				newLocation = window.location.pathname;
-				queryString = Utilities.getQueryString();
-				if(queryString) {
-					newLocation += '?' + queryString;
-				}
-				newLocation += '#' + route;
-				history.pushState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
-			}
-		}
-		else {
-			//Hash change event fired
-			hashUpdated = false;
-		}
-	
-		//Strip querystring from route
-		queryIndex = route.indexOf('?');
-		if(queryIndex >= 0) {
-			route = route.substring(0, queryIndex);
-		}
-	
-		ViewLoader.loadView(this.getRoute(route), route, data, function(error, loadedViewController) {
-			if(!error) {
-				router.currentViewController = loadedViewController;
-			}
-			if(_.isFunction(callback)) {
-				callback();
-			}
-		});
-	};
-	
-	openModalView = function(route, data, callback) {
-		var router = this,
-			view = this.getRoute(route);
-				
-		ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
-			if(!error) {
-				router.currentModalViewController = loadedViewController;
-			}
-			if(_.isFunction(callback)) {
-				callback();
-			}
-		});
-	};
-	
-	/**
-	 * Opens a modal view by closing any current open modals.
-	 */
-	openModalSiblingView = function(route, data, callback) {
-		var router = this,
-			view = this.getRoute(route);
-	
-		ViewLoader.loadModalViewSibling(view, route, data, function(error, loadedViewController) {
-			if(!error) {
-				router.currentModalViewController = loadedViewController;
-			}
-			if(_.isFunction(callback)) {
-				callback();
-			}
-		});
-	};
-	
-	closeModalView = function(callback) {
-		var router = this;
-		ViewLoader.closeModalView(function(error, currentModalViewController) {
-			if(!error) {
-				router.currentModalViewController = currentModalViewController;
-			}
-			if(_.isFunction(callback)) {
-				callback();
-			}
-		});
-	};
-	
-	setQueryString = function(queryString) {
-		var hash = window.location.hash,
-			newLocation;
-		if(!queryString || queryString === '') {
-			newLocation = window.location.pathname + hash;
-		}
-		else {
-			newLocation = window.location.pathname + '?' + queryString + hash;
-		}
-		history.replaceState({}, '', newLocation);
-	};
-	
-	Router = {
-		routes: ['error'], //The default error route must always be present for error handling
-		currentViewController: null,
-		currentModalViewController: null,
-		viewLoader: ViewLoader,
-	
-		addRoutes: addRoutes,
-		getRoute: getRoute,
-		routeExists: routeExists,
-		handleHashChange: handleHashChange,
-		navigateTo: navigateTo,
-		openModalView: openModalView,
-		openModalSiblingView: openModalSiblingView,
-		closeModalView: closeModalView,
-		setQueryString: setQueryString
-	};
-	
-	window.onhashchange = Router.handleHashChange;
-	
-	module.exports = Router;
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * JavaScript utilities.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
-		GoogleMaps = __webpack_require__(13),
-		
-		geocoder,
-	    inherit,
-	    getBaseURL,
-	    ajajFileUpload,
-	    getCityFromCoordinates,
-	    getQueryString,
-	    getQueryStringParameterValue,
-	    capitalizeString,
-	    isMomentBetween,
-	    isMobile;
-	
-	geocoder = new GoogleMaps.Geocoder();
-	
-	/**
-	 * @return A new object that has the same properties as object but with the added properties inheritOptions
-	 */
-	inherit = function(object, defaultOptions) {
-	    var Inherited;
-	
-	    if (typeof defaultOptions !== 'object') {
-	        defaultOptions = {};
-	    }
-	
-	    //This becomes the actual contstructor
-	    Inherited = function(options) {
-	        if (typeof options !== 'object') {
-	            options = {};
-	        }
-	        _.extend(options, defaultOptions); //Fill in missing defaults
-	        object.call(this, options);
-	    };
-	
-	    //Inherited.prototype = new object();
-	    Inherited.prototype.constructor = Inherited;
-	    return Inherited;
-	};
-	
-	getBaseURL = function() {
-	    if (!window.location.origin) {
-	        window.location.origin = window.location.protocol + '//' + window.location.host;
-	    }
-	    return window.location.origin;
-	};
-	
-	/**
-	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
-	 * @param inputName: The name for the file expected on the backend
-	 */
-	ajajFileUpload = function(url, secretProof, fileName, file, callback) {
-	    var formData = new FormData();
-	    formData.append('uploadedfile', file);
-	    formData.append('fileName', fileName);
-	    formData.append('secretProof', secretProof);
-	
-	    $.ajax({
-	        url: url,
-	        type: 'POST',
-	        data: formData,
-	        dataType: 'json',
-	        //Options to tell jQuery not to process data or worry about content-type.
-	        cache: false,
-	        contentType: false,
-	        processData: false,
-	        success: function(data) {
-	            if (data.error) {
-	                callback(data.error);
-	                return;
-	            }
-	            if (data.code && data.code === '401') {
-	                callback(data.message);
-	                return;
-	            }
-	            callback(null, data);
-	        },
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            var error = 'Error uploading file with AJAX POST: ' + textStatus + '. ' + errorThrown;
-	            callback(error);
-	        }
-	    });
-	};
-	
-	getCityFromCoordinates = function(latitude, longitude, callback) {
-	    var geocoder = new GoogleMaps.Geocoder(),
-	        latLng = new GoogleMaps.LatLng(latitude, longitude);
-	    //Use Google Geocoder to translate the coordinates to city name
-	    geocoder.geocode({
-	        'latLng': latLng
-	    }, function(results, status) {
-	        var locationCity = null;
-	        if (status === GoogleMaps.GeocoderStatus.OK) {
-	            locationCity = results[0].address_components[2].long_name;
-	        }
-	        callback(locationCity);
-	    });
-	};
-	
-	getQueryString = function() {
-	    var queryString = window.location.href.split('?')[1];
-	    if (queryString) {
-	        queryString = queryString.split('#')[0];
-	    }
-	    return queryString;
-	};
-	
-	/**
-	 * Receives a query string and returns the value for the specified key.
-	 * Inspired by http://stackoverflow.com/a/1099670
-	 */
-	getQueryStringParameterValue = function(queryString, key) {
-	    var regEx = /[?&]?([^=]+)=([^&]*)/g,
-	        parameters = {},
-	        tokens;
-	    queryString = queryString.split('+').join(' ');
-	    while ((tokens = regEx.exec(queryString)) !== null) {
-	        parameters[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-	    }
-	    return parameters[key];
-	};
-	
-	capitalizeString = function(string) {
-	    return string.charAt(0).toUpperCase() + string.slice(1);
-	};
-	
-	/**
-	 * This function considers days as smallest time unit.
-	 * This function is inclusive.
-	 */
-	//TODO: rename to isDayMomentBetween
-	isMomentBetween = function(moment, intervalStart, intervalEnd) {
-	    return ((moment.isAfter(intervalStart, 'day') === true || moment.isSame(intervalStart, 'day') === true) && (moment.isBefore(intervalEnd, 'day') === true || moment.isSame(intervalEnd, 'day') === true));
-	};
-	
-	/**
-	 * Breakpoints are Bootstrap compatible.
-	 */
-	isMobile = function() {
-	    var breakpoints = [768, 992, 1200],
-	        viewWidth = $(document).width();
-	    return (viewWidth < breakpoints[0]);
-	};
-	
-	module.exports = {
-	    inherit: inherit,
-	    getBaseURL: getBaseURL,
-	    ajajFileUpload: ajajFileUpload,
-	    getCityFromCoordinates: getCityFromCoordinates,
-	    getQueryString: getQueryString,
-	    getQueryStringParameterValue: getQueryStringParameterValue,
-	    capitalizeString: capitalizeString,
-	    isMomentBetween: isMomentBetween,
-	    isMobile: isMobile
-	};
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a Sharingear user. This can both be a logged in user or the owner of gear.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-	    FB = __webpack_require__(16),
-	    Localization = __webpack_require__(17),
-	    Model = __webpack_require__(18),
-	    Utilities = __webpack_require__(6),
-	
-	    didInitialize,
-	    getLoginStatus,
-	    login,
-	    loginToBackend,
-	    fetch,
-	    update,
-	    uploadProfilePicture,
-	    getPublicInfo,
-	    isSubMerchant,
-	    updateBankDetails,
-	    setSearchInterval,
-	    getIntervalStart,
-	    getIntervalEnd,
-	
-	    isLoggedIn;
-	
-	didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            name: '',
-	            surname: '',
-	            city: '',
-	            image_url: '',
-	            bio: '',
-	            birthdate: null,
-	            address: null,
-	            postal_code: null,
-	            country: null,
-	            phone: null,
-	            nationality: null,
-	            currency: 'EUR',
-	            time_zone: 'UTC'
-	        };
-	    }
-	};
-	
-	getLoginStatus = function(callback) {
-	    var user = this;
-	    if (!FB) {
-	        callback({
-	            status: 'Failed.'
-	        });
-	        return;
-	    }
-	    FB.getLoginStatus(function(response) {
-	        user.fbStatus = response.status;
-	        if (callback && typeof callback === 'function') {
-	            callback(response);
-	        }
-	    }); //Adding the true parameter forces a refresh from the FB servers, but also causes the login popup to be blocked, since it goes async and creates a new execution context
-	};
-	
-	login = function(callback) {
-	    var user = this;
-	
-	    if (!FB) {
-	        callback('Facebook library is not loaded or blocked.');
-	        return;
-	    }
-	
-	    //We need to make sure Facebook has not changed the status on their side.
-	    this.getLoginStatus(function(response) {
-	        if (user.fbStatus !== 'connected') {
-	            FB.login(function(response) {
-	                var error;
-	                //console.log(response);
-	                if (response.status === 'connected') {
-	                    error = null;
-	                    user.loginToBackend(response, callback);
-	                    return;
-	                } else if (response.status === 'not_authorized') {
-	                    error = {
-	                        error: 'FB App not authorized'
-	                    };
-	                } else {
-	                    error = {
-	                        error: 'FB login failed'
-	                    };
-	                }
-	
-	                user.fbStatus = response.status;
-	
-	                if (callback && typeof callback === 'function') {
-	                    callback(error);
-	                }
-	            }, {
-	                scope: 'email'
-	            });
-	        } else {
-	            user.loginToBackend(response, callback);
-	        }
-	    });
-	};
-	
-	loginToBackend = function(FBResponse, callback) {
-	    var user = this,
-	        authData = FBResponse.authResponse,
-	        postData;
-	
-	    if (_.isFunction(window.ga) === true) {
-	        window.ga('send', 'event', 'user action', 'login', 'fb login', 1);
-	    }
-	
-	    postData = {
-	        fbid: authData.userID,
-	        accesstoken: authData.accessToken
-	    };
-	    this.post('/users/login', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error logging into backend: ' + error);
-	            }
-	            return;
-	        }
-	        if (user.data === null) {
-	            user.data = {};
-	        }
-	        _.extend(user.data, data);
-	
-	        //Enable Google Analytics user tracking
-	        if (_.isFunction(window.ga) === true) {
-	            window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
-	        }
-	
-	        Localization.setCurrentTimeZone(user.data.time_zone);
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	fetch = function(callback) {
-	    var user = this;
-	    user.get('/users/' + user.data.id, function(error, data) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        _.extend(user.data, data);
-	        Localization.setCurrentTimeZone(user.data.time_zone);
-	        callback(null);
-	    });
-	};
-	
-	update = function(callback) {
-	    var user = this;
-	    user.put('/users/' + user.data.id, user.data, function(error, data) {
-	        if (error) {
-	            callback('Error updating user: ' + error);
-	            return;
-	        }
-	        _.extend(user.data, data);
-	        Localization.setCurrentTimeZone(user.data.time_zone);
-	        callback(null);
-	    });
-	};
-	
-	uploadProfilePicture = function(file, filename, userID, callback) {
-	    var model = this;
-	    this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error getting filename: ' + error);
-	            }
-	            return;
-	        }
-	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
-	            var postData;
-	            if (error) {
-	                if (callback && typeof callback === 'function') {
-	                    callback('Error uploading file: ' + error);
-	                }
-	                return;
-	            }
-	
-	            //Add image url to backend
-	            postData = {
-	                image_url: data.url
-	            };
-	
-	            model.put('/users/' + userID, postData, function(error, images) {
-	                if (error) {
-	                    if (callback && typeof callback === 'function') {
-	                        callback('Error uploading file: ' + error);
-	                    }
-	                    return;
-	                }
-	                model.data.images = images.images;
-	                callback(null, data.url);
-	            });
-	
-	        });
-	    });
-	};
-	
-	getPublicInfo = function(callback) {
-	    var model = this;
-	
-	    this.get('/users/' + this.data.id, function(error, user) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, user);
-	        callback(null);
-	    });
-	};
-	
-	isSubMerchant = function() {
-	    return this.data.hasBank;
-	};
-	
-	updateBankDetails = function(callback) {
-	    var user = this;
-	    user.put('/users/' + user.data.id + '/bankdetails', user.data, function(error) {
-	        if (error) {
-	            callback('Error updating bank details: ' + error);
-	        }
-	        callback(null);
-	    });
-	};
-	
-	setSearchInterval = function(dateRange) {
-	    this.data.searchInterval = dateRange;
-	};
-	
-	getIntervalStart = function() {
-	    var date = null;
-	    if (this.data.searchInterval) {
-	        date = this.data.searchInterval.split('-')[0];
-	    }
-	    return date;
-	};
-	
-	getIntervalEnd = function() {
-	    var date = null;
-	    if (this.data.searchInterval) {
-	        date = this.data.searchInterval.split('-')[1];
-	    }
-	    return date;
-	};
-	
-	isLoggedIn = function() {
-	    return this.data.id !== null;
-	};
-	
-	module.exports = Model.inherit({
-	    fbStatus: '',
-	
-	    didInitialize: didInitialize,
-	    getLoginStatus: getLoginStatus,
-	    login: login,
-	    loginToBackend: loginToBackend,
-	    uploadProfilePicture: uploadProfilePicture,
-	    fetch: fetch,
-	    update: update,
-	    getPublicInfo: getPublicInfo,
-	    isSubMerchant: isSubMerchant,
-	    updateBankDetails: updateBankDetails,
-	    setSearchInterval: setSearchInterval,
-	    getIntervalStart: getIntervalStart,
-	    getIntervalEnd: getIntervalEnd,
-	    isLoggedIn: isLoggedIn
-	});
-
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines the Sharingear classification of gear, vans and techs.
-	 * @author: Chris Hjorth
-	 */
-	//TODO: Store the classification locally so that it is always ready on load after the first time
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-	
-	    Model = __webpack_require__(18),
-	
-	    didInitialize,
-	    getClassification;
-	
-	didInitialize = function() {
-	    this.data = {};
-	    this.getClassification();
-	};
-	
-	getClassification = function(callback) {
-	    var model = this;
-	
-	    if (_.isEmpty(this.data) === false) {
-	        if (callback && typeof callback === 'function') {
-	            callback(this.data);
-	        }
-	        return;
-	    }
-	
-	    this.get('/contentclassification', function(error, contentClassification) {
-	        if (error) {
-	            console.log(error);
-	            return;
-	        }
-	        model.data = contentClassification;
-	        if (callback && typeof callback === 'function') {
-	            callback(model.data);
-	        }
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    getClassification: getClassification
-	});
-
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Popup that requests a time.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var $ = __webpack_require__(11),
-	
-		PopupController = __webpack_require__(19),
-	
-		MessagePopupTemplate = __webpack_require__(22),
-	
-		MessagePopup,
-	
-	    setMessage,
-	    wasClosed,
-	    didRender,
-	    getWasClosed,
-	
-	    handleCancel;
-	
-	didRender = function() {
-	    wasClosed = false;
-	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
-	};
-	
-	setMessage = function(message) {
-	    $('#popup-message', this.$element).html(message);
-	};
-	
-	getWasClosed = function() {
-	    return wasClosed;
-	};
-	
-	handleCancel = function(event) {
-	    var view = event.data;
-	    wasClosed = true;
-	    view.hide();
-	};
-	
-	MessagePopup = PopupController.inherit({
-	    template: MessagePopupTemplate,
-	
-	    didRender: didRender,
-	    setMessage: setMessage,
-	
-	    getWasClosed: getWasClosed,
-	    handleCancel: handleCancel
-	});
-	
-	
-	module.exports = MessagePopup;
-
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Controller for the Sharingear header with navigation view.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var $ = __webpack_require__(11),
-	
-	    ViewController = __webpack_require__(20),
-	    Utilities = __webpack_require__(6),
-	    App = __webpack_require__(1),
-	
-	    defaultTitle,
-	
-	    didInitialize,
-	    didRender,
-	    didResize,
-	    populateMainMenu,
-	    renderProfilePicture,
-	    handleNavbarToggle,
-	    handleLogin,
-	    setTitle,
-	    _updateTitle,
-	    changeActiveState;
-	
-	/* Static variables */
-	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	
-	didInitialize = function() {
-	    this.isMobile = false;
-	    this.title = defaultTitle;
-	};
-	
-	didRender = function() {
-	    this._updateTitle();
-	    this.populateMainMenu();
-	    this.renderProfilePicture();
-	
-	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
-	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
-	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
-	};
-	
-	didResize = function(event) {
-	    var view = event.data;
-	    if (Utilities.isMobile() !== view.isMobile) {
-	        view.populateMainMenu();
-	    }
-	    view._updateTitle();
-	};
-	
-	populateMainMenu = function() {
-	    var html = '',
-	        $slideMenu, $dropdownMenu, $menuList;
-	
-	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
-	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
-	
-	    if (Utilities.isMobile() === true) {
-	        this.isMobile = true;
-	        $slideMenu.removeClass('hidden');
-	        if ($dropdownMenu.hasClass('hidden') === false) {
-	            $dropdownMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $slideMenu);
-	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	    } else {
-	        this.isMobile = false;
-	        $dropdownMenu.removeClass('hidden');
-	        if ($slideMenu.hasClass('hidden') === false) {
-	            $slideMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $dropdownMenu);
-	    }
-	
-	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
-	
-	    if (App.user && App.user.data.id !== null) {
-	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
-	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
-	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
-	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
-	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
-	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
-	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
-	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
-	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
-	    } else {
-	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
-	    }
-	
-	    $menuList.html(html);
-	};
-	
-	renderProfilePicture = function() {
-	    var view = this,
-	        img;
-	    if (App.user && App.user.data.image_url) {
-	        img = new Image();
-	        img.onload = function() {
-	            var isVertical, backgroundSize;
-	            isVertical = img.width < img.height;
-	            if (isVertical === true) {
-	                backgroundSize = '30px auto';
-	            } else {
-	                backgroundSize = 'auto 30px';
-	            }
-	            $('.profile-pic', view.$element).css({
-	                'background-image': 'url(' + img.src + ')',
-	                'background-size': backgroundSize
-	            });
-	        };
-	        img.src = App.user.data.image_url;
-	    }
-	};
-	
-	handleNavbarToggle = function(event) {
-	    var view = event.data,
-	        $this = $(this),
-	        $viewContainer = $('.view-container'),
-	        $navbar, $tabbar, handleTransition;
-	
-	    handleTransition = function() {
-	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
-	        $this.removeClass('sliding-right');
-	    };
-	
-	    $navbar = $('.sg-navbar', view.$element);
-	    $tabbar = $('.sg-tabbar-container', $viewContainer);
-	    if ($tabbar.css('position') !== 'fixed') {
-	        //We are not in a mobile situation
-	        $tabbar = $('');
-	    }
-	
-	    $navbar.addClass('sliding-right');
-	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $viewContainer.addClass('sliding-right');
-	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $tabbar.addClass('sliding-right');
-	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	
-	    if ($navbar.hasClass('slide-right') === true) {
-	        $navbar.removeClass('slide-right');
-	        $viewContainer.removeClass('slide-right');
-	        $tabbar.removeClass('slide-right');
-	    } else {
-	        $navbar.addClass('slide-right');
-	        $viewContainer.addClass('slide-right');
-	        $tabbar.addClass('slide-right');
-	    }
-	
-	    //Handle selection display
-	    if ($this.hasClass('list-group-item') === true) {
-	        view.changeActiveState($this);
-	    }
-	};
-	
-	handleLogin = function(event, callback) {
-	    var view = event.data,
-	        user = App.user;
-	
-	    user.login(function(error) {
-	        if (!error) {
-	            App.router.navigateTo('dashboard');
-	            view.render();
-	        } else {
-	            alert('Could not connect to Facebook.');
-	            console.log(error);
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback();
-	        }
-	    });
-	};
-	
-	/**
-	 * @param title: the text to display as title, if null title is set to default
-	 */
-	setTitle = function(title) {
-	    if (!title || title === null) {
-	        title = defaultTitle;
-	    }
-	    this.title = title;
-	    this._updateTitle();
-	};
-	
-	_updateTitle = function() {
-	    if (Utilities.isMobile() === true) {
-	        $('.sg-navbar-brand', this.$element).html(this.title);
-	    } else {
-	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
-	    }
-	};
-	
-	changeActiveState = function($menuItem) {
-	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
-	    $menuItem.addClass('list-group-item-selected');
-	};
-	
-	module.exports = ViewController.inherit({
-	    didInitialize: didInitialize,
-	    didRender: didRender,
-	    didResize: didResize,
-	    populateMainMenu: populateMainMenu,
-	    renderProfilePicture: renderProfilePicture,
-	    handleNavbarToggle: handleNavbarToggle,
-	    handleLogin: handleLogin,
-	    setTitle: setTitle,
-	    _updateTitle: _updateTitle,
-	    changeActiveState: changeActiveState
-	});
-
-
-/***/ },
-/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -12186,6 +11155,1037 @@
 
 
 /***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines site configuration.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
+	    MIN_USER_AGE = 13,
+	    AVG_USER_AGE = 27,
+	    MIN_XP_START_YEAR = 1960,
+	    FB_APP_ID = '522375581240221',
+	    FB_STATUSCHECK_TIMEOUT = 5000,
+	    API_URL,
+	    isProduction;
+	
+	if (IS_PRODUCTION === true) {
+	    API_URL = 'https://prod-api.sharingear.com';
+	} else {
+	    API_URL = 'https://api.sharingear.com';
+	}
+	
+	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+	
+	isProduction = function() {
+	    return (this.IS_PRODUCTION === true);
+	};
+	
+	module.exports = {
+	    IS_PRODUCTION: IS_PRODUCTION,
+	    API_URL: API_URL,
+	    MIN_USER_AGE: MIN_USER_AGE,
+	    AVG_USER_AGE: AVG_USER_AGE,
+	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
+	    FB_APP_ID: FB_APP_ID,
+	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
+	    isProduction: isProduction
+	};
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Handles routing.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	
+		ViewLoader = __webpack_require__(15),
+		Utilities = __webpack_require__(7);
+	
+	var Router,
+				
+		hashUpdated,
+	
+		addRoutes,
+		getRoute,
+		routeExists,
+		handleHashChange,
+		navigateTo,
+		openModalView,
+		openModalSiblingView,
+		closeModalView,
+		setQueryString;
+			
+	hashUpdated = false; //Semaphore variable
+	
+	addRoutes = function() {
+		var i;
+		for(i = 0; i < arguments.length; i++) {
+			this.routes.push(arguments[i]);
+		}
+	};
+	
+	/**
+	 * Validates the route and returns error if route does not exist.
+	 */
+	getRoute = function(route) {
+		//Extract route root
+		var routeRoot = route.substring(0, route.indexOf('/'));
+		if(routeRoot.length <= 0) {
+			routeRoot = route;
+		}
+	
+		if(this.routeExists(routeRoot) === false) {
+			console.log('Error: no view for route "' + routeRoot + '".');
+			routeRoot = 'error';
+		}
+	
+		return routeRoot;
+	};
+	
+	/**
+	 * @return true if the route exists, false in all other cases.
+	 */
+	routeExists = function(route) {
+		var i = 0;
+		while(i < this.routes.length) {
+			if(route === this.routes[i]) {
+				return true;
+			}
+			i++;
+		}
+		return false;
+	};
+	
+	/**
+	 * NOTE: This function is triggered when the hash in the URL changes, no matter wether it is by code or by user interaction.
+	 */
+	handleHashChange = function() {
+		hashUpdated = true;
+		Router.navigateTo(window.location.hash.substring(1));
+	};
+	
+	navigateTo = function(route, data, callback) {
+		var router = this,
+			queryIndex, newLocation, queryString;
+		if(hashUpdated === false) {
+			//Hash change event not fired
+			//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
+			if(window.location.hash !== '#' + route) {
+				newLocation = window.location.pathname;
+				queryString = Utilities.getQueryString();
+				if(queryString) {
+					newLocation += '?' + queryString;
+				}
+				newLocation += '#' + route;
+				history.pushState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
+			}
+		}
+		else {
+			//Hash change event fired
+			hashUpdated = false;
+		}
+	
+		//Strip querystring from route
+		queryIndex = route.indexOf('?');
+		if(queryIndex >= 0) {
+			route = route.substring(0, queryIndex);
+		}
+	
+		ViewLoader.loadView(this.getRoute(route), route, data, function(error, loadedViewController) {
+			if(!error) {
+				router.currentViewController = loadedViewController;
+			}
+			if(_.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	
+	openModalView = function(route, data, callback) {
+		var router = this,
+			view = this.getRoute(route);
+				
+		ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
+			if(!error) {
+				router.currentModalViewController = loadedViewController;
+			}
+			if(_.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	
+	/**
+	 * Opens a modal view by closing any current open modals.
+	 */
+	openModalSiblingView = function(route, data, callback) {
+		var router = this,
+			view = this.getRoute(route);
+	
+		ViewLoader.loadModalViewSibling(view, route, data, function(error, loadedViewController) {
+			if(!error) {
+				router.currentModalViewController = loadedViewController;
+			}
+			if(_.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	
+	closeModalView = function(callback) {
+		var router = this;
+		ViewLoader.closeModalView(function(error, currentModalViewController) {
+			if(!error) {
+				router.currentModalViewController = currentModalViewController;
+			}
+			if(_.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	
+	setQueryString = function(queryString) {
+		var hash = window.location.hash,
+			newLocation;
+		if(!queryString || queryString === '') {
+			newLocation = window.location.pathname + hash;
+		}
+		else {
+			newLocation = window.location.pathname + '?' + queryString + hash;
+		}
+		history.replaceState({}, '', newLocation);
+	};
+	
+	Router = {
+		routes: ['error'], //The default error route must always be present for error handling
+		currentViewController: null,
+		currentModalViewController: null,
+		viewLoader: ViewLoader,
+	
+		addRoutes: addRoutes,
+		getRoute: getRoute,
+		routeExists: routeExists,
+		handleHashChange: handleHashChange,
+		navigateTo: navigateTo,
+		openModalView: openModalView,
+		openModalSiblingView: openModalSiblingView,
+		closeModalView: closeModalView,
+		setQueryString: setQueryString
+	};
+	
+	window.onhashchange = Router.handleHashChange;
+	
+	module.exports = Router;
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * JavaScript utilities.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+		GoogleMaps = __webpack_require__(13),
+		
+		geocoder,
+	    inherit,
+	    getBaseURL,
+	    ajajFileUpload,
+	    getCityFromCoordinates,
+	    getQueryString,
+	    getQueryStringParameterValue,
+	    capitalizeString,
+	    isMomentBetween,
+	    isMobile;
+	
+	geocoder = new GoogleMaps.Geocoder();
+	
+	/**
+	 * @return A new object that has the same properties as object but with the added properties inheritOptions
+	 */
+	inherit = function(object, defaultOptions) {
+	    var Inherited;
+	
+	    if (typeof defaultOptions !== 'object') {
+	        defaultOptions = {};
+	    }
+	
+	    //This becomes the actual contstructor
+	    Inherited = function(options) {
+	        if (typeof options !== 'object') {
+	            options = {};
+	        }
+	        _.extend(options, defaultOptions); //Fill in missing defaults
+	        object.call(this, options);
+	    };
+	
+	    //Inherited.prototype = new object();
+	    Inherited.prototype.constructor = Inherited;
+	    return Inherited;
+	};
+	
+	getBaseURL = function() {
+	    if (!window.location.origin) {
+	        window.location.origin = window.location.protocol + '//' + window.location.host;
+	    }
+	    return window.location.origin;
+	};
+	
+	/**
+	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
+	 * @param inputName: The name for the file expected on the backend
+	 */
+	ajajFileUpload = function(url, secretProof, fileName, file, callback) {
+	    var formData = new FormData();
+	    formData.append('uploadedfile', file);
+	    formData.append('fileName', fileName);
+	    formData.append('secretProof', secretProof);
+	
+	    $.ajax({
+	        url: url,
+	        type: 'POST',
+	        data: formData,
+	        dataType: 'json',
+	        //Options to tell jQuery not to process data or worry about content-type.
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+	        success: function(data) {
+	            if (data.error) {
+	                callback(data.error);
+	                return;
+	            }
+	            if (data.code && data.code === '401') {
+	                callback(data.message);
+	                return;
+	            }
+	            callback(null, data);
+	        },
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            var error = 'Error uploading file with AJAX POST: ' + textStatus + '. ' + errorThrown;
+	            callback(error);
+	        }
+	    });
+	};
+	
+	getCityFromCoordinates = function(latitude, longitude, callback) {
+	    var geocoder = new GoogleMaps.Geocoder(),
+	        latLng = new GoogleMaps.LatLng(latitude, longitude);
+	    //Use Google Geocoder to translate the coordinates to city name
+	    geocoder.geocode({
+	        'latLng': latLng
+	    }, function(results, status) {
+	        var locationCity = null;
+	        if (status === GoogleMaps.GeocoderStatus.OK) {
+	            locationCity = results[0].address_components[2].long_name;
+	        }
+	        callback(locationCity);
+	    });
+	};
+	
+	getQueryString = function() {
+	    var queryString = window.location.href.split('?')[1];
+	    if (queryString) {
+	        queryString = queryString.split('#')[0];
+	    }
+	    return queryString;
+	};
+	
+	/**
+	 * Receives a query string and returns the value for the specified key.
+	 * Inspired by http://stackoverflow.com/a/1099670
+	 */
+	getQueryStringParameterValue = function(queryString, key) {
+	    var regEx = /[?&]?([^=]+)=([^&]*)/g,
+	        parameters = {},
+	        tokens;
+	    queryString = queryString.split('+').join(' ');
+	    while ((tokens = regEx.exec(queryString)) !== null) {
+	        parameters[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+	    }
+	    return parameters[key];
+	};
+	
+	capitalizeString = function(string) {
+	    return string.charAt(0).toUpperCase() + string.slice(1);
+	};
+	
+	/**
+	 * This function considers days as smallest time unit.
+	 * This function is inclusive.
+	 */
+	//TODO: rename to isDayMomentBetween
+	isMomentBetween = function(moment, intervalStart, intervalEnd) {
+	    return ((moment.isAfter(intervalStart, 'day') === true || moment.isSame(intervalStart, 'day') === true) && (moment.isBefore(intervalEnd, 'day') === true || moment.isSame(intervalEnd, 'day') === true));
+	};
+	
+	/**
+	 * Breakpoints are Bootstrap compatible.
+	 */
+	isMobile = function() {
+	    var breakpoints = [768, 992, 1200],
+	        viewWidth = $(document).width();
+	    return (viewWidth < breakpoints[0]);
+	};
+	
+	module.exports = {
+	    inherit: inherit,
+	    getBaseURL: getBaseURL,
+	    ajajFileUpload: ajajFileUpload,
+	    getCityFromCoordinates: getCityFromCoordinates,
+	    getQueryString: getQueryString,
+	    getQueryStringParameterValue: getQueryStringParameterValue,
+	    capitalizeString: capitalizeString,
+	    isMomentBetween: isMomentBetween,
+	    isMobile: isMobile
+	};
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a Sharingear user. This can both be a logged in user or the owner of gear.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	    FB = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
+	    Model = __webpack_require__(16),
+	    Utilities = __webpack_require__(7),
+	
+	    didInitialize,
+	    getLoginStatus,
+	    login,
+	    loginToBackend,
+	    fetch,
+	    update,
+	    uploadProfilePicture,
+	    getPublicInfo,
+	    isSubMerchant,
+	    updateBankDetails,
+	    setSearchInterval,
+	    getIntervalStart,
+	    getIntervalEnd,
+	
+	    isLoggedIn;
+	
+	didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            name: '',
+	            surname: '',
+	            city: '',
+	            image_url: '',
+	            bio: '',
+	            birthdate: null,
+	            address: null,
+	            postal_code: null,
+	            country: null,
+	            phone: null,
+	            nationality: null,
+	            currency: 'EUR',
+	            time_zone: 'UTC'
+	        };
+	    }
+	};
+	
+	getLoginStatus = function(callback) {
+	    var user = this;
+	    if (!FB) {
+	        callback({
+	            status: 'Failed.'
+	        });
+	        return;
+	    }
+	    FB.getLoginStatus(function(response) {
+	        user.fbStatus = response.status;
+	        if (callback && typeof callback === 'function') {
+	            callback(response);
+	        }
+	    }); //Adding the true parameter forces a refresh from the FB servers, but also causes the login popup to be blocked, since it goes async and creates a new execution context
+	};
+	
+	login = function(callback) {
+	    var user = this;
+	
+	    if (!FB) {
+	        callback('Facebook library is not loaded or blocked.');
+	        return;
+	    }
+	
+	    //We need to make sure Facebook has not changed the status on their side.
+	    this.getLoginStatus(function(response) {
+	        if (user.fbStatus !== 'connected') {
+	            FB.login(function(response) {
+	                var error;
+	                //console.log(response);
+	                if (response.status === 'connected') {
+	                    error = null;
+	                    user.loginToBackend(response, callback);
+	                    return;
+	                } else if (response.status === 'not_authorized') {
+	                    error = {
+	                        error: 'FB App not authorized'
+	                    };
+	                } else {
+	                    error = {
+	                        error: 'FB login failed'
+	                    };
+	                }
+	
+	                user.fbStatus = response.status;
+	
+	                if (callback && typeof callback === 'function') {
+	                    callback(error);
+	                }
+	            }, {
+	                scope: 'email'
+	            });
+	        } else {
+	            user.loginToBackend(response, callback);
+	        }
+	    });
+	};
+	
+	loginToBackend = function(FBResponse, callback) {
+	    var user = this,
+	        authData = FBResponse.authResponse,
+	        postData;
+	
+	    if (_.isFunction(window.ga) === true) {
+	        window.ga('send', 'event', 'user action', 'login', 'fb login', 1);
+	    }
+	
+	    postData = {
+	        fbid: authData.userID,
+	        accesstoken: authData.accessToken
+	    };
+	    this.post('/users/login', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error logging into backend: ' + error);
+	            }
+	            return;
+	        }
+	        if (user.data === null) {
+	            user.data = {};
+	        }
+	        _.extend(user.data, data);
+	
+	        //Enable Google Analytics user tracking
+	        if (_.isFunction(window.ga) === true) {
+	            window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
+	        }
+	
+	        Localization.setCurrentTimeZone(user.data.time_zone);
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	fetch = function(callback) {
+	    var user = this;
+	    user.get('/users/' + user.data.id, function(error, data) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        _.extend(user.data, data);
+	        Localization.setCurrentTimeZone(user.data.time_zone);
+	        callback(null);
+	    });
+	};
+	
+	update = function(callback) {
+	    var user = this;
+	    user.put('/users/' + user.data.id, user.data, function(error, data) {
+	        if (error) {
+	            callback('Error updating user: ' + error);
+	            return;
+	        }
+	        _.extend(user.data, data);
+	        Localization.setCurrentTimeZone(user.data.time_zone);
+	        callback(null);
+	    });
+	};
+	
+	uploadProfilePicture = function(file, filename, userID, callback) {
+	    var model = this;
+	    this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error getting filename: ' + error);
+	            }
+	            return;
+	        }
+	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+	            var postData;
+	            if (error) {
+	                if (callback && typeof callback === 'function') {
+	                    callback('Error uploading file: ' + error);
+	                }
+	                return;
+	            }
+	
+	            //Add image url to backend
+	            postData = {
+	                image_url: data.url
+	            };
+	
+	            model.put('/users/' + userID, postData, function(error, images) {
+	                if (error) {
+	                    if (callback && typeof callback === 'function') {
+	                        callback('Error uploading file: ' + error);
+	                    }
+	                    return;
+	                }
+	                model.data.images = images.images;
+	                callback(null, data.url);
+	            });
+	
+	        });
+	    });
+	};
+	
+	getPublicInfo = function(callback) {
+	    var model = this;
+	
+	    this.get('/users/' + this.data.id, function(error, user) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, user);
+	        callback(null);
+	    });
+	};
+	
+	isSubMerchant = function() {
+	    return this.data.hasBank;
+	};
+	
+	updateBankDetails = function(callback) {
+	    var user = this;
+	    user.put('/users/' + user.data.id + '/bankdetails', user.data, function(error) {
+	        if (error) {
+	            callback('Error updating bank details: ' + error);
+	        }
+	        callback(null);
+	    });
+	};
+	
+	setSearchInterval = function(dateRange) {
+	    this.data.searchInterval = dateRange;
+	};
+	
+	getIntervalStart = function() {
+	    var date = null;
+	    if (this.data.searchInterval) {
+	        date = this.data.searchInterval.split('-')[0];
+	    }
+	    return date;
+	};
+	
+	getIntervalEnd = function() {
+	    var date = null;
+	    if (this.data.searchInterval) {
+	        date = this.data.searchInterval.split('-')[1];
+	    }
+	    return date;
+	};
+	
+	isLoggedIn = function() {
+	    return this.data.id !== null;
+	};
+	
+	module.exports = Model.inherit({
+	    fbStatus: '',
+	
+	    didInitialize: didInitialize,
+	    getLoginStatus: getLoginStatus,
+	    login: login,
+	    loginToBackend: loginToBackend,
+	    uploadProfilePicture: uploadProfilePicture,
+	    fetch: fetch,
+	    update: update,
+	    getPublicInfo: getPublicInfo,
+	    isSubMerchant: isSubMerchant,
+	    updateBankDetails: updateBankDetails,
+	    setSearchInterval: setSearchInterval,
+	    getIntervalStart: getIntervalStart,
+	    getIntervalEnd: getIntervalEnd,
+	    isLoggedIn: isLoggedIn
+	});
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines the Sharingear classification of gear, vans and techs.
+	 * @author: Chris Hjorth
+	 */
+	//TODO: Store the classification locally so that it is always ready on load after the first time
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	
+	    Model = __webpack_require__(16),
+	
+	    didInitialize,
+	    getClassification;
+	
+	didInitialize = function() {
+	    this.data = {};
+	    this.getClassification();
+	};
+	
+	getClassification = function(callback) {
+	    var model = this;
+	
+	    if (_.isEmpty(this.data) === false) {
+	        if (callback && typeof callback === 'function') {
+	            callback(this.data);
+	        }
+	        return;
+	    }
+	
+	    this.get('/contentclassification', function(error, contentClassification) {
+	        if (error) {
+	            console.log(error);
+	            return;
+	        }
+	        model.data = contentClassification;
+	        if (callback && typeof callback === 'function') {
+	            callback(model.data);
+	        }
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    getClassification: getClassification
+	});
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Popup that requests a time.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var $ = __webpack_require__(4),
+	
+		PopupController = __webpack_require__(19),
+	
+		MessagePopupTemplate = __webpack_require__(21),
+	
+		MessagePopup,
+	
+	    setMessage,
+	    wasClosed,
+	    didRender,
+	    getWasClosed,
+	
+	    handleCancel;
+	
+	didRender = function() {
+	    wasClosed = false;
+	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+	};
+	
+	setMessage = function(message) {
+	    $('#popup-message', this.$element).html(message);
+	};
+	
+	getWasClosed = function() {
+	    return wasClosed;
+	};
+	
+	handleCancel = function(event) {
+	    var view = event.data;
+	    wasClosed = true;
+	    view.hide();
+	};
+	
+	MessagePopup = PopupController.inherit({
+	    template: MessagePopupTemplate,
+	
+	    didRender: didRender,
+	    setMessage: setMessage,
+	
+	    getWasClosed: getWasClosed,
+	    handleCancel: handleCancel
+	});
+	
+	
+	module.exports = MessagePopup;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Controller for the Sharingear header with navigation view.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var $ = __webpack_require__(4),
+	
+	    ViewController = __webpack_require__(22),
+	    Utilities = __webpack_require__(7),
+	    App = __webpack_require__(1),
+	
+	    defaultTitle,
+	
+	    didInitialize,
+	    didRender,
+	    didResize,
+	    populateMainMenu,
+	    renderProfilePicture,
+	    handleNavbarToggle,
+	    handleLogin,
+	    setTitle,
+	    _updateTitle,
+	    changeActiveState;
+	
+	/* Static variables */
+	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	
+	didInitialize = function() {
+	    this.isMobile = false;
+	    this.title = defaultTitle;
+	};
+	
+	didRender = function() {
+	    this._updateTitle();
+	    this.populateMainMenu();
+	    this.renderProfilePicture();
+	
+	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
+	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
+	};
+	
+	didResize = function(event) {
+	    var view = event.data;
+	    if (Utilities.isMobile() !== view.isMobile) {
+	        view.populateMainMenu();
+	    }
+	    view._updateTitle();
+	};
+	
+	populateMainMenu = function() {
+	    var html = '',
+	        $slideMenu, $dropdownMenu, $menuList;
+	
+	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
+	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
+	
+	    if (Utilities.isMobile() === true) {
+	        this.isMobile = true;
+	        $slideMenu.removeClass('hidden');
+	        if ($dropdownMenu.hasClass('hidden') === false) {
+	            $dropdownMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $slideMenu);
+	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	    } else {
+	        this.isMobile = false;
+	        $dropdownMenu.removeClass('hidden');
+	        if ($slideMenu.hasClass('hidden') === false) {
+	            $slideMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $dropdownMenu);
+	    }
+	
+	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
+	
+	    if (App.user && App.user.data.id !== null) {
+	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
+	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
+	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
+	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
+	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
+	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
+	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
+	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
+	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
+	    } else {
+	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
+	    }
+	
+	    $menuList.html(html);
+	};
+	
+	renderProfilePicture = function() {
+	    var view = this,
+	        img;
+	    if (App.user && App.user.data.image_url) {
+	        img = new Image();
+	        img.onload = function() {
+	            var isVertical, backgroundSize;
+	            isVertical = img.width < img.height;
+	            if (isVertical === true) {
+	                backgroundSize = '30px auto';
+	            } else {
+	                backgroundSize = 'auto 30px';
+	            }
+	            $('.profile-pic', view.$element).css({
+	                'background-image': 'url(' + img.src + ')',
+	                'background-size': backgroundSize
+	            });
+	        };
+	        img.src = App.user.data.image_url;
+	    }
+	};
+	
+	handleNavbarToggle = function(event) {
+	    var view = event.data,
+	        $this = $(this),
+	        $viewContainer = $('.view-container'),
+	        $navbar, $tabbar, handleTransition;
+	
+	    handleTransition = function() {
+	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
+	        $this.removeClass('sliding-right');
+	    };
+	
+	    $navbar = $('.sg-navbar', view.$element);
+	    $tabbar = $('.sg-tabbar-container', $viewContainer);
+	    if ($tabbar.css('position') !== 'fixed') {
+	        //We are not in a mobile situation
+	        $tabbar = $('');
+	    }
+	
+	    $navbar.addClass('sliding-right');
+	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $viewContainer.addClass('sliding-right');
+	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $tabbar.addClass('sliding-right');
+	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	
+	    if ($navbar.hasClass('slide-right') === true) {
+	        $navbar.removeClass('slide-right');
+	        $viewContainer.removeClass('slide-right');
+	        $tabbar.removeClass('slide-right');
+	    } else {
+	        $navbar.addClass('slide-right');
+	        $viewContainer.addClass('slide-right');
+	        $tabbar.addClass('slide-right');
+	    }
+	
+	    //Handle selection display
+	    if ($this.hasClass('list-group-item') === true) {
+	        view.changeActiveState($this);
+	    }
+	};
+	
+	handleLogin = function(event, callback) {
+	    var view = event.data,
+	        user = App.user;
+	
+	    user.login(function(error) {
+	        if (!error) {
+	            App.router.navigateTo('dashboard');
+	            view.render();
+	        } else {
+	            alert('Could not connect to Facebook.');
+	            console.log(error);
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback();
+	        }
+	    });
+	};
+	
+	/**
+	 * @param title: the text to display as title, if null title is set to default
+	 */
+	setTitle = function(title) {
+	    if (!title || title === null) {
+	        title = defaultTitle;
+	    }
+	    this.title = title;
+	    this._updateTitle();
+	};
+	
+	_updateTitle = function() {
+	    if (Utilities.isMobile() === true) {
+	        $('.sg-navbar-brand', this.$element).html(this.title);
+	    } else {
+	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
+	    }
+	};
+	
+	changeActiveState = function($menuItem) {
+	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
+	    $menuItem.addClass('list-group-item-selected');
+	};
+	
+	module.exports = ViewController.inherit({
+	    didInitialize: didInitialize,
+	    didRender: didRender,
+	    didResize: didResize,
+	    populateMainMenu: populateMainMenu,
+	    renderProfilePicture: renderProfilePicture,
+	    handleNavbarToggle: handleNavbarToggle,
+	    handleLogin: handleLogin,
+	    setTitle: setTitle,
+	    _updateTitle: _updateTitle,
+	    changeActiveState: changeActiveState
+	});
+
+
+/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -12236,7 +12236,7 @@
 	a);this.unWrap();this.init(a,this.$elem)},addItem:function(a,b){var e;if(!a)return!1;if(0===this.$elem.children().length)return this.$elem.append(a),this.setVars(),!1;this.unWrap();e=void 0===b||-1===b?-1:b;e>=this.$userItems.length||-1===e?this.$userItems.eq(-1).after(a):this.$userItems.eq(e).before(a);this.setVars()},removeItem:function(a){if(0===this.$elem.children().length)return!1;a=void 0===a||-1===a?-1:a;this.unWrap();this.$userItems.eq(a).remove();this.setVars()}};f.fn.owlCarousel=function(a){return this.each(function(){if(!0===
 	f(this).data("owl-init"))return!1;f(this).data("owl-init",!0);var b=Object.create(l);b.init(a,this);f.data(this,"owlCarousel",b)})};f.fn.owlCarousel.options={items:5,itemsCustom:!1,itemsDesktop:[1199,4],itemsDesktopSmall:[979,3],itemsTablet:[768,2],itemsTabletSmall:!1,itemsMobile:[479,1],singleItem:!1,itemsScaleUp:!1,slideSpeed:200,paginationSpeed:800,rewindSpeed:1E3,autoPlay:!1,stopOnHover:!1,navigation:!1,navigationText:["prev","next"],rewindNav:!0,scrollPerPage:!1,pagination:!0,paginationNumbers:!1,
 	responsive:!0,responsiveRefreshRate:200,responsiveBaseWidth:g,baseClass:"owl-carousel",theme:"owl-theme",lazyLoad:!1,lazyFollow:!0,lazyEffect:"fade",autoHeight:!1,jsonPath:!1,jsonSuccess:!1,dragBeforeAnimFinish:!0,mouseDrag:!0,touchDrag:!0,addClassActive:!1,transitionStyle:!1,beforeUpdate:!1,afterUpdate:!1,beforeInit:!1,afterInit:!1,beforeMove:!1,afterMove:!1,afterAction:!1,startDragging:!1,afterLazyLoad:!1}})(jQuery,window,document);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 13 */
@@ -12264,7 +12264,7 @@
 	
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
 	    ViewLoader,
 	    mainViewContainer,
@@ -12493,6 +12493,139 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * General model object with support for jQuery ajax.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+	
+		Utilities = __webpack_require__(7),
+	
+		initialize,
+	    get,
+	    post,
+	    put,
+	    del,
+	
+	    constructor, inherit;
+	
+	initialize = function() {
+	    if (this.didInitialize && typeof this.didInitialize == 'function') {
+	        this.didInitialize();
+	    }
+	};
+	
+	get = function(url, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'GET',
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            console.log(jqXHR);
+	            console.log(textStatus);
+	            callback('Error executing GET request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                callback('Error retrieving resource from server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	post = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'POST',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing POST request: ' + errorThrown);
+	
+	        },
+	        success: function(data) {
+	
+	            if (data.error) {
+	                callback('Error sending resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	put = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'PUT',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing PUT request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                console.log(data.error);
+	                callback('Error putting resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	del = function() {
+	
+	};
+	
+	constructor = function(options) {
+	    var defaults, methods;
+	
+	    defaults = {
+	        rootURL: '',
+	        data: null
+	    };
+	
+	    methods = {
+	        initialize: initialize,
+	        get: get,
+	        post: post,
+	        put: put,
+	        del: del
+	    };
+	    _.extend(this, defaults, methods, options);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/*jslint node: true */
 	'use strict';
 	
@@ -12555,7 +12688,7 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12568,9 +12701,9 @@
 	
 	var Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
-	    Model = __webpack_require__(18),
-	    XChangeRates = __webpack_require__(25),
+	    Config = __webpack_require__(5),
+	    Model = __webpack_require__(16),
+	    XChangeRates = __webpack_require__(37),
 	    Localization,
 	
 	    didInitialize,
@@ -12755,139 +12888,6 @@
 
 
 /***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General model object with support for jQuery ajax.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
-	
-		Utilities = __webpack_require__(6),
-	
-		initialize,
-	    get,
-	    post,
-	    put,
-	    del,
-	
-	    constructor, inherit;
-	
-	initialize = function() {
-	    if (this.didInitialize && typeof this.didInitialize == 'function') {
-	        this.didInitialize();
-	    }
-	};
-	
-	get = function(url, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'GET',
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR);
-	            console.log(textStatus);
-	            callback('Error executing GET request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                callback('Error retrieving resource from server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	post = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'POST',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing POST request: ' + errorThrown);
-	
-	        },
-	        success: function(data) {
-	
-	            if (data.error) {
-	                callback('Error sending resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	put = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'PUT',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing PUT request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                console.log(data.error);
-	                callback('Error putting resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	del = function() {
-	
-	};
-	
-	constructor = function(options) {
-	    var defaults, methods;
-	
-	    defaults = {
-	        rootURL: '',
-	        data: null
-	    };
-	
-	    methods = {
-	        initialize: initialize,
-	        get: get,
-	        post: post,
-	        put: put,
-	        del: del
-	    };
-	    _.extend(this, defaults, methods, options);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -12900,10 +12900,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
+		$ = __webpack_require__(4),
 	
-		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(22),
 	
 		$popupLightbox = $('#popup-lightbox'),
 	    inherit, show, hide, setTitle;
@@ -12948,6 +12948,30 @@
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
+	__webpack_require__(25)
+	__webpack_require__(26)
+	__webpack_require__(27)
+	__webpack_require__(28)
+	__webpack_require__(29)
+	__webpack_require__(30)
+	__webpack_require__(31)
+	__webpack_require__(32)
+	__webpack_require__(33)
+	__webpack_require__(34)
+	__webpack_require__(35)
+	__webpack_require__(36)
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-right\">\n\t\t\t<button class=\"cancel-btn sg-btn-round submerchant-message-close sg-white-bg sg-blue\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div id=\"popup-message\" class=\"message-pop\"></div>\n\t</div>\n</div>";
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * General view object with support for jQuery event autounbinding and localization.
 	 * @author: Chris Hjorth
@@ -12957,9 +12981,9 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
+		$ = __webpack_require__(4),
 	
-		Utilities = __webpack_require__(6),
+		Utilities = __webpack_require__(7),
 	
 		initialize,
 	    render,
@@ -13121,30 +13145,6 @@
 
 
 /***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(26)
-	__webpack_require__(27)
-	__webpack_require__(28)
-	__webpack_require__(29)
-	__webpack_require__(30)
-	__webpack_require__(31)
-	__webpack_require__(32)
-	__webpack_require__(33)
-	__webpack_require__(34)
-	__webpack_require__(35)
-	__webpack_require__(36)
-	__webpack_require__(37)
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-right\">\n\t\t\t<button class=\"cancel-btn sg-btn-round submerchant-message-close sg-white-bg sg-blue\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div id=\"popup-message\" class=\"message-pop\"></div>\n\t</div>\n</div>";
-
-/***/ },
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -13179,7 +13179,7 @@
 		"./gearsearchform.js": 65,
 		"./home.js": 66,
 		"./insurance.js": 67,
-		"./navigation-header.js": 10,
+		"./navigation-header.js": 11,
 		"./payment.js": 68,
 		"./paymentsuccessful.js": 69,
 		"./pickupdeliverycalendar.js": 70,
@@ -13289,51 +13289,6 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Defines a currency conversion model.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var Config = __webpack_require__(4),
-		Model = __webpack_require__(18),
-	
-		currencies = {},
-	    XChangeRates,
-	
-	    getRate;
-	
-	getRate = function(fromCurrency, toCurrency, callback) {
-	    var code = fromCurrency + toCurrency;
-	    if (currencies[code]) {
-	        callback(null, currencies[code]);
-	        return;
-	    }
-	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        currencies[code] = data.rate;
-	        callback(null, data.rate);
-	    });
-	};
-	
-	XChangeRates = Model.inherit({
-	    getRate: getRate
-	});
-	XChangeRates = new XChangeRates.constructor({
-	    rootURL: Config.API_URL
-	});
-	module.exports = XChangeRates;
-
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
 	 * Bootstrap: transition.js v3.3.4
 	 * http://getbootstrap.com/javascript/#transitions
@@ -13394,10 +13349,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13495,10 +13450,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13618,10 +13573,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13862,10 +13817,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14080,10 +14035,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14248,10 +14203,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14594,10 +14549,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15077,10 +15032,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15192,10 +15147,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15371,10 +15326,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15531,10 +15486,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15700,7 +15655,52 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a currency conversion model.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var Config = __webpack_require__(5),
+		Model = __webpack_require__(16),
+	
+		currencies = {},
+	    XChangeRates,
+	
+	    getRate;
+	
+	getRate = function(fromCurrency, toCurrency, callback) {
+	    var code = fromCurrency + toCurrency;
+	    if (currencies[code]) {
+	        callback(null, currencies[code]);
+	        return;
+	    }
+	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        currencies[code] = data.rate;
+	        callback(null, data.rate);
+	    });
+	};
+	
+	XChangeRates = Model.inherit({
+	    getRate: getRate
+	});
+	XChangeRates = new XChangeRates.constructor({
+	    rootURL: Config.API_URL
+	});
+	module.exports = XChangeRates;
+
 
 /***/ },
 /* 38 */
@@ -15715,10 +15715,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(22),
 	
 	    testimonials,
 	
@@ -15857,16 +15857,16 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
-	    Gear = __webpack_require__(139),
+	    Localization = __webpack_require__(18),
+	    Gear = __webpack_require__(138),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -16663,16 +16663,16 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
-	    TechProfile = __webpack_require__(138),
+	    Localization = __webpack_require__(18),
+	    TechProfile = __webpack_require__(139),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -17299,15 +17299,15 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	    Van = __webpack_require__(140),
 	
 	    countryDefault = 'Select country:',
@@ -18012,13 +18012,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	
 	    didInitialize,
 	    didRender,
@@ -18526,15 +18526,15 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(7),
+	    Localization = __webpack_require__(18),
+	    User = __webpack_require__(8),
 	    Booking = __webpack_require__(141),
 	
 	    didInitialize,
@@ -18824,14 +18824,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	    Booking = __webpack_require__(141),
 	
 	    SelectTimePopup = __webpack_require__(142),
@@ -19052,7 +19052,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(22);
 	
 	module.exports = ViewController.inherit({});
 
@@ -19069,9 +19069,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(22),
 		
 	    didRender,
 	    loadFooter;
@@ -19116,14 +19116,14 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -19441,12 +19441,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(22),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		didInitialize,
 	    didRender,
@@ -19530,10 +19530,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19652,10 +19652,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19801,10 +19801,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19946,10 +19946,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20091,10 +20091,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20234,10 +20234,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20341,10 +20341,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20486,10 +20486,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20629,10 +20629,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20747,9 +20747,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    subViewContainerID,
@@ -20832,13 +20832,13 @@
 	
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	    GoogleMaps = __webpack_require__(13),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(22),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -21467,14 +21467,14 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
+	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(22),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -21980,13 +21980,13 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(22),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -22542,7 +22542,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(22);
 	module.exports = ViewController.inherit();
 
 
@@ -22560,9 +22560,9 @@
 	
 	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(22),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		didInitialize;
 	
@@ -22592,18 +22592,18 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
-		FB = __webpack_require__(16),
+	    $ = __webpack_require__(4),
+		FB = __webpack_require__(17),
 		GoogleMaps = __webpack_require__(13),
 	
-		Config = __webpack_require__(4),
-		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(20),
+		Config = __webpack_require__(5),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(22),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
-		Gear = __webpack_require__(139),
-		User = __webpack_require__(7),
+		Localization = __webpack_require__(18),
+		Gear = __webpack_require__(138),
+		User = __webpack_require__(8),
 	
 		paymentSuccessModalOpen = false,
 	
@@ -22972,15 +22972,15 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
+		$ = __webpack_require__(4),
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(22),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -23385,9 +23385,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23528,9 +23528,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(22),
 	
 	    didRender,
 	    loadFooter;
@@ -23572,14 +23572,14 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
+		$ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(4),
-		ViewController = __webpack_require__(20),
+		Config = __webpack_require__(5),
+		ViewController = __webpack_require__(22),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 		Card = __webpack_require__(146),
 	
 		didInitialize,
@@ -24010,14 +24010,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(4),
+		Config = __webpack_require__(5),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
-		ViewController = __webpack_require__(20),
+		Localization = __webpack_require__(18),
+		ViewController = __webpack_require__(22),
 		Booking = __webpack_require__(141),
 	
 		didInitialize,
@@ -24151,13 +24151,13 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
+		$ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(22),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -24605,9 +24605,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(22),
 	
 	    didRender,
 	    loadFooter;
@@ -24650,16 +24650,16 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(16),
+	    FB = __webpack_require__(17),
 	
-	    Config = __webpack_require__(4),
-	    Utilities = __webpack_require__(6),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    Utilities = __webpack_require__(7),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -25178,15 +25178,15 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(4),
+	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
-	    MessagePopup = __webpack_require__(9),
+	    ViewController = __webpack_require__(22),
+	    Localization = __webpack_require__(18),
+	    MessagePopup = __webpack_require__(10),
 	
 	    geocoder,
 	
@@ -25553,17 +25553,17 @@
 	
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(16),
+	    FB = __webpack_require__(17),
 	
-	    Config = __webpack_require__(4),
-	    Utilities = __webpack_require__(6),
+	    Config = __webpack_require__(5),
+	    Utilities = __webpack_require__(7),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(7),
-	    TechProfile = __webpack_require__(138),
+	    ViewController = __webpack_require__(22),
+	    Localization = __webpack_require__(18),
+	    User = __webpack_require__(8),
+	    TechProfile = __webpack_require__(139),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -25912,15 +25912,15 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
+		$ = __webpack_require__(4),
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(22),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -26311,7 +26311,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(22);
 	
 	module.exports = ViewController;
 
@@ -26329,12 +26329,12 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(22),
 	
-	    User = __webpack_require__(7),
+	    User = __webpack_require__(8),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -26595,17 +26595,17 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(11),
-	    FB = __webpack_require__(16),
+	    $ = __webpack_require__(4),
+	    FB = __webpack_require__(17),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    Config = __webpack_require__(4),
-	    Utilities = __webpack_require__(6),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(5),
+	    Utilities = __webpack_require__(7),
+	    ViewController = __webpack_require__(22),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(7),
+	    Localization = __webpack_require__(18),
+	    User = __webpack_require__(8),
 	    Van = __webpack_require__(140),
 	
 	    paymentSuccessModalOpen = false,
@@ -26970,15 +26970,15 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		$ = __webpack_require__(11),
+		$ = __webpack_require__(4),
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(22),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -27713,205 +27713,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(3),
-	
-	    App = __webpack_require__(1),
-	    Model = __webpack_require__(18),
-	
-	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
-	        };
-	    }
-	};
-	
-	createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
-/* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Defines a gear item.
 	 * @author: Chris Hjorth
 	 */
@@ -27921,8 +27722,8 @@
 	
 	var _ = __webpack_require__(3),
 		
-		Utilities = __webpack_require__(6),
-		Model = __webpack_require__(18),
+		Utilities = __webpack_require__(7),
+		Model = __webpack_require__(16),
 		App = __webpack_require__(1),
 		
 		didInitialize,
@@ -28154,6 +27955,205 @@
 
 
 /***/ },
+/* 139 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(3),
+	
+	    App = __webpack_require__(1),
+	    Model = __webpack_require__(16),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28167,8 +28167,8 @@
 	
 	var _ = __webpack_require__(3),
 		
-		Utilities = __webpack_require__(6),
-		Model = __webpack_require__(18),
+		Utilities = __webpack_require__(7),
+		Model = __webpack_require__(16),
 		App = __webpack_require__(1),
 	
 		didInitialize,
@@ -28404,7 +28404,7 @@
 	var _ = __webpack_require__(3),
 	    Moment = __webpack_require__(137),
 	
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(16),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -28541,7 +28541,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(11),
+	var $ = __webpack_require__(4),
 	
 		PopupController = __webpack_require__(19),
 		SelectTimePopupTemplate = __webpack_require__(148),
@@ -28615,8 +28615,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-		Model = __webpack_require__(18),
-		Gear = __webpack_require__(139),
+		Model = __webpack_require__(16),
+		Gear = __webpack_require__(138),
 		
 		didInitialize,
 	
@@ -28757,8 +28757,8 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		Model = __webpack_require__(18),
-		TechProfile = __webpack_require__(138),
+		Model = __webpack_require__(16),
+		TechProfile = __webpack_require__(139),
 		
 		didInitialize,
 	
@@ -28900,7 +28900,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(16),
 	    Van = __webpack_require__(140),
 	
 	    didInitialize,
@@ -29043,8 +29043,8 @@
 	
 	var mangoPay = __webpack_require__(150),
 		
-		Config = __webpack_require__(4),
-		Model = __webpack_require__(18),
+		Config = __webpack_require__(5),
+		Model = __webpack_require__(16),
 	
 	    didInitialize,
 	    registerCard;
