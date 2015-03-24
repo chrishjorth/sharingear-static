@@ -3,127 +3,135 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/techprofilelist'],
-	function(_, $, Config, ViewController, App, TechProfileList) {
-		var reservationBlockID,
+var _ = require('underscore'),
+    $ = require('jquery'),
 
-			didInitialize,
-			didRender,
+    Config = require('../config.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-			populateYourReservations,
+    TechProfileList = require('../models/techprofilelist.js'),
 
-			handleBooking;
+    reservationBlockID,
 
-		reservationBlockID = 'yourreservations-techprofile-block';
+    didInitialize,
+    didRender,
 
-		didInitialize = function() {
-			var view = this;
-			view.techProfileList = new TechProfileList.constructor({
-				rootURL: Config.API_URL
-			});
-			view.techProfileList.initialize();
-			view.techProfileList.getUserTechProfileReservations(App.user.data.id, function () {
-				view.didFetch = true;
-				view.render();
-			});
-		};
+    populateYourReservations,
 
-		didRender = function() {
-			App.header.setTitle('Tech profile reservations');
-			if(this.didFetch === true) {
-				this.populateYourReservations();
-			}
+    handleBooking;
 
-			this.setupEvent('click', '#yourreservations-techprofile-block .sg-list-item button', this, this.handleBooking);
-		};
+reservationBlockID = 'yourreservations-techprofile-block';
 
-		populateYourReservations = function(callback) {
-			var view = this;
-			require(['text!../templates/yourtechprofilereservations-item.html'], function(YourReservationsItemTemplate) {
-				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
-					yourReserv = view.techProfileList.data,
-					$reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
+didInitialize = function() {
+    var view = this;
+    view.techProfileList = new TechProfileList.constructor({
+        rootURL: Config.API_URL
+    });
+    view.techProfileList.initialize();
+    view.techProfileList.getUserTechProfileReservations(App.user.data.id, function() {
+        view.didFetch = true;
+        view.render();
+    });
+};
 
-				if(yourReserv.length <= 0) {
-					$('#' + reservationBlockID, view.$element).append('You currently do not have any reservations.');
-					if(callback && typeof callback === 'function') {
-						callback();
-					}
-					return;
-				}
+didRender = function() {
+    if(App.rootVC !== null && App.rootVC.header) {
+        App.rootVC.header.setTitle('Tech profile reservations');
+    }
+    if (this.didFetch === true) {
+        this.populateYourReservations();
+    }
 
-				$reservationBlock = $('#' + reservationBlockID, view.$element);
+    this.setupEvent('click', '#yourreservations-techprofile-block .sg-list-item button', this, this.handleBooking);
+};
 
-				for(i = 0; i < yourReserv.length; i++) {
-                    defaultReservation = {
-                        id: null,
-                        roadie_type: '',
-						start_date:'',
-                        start_time:'',
-						end_date:'',
-                        end_time:'',
-                        model: '',
-                        images:'',
-                        img_url: 'images/placeholder_grey.png',
-                        price: 0,
-                        city: ''
-                    };
-					reservation = yourReserv[i];
-					_.extend(defaultReservation, reservation.data);
+populateYourReservations = function(callback) {
+    var view = this,
+        YourReservationsItemTemplate;
+    YourReservationsItemTemplate = require('../../templates/yourtechprofilereservations-item.html');
 
-					if(defaultReservation.images.length > 0) {
-						defaultReservation.img_url = defaultReservation.images.split(',')[0];
-					}
+    var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
+        yourReserv = view.techProfileList.data,
+        $reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
 
-					$reservationItem = $(yourReservationsItemTemplate(defaultReservation));
-					$('.sg-bg-image', $reservationItem).css({
-						'background-image': 'url("' + defaultReservation.img_url + '")'
-					});
-					
+    if (yourReserv.length <= 0) {
+        $('#' + reservationBlockID, view.$element).append('You currently do not have any reservations.');
+        if (callback && typeof callback === 'function') {
+            callback();
+        }
+        return;
+    }
 
-					status = reservation.data.booking_status;
+    $reservationBlock = $('#' + reservationBlockID, view.$element);
 
-					if(status === 'pending' || status === 'waiting') {
-						$('.request', $reservationItem).removeClass('hidden');
-					}
-					if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
-						$('.accepted', $reservationItem).removeClass('hidden');
-					}
-					if(status === 'denied' || status==='ended-denied') {
-						$('.denied', $reservationItem).removeClass('hidden');
-					}
+    for (i = 0; i < yourReserv.length; i++) {
+        defaultReservation = {
+            id: null,
+            roadie_type: '',
+            start_date: '',
+            start_time: '',
+            end_date: '',
+            end_time: '',
+            model: '',
+            images: '',
+            img_url: 'images/placeholder_grey.png',
+            price: 0,
+            city: ''
+        };
+        reservation = yourReserv[i];
+        _.extend(defaultReservation, reservation.data);
 
-					$reservationBlock.append($reservationItem);
-				}
+        if (defaultReservation.images.length > 0) {
+            defaultReservation.img_url = defaultReservation.images.split(',')[0];
+        }
 
-				if(callback && typeof callback === 'function') {
-					callback();
-				}
-			});
-		};
+        $reservationItem = $(yourReservationsItemTemplate(defaultReservation));
+        $('.sg-bg-image', $reservationItem).css({
+            'background-image': 'url("' + defaultReservation.img_url + '")'
+        });
 
-		handleBooking = function(event) {
-			var view = event.data,
-				bookingID = $(this).data('bookingid'),
-				techProfile, passedData;
-			techProfile = view.techProfileList.getTechProfileItem('booking_id', bookingID);
-			passedData = {
-				techprofile: techProfile.data.roadie_type,
-				techprofile_id: techProfile.data.id,
-				mode: 'renter',
-				booking_id: bookingID
-			};
-			App.router.openModalView('booking', passedData);
-		};
 
-		return ViewController.inherit({
-			didInitialize: didInitialize,
-			didRender: didRender,
-			populateYourReservations: populateYourReservations,
-			handleBooking: handleBooking
-		});
-	}
-);
+        status = reservation.data.booking_status;
+
+        if (status === 'pending' || status === 'waiting') {
+            $('.request', $reservationItem).removeClass('hidden');
+        }
+        if (status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
+            $('.accepted', $reservationItem).removeClass('hidden');
+        }
+        if (status === 'denied' || status === 'ended-denied') {
+            $('.denied', $reservationItem).removeClass('hidden');
+        }
+
+        $reservationBlock.append($reservationItem);
+    }
+
+    if (callback && typeof callback === 'function') {
+        callback();
+    }
+};
+
+handleBooking = function(event) {
+    var view = event.data,
+        bookingID = $(this).data('bookingid'),
+        techProfile, passedData;
+    techProfile = view.techProfileList.getTechProfileItem('booking_id', bookingID);
+    passedData = {
+        techprofile: techProfile.data.roadie_type,
+        techprofile_id: techProfile.data.id,
+        mode: 'renter',
+        booking_id: bookingID
+    };
+    App.router.openModalView('booking', passedData);
+};
+
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize,
+    didRender: didRender,
+    populateYourReservations: populateYourReservations,
+    handleBooking: handleBooking
+});

@@ -36,19 +36,19 @@
 						<div class="col-xs-3 col-sm-4">
 							<div class="sg-blue-bg">
 								<div class="text-center sg-darkergray">Day</div>
-								<div class="text-center sg-white"><span id="techprofile-price_a"></span> <span class="currency">{{currency}}</span></div>
+								<div class="text-center sg-white">{{displayed_price_a}} <span class="currency">{{currency}}</span></div>
 							</div>
 						</div>
 						<div class="col-xs-3 col-sm-4">
 							<div class="sg-blue-bg">
 								<div class="text-center sg-darkergray">Week</div>
-								<div class="text-center sg-white"><span id="techprofile-price_b"></span> <span class="currency">{{currency}}</span></div>
+								<div class="text-center sg-white">{{displayed_price_b}} <span class="currency">{{currency}}</span></div>
 							</div>
 						</div>
 						<div class="col-xs-3 col-sm-4">
 							<div class="sg-blue-bg">
 								<div class="text-center sg-darkergray">Month</div>
-								<div class="text-center sg-white"><span id="techprofile-price_c"></span> <span class="currency">{{currency}}</span></div>
+								<div class="text-center sg-white">{{displayed_price_c}} <span class="currency">{{currency}}</span></div>
 							</div>
 						</div>
 						<div class="col-xs-3 col-sm-12 button-container">
@@ -102,6 +102,12 @@
 							<p>{{bands}}</p>
 						</div>
 					</div>
+
+					<div class="row techprofilelistborder">
+						<div class="techprofilelistname">{{name}} is also working as </div>
+						<div id="techprofilelist" class="techprofilelist"></div>
+					</div>
+
 				</div>
 			</div>
 		</div>

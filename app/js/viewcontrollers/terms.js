@@ -3,10 +3,8 @@
  * @author: Chris Hjorth
  */
 
-define(
-	['viewcontroller'],
-	function(ViewController) {
-		var Insurance = ViewController; 
-		return Insurance;
-	}
-);
+/*jslint node: true */
+'use strict';
+var ViewController = require('../viewcontroller.js');
+
+module.exports = ViewController;

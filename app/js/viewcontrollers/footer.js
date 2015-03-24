@@ -3,23 +3,25 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['viewcontroller', 'moment', 'models/localization'],
-	function(ViewController, Moment, Localization) {
-		var didInitialize;
+var Moment = require('moment-timezone'),
+	
+	ViewController = require('../viewcontroller.js'),
 
-		didInitialize = function() {
-			var today = new Moment.tz(Localization.getCurrentTimeZone());
-			
-			this.templateParameters = {
-				year: today.format('YYYY')
-			};
-		};
+	Localization = require('../models/localization.js'),
 
-		return ViewController.inherit({
-			didInitialize: didInitialize
-		});
-	}
-);
+	didInitialize;
+
+didInitialize = function() {
+    var today = new Moment.tz(Localization.getCurrentTimeZone());
+
+    this.templateParameters = {
+        year: today.format('YYYY')
+    };
+};
+
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize
+});

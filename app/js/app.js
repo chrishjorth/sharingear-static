@@ -3,210 +3,215 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'jquery', 'config', 'router', 'utilities', 'models/user', 'models/contentclassification', 'models/localization'],
-	function(_, $, Config, Router, Utilities, User, ContentClassification) {
-		var App,
+var _ = require('underscore'),
+    $ = require('jquery'),
 
-			run,
-			setUserLocation,
-			loadHeader,
-			getCookie,
+    Config = require('./config.js'),
+    Router = require('./router.js'),
+    Utilities = require('./utilities.js'),
 
-			$headerContainer, $footerContainer;
+    User = require('./models/user.js'),
+    ContentClassification = require('./models/contentclassification.js'),
+    MessagePopup = require('./popups/messagepopup.js'),
 
-		$headerContainer = $('.navigation-header');
-		$footerContainer = $('.footer');
+    App,
 
-		/**
-		 * Initializes the app, that is:
-		 * - Navigate to correct initial route
-		 * - Call load header
-		 * - Call load router
-		 * @param callback: A function that will be called once the app is initialized.
-		 */
-		run = function(callback) {
-			var router = this.router,
-				loginDeferred = $.Deferred(),
-				documentReadyDeferred = $.Deferred();
+    run,
+    setUserLocation,
+    setUserLocation,
+    loadHeader,
+    getCookie,
 
-			router.addRoutes(
-				'home',
-				'dashboard',
-				'dashboard/profile',
-				'dashboard/yourgear',
-				'dashboard/yourgearrentals',
-				'dashboard/yourgearreservations',
-				'dashboard/settings',
-				'addgear',
-				'gearprofile',
-				'aboutus',
-				'contactus',
-				'terms',
-				'copyright',
-				'privacy',
-				'editgear',
-				'bookingrequest',
-				'gearavailability',
-                'booking',
-                'payment',
-                'paymentsuccessful',
-                'submerchantregistration',
-                'closedbeta',
-                'search',
-                'user',
-                'pickupdeliverycalendar',
-                'insurance',
-                'addvan',
-                'vanprofile',
-                'editvan',
-                'dashboard/yourvanrentals',
-				'dashboard/yourvanreservations',
-				'addtechprofile',
-				'techprofile',
-				'edittechprofile'
-			);
+    $headerContainer;
 
-			// if logged in on facebook, login user on the backend and go to required page.
-			App.user.getLoginStatus(function(response) {
-				// if login was unsuccessful
-				if (response.status !== 'connected') {
-					console.log('User not logged in.');
-					loginDeferred.resolve();
-				}
-				else {
-					console.log('Logging into backend.');
-					App.user.loginToBackend(response, function() {
-						console.log('User logged in.');
-						loginDeferred.resolve();
-					});
-				}
-			});
+/**
+ * Initializes the app, that is:
+ * - Navigate to correct initial route
+ * - Call load header
+ * - Call load router
+ * @param callback: A function that will be called once the app is initialized.
+ */
+run = function(callback) {
+    var router = this.router,
+        loginDeferred = $.Deferred();
 
-			$(document).ready(function() {
-				console.log('DOM ready');
-				documentReadyDeferred.resolve();
-			});
+    router.addRoutes(
+        'home',
+        'dashboard',
+        'dashboard/profile',
+        'dashboard/yourgear',
+        'dashboard/yourgearrentals',
+        'dashboard/yourgearreservations',
+        'dashboard/settings',
+        'addgear',
+        'gearprofile',
+        'aboutus',
+        'contactus',
+        'terms',
+        'copyright',
+        'privacy',
+        'editgear',
+        'bookingrequest',
+        'gearavailability',
+        'booking',
+        'payment',
+        'paymentsuccessful',
+        'submerchantregistration',
+        'search',
+        'user',
+        'pickupdeliverycalendar',
+        'insurance',
+        'addvan',
+        'vanprofile',
+        'editvan',
+        'dashboard/yourvanrentals',
+        'dashboard/yourvanreservations',
+        'addtechprofile',
+        'techprofile',
+        'edittechprofile'
+    );
 
-			App.contentClassification = new ContentClassification.constructor({
-				rootURL: Config.API_URL
-			});
-			App.contentClassification.initialize();
+    App.user.getLoginStatus(function(response) {
+        // if login was unsuccessful
+        if (response.status !== 'connected') {
+            console.log('User not logged in.');
+            loginDeferred.resolve();
+        } else {
+            console.log('Logging into backend.');
+            App.user.loginToBackend(response, function() {
+                console.log('User logged in.');
+                loginDeferred.resolve();
+            });
+        }
+    });
 
-			App.setUserLocation();
+    App.contentClassification = new ContentClassification.constructor({
+        rootURL: Config.API_URL
+    });
+    App.contentClassification.initialize();
 
-			$.when(loginDeferred, documentReadyDeferred).then(function() {
-				var route = null,
-					hash = '';
+    App.setUserLocation();
 
-				//Load header and footer
-				App.loadHeader($headerContainer);
+    $.when(loginDeferred).then(function() {
+        console.log('Sharingear loaded and ready.');
 
-				//Load page based on hash
-				hash = window.location.hash;
-				if(hash.length > 0) {
-					route = hash.substring(1);
-				}
-				else {
-					route = 'home';
-				}
-				router.navigateTo(route);
+        if (!window.history.pushState) {
 
-				if(getCookie('cookie-consent') != '1') {
-					$('.cookie-opt-in').removeClass('hidden');
-				}
+            //show message if pushState is not defined
+            var messagePopup = new MessagePopup.constructor(),
+                message = 'Your browser is outdated and does not support some important features. Please dowload the latest version of your browser of preference.';
 
-				$('.cookie-opt-in-button').click(function() {
-					document.cookie = 'cookie-consent=1';
-					$('.cookie-opt-in').addClass('hidden');
-				});
+            messagePopup.initialize();
+            messagePopup.show();
+            messagePopup.setMessage(message);
 
-				console.log('Sharingear loaded and ready.');
+        }
 
-				if(_.isFunction(callback)) {
-					callback();
-				}
-			});
-		};
+        if (_.isFunction(callback)) {
+            callback();
+        }
+    });
+};
 
-		setUserLocation = function(location, callback) {
-			if((!location || location === null) && navigator.geolocation && App.user.data.id !== null) {
-				navigator.geolocation.getCurrentPosition(function(position){
-                    var lat, lon; 
-                    lat = position.coords.latitude;
-                    lon = position.coords.longitude;
-                    Utilities.getCityFromCoordinates(lat, lon, function (locationCity) {
-                        App.user.data.currentCity = locationCity;
-                        if(_.isFunction(callback)) {
-							callback();
-						}
-                    });
-                });
-			}
-			else if(!location || location === null) {
-				App.user.data.currentCity = null;
-			}
-			else {
-				App.user.data.currentCity = location;
-				if(_.isFunction(callback)) {
-					callback();
-				}
-			}
-		};
+setUserLocation = function(location, callback) {
+    if ((!location || location === null) && navigator.geolocation && App.user.data.id !== null) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat, lon;
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
+            Utilities.getCityFromCoordinates(lat, lon, function(locationCity) {
+                App.user.data.currentCity = locationCity;
+                if (_.isFunction(callback)) {
+                    callback();
+                }
+            });
+        });
+    } else if (!location || location === null) {
+        App.user.data.currentCity = null;
+    } else {
+        App.user.data.currentCity = location;
+        if (_.isFunction(callback)) {
+            callback();
+        }
+    }
+};
 
-		/**
-		 * Loads the header portion of the site. The header contains Sharingear's main navigation and is the same across the app.
-		 */
-		loadHeader = function($headerContainer, callback) {
-			var app = this;
-			require(['viewcontrollers/navigation-header', 'text!../templates/navigation-header.html'], function(HeaderController, HeaderTemplate) {
-				app.header = new HeaderController.constructor({name: 'header', $element: $headerContainer, labels: {}, template: HeaderTemplate});
-				app.header.initialize();
-				app.header.render();
-				if(_.isFunction(callback)) {
-					callback();
-				}
-			});
-		};
+App = {
+    router: Router,
+    user: null,
+    rootVC: null,
+    gearClassification: null,
 
-		getCookie = function(cname) {
-			var name = cname + '=',
-				ca = document.cookie.split(';'),
-				i, c;
-			for(i = 0; i < ca.length; i++) {
-				c = ca[i];
-				while (c.charAt(0) === ' ') {
-					c = c.substring(1);
-				}
-				if (c.indexOf(name) !== -1) {
-					return c.substring(name.length, c.length);
-				}
-			}
-			return '';
-		};
+    run: run,
+    setUserLocation: setUserLocation,
+    loadHeader: loadHeader,
+    getCookie: getCookie
+};
 
-		App = {
-			$headerContainer: $headerContainer,
-			$footerContainer: $footerContainer,
-			router: Router,
-			user: null,
-			header: null,
-			footer: null,
-			gearClassification: null,
+App.user = new User.constructor({
+    rootURL: Config.API_URL
+});
+App.user.initialize();
 
-			run: run,
-			setUserLocation: setUserLocation,
-			loadHeader: loadHeader,
-			getCookie: getCookie
-		};
+setUserLocation = function(location, callback) {
+    if ((!location || location === null) && navigator.geolocation && App.user.data.id !== null) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat, lon;
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
+            Utilities.getCityFromCoordinates(lat, lon, function(locationCity) {
+                App.user.data.currentCity = locationCity;
+                if (_.isFunction(callback)) {
+                    callback();
+                }
+            });
+        });
+    } else if (!location || location === null) {
+        App.user.data.currentCity = null;
+    } else {
+        App.user.data.currentCity = location;
+        if (_.isFunction(callback)) {
+            callback();
+        }
+    }
+};
 
-		App.user = new User.constructor({
-			rootURL: Config.API_URL
-		});
-		App.user.initialize();
+getCookie = function(cname) {
+    var name = cname + '=',
+        ca = document.cookie.split(';'),
+        i, c;
+    for (i = 0; i < ca.length; i++) {
+        c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) !== -1) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return '';
+};
 
-		return App;
-	}
-);
+App = {
+    $headerContainer: $headerContainer,
+    router: Router,
+    user: null,
+    header: null,
+    rootVC: null,
+    gearClassification: null,
+
+    run: run,
+    setUserLocation: setUserLocation,
+    loadHeader: loadHeader,
+    getCookie: getCookie
+};
+
+App.user = new User.constructor({
+    rootURL: Config.API_URL
+});
+App.user.initialize();
+
+module.exports = App;

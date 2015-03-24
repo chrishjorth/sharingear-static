@@ -3,138 +3,135 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'model', 'models/gear'],
-	function(_, Model, Gear) {
-		var didInitialize,
+var _ = require('underscore'),
 
-			search,
-			getUserGear,
-			getUserRentals,
-			getUserReservations,
-			getGearItem,
-			isEmpty,
-			updateGearItem,
-			loadFromArray;
+	Model = require('../model.js'),
+	Gear = require('./gear.js'),
+	
+	didInitialize,
 
-		didInitialize = function() {
-			if(this.data === null) {
-				this.data = [];
-			}
-		};
+    search,
+    getUserGear,
+    getUserRentals,
+    getUserReservations,
+    getGearItem,
+    isEmpty,
+    updateGearItem,
+    loadFromArray;
 
-		search = function(location, gear, daterange, callback) {
-			var view = this;
+didInitialize = function() {
+    if (this.data === null) {
+        this.data = [];
+    }
+};
 
-			if(location === null || location === '') {
-				location = 'all';
-			}
-			this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(searchResults);
-					callback(view.data);
-				}
-			});
-		}
+search = function(location, gear, daterange, callback) {
+    var view = this;
 
-		getUserGear = function(userID, callback) {
-			var view = this;
-			this.get('/users/' + userID + '/gear', function(error, userGear) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(userGear);
-					callback(view.data);
-				}
-			});
-		};
+    if (location === null || location === '') {
+        location = 'all';
+    }
+    this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+        if (error) {
+            console.log(error);
+            callback([]);
+        } else {
+            view.loadFromArray(searchResults);
+            callback(view.data);
+        }
+    });
+};
 
-		getUserRentals = function(userID, callback) {
-			var view = this;
-			this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
-				if(error) {
-					console.log(error);
-					callback([]);
-				}
-				else {
-					view.loadFromArray(userRentals);
-					callback(view.data);
-				}
-			});
-		};
+getUserGear = function(userID, callback) {
+    var view = this;
+    this.get('/users/' + userID + '/gear', function(error, userGear) {
+        if (error) {
+            console.log(error);
+            callback([]);
+        } else {
+            view.loadFromArray(userGear);
+            callback(view.data);
+        }
+    });
+};
 
-		getUserReservations = function(userID, callback) {
-			var view = this;
-            
-            view.get('/users/' + userID + '/gearreservations', function (error, userReservations) {
-            	if (error) {
-            		callback([]);
-            	}
-            	else {
-            		view.loadFromArray(userReservations);
-            		callback(view.data);
-            	}
-            });
-		};
+getUserRentals = function(userID, callback) {
+    var view = this;
+    this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
+        if (error) {
+            console.log(error);
+            callback([]);
+        } else {
+            view.loadFromArray(userRentals);
+            callback(view.data);
+        }
+    });
+};
 
-		getGearItem = function(property, key) {
-			var i;
-			for(i = 0; i < this.data.length; i++) {
-				if(this.data[i].data[property] === key) {
-					return this.data[i];
-				}
-			}
-			return null;
-		};
+getUserReservations = function(userID, callback) {
+    var view = this;
 
-		isEmpty = function() {
-			return this.data.length <= 0;
-		};
+    view.get('/users/' + userID + '/gearreservations', function(error, userReservations) {
+        if (error) {
+            callback([]);
+        } else {
+            view.loadFromArray(userReservations);
+            callback(view.data);
+        }
+    });
+};
 
-		updateGearItem = function(gearItem) {
-			var i;
-			for(i = 0; i < this.data.length; i++) {
-				if(this.data[i].id === gearItem.data.id) {
-					this.data[i] = gearItem.data;
-					return;
-				}
-			}
-		};
+getGearItem = function(property, key) {
+    var i;
+    for (i = 0; i < this.data.length; i++) {
+        if (this.data[i].data[property] === key) {
+            return this.data[i];
+        }
+    }
+    return null;
+};
 
-		loadFromArray = function(gearArray) {
-			var i, gearItem;
+isEmpty = function() {
+    return this.data.length <= 0;
+};
 
-            this.data = [];
+updateGearItem = function(gearItem) {
+    var i;
+    for (i = 0; i < this.data.length; i++) {
+        if (this.data[i].id === gearItem.data.id) {
+            this.data[i] = gearItem.data;
+            return;
+        }
+    }
+};
 
-			for(i = 0; i < gearArray.length; i++) {
-                gearItem = new Gear.constructor({
-                    rootURL: this.rootURL
-                });
-                gearItem.initialize();
-                _.extend(gearItem.data, gearArray[i]);
-				this.data.push(gearItem);
-			}
-		};
+loadFromArray = function(gearArray) {
+    var i, gearItem;
 
-		return Model.inherit({
-			didInitialize: didInitialize,
+    this.data = [];
 
-			search: search,
-			getUserGear: getUserGear,
-			getUserRentals: getUserRentals,
-			getUserReservations: getUserReservations,
-			getGearItem: getGearItem,
-			isEmpty: isEmpty,
-			updateGearItem: updateGearItem,
-			loadFromArray: loadFromArray
-		});
-	}
-);
+    for (i = 0; i < gearArray.length; i++) {
+        gearItem = new Gear.constructor({
+            rootURL: this.rootURL
+        });
+        gearItem.initialize();
+        _.extend(gearItem.data, gearArray[i]);
+        this.data.push(gearItem);
+    }
+};
+
+module.exports = Model.inherit({
+    didInitialize: didInitialize,
+
+    search: search,
+    getUserGear: getUserGear,
+    getUserRentals: getUserRentals,
+    getUserReservations: getUserReservations,
+    getGearItem: getGearItem,
+    isEmpty: isEmpty,
+    updateGearItem: updateGearItem,
+    loadFromArray: loadFromArray
+});

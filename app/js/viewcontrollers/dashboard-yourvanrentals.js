@@ -3,131 +3,137 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/vanlist'],
-	function(_, $, Config, ViewController, App, VanList) {
-		var vanBlockID,
+var _ = require('underscore'),
+    $ = require('jquery'),
 
-			didInitialize,
-			didRender,
-			populateYourRentals,
+    Config = require('../config.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-			handleBooking;
+    VanList = require('../models/vanlist.js'),
 
-		vanBlockID = 'yourrentals-van-block';
+    vanBlockID,
 
-		didInitialize = function() {
-			var view = this;
+    didInitialize,
+    didRender,
+    populateYourRentals,
 
-			this.didFetch = false;
-			this.vanList = new VanList.constructor({
-				rootURL: Config.API_URL
-			});
-			this.vanList.initialize();
-			this.vanList.getUserVanRentals(App.user.data.id, function() {
-				view.didFetch = true;
-				view.render();
-			});
-		};
+    handleBooking;
 
-		didRender = function() {
-			App.header.setTitle('Van rentals');
+vanBlockID = 'yourrentals-van-block';
 
-			if(this.didFetch === true) {
-				this.populateYourRentals();
-			}
+didInitialize = function() {
+    var view = this;
 
-			this.setupEvent('click', '#yourrentals-van-block .sg-list-item button', this, this.handleBooking);
-		};
+    this.didFetch = false;
+    this.vanList = new VanList.constructor({
+        rootURL: Config.API_URL
+    });
+    this.vanList.initialize();
+    this.vanList.getUserVanRentals(App.user.data.id, function() {
+        view.didFetch = true;
+        view.render();
+    });
+};
 
-		populateYourRentals = function(callback) {
-			var view = this;
-			require(['text!../templates/yourvanrentals-item.html'], function(YourRentalsItemTemplate) {
-				var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
-					yourRentals = view.vanList.data,
-					displayedRentals = 0, //We do not display rentals with status waiting
-					$vanBlock, defaultVan, van, i, $vanItem, status;
+didRender = function() {
+    if(App.rootVC !== null && App.rootVC.header) {
+        App.rootVC.header.setTitle('Van rentals');
+    }
 
-				$vanBlock = $('#' + vanBlockID, view.$element);
+    if (this.didFetch === true) {
+        this.populateYourRentals();
+    }
 
-				for(i = 0; i < yourRentals.length; i++) {
-					defaultVan = {
-						id: null,
-						van_type: '',
-						subtype: '',
-						brand: '',
-						model: '',
-						description: '',
-						img_url: 'images/placeholder_grey.png',
-						price_a: 0,
-						price_b: 0,
-						price_c: 0,
-						owner_id: null
-					};
+    this.setupEvent('click', '#yourrentals-van-block .sg-list-item button', this, this.handleBooking);
+};
 
-					van = yourRentals[i];
-					_.extend(defaultVan, van.data);
-					if(defaultVan.images.length > 0) {
-						defaultVan.img_url = defaultVan.images.split(',')[0];
-					}
-					$vanItem = $(yourRentalsItemTemplate(defaultVan));
-					$('.sg-bg-image', $vanItem).css({
-						'background-image': 'url("' + defaultVan.img_url + '")'
-					});
+populateYourRentals = function(callback) {
+    var view = this,
+        YourRentalsItemTemplate;
+    YourRentalsItemTemplate = require('../../templates/yourvanrentals-item.html');
+    var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
+        yourRentals = view.vanList.data,
+        displayedRentals = 0, //We do not display rentals with status waiting
+        $vanBlock, defaultVan, van, i, $vanItem, status;
+
+    $vanBlock = $('#' + vanBlockID, view.$element);
+
+    for (i = 0; i < yourRentals.length; i++) {
+        defaultVan = {
+            id: null,
+            van_type: '',
+            subtype: '',
+            brand: '',
+            model: '',
+            description: '',
+            img_url: 'images/placeholder_grey.png',
+            price_a: 0,
+            price_b: 0,
+            price_c: 0,
+            owner_id: null
+        };
+
+        van = yourRentals[i];
+        _.extend(defaultVan, van.data);
+        if (defaultVan.images.length > 0) {
+            defaultVan.img_url = defaultVan.images.split(',')[0];
+        }
+        $vanItem = $(yourRentalsItemTemplate(defaultVan));
+        $('.sg-bg-image', $vanItem).css({
+            'background-image': 'url("' + defaultVan.img_url + '")'
+        });
 
 
-					status = van.data.booking_status;
-					if(status !== 'waiting') {
-						if(status === 'pending') {
-							$('.request', $vanItem).removeClass('hidden');
-						}
-						if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
-							$('.accepted', $vanItem).removeClass('hidden');
-						}
-						if(status === 'denied') {
-							$('.denied', $vanItem).removeClass('hidden');
-						}
-                    
-						$vanBlock.append($vanItem);
-						displayedRentals++;
-					}
-				}
+        status = van.data.booking_status;
+        if (status !== 'waiting') {
+            if (status === 'pending') {
+                $('.request', $vanItem).removeClass('hidden');
+            }
+            if (status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
+                $('.accepted', $vanItem).removeClass('hidden');
+            }
+            if (status === 'denied') {
+                $('.denied', $vanItem).removeClass('hidden');
+            }
 
-				if(displayedRentals <= 0) {
-					$('#' + vanBlockID, view.$element).append('You currently do not have any rentals.');
-				}
-				else {
-					view.setupEvent('click', '.booking-btn', view, view.handleBooking);
-				}
+            $vanBlock.append($vanItem);
+            displayedRentals++;
+        }
+    }
 
-				if(callback && typeof callback === 'function') {
-					callback();
-				}
-			});
-		};
+    if (displayedRentals <= 0) {
+        $('#' + vanBlockID, view.$element).append('You currently do not have any rentals.');
+    } else {
+        view.setupEvent('click', '.booking-btn', view, view.handleBooking);
+    }
 
-		handleBooking = function(event) {
-			var view = event.data,
-				bookingID = $(this).data('bookingid'),
-				van, passedData;
-			van = view.vanList.getVanItem('booking_id', bookingID);
-			passedData = {
-				van: van.data.van_type + ' ' + van.data.model,
-				van_id: van.data.id,
-				mode: 'owner',
-				booking_id: bookingID
-			};
-			App.router.openModalView('booking', passedData);
-		};
+    if (callback && typeof callback === 'function') {
+        callback();
+    }
+};
 
-		return ViewController.inherit({
-			didInitialize: didInitialize,
-			didRender: didRender,
-			populateYourRentals: populateYourRentals,
+handleBooking = function(event) {
+    var view = event.data,
+        bookingID = $(this).data('bookingid'),
+        van, passedData;
+    van = view.vanList.getVanItem('booking_id', bookingID);
+    passedData = {
+        van: van.data.van_type + ' ' + van.data.model,
+        van_id: van.data.id,
+        mode: 'owner',
+        booking_id: bookingID
+    };
+    App.router.openModalView('booking', passedData);
+};
 
-            handleBooking: handleBooking
-		});
-	}
-);
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize,
+    didRender: didRender,
+    populateYourRentals: populateYourRentals,
+
+    handleBooking: handleBooking
+});

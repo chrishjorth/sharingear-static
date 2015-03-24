@@ -4,44 +4,44 @@
  */
 //TODO: Store the classification locally so that it is always ready on load after the first time
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'model'],
-	function(_, Model) {
-		var didInitialize,
-			getClassification;
+var _ = require('underscore'),
 
-		didInitialize = function() {
-			this.data = {};
-			this.getClassification();
-		};
+    Model = require('../model'),
 
-		getClassification = function(callback) {
-			var model = this;
+    didInitialize,
+    getClassification;
 
-			if(_.isEmpty(this.data) === false) {
-				if(callback && typeof callback === 'function') {
-					callback(this.data);
-				}
-				return;
-			}
+didInitialize = function() {
+    this.data = {};
+    this.getClassification();
+};
 
-			this.get('/contentclassification', function(error, contentClassification) {
-				if(error) {
-					console.log(error);
-					return;
-				}
-				model.data = contentClassification;
-				if(callback && typeof callback === 'function') {
-					callback(model.data);
-				}
-			});
-		};
+getClassification = function(callback) {
+    var model = this;
 
-		return Model.inherit({
-			didInitialize: didInitialize,
-			getClassification: getClassification
-		});
-	}
-);
+    if (_.isEmpty(this.data) === false) {
+        if (callback && typeof callback === 'function') {
+            callback(this.data);
+        }
+        return;
+    }
+
+    this.get('/contentclassification', function(error, contentClassification) {
+        if (error) {
+            console.log(error);
+            return;
+        }
+        model.data = contentClassification;
+        if (callback && typeof callback === 'function') {
+            callback(model.data);
+        }
+    });
+};
+
+module.exports = Model.inherit({
+    didInitialize: didInitialize,
+    getClassification: getClassification
+});

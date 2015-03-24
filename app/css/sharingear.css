@@ -709,22 +709,26 @@ body {
 	.sg-modal-header > .col-xs-8 {
 		display: none;
 	}
+
+	.sg-modal-header > .editgearcancel{
+		display: none;
+	}
 }
 .sg-modal-header button {
 	-moz-appearance: none;
 	-webkit-appearance: none;
-	background-color: inherit;
+
 	border: none;
 	cursor: pointer;
 	min-height: 36px;
 	min-width: 44px;
-	color: #00aeff;
 	font-weight: bold;
-	margin-top: 4px;
 }
+
 .sg-modal-header button .fa {
 	display: none;
 }
+
 @media (min-width: 768px) {
 	.sg-modal-header button .fa {
 		display: inline-block;
@@ -1009,6 +1013,10 @@ body {
 }
 .sg-white-bg {
 	background-color: #ffffff;
+}
+
+.sg-inherit-bg {
+	background-color: inherit;
 }
 
 .sg-black {
@@ -1374,12 +1382,23 @@ button:active .sg-gray-bg {
 }
 
 .availability-legend-box {
-	padding: 4px 10px 4px 10px;
+	width: 40px;
+	height: 40px;
 	margin-bottom: 10px; 
 	border-style: solid;
 	border-width: 1px;
 	border-color: #d5dada;
+	float: left;
+	margin-left: -14px;
 }
+
+.availability-text-box{
+
+	line-height: 40px;
+	float: left;
+	margin-left: 10px;
+}
+
 .availabilitycalendar .always-never button {
 	font-size: 16px;
 	font-weight: bold;
@@ -2308,6 +2327,22 @@ button:active .sg-gray-bg {
 	}
 }
 
+.editgear-close-top{
+	position: absolute;
+	top: 3px;
+	right: 20px;
+	background-color: #BABABA;
+}
+
+@media (min-width: 768px) {
+	.editsavebutton{
+		max-width: 110px;
+		margin-top: 40px;
+		color: white;
+		background-color: #01adff;
+	}
+}
+
 .editgear .sg-toptab {
 	font-size: 10px;
 	padding-top: 12px;
@@ -2387,8 +2422,30 @@ text-align: left;
 	padding-bottom: 70px;
 }
 
+.message-pop{
+	padding: 15px;
+}
+
 .submerchant-container, .submerchant-height  {
 	height: 100%;
+}
+
+.submerchant-hits {
+	color: #808080;
+	font-size: 12px;
+	padding-left: 5px;
+	vertical-align: middle;
+	position: absolute;
+	top: 28px;
+	cursor: pointer;
+}
+
+.submerchant-message-close{
+
+	margin-right: -10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+
 }
 
 .full-height{
@@ -3341,6 +3398,20 @@ text-align: left;
 	font-weight: bold;
 	text-transform: uppercase;
 }
+.techprofilelistborder{
+	border-top: 1px solid darkgray;
+}
+
+.techprofilelist{
+	text-transform: capitalize;
+	float: left;
+	margin-left: 5px;
+}
+
+.techprofilelistname{
+	float: left;
+}
+
 .techprofile .profile-type .sg-icon {
 	font-size: 24px;
 	margin-right: 6px;

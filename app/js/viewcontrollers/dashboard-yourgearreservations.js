@@ -3,130 +3,137 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/gearlist'],
-	function(_, $, Config, ViewController, App, GearList) {
-		var reservationBlockID,
+var _ = require('underscore'),
+    $ = require('jquery'),
 
-			didInitialize,
-			didRender,
+    Config = require('../config.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-			populateYourReservations,
+    GearList = require('../models/gearlist.js'),
 
-			handleBooking;
+    reservationBlockID,
 
-		reservationBlockID = 'yourreservations-gear-block';
+    didInitialize,
+    didRender,
 
-		didInitialize = function() {
-			var view = this;
-			view.gearList = new GearList.constructor({
-				rootURL: Config.API_URL
-			});
-			view.gearList.initialize();
-			view.gearList.getUserReservations(App.user.data.id, function () {
-				view.didFetch = true;
-				view.render();
-			});
-		};
+    populateYourReservations,
 
-		didRender = function() {
-			App.header.setTitle('Gear reservations');
-			if(this.didFetch === true) {
-				this.populateYourReservations();
-			}
+    handleBooking;
 
-			this.setupEvent('click', '#yourreservations-gear-block .sg-list-item button', this, this.handleBooking);
-		};
+reservationBlockID = 'yourreservations-gear-block';
 
-		populateYourReservations = function(callback) {
-			var view = this;
-			require(['text!../templates/yourgearreservations-item.html'], function(YourReservationsItemTemplate) {
-				var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
-					yourReserv = view.gearList.data,
-					$reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
+didInitialize = function() {
+    var view = this;
+    view.gearList = new GearList.constructor({
+        rootURL: Config.API_URL
+    });
+    view.gearList.initialize();
+    view.gearList.getUserReservations(App.user.data.id, function() {
+        view.didFetch = true;
+        view.render();
+    });
+};
 
-				if(yourReserv.length <= 0) {
-					$('#' + reservationBlockID, view.$element).append('You currently do not have any reservations.');
-					if(callback && typeof callback === 'function') {
-						callback();
-					}
-					return;
-				}
+didRender = function() {
+    if(App.rootVC !== null && App.rootVC.header) {
+        App.rootVC.header.setTitle('Gear reservations');
+    }
+    if (this.didFetch === true) {
+        this.populateYourReservations();
+    }
 
-				$reservationBlock = $('#' + reservationBlockID, view.$element);
+    this.setupEvent('click', '#yourreservations-gear-block .sg-list-item button', this, this.handleBooking);
+};
 
-				for(i = 0; i < yourReserv.length; i++) {
-                    defaultReservation = {
-                        id: null,
-                        gear_type: '',
-                        subtype: '',
-                        brand: '',
-						start_date:'',
-                        start_time:'',
-						end_date:'',
-                        end_time:'',
-                        model: '',
-                        images:'',
-                        img_url: 'images/placeholder_grey.png',
-                        price: 0,
-                        city: '',
-                        gear_status: 'status'
-                    };
-					reservation = yourReserv[i];
-					_.extend(defaultReservation, reservation.data);
+populateYourReservations = function(callback) {
+    var view = this,
+        YourReservationsItemTemplate;
+    YourReservationsItemTemplate = require('../../templates/yourgearreservations-item.html');
+    var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
+        yourReserv = view.gearList.data,
+        $reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
 
-					if(defaultReservation.images.length > 0) {
-						defaultReservation.img_url = defaultReservation.images.split(',')[0];
-					}
+    if (yourReserv.length <= 0) {
+        $('#' + reservationBlockID, view.$element).append('You currently do not have any reservations.');
+        if (callback && typeof callback === 'function') {
+            callback();
+        }
+        return;
+    }
 
-					$reservationItem = $(yourReservationsItemTemplate(defaultReservation));
-					$('.sg-bg-image', $reservationItem).css({
-						'background-image': 'url("' + defaultReservation.img_url + '")'
-					});
-					
+    $reservationBlock = $('#' + reservationBlockID, view.$element);
 
-					status = reservation.data.booking_status;
+    for (i = 0; i < yourReserv.length; i++) {
+        defaultReservation = {
+            id: null,
+            gear_type: '',
+            subtype: '',
+            brand: '',
+            start_date: '',
+            start_time: '',
+            end_date: '',
+            end_time: '',
+            model: '',
+            images: '',
+            img_url: 'images/placeholder_grey.png',
+            price: 0,
+            city: '',
+            gear_status: 'status'
+        };
+        reservation = yourReserv[i];
+        _.extend(defaultReservation, reservation.data);
 
-					if(status === 'pending' || status === 'waiting') {
-						$('.request', $reservationItem).removeClass('hidden');
-					}
-					if(status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
-						$('.accepted', $reservationItem).removeClass('hidden');
-					}
-					if(status === 'denied' || status==='ended-denied') {
-						$('.denied', $reservationItem).removeClass('hidden');
-					}
+        if (defaultReservation.images.length > 0) {
+            defaultReservation.img_url = defaultReservation.images.split(',')[0];
+        }
 
-					$reservationBlock.append($reservationItem);
-				}
+        $reservationItem = $(yourReservationsItemTemplate(defaultReservation));
+        $('.sg-bg-image', $reservationItem).css({
+            'background-image': 'url("' + defaultReservation.img_url + '")'
+        });
 
-				if(callback && typeof callback === 'function') {
-					callback();
-				}
-			});
-		};
 
-		handleBooking = function(event) {
-			var view = event.data,
-				bookingID = $(this).data('bookingid'),
-				gear, passedData;
-			gear = view.gearList.getGearItem('booking_id', bookingID);
-			passedData = {
-				item_name: gear.data.brand + ' ' + gear.data.model + ' ' + gear.data.subtype,
-				gear_id: gear.data.id,
-				mode: 'renter',
-				booking_id: bookingID
-			};
-			App.router.openModalView('booking', passedData);
-		};
+        status = reservation.data.booking_status;
 
-		return ViewController.inherit({
-			didInitialize: didInitialize,
-			didRender: didRender,
-			populateYourReservations: populateYourReservations,
-			handleBooking: handleBooking
-		});
-	}
-);
+        if (status === 'pending' || status === 'waiting') {
+            $('.request', $reservationItem).removeClass('hidden');
+        }
+        if (status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
+            $('.accepted', $reservationItem).removeClass('hidden');
+        }
+        if (status === 'denied' || status === 'ended-denied') {
+            $('.denied', $reservationItem).removeClass('hidden');
+        }
+
+        $reservationBlock.append($reservationItem);
+    }
+
+    if (callback && typeof callback === 'function') {
+        callback();
+    }
+};
+
+handleBooking = function(event) {
+    var view = event.data,
+        bookingID = $(this).data('bookingid'),
+        gear, passedData;
+    gear = view.gearList.getGearItem('booking_id', bookingID);
+    passedData = {
+        item_name: gear.data.brand + ' ' + gear.data.model + ' ' + gear.data.subtype,
+        gear_id: gear.data.id,
+        mode: 'renter',
+        booking_id: bookingID
+    };
+    App.router.openModalView('booking', passedData);
+};
+
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize,
+    didRender: didRender,
+    populateYourReservations: populateYourReservations,
+    handleBooking: handleBooking
+});

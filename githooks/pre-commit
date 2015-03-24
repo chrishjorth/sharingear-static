@@ -3,6 +3,19 @@
 #Add node modules to PATH
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
+#Build app
+cd app/js
+webpack
+
+#Build test
+cd ../test/js
+webpack
+
+#Stage build
+cd ../../../
+git add --refresh -A
+git add -A
+
 git stash -q --keep-index
 
 #Run test

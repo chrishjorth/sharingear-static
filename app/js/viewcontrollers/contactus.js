@@ -3,10 +3,9 @@
  * @author: Chris Hjorth
  */
 
-define(
-	['viewcontroller'],
-	function(ViewController) {
-		var ContactUs = ViewController.inherit({}); 
-		return ContactUs;
-	}
-);
+/*jslint node: true */
+'use strict';
+
+var ViewController = require('../viewcontroller.js');
+
+module.exports = ViewController.inherit({});

@@ -3,780 +3,798 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define(
-	['underscore', 'jquery', 'config', 'viewcontroller', 'app', 'models/gear', 'models/localization', 'googlemaps', 'moment'],
-	function(_, $, Config, ViewController, App, Gear, Localization, GoogleMaps, Moment) {
-		var subtypeDefault = 'Choose subtype:',
-			brandDefault = 'Choose brand:',
-			countryDefault = 'Select country:',
-			geocoder,
+var _ = require('underscore'),
+    $ = require('jquery'),
+    GoogleMaps = require('googlemaps'),
+    Moment = require('moment-timezone'),
 
-			didInitialize,
-			didRender,
+    Config = require('../config.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-			getTabID,
-			toggleLoading,
+    Localization = require('../models/localization.js'),
+    Gear = require('../models/gear.js'),
 
-			addGearIcons,
-			renderAccessories,
-			prepopulateInstrument,
-			populateSubtypeSelect,
-			populateBrandSelect,
-			handleGearRadio,
-			handleSelectSubtype,
-			handleSelectBrand,
-			saveInstrument,
+    subtypeDefault = 'Choose subtype:',
+    brandDefault = 'Choose brand:',
+    countryDefault = 'Select country:',
+    geocoder,
 
-			populatePhotos,
-			handleImageUpload,
+    didInitialize,
+    didRender,
 
-			populateCountries,
-			populatePriceSuggestions,
-			handlePriceChange,
-			handleDeliveryCheckbox,
-			savePriceLocation,
+    getTabID,
+    toggleLoading,
 
-			renderAvailability,
-			renderSubmerchantForm,
-			saveAvailability,
+    addGearIcons,
+    renderAccessories,
+    prepopulateInstrument,
+    populateSubtypeSelect,
+    populateBrandSelect,
+    handleGearRadio,
+    handleSelectSubtype,
+    handleSelectBrand,
+    saveInstrument,
 
-			handleCancel,
-			handleNext,
-			handleViewGearProfile,
-			handleAddMoreGear,
+    populatePhotos,
+    handleImageUpload,
 
-			showPanel;
+    populateCountries,
+    populatePriceSuggestions,
+    handlePriceChange,
+    handleDeliveryCheckbox,
+    savePriceLocation,
 
-		geocoder = new GoogleMaps.Geocoder();
+    renderAvailability,
+    renderSubmerchantForm,
+    saveAvailability,
 
-		didInitialize = function() {
-			if(App.user.data.id === null) {
-				this.ready = false;
-				App.router.navigateTo('home');
-				return;
-			}
+    handleCancel,
+    handleNext,
+    handleViewGearProfile,
+    handleAddMoreGear,
 
-			Moment.locale('en-custom', {
-				week: {
-					dow: 1,
-					doy: 4
-				}
-			});
+    showPanel;
 
-			this.isLoading = false;
-			this.submerchantFormVC = null;
+geocoder = new GoogleMaps.Geocoder();
 
-			this.templateParameters = {
-				currency: App.user.data.currency
-			};
+didInitialize = function() {
+    if (App.user.data.id === null) {
+        this.ready = false;
+        App.router.navigateTo('home');
+        return;
+    }
 
-			this.newGear = new Gear.constructor({
-				rootURL: Config.API_URL
-			});
-			this.newGear.initialize();
+    Moment.locale('en-custom', {
+        week: {
+            dow: 1,
+            doy: 4
+        }
+    });
 
-			this.hasDelivery = false;
+    this.isLoading = false;
+    this.submerchantFormVC = null;
 
-			this.shownMoment = new Moment.tz(Localization.getCurrentTimeZone());
-			this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
-			this.alwaysFlag = 1; //New gear is always available by default
-			this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
-		};
+    this.templateParameters = {
+        currency: App.user.data.currency
+    };
 
-		didRender = function() {
-			this.addGearIcons();
-			
-			this.prepopulateInstrument();
-			
-			this.populatePhotos();
-			this.populateCountries($('#dashboard-addgearprice-country', this.$element));
+    this.newGear = new Gear.constructor({
+        rootURL: Config.API_URL
+    });
+    this.newGear.initialize();
 
-			$('#dashboard-addgearprice-form #price_a', this.$element).val(this.newGear.data.price_a);
-			$('#dashboard-addgearprice-form #price_b', this.$element).val(this.newGear.data.price_b);
-			$('#dashboard-addgearprice-form #price_c', this.$element).val(this.newGear.data.price_c);
+    this.hasDelivery = false;
 
-			this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
-			this.setupEvent('click', '.next-btn', this, this.handleNext);
-			this.setupEvent('change', '#addgear-form-type .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
-			this.setupEvent('change', '#dashboard-addgearphotos-form-imageupload', this, this.handleImageUpload);
+    this.shownMoment = new Moment.tz(Localization.getCurrentTimeZone());
+    this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
+    this.alwaysFlag = 1; //New gear is always available by default
+    this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
+};
 
-			this.setupEvent('change', '.price', this, this.handlePriceChange);
-			this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
-		};
+didRender = function() {
+    this.addGearIcons();
 
-		getTabID = function() {
-			var tabID = null;
-			$('.addgear-panel').each(function() {
-				var $this = $(this);
-				if($this.hasClass('hidden') === false) {
-					tabID = $this.attr('id');
-				}
-			});
-			return tabID;
-		};
+    this.prepopulateInstrument();
 
-		populatePriceSuggestions = function () {
-			var gearClassification = App.contentClassification.data.gearClassification,
-                view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
+    this.populatePhotos();
+    this.populateCountries($('#dashboard-addgearprice-country', this.$element));
 
-            view = this;
+    $('#dashboard-addgearprice-form #price_a', this.$element).val(this.newGear.data.price_a);
+    $('#dashboard-addgearprice-form #price_b', this.$element).val(this.newGear.data.price_b);
+    $('#dashboard-addgearprice-form #price_c', this.$element).val(this.newGear.data.price_c);
 
-            gearSubtypes = gearClassification[view.newGear.data.gear_type];
-            for(i = 0; i < gearSubtypes.length; i++) {
-                if (gearSubtypes[i].subtype === view.newGear.data.subtype) {
-                    suggestionA = gearSubtypes[i].price_a_suggestion;
-                    suggestionB = gearSubtypes[i].price_b_suggestion;
-                    suggestionC = gearSubtypes[i].price_c_suggestion;
-                    i = gearSubtypes.length;
+    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+    this.setupEvent('click', '.next-btn', this, this.handleNext);
+    this.setupEvent('change', '#addgear-form-type .gearbuttonlist-container input[type="radio"]', this, this.handleGearRadio);
+    this.setupEvent('change', '#dashboard-addgearphotos-form-imageupload', this, this.handleImageUpload);
+
+    this.setupEvent('change', '.price', this, this.handlePriceChange);
+    this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
+};
+
+getTabID = function() {
+    var tabID = null;
+    $('.addgear-panel').each(function() {
+        var $this = $(this);
+        if ($this.hasClass('hidden') === false) {
+            tabID = $this.attr('id');
+        }
+    });
+    return tabID;
+};
+
+populatePriceSuggestions = function() {
+    var gearClassification = App.contentClassification.data.gearClassification,
+        view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
+
+    view = this;
+
+    gearSubtypes = gearClassification[view.newGear.data.gear_type];
+    for (i = 0; i < gearSubtypes.length; i++) {
+        if (gearSubtypes[i].subtype === view.newGear.data.subtype) {
+            suggestionA = gearSubtypes[i].price_a_suggestion;
+            suggestionB = gearSubtypes[i].price_b_suggestion;
+            suggestionC = gearSubtypes[i].price_c_suggestion;
+            i = gearSubtypes.length;
+        }
+    }
+    Localization.convertPrice(suggestionA, App.user.data.currency, function(error, convertedPrice) {
+        if (error) {
+            console.log('Could not convert price: ' + error);
+            return;
+        }
+        $('#addgear-price_a-suggestion', view.$element).html(Math.ceil(convertedPrice));
+    });
+    Localization.convertPrice(suggestionB, App.user.data.currency, function(error, convertedPrice) {
+        if (error) {
+            console.log('Could not convert price: ' + error);
+            return;
+        }
+        $('#addgear-price_b-suggestion', view.$element).html(Math.ceil(convertedPrice));
+    });
+    Localization.convertPrice(suggestionC, App.user.data.currency, function(error, convertedPrice) {
+        if (error) {
+            console.log('Could not convert price: ' + error);
+            return;
+        }
+        $('#addgear-price_c-suggestion', view.$element).html(Math.ceil(convertedPrice));
+    });
+};
+
+toggleLoading = function() {
+    if (this.isLoading === true) {
+        $('.next-btn', this.$element).html('Next <i class="fa fa-arrow-circle-right"></i>');
+        this.isLoading = false;
+    } else {
+        $('.next-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
+        this.isLoading = true;
+    }
+};
+
+addGearIcons = function() {
+    var view = this,
+        gearClassification = App.contentClassification.data.gearClassification,
+        html = '',
+        gearType;
+
+    for (gearType in gearClassification) {
+        html += '<div class="custom-radio">';
+        html += '<input type="radio" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">';
+        html += '<label for="gear-radio-' + gearType + '">';
+        html += '<div class="custom-radio-icon sg-icon icon-addgear-' + gearType.toLowerCase() + '"></div>';
+        html += '<span>' + gearType + '</span>';
+        html += '</label>';
+        html += '</div>';
+    }
+
+    $('.gearbuttonlist-container', view.$element).append(html);
+};
+
+renderAccessories = function() {
+    var view = this,
+        gearClassification = App.contentClassification.data.gearClassification,
+        html = '',
+        gearType, gearSubtypes, i, j;
+
+    gearType = $('#addgear-form-type input[type="radio"]:checked').val();
+
+    gearSubtypes = gearClassification[gearType];
+
+    for (i = 0; i < gearSubtypes.length; i++) {
+        if (gearSubtypes[i].subtype === $('#addgear-form-subtype', view.$element).val()) {
+            for (j = 0; j < gearSubtypes[i].accessories.length; j++) {
+                //Check the checkbox if the specific accessory was selected for this gear before
+                if (view.newGear.data.accessories !== null && view.newGear.data.accessories.indexOf(gearSubtypes[i].accessories[j]) > -1) {
+                    html += '<input type="checkbox" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '" checked> ' + gearSubtypes[i].accessories[j];
+                } else {
+                    html += '<input type="checkbox" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '"> ' + gearSubtypes[i].accessories[j];
                 }
             }
-            Localization.convertPrice(suggestionA, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#addgear-price_a-suggestion', view.$element).html(Math.ceil(convertedPrice));
-            });
-            Localization.convertPrice(suggestionB, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#addgear-price_b-suggestion', view.$element).html(Math.ceil(convertedPrice));
-            });
-            Localization.convertPrice(suggestionC, App.user.data.currency, function(error, convertedPrice) {
-                if(error) {
-                    console.log('Could not convert price: ' + error);
-                    return;
-                }
-                $('#addgear-price_c-suggestion', view.$element).html(Math.ceil(convertedPrice));
-            });
-		};
+        }
+    }
+    $('#addgear-accessories-container', view.$element).html(html);
+};
 
-		toggleLoading = function() {
-			if(this.isLoading === true) {
-				$('.next-btn', this.$element).html('Next <i class="fa fa-arrow-circle-right"></i>');
-				this.isLoading = false;
-			}
-			else {
-				$('.next-btn', this.$element).html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
-				this.isLoading = true;
-			}
-		};
+/**
+ * Prefills the form with passed data.
+ */
+prepopulateInstrument = function() {
+    var gear;
+    if (!this.passedData || this.passedData === null) {
+        return;
+    }
+    gear = this.passedData.data;
+    if (!gear) {
+        return;
+    }
+    if (gear.gear_type && gear.gear_type.length >= 0) {
+        $('#dashboard-addgear-form .gearbuttonlist-container #gear-radio-' + gear.gear_type.toLowerCase()).prop('checked', true);
+        this.populateSubtypeSelect(gear.gear_type);
+        if (gear.subtype && gear.subtype.length >= 0) {
+            $('#gear-subtype-container select').val(gear.subtype);
+            this.populateBrandSelect();
+            if (gear.brand && gear.brand.length >= 0) {
+                $('#gear-brand-container select').val(gear.brand);
+            }
+        }
+    }
+    $('#dashboard-addgear-form-model').val(gear.model);
+    $('#dashboard-addgear-form-description').val(gear.description);
+};
 
-		addGearIcons = function() {
-			var view = this,
-				gearClassification = App.contentClassification.data.gearClassification,
-				html = '',
-				gearType;
+populateSubtypeSelect = function(gearType) {
+    var gearClassification = App.contentClassification.data.gearClassification,
+        html = '<option> ' + subtypeDefault + ' </option>',
+        $subtypeSelect, $brandSelectContainer, $detailsContainer, gearSubtypes, i;
 
-			for(gearType in gearClassification) {
-				html += '<div class="custom-radio">';
-				html += '<input type="radio" name="gear-radio" id="gear-radio-' + gearType + '" value="' + gearType + '">';
-				html += '<label for="gear-radio-' + gearType + '">';
-				html += '<div class="custom-radio-icon sg-icon icon-addgear-' + gearType.toLowerCase() + '"></div>';
-				html += '<span>' + gearType + '</span>';
-				html += '</label>';
-				html += '</div>';
-			}
+    $('#addgear-form-subtype-container', this.$element).removeClass('hidden');
 
-			$('.gearbuttonlist-container', view.$element).append(html);
-		};
+    $subtypeSelect = $('#addgear-form-subtype-container select', this.$element);
+    $subtypeSelect.empty();
 
-		renderAccessories = function () {
-			var view = this,
-				gearClassification = App.contentClassification.data.gearClassification,
-				html = '',
-				gearType, gearSubtypes, i, j;
+    $brandSelectContainer = $('#addgear-form-brand-container', this.$element);
+    if ($brandSelectContainer.hasClass('hidden') === false) {
+        $brandSelectContainer.addClass('hidden');
+    }
 
-			gearType = $('#addgear-form-type input[type="radio"]:checked').val();
+    $detailsContainer = $('#addgear-form-geardetails-container', this.$element);
+    if ($detailsContainer.hasClass('hidden') === false) {
+        $detailsContainer.addClass('hidden');
+    }
 
-			gearSubtypes = gearClassification[gearType];
+    gearSubtypes = gearClassification[gearType];
+    for (i = 0; i < gearSubtypes.length; i++) {
+        html += '<option value="' + gearSubtypes[i].subtype + '">' + gearSubtypes[i].subtype + '</option>';
+    }
+    $subtypeSelect.append(html);
+    this.setupEvent('change', '#addgear-form-subtype-container select', this, this.handleSelectSubtype);
+};
 
-			for(i = 0; i < gearSubtypes.length; i++) {
-				if (gearSubtypes[i].subtype === $('#addgear-form-subtype', view.$element).val()) {
-					for(j = 0; j < gearSubtypes[i].accessories.length; j++){
-						//Check the checkbox if the specific accessory was selected for this gear before
-						if(view.newGear.data.accessories !== null && view.newGear.data.accessories.indexOf(gearSubtypes[i].accessories[j]) > -1) {
-							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'" checked> '+gearSubtypes[i].accessories[j];
-						}
-						else {
-							html += '<input type="checkbox" name="'+gearSubtypes[i].accessories[j]+'" value="'+gearSubtypes[i].accessories[j]+'"> '+gearSubtypes[i].accessories[j];
-						}
-					}
-				}
-			}
-			$('#addgear-accessories-container', view.$element).html(html);
-		};
+populateBrandSelect = function() {
+    var brands = App.contentClassification.data.gearBrands,
+        html = '<option> ' + brandDefault + ' </option>',
+        $brandSelect, $detailsContainer, i;
 
-		/**
-		 * Prefills the form with passed data.
-		 */
-		prepopulateInstrument = function() {
-			var gear;
-			if(!this.passedData || this.passedData === null) {
-				return;
-			}
-			gear = this.passedData.data;
-			if(!gear) {
-				return;
-			}
-			if(gear.gear_type && gear.gear_type.length >= 0) {
-				$('#dashboard-addgear-form .gearbuttonlist-container #gear-radio-' + gear.gear_type.toLowerCase()).prop('checked', true);
-				this.populateSubtypeSelect(gear.gear_type);
-				if(gear.subtype && gear.subtype.length >= 0) {
-					$('#gear-subtype-container select').val(gear.subtype);
-					this.populateBrandSelect();
-					if(gear.brand && gear.brand.length >= 0) {
-						$('#gear-brand-container select').val(gear.brand);
-					}
-				}
-			}
-			$('#dashboard-addgear-form-model').val(gear.model);
-			$('#dashboard-addgear-form-description').val(gear.description);
-		};
+    $('#addgear-form-brand-container', this.$element).removeClass('hidden');
 
-		populateSubtypeSelect = function(gearType) {
-			var gearClassification = App.contentClassification.data.gearClassification,
-				html = '<option> ' + subtypeDefault + ' </option>',
-				$subtypeSelect, $brandSelectContainer, $detailsContainer, gearSubtypes, i;
+    $brandSelect = $('#addgear-form-brand-container select', this.$element);
+    $brandSelect.empty();
 
-			$('#addgear-form-subtype-container', this.$element).removeClass('hidden');
+    $detailsContainer = $('#addgear-form-geardetails-container', this.$element);
+    if ($detailsContainer.hasClass('hidden') === false) {
+        $detailsContainer.addClass('hidden');
+    }
 
-			$subtypeSelect = $('#addgear-form-subtype-container select', this.$element);
-			$subtypeSelect.empty();
-			
-			$brandSelectContainer = $('#addgear-form-brand-container', this.$element);
-			if($brandSelectContainer.hasClass('hidden') === false) {
-				$brandSelectContainer.addClass('hidden');
-			}
+    for (i = 0; i < brands.length; i++) {
+        html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
+    }
+    $brandSelect.append(html);
+    this.setupEvent('change', '#addgear-form-brand-container select', this, this.handleSelectBrand);
+};
 
-			$detailsContainer = $('#addgear-form-geardetails-container', this.$element);
-			if($detailsContainer.hasClass('hidden') === false) {
-				$detailsContainer.addClass('hidden');
-			}
-			
-			gearSubtypes = gearClassification[gearType];
-			for(i = 0; i < gearSubtypes.length; i++) {
-				html += '<option value="' + gearSubtypes[i].subtype + '">' + gearSubtypes[i].subtype + '</option>';
-			}
-			$subtypeSelect.append(html);
-			this.setupEvent('change', '#addgear-form-subtype-container select', this, this.handleSelectSubtype);
-		};
+/**
+ * @assertion: gearClassification has been loaded
+ */
+handleGearRadio = function(event) {
+    var view = event.data;
+    $('.hint1', view.$element).addClass('hidden');
+    view.populateSubtypeSelect($(this).val());
+};
 
-		populateBrandSelect = function() {
-			var brands = App.contentClassification.data.gearBrands,
-				html = '<option> ' + brandDefault + ' </option>',
-				$brandSelect, $detailsContainer, i;
+handleSelectSubtype = function(event) {
+    var view = event.data;
+    view.populateBrandSelect();
+    view.renderAccessories();
+};
 
-			$('#addgear-form-brand-container', this.$element).removeClass('hidden');
+handleSelectBrand = function(event) {
+    var view = event.data;
+    $('#addgear-form-geardetails-container', view.$element).removeClass('hidden');
+};
 
-			$brandSelect = $('#addgear-form-brand-container select', this.$element);
-			$brandSelect.empty();
+saveInstrument = function() {
+    var view = this,
+        accessoriesArray = [],
+        newData, callback;
 
-			$detailsContainer = $('#addgear-form-geardetails-container', this.$element);
-			if($detailsContainer.hasClass('hidden') === false) {
-				$detailsContainer.addClass('hidden');
-			}
+    if (view.isLoading === true) {
+        return;
+    }
 
-			for(i = 0; i < brands.length; i++) {
-				html += '<option value="' + brands[i] + '">' + brands[i] + '</option>';
-			}
-			$brandSelect.append(html);
-			this.setupEvent('change', '#addgear-form-brand-container select', this, this.handleSelectBrand);
-		};
+    //Push the checked checkboxes to an array
+    Array.prototype.push.apply(accessoriesArray, $('#addgear-accessories-container input:checked', view.$element).map(function() {
+        return this.name;
+    }));
 
-		/**
-		 * @assertion: gearClassification has been loaded
-		 */
-		handleGearRadio = function(event) {
-			var view = event.data;
-			$('.hint1', view.$element).addClass('hidden');
-			view.populateSubtypeSelect($(this).val());
-		};
+    //Create new gear model object from form data
+    newData = {
+        gear_type: $('#addgear-form-type .gearbuttonlist-container input[type="radio"]:checked').val(),
+        subtype: $('#addgear-form-subtype option:selected').val(),
+        brand: $('#addgear-form-brand option:selected').val(),
+        model: $('#addgear-form-model').val(),
+        accessories: accessoriesArray,
+        description: $('#addgear-form-description').val(),
+        currency: App.user.data.currency
+    };
 
-		handleSelectSubtype = function(event) {
-			var view = event.data;
-			view.populateBrandSelect();
-			view.renderAccessories();
-		};
+    //Validate
+    if (!newData.gear_type || newData.gear_type === '') {
+        alert('Please select a type of instrument.');
+        return;
+    }
+    if (newData.subtype === '' || newData.subtype === subtypeDefault) {
+        alert('Please select a subtype for your instrument.');
+        return;
+    }
+    if (newData.brand === '' || newData.brand === brandDefault) {
+        alert('Please select the instrument\'s brand.');
+        return;
+    }
+    if (newData.model === '') {
+        alert('Please type in the model of your instrument.');
+        return;
+    }
 
-		handleSelectBrand = function(event) {
-			var view = event.data;
-			$('#addgear-form-geardetails-container', view.$element).removeClass('hidden');
-		};
+    this.toggleLoading();
 
-		saveInstrument = function() {
-			var view = this,
-				accessoriesArray = [],
-				newData, callback;
+    _.extend(this.newGear.data, newData);
 
-			if(view.isLoading === true) {
-				return;
-			}
+    callback = function(error) {
+        if (error) {
+            alert('Error saving gear');
+            return;
+        }
 
-			//Push the checked checkboxes to an array
-			Array.prototype.push.apply(accessoriesArray, $('#addgear-accessories-container input:checked', view.$element).map(function(){
-				return this.name;
-			}));
+        view.showPanel('#addgear-panel-photos');
 
-			//Create new gear model object from form data
-			newData = {
-				gear_type: $('#addgear-form-type .gearbuttonlist-container input[type="radio"]:checked').val(),
-				subtype: $('#addgear-form-subtype option:selected').val(),
-				brand: $('#addgear-form-brand option:selected').val(),
-				model: $('#addgear-form-model').val(),
-				accessories: accessoriesArray,
-				description: $('#addgear-form-description').val(),
-				currency: App.user.data.currency
-			};
+        view.toggleLoading();
+    };
 
-			//Validate
-			if(!newData.gear_type || newData.gear_type === '') {
-				alert('Please select a type of instrument.');
-				return;
-			}
-			if(newData.subtype === '' || newData.subtype === subtypeDefault) {
-				alert('Please select a subtype for your instrument.');
-				return;
-			}
-			if(newData.brand === '' || newData.brand === brandDefault) {
-				alert('Please select the instrument\'s brand.');
-				return;
-			}
-			if(newData.model === '') {
-				alert('Please type in the model of your instrument.');
-				return;
-			}
+    if (this.newGear.data.id === null) {
+        this.newGear.createGear(App.user, callback);
+    } else {
+        //Case of the user tabbing back
+        this.newGear.save(App.user.data.id, callback);
+    }
 
-			this.toggleLoading();
+    this.populatePriceSuggestions();
+};
 
-			_.extend(this.newGear.data, newData);
+populatePhotos = function() {
+    var images = this.newGear.data.images.split(','),
+        html = '',
+        i;
+    for (i = 0; i < images.length; i++) {
+        //Avoid empty url strings because of trailing ','
+        if (images[i].length > 0) {
+            html += '<li><img src="' + images[i] + '" alt="Gear thumb"></li>';
+        }
+    }
+    $('#dashboard-addgearphotos-form .thumb-list-container ul', this.$element).append(html);
+};
 
-			callback = function(error) {
-				if(error) {
-					alert('Error saving gear');
-					return;
-				}
+handleImageUpload = function(event) {
+    var view = event.data,
+        $file = $(this);
 
-				view.showPanel('#addgear-panel-photos');
+    view.toggleLoading();
 
-				view.toggleLoading();
-			};
-
-			if(this.newGear.data.id === null) {
-				this.newGear.createGear(App.user, callback);
-			}
-			else {
-				//Case of the user tabbing back
-				this.newGear.save(App.user.data.id, callback);
-			}
-
-			this.populatePriceSuggestions();
-		};
-
-		populatePhotos = function() {
-			var images = this.newGear.data.images.split(','),
-				html = '',
-				i;
-			for(i = 0; i < images.length; i++) {
-				//Avoid empty url strings because of trailing ','
-				if(images[i].length > 0) {
-					html += '<li><img src="' + images[i] + '" alt="Gear thumb"></li>';
-				}
-			}
-			$('#dashboard-addgearphotos-form .thumb-list-container ul', this.$element).append(html);
-		};
-
-		handleImageUpload = function(event) {
-			var view = event.data,
-				$file = $(this);
-
+    view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
+        var $thumbList, html;
+        if (error) {
+            alert('Error uploading file.');
+            console.log(error);
             view.toggleLoading();
+            return;
+        }
 
-            view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
-				var $thumbList, html;
-				if(error) {
-					alert('Error uploading file.');
-					console.log(error);
-					view.toggleLoading();
-					return;
-				}
+        $thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
+        html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
+        $thumbList.append(html);
 
-				$thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
-				html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
-				$thumbList.append(html);
+        view.toggleLoading();
+    });
+};
 
+populateCountries = function($select) {
+    var html = $('option', $select).first()[0].outerHTML,
+        countriesArray, i;
+    countriesArray = Localization.getCountries();
+    for (i = 0; i < countriesArray.length; i++) {
+        html += '<option value="' + countriesArray[i].code + '">' + countriesArray[i].name.replace(/\b./g, function(m) {
+            return m.toUpperCase();
+        }) + '</option>';
+    }
+
+    $select.html(html);
+};
+
+handlePriceChange = function() {
+    var $this = $(this),
+        price;
+    price = parseInt($this.val(), 10);
+    if (isNaN(price)) {
+        price = '';
+    }
+    $this.val(price);
+};
+
+handleDeliveryCheckbox = function(event) {
+    var view = event.data;
+    if (this.checked === true) {
+        view.hasDelivery = true;
+        $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled');
+    } else {
+        view.hasDelivery = false;
+        $(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
+    }
+};
+
+savePriceLocation = function() {
+    var view = this,
+        isLocationSame, addressOneliner, newGearData, saveCall,
+        currentAddress, currentPostalCode, currentCity, currentRegion, currentCountry, didLocationChange;
+
+    if (view.isLoading === true) {
+        return;
+    }
+
+    currentAddress = this.newGear.address;
+    currentPostalCode = this.newGear.postal_code;
+    currentCity = this.newGear.city;
+    currentRegion = this.newGear.region;
+    currentCountry = this.newGear.country;
+    didLocationChange = false;
+
+    _.extend(this.newGear.data, {
+        price_a: $('#dashboard-addgearprice-form #price_a', this.$element).val(),
+        price_b: $('#dashboard-addgearprice-form #price_b', this.$element).val(),
+        price_c: $('#dashboard-addgearprice-form #price_c', this.$element).val(),
+        currency: App.user.data.currency,
+        address: $('#dashboard-addgearprice-form #dashboard-addgearprice-address', this.$element).val(),
+        postal_code: $('#dashboard-addgearprice-form #dashboard-addgearprice-postalcode', this.$element).val(),
+        city: $('#dashboard-addgearprice-form #dashboard-addgearprice-city', this.$element).val(),
+        region: $('#dashboard-addgearprice-form #dashboard-addgearprice-region', this.$element).val(),
+        country: $('#dashboard-addgearprice-form #dashboard-addgearprice-country option:selected').val()
+    });
+
+    if (this.hasDelivery === true) {
+        this.newGear.data.delivery_price = $('#dashboard-addgearprice-form input[name="delivery_price"]', this.$element).val();
+        this.newGear.data.delivery_distance = $('#dashboard-addgearprice-form input[name="delivery_distance"]', this.$element).val();
+    }
+
+    newGearData = this.newGear.data;
+
+    //Validation
+    if (newGearData.price_a === '') {
+        alert('Price is missing.');
+        return;
+    }
+    if (newGearData.price_a % 1 !== 0) {
+        alert('Hourly price is invalid.');
+        return;
+    }
+    if (newGearData.price_b === '') {
+        alert('Price is missing.');
+        return;
+    }
+    if (newGearData.price_b % 1 !== 0) {
+        alert('Daily is invalid.');
+        return;
+    }
+    if (newGearData.price_c === '') {
+        alert('Price is missing.');
+        return;
+    }
+    if (newGearData.price_c % 1 !== 0) {
+        alert('Weekly is invalid.');
+        return;
+    }
+    if (this.hasDelivery === true && newGearData.delivery_price === '') {
+        alert('Delivery price is missing.');
+        return;
+    }
+    if (this.hasDelivery === true && newGearData.delivery_distance === '') {
+        alert('Delivery distance is missing.');
+        return;
+    }
+    if (newGearData.address === '') {
+        alert('Address is missing');
+        return;
+    }
+    if (newGearData.postal_code === '') {
+        alert('Postal code is missing.');
+        return;
+    }
+    if (newGearData.city === '') {
+        alert('City is missing.');
+        return;
+    }
+    if (newGearData.country === '' || newGearData.country === countryDefault) {
+        alert('Country is missing.');
+        return;
+    }
+
+    isLocationSame = (currentAddress === newGearData.address &&
+        currentPostalCode === newGearData.postal_code &&
+        currentCity === newGearData.city &&
+        currentRegion === newGearData.region &&
+        currentCountry === newGearData.country);
+
+    view.toggleLoading();
+
+    saveCall = function() {
+        view.newGear.save(App.user.data.id, function(error) {
+            view.toggleLoading();
+            if (error) {
+                alert('Error saving data');
+                return;
+            }
+            view.showPanel('#addgear-panel-availability');
+            if (App.user.isSubMerchant() === false) {
+                view.renderSubmerchantForm();
+            } else {
+                view.renderAvailability();
+            }
+        });
+    };
+
+    if (isLocationSame === false) {
+        addressOneliner = newGearData.address + ', ' + newGearData.postal_code + ' ' + newGearData.city + ', ' + newGearData.country;
+        geocoder.geocode({
+            'address': addressOneliner
+        }, function(results, status) {
+            if (status === GoogleMaps.GeocoderStatus.OK) {
+                view.newGear.data.longitude = results[0].geometry.location.lng();
+                view.newGear.data.latitude = results[0].geometry.location.lat();
+                saveCall();
+            } else {
+                console.log('Error geocoding: ' + status);
+                alert('Address error');
                 view.toggleLoading();
+            }
+        });
+    } else {
+        saveCall();
+    }
+};
+
+renderAvailability = function() {
+    var view = this,
+        $calendarContainer, calendarVC, calendarVT;
+
+    $calendarContainer = $('#addgear-availability-calendar', this.$element);
+    $calendarContainer.removeClass('hidden');
+
+    $('#addgear-darkgray-left', this.$element).hide();
+    $calendarContainer.removeClass('col-sm-9');
+    $calendarContainer.addClass('col-sm-12');
+
+    calendarVC = require('./availabilitycalendar.js');
+    calendarVT = require('../../templates/availabilitycalendar.html');
+
+    view.calendarVC = new calendarVC.constructor({
+        name: 'availabilitycalendar',
+        $element: $calendarContainer,
+        template: calendarVT,
+        passedData: {
+            gear: view.newGear
+        }
+    });
+    view.calendarVC.initialize();
+    view.newGear.getAvailability(App.user.data.id, function(error, result) {
+        var selections = {},
+            availabilityArray, i, startMoment, endMoment;
+
+        if (error) {
+            console.log('Error retrieving van availability: ' + error);
+            return;
+        }
+
+        availabilityArray = result.availabilityArray;
+        for (i = 0; i < availabilityArray.length; i++) {
+            startMoment = new Moment.tz(availabilityArray[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+            endMoment = new Moment.tz(availabilityArray[i].end, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
+            if (Array.isArray(selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
+                selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
+            }
+            selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
+                startMoment: startMoment,
+                endMoment: endMoment
             });
-		};
+        }
+        view.calendarVC.setAlwaysState(result.alwaysFlag);
+        view.calendarVC.setSelections(selections);
+        view.calendarVC.render();
+    });
+};
 
-		populateCountries = function($select) {
-            var html = $('option', $select).first()[0].outerHTML,
-            	countriesArray, i;
-			countriesArray = Localization.getCountries();
-			for(i = 0; i < countriesArray.length; i++) {
-				html += '<option value="' + countriesArray[i].code + '">' + countriesArray[i].name.replace(/\b./g, function(m){ return m.toUpperCase(); }) + '</option>';
-			}
+renderSubmerchantForm = function() {
+    var $submerchantFormContainer = $('#addgear-availability-calendar', this.$element),
+        view = this,
+        submerchantFormVC, submerchantFormVT;
 
-			$select.html(html);
-		};
+    submerchantFormVC = require('./submerchantregistration.js');
+    submerchantFormVT = require('../../templates/submerchantregistration.html');
 
-		handlePriceChange = function() {
-			var $this = $(this),
-				price;
-			price = parseInt($this.val(), 10);
-			if(isNaN(price)) {
-				price = '';
-			}
-			$this.val(price);
-		};
+    view.submerchantFormVC = new submerchantFormVC.constructor({
+        name: 'submerchantform',
+        $element: $submerchantFormContainer,
+        template: submerchantFormVT
+    });
+    view.submerchantFormVC.initialize();
+    view.submerchantFormVC.render();
+};
 
-		handleDeliveryCheckbox = function(event) {
-			var view = event.data;
-            if(this.checked === true) {
-            	view.hasDelivery = true;
-            	$(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled');
+saveAvailability = function() {
+    var view = this,
+        availabilityArray = [],
+        selections, alwaysFlag, month, monthSelections, selection, j;
+
+    if (view.isLoading === true) {
+        return;
+    }
+
+    view.toggleLoading();
+
+    if (view.calendarVC !== null) {
+        selections = view.calendarVC.getSelections();
+        alwaysFlag = view.calendarVC.getAlwaysFlag();
+    } else {
+        //For some reason the availability calendar did not load, so we set to never available as default.
+        selections = {};
+        alwaysFlag = 0;
+    }
+
+    for (month in selections) {
+        monthSelections = selections[month];
+        for (j = 0; j < monthSelections.length; j++) {
+            selection = monthSelections[j];
+            availabilityArray.push({
+                start_time: selection.startMoment.format('YYYY-MM-DD') + ' 00:00:00',
+                end_time: selection.endMoment.format('YYYY-MM-DD') + ' 23:59:59'
+            });
+        }
+    }
+
+    view.newGear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
+        if (error) {
+            alert('Error saving gear availability.');
+            console.log(error);
+            return;
+        }
+        view.toggleLoading();
+        $('.footer', view.$element).addClass('hidden');
+        view.showPanel('#addgear-panel-final');
+        view.setupEvent('click', '.profile-btn', view, view.handleViewGearProfile);
+        view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreGear);
+    });
+};
+
+handleCancel = function() {
+    App.router.closeModalView();
+};
+
+handleNext = function(event) {
+    var view = event.data,
+        currentTabID;
+
+    currentTabID = view.getTabID();
+
+    switch (currentTabID) {
+        case 'addgear-panel-type':
+            view.saveInstrument();
+            break;
+        case 'addgear-panel-photos':
+            if (view.isLoading === false) {
+                view.showPanel('#addgear-panel-pricelocation');
             }
-            else {
-            	view.hasDelivery = false;
-            	$(this).closest('#addDeliveryPriceContainer').find('fieldset').attr('disabled', true);
+            break;
+        case 'addgear-panel-pricelocation':
+            view.savePriceLocation();
+            break;
+        case 'addgear-panel-availability':
+            if (view.submerchantFormVC !== null) {
+                view.toggleLoading();
+                view.submerchantFormVC.submitForm(function(error) {
+                    view.toggleLoading();
+                    if (error) {
+                        console.log(error);
+                        return;
+                    }
+                    view.submerchantFormVC.close();
+                    view.submerchantFormVC = null;
+                    view.renderAvailability();
+                });
+            } else {
+                view.saveAvailability();
             }
-        };
+            break;
+        default:
+            console.log('Something went wrong.');
+    }
+};
 
-		savePriceLocation = function() {
-			var view = this,
-                isLocationSame, addressOneliner, newGearData, saveCall,
-                currentAddress, currentPostalCode, currentCity, currentRegion, currentCountry, didLocationChange;
+handleViewGearProfile = function(event) {
+    var view = event.data;
+    App.router.closeModalView();
+    App.router.navigateTo('gearprofile/' + view.newGear.data.id);
+};
 
-            if(view.isLoading === true) {
-            	return;
-            }
+handleAddMoreGear = function() {
+    App.router.closeModalView();
+    App.router.openModalView('addgear');
+};
 
-            currentAddress = this.newGear.address;
-			currentPostalCode = this.newGear.postal_code;
-			currentCity = this.newGear.city;
-			currentRegion = this.newGear.region;
-			currentCountry = this.newGear.country;
-			didLocationChange = false;
+showPanel = function(panelID) {
+    $('.addgear-panel', this.$element).each(function() {
+        var $this = $(this);
+        if ($this.hasClass('hidden') === false) {
+            $this.addClass('hidden');
+        }
+    });
+    $(panelID, this.$element).removeClass('hidden');
+};
 
-			_.extend(this.newGear.data, {
-				price_a: $('#dashboard-addgearprice-form #price_a', this.$element).val(),
-				price_b: $('#dashboard-addgearprice-form #price_b', this.$element).val(),
-				price_c: $('#dashboard-addgearprice-form #price_c', this.$element).val(),
-				currency: App.user.data.currency,
-                address: $('#dashboard-addgearprice-form #dashboard-addgearprice-address', this.$element).val(),
-				postal_code: $('#dashboard-addgearprice-form #dashboard-addgearprice-postalcode', this.$element).val(),
-				city: $('#dashboard-addgearprice-form #dashboard-addgearprice-city', this.$element).val(),
-				region: $('#dashboard-addgearprice-form #dashboard-addgearprice-region', this.$element).val(),
-				country: $('#dashboard-addgearprice-form #dashboard-addgearprice-country option:selected').val()
-			});
+module.exports = ViewController.inherit({
+    didInitialize: didInitialize,
+    didRender: didRender,
 
-			if(this.hasDelivery === true) {
-				this.newGear.data.delivery_price = $('#dashboard-addgearprice-form input[name="delivery_price"]', this.$element).val();
-				this.newGear.data.delivery_distance = $('#dashboard-addgearprice-form input[name="delivery_distance"]', this.$element).val();
-			}
+    getTabID: getTabID,
+    toggleLoading: toggleLoading,
 
-			newGearData = this.newGear.data;
+    addGearIcons: addGearIcons,
+    renderAccessories: renderAccessories,
+    prepopulateInstrument: prepopulateInstrument,
+    populateSubtypeSelect: populateSubtypeSelect,
+    populateBrandSelect: populateBrandSelect,
+    handleGearRadio: handleGearRadio,
+    handleSelectSubtype: handleSelectSubtype,
+    handleSelectBrand: handleSelectBrand,
+    saveInstrument: saveInstrument,
 
-			//Validation
-			if(newGearData.price_a === '') {
-				alert('Price is missing.');
-				return;
-			}
-			if(newGearData.price_a % 1 !==0) {
-				alert('Hourly price is invalid.');
-				return;
-			}
-			if(newGearData.price_b === '') {
-				alert('Price is missing.');
-				return;
-			}
-			if(newGearData.price_b % 1 !==0) {
-				alert('Daily is invalid.');
-				return;
-			}
-			if(newGearData.price_c === '') {
-				alert('Price is missing.');
-				return;
-			}
-			if(newGearData.price_c % 1 !==0) {
-				alert('Weekly is invalid.');
-				return;
-			}
-			if(this.hasDelivery === true && newGearData.delivery_price === '') {
-				alert('Delivery price is missing.');
-				return;
-			}
-			if(this.hasDelivery === true && newGearData.delivery_distance === '') {
-				alert('Delivery distance is missing.');
-				return;
-			}
-			if(newGearData.address === '') {
-				alert('Address is missing');
-				return;
-			}
-			if(newGearData.postal_code === '') {
-				alert('Postal code is missing.');
-				return;
-			}
-			if(newGearData.city === '') {
-				alert('City is missing.');
-				return;
-			}
-			if(newGearData.country === '' || newGearData.country === countryDefault) {
-				alert('Country is missing.');
-				return;
-			}
+    populatePhotos: populatePhotos,
+    handleImageUpload: handleImageUpload,
 
-			isLocationSame = (currentAddress === newGearData.address &&
-				currentPostalCode === newGearData.postal_code &&
-				currentCity === newGearData.city &&
-				currentRegion === newGearData.region &&
-				currentCountry === newGearData.country);
+    populatePriceSuggestions: populatePriceSuggestions,
 
-			view.toggleLoading();
+    populateCountries: populateCountries,
+    handlePriceChange: handlePriceChange,
+    handleDeliveryCheckbox: handleDeliveryCheckbox,
+    savePriceLocation: savePriceLocation,
 
-			saveCall = function() {
-				view.newGear.save(App.user.data.id, function(error) {
-					view.toggleLoading();
-					if(error) {
-						alert('Error saving data');
-						return;
-					}
-					view.showPanel('#addgear-panel-availability');
-					if(App.user.isSubMerchant() === false) {
-						view.renderSubmerchantForm();
-					}
-					else {
-						view.renderAvailability();
-					}
-				});
-			};
+    renderAvailability: renderAvailability,
+    renderSubmerchantForm: renderSubmerchantForm,
+    saveAvailability: saveAvailability,
 
-			if(isLocationSame === false) {
-				addressOneliner = newGearData.address + ', ' + newGearData.postal_code + ' ' + newGearData.city + ', ' + newGearData.country;
-				geocoder.geocode({'address': addressOneliner}, function(results, status) {
-					if(status === GoogleMaps.GeocoderStatus.OK) {
-						view.newGear.data.longitude = results[0].geometry.location.lng();
-						view.newGear.data.latitude = results[0].geometry.location.lat();
-						saveCall();
-					}
-					else {
-						console.log('Error geocoding: ' + status);
-                        alert('Address error');
-                        view.toggleLoading();
-					}
-				});
-			}
-			else {
-				saveCall();
-			}
-		};
+    handleCancel: handleCancel,
+    handleNext: handleNext,
+    handleViewGearProfile: handleViewGearProfile,
+    handleAddMoreGear: handleAddMoreGear,
 
-		renderAvailability = function() {
-			var view = this,
-				$calendarContainer;
-			$calendarContainer = $('#addgear-availability-calendar', this.$element);
-			$calendarContainer.removeClass('hidden');
-			
-			$("#addgear-darkgray-left", this.$element).hide();
-			$calendarContainer.removeClass('col-sm-9');
-			$calendarContainer.addClass('col-sm-12');	
-			
-			require(['viewcontrollers/availabilitycalendar', 'text!../templates/availabilitycalendar.html'], function(calendarVC, calendarVT) {
-				view.calendarVC = new calendarVC.constructor({name: 'availabilitycalendar', $element: $calendarContainer, template: calendarVT, passedData: view.newGear});
-				view.calendarVC.initialize();
-				view.newGear.getAvailability(App.user.data.id, function(error, result) {
-                	var selections = {},
-                    	availabilityArray, i, startMoment, endMoment;
-
-                	if(error) {
-                		console.log('Error retrieving van availability: ' + error);
-                    	return;
-                	}
-
-                	availabilityArray = result.availabilityArray;
-                	for(i = 0; i < availabilityArray.length; i++) {
-                    	startMoment = new Moment.tz(availabilityArray[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
-                    	endMoment = new Moment.tz(availabilityArray[i].end, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
-                    	if(Array.isArray(selections[startMoment.year() + '-' + (startMoment.month() + 1)]) === false) {
-                        	selections[startMoment.year() + '-' + (startMoment.month() + 1)] = [];
-                    	}
-                    	selections[startMoment.year() + '-' + (startMoment.month() + 1)].push({
-                        	startMoment: startMoment,
-                        	endMoment: endMoment
-                    	});
-                	}
-                	view.calendarVC.setAlwaysState(result.alwaysFlag);
-                	view.calendarVC.setSelections(selections);
-					view.calendarVC.render();
-				});
-			});
-		};
-
-		renderSubmerchantForm = function() {
-			var $submerchantFormContainer = $('#addgear-availability-calendar', this.$element),
-				view = this;
-
-			require(['viewcontrollers/submerchantregistration', 'text!../templates/submerchantregistration.html'], function(submerchantFormVC, submerchantFormVT) {
-				view.submerchantFormVC = new submerchantFormVC.constructor({name: 'submerchantform', $element: $submerchantFormContainer, template: submerchantFormVT});
-				view.submerchantFormVC.initialize();
-				view.submerchantFormVC.render();
-			});
-		};
-		
-		saveAvailability = function() {
-			var view = this,
-				availabilityArray = [],
-				selections, alwaysFlag, month, monthSelections, selection, j;
-
-			if(view.isLoading === true) {
-				return;
-			}
-
-			view.toggleLoading();
-
-			if(view.calendarVC !== null) {
-				selections = view.calendarVC.getSelections();
-				alwaysFlag = view.calendarVC.getAlwaysFlag();
-			}
-			else {
-				//For some reason the availability calendar did not load, so we set to never available as default.
-				selections = {};
-				alwaysFlag = 0;
-			}
-
-			for(month in selections) {
-				monthSelections = selections[month];
-				for(j = 0; j < monthSelections.length; j++) {
-					selection = monthSelections[j];
-					availabilityArray.push({
-						start_time: selection.startMoment.format('YYYY-MM-DD') + ' 00:00:00',
-						end_time: selection.endMoment.format('YYYY-MM-DD') + ' 23:59:59'
-					});
-				}
-			}
-
-      		view.newGear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
-      			if(error) {
-      				alert('Error saving gear availability.');
-      				console.log(error);
-      				return;
-      			}
-      			view.toggleLoading();
-      			$('.footer', view.$element).addClass('hidden');
-      			view.showPanel('#addgear-panel-final');
-      			view.setupEvent('click', '.profile-btn', view, view.handleViewGearProfile);
-      			view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreGear);
-      		});
-        };
-
-        handleCancel = function() {
-        	App.router.closeModalView();
-        };
-
-		handleNext = function(event) {
-			var view = event.data,
-				currentTabID;
-
-			currentTabID = view.getTabID();
-
-			switch(currentTabID) {
-				case 'addgear-panel-type':
-					view.saveInstrument();
-					break;
-				case 'addgear-panel-photos':
-					if(view.isLoading === false) {
-						view.showPanel('#addgear-panel-pricelocation');
-					}
-					break;
-				case 'addgear-panel-pricelocation':
-					view.savePriceLocation();
-					break;
-				case 'addgear-panel-availability':
-					if(view.submerchantFormVC !== null) {
-							view.toggleLoading();
-							view.submerchantFormVC.submitForm(function(error) {
-								view.toggleLoading();
-								if(error) {
-									console.log(error);
-									return;
-								}
-								view.submerchantFormVC.close();
-								view.submerchantFormVC = null;
-								view.renderAvailability();
-							});
-					}
-					else {
-						view.saveAvailability();
-					}
-					break;
-				default:
-					console.log('Something went wrong.');
-			}
-		};
-
-		handleViewGearProfile = function(event) {
-			var view = event.data;
-			App.router.closeModalView();
-			App.router.navigateTo('gearprofile/' + view.newGear.data.id);
-		};
-
-		handleAddMoreGear = function() {
-			App.router.closeModalView();
-			App.router.openModalView('addgear');
-		};
-
-		showPanel = function(panelID) {
-			$('.addgear-panel', this.$element).each(function() {
-				var $this = $(this);
-				if($this.hasClass('hidden') === false) {
-					$this.addClass('hidden');
-				}
-			});
-			$(panelID, this.$element).removeClass('hidden');
-		};
-
-		return ViewController.inherit({
-			didInitialize: didInitialize,
-			didRender: didRender,
-
-			getTabID: getTabID,
-			toggleLoading: toggleLoading,
-
-			addGearIcons: addGearIcons,
-			renderAccessories: renderAccessories,
-			prepopulateInstrument: prepopulateInstrument,
-			populateSubtypeSelect: populateSubtypeSelect,
-			populateBrandSelect: populateBrandSelect,
-			handleGearRadio: handleGearRadio,
-			handleSelectSubtype: handleSelectSubtype,
-			handleSelectBrand: handleSelectBrand,
-			saveInstrument: saveInstrument,
-
-			populatePhotos: populatePhotos,
-			handleImageUpload: handleImageUpload,
-
-			populatePriceSuggestions:populatePriceSuggestions,
-
-			populateCountries: populateCountries,
-			handlePriceChange: handlePriceChange,
-			handleDeliveryCheckbox: handleDeliveryCheckbox,
-			savePriceLocation: savePriceLocation,
-
-			renderAvailability: renderAvailability,
-			renderSubmerchantForm: renderSubmerchantForm,
-			saveAvailability: saveAvailability,
-			
-			handleCancel: handleCancel,
-			handleNext: handleNext,
-			handleViewGearProfile: handleViewGearProfile,
-			handleAddMoreGear: handleAddMoreGear,
-
-			showPanel: showPanel
-		});
-	}
-);
+    showPanel: showPanel
+});

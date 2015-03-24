@@ -3,62 +3,64 @@
  * @author: Chris Hjorth
  */
 
+/*jslint node: true */
 'use strict';
 
-define([
-	'jquery', 'popupcontroller', 'text!popups/selecttime.html'
-], function($, PopupController, SelectTimePopupTemplate) {
-	var SelectTimePopup,
+var $ = require('jquery'),
 
-		wasClosed,
-		didRender,
-		getSelectedTime,
-		getWasClosed,
+	PopupController = require('../popupcontroller'),
+	SelectTimePopupTemplate = require('./selecttime.html'),
 
-		handleCancel,
-		handleConfirm;
+	SelectTimePopup,
 
-	didRender = function() {
-		wasClosed = false;
-		this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
-		this.setupEvent('click', '.confirm-btn', this, this.handleConfirm);
-	};
+    wasClosed,
+    didRender,
+    getSelectedTime,
+    getWasClosed,
 
-	getSelectedTime = function() {
-		return {
-			hours: parseInt($('#selecttimepopup-hours', this.$element).val(), 10),
-			minutes: parseInt($('#selecttimepopup-minutes', this.$element).val(), 10)
-		};
-	};
-	
-	getWasClosed = function(){
-		return wasClosed;
-	};
+    handleCancel,
+    handleConfirm;
 
-	handleConfirm = function(event) {
-		var view = event.data;
-		wasClosed = false;
-		view.hide();
-	};
+didRender = function() {
+    wasClosed = false;
+    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+    this.setupEvent('click', '.confirm-btn', this, this.handleConfirm);
+};
 
-	handleCancel = function(event) {
-		var view = event.data;
-		wasClosed = true;
-		$('#selecttimepopup-hours', this.$element).val("12");
-		$('#selecttimepopup-minutes', this.$element).val("00");
-		view.hide();
-	};
+getSelectedTime = function() {
+    return {
+        hours: parseInt($('#selecttimepopup-hours', this.$element).val(), 10),
+        minutes: parseInt($('#selecttimepopup-minutes', this.$element).val(), 10)
+    };
+};
 
-	SelectTimePopup = PopupController.inherit({
-		template: SelectTimePopupTemplate,
+getWasClosed = function() {
+    return wasClosed;
+};
 
-		didRender: didRender,
-		getSelectedTime: getSelectedTime,
-		getWasClosed: getWasClosed,
-		handleConfirm: handleConfirm,
-		handleCancel: handleCancel
-	});
+handleConfirm = function(event) {
+    var view = event.data;
+    wasClosed = false;
+    view.hide();
+};
 
+handleCancel = function(event) {
+    var view = event.data;
+    wasClosed = true;
+    $('#selecttimepopup-hours', this.$element).val('12');
+    $('#selecttimepopup-minutes', this.$element).val('00');
+    view.hide();
+};
 
-	return SelectTimePopup;
+SelectTimePopup = PopupController.inherit({
+    template: SelectTimePopupTemplate,
+
+    didRender: didRender,
+    getSelectedTime: getSelectedTime,
+    getWasClosed: getWasClosed,
+    handleConfirm: handleConfirm,
+    handleCancel: handleCancel
 });
+
+
+module.exports = SelectTimePopup;
