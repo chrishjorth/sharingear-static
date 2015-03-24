@@ -6,7 +6,8 @@
 /*jslint node: true */
 'use strict';
 
-var $ = require('jquery'),
+var _ = require('underscore'),
+    $ = require('jquery'),
     FB = require('../libraries/mscl-facebook.js'),
     GoogleMaps = require('googlemaps'),
 
@@ -44,6 +45,9 @@ didInitialize = function() {
         model: '',
         description: '',
         accessories: null,
+        displayed_price_a: '',
+        displayed_price_b: '',
+        displayed_price_c: '',
         currency: App.user.data.currency,
         name: '',
         bio: '',
@@ -61,6 +65,7 @@ didInitialize = function() {
     if (view.passedData) {
         //No need to fetch van from backend
         view.van = this.passedData;
+        view.renderPricing();
     } else {
         if (view.van === null) {
             //In this case the view is loaded the first time, and not returning from a modal fx
@@ -87,7 +92,7 @@ didInitialize = function() {
                 }
                 vanData = view.van.data;
                 ownerData = view.owner.data;
-                view.templateParameters = {
+                _.extend(view.templateParameters, {
                     van_type: vanData.van_type,
                     model: vanData.model,
                     description: vanData.description,
@@ -97,8 +102,8 @@ didInitialize = function() {
                     bio: ownerData.bio,
                     location: vanData.city + ', ' + vanData.country,
                     owner_id: vanData.owner_id
-                };
-                view.render();
+                });
+                view.renderPricing();
             });
 
             view.van.getAvailability(function(error, result) {
@@ -121,7 +126,6 @@ didRender = function() {
     }
 
     this.renderVanPictures();
-    this.renderPricing();
     this.renderOwnerPicture();
     this.renderAccessories();
     this.renderMap();
@@ -219,9 +223,10 @@ renderPricing = function() {
             console.log('Could not convert prices: ' + error);
             return;
         }
-        $('#vanprofile-price_a', view.$element).html(Math.ceil(convertedPrices[0]));
-        $('#vanprofile-price_b', view.$element).html(Math.ceil(convertedPrices[1]));
-        $('#vanprofile-price_c', view.$element).html(Math.ceil(convertedPrices[2]));
+        view.templateParameters.displayed_price_a = Math.ceil(convertedPrices[0]);
+        view.templateParameters.displayed_price_b = Math.ceil(convertedPrices[1]);
+        view.templateParameters.displayed_price_c = Math.ceil(convertedPrices[2]);
+        view.render();
     });
 };
 

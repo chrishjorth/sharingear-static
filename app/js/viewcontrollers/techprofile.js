@@ -7,19 +7,20 @@
 'use strict';
 
 
-var $ = require('jquery'),
-	GoogleMaps = require('googlemaps'),
-	FB = require('../libraries/mscl-facebook.js'),
-	
-	Config = require('../config.js'),
-	Utilities = require('../utilities.js'),
-	App = require('../app.js'),
-	ViewController = require('../viewcontroller.js'),
-	Localization = require('../models/localization.js'),
-	User = require('../models/user.js'),
-	TechProfile = require('../models/techprofile.js'),
+var _ = require('underscore'),
+    $ = require('jquery'),
+    GoogleMaps = require('googlemaps'),
+    FB = require('../libraries/mscl-facebook.js'),
 
-	paymentSuccessModalOpen = false,
+    Config = require('../config.js'),
+    Utilities = require('../utilities.js'),
+    App = require('../app.js'),
+    ViewController = require('../viewcontroller.js'),
+    Localization = require('../models/localization.js'),
+    User = require('../models/user.js'),
+    TechProfile = require('../models/techprofile.js'),
+
+    paymentSuccessModalOpen = false,
 
     didInitialize,
     didRender,
@@ -41,6 +42,9 @@ didInitialize = function() {
     view.templateParameters = {
         roadie_type: '',
         icon: '',
+        displayed_price_a: '',
+        displayed_price_b: '',
+        displayed_price_c: '',
         currency: App.user.data.currency,
         experience: '',
         about: '',
@@ -65,6 +69,7 @@ didInitialize = function() {
     if (view.passedData) {
         //No need to fetch tech profile from backend
         view.techProfile = this.passedData;
+        view.renderPricing();
     } else {
         if (view.techProfile === null) {
             //In this case the view is loaded the first time, and not returning from a modal fx
@@ -91,7 +96,7 @@ didInitialize = function() {
                 }
                 techProfileData = view.techProfile.data;
                 ownerData = view.owner.data;
-                view.templateParameters = {
+                _.extend(view.templateParameters, {
                     roadie_type: techProfileData.roadie_type,
                     icon: techProfileData.roadie_type.replace(/\s/g, '').toLowerCase(),
                     experience: techProfileData.experience,
@@ -106,8 +111,8 @@ didInitialize = function() {
                     name: ownerData.name + ' ' + ownerData.surname.substring(0, 1) + '.',
                     location: techProfileData.city + ', ' + techProfileData.country,
                     owner_id: techProfileData.owner_id
-                };
-                view.render();
+                });
+                view.renderPricing();
             });
 
             view.techProfile.getAvailability(function(error, result) {
@@ -129,7 +134,6 @@ didRender = function() {
         App.header.setTitle(this.techProfile.data.roadie_type);
     }
 
-    this.renderPricing();
     this.renderOwnerPicture();
     this.renderMap();
 
@@ -189,9 +193,10 @@ renderPricing = function() {
             console.log('Could not convert prices: ' + error);
             return;
         }
-        $('#techprofile-price_a', view.$element).html(Math.ceil(convertedPrices[0]));
-        $('#techprofile-price_b', view.$element).html(Math.ceil(convertedPrices[1]));
-        $('#techprofile-price_c', view.$element).html(Math.ceil(convertedPrices[2]));
+        view.templateParameters.displayed_price_a = Math.ceil(convertedPrices[0]);
+        view.templateParameters.displayed_price_b = Math.ceil(convertedPrices[1]);
+        view.templateParameters.displayed_price_c = Math.ceil(convertedPrices[2]);
+        view.render();
     });
 };
 

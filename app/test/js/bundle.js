@@ -54,7 +54,7 @@
 	
 	var _ = __webpack_require__(15);
 	
-	__webpack_require__(18);
+	__webpack_require__(16);
 	
 	__webpack_require__(1);
 	__webpack_require__(3);
@@ -86,10 +86,10 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(2)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -199,10 +199,10 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(4)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -255,10 +255,10 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(6)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -431,10 +431,10 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(8)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -619,10 +619,10 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(10)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -650,7 +650,7 @@
 		_ = __webpack_require__(15),
 		$ = __webpack_require__(31),
 	
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 		expect;
 	
@@ -793,10 +793,10 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(12)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -823,7 +823,7 @@
 	var chai = __webpack_require__(27),
 		$ = __webpack_require__(31),
 	
-		Model = __webpack_require__(24),
+		Model = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		expect;
@@ -904,10 +904,10 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(14)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -2602,30 +2602,6 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
-	
-	__webpack_require__(36);
-	__webpack_require__(28);
-
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
-		delete __webpack_require__.c[module.id];
-		if(typeof window !== "undefined" && window.mochaPhantomJS)
-			mochaPhantomJS.run();
-		else
-			mocha.run();
-	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
 	if (typeof Function.prototype.bind != 'function') {
 	    Function.prototype.bind = function bind(obj) {
 	        var args = Array.prototype.slice.call(arguments, 1),
@@ -2645,6 +2621,30 @@
 	    };
 	}
 
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
+	
+	__webpack_require__(36);
+	__webpack_require__(28);
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
+		delete __webpack_require__.c[module.id];
+		if(typeof window !== "undefined" && window.mochaPhantomJS)
+			mochaPhantomJS.run();
+		else
+			mocha.run();
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
 /* 19 */
@@ -3359,139 +3359,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * General model object with support for jQuery ajax.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(15),
-		$ = __webpack_require__(31),
-	
-		Utilities = __webpack_require__(26),
-	
-		initialize,
-	    get,
-	    post,
-	    put,
-	    del,
-	
-	    constructor, inherit;
-	
-	initialize = function() {
-	    if (this.didInitialize && typeof this.didInitialize == 'function') {
-	        this.didInitialize();
-	    }
-	};
-	
-	get = function(url, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'GET',
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR);
-	            console.log(textStatus);
-	            callback('Error executing GET request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                callback('Error retrieving resource from server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	post = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'POST',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing POST request: ' + errorThrown);
-	
-	        },
-	        success: function(data) {
-	
-	            if (data.error) {
-	                callback('Error sending resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	put = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'PUT',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing PUT request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                console.log(data.error);
-	                callback('Error putting resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	del = function() {
-	
-	};
-	
-	constructor = function(options) {
-	    var defaults, methods;
-	
-	    defaults = {
-	        rootURL: '',
-	        data: null
-	    };
-	
-	    methods = {
-	        initialize: initialize,
-	        get: get,
-	        post: post,
-	        put: put,
-	        del: del
-	    };
-	    _.extend(this, defaults, methods, options);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * General view object with support for jQuery event autounbinding and localization.
 	 * @author: Chris Hjorth
 	 */
@@ -3647,6 +3514,139 @@
 	    _.extend(this, defaults, options);
 	
 	    this.template = _.template(this.template);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General model object with support for jQuery ajax.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
+	
+		Utilities = __webpack_require__(26),
+	
+		initialize,
+	    get,
+	    post,
+	    put,
+	    del,
+	
+	    constructor, inherit;
+	
+	initialize = function() {
+	    if (this.didInitialize && typeof this.didInitialize == 'function') {
+	        this.didInitialize();
+	    }
+	};
+	
+	get = function(url, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'GET',
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            console.log(jqXHR);
+	            console.log(textStatus);
+	            callback('Error executing GET request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                callback('Error retrieving resource from server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	post = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'POST',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing POST request: ' + errorThrown);
+	
+	        },
+	        success: function(data) {
+	
+	            if (data.error) {
+	                callback('Error sending resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	put = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'PUT',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing PUT request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                console.log(data.error);
+	                callback('Error putting resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	del = function() {
+	
+	};
+	
+	constructor = function(options) {
+	    var defaults, methods;
+	
+	    defaults = {
+	        rootURL: '',
+	        data: null
+	    };
+	
+	    methods = {
+	        initialize: initialize,
+	        get: get,
+	        post: post,
+	        put: put,
+	        del: del
+	    };
+	    _.extend(this, defaults, methods, options);
 	};
 	
 	inherit = function(inheritOptions) {
@@ -13207,7 +13207,7 @@
 	var _ = __webpack_require__(15),
 	    FB = __webpack_require__(89),
 	    Localization = __webpack_require__(90),
-	    Model = __webpack_require__(24),
+	    Model = __webpack_require__(25),
 	    Utilities = __webpack_require__(26),
 	
 	    didInitialize,
@@ -13493,7 +13493,7 @@
 	
 	var _ = __webpack_require__(15),
 	
-	    Model = __webpack_require__(24),
+	    Model = __webpack_require__(25),
 	
 	    didInitialize,
 	    getClassification;
@@ -13944,7 +13944,7 @@
 	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	
 	    testimonials,
 	
@@ -14088,11 +14088,11 @@
 	    Moment = __webpack_require__(29),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
-	    Gear = __webpack_require__(152),
+	    Gear = __webpack_require__(153),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -14894,11 +14894,11 @@
 	    Moment = __webpack_require__(29),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
-	    TechProfile = __webpack_require__(153),
+	    TechProfile = __webpack_require__(152),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -15530,11 +15530,11 @@
 	    Moment = __webpack_require__(29),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
-	    Van = __webpack_require__(154),
+	    Van = __webpack_require__(155),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -16241,7 +16241,7 @@
 	var $ = __webpack_require__(31),
 	    Moment = __webpack_require__(29),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
@@ -16756,12 +16756,12 @@
 	    Moment = __webpack_require__(29),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
 	    User = __webpack_require__(38),
-	    Booking = __webpack_require__(155),
+	    Booking = __webpack_require__(154),
 	
 	    didInitialize,
 	    didRender,
@@ -17054,11 +17054,11 @@
 	    Moment = __webpack_require__(29),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
-	    Booking = __webpack_require__(155),
+	    Booking = __webpack_require__(154),
 	
 	    SelectTimePopup = __webpack_require__(156),
 	
@@ -17278,7 +17278,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(25);
+	var ViewController = __webpack_require__(24);
 	
 	module.exports = ViewController.inherit({});
 
@@ -17297,7 +17297,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		
 	    didRender,
 	    loadFooter;
@@ -17346,7 +17346,7 @@
 	    Moment = __webpack_require__(29),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
@@ -17669,7 +17669,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(90),
@@ -17759,7 +17759,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
@@ -17881,7 +17881,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
@@ -18030,7 +18030,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
@@ -18175,7 +18175,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
@@ -18320,7 +18320,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
@@ -18463,7 +18463,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
@@ -18570,7 +18570,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
@@ -18715,7 +18715,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
@@ -18858,7 +18858,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
@@ -18975,7 +18975,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    subViewContainerID,
@@ -19063,7 +19063,7 @@
 	    GoogleMaps = __webpack_require__(19),
 	
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(90),
 	
 	    geocoder,
@@ -19699,7 +19699,7 @@
 	
 	    Config = __webpack_require__(21),
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(90),
 	
 	    geocoder,
@@ -20211,7 +20211,7 @@
 	    Moment = __webpack_require__(29),
 	
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(90),
 	
 	    geocoder,
@@ -20768,7 +20768,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(25);
+	var ViewController = __webpack_require__(24);
 	module.exports = ViewController.inherit();
 
 
@@ -20786,7 +20786,7 @@
 	
 	var Moment = __webpack_require__(29),
 		
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 		Localization = __webpack_require__(90),
 	
@@ -20817,17 +20817,18 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(31),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 		FB = __webpack_require__(89),
 		GoogleMaps = __webpack_require__(19),
 	
 		Config = __webpack_require__(21),
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(90),
-		Gear = __webpack_require__(152),
+		Gear = __webpack_require__(153),
 		User = __webpack_require__(38),
 	
 		paymentSuccessModalOpen = false,
@@ -20857,6 +20858,9 @@
 	        model: '',
 	        description: '',
 	        accessories: null,
+	        displayed_price_a: '',
+	        displayed_price_b: '',
+	        displayed_price_c: '',
 	        currency: App.user.data.currency,
 	        name: '',
 	        bio: '',
@@ -20874,6 +20878,7 @@
 	    if (view.passedData) {
 	        //No need to fetch gear from backend
 	        view.gear = this.passedData;
+	        view.renderPricing();
 	    } else {
 	        if (view.gear === null) {
 	            //In this case the view is loaded the first time, and not returning from a modal fx
@@ -20900,7 +20905,7 @@
 	                }
 	                gearData = view.gear.data;
 	                ownerData = view.owner.data;
-	                view.templateParameters = {
+	                _.extend(view.templateParameters, {
 	                    brand: gearData.brand,
 	                    gear_type: gearData.gear_type,
 	                    subtype: gearData.subtype,
@@ -20912,8 +20917,8 @@
 	                    bio: ownerData.bio,
 	                    location: gearData.city + ', ' + gearData.country,
 	                    owner_id: gearData.owner_id
-	                };
-	                view.render();
+	                });
+	                view.renderPricing();
 	            });
 	
 	            view.gear.getAvailability(App.user.data.id, function(error, result) {
@@ -20936,7 +20941,6 @@
 	    }
 	
 	    this.renderGearPictures();
-	    this.renderPricing();
 	    this.renderOwnerPicture();
 	    this.renderAccessories();
 	    this.renderMap();
@@ -21034,9 +21038,10 @@
 	            console.log('Could not convert prices: ' + error);
 	            return;
 	        }
-	        $('#gearprofile-price_a', view.$element).html(Math.ceil(convertedPrices[0]));
-	        $('#gearprofile-price_b', view.$element).html(Math.ceil(convertedPrices[1]));
-	        $('#gearprofile-price_c', view.$element).html(Math.ceil(convertedPrices[2]));
+	        view.templateParameters.displayed_price_a = Math.ceil(convertedPrices[0]);
+	        view.templateParameters.displayed_price_b = Math.ceil(convertedPrices[1]);
+	        view.templateParameters.displayed_price_c = Math.ceil(convertedPrices[2]);
+	        view.render();
 	    });
 	};
 	
@@ -21198,7 +21203,7 @@
 		Moment = __webpack_require__(29),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(90),
@@ -21608,7 +21613,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    didInitialize,
@@ -21751,7 +21756,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	
 	    didRender,
 	    loadFooter;
@@ -21795,7 +21800,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Utilities = __webpack_require__(26),
 	    App = __webpack_require__(20),
 	
@@ -22020,7 +22025,7 @@
 		Moment = __webpack_require__(29),
 	
 		Config = __webpack_require__(21),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(90),
@@ -22462,8 +22467,8 @@
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(90),
-		ViewController = __webpack_require__(25),
-		Booking = __webpack_require__(155),
+		ViewController = __webpack_require__(24),
+		Booking = __webpack_require__(154),
 	
 		didInitialize,
 	    didRender,
@@ -22600,7 +22605,7 @@
 		Moment = __webpack_require__(29),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 		Localization = __webpack_require__(90),
 	
@@ -23052,7 +23057,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 	    didRender,
 	    loadFooter;
@@ -23101,7 +23106,7 @@
 	
 	    Config = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
@@ -23629,7 +23634,7 @@
 	
 	    Config = __webpack_require__(21),
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(90),
 	    MessagePopup = __webpack_require__(40),
 	
@@ -23997,19 +24002,20 @@
 	'use strict';
 	
 	
-	var $ = __webpack_require__(31),
-		GoogleMaps = __webpack_require__(19),
-		FB = __webpack_require__(89),
-		
-		Config = __webpack_require__(21),
-		Utilities = __webpack_require__(26),
-		App = __webpack_require__(20),
-		ViewController = __webpack_require__(25),
-		Localization = __webpack_require__(90),
-		User = __webpack_require__(38),
-		TechProfile = __webpack_require__(153),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
+	    GoogleMaps = __webpack_require__(19),
+	    FB = __webpack_require__(89),
 	
-		paymentSuccessModalOpen = false,
+	    Config = __webpack_require__(21),
+	    Utilities = __webpack_require__(26),
+	    App = __webpack_require__(20),
+	    ViewController = __webpack_require__(24),
+	    Localization = __webpack_require__(90),
+	    User = __webpack_require__(38),
+	    TechProfile = __webpack_require__(152),
+	
+	    paymentSuccessModalOpen = false,
 	
 	    didInitialize,
 	    didRender,
@@ -24031,6 +24037,9 @@
 	    view.templateParameters = {
 	        roadie_type: '',
 	        icon: '',
+	        displayed_price_a: '',
+	        displayed_price_b: '',
+	        displayed_price_c: '',
 	        currency: App.user.data.currency,
 	        experience: '',
 	        about: '',
@@ -24055,6 +24064,7 @@
 	    if (view.passedData) {
 	        //No need to fetch tech profile from backend
 	        view.techProfile = this.passedData;
+	        view.renderPricing();
 	    } else {
 	        if (view.techProfile === null) {
 	            //In this case the view is loaded the first time, and not returning from a modal fx
@@ -24081,7 +24091,7 @@
 	                }
 	                techProfileData = view.techProfile.data;
 	                ownerData = view.owner.data;
-	                view.templateParameters = {
+	                _.extend(view.templateParameters, {
 	                    roadie_type: techProfileData.roadie_type,
 	                    icon: techProfileData.roadie_type.replace(/\s/g, '').toLowerCase(),
 	                    experience: techProfileData.experience,
@@ -24096,8 +24106,8 @@
 	                    name: ownerData.name + ' ' + ownerData.surname.substring(0, 1) + '.',
 	                    location: techProfileData.city + ', ' + techProfileData.country,
 	                    owner_id: techProfileData.owner_id
-	                };
-	                view.render();
+	                });
+	                view.renderPricing();
 	            });
 	
 	            view.techProfile.getAvailability(function(error, result) {
@@ -24119,7 +24129,6 @@
 	        App.header.setTitle(this.techProfile.data.roadie_type);
 	    }
 	
-	    this.renderPricing();
 	    this.renderOwnerPicture();
 	    this.renderMap();
 	
@@ -24179,9 +24188,10 @@
 	            console.log('Could not convert prices: ' + error);
 	            return;
 	        }
-	        $('#techprofile-price_a', view.$element).html(Math.ceil(convertedPrices[0]));
-	        $('#techprofile-price_b', view.$element).html(Math.ceil(convertedPrices[1]));
-	        $('#techprofile-price_c', view.$element).html(Math.ceil(convertedPrices[2]));
+	        view.templateParameters.displayed_price_a = Math.ceil(convertedPrices[0]);
+	        view.templateParameters.displayed_price_b = Math.ceil(convertedPrices[1]);
+	        view.templateParameters.displayed_price_c = Math.ceil(convertedPrices[2]);
+	        view.render();
 	    });
 	};
 	
@@ -24357,7 +24367,7 @@
 		Moment = __webpack_require__(29),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(90),
@@ -24751,7 +24761,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(25);
+	var ViewController = __webpack_require__(24);
 	
 	module.exports = ViewController;
 
@@ -24772,7 +24782,7 @@
 	    $ = __webpack_require__(31),
 	
 	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	
 	    User = __webpack_require__(38),
 	    GearList = __webpack_require__(157),
@@ -25034,18 +25044,19 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(31),
+	var _ = __webpack_require__(15),
+	    $ = __webpack_require__(31),
 	    FB = __webpack_require__(89),
 	    GoogleMaps = __webpack_require__(19),
 	
 	    Config = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(90),
 	    User = __webpack_require__(38),
-	    Van = __webpack_require__(154),
+	    Van = __webpack_require__(155),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -25072,6 +25083,9 @@
 	        model: '',
 	        description: '',
 	        accessories: null,
+	        displayed_price_a: '',
+	        displayed_price_b: '',
+	        displayed_price_c: '',
 	        currency: App.user.data.currency,
 	        name: '',
 	        bio: '',
@@ -25089,6 +25103,7 @@
 	    if (view.passedData) {
 	        //No need to fetch van from backend
 	        view.van = this.passedData;
+	        view.renderPricing();
 	    } else {
 	        if (view.van === null) {
 	            //In this case the view is loaded the first time, and not returning from a modal fx
@@ -25115,7 +25130,7 @@
 	                }
 	                vanData = view.van.data;
 	                ownerData = view.owner.data;
-	                view.templateParameters = {
+	                _.extend(view.templateParameters, {
 	                    van_type: vanData.van_type,
 	                    model: vanData.model,
 	                    description: vanData.description,
@@ -25125,8 +25140,8 @@
 	                    bio: ownerData.bio,
 	                    location: vanData.city + ', ' + vanData.country,
 	                    owner_id: vanData.owner_id
-	                };
-	                view.render();
+	                });
+	                view.renderPricing();
 	            });
 	
 	            view.van.getAvailability(function(error, result) {
@@ -25149,7 +25164,6 @@
 	    }
 	
 	    this.renderVanPictures();
-	    this.renderPricing();
 	    this.renderOwnerPicture();
 	    this.renderAccessories();
 	    this.renderMap();
@@ -25247,9 +25261,10 @@
 	            console.log('Could not convert prices: ' + error);
 	            return;
 	        }
-	        $('#vanprofile-price_a', view.$element).html(Math.ceil(convertedPrices[0]));
-	        $('#vanprofile-price_b', view.$element).html(Math.ceil(convertedPrices[1]));
-	        $('#vanprofile-price_c', view.$element).html(Math.ceil(convertedPrices[2]));
+	        view.templateParameters.displayed_price_a = Math.ceil(convertedPrices[0]);
+	        view.templateParameters.displayed_price_b = Math.ceil(convertedPrices[1]);
+	        view.templateParameters.displayed_price_c = Math.ceil(convertedPrices[2]);
+	        view.render();
 	    });
 	};
 	
@@ -25410,7 +25425,7 @@
 		Moment = __webpack_require__(29),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(90),
@@ -25907,7 +25922,7 @@
 	
 		/*global define*/
 		if (true) {
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));                 // AMD
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));                 // AMD
 		} else if (typeof exports === 'object') {
 			module.exports = factory(require('moment')); // Node
 		} else {
@@ -26396,7 +26411,7 @@
 	var Moment = __webpack_require__(29),
 	
 	    Config = __webpack_require__(21),
-	    Model = __webpack_require__(24),
+	    Model = __webpack_require__(25),
 	    XChangeRates = __webpack_require__(169),
 	    Localization,
 	
@@ -26597,7 +26612,7 @@
 		$ = __webpack_require__(31),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 		$popupLightbox = $('#popup-lightbox'),
 	    inherit, show, hide, setTitle;
@@ -26825,7 +26840,7 @@
 /* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view gearprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourgear\"></div>{{gear_type}}</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card\">\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset gear\">\n\t\t\t\t\t<div class=\"sg-icon icon-addgear-{{gear_type}} sg-darkgray\"></div>\n\t\t\t\t\t<span class=\"gear-title\">{{brand}} {{subtype}} {{model}}</span>\n\t\t\t\t\t<div class=\"social sg-gray\">\n\t\t\t\t\t\t<div class=\"sharethis\">Share this profile</div>\n\t\t\t\t\t\t<button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-fb-btn\"><i class=\"fa fa-facebook\"></i>\n\t\t\t\t\t\t</button> | <button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-tw-btn\">\n\t\t\t\t\t\t<i class=\"fa fa-twitter\"></i>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"gearprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-book\">BOOK</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-edit\">EDIT</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h3>Description</h3>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t{{description}}\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\n\t\t\t\t\t\t\t<h3>Accessories</h3>\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\n\t\t\t\t\t\t\t{{location}}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\" row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t<div class=\"map\" id=\"gearprofile-map\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view gearprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourgear\"></div>{{gear_type}}</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card\">\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset gear\">\n\t\t\t\t\t<div class=\"sg-icon icon-addgear-{{gear_type}} sg-darkgray\"></div>\n\t\t\t\t\t<span class=\"gear-title\">{{brand}} {{subtype}} {{model}}</span>\n\t\t\t\t\t<div class=\"social sg-gray\">\n\t\t\t\t\t\t<div class=\"sharethis\">Share this profile</div>\n\t\t\t\t\t\t<button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-fb-btn\"><i class=\"fa fa-facebook\"></i>\n\t\t\t\t\t\t</button> | <button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-tw-btn\">\n\t\t\t\t\t\t<i class=\"fa fa-twitter\"></i>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_a}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_b}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_c}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"gearprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-book\">BOOK</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-edit\">EDIT</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h3>Description</h3>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t{{description}}\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\n\t\t\t\t\t\t\t<h3>Accessories</h3>\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\n\t\t\t\t\t\t\t{{location}}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\" row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t<div class=\"map\" id=\"gearprofile-map\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 121 */
@@ -26897,7 +26912,7 @@
 /* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view techprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t<hr>\n\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 map-container\">\n\t\t\t\t\t<div class=\"sg-gray\"><i class=\"fa fa-home\"></i><span class=\"sg-darkergray\"> {{location}}</span></div>\n\t\t\t\t\t<div class=\"map\" id=\"techprofile-map\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-white-bg sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-gray profile-type\">\n\t\t\t\t\t<div class=\"sg-icon icon-dashboard-yourtechprofile\"></div> TECHNICIAN PROFILE\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-7 sg-darkergray title-container\">\n\t\t\t\t\t<div class=\"sg-icon icon-addtechprofile-{{icon}} sg-darkgray\"></div> <div class=\"techprofile-title\">{{roadie_type}}</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-sm-5\">\n\t\t\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"techprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-book\">BOOK</button>\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-edit\">EDIT</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg experience\">\n\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t\t<div class=\"sg-darkergray\">Experience: <span class=\"sg-yellow\">{{experience}}</span></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t<div class=\"social sg-gray text-right\"><div class=\"sharethistech\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 profile-text\">\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">ABOUT</h4>\n\t\t\t\t\t\t\t<p>{{about}}</p>\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">CURRENTLY WORKING FOR</h4>\n\t\t\t\t\t\t\t<p>{{currently}}</p>\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">REFERENCES</h4>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Bands &amp; artists toured with:</h5>\n\t\t\t\t\t\t\t<p>{{tours}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Companies, venues and festivals worked for:</h5>\n\t\t\t\t\t\t\t<p>{{companies}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Years of experience:</h5>\n\t\t\t\t\t\t\t<p>{{xp_years}}</p>\n\t\t\t\t\t\t\t<h5>Genres interested in:</h5>\n\t\t\t\t\t\t\t<p>{{genres}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Bands worked for:</h5>\n\t\t\t\t\t\t\t<p>{{bands}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"row techprofilelistborder\">\n\t\t\t\t\t\t<div class=\"techprofilelistname\">{{name}} is also working as </div>\n\t\t\t\t\t\t<div id=\"techprofilelist\" class=\"techprofilelist\"></div>\n\t\t\t\t\t</div>\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
+	module.exports = "<div class=\"container-fluid view techprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t<hr>\n\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 map-container\">\n\t\t\t\t\t<div class=\"sg-gray\"><i class=\"fa fa-home\"></i><span class=\"sg-darkergray\"> {{location}}</span></div>\n\t\t\t\t\t<div class=\"map\" id=\"techprofile-map\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-white-bg sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-gray profile-type\">\n\t\t\t\t\t<div class=\"sg-icon icon-dashboard-yourtechprofile\"></div> TECHNICIAN PROFILE\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-7 sg-darkergray title-container\">\n\t\t\t\t\t<div class=\"sg-icon icon-addtechprofile-{{icon}} sg-darkgray\"></div> <div class=\"techprofile-title\">{{roadie_type}}</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-sm-5\">\n\t\t\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_a}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_b}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_c}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"techprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-book\">BOOK</button>\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-edit\">EDIT</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg experience\">\n\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t\t<div class=\"sg-darkergray\">Experience: <span class=\"sg-yellow\">{{experience}}</span></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t<div class=\"social sg-gray text-right\"><div class=\"sharethistech\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<div class=\"row sg-card sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 profile-text\">\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">ABOUT</h4>\n\t\t\t\t\t\t\t<p>{{about}}</p>\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">CURRENTLY WORKING FOR</h4>\n\t\t\t\t\t\t\t<p>{{currently}}</p>\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">REFERENCES</h4>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Bands &amp; artists toured with:</h5>\n\t\t\t\t\t\t\t<p>{{tours}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Companies, venues and festivals worked for:</h5>\n\t\t\t\t\t\t\t<p>{{companies}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Years of experience:</h5>\n\t\t\t\t\t\t\t<p>{{xp_years}}</p>\n\t\t\t\t\t\t\t<h5>Genres interested in:</h5>\n\t\t\t\t\t\t\t<p>{{genres}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t<div class=\"col-sm-4\">\n\t\t\t\t\t\t\t<h5>Bands worked for:</h5>\n\t\t\t\t\t\t\t<p>{{bands}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"row techprofilelistborder\">\n\t\t\t\t\t\t<div class=\"techprofilelistname\">{{name}} is also working as </div>\n\t\t\t\t\t\t<div id=\"techprofilelist\" class=\"techprofilelist\"></div>\n\t\t\t\t\t</div>\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ },
 /* 133 */
@@ -26945,7 +26960,7 @@
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container-fluid view vanprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourvans\"></div>{{van_type}}</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card\">\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset van\">\n\t\t\t\t\t<div class=\"sg-icon icon-addvan-{{van_type}} sg-darkgray\"></div><span class=\"van-title\">{{model}}</span> <div class=\"social sg-gray\"><div class=\"sharethis\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"vanprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-book\">BOOK</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-edit\">EDIT</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h3>Description</h3>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t{{description}}\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\n\t\t\t\t\t\t\t<h3>Accessories</h3>\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\n\t\t\t\t\t\t\t{{location}}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\" row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t<div class=\"map\" id=\"vanprofile-map\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
+	module.exports = "<div class=\"container-fluid view vanprofile sg-lightgray-bg\">\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourvans\"></div>{{van_type}}</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card\">\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset van\">\n\t\t\t\t\t<div class=\"sg-icon icon-addvan-{{van_type}} sg-darkgray\"></div><span class=\"van-title\">{{model}}</span> <div class=\"social sg-gray\"><div class=\"sharethis\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_a}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_b}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\n\t\t\t\t\t<div class=\"sg-blue-bg\">\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\n\t\t\t\t\t\t<div class=\"text-center sg-white\">{{displayed_price_c}} <span class=\"currency\">{{currency}}</span></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"vanprofile-action-unavailable\">UNAVAILABLE</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-book\">BOOK</button>\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-edit\">EDIT</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n\t<div class=\"row bs-reset\">\n\t\t<div class=\"col-sm-8 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<h3>Description</h3>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t{{description}}\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\n\t\t\t\t\t\t\t<h3>Accessories</h3>\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"col-sm-4 bs-reset\">\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\n\t\t\t\t\t\t\t{{location}}\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\" row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t<div class=\"map\" id=\"vanprofile-map\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<hr>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"row bs-reset\">\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n";
 
 /***/ },
 /* 141 */
@@ -27018,6 +27033,205 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(15),
+	
+	    App = __webpack_require__(20),
+	    Model = __webpack_require__(25),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Defines a gear item.
 	 * @author: Chris Hjorth
 	 */
@@ -27028,7 +27242,7 @@
 	var _ = __webpack_require__(15),
 		
 		Utilities = __webpack_require__(26),
-		Model = __webpack_require__(24),
+		Model = __webpack_require__(25),
 		App = __webpack_require__(20),
 		
 		didInitialize,
@@ -27260,206 +27474,148 @@
 
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Defines a tech profile item.
+	 * Defines a booking item.
 	 * @author: Chris Hjorth
 	 */
 	
 	/*jslint node: true */
 	'use strict';
 	
-	
 	var _ = __webpack_require__(15),
+	    Moment = __webpack_require__(29),
 	
+	    Model = __webpack_require__(25),
 	    App = __webpack_require__(20),
-	    Model = __webpack_require__(24),
 	
 	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
+	    createBooking,
+	    getBookingInfo,
+	    update;
 	
-	didInitialize = function didInitialize() {
+	didInitialize = function() {
 	    if (this.data === null) {
 	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
+	            //The non-null id property determines the booking type
+	            gear_id: null,
+	            van_id: null,
+	            techprofile_id: null,
+	            item_name: '', //Displayed name of the booked item
+	            price_a: 0,
+	            price_b: 0,
+	            price_c: 0,
+	            currency: 0,
+	            start_time: null,
+	            end_time: null,
+	            cardId: null,
+	            returnURL: null
 	        };
 	    }
 	};
 	
-	createTechProfile = function createGear(callback) {
+	// POST: /users/:user_id/gear/:gear_id/bookings
+	createBooking = function(cardId, callback) {
 	    var model = this,
-	        newTechProfile = this.data,
+	        newBooking = this.data,
+	        url,
 	        postData;
 	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
+	    }
+	    if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
+	    } else {
+	        url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';
+	    }
+	
 	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
+	        start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+	        end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+	        cardId: cardId,
+	        returnURL: window.location.href
 	    };
 	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	    this.post(url, postData, function(error, data) {
 	        if (error) {
 	            if (callback && typeof callback === 'function') {
 	                callback(error);
 	            }
 	            return;
 	        }
-	
 	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
 	        callback(null);
 	    });
 	};
 	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
+	getBookingInfo = function(userID, callback) {
+	    var model = this,
+	        url;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+	    } else {
+	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
 	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	
+	    this.get(url, function(error, booking) {
 	        if (error) {
-	            console.log(error);
 	            callback(error);
 	            return;
 	        }
-	        callback(null, result);
+	        _.extend(model.data, booking);
+	
+	        model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+	        model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+	
+	        callback(null);
 	    });
 	};
 	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
+	update = function(userID, callback) {
+	    var model = this,
+	        url, updateData;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+	    } else {
+	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+	    }
+	
+	    updateData = {
+	        booking_status: model.data.booking_status,
+	        preauth_id: model.data.preauth_id
 	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	
+	    this.put(url, updateData, function(error, booking) {
 	        if (error) {
 	            console.log(error);
 	            callback(error);
 	            return;
 	        }
+	
+	        _.extend(model.data, booking);
 	        callback(null);
 	    });
 	};
 	
 	module.exports = Model.inherit({
 	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
+	    createBooking: createBooking,
+	    getBookingInfo: getBookingInfo,
+	    update: update
 	});
 
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27473,7 +27629,7 @@
 	var _ = __webpack_require__(15),
 		
 		Utilities = __webpack_require__(26),
-		Model = __webpack_require__(24),
+		Model = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		didInitialize,
@@ -27695,147 +27851,6 @@
 
 
 /***/ },
-/* 155 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a booking item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(15),
-	    Moment = __webpack_require__(29),
-	
-	    Model = __webpack_require__(24),
-	    App = __webpack_require__(20),
-	
-	    didInitialize,
-	    createBooking,
-	    getBookingInfo,
-	    update;
-	
-	didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = {
-	            //The non-null id property determines the booking type
-	            gear_id: null,
-	            van_id: null,
-	            techprofile_id: null,
-	            item_name: '', //Displayed name of the booked item
-	            price_a: 0,
-	            price_b: 0,
-	            price_c: 0,
-	            currency: 0,
-	            start_time: null,
-	            end_time: null,
-	            cardId: null,
-	            returnURL: null
-	        };
-	    }
-	};
-	
-	// POST: /users/:user_id/gear/:gear_id/bookings
-	createBooking = function(cardId, callback) {
-	    var model = this,
-	        newBooking = this.data,
-	        url,
-	        postData;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
-	    }
-	    if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
-	    } else {
-	        url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';
-	    }
-	
-	    postData = {
-	        start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-	        end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-	        cardId: cardId,
-	        returnURL: window.location.href
-	    };
-	
-	    this.post(url, postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        callback(null);
-	    });
-	};
-	
-	getBookingInfo = function(userID, callback) {
-	    var model = this,
-	        url;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
-	    } else {
-	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
-	    }
-	
-	    this.get(url, function(error, booking) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, booking);
-	
-	        model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
-	        model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
-	
-	        callback(null);
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this,
-	        url, updateData;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
-	    } else {
-	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
-	    }
-	
-	    updateData = {
-	        booking_status: model.data.booking_status,
-	        preauth_id: model.data.preauth_id
-	    };
-	
-	    this.put(url, updateData, function(error, booking) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	
-	        _.extend(model.data, booking);
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createBooking: createBooking,
-	    getBookingInfo: getBookingInfo,
-	    update: update
-	});
-
-
-/***/ },
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -27850,7 +27865,7 @@
 	var $ = __webpack_require__(31),
 	
 		PopupController = __webpack_require__(91),
-		SelectTimePopupTemplate = __webpack_require__(172),
+		SelectTimePopupTemplate = __webpack_require__(171),
 	
 		SelectTimePopup,
 	
@@ -27921,8 +27936,8 @@
 	
 	var _ = __webpack_require__(15),
 	
-		Model = __webpack_require__(24),
-		Gear = __webpack_require__(152),
+		Model = __webpack_require__(25),
+		Gear = __webpack_require__(153),
 		
 		didInitialize,
 	
@@ -28063,8 +28078,8 @@
 	'use strict';
 	
 	var _ = __webpack_require__(15),
-		Model = __webpack_require__(24),
-		TechProfile = __webpack_require__(153),
+		Model = __webpack_require__(25),
+		TechProfile = __webpack_require__(152),
 		
 		didInitialize,
 	
@@ -28206,8 +28221,8 @@
 	
 	var _ = __webpack_require__(15),
 	
-	    Model = __webpack_require__(24),
-	    Van = __webpack_require__(154),
+	    Model = __webpack_require__(25),
+	    Van = __webpack_require__(155),
 	
 	    didInitialize,
 	
@@ -28350,7 +28365,7 @@
 	var mangoPay = __webpack_require__(191),
 		
 		Config = __webpack_require__(21),
-		Model = __webpack_require__(24),
+		Model = __webpack_require__(25),
 	
 	    didInitialize,
 	    registerCard;
@@ -32283,7 +32298,7 @@
 	'use strict';
 	
 	var Config = __webpack_require__(21),
-		Model = __webpack_require__(24),
+		Model = __webpack_require__(25),
 	
 		currencies = {},
 	    XChangeRates,
@@ -32433,6 +32448,12 @@
 
 /***/ },
 /* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-center\">\n\t\t\t<h2>{{title}}</h2>\n\t\t</div>\n\t</div>\n\t<form onsubmit=\"return false;\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Hours:</p></div>\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Minutes:</p></div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 text-center selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-hours\">\n\t\t\t\t\t<option>00</option>\n\t\t\t\t\t<option>01</option>\n\t\t\t\t\t<option>02</option>\n\t\t\t\t\t<option>03</option>\n\t\t\t\t\t<option>04</option>\n\t\t\t\t\t<option>05</option>\n\t\t\t\t\t<option>06</option>\n\t\t\t\t\t<option>07</option>\n\t\t\t\t\t<option>08</option>\n\t\t\t\t\t<option>09</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>11</option>\n\t\t\t\t\t<option selected=\"\">12</option>\n\t\t\t\t\t<option>13</option>\n\t\t\t\t\t<option>14</option>\n\t\t\t\t\t<option>15</option>\n\t\t\t\t\t<option>16</option>\n\t\t\t\t\t<option>17</option>\n\t\t\t\t\t<option>18</option>\n\t\t\t\t\t<option>19</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>21</option>\n\t\t\t\t\t<option>22</option>\n\t\t\t\t\t<option>23</option>\n\t\t\t\t</select> \n\t\t\t</div>\n\t\t\n\t\t\t<div class=\"col-xs-6 selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-minutes\">\n\t\t\t\t\t<option selected=\"\">00</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>30</option>\n\t\t\t\t\t<option>40</option>\n\t\t\t\t\t<option>50</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\t\t\n\t\t\t<div class=\"col-xs-12\">\n\t\t        <div class=\"col-xs-offset-1 col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n\t\t        </div>\n\t\t        <div class=\"col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square confirm-btn\">Confirm <i class=\"fa fa-check-circle\"></i></button>\n\t\t        </div>\n\t\t      </div>\n\t\t    </div>\n\t\t</div>\n\t</form>\n</div>";
+
+/***/ },
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {//! moment.js
@@ -35482,12 +35503,6 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(276)(module)))
 
 /***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-center\">\n\t\t\t<h2>{{title}}</h2>\n\t\t</div>\n\t</div>\n\t<form onsubmit=\"return false;\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Hours:</p></div>\n\t\t\t<div class=\"col-xs-6 selecttime-label\"><p class=\"text-left\">Minutes:</p></div>\n\t\t</div>\n\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-6 text-center selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-hours\">\n\t\t\t\t\t<option>00</option>\n\t\t\t\t\t<option>01</option>\n\t\t\t\t\t<option>02</option>\n\t\t\t\t\t<option>03</option>\n\t\t\t\t\t<option>04</option>\n\t\t\t\t\t<option>05</option>\n\t\t\t\t\t<option>06</option>\n\t\t\t\t\t<option>07</option>\n\t\t\t\t\t<option>08</option>\n\t\t\t\t\t<option>09</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>11</option>\n\t\t\t\t\t<option selected=\"\">12</option>\n\t\t\t\t\t<option>13</option>\n\t\t\t\t\t<option>14</option>\n\t\t\t\t\t<option>15</option>\n\t\t\t\t\t<option>16</option>\n\t\t\t\t\t<option>17</option>\n\t\t\t\t\t<option>18</option>\n\t\t\t\t\t<option>19</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>21</option>\n\t\t\t\t\t<option>22</option>\n\t\t\t\t\t<option>23</option>\n\t\t\t\t</select> \n\t\t\t</div>\n\t\t\n\t\t\t<div class=\"col-xs-6 selectdiv\">\n\t\t\t\t<select id=\"selecttimepopup-minutes\">\n\t\t\t\t\t<option selected=\"\">00</option>\n\t\t\t\t\t<option>10</option>\n\t\t\t\t\t<option>20</option>\n\t\t\t\t\t<option>30</option>\n\t\t\t\t\t<option>40</option>\n\t\t\t\t\t<option>50</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"row\">\t\t\n\t\t\t<div class=\"col-xs-12\">\n\t\t        <div class=\"col-xs-offset-1 col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n\t\t        </div>\n\t\t        <div class=\"col-xs-5 text-center selecttime-button\">\n\t\t          <button class=\"sg-btn-square confirm-btn\">Confirm <i class=\"fa fa-check-circle\"></i></button>\n\t\t        </div>\n\t\t      </div>\n\t\t    </div>\n\t\t</div>\n\t</form>\n</div>";
-
-/***/ },
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37056,7 +37071,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37134,7 +37149,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37196,7 +37211,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37302,7 +37317,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37366,7 +37381,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37504,7 +37519,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37619,7 +37634,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37777,7 +37792,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37871,7 +37886,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -37988,7 +38003,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38102,7 +38117,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38218,7 +38233,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38363,7 +38378,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38446,7 +38461,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38609,7 +38624,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38676,7 +38691,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38761,7 +38776,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38827,7 +38842,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38906,7 +38921,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -38984,7 +38999,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39083,7 +39098,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39154,7 +39169,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39221,7 +39236,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39294,7 +39309,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39369,7 +39384,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39453,7 +39468,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39536,7 +39551,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39604,7 +39619,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39713,7 +39728,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39826,7 +39841,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39890,7 +39905,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -39952,7 +39967,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40018,7 +40033,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40093,7 +40108,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40174,7 +40189,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40258,7 +40273,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40387,7 +40402,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40532,7 +40547,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40649,7 +40664,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40774,7 +40789,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40860,7 +40875,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -40993,7 +41008,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41066,7 +41081,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41135,7 +41150,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41250,7 +41265,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41315,7 +41330,7 @@
 	// - Jeeeyul Lee <jeeeyul@gmail.com>
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41387,7 +41402,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41528,7 +41543,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41654,7 +41669,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41739,7 +41754,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41833,7 +41848,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -41908,7 +41923,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42034,7 +42049,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42120,7 +42135,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42216,7 +42231,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42280,7 +42295,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42407,7 +42422,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42482,7 +42497,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42546,7 +42561,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42652,7 +42667,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42716,7 +42731,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42785,7 +42800,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -42864,7 +42879,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43046,7 +43061,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43209,7 +43224,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43363,7 +43378,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43434,7 +43449,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43547,7 +43562,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43660,7 +43675,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43731,7 +43746,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43867,7 +43882,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -43936,7 +43951,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44003,7 +44018,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44102,7 +44117,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44164,7 +44179,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44227,7 +44242,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44395,7 +44410,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44457,7 +44472,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44528,7 +44543,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
@@ -44658,7 +44673,7 @@
 	
 	(function (factory) {
 	    if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(171)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
 	    } else if (typeof exports === 'object') {
 	        module.exports = factory(require('../moment')); // Node
 	    } else {
