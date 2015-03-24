@@ -57,6 +57,7 @@ didRender = function() {
     var view = this,
         userData = this.user.data,
         birthdate, $countriesSelect, $nationalitiesSelect;
+
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your profile');
     }

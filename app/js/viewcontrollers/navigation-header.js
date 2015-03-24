@@ -164,8 +164,6 @@ handleLogin = function(event, callback) {
     var view = event.data,
         user = App.user;
 
-    console.log(App);
-
     user.login(function(error) {
         if (!error) {
             App.router.navigateTo('dashboard');

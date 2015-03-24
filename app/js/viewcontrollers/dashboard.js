@@ -8,10 +8,10 @@
 
 var $ = require('jquery'),
 
-	ViewController = require('../viewcontroller.js'),
-	App = require('../app.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-	subViewContainerID,
+    subViewContainerID,
 
     didInitialize,
     didRender,
@@ -34,15 +34,15 @@ didInitialize = function() {
     this.hasSubviews = true;
 
     this.$subViewContainer = $('');
-
-    if (this.path === 'dashboard') {
-        App.router.navigateTo('dashboard/profile');
-    }
 };
 
 didRender = function() {
     this.$subViewContainer = $('#' + subViewContainerID);
     this.setupEvent('click', '.dashboard-menu .list-group-item', this, this.handleSelection);
+    //We need to make sure that a subview gets rendered
+    if (this.path === 'dashboard') {
+        App.router.navigateTo('dashboard/profile');
+    }
 };
 
 didRenderSubview = function() {

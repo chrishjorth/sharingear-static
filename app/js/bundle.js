@@ -98,13 +98,13 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    Router = __webpack_require__(7),
-	    Utilities = __webpack_require__(8),
+	    Config = __webpack_require__(5),
+	    Router = __webpack_require__(6),
+	    Utilities = __webpack_require__(7),
 	
-	    User = __webpack_require__(9),
-	    ContentClassification = __webpack_require__(10),
-	    MessagePopup = __webpack_require__(11),
+	    User = __webpack_require__(8),
+	    ContentClassification = __webpack_require__(9),
+	    MessagePopup = __webpack_require__(10),
 	
 	    App,
 	
@@ -323,7 +323,7 @@
 	
 		App = __webpack_require__(1),
 	
-		HeaderController = __webpack_require__(5),
+		HeaderController = __webpack_require__(11),
 	    HeaderTemplate = __webpack_require__(14),
 	
 	    initialize,
@@ -331,7 +331,7 @@
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(15);
+	__webpack_require__(20);
 	__webpack_require__(12);
 	
 	initialize = function() {
@@ -11159,231 +11159,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Controller for the Sharingear header with navigation view.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var $ = __webpack_require__(4),
-	
-	    ViewController = __webpack_require__(16),
-	    Utilities = __webpack_require__(8),
-	    App = __webpack_require__(1),
-	
-	    defaultTitle,
-	
-	    didInitialize,
-	    didRender,
-	    didResize,
-	    populateMainMenu,
-	    renderProfilePicture,
-	    handleNavbarToggle,
-	    handleLogin,
-	    setTitle,
-	    _updateTitle,
-	    changeActiveState;
-	
-	/* Static variables */
-	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	
-	didInitialize = function() {
-	    this.isMobile = false;
-	    this.title = defaultTitle;
-	};
-	
-	didRender = function() {
-	    this._updateTitle();
-	    this.populateMainMenu();
-	    this.renderProfilePicture();
-	
-	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
-	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
-	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
-	};
-	
-	didResize = function(event) {
-	    var view = event.data;
-	    if (Utilities.isMobile() !== view.isMobile) {
-	        view.populateMainMenu();
-	    }
-	    view._updateTitle();
-	};
-	
-	populateMainMenu = function() {
-	    var html = '',
-	        $slideMenu, $dropdownMenu, $menuList;
-	
-	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
-	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
-	
-	    if (Utilities.isMobile() === true) {
-	        this.isMobile = true;
-	        $slideMenu.removeClass('hidden');
-	        if ($dropdownMenu.hasClass('hidden') === false) {
-	            $dropdownMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $slideMenu);
-	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	    } else {
-	        this.isMobile = false;
-	        $dropdownMenu.removeClass('hidden');
-	        if ($slideMenu.hasClass('hidden') === false) {
-	            $slideMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $dropdownMenu);
-	    }
-	
-	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
-	
-	    if (App.user && App.user.data.id !== null) {
-	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
-	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
-	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
-	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
-	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
-	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
-	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
-	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
-	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
-	    } else {
-	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
-	    }
-	
-	    $menuList.html(html);
-	};
-	
-	renderProfilePicture = function() {
-	    var view = this,
-	        img;
-	    if (App.user && App.user.data.image_url) {
-	        img = new Image();
-	        img.onload = function() {
-	            var isVertical, backgroundSize;
-	            isVertical = img.width < img.height;
-	            if (isVertical === true) {
-	                backgroundSize = '30px auto';
-	            } else {
-	                backgroundSize = 'auto 30px';
-	            }
-	            $('.profile-pic', view.$element).css({
-	                'background-image': 'url(' + img.src + ')',
-	                'background-size': backgroundSize
-	            });
-	        };
-	        img.src = App.user.data.image_url;
-	    }
-	};
-	
-	handleNavbarToggle = function(event) {
-	    var view = event.data,
-	        $this = $(this),
-	        $viewContainer = $('.view-container'),
-	        $navbar, $tabbar, handleTransition;
-	
-	    handleTransition = function() {
-	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
-	        $this.removeClass('sliding-right');
-	    };
-	
-	    $navbar = $('.sg-navbar', view.$element);
-	    $tabbar = $('.sg-tabbar-container', $viewContainer);
-	    if ($tabbar.css('position') !== 'fixed') {
-	        //We are not in a mobile situation
-	        $tabbar = $('');
-	    }
-	
-	    $navbar.addClass('sliding-right');
-	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $viewContainer.addClass('sliding-right');
-	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $tabbar.addClass('sliding-right');
-	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	
-	    if ($navbar.hasClass('slide-right') === true) {
-	        $navbar.removeClass('slide-right');
-	        $viewContainer.removeClass('slide-right');
-	        $tabbar.removeClass('slide-right');
-	    } else {
-	        $navbar.addClass('slide-right');
-	        $viewContainer.addClass('slide-right');
-	        $tabbar.addClass('slide-right');
-	    }
-	
-	    //Handle selection display
-	    if ($this.hasClass('list-group-item') === true) {
-	        view.changeActiveState($this);
-	    }
-	};
-	
-	handleLogin = function(event, callback) {
-	    var view = event.data,
-	        user = App.user;
-	
-	    console.log(App);
-	
-	    user.login(function(error) {
-	        if (!error) {
-	            App.router.navigateTo('dashboard');
-	            view.render();
-	        } else {
-	            alert('Could not connect to Facebook.');
-	            console.log(error);
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback();
-	        }
-	    });
-	};
-	
-	/**
-	 * @param title: the text to display as title, if null title is set to default
-	 */
-	setTitle = function(title) {
-	    if (!title || title === null) {
-	        title = defaultTitle;
-	    }
-	    this.title = title;
-	    this._updateTitle();
-	};
-	
-	_updateTitle = function() {
-	    if (Utilities.isMobile() === true) {
-	        $('.sg-navbar-brand', this.$element).html(this.title);
-	    } else {
-	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
-	    }
-	};
-	
-	changeActiveState = function($menuItem) {
-	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
-	    $menuItem.addClass('list-group-item-selected');
-	};
-	
-	module.exports = ViewController.inherit({
-	    didInitialize: didInitialize,
-	    didRender: didRender,
-	    didResize: didResize,
-	    populateMainMenu: populateMainMenu,
-	    renderProfilePicture: renderProfilePicture,
-	    handleNavbarToggle: handleNavbarToggle,
-	    handleLogin: handleLogin,
-	    setTitle: setTitle,
-	    _updateTitle: _updateTitle,
-	    changeActiveState: changeActiveState
-	});
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Defines site configuration.
 	 * @author: Chris Hjorth
 	 */
@@ -11425,7 +11200,7 @@
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11438,8 +11213,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-		ViewLoader = __webpack_require__(20),
-		Utilities = __webpack_require__(8);
+		ViewLoader = __webpack_require__(15),
+		Utilities = __webpack_require__(7);
 	
 	var Router,
 				
@@ -11619,7 +11394,7 @@
 
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11789,7 +11564,7 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11801,10 +11576,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    FB = __webpack_require__(17),
-	    Localization = __webpack_require__(18),
-	    Model = __webpack_require__(19),
-	    Utilities = __webpack_require__(8),
+	    FB = __webpack_require__(18),
+	    Localization = __webpack_require__(19),
+	    Model = __webpack_require__(16),
+	    Utilities = __webpack_require__(7),
 	
 	    didInitialize,
 	    getLoginStatus,
@@ -12075,7 +11850,7 @@
 
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12089,7 +11864,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(19),
+	    Model = __webpack_require__(16),
 	
 	    didInitialize,
 	    getClassification;
@@ -12128,7 +11903,7 @@
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12185,6 +11960,229 @@
 	
 	
 	module.exports = MessagePopup;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Controller for the Sharingear header with navigation view.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var $ = __webpack_require__(4),
+	
+	    ViewController = __webpack_require__(17),
+	    Utilities = __webpack_require__(7),
+	    App = __webpack_require__(1),
+	
+	    defaultTitle,
+	
+	    didInitialize,
+	    didRender,
+	    didResize,
+	    populateMainMenu,
+	    renderProfilePicture,
+	    handleNavbarToggle,
+	    handleLogin,
+	    setTitle,
+	    _updateTitle,
+	    changeActiveState;
+	
+	/* Static variables */
+	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	
+	didInitialize = function() {
+	    this.isMobile = false;
+	    this.title = defaultTitle;
+	};
+	
+	didRender = function() {
+	    this._updateTitle();
+	    this.populateMainMenu();
+	    this.renderProfilePicture();
+	
+	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
+	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
+	};
+	
+	didResize = function(event) {
+	    var view = event.data;
+	    if (Utilities.isMobile() !== view.isMobile) {
+	        view.populateMainMenu();
+	    }
+	    view._updateTitle();
+	};
+	
+	populateMainMenu = function() {
+	    var html = '',
+	        $slideMenu, $dropdownMenu, $menuList;
+	
+	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
+	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
+	
+	    if (Utilities.isMobile() === true) {
+	        this.isMobile = true;
+	        $slideMenu.removeClass('hidden');
+	        if ($dropdownMenu.hasClass('hidden') === false) {
+	            $dropdownMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $slideMenu);
+	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	    } else {
+	        this.isMobile = false;
+	        $dropdownMenu.removeClass('hidden');
+	        if ($slideMenu.hasClass('hidden') === false) {
+	            $slideMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $dropdownMenu);
+	    }
+	
+	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
+	
+	    if (App.user && App.user.data.id !== null) {
+	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
+	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
+	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
+	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
+	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
+	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
+	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
+	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
+	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
+	    } else {
+	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
+	    }
+	
+	    $menuList.html(html);
+	};
+	
+	renderProfilePicture = function() {
+	    var view = this,
+	        img;
+	    if (App.user && App.user.data.image_url) {
+	        img = new Image();
+	        img.onload = function() {
+	            var isVertical, backgroundSize;
+	            isVertical = img.width < img.height;
+	            if (isVertical === true) {
+	                backgroundSize = '30px auto';
+	            } else {
+	                backgroundSize = 'auto 30px';
+	            }
+	            $('.profile-pic', view.$element).css({
+	                'background-image': 'url(' + img.src + ')',
+	                'background-size': backgroundSize
+	            });
+	        };
+	        img.src = App.user.data.image_url;
+	    }
+	};
+	
+	handleNavbarToggle = function(event) {
+	    var view = event.data,
+	        $this = $(this),
+	        $viewContainer = $('.view-container'),
+	        $navbar, $tabbar, handleTransition;
+	
+	    handleTransition = function() {
+	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
+	        $this.removeClass('sliding-right');
+	    };
+	
+	    $navbar = $('.sg-navbar', view.$element);
+	    $tabbar = $('.sg-tabbar-container', $viewContainer);
+	    if ($tabbar.css('position') !== 'fixed') {
+	        //We are not in a mobile situation
+	        $tabbar = $('');
+	    }
+	
+	    $navbar.addClass('sliding-right');
+	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $viewContainer.addClass('sliding-right');
+	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $tabbar.addClass('sliding-right');
+	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	
+	    if ($navbar.hasClass('slide-right') === true) {
+	        $navbar.removeClass('slide-right');
+	        $viewContainer.removeClass('slide-right');
+	        $tabbar.removeClass('slide-right');
+	    } else {
+	        $navbar.addClass('slide-right');
+	        $viewContainer.addClass('slide-right');
+	        $tabbar.addClass('slide-right');
+	    }
+	
+	    //Handle selection display
+	    if ($this.hasClass('list-group-item') === true) {
+	        view.changeActiveState($this);
+	    }
+	};
+	
+	handleLogin = function(event, callback) {
+	    var view = event.data,
+	        user = App.user;
+	
+	    user.login(function(error) {
+	        if (!error) {
+	            App.router.navigateTo('dashboard');
+	            view.render();
+	        } else {
+	            alert('Could not connect to Facebook.');
+	            console.log(error);
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback();
+	        }
+	    });
+	};
+	
+	/**
+	 * @param title: the text to display as title, if null title is set to default
+	 */
+	setTitle = function(title) {
+	    if (!title || title === null) {
+	        title = defaultTitle;
+	    }
+	    this.title = title;
+	    this._updateTitle();
+	};
+	
+	_updateTitle = function() {
+	    if (Utilities.isMobile() === true) {
+	        $('.sg-navbar-brand', this.$element).html(this.title);
+	    } else {
+	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
+	    }
+	};
+	
+	changeActiveState = function($menuItem) {
+	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
+	    $menuItem.addClass('list-group-item-selected');
+	};
+	
+	module.exports = ViewController.inherit({
+	    didInitialize: didInitialize,
+	    didRender: didRender,
+	    didResize: didResize,
+	    populateMainMenu: populateMainMenu,
+	    renderProfilePicture: renderProfilePicture,
+	    handleNavbarToggle: handleNavbarToggle,
+	    handleLogin: handleLogin,
+	    setTitle: setTitle,
+	    _updateTitle: _updateTitle,
+	    changeActiveState: changeActiveState
+	});
 
 
 /***/ },
@@ -12256,22 +12254,377 @@
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(25)
-	__webpack_require__(26)
-	__webpack_require__(27)
-	__webpack_require__(28)
-	__webpack_require__(29)
-	__webpack_require__(30)
-	__webpack_require__(31)
-	__webpack_require__(32)
-	__webpack_require__(33)
-	__webpack_require__(34)
-	__webpack_require__(35)
-	__webpack_require__(36)
+	/**
+	 * Handles viewcontroller and template loading.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	
+	    ViewLoader,
+	    mainViewContainer,
+	    $modalViewLightbox,
+	    modalViewContainer,
+	
+	    loadView,
+	    loadSubview,
+	    loadModalView,
+	    loadModalViewSibling,
+	    closeModalView,
+	
+	    _loadModalView;
+	
+	mainViewContainer = '.view-container';
+	$modalViewLightbox = $('#modal-view-lightbox');
+	modalViewContainer = '.modal-view-container';
+	
+	/**
+	 * Note that a path for a subviews could also simply be a content reference, fx gear/1
+	 */
+	//TODO: Consider turning this into recursive for the case of subviews
+	loadView = function(view, path, data, callback) {
+	    var viewLoader = this,
+	        renderSubviews, ViewController, ViewTemplate;
+	
+	    renderSubviews = function() {
+	        var subview = viewLoader.currentViewController.subPath;
+	        if (subview !== null && subview !== '') {
+	            viewLoader.loadSubview(data, function() {
+	                if (_.isFunction(callback) === true) {
+	                    callback(null, viewLoader.currentViewController);
+	                }
+	            });
+	        } else {
+	            if (_.isFunction(callback) === true) {
+	                callback(null, viewLoader.currentViewController);
+	            }
+	        }
+	    };
+	    //If the view is already loaded just update the path and call render subviews
+	    if (this.currentViewController !== null && this.currentViewController.name === view && this.currentViewController.hasSubviews === true) {
+	        this.currentViewController.path = path;
+	        this.currentViewController.setSubPath();
+	        renderSubviews();
+	        return;
+	    }
+	
+	    ViewController = __webpack_require__(23)("./" + view + '.js');
+	    ViewTemplate = __webpack_require__(24)("./" + view + '.html');
+	
+	    //Close the previous controller properly before loading a new one
+	    if (viewLoader.currentViewController !== null) {
+	        viewLoader.currentViewController.close();
+	    }
+	    viewLoader.currentViewController = new ViewController.constructor({
+	        name: view,
+	        $element: $(mainViewContainer),
+	        labels: {},
+	        template: ViewTemplate,
+	        path: path,
+	        passedData: data
+	    });
+	    viewLoader.currentViewController.initialize();
+	    viewLoader.currentViewController.render();
+	    //The ready property is so a controller can abort loading, useful if a redirect is being called
+	    if (viewLoader.currentViewController.ready === true) {
+	        viewLoader.currentViewController.render(function() {
+	            renderSubviews();
+	        });
+	    } else {
+	        callback('Loading of view was aborted by controller.');
+	    }
+	};
+	
+	loadSubview = function(data, callback) {
+	    var viewLoader = this,
+	        subview = this.currentViewController.subPath,
+	        viewString = this.currentViewController.name + '-' + subview,
+	        SubViewController, SubViewTemplate;
+	
+	    SubViewController = __webpack_require__(23)("./" + viewString + '.js');
+	    SubViewTemplate = __webpack_require__(24)("./" + viewString + '.html');
+	
+	    if (viewLoader.currentSubViewController !== null) {
+	        viewLoader.currentSubViewController.close();
+	    }
+	    viewLoader.currentSubViewController = new SubViewController.constructor({
+	        name: viewString,
+	        $element: viewLoader.currentViewController.$subViewContainer,
+	        labels: {},
+	        template: SubViewTemplate,
+	        path: viewLoader.currentViewController.path,
+	        passedData: data
+	    });
+	    viewLoader.currentSubViewController.initialize();
+	    viewLoader.currentSubViewController.render(function() {
+	        if (_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
+	            viewLoader.currentViewController.didRenderSubview();
+	        }
+	    });
+	    if (_.isFunction(callback) === true) {
+	        callback(null, viewLoader.currentSubViewController);
+	    }
+	};
+	
+	/**
+	 * Does the heavy lifting regardless of the openModalViews array.
+	 */
+	_loadModalView = function(view, path, data, callback) {
+	    var viewLoader = ViewLoader,
+	        $modalViewContainer = $(modalViewContainer),
+	        ViewController, ViewTemplate;
+	
+	    ViewController = __webpack_require__(23)("./" + view + '.js');
+	    ViewTemplate = __webpack_require__(24)("./" + view + '.html');
+	
+	    if (viewLoader.currentModalViewController !== null) {
+	        viewLoader.currentModalViewController.close();
+	        viewLoader.openModalViews.pop();
+	    }
+	
+	    if ($modalViewLightbox.hasClass('hidden') === true) {
+	        $modalViewLightbox.removeClass('hidden');
+	        $('body').addClass('modal-open');
+	        $('.view-container').addClass('modal-open');
+	    }
+	
+	    viewLoader.currentModalViewController = new ViewController.constructor({
+	        name: view,
+	        $element: $modalViewContainer,
+	        labels: {},
+	        template: ViewTemplate,
+	        path: path,
+	        passedData: data
+	    });
+	    viewLoader.currentModalViewController.initialize();
+	    if (viewLoader.currentModalViewController.ready === true) {
+	        viewLoader.currentModalViewController.render(function(error, subview, $subViewContainer) {
+	            if (!error && subview && subview !== null) {
+	                viewLoader.loadSubview(subview, $subViewContainer, data);
+	            }
+	        });
+	    }
+	
+	    callback(null, viewLoader.currentModalViewController);
+	};
+	
+	loadModalView = function(view, path, data, callback) {
+	    var viewLoader = this;
+	
+	    viewLoader.openModalViews.unshift({
+	        view: view,
+	        path: path,
+	        data: data,
+	        callback: callback
+	    });
+	
+	    if (viewLoader.openModalViews.length <= 1) {
+	        _loadModalView(view, path, data, callback);
+	    } else {
+	        callback(null, viewLoader.currentModalViewController);
+	    }
+	};
+	
+	loadModalViewSibling = function(view, path, data, callback) {
+	    this.openModalViews.unshift({
+	        view: view,
+	        path: path,
+	        data: data,
+	        callback: callback
+	    });
+	    _loadModalView(view, path, data, callback);
+	};
+	
+	closeModalView = function(callback) {
+	    var viewLoader = this,
+	        previousModal = null;
+	
+	    if (this.currentModalViewController !== null) {
+	        this.currentModalViewController.close();
+	        this.currentModalViewController = null;
+	    }
+	    if ($modalViewLightbox.hasClass('hidden') === false) {
+	        $modalViewLightbox.addClass('hidden');
+	        $('body').removeClass('modal-open');
+	        $('.view-container').removeClass('modal-open');
+	    }
+	
+	    //Remove modal from queue
+	    this.openModalViews.pop();
+	
+	    if (this.openModalViews.length > 0) {
+	        previousModal = this.openModalViews[this.openModalViews.length - 1];
+	        _loadModalView(previousModal.view, previousModal.path, previousModal.data, function(error, loadedModalViewController) {
+	            if (_.isFunction(previousModal.callback) === true) {
+	                previousModal.callback();
+	            }
+	            callback(null, loadedModalViewController);
+	        });
+	    } else {
+	        //Render the underlying view again so that data gets updated
+	        this.loadView(viewLoader.currentViewController.name, viewLoader.currentViewController.path, viewLoader.currentViewController.passedData, function() {
+	            if (_.isFunction(callback)) {
+	                callback(null, previousModal);
+	            }
+	        });
+	    }
+	};
+	
+	ViewLoader = {
+	    currentViewController: null,
+	    currentSubViewController: null,
+	    currentModalViewController: null,
+	    openModalViews: [],
+	
+	    loadView: loadView,
+	    loadSubview: loadSubview,
+	    loadModalView: loadModalView,
+	    loadModalViewSibling: loadModalViewSibling,
+	    closeModalView: closeModalView
+	};
+	module.exports = ViewLoader;
+
 
 /***/ },
 /* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General model object with support for jQuery ajax.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+	
+		Utilities = __webpack_require__(7),
+	
+		initialize,
+	    get,
+	    post,
+	    put,
+	    del,
+	
+	    constructor, inherit;
+	
+	initialize = function() {
+	    if (this.didInitialize && typeof this.didInitialize == 'function') {
+	        this.didInitialize();
+	    }
+	};
+	
+	get = function(url, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'GET',
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            console.log(jqXHR);
+	            console.log(textStatus);
+	            callback('Error executing GET request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                callback('Error retrieving resource from server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	post = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'POST',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing POST request: ' + errorThrown);
+	
+	        },
+	        success: function(data) {
+	
+	            if (data.error) {
+	                callback('Error sending resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	put = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'PUT',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing PUT request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                console.log(data.error);
+	                callback('Error putting resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	del = function() {
+	
+	};
+	
+	constructor = function(options) {
+	    var defaults, methods;
+	
+	    defaults = {
+	        rootURL: '',
+	        data: null
+	    };
+	
+	    methods = {
+	        initialize: initialize,
+	        get: get,
+	        post: post,
+	        put: put,
+	        del: del
+	    };
+	    _.extend(this, defaults, methods, options);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12285,7 +12638,7 @@
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
 	
-		Utilities = __webpack_require__(8),
+		Utilities = __webpack_require__(7),
 	
 		initialize,
 	    render,
@@ -12447,7 +12800,7 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*jslint node: true */
@@ -12512,7 +12865,7 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12525,9 +12878,9 @@
 	
 	var Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    Model = __webpack_require__(19),
-	    XChangeRates = __webpack_require__(37),
+	    Config = __webpack_require__(5),
+	    Model = __webpack_require__(16),
+	    XChangeRates = __webpack_require__(25),
 	    Localization,
 	
 	    didInitialize,
@@ -12712,376 +13065,22 @@
 
 
 /***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General model object with support for jQuery ajax.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-	
-		Utilities = __webpack_require__(8),
-	
-		initialize,
-	    get,
-	    post,
-	    put,
-	    del,
-	
-	    constructor, inherit;
-	
-	initialize = function() {
-	    if (this.didInitialize && typeof this.didInitialize == 'function') {
-	        this.didInitialize();
-	    }
-	};
-	
-	get = function(url, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'GET',
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR);
-	            console.log(textStatus);
-	            callback('Error executing GET request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                callback('Error retrieving resource from server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	post = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'POST',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing POST request: ' + errorThrown);
-	
-	        },
-	        success: function(data) {
-	
-	            if (data.error) {
-	                callback('Error sending resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	put = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'PUT',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing PUT request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                console.log(data.error);
-	                callback('Error putting resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	del = function() {
-	
-	};
-	
-	constructor = function(options) {
-	    var defaults, methods;
-	
-	    defaults = {
-	        rootURL: '',
-	        data: null
-	    };
-	
-	    methods = {
-	        initialize: initialize,
-	        get: get,
-	        post: post,
-	        put: put,
-	        del: del
-	    };
-	    _.extend(this, defaults, methods, options);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Handles viewcontroller and template loading.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	
-	    ViewLoader,
-	    mainViewContainer,
-	    $modalViewLightbox,
-	    modalViewContainer,
-	
-	    loadView,
-	    loadSubview,
-	    loadModalView,
-	    loadModalViewSibling,
-	    closeModalView,
-	
-	    _loadModalView;
-	
-	mainViewContainer = '.view-container';
-	$modalViewLightbox = $('#modal-view-lightbox');
-	modalViewContainer = '.modal-view-container';
-	
-	/**
-	 * Note that a path for a subviews could also simply be a content reference, fx gear/1
-	 */
-	//TODO: Consider turning this into recursive for the case of subviews
-	loadView = function(view, path, data, callback) {
-	    var viewLoader = this,
-	        renderSubviews, ViewController, ViewTemplate;
-	
-	    renderSubviews = function() {
-	        var subview = viewLoader.currentViewController.subPath;
-	        if (subview !== null && subview !== '') {
-	            viewLoader.loadSubview(data, function() {
-	                if (_.isFunction(callback) === true) {
-	                    callback(null, viewLoader.currentViewController);
-	                }
-	            });
-	        } else {
-	            if (_.isFunction(callback) === true) {
-	                callback(null, viewLoader.currentViewController);
-	            }
-	        }
-	    };
-	    //If the view is already loaded just update the path and call render subviews
-	    if (this.currentViewController !== null && this.currentViewController.name === view && this.currentViewController.hasSubviews === true) {
-	        this.currentViewController.path = path;
-	        this.currentViewController.setSubPath();
-	        renderSubviews();
-	        return;
-	    }
-	
-	    ViewController = __webpack_require__(23)("./" + view + '.js');
-	    ViewTemplate = __webpack_require__(24)("./" + view + '.html');
-	
-	    //Close the previous controller properly before loading a new one
-	    if (viewLoader.currentViewController !== null) {
-	        viewLoader.currentViewController.close();
-	    }
-	    viewLoader.currentViewController = new ViewController.constructor({
-	        name: view,
-	        $element: $(mainViewContainer),
-	        labels: {},
-	        template: ViewTemplate,
-	        path: path,
-	        passedData: data
-	    });
-	    viewLoader.currentViewController.initialize();
-	    //The ready property is so a controller can abort loading, useful if a redirect is being called
-	    if (viewLoader.currentViewController.ready === true) {
-	        viewLoader.currentViewController.render(function() {
-	            renderSubviews();
-	        });
-	    } else {
-	        callback('Loading of view was aborted by controller.');
-	    }
-	};
-	
-	loadSubview = function(data, callback) {
-	    var viewLoader = this,
-	        subview = this.currentViewController.subPath,
-	        viewString = this.currentViewController.name + '-' + subview,
-	        SubViewController, SubViewTemplate;
-	
-	    SubViewController = __webpack_require__(23)("./" + viewString + '.js');
-	    SubViewTemplate = __webpack_require__(24)("./" + viewString + '.html');
-	
-	    if (viewLoader.currentSubViewController !== null) {
-	        viewLoader.currentSubViewController.close();
-	    }
-	    viewLoader.currentSubViewController = new SubViewController.constructor({
-	        name: viewString,
-	        $element: viewLoader.currentViewController.$subViewContainer,
-	        labels: {},
-	        template: SubViewTemplate,
-	        path: viewLoader.currentViewController.path,
-	        passedData: data
-	    });
-	    viewLoader.currentSubViewController.initialize();
-	    viewLoader.currentSubViewController.render(function() {
-	        if (_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
-	            viewLoader.currentViewController.didRenderSubview();
-	        }
-	    });
-	    if (_.isFunction(callback) === true) {
-	        callback(null, viewLoader.currentSubViewController);
-	    }
-	};
-	
-	/**
-	 * Does the heavy lifting regardless of the openModalViews array.
-	 */
-	_loadModalView = function(view, path, data, callback) {
-	    var viewLoader = ViewLoader,
-	        $modalViewContainer = $(modalViewContainer),
-	        ViewController, ViewTemplate;
-	
-	    ViewController = __webpack_require__(23)("./" + view + '.js');
-	    ViewTemplate = __webpack_require__(24)("./" + view + '.html');
-	
-	    if (viewLoader.currentModalViewController !== null) {
-	        viewLoader.currentModalViewController.close();
-	        viewLoader.openModalViews.pop();
-	    }
-	
-	    if ($modalViewLightbox.hasClass('hidden') === true) {
-	        $modalViewLightbox.removeClass('hidden');
-	        $('body').addClass('modal-open');
-	        $('.view-container').addClass('modal-open');
-	    }
-	
-	    viewLoader.currentModalViewController = new ViewController.constructor({
-	        name: view,
-	        $element: $modalViewContainer,
-	        labels: {},
-	        template: ViewTemplate,
-	        path: path,
-	        passedData: data
-	    });
-	    viewLoader.currentModalViewController.initialize();
-	    if (viewLoader.currentModalViewController.ready === true) {
-	        viewLoader.currentModalViewController.render(function(error, subview, $subViewContainer) {
-	            if (!error && subview && subview !== null) {
-	                viewLoader.loadSubview(subview, $subViewContainer, data);
-	            }
-	        });
-	    }
-	
-	    callback(null, viewLoader.currentModalViewController);
-	};
-	
-	loadModalView = function(view, path, data, callback) {
-	    var viewLoader = this;
-	
-	    viewLoader.openModalViews.unshift({
-	        view: view,
-	        path: path,
-	        data: data,
-	        callback: callback
-	    });
-	
-	    if (viewLoader.openModalViews.length <= 1) {
-	        _loadModalView(view, path, data, callback);
-	    } else {
-	        callback(null, viewLoader.currentModalViewController);
-	    }
-	};
-	
-	loadModalViewSibling = function(view, path, data, callback) {
-	    this.openModalViews.unshift({
-	        view: view,
-	        path: path,
-	        data: data,
-	        callback: callback
-	    });
-	    _loadModalView(view, path, data, callback);
-	};
-	
-	closeModalView = function(callback) {
-	    var viewLoader = this,
-	        previousModal = null;
-	
-	    if (this.currentModalViewController !== null) {
-	        this.currentModalViewController.close();
-	        this.currentModalViewController = null;
-	    }
-	    if ($modalViewLightbox.hasClass('hidden') === false) {
-	        $modalViewLightbox.addClass('hidden');
-	        $('body').removeClass('modal-open');
-	        $('.view-container').removeClass('modal-open');
-	    }
-	
-	    //Remove modal from queue
-	    this.openModalViews.pop();
-	
-	    if (this.openModalViews.length > 0) {
-	        previousModal = this.openModalViews[this.openModalViews.length - 1];
-	        _loadModalView(previousModal.view, previousModal.path, previousModal.data, function(error, loadedModalViewController) {
-	            if (_.isFunction(previousModal.callback) === true) {
-	                previousModal.callback();
-	            }
-	            callback(null, loadedModalViewController);
-	        });
-	    } else {
-	        //Render the underlying view again so that data gets updated
-	        this.loadView(viewLoader.currentViewController.name, viewLoader.currentViewController.path, viewLoader.currentViewController.passedData, function() {
-	            if (_.isFunction(callback)) {
-	                callback(null, previousModal);
-	            }
-	        });
-	    }
-	};
-	
-	ViewLoader = {
-	    currentViewController: null,
-	    currentSubViewController: null,
-	    currentModalViewController: null,
-	    openModalViews: [],
-	
-	    loadView: loadView,
-	    loadSubview: loadSubview,
-	    loadModalView: loadModalView,
-	    loadModalViewSibling: loadModalViewSibling,
-	    closeModalView: closeModalView
-	};
-	module.exports = ViewLoader;
-
+	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
+	__webpack_require__(26)
+	__webpack_require__(27)
+	__webpack_require__(28)
+	__webpack_require__(29)
+	__webpack_require__(30)
+	__webpack_require__(31)
+	__webpack_require__(32)
+	__webpack_require__(33)
+	__webpack_require__(34)
+	__webpack_require__(35)
+	__webpack_require__(36)
+	__webpack_require__(37)
 
 /***/ },
 /* 21 */
@@ -13098,8 +13097,8 @@
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(16),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(17),
 	
 		$popupLightbox = $('#popup-lightbox'),
 	    inherit, show, hide, setTitle;
@@ -13181,7 +13180,7 @@
 		"./gearsearchform.js": 65,
 		"./home.js": 66,
 		"./insurance.js": 67,
-		"./navigation-header.js": 5,
+		"./navigation-header.js": 11,
 		"./payment.js": 68,
 		"./paymentsuccessful.js": 69,
 		"./pickupdeliverycalendar.js": 70,
@@ -13291,6 +13290,51 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Defines a currency conversion model.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var Config = __webpack_require__(5),
+		Model = __webpack_require__(16),
+	
+		currencies = {},
+	    XChangeRates,
+	
+	    getRate;
+	
+	getRate = function(fromCurrency, toCurrency, callback) {
+	    var code = fromCurrency + toCurrency;
+	    if (currencies[code]) {
+	        callback(null, currencies[code]);
+	        return;
+	    }
+	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        currencies[code] = data.rate;
+	        callback(null, data.rate);
+	    });
+	};
+	
+	XChangeRates = Model.inherit({
+	    getRate: getRate
+	});
+	XChangeRates = new XChangeRates.constructor({
+	    rootURL: Config.API_URL
+	});
+	module.exports = XChangeRates;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
 	 * Bootstrap: transition.js v3.3.4
 	 * http://getbootstrap.com/javascript/#transitions
@@ -13354,7 +13398,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13455,7 +13499,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13578,7 +13622,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13822,7 +13866,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14040,7 +14084,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14208,7 +14252,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14554,7 +14598,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15037,7 +15081,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15152,7 +15196,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15331,7 +15375,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15491,7 +15535,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15660,51 +15704,6 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a currency conversion model.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var Config = __webpack_require__(6),
-		Model = __webpack_require__(19),
-	
-		currencies = {},
-	    XChangeRates,
-	
-	    getRate;
-	
-	getRate = function(fromCurrency, toCurrency, callback) {
-	    var code = fromCurrency + toCurrency;
-	    if (currencies[code]) {
-	        callback(null, currencies[code]);
-	        return;
-	    }
-	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        currencies[code] = data.rate;
-	        callback(null, data.rate);
-	    });
-	};
-	
-	XChangeRates = Model.inherit({
-	    getRate: getRate
-	});
-	XChangeRates = new XChangeRates.constructor({
-	    rootURL: Config.API_URL
-	});
-	module.exports = XChangeRates;
-
-
-/***/ },
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -15720,7 +15719,7 @@
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(16),
+	    ViewController = __webpack_require__(17),
 	
 	    testimonials,
 	
@@ -15863,12 +15862,12 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
-	    Gear = __webpack_require__(139),
+	    Localization = __webpack_require__(19),
+	    Gear = __webpack_require__(138),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -16669,12 +16668,12 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
-	    TechProfile = __webpack_require__(138),
+	    Localization = __webpack_require__(19),
+	    TechProfile = __webpack_require__(139),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -17305,11 +17304,11 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
+	    Localization = __webpack_require__(19),
 	    Van = __webpack_require__(140),
 	
 	    countryDefault = 'Select country:',
@@ -18017,10 +18016,10 @@
 	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(16),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
+	    Localization = __webpack_require__(19),
 	
 	    didInitialize,
 	    didRender,
@@ -18531,12 +18530,12 @@
 	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
-	    User = __webpack_require__(9),
+	    Localization = __webpack_require__(19),
+	    User = __webpack_require__(8),
 	    Booking = __webpack_require__(141),
 	
 	    didInitialize,
@@ -18829,11 +18828,11 @@
 	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
+	    Localization = __webpack_require__(19),
 	    Booking = __webpack_require__(141),
 	
 	    SelectTimePopup = __webpack_require__(142),
@@ -19054,7 +19053,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(16);
+	var ViewController = __webpack_require__(17);
 	
 	module.exports = ViewController.inherit({});
 
@@ -19073,7 +19072,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(16),
+		ViewController = __webpack_require__(17),
 		
 	    didRender,
 	    loadFooter;
@@ -19121,11 +19120,11 @@
 	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
+	    Localization = __webpack_require__(19),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -19168,6 +19167,7 @@
 	    var view = this,
 	        userData = this.user.data,
 	        birthdate, $countriesSelect, $nationalitiesSelect;
+	
 	    if (App.rootVC !== null && App.rootVC.header) {
 	        App.rootVC.header.setTitle('Your profile');
 	    }
@@ -19444,10 +19444,10 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(16),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(18),
+		Localization = __webpack_require__(19),
 	
 		didInitialize,
 	    didRender,
@@ -19533,8 +19533,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19655,8 +19655,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19804,8 +19804,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19949,8 +19949,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20094,8 +20094,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20237,8 +20237,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20344,8 +20344,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20489,8 +20489,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20632,8 +20632,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20750,10 +20750,10 @@
 	
 	var $ = __webpack_require__(4),
 	
-		ViewController = __webpack_require__(16),
-		App = __webpack_require__(1),
+	    ViewController = __webpack_require__(17),
+	    App = __webpack_require__(1),
 	
-		subViewContainerID,
+	    subViewContainerID,
 	
 	    didInitialize,
 	    didRender,
@@ -20776,15 +20776,15 @@
 	    this.hasSubviews = true;
 	
 	    this.$subViewContainer = $('');
-	
-	    if (this.path === 'dashboard') {
-	        App.router.navigateTo('dashboard/profile');
-	    }
 	};
 	
 	didRender = function() {
 	    this.$subViewContainer = $('#' + subViewContainerID);
 	    this.setupEvent('click', '.dashboard-menu .list-group-item', this, this.handleSelection);
+	    //We need to make sure that a subview gets rendered
+	    if (this.path === 'dashboard') {
+	        App.router.navigateTo('dashboard/profile');
+	    }
 	};
 	
 	didRenderSubview = function() {
@@ -20838,8 +20838,8 @@
 	    GoogleMaps = __webpack_require__(13),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(16),
-	    Localization = __webpack_require__(18),
+	    ViewController = __webpack_require__(17),
+	    Localization = __webpack_require__(19),
 	
 	    geocoder,
 	
@@ -21472,10 +21472,10 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
+	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(16),
-	    Localization = __webpack_require__(18),
+	    ViewController = __webpack_require__(17),
+	    Localization = __webpack_require__(19),
 	
 	    geocoder,
 	
@@ -21986,8 +21986,8 @@
 	    Moment = __webpack_require__(137),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(16),
-	    Localization = __webpack_require__(18),
+	    ViewController = __webpack_require__(17),
+	    Localization = __webpack_require__(19),
 	
 	    geocoder,
 	
@@ -22543,7 +22543,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(16);
+	var ViewController = __webpack_require__(17);
 	module.exports = ViewController.inherit();
 
 
@@ -22561,9 +22561,9 @@
 	
 	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(16),
+		ViewController = __webpack_require__(17),
 	
-		Localization = __webpack_require__(18),
+		Localization = __webpack_require__(19),
 	
 		didInitialize;
 	
@@ -22593,17 +22593,17 @@
 	'use strict';
 	
 	var $ = __webpack_require__(4),
-		FB = __webpack_require__(17),
+		FB = __webpack_require__(18),
 		GoogleMaps = __webpack_require__(13),
 	
-		Config = __webpack_require__(6),
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(16),
+		Config = __webpack_require__(5),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(18),
-		Gear = __webpack_require__(139),
-		User = __webpack_require__(9),
+		Localization = __webpack_require__(19),
+		Gear = __webpack_require__(138),
+		User = __webpack_require__(8),
 	
 		paymentSuccessModalOpen = false,
 	
@@ -22972,11 +22972,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(16),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(18),
+		Localization = __webpack_require__(19),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -23383,7 +23383,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(16),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23526,7 +23526,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(16),
+	    ViewController = __webpack_require__(17),
 	
 	    didRender,
 	    loadFooter;
@@ -23571,11 +23571,11 @@
 		$ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(6),
-		ViewController = __webpack_require__(16),
+		Config = __webpack_require__(5),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(18),
+		Localization = __webpack_require__(19),
 		Card = __webpack_require__(146),
 	
 		didInitialize,
@@ -24010,11 +24010,11 @@
 	var $ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(6),
+		Config = __webpack_require__(5),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(18),
-		ViewController = __webpack_require__(16),
+		Localization = __webpack_require__(19),
+		ViewController = __webpack_require__(17),
 		Booking = __webpack_require__(141),
 	
 		didInitialize,
@@ -24151,10 +24151,10 @@
 		$ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(16),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(17),
 	
-		Localization = __webpack_require__(18),
+		Localization = __webpack_require__(19),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -24604,7 +24604,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(16),
+		ViewController = __webpack_require__(17),
 	
 	    didRender,
 	    loadFooter;
@@ -24649,14 +24649,14 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(17),
+	    FB = __webpack_require__(18),
 	
-	    Config = __webpack_require__(6),
-	    Utilities = __webpack_require__(8),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    Utilities = __webpack_require__(7),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
+	    Localization = __webpack_require__(19),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -25179,11 +25179,11 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(6),
+	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(16),
-	    Localization = __webpack_require__(18),
-	    MessagePopup = __webpack_require__(11),
+	    ViewController = __webpack_require__(17),
+	    Localization = __webpack_require__(19),
+	    MessagePopup = __webpack_require__(10),
 	
 	    geocoder,
 	
@@ -25551,15 +25551,15 @@
 	
 	var $ = __webpack_require__(4),
 		GoogleMaps = __webpack_require__(13),
-		FB = __webpack_require__(17),
+		FB = __webpack_require__(18),
 		
-		Config = __webpack_require__(6),
-		Utilities = __webpack_require__(8),
+		Config = __webpack_require__(5),
+		Utilities = __webpack_require__(7),
 		App = __webpack_require__(1),
-		ViewController = __webpack_require__(16),
-		Localization = __webpack_require__(18),
-		User = __webpack_require__(9),
-		TechProfile = __webpack_require__(138),
+		ViewController = __webpack_require__(17),
+		Localization = __webpack_require__(19),
+		User = __webpack_require__(8),
+		TechProfile = __webpack_require__(139),
 	
 		paymentSuccessModalOpen = false,
 	
@@ -25908,11 +25908,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(16),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(18),
+		Localization = __webpack_require__(19),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -26303,7 +26303,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(16);
+	var ViewController = __webpack_require__(17);
 	
 	module.exports = ViewController;
 
@@ -26323,10 +26323,10 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(6),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    ViewController = __webpack_require__(17),
 	
-	    User = __webpack_require__(9),
+	    User = __webpack_require__(8),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -26587,16 +26587,16 @@
 	'use strict';
 	
 	var $ = __webpack_require__(4),
-	    FB = __webpack_require__(17),
+	    FB = __webpack_require__(18),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    Config = __webpack_require__(6),
-	    Utilities = __webpack_require__(8),
-	    ViewController = __webpack_require__(16),
+	    Config = __webpack_require__(5),
+	    Utilities = __webpack_require__(7),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(18),
-	    User = __webpack_require__(9),
+	    Localization = __webpack_require__(19),
+	    User = __webpack_require__(8),
 	    Van = __webpack_require__(140),
 	
 	    paymentSuccessModalOpen = false,
@@ -26961,11 +26961,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(8),
-		ViewController = __webpack_require__(16),
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(18),
+		Localization = __webpack_require__(19),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -27700,205 +27700,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(3),
-	
-	    App = __webpack_require__(1),
-	    Model = __webpack_require__(19),
-	
-	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
-	        };
-	    }
-	};
-	
-	createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
-/* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Defines a gear item.
 	 * @author: Chris Hjorth
 	 */
@@ -27908,8 +27709,8 @@
 	
 	var _ = __webpack_require__(3),
 		
-		Utilities = __webpack_require__(8),
-		Model = __webpack_require__(19),
+		Utilities = __webpack_require__(7),
+		Model = __webpack_require__(16),
 		App = __webpack_require__(1),
 		
 		didInitialize,
@@ -28141,6 +27942,205 @@
 
 
 /***/ },
+/* 139 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(3),
+	
+	    App = __webpack_require__(1),
+	    Model = __webpack_require__(16),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28154,8 +28154,8 @@
 	
 	var _ = __webpack_require__(3),
 		
-		Utilities = __webpack_require__(8),
-		Model = __webpack_require__(19),
+		Utilities = __webpack_require__(7),
+		Model = __webpack_require__(16),
 		App = __webpack_require__(1),
 	
 		didInitialize,
@@ -28391,7 +28391,7 @@
 	var _ = __webpack_require__(3),
 	    Moment = __webpack_require__(137),
 	
-	    Model = __webpack_require__(19),
+	    Model = __webpack_require__(16),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -28603,8 +28603,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-		Model = __webpack_require__(19),
-		Gear = __webpack_require__(139),
+		Model = __webpack_require__(16),
+		Gear = __webpack_require__(138),
 		
 		didInitialize,
 	
@@ -28745,8 +28745,8 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		Model = __webpack_require__(19),
-		TechProfile = __webpack_require__(138),
+		Model = __webpack_require__(16),
+		TechProfile = __webpack_require__(139),
 		
 		didInitialize,
 	
@@ -28888,7 +28888,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(19),
+	    Model = __webpack_require__(16),
 	    Van = __webpack_require__(140),
 	
 	    didInitialize,
@@ -29031,8 +29031,8 @@
 	
 	var mangoPay = __webpack_require__(150),
 		
-		Config = __webpack_require__(6),
-		Model = __webpack_require__(19),
+		Config = __webpack_require__(5),
+		Model = __webpack_require__(16),
 	
 	    didInitialize,
 	    registerCard;
