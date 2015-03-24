@@ -13,8 +13,8 @@ webpack
 
 #Stage build
 cd ../../../
-git add --refresh -A
-git add -A
+git add --refresh
+git add .
 
 git stash -q --keep-index
 

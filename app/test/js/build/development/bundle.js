@@ -54,7 +54,7 @@
 	
 	var _ = __webpack_require__(15);
 	
-	__webpack_require__(16);
+	__webpack_require__(18);
 	
 	__webpack_require__(1);
 	__webpack_require__(3);
@@ -86,10 +86,10 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(17);
+	__webpack_require__(16);
 	mocha.setup("bdd");
 	__webpack_require__(2)
-	__webpack_require__(18);
+	__webpack_require__(17);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -112,16 +112,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(28),
+	var chai = __webpack_require__(27),
 		$ = __webpack_require__(32),
 	
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
 		expect;
 	
 	expect = chai.expect;
 	
-	__webpack_require__(29);
+	__webpack_require__(30);
 	
 	describe('App', function() {
 	    beforeEach(function() {
@@ -199,10 +199,10 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(17);
+	__webpack_require__(16);
 	mocha.setup("bdd");
 	__webpack_require__(4)
-	__webpack_require__(18);
+	__webpack_require__(17);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -226,9 +226,9 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(28),
+	var chai = __webpack_require__(27),
 		
-		Config = __webpack_require__(20),
+		Config = __webpack_require__(21),
 	
 		expect;
 	
@@ -255,10 +255,10 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(17);
+	__webpack_require__(16);
 	mocha.setup("bdd");
 	__webpack_require__(6)
-	__webpack_require__(18);
+	__webpack_require__(17);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -281,7 +281,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(28),
+	var chai = __webpack_require__(27),
 	
 	    Router = __webpack_require__(22),
 	    ViewLoader = __webpack_require__(23),
@@ -431,10 +431,10 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(17);
+	__webpack_require__(16);
 	mocha.setup("bdd");
 	__webpack_require__(8)
-	__webpack_require__(18);
+	__webpack_require__(17);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -457,17 +457,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(28),
+	var chai = __webpack_require__(27),
 		$ = __webpack_require__(32),
 		GoogleMaps = __webpack_require__(19),
 	
 		Router = __webpack_require__(22),
 		ViewLoader = __webpack_require__(23),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
 		expect;
 	
-	__webpack_require__(29);
+	__webpack_require__(30);
 	
 	expect = chai.expect;
 	
@@ -619,10 +619,10 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(17);
+	__webpack_require__(16);
 	mocha.setup("bdd");
 	__webpack_require__(10)
-	__webpack_require__(18);
+	__webpack_require__(17);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -646,7 +646,7 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(28),
+	var chai = __webpack_require__(27),
 		_ = __webpack_require__(15),
 		$ = __webpack_require__(32),
 	
@@ -793,10 +793,10 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(17);
+	__webpack_require__(16);
 	mocha.setup("bdd");
 	__webpack_require__(12)
-	__webpack_require__(18);
+	__webpack_require__(17);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -820,11 +820,11 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(28),
+	var chai = __webpack_require__(27),
 		$ = __webpack_require__(32),
 	
 		Model = __webpack_require__(25),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
 		expect;
 	
@@ -904,10 +904,10 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(17);
+	__webpack_require__(16);
 	mocha.setup("bdd");
 	__webpack_require__(14)
-	__webpack_require__(18);
+	__webpack_require__(17);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -931,10 +931,10 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(28),
+	var chai = __webpack_require__(27),
 		_ = __webpack_require__(15),
 		$ = __webpack_require__(32),
-		Moment = __webpack_require__(30),
+		Moment = __webpack_require__(29),
 		GoogleMaps = __webpack_require__(19),
 	
 		Utilities = __webpack_require__(26),
@@ -2602,6 +2602,30 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
+	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
+	
+	__webpack_require__(36);
+	__webpack_require__(28);
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
+		delete __webpack_require__.c[module.id];
+		if(typeof window !== "undefined" && window.mochaPhantomJS)
+			mochaPhantomJS.run();
+		else
+			mocha.run();
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
 	if (typeof Function.prototype.bind != 'function') {
 	    Function.prototype.bind = function bind(obj) {
 	        var args = Array.prototype.slice.call(arguments, 1),
@@ -2623,30 +2647,6 @@
 
 
 /***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
-	
-	__webpack_require__(36);
-	__webpack_require__(27);
-
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
-		delete __webpack_require__.c[module.id];
-		if(typeof window !== "undefined" && window.mochaPhantomJS)
-			mochaPhantomJS.run();
-		else
-			mocha.run();
-	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
-
-/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2654,51 +2654,6 @@
 
 /***/ },
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines site configuration.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
-	    MIN_USER_AGE = 13,
-	    AVG_USER_AGE = 27,
-	    MIN_XP_START_YEAR = 1960,
-	    FB_APP_ID = '522375581240221',
-	    FB_STATUSCHECK_TIMEOUT = 5000,
-	    API_URL,
-	    isProduction;
-	
-	if (IS_PRODUCTION === true) {
-	    API_URL = 'https://prod-api.sharingear.com';
-	} else {
-	    API_URL = 'https://api.sharingear.com';
-	}
-	
-	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
-	
-	isProduction = function() {
-	    return (this.IS_PRODUCTION === true);
-	};
-	
-	module.exports = {
-	    IS_PRODUCTION: IS_PRODUCTION,
-	    API_URL: API_URL,
-	    MIN_USER_AGE: MIN_USER_AGE,
-	    AVG_USER_AGE: AVG_USER_AGE,
-	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
-	    FB_APP_ID: FB_APP_ID,
-	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
-	    isProduction: isProduction
-	};
-
-
-/***/ },
-/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2712,7 +2667,7 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    Router = __webpack_require__(22),
 	    Utilities = __webpack_require__(26),
 	
@@ -2918,6 +2873,51 @@
 	App.user.initialize();
 	
 	module.exports = App;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines site configuration.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
+	    MIN_USER_AGE = 13,
+	    AVG_USER_AGE = 27,
+	    MIN_XP_START_YEAR = 1960,
+	    FB_APP_ID = '522375581240221',
+	    FB_STATUSCHECK_TIMEOUT = 5000,
+	    API_URL,
+	    isProduction;
+	
+	if (IS_PRODUCTION === true) {
+	    API_URL = 'https://prod-api.sharingear.com';
+	} else {
+	    API_URL = 'https://api.sharingear.com';
+	}
+	
+	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+	
+	isProduction = function() {
+	    return (this.IS_PRODUCTION === true);
+	};
+	
+	module.exports = {
+	    IS_PRODUCTION: IS_PRODUCTION,
+	    API_URL: API_URL,
+	    MIN_USER_AGE: MIN_USER_AGE,
+	    AVG_USER_AGE: AVG_USER_AGE,
+	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
+	    FB_APP_ID: FB_APP_ID,
+	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
+	    isProduction: isProduction
+	};
 
 
 /***/ },
@@ -3836,28 +3836,28 @@
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(33)(__webpack_require__(34))
+	module.exports = __webpack_require__(87);
+
 
 /***/ },
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(87);
-
+	__webpack_require__(33)(__webpack_require__(34))
 
 /***/ },
 /* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(33)(__webpack_require__(35))
+	var moment = module.exports = __webpack_require__(88);
+	moment.tz.load(__webpack_require__(168));
+
 
 /***/ },
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var moment = module.exports = __webpack_require__(88);
-	moment.tz.load(__webpack_require__(167));
-
+	__webpack_require__(33)(__webpack_require__(35))
 
 /***/ },
 /* 31 */
@@ -13188,7 +13188,7 @@
 /* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(89)();
+	exports = module.exports = __webpack_require__(92)();
 	exports.push([module.id, "@charset \"utf-8\";\n\nbody {\n  margin:0;\n}\n\n#mocha {\n  font: 20px/1.5 \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  margin: 60px 50px;\n}\n\n#mocha ul,\n#mocha li {\n  margin: 0;\n  padding: 0;\n}\n\n#mocha ul {\n  list-style: none;\n}\n\n#mocha h1,\n#mocha h2 {\n  margin: 0;\n}\n\n#mocha h1 {\n  margin-top: 15px;\n  font-size: 1em;\n  font-weight: 200;\n}\n\n#mocha h1 a {\n  text-decoration: none;\n  color: inherit;\n}\n\n#mocha h1 a:hover {\n  text-decoration: underline;\n}\n\n#mocha .suite .suite h1 {\n  margin-top: 0;\n  font-size: .8em;\n}\n\n#mocha .hidden {\n  display: none;\n}\n\n#mocha h2 {\n  font-size: 12px;\n  font-weight: normal;\n  cursor: pointer;\n}\n\n#mocha .suite {\n  margin-left: 15px;\n}\n\n#mocha .test {\n  margin-left: 15px;\n  overflow: hidden;\n}\n\n#mocha .test.pending:hover h2::after {\n  content: '(pending)';\n  font-family: arial, sans-serif;\n}\n\n#mocha .test.pass.medium .duration {\n  background: #c09853;\n}\n\n#mocha .test.pass.slow .duration {\n  background: #b94a48;\n}\n\n#mocha .test.pass::before {\n  content: '✓';\n  font-size: 12px;\n  display: block;\n  float: left;\n  margin-right: 5px;\n  color: #00d6b2;\n}\n\n#mocha .test.pass .duration {\n  font-size: 9px;\n  margin-left: 5px;\n  padding: 2px 5px;\n  color: #fff;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.2);\n  -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.2);\n  box-shadow: inset 0 1px 1px rgba(0,0,0,.2);\n  -webkit-border-radius: 5px;\n  -moz-border-radius: 5px;\n  -ms-border-radius: 5px;\n  -o-border-radius: 5px;\n  border-radius: 5px;\n}\n\n#mocha .test.pass.fast .duration {\n  display: none;\n}\n\n#mocha .test.pending {\n  color: #0b97c4;\n}\n\n#mocha .test.pending::before {\n  content: '◦';\n  color: #0b97c4;\n}\n\n#mocha .test.fail {\n  color: #c00;\n}\n\n#mocha .test.fail pre {\n  color: black;\n}\n\n#mocha .test.fail::before {\n  content: '✖';\n  font-size: 12px;\n  display: block;\n  float: left;\n  margin-right: 5px;\n  color: #c00;\n}\n\n#mocha .test pre.error {\n  color: #c00;\n  max-height: 300px;\n  overflow: auto;\n}\n\n/**\n * (1): approximate for browsers not supporting calc\n * (2): 42 = 2*15 + 2*10 + 2*1 (padding + margin + border)\n *      ^^ seriously\n */\n#mocha .test pre {\n  display: block;\n  float: left;\n  clear: left;\n  font: 12px/1.5 monaco, monospace;\n  margin: 5px;\n  padding: 15px;\n  border: 1px solid #eee;\n  max-width: 85%; /*(1)*/\n  max-width: calc(100% - 42px); /*(2)*/\n  word-wrap: break-word;\n  border-bottom-color: #ddd;\n  -webkit-border-radius: 3px;\n  -webkit-box-shadow: 0 1px 3px #eee;\n  -moz-border-radius: 3px;\n  -moz-box-shadow: 0 1px 3px #eee;\n  border-radius: 3px;\n}\n\n#mocha .test h2 {\n  position: relative;\n}\n\n#mocha .test a.replay {\n  position: absolute;\n  top: 3px;\n  right: 0;\n  text-decoration: none;\n  vertical-align: middle;\n  display: block;\n  width: 15px;\n  height: 15px;\n  line-height: 15px;\n  text-align: center;\n  background: #eee;\n  font-size: 15px;\n  -moz-border-radius: 15px;\n  border-radius: 15px;\n  -webkit-transition: opacity 200ms;\n  -moz-transition: opacity 200ms;\n  transition: opacity 200ms;\n  opacity: 0.3;\n  color: #888;\n}\n\n#mocha .test:hover a.replay {\n  opacity: 1;\n}\n\n#mocha-report.pass .test.fail {\n  display: none;\n}\n\n#mocha-report.fail .test.pass {\n  display: none;\n}\n\n#mocha-report.pending .test.pass,\n#mocha-report.pending .test.fail {\n  display: none;\n}\n#mocha-report.pending .test.pass.pending {\n  display: block;\n}\n\n#mocha-error {\n  color: #c00;\n  font-size: 1.5em;\n  font-weight: 100;\n  letter-spacing: 1px;\n}\n\n#mocha-stats {\n  position: fixed;\n  top: 15px;\n  right: 10px;\n  font-size: 12px;\n  margin: 0;\n  color: #888;\n  z-index: 1;\n}\n\n#mocha-stats .progress {\n  float: right;\n  padding-top: 0;\n}\n\n#mocha-stats em {\n  color: black;\n}\n\n#mocha-stats a {\n  text-decoration: none;\n  color: inherit;\n}\n\n#mocha-stats a:hover {\n  border-bottom: 1px solid #eee;\n}\n\n#mocha-stats li {\n  display: inline-block;\n  margin: 0 5px;\n  list-style: none;\n  padding-top: 11px;\n}\n\n#mocha-stats canvas {\n  width: 40px;\n  height: 40px;\n}\n\n#mocha code .comment { color: #ddd; }\n#mocha code .init { color: #2f6fad; }\n#mocha code .string { color: #5890ad; }\n#mocha code .keyword { color: #8a6343; }\n#mocha code .number { color: #2f6fad; }\n\n@media screen and (max-device-width: 480px) {\n  #mocha {\n    margin: 60px 0px;\n  }\n\n  #mocha #stats {\n    position: absolute;\n  }\n}\n", ""]);
 
 /***/ },
@@ -13204,8 +13204,8 @@
 	'use strict';
 	
 	var _ = __webpack_require__(15),
-	    FB = __webpack_require__(90),
-	    Localization = __webpack_require__(91),
+	    FB = __webpack_require__(89),
+	    Localization = __webpack_require__(90),
 	    Model = __webpack_require__(25),
 	    Utilities = __webpack_require__(26),
 	
@@ -13544,7 +13544,7 @@
 	
 	var $ = __webpack_require__(32),
 	
-		PopupController = __webpack_require__(92),
+		PopupController = __webpack_require__(91),
 	
 		MessagePopupTemplate = __webpack_require__(151),
 	
@@ -14084,13 +14084,13 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    Gear = __webpack_require__(152),
 	
 	    subtypeDefault = 'Choose subtype:',
@@ -14890,13 +14890,13 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    TechProfile = __webpack_require__(153),
 	
 	    countryDefault = 'Select country:',
@@ -15526,13 +15526,13 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    Van = __webpack_require__(154),
 	
 	    countryDefault = 'Select country:',
@@ -16238,12 +16238,12 @@
 	'use strict';
 	
 	var $ = __webpack_require__(32),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	
 	    didInitialize,
 	    didRender,
@@ -16752,13 +16752,13 @@
 	
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    User = __webpack_require__(38),
 	    Booking = __webpack_require__(155),
 	
@@ -17050,13 +17050,13 @@
 	'use strict';
 	
 	var $ = __webpack_require__(32),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    Booking = __webpack_require__(155),
 	
 	    SelectTimePopup = __webpack_require__(156),
@@ -17342,13 +17342,13 @@
 	
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -17669,9 +17669,9 @@
 	var $ = __webpack_require__(32),
 		
 		ViewController = __webpack_require__(24),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 	
 		didInitialize,
 	    didRender,
@@ -17757,9 +17757,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
 	
@@ -17879,9 +17879,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
 	
@@ -18028,9 +18028,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
 	
@@ -18173,9 +18173,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
 	
@@ -18318,9 +18318,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
 	
@@ -18461,9 +18461,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
 	
@@ -18568,9 +18568,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
 	
@@ -18713,9 +18713,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
 	
@@ -18856,9 +18856,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
 	
@@ -18975,7 +18975,7 @@
 	var $ = __webpack_require__(32),
 	
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    subViewContainerID,
 	
@@ -19058,12 +19058,12 @@
 	
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	    GoogleMaps = __webpack_require__(19),
 	
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	
 	    geocoder,
 	
@@ -19694,12 +19694,12 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
-	    App = __webpack_require__(21),
+	    Config = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	
 	    geocoder,
 	
@@ -20207,11 +20207,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	
 	    geocoder,
 	
@@ -20783,11 +20783,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Moment = __webpack_require__(30),
+	var Moment = __webpack_require__(29),
 		
 		ViewController = __webpack_require__(24),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 	
 		didInitialize;
 	
@@ -20818,15 +20818,15 @@
 	
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
-		FB = __webpack_require__(90),
+		FB = __webpack_require__(89),
 		GoogleMaps = __webpack_require__(19),
 	
-		Config = __webpack_require__(20),
+		Config = __webpack_require__(21),
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 		Gear = __webpack_require__(152),
 		User = __webpack_require__(38),
 	
@@ -21199,13 +21199,13 @@
 	var _ = __webpack_require__(15),
 		$ = __webpack_require__(32),
 		GoogleMaps = __webpack_require__(19),
-		Moment = __webpack_require__(30),
+		Moment = __webpack_require__(29),
 	
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -21613,7 +21613,7 @@
 	var $ = __webpack_require__(32),
 	
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    didInitialize,
 	    didRender,
@@ -21801,7 +21801,7 @@
 	
 	    ViewController = __webpack_require__(24),
 	    Utilities = __webpack_require__(26),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    defaultTitle,
 	
@@ -22021,13 +22021,13 @@
 	
 	var _ = __webpack_require__(15),
 		$ = __webpack_require__(32),
-		Moment = __webpack_require__(30),
+		Moment = __webpack_require__(29),
 	
-		Config = __webpack_require__(20),
+		Config = __webpack_require__(21),
 		ViewController = __webpack_require__(24),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 		Card = __webpack_require__(160),
 	
 		didInitialize,
@@ -22459,12 +22459,12 @@
 	'use strict';
 	
 	var $ = __webpack_require__(32),
-		Moment = __webpack_require__(30),
+		Moment = __webpack_require__(29),
 	
-		Config = __webpack_require__(20),
-		App = __webpack_require__(21),
+		Config = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 		ViewController = __webpack_require__(24),
 		Booking = __webpack_require__(155),
 	
@@ -22600,12 +22600,12 @@
 	
 	var _ = __webpack_require__(15),
 		$ = __webpack_require__(32),
-		Moment = __webpack_require__(30),
+		Moment = __webpack_require__(29),
 	
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -23100,14 +23100,14 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	    GoogleMaps = __webpack_require__(19),
-	    FB = __webpack_require__(90),
+	    FB = __webpack_require__(89),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    GearList = __webpack_require__(157),
 	    TechProfileList = __webpack_require__(158),
 	    VanList = __webpack_require__(159),
@@ -23628,12 +23628,12 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	    GoogleMaps = __webpack_require__(19),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
-	    App = __webpack_require__(21),
+	    Config = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    MessagePopup = __webpack_require__(40),
 	
 	    geocoder,
@@ -24003,13 +24003,13 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	    GoogleMaps = __webpack_require__(19),
-	    FB = __webpack_require__(90),
+	    FB = __webpack_require__(89),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	    ViewController = __webpack_require__(24),
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    User = __webpack_require__(38),
 	    TechProfile = __webpack_require__(153),
 	
@@ -24362,13 +24362,13 @@
 	var _ = __webpack_require__(15),
 		$ = __webpack_require__(32),
 		GoogleMaps = __webpack_require__(19),
-		Moment = __webpack_require__(30),
+		Moment = __webpack_require__(29),
 	
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -24779,7 +24779,7 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    ViewController = __webpack_require__(24),
 	
 	    User = __webpack_require__(38),
@@ -25044,15 +25044,15 @@
 	
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(32),
-	    FB = __webpack_require__(90),
+	    FB = __webpack_require__(89),
 	    GoogleMaps = __webpack_require__(19),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
 	    ViewController = __webpack_require__(24),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
-	    Localization = __webpack_require__(91),
+	    Localization = __webpack_require__(90),
 	    User = __webpack_require__(38),
 	    Van = __webpack_require__(154),
 	
@@ -25420,13 +25420,13 @@
 	var _ = __webpack_require__(15),
 		$ = __webpack_require__(32),
 		GoogleMaps = __webpack_require__(19),
-		Moment = __webpack_require__(30),
+		Moment = __webpack_require__(29),
 	
 		Utilities = __webpack_require__(26),
 		ViewController = __webpack_require__(24),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
-		Localization = __webpack_require__(91),
+		Localization = __webpack_require__(90),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -25835,7 +25835,7 @@
 	 * Utils for plugins (not exported)
 	 */
 	
-	var util = __webpack_require__(168);
+	var util = __webpack_require__(167);
 	
 	/**
 	 * # .use(function)
@@ -26333,27 +26333,6 @@
 /* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function() {
-		var list = [];
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-		return list;
-	}
-
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/*jslint node: true */
 	'use strict';
 	
@@ -26416,7 +26395,7 @@
 
 
 /***/ },
-/* 91 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26427,9 +26406,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Moment = __webpack_require__(30),
+	var Moment = __webpack_require__(29),
 	
-	    Config = __webpack_require__(20),
+	    Config = __webpack_require__(21),
 	    Model = __webpack_require__(25),
 	    XChangeRates = __webpack_require__(169),
 	    Localization,
@@ -26616,7 +26595,7 @@
 
 
 /***/ },
-/* 92 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26671,6 +26650,27 @@
 	    inherit: inherit
 	};
 
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function() {
+		var list = [];
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+		return list;
+	}
 
 /***/ },
 /* 93 */
@@ -27042,7 +27042,7 @@
 		
 		Utilities = __webpack_require__(26),
 		Model = __webpack_require__(25),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 		
 		didInitialize,
 	    createGear,
@@ -27287,7 +27287,7 @@
 	
 	var _ = __webpack_require__(15),
 	
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	    Model = __webpack_require__(25),
 	
 	    didInitialize,
@@ -27487,7 +27487,7 @@
 		
 		Utilities = __webpack_require__(26),
 		Model = __webpack_require__(25),
-		App = __webpack_require__(21),
+		App = __webpack_require__(20),
 	
 		didInitialize,
 	    createVan,
@@ -27720,10 +27720,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(15),
-	    Moment = __webpack_require__(30),
+	    Moment = __webpack_require__(29),
 	
 	    Model = __webpack_require__(25),
-	    App = __webpack_require__(21),
+	    App = __webpack_require__(20),
 	
 	    didInitialize,
 	    createBooking,
@@ -27861,7 +27861,7 @@
 	
 	var $ = __webpack_require__(32),
 	
-		PopupController = __webpack_require__(92),
+		PopupController = __webpack_require__(91),
 		SelectTimePopupTemplate = __webpack_require__(171),
 	
 		SelectTimePopup,
@@ -28361,7 +28361,7 @@
 	
 	var mangoPay = __webpack_require__(191),
 		
-		Config = __webpack_require__(20),
+		Config = __webpack_require__(21),
 		Model = __webpack_require__(25),
 	
 	    didInitialize,
@@ -31560,6 +31560,138 @@
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*!
+	 * chai
+	 * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
+	 * MIT Licensed
+	 */
+	
+	/*!
+	 * Main exports
+	 */
+	
+	var exports = module.exports = {};
+	
+	/*!
+	 * test utility
+	 */
+	
+	exports.test = __webpack_require__(173);
+	
+	/*!
+	 * type utility
+	 */
+	
+	exports.type = __webpack_require__(174);
+	
+	/*!
+	 * message utility
+	 */
+	
+	exports.getMessage = __webpack_require__(175);
+	
+	/*!
+	 * actual utility
+	 */
+	
+	exports.getActual = __webpack_require__(176);
+	
+	/*!
+	 * Inspect util
+	 */
+	
+	exports.inspect = __webpack_require__(177);
+	
+	/*!
+	 * Object Display util
+	 */
+	
+	exports.objDisplay = __webpack_require__(178);
+	
+	/*!
+	 * Flag utility
+	 */
+	
+	exports.flag = __webpack_require__(179);
+	
+	/*!
+	 * Flag transferring utility
+	 */
+	
+	exports.transferFlags = __webpack_require__(180);
+	
+	/*!
+	 * Deep equal utility
+	 */
+	
+	exports.eql = __webpack_require__(192);
+	
+	/*!
+	 * Deep path value
+	 */
+	
+	exports.getPathValue = __webpack_require__(181);
+	
+	/*!
+	 * Deep path info
+	 */
+	
+	exports.getPathInfo = __webpack_require__(182);
+	
+	/*!
+	 * Check if a property exists
+	 */
+	
+	exports.hasProperty = __webpack_require__(183);
+	
+	/*!
+	 * Function name
+	 */
+	
+	exports.getName = __webpack_require__(184);
+	
+	/*!
+	 * add Property
+	 */
+	
+	exports.addProperty = __webpack_require__(185);
+	
+	/*!
+	 * add Method
+	 */
+	
+	exports.addMethod = __webpack_require__(186);
+	
+	/*!
+	 * overwrite Property
+	 */
+	
+	exports.overwriteProperty = __webpack_require__(187);
+	
+	/*!
+	 * overwrite Method
+	 */
+	
+	exports.overwriteMethod = __webpack_require__(188);
+	
+	/*!
+	 * Add a chainable method
+	 */
+	
+	exports.addChainableMethod = __webpack_require__(189);
+	
+	/*!
+	 * Overwrite chainable method
+	 */
+	
+	exports.overwriteChainableMethod = __webpack_require__(190);
+	
+
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
 	module.exports = {
 		"version": "2015a",
 		"zones": [
@@ -32151,138 +32283,6 @@
 	}
 
 /***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*!
-	 * chai
-	 * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
-	 * MIT Licensed
-	 */
-	
-	/*!
-	 * Main exports
-	 */
-	
-	var exports = module.exports = {};
-	
-	/*!
-	 * test utility
-	 */
-	
-	exports.test = __webpack_require__(173);
-	
-	/*!
-	 * type utility
-	 */
-	
-	exports.type = __webpack_require__(174);
-	
-	/*!
-	 * message utility
-	 */
-	
-	exports.getMessage = __webpack_require__(175);
-	
-	/*!
-	 * actual utility
-	 */
-	
-	exports.getActual = __webpack_require__(176);
-	
-	/*!
-	 * Inspect util
-	 */
-	
-	exports.inspect = __webpack_require__(177);
-	
-	/*!
-	 * Object Display util
-	 */
-	
-	exports.objDisplay = __webpack_require__(178);
-	
-	/*!
-	 * Flag utility
-	 */
-	
-	exports.flag = __webpack_require__(179);
-	
-	/*!
-	 * Flag transferring utility
-	 */
-	
-	exports.transferFlags = __webpack_require__(180);
-	
-	/*!
-	 * Deep equal utility
-	 */
-	
-	exports.eql = __webpack_require__(192);
-	
-	/*!
-	 * Deep path value
-	 */
-	
-	exports.getPathValue = __webpack_require__(181);
-	
-	/*!
-	 * Deep path info
-	 */
-	
-	exports.getPathInfo = __webpack_require__(182);
-	
-	/*!
-	 * Check if a property exists
-	 */
-	
-	exports.hasProperty = __webpack_require__(183);
-	
-	/*!
-	 * Function name
-	 */
-	
-	exports.getName = __webpack_require__(184);
-	
-	/*!
-	 * add Property
-	 */
-	
-	exports.addProperty = __webpack_require__(185);
-	
-	/*!
-	 * add Method
-	 */
-	
-	exports.addMethod = __webpack_require__(186);
-	
-	/*!
-	 * overwrite Property
-	 */
-	
-	exports.overwriteProperty = __webpack_require__(187);
-	
-	/*!
-	 * overwrite Method
-	 */
-	
-	exports.overwriteMethod = __webpack_require__(188);
-	
-	/*!
-	 * Add a chainable method
-	 */
-	
-	exports.addChainableMethod = __webpack_require__(189);
-	
-	/*!
-	 * Overwrite chainable method
-	 */
-	
-	exports.overwriteChainableMethod = __webpack_require__(190);
-	
-
-
-/***/ },
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32294,7 +32294,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Config = __webpack_require__(20),
+	var Config = __webpack_require__(21),
 		Model = __webpack_require__(25),
 	
 		currencies = {},
@@ -35497,7 +35497,7 @@
 	    }
 	}).call(this);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(277)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(276)(module)))
 
 /***/ },
 /* 173 */
@@ -36803,7 +36803,7 @@
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(276);
+	module.exports = __webpack_require__(277);
 
 
 /***/ },
@@ -44769,6 +44769,22 @@
 /* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/*!
 	 * deep-eql
 	 * Copyright(c) 2013 Jake Luer <jake@alogicalparadox.com>
@@ -45025,22 +45041,6 @@
 	  }
 	
 	  return true;
-	}
-
-
-/***/ },
-/* 277 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
 	}
 
 
