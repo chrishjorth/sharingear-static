@@ -112,7 +112,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		$ = __webpack_require__(31),
 	
 		App = __webpack_require__(20),
@@ -226,9 +226,9 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		
-		Config = __webpack_require__(21),
+		Config = __webpack_require__(24),
 	
 		expect;
 	
@@ -281,10 +281,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 	
-	    Router = __webpack_require__(22),
-	    ViewLoader = __webpack_require__(23),
+	    Router = __webpack_require__(21),
+	    ViewLoader = __webpack_require__(22),
 	
 	    expect;
 	
@@ -457,12 +457,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		$ = __webpack_require__(31),
 		GoogleMaps = __webpack_require__(19),
 	
-		Router = __webpack_require__(22),
-		ViewLoader = __webpack_require__(23),
+		Router = __webpack_require__(21),
+		ViewLoader = __webpack_require__(22),
 		App = __webpack_require__(20),
 	
 		expect;
@@ -646,11 +646,11 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		_ = __webpack_require__(15),
 		$ = __webpack_require__(31),
 	
-		ViewController = __webpack_require__(24),
+		ViewController = __webpack_require__(25),
 	
 		expect;
 	
@@ -820,10 +820,10 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		$ = __webpack_require__(31),
 	
-		Model = __webpack_require__(26),
+		Model = __webpack_require__(23),
 		App = __webpack_require__(20),
 	
 		expect;
@@ -931,13 +931,13 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		_ = __webpack_require__(15),
 		$ = __webpack_require__(31),
 		Moment = __webpack_require__(30),
 		GoogleMaps = __webpack_require__(19),
 	
-		Utilities = __webpack_require__(25),
+		Utilities = __webpack_require__(26),
 	
 		expect;
 	
@@ -2629,7 +2629,7 @@
 	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
 	
 	__webpack_require__(36);
-	__webpack_require__(28);
+	__webpack_require__(27);
 
 
 /***/ },
@@ -2667,9 +2667,9 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    Router = __webpack_require__(22),
-	    Utilities = __webpack_require__(25),
+	    Config = __webpack_require__(24),
+	    Router = __webpack_require__(21),
+	    Utilities = __webpack_require__(26),
 	
 	    User = __webpack_require__(38),
 	    ContentClassification = __webpack_require__(39),
@@ -2880,51 +2880,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Defines site configuration.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
-	    MIN_USER_AGE = 13,
-	    AVG_USER_AGE = 27,
-	    MIN_XP_START_YEAR = 1960,
-	    FB_APP_ID = '522375581240221',
-	    FB_STATUSCHECK_TIMEOUT = 5000,
-	    API_URL,
-	    isProduction;
-	
-	if (IS_PRODUCTION === true) {
-	    API_URL = 'https://prod-api.sharingear.com';
-	} else {
-	    API_URL = 'https://api.sharingear.com';
-	}
-	
-	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
-	
-	isProduction = function() {
-	    return (this.IS_PRODUCTION === true);
-	};
-	
-	module.exports = {
-	    IS_PRODUCTION: IS_PRODUCTION,
-	    API_URL: API_URL,
-	    MIN_USER_AGE: MIN_USER_AGE,
-	    AVG_USER_AGE: AVG_USER_AGE,
-	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
-	    FB_APP_ID: FB_APP_ID,
-	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
-	    isProduction: isProduction
-	};
-
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Handles routing.
 	 * @author: Chris Hjorth
 	 */
@@ -2934,8 +2889,8 @@
 	
 	var _ = __webpack_require__(15),
 	
-		ViewLoader = __webpack_require__(23),
-		Utilities = __webpack_require__(25);
+		ViewLoader = __webpack_require__(22),
+		Utilities = __webpack_require__(26);
 	
 	var Router,
 				
@@ -3115,7 +3070,7 @@
 
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3354,7 +3309,185 @@
 
 
 /***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General model object with support for jQuery ajax.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
+	
+		Utilities = __webpack_require__(26),
+	
+		initialize,
+	    get,
+	    post,
+	    put,
+	    del,
+	
+	    constructor, inherit;
+	
+	initialize = function() {
+	    if (this.didInitialize && typeof this.didInitialize == 'function') {
+	        this.didInitialize();
+	    }
+	};
+	
+	get = function(url, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'GET',
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            console.log(jqXHR);
+	            console.log(textStatus);
+	            callback('Error executing GET request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                callback('Error retrieving resource from server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	post = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'POST',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing POST request: ' + errorThrown);
+	
+	        },
+	        success: function(data) {
+	
+	            if (data.error) {
+	                callback('Error sending resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	put = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'PUT',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing PUT request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                console.log(data.error);
+	                callback('Error putting resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	del = function() {
+	
+	};
+	
+	constructor = function(options) {
+	    var defaults, methods;
+	
+	    defaults = {
+	        rootURL: '',
+	        data: null
+	    };
+	
+	    methods = {
+	        initialize: initialize,
+	        get: get,
+	        post: post,
+	        put: put,
+	        del: del
+	    };
+	    _.extend(this, defaults, methods, options);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
+
+
+/***/ },
 /* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines site configuration.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
+	    MIN_USER_AGE = 13,
+	    AVG_USER_AGE = 27,
+	    MIN_XP_START_YEAR = 1960,
+	    FB_APP_ID = '522375581240221',
+	    FB_STATUSCHECK_TIMEOUT = 5000,
+	    API_URL,
+	    isProduction;
+	
+	if (IS_PRODUCTION === true) {
+	    API_URL = 'https://prod-api.sharingear.com';
+	} else {
+	    API_URL = 'https://api.sharingear.com';
+	}
+	
+	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+	
+	isProduction = function() {
+	    return (this.IS_PRODUCTION === true);
+	};
+	
+	module.exports = {
+	    IS_PRODUCTION: IS_PRODUCTION,
+	    API_URL: API_URL,
+	    MIN_USER_AGE: MIN_USER_AGE,
+	    AVG_USER_AGE: AVG_USER_AGE,
+	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
+	    FB_APP_ID: FB_APP_ID,
+	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
+	    isProduction: isProduction
+	};
+
+
+/***/ },
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3368,7 +3501,7 @@
 	var _ = __webpack_require__(15),
 		$ = __webpack_require__(31),
 	
-		Utilities = __webpack_require__(25),
+		Utilities = __webpack_require__(26),
 	
 		initialize,
 	    render,
@@ -3530,7 +3663,7 @@
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3700,150 +3833,17 @@
 
 
 /***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General model object with support for jQuery ajax.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(15),
-		$ = __webpack_require__(31),
-	
-		Utilities = __webpack_require__(25),
-	
-		initialize,
-	    get,
-	    post,
-	    put,
-	    del,
-	
-	    constructor, inherit;
-	
-	initialize = function() {
-	    if (this.didInitialize && typeof this.didInitialize == 'function') {
-	        this.didInitialize();
-	    }
-	};
-	
-	get = function(url, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'GET',
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR);
-	            console.log(textStatus);
-	            callback('Error executing GET request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                callback('Error retrieving resource from server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	post = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'POST',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing POST request: ' + errorThrown);
-	
-	        },
-	        success: function(data) {
-	
-	            if (data.error) {
-	                callback('Error sending resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	put = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'PUT',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing PUT request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                console.log(data.error);
-	                callback('Error putting resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	del = function() {
-	
-	};
-	
-	constructor = function(options) {
-	    var defaults, methods;
-	
-	    defaults = {
-	        rootURL: '',
-	        data: null
-	    };
-	
-	    methods = {
-	        initialize: initialize,
-	        get: get,
-	        post: post,
-	        put: put,
-	        del: del
-	    };
-	    _.extend(this, defaults, methods, options);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(44);
-
+	__webpack_require__(33)(__webpack_require__(34))
 
 /***/ },
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(33)(__webpack_require__(34))
+	module.exports = __webpack_require__(87);
+
 
 /***/ },
 /* 29 */
@@ -13206,8 +13206,8 @@
 	var _ = __webpack_require__(15),
 	    FB = __webpack_require__(90),
 	    Localization = __webpack_require__(91),
-	    Model = __webpack_require__(26),
-	    Utilities = __webpack_require__(25),
+	    Model = __webpack_require__(23),
+	    Utilities = __webpack_require__(26),
 	
 	    didInitialize,
 	    getLoginStatus,
@@ -13492,7 +13492,7 @@
 	
 	var _ = __webpack_require__(15),
 	
-	    Model = __webpack_require__(26),
+	    Model = __webpack_require__(23),
 	
 	    didInitialize,
 	    getClassification;
@@ -13595,49 +13595,49 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./aboutus.js": 45,
-		"./addgear.js": 46,
-		"./addtechprofile.js": 47,
-		"./addvan.js": 48,
-		"./availabilitycalendar.js": 49,
-		"./booking.js": 50,
-		"./bookingrequest.js": 51,
-		"./contactus.js": 52,
-		"./copyright.js": 53,
-		"./dashboard-profile.js": 54,
-		"./dashboard-settings.js": 55,
-		"./dashboard-yourgear.js": 56,
-		"./dashboard-yourgearrentals.js": 57,
-		"./dashboard-yourgearreservations.js": 58,
-		"./dashboard-yourtechprofilerentals.js": 59,
-		"./dashboard-yourtechprofilereservations.js": 60,
-		"./dashboard-yourtechprofiles.js": 61,
-		"./dashboard-yourvanrentals.js": 62,
-		"./dashboard-yourvanreservations.js": 63,
-		"./dashboard-yourvans.js": 64,
-		"./dashboard.js": 65,
-		"./editgear.js": 66,
-		"./edittechprofile.js": 67,
-		"./editvan.js": 68,
-		"./error.js": 69,
-		"./footer.js": 70,
-		"./gearprofile.js": 71,
-		"./gearsearchform.js": 72,
-		"./home.js": 73,
-		"./insurance.js": 74,
-		"./navigation-header.js": 75,
-		"./payment.js": 76,
-		"./paymentsuccessful.js": 77,
-		"./pickupdeliverycalendar.js": 78,
-		"./privacy.js": 79,
-		"./search.js": 80,
-		"./submerchantregistration.js": 81,
-		"./techprofile.js": 82,
-		"./techprofilesearchform.js": 83,
-		"./terms.js": 84,
-		"./user.js": 85,
-		"./vanprofile.js": 86,
-		"./vansearchform.js": 87
+		"./aboutus.js": 44,
+		"./addgear.js": 45,
+		"./addtechprofile.js": 46,
+		"./addvan.js": 47,
+		"./availabilitycalendar.js": 48,
+		"./booking.js": 49,
+		"./bookingrequest.js": 50,
+		"./contactus.js": 51,
+		"./copyright.js": 52,
+		"./dashboard-profile.js": 53,
+		"./dashboard-settings.js": 54,
+		"./dashboard-yourgear.js": 55,
+		"./dashboard-yourgearrentals.js": 56,
+		"./dashboard-yourgearreservations.js": 57,
+		"./dashboard-yourtechprofilerentals.js": 58,
+		"./dashboard-yourtechprofilereservations.js": 59,
+		"./dashboard-yourtechprofiles.js": 60,
+		"./dashboard-yourvanrentals.js": 61,
+		"./dashboard-yourvanreservations.js": 62,
+		"./dashboard-yourvans.js": 63,
+		"./dashboard.js": 64,
+		"./editgear.js": 65,
+		"./edittechprofile.js": 66,
+		"./editvan.js": 67,
+		"./error.js": 68,
+		"./footer.js": 69,
+		"./gearprofile.js": 70,
+		"./gearsearchform.js": 71,
+		"./home.js": 72,
+		"./insurance.js": 73,
+		"./navigation-header.js": 74,
+		"./payment.js": 75,
+		"./paymentsuccessful.js": 76,
+		"./pickupdeliverycalendar.js": 77,
+		"./privacy.js": 78,
+		"./search.js": 79,
+		"./submerchantregistration.js": 80,
+		"./techprofile.js": 81,
+		"./techprofilesearchform.js": 82,
+		"./terms.js": 83,
+		"./user.js": 84,
+		"./vanprofile.js": 85,
+		"./vansearchform.js": 86
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -13931,105 +13931,6 @@
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*!
-	 * chai
-	 * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
-	 * MIT Licensed
-	 */
-	
-	var used = []
-	  , exports = module.exports = {};
-	
-	/*!
-	 * Chai version
-	 */
-	
-	exports.version = '2.1.2';
-	
-	/*!
-	 * Assertion Error
-	 */
-	
-	exports.AssertionError = __webpack_require__(170);
-	
-	/*!
-	 * Utils for plugins (not exported)
-	 */
-	
-	var util = __webpack_require__(167);
-	
-	/**
-	 * # .use(function)
-	 *
-	 * Provides a way to extend the internals of Chai
-	 *
-	 * @param {Function}
-	 * @returns {this} for chaining
-	 * @api public
-	 */
-	
-	exports.use = function (fn) {
-	  if (!~used.indexOf(fn)) {
-	    fn(this, util);
-	    used.push(fn);
-	  }
-	
-	  return this;
-	};
-	
-	/*!
-	 * Utility Functions
-	 */
-	
-	exports.util = util;
-	
-	/*!
-	 * Configuration
-	 */
-	
-	var config = __webpack_require__(157);
-	exports.config = config;
-	
-	/*!
-	 * Primary `Assertion` prototype
-	 */
-	
-	var assertion = __webpack_require__(158);
-	exports.use(assertion);
-	
-	/*!
-	 * Core Assertions
-	 */
-	
-	var core = __webpack_require__(159);
-	exports.use(core);
-	
-	/*!
-	 * Expect interface
-	 */
-	
-	var expect = __webpack_require__(160);
-	exports.use(expect);
-	
-	/*!
-	 * Should interface
-	 */
-	
-	var should = __webpack_require__(161);
-	exports.use(should);
-	
-	/*!
-	 * Assert interface
-	 */
-	
-	var assert = __webpack_require__(162);
-	exports.use(assert);
-
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/**
 	 * Controller for the Sharingear About us page view.
 	 * @author: Chris Hjorth
@@ -14042,7 +13943,7 @@
 	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
 	
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	
 	    testimonials,
 	
@@ -14146,7 +14047,7 @@
 	loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(70);
+	    FooterController = __webpack_require__(69);
 	    FooterTemplate = __webpack_require__(119);
 	
 	    view.footer = new FooterController.constructor({
@@ -14169,7 +14070,7 @@
 
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14185,12 +14086,12 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
-	    Gear = __webpack_require__(152),
+	    Gear = __webpack_require__(153),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -14768,7 +14669,7 @@
 	    $calendarContainer.removeClass('col-sm-9');
 	    $calendarContainer.addClass('col-sm-12');
 	
-	    calendarVC = __webpack_require__(49);
+	    calendarVC = __webpack_require__(48);
 	    calendarVT = __webpack_require__(97);
 	
 	    view.calendarVC = new calendarVC.constructor({
@@ -14812,7 +14713,7 @@
 	        view = this,
 	        submerchantFormVC, submerchantFormVT;
 	
-	    submerchantFormVC = __webpack_require__(81);
+	    submerchantFormVC = __webpack_require__(80);
 	    submerchantFormVT = __webpack_require__(131);
 	
 	    view.submerchantFormVC = new submerchantFormVC.constructor({
@@ -14975,7 +14876,7 @@
 
 
 /***/ },
-/* 47 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14991,12 +14892,12 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
-	    TechProfile = __webpack_require__(154),
+	    TechProfile = __webpack_require__(152),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -15411,7 +15312,7 @@
 	    $calendarContainer.removeClass('col-sm-9');
 	    $calendarContainer.addClass('col-sm-12');
 	
-	    calendarVC = __webpack_require__(49);
+	    calendarVC = __webpack_require__(48);
 	    calendarVT = __webpack_require__(97);
 	
 	    view.calendarVC = new calendarVC.constructor({
@@ -15455,7 +15356,7 @@
 	        view = this,
 	        submerchantFormVC, submerchantFormVT;
 	
-	    submerchantFormVC = __webpack_require__(81);
+	    submerchantFormVC = __webpack_require__(80);
 	    submerchantFormVT = __webpack_require__(131);
 	    view.submerchantFormVC = new submerchantFormVC.constructor({
 	        name: 'submerchantform',
@@ -15611,7 +15512,7 @@
 
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15627,12 +15528,12 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
-	    Van = __webpack_require__(153),
+	    Van = __webpack_require__(154),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -16122,7 +16023,7 @@
 	    $calendarContainer.removeClass('col-sm-9');
 	    $calendarContainer.addClass('col-sm-12');
 	
-	    calendarVC = __webpack_require__(49);
+	    calendarVC = __webpack_require__(48);
 	    calendarVT = __webpack_require__(97);
 	
 	    view.calendarVC = new calendarVC.constructor({
@@ -16166,7 +16067,7 @@
 	        view = this,
 	        submerchantFormVC, submerchantFormVT;
 	
-	    submerchantFormVC = __webpack_require__(81);
+	    submerchantFormVC = __webpack_require__(80);
 	    submerchantFormVT = __webpack_require__(131);
 	
 	    view.submerchantFormVC = new submerchantFormVC.constructor({
@@ -16325,7 +16226,7 @@
 
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16339,7 +16240,7 @@
 	var $ = __webpack_require__(31),
 	    Moment = __webpack_require__(30),
 	
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -16837,7 +16738,7 @@
 
 
 /***/ },
-/* 50 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16853,8 +16754,8 @@
 	    $ = __webpack_require__(31),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -17137,7 +17038,7 @@
 
 
 /***/ },
-/* 51 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17151,8 +17052,8 @@
 	var $ = __webpack_require__(31),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -17227,7 +17128,7 @@
 	        parent: view
 	    };
 	
-	    calendarVC = __webpack_require__(78);
+	    calendarVC = __webpack_require__(77);
 	    calendarVT = __webpack_require__(127);
 	
 	    view.calendarVC = new calendarVC.constructor({
@@ -17365,7 +17266,7 @@
 
 
 /***/ },
-/* 52 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17376,13 +17277,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(24);
+	var ViewController = __webpack_require__(25);
 	
 	module.exports = ViewController.inherit({});
 
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17395,7 +17296,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(24),
+		ViewController = __webpack_require__(25),
 		
 	    didRender,
 	    loadFooter;
@@ -17408,7 +17309,7 @@
 	    var view = this,
 	        FooterController, FooterTemplate;
 	
-	    FooterController = __webpack_require__(70);
+	    FooterController = __webpack_require__(69);
 	    FooterTemplate = __webpack_require__(119);
 	
 	    view.footer = new FooterController.constructor({
@@ -17428,7 +17329,7 @@
 
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17443,8 +17344,8 @@
 	    $ = __webpack_require__(31),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -17754,7 +17655,7 @@
 
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17767,7 +17668,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(24),
+		ViewController = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -17842,7 +17743,7 @@
 
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17856,11 +17757,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    GearList = __webpack_require__(163),
+	    GearList = __webpack_require__(157),
 	
 	    gearBlockID,
 	
@@ -17964,7 +17865,7 @@
 
 
 /***/ },
-/* 57 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17978,11 +17879,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    GearList = __webpack_require__(163),
+	    GearList = __webpack_require__(157),
 	
 	    gearBlockID,
 	
@@ -18113,7 +18014,7 @@
 
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18127,11 +18028,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    GearList = __webpack_require__(163),
+	    GearList = __webpack_require__(157),
 	
 	    reservationBlockID,
 	
@@ -18258,7 +18159,7 @@
 
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18272,11 +18173,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    TechProfileList = __webpack_require__(164),
+	    TechProfileList = __webpack_require__(158),
 	
 	    techProfileBlockID,
 	
@@ -18403,7 +18304,7 @@
 
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18417,11 +18318,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    TechProfileList = __webpack_require__(164),
+	    TechProfileList = __webpack_require__(158),
 	
 	    reservationBlockID,
 	
@@ -18546,7 +18447,7 @@
 
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18560,11 +18461,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    TechProfileList = __webpack_require__(164),
+	    TechProfileList = __webpack_require__(158),
 	
 	    techprofilesBlockID,
 	
@@ -18653,7 +18554,7 @@
 
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18667,11 +18568,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    VanList = __webpack_require__(165),
+	    VanList = __webpack_require__(159),
 	
 	    vanBlockID,
 	
@@ -18798,7 +18699,7 @@
 
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18812,11 +18713,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    VanList = __webpack_require__(165),
+	    VanList = __webpack_require__(159),
 	
 	    reservationBlockID,
 	
@@ -18941,7 +18842,7 @@
 
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18955,11 +18856,11 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
-	    VanList = __webpack_require__(165),
+	    VanList = __webpack_require__(159),
 	
 	    vanBlockID,
 	
@@ -19060,7 +18961,7 @@
 
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19073,7 +18974,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    subViewContainerID,
@@ -19143,7 +19044,7 @@
 
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19161,7 +19062,7 @@
 	    GoogleMaps = __webpack_require__(19),
 	
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    Localization = __webpack_require__(91),
 	
 	    geocoder,
@@ -19312,7 +19213,7 @@
 	    $submerchantFormBtn = $('#editgear-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        calendarVC = __webpack_require__(49);
+	        calendarVC = __webpack_require__(48);
 	        calendarVT = __webpack_require__(97);
 	        view.calendarVC = new calendarVC.constructor({
 	            name: 'availabilitycalendar',
@@ -19329,7 +19230,7 @@
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        submerchantFormVC = __webpack_require__(81);
+	        submerchantFormVC = __webpack_require__(80);
 	        submerchantFormVT = __webpack_require__(131);
 	
 	        view.submerchantFormVC = new submerchantFormVC.constructor({
@@ -19779,7 +19680,7 @@
 
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19795,9 +19696,9 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(24),
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    Localization = __webpack_require__(91),
 	
 	    geocoder,
@@ -19902,7 +19803,7 @@
 	    $submerchantFormBtn = $('#edittechprofile-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        calendarVC = __webpack_require__(49);
+	        calendarVC = __webpack_require__(48);
 	        calendarVT = __webpack_require__(97);
 	        view.calendarVC = new calendarVC.constructor({
 	            name: 'availabilitycalendar',
@@ -19918,7 +19819,7 @@
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        submerchantFormVC = __webpack_require__(81);
+	        submerchantFormVC = __webpack_require__(80);
 	        submerchantFormVT = __webpack_require__(131);
 	        view.submerchantFormVC = new submerchantFormVC.constructor({
 	            name: 'submerchantform',
@@ -20292,7 +20193,7 @@
 
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20309,7 +20210,7 @@
 	    Moment = __webpack_require__(30),
 	
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    Localization = __webpack_require__(91),
 	
 	    geocoder,
@@ -20453,7 +20354,7 @@
 	    $submerchantFormBtn = $('#editvan-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        calendarVC = __webpack_require__(49);
+	        calendarVC = __webpack_require__(48);
 	        calendarVT = __webpack_require__(97);
 	        view.calendarVC = new calendarVC.constructor({
 	            name: 'availabilitycalendar',
@@ -20469,7 +20370,7 @@
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        submerchantFormVC = __webpack_require__(81);
+	        submerchantFormVC = __webpack_require__(80);
 	        submerchantFormVT = __webpack_require__(131);
 	        view.submerchantFormVC = new submerchantFormVC.constructor({
 	            name: 'submerchantform',
@@ -20855,7 +20756,7 @@
 
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20866,12 +20767,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(24);
+	var ViewController = __webpack_require__(25);
 	module.exports = ViewController.inherit();
 
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20884,7 +20785,7 @@
 	
 	var Moment = __webpack_require__(30),
 		
-		ViewController = __webpack_require__(24),
+		ViewController = __webpack_require__(25),
 	
 		Localization = __webpack_require__(91),
 	
@@ -20904,7 +20805,7 @@
 
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20920,13 +20821,13 @@
 		FB = __webpack_require__(90),
 		GoogleMaps = __webpack_require__(19),
 	
-		Config = __webpack_require__(21),
-		Utilities = __webpack_require__(25),
-		ViewController = __webpack_require__(24),
+		Config = __webpack_require__(24),
+		Utilities = __webpack_require__(26),
+		ViewController = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
-		Gear = __webpack_require__(152),
+		Gear = __webpack_require__(153),
 		User = __webpack_require__(38),
 	
 		paymentSuccessModalOpen = false,
@@ -21284,7 +21185,7 @@
 
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21300,8 +21201,8 @@
 		GoogleMaps = __webpack_require__(19),
 		Moment = __webpack_require__(30),
 	
-		Utilities = __webpack_require__(25),
-		ViewController = __webpack_require__(24),
+		Utilities = __webpack_require__(26),
+		ViewController = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -21698,7 +21599,7 @@
 
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21711,7 +21612,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    didInitialize,
@@ -21745,7 +21646,7 @@
 	loadSearchBar = function() {
 	    var view = this,
 	        gearSearchVC, gearSearchVT, techProfileSearchVC, techProfileSearchVT, vanSearchVC, vanSearchVT;
-	    gearSearchVC = __webpack_require__(72);
+	    gearSearchVC = __webpack_require__(71);
 	    gearSearchVT = __webpack_require__(121);
 	    view.gearSearchFormVC = new gearSearchVC.constructor({
 	        name: 'gearsearchform',
@@ -21755,7 +21656,7 @@
 	    view.gearSearchFormVC.initialize();
 	    view.gearSearchFormVC.render();
 	
-	    techProfileSearchVC = __webpack_require__(83);
+	    techProfileSearchVC = __webpack_require__(82);
 	    techProfileSearchVT = __webpack_require__(133);
 	    view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
 	        name: 'techprofilesearchform',
@@ -21765,7 +21666,7 @@
 	    view.techProfileSearchFormVC.initialize();
 	    view.techProfileSearchFormVC.render();
 	
-	    vanSearchVC = __webpack_require__(87);
+	    vanSearchVC = __webpack_require__(86);
 	    vanSearchVT = __webpack_require__(141);
 	    view.vanSearchFormVC = new vanSearchVC.constructor({
 	        name: 'vansearchform',
@@ -21779,7 +21680,7 @@
 	loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(70);
+	    FooterController = __webpack_require__(69);
 	    FooterTemplate = __webpack_require__(119);
 	    view.footer = new FooterController.constructor({
 	        name: 'footer',
@@ -21841,7 +21742,7 @@
 
 
 /***/ },
-/* 74 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21854,7 +21755,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	
 	    didRender,
 	    loadFooter;
@@ -21866,7 +21767,7 @@
 	loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(70);
+	    FooterController = __webpack_require__(69);
 	    FooterTemplate = __webpack_require__(119);
 	    view.footer = new FooterController.constructor({
 	        name: 'footer',
@@ -21884,7 +21785,7 @@
 
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21898,8 +21799,8 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(24),
-	    Utilities = __webpack_require__(25),
+	    ViewController = __webpack_require__(25),
+	    Utilities = __webpack_require__(26),
 	    App = __webpack_require__(20),
 	
 	    defaultTitle,
@@ -22107,7 +22008,7 @@
 
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22122,12 +22023,12 @@
 		$ = __webpack_require__(31),
 		Moment = __webpack_require__(30),
 	
-		Config = __webpack_require__(21),
-		ViewController = __webpack_require__(24),
+		Config = __webpack_require__(24),
+		ViewController = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
-		Card = __webpack_require__(166),
+		Card = __webpack_require__(160),
 	
 		didInitialize,
 	    didRender,
@@ -22546,7 +22447,7 @@
 
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22560,11 +22461,11 @@
 	var $ = __webpack_require__(31),
 		Moment = __webpack_require__(30),
 	
-		Config = __webpack_require__(21),
+		Config = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
-		ViewController = __webpack_require__(24),
+		ViewController = __webpack_require__(25),
 		Booking = __webpack_require__(155),
 	
 		didInitialize,
@@ -22686,7 +22587,7 @@
 
 
 /***/ },
-/* 78 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22701,8 +22602,8 @@
 		$ = __webpack_require__(31),
 		Moment = __webpack_require__(30),
 	
-		Utilities = __webpack_require__(25),
-		ViewController = __webpack_require__(24),
+		Utilities = __webpack_require__(26),
+		ViewController = __webpack_require__(25),
 	
 		Localization = __webpack_require__(91),
 	
@@ -23141,7 +23042,7 @@
 
 
 /***/ },
-/* 79 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23154,7 +23055,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(24),
+		ViewController = __webpack_require__(25),
 	
 	    didRender,
 	    loadFooter;
@@ -23166,7 +23067,7 @@
 	loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(70);
+	    FooterController = __webpack_require__(69);
 	    FooterTemplate = __webpack_require__(119);
 	
 	    view.footer = new FooterController.constructor({
@@ -23185,7 +23086,7 @@
 
 
 /***/ },
-/* 80 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23201,15 +23102,15 @@
 	    GoogleMaps = __webpack_require__(19),
 	    FB = __webpack_require__(90),
 	
-	    Config = __webpack_require__(21),
-	    Utilities = __webpack_require__(25),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    Utilities = __webpack_require__(26),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
-	    GearList = __webpack_require__(163),
-	    TechProfileList = __webpack_require__(164),
-	    VanList = __webpack_require__(165),
+	    GearList = __webpack_require__(157),
+	    TechProfileList = __webpack_require__(158),
+	    VanList = __webpack_require__(159),
 	
 	    gearSearchBlockID = 'search-results-gear',
 	    techProfileSearchBlockID = 'search-results-techprofiles',
@@ -23414,7 +23315,7 @@
 	    };
 	
 	    if (this.gearSearchFormVC === null) {
-	        gearSearchVC = __webpack_require__(72);
+	        gearSearchVC = __webpack_require__(71);
 	        gearSearchVT = __webpack_require__(121);
 	
 	        view.gearSearchFormVC = new gearSearchVC.constructor({
@@ -23469,7 +23370,7 @@
 	    };
 	
 	    if (this.techProfileSearchFormVC === null) {
-	        techProfileSearchVC = __webpack_require__(83);
+	        techProfileSearchVC = __webpack_require__(82);
 	        techProfileSearchVT = __webpack_require__(133);
 	        view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
 	            name: 'techprofilesearchform',
@@ -23523,7 +23424,7 @@
 	    };
 	
 	    if (this.vanSearchFormVC === null) {
-	        vanSearchVC = __webpack_require__(87);
+	        vanSearchVC = __webpack_require__(86);
 	        vanSearchVT = __webpack_require__(141);
 	        view.vanSearchFormVC = new vanSearchVC.constructor({
 	            name: 'vansearchform',
@@ -23713,7 +23614,7 @@
 
 
 /***/ },
-/* 81 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23729,9 +23630,9 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
+	    Config = __webpack_require__(24),
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    Localization = __webpack_require__(91),
 	    MessagePopup = __webpack_require__(40),
 	
@@ -24087,7 +23988,7 @@
 
 
 /***/ },
-/* 82 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24104,13 +24005,13 @@
 	    GoogleMaps = __webpack_require__(19),
 	    FB = __webpack_require__(90),
 	
-	    Config = __webpack_require__(21),
-	    Utilities = __webpack_require__(25),
+	    Config = __webpack_require__(24),
+	    Utilities = __webpack_require__(26),
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	    Localization = __webpack_require__(91),
 	    User = __webpack_require__(38),
-	    TechProfile = __webpack_require__(154),
+	    TechProfile = __webpack_require__(152),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -24447,7 +24348,7 @@
 
 
 /***/ },
-/* 83 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24463,8 +24364,8 @@
 		GoogleMaps = __webpack_require__(19),
 		Moment = __webpack_require__(30),
 	
-		Utilities = __webpack_require__(25),
-		ViewController = __webpack_require__(24),
+		Utilities = __webpack_require__(26),
+		ViewController = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -24848,7 +24749,7 @@
 
 
 /***/ },
-/* 84 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24858,13 +24759,13 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(24);
+	var ViewController = __webpack_require__(25);
 	
 	module.exports = ViewController;
 
 
 /***/ },
-/* 85 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24878,13 +24779,13 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(21),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    ViewController = __webpack_require__(25),
 	
 	    User = __webpack_require__(38),
-	    GearList = __webpack_require__(163),
-	    TechProfileList = __webpack_require__(164),
-	    VanList = __webpack_require__(165),
+	    GearList = __webpack_require__(157),
+	    TechProfileList = __webpack_require__(158),
+	    VanList = __webpack_require__(159),
 	
 	    didInitialize,
 	    didRender,
@@ -25130,7 +25031,7 @@
 
 
 /***/ },
-/* 86 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25146,14 +25047,14 @@
 	    FB = __webpack_require__(90),
 	    GoogleMaps = __webpack_require__(19),
 	
-	    Config = __webpack_require__(21),
-	    Utilities = __webpack_require__(25),
-	    ViewController = __webpack_require__(24),
+	    Config = __webpack_require__(24),
+	    Utilities = __webpack_require__(26),
+	    ViewController = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
 	    User = __webpack_require__(38),
-	    Van = __webpack_require__(153),
+	    Van = __webpack_require__(154),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -25505,7 +25406,7 @@
 
 
 /***/ },
-/* 87 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25521,8 +25422,8 @@
 		GoogleMaps = __webpack_require__(19),
 		Moment = __webpack_require__(30),
 	
-		Utilities = __webpack_require__(25),
-		ViewController = __webpack_require__(24),
+		Utilities = __webpack_require__(26),
+		ViewController = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -25903,6 +25804,105 @@
 	
 	    getSearchParameters: getSearchParameters
 	});
+
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*!
+	 * chai
+	 * Copyright(c) 2011-2014 Jake Luer <jake@alogicalparadox.com>
+	 * MIT Licensed
+	 */
+	
+	var used = []
+	  , exports = module.exports = {};
+	
+	/*!
+	 * Chai version
+	 */
+	
+	exports.version = '2.1.2';
+	
+	/*!
+	 * Assertion Error
+	 */
+	
+	exports.AssertionError = __webpack_require__(170);
+	
+	/*!
+	 * Utils for plugins (not exported)
+	 */
+	
+	var util = __webpack_require__(167);
+	
+	/**
+	 * # .use(function)
+	 *
+	 * Provides a way to extend the internals of Chai
+	 *
+	 * @param {Function}
+	 * @returns {this} for chaining
+	 * @api public
+	 */
+	
+	exports.use = function (fn) {
+	  if (!~used.indexOf(fn)) {
+	    fn(this, util);
+	    used.push(fn);
+	  }
+	
+	  return this;
+	};
+	
+	/*!
+	 * Utility Functions
+	 */
+	
+	exports.util = util;
+	
+	/*!
+	 * Configuration
+	 */
+	
+	var config = __webpack_require__(161);
+	exports.config = config;
+	
+	/*!
+	 * Primary `Assertion` prototype
+	 */
+	
+	var assertion = __webpack_require__(162);
+	exports.use(assertion);
+	
+	/*!
+	 * Core Assertions
+	 */
+	
+	var core = __webpack_require__(163);
+	exports.use(core);
+	
+	/*!
+	 * Expect interface
+	 */
+	
+	var expect = __webpack_require__(164);
+	exports.use(expect);
+	
+	/*!
+	 * Should interface
+	 */
+	
+	var should = __webpack_require__(165);
+	exports.use(should);
+	
+	/*!
+	 * Assert interface
+	 */
+	
+	var assert = __webpack_require__(166);
+	exports.use(assert);
 
 
 /***/ },
@@ -26429,8 +26429,8 @@
 	
 	var Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(21),
-	    Model = __webpack_require__(26),
+	    Config = __webpack_require__(24),
+	    Model = __webpack_require__(23),
 	    XChangeRates = __webpack_require__(169),
 	    Localization,
 	
@@ -26630,8 +26630,8 @@
 	var _ = __webpack_require__(15),
 		$ = __webpack_require__(31),
 	
-		Utilities = __webpack_require__(25),
-		ViewController = __webpack_require__(24),
+		Utilities = __webpack_require__(26),
+		ViewController = __webpack_require__(25),
 	
 		$popupLightbox = $('#popup-lightbox'),
 	    inherit, show, hide, setTitle;
@@ -27031,6 +27031,205 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(15),
+	
+	    App = __webpack_require__(20),
+	    Model = __webpack_require__(23),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Defines a gear item.
 	 * @author: Chris Hjorth
 	 */
@@ -27040,8 +27239,8 @@
 	
 	var _ = __webpack_require__(15),
 		
-		Utilities = __webpack_require__(25),
-		Model = __webpack_require__(26),
+		Utilities = __webpack_require__(26),
+		Model = __webpack_require__(23),
 		App = __webpack_require__(20),
 		
 		didInitialize,
@@ -27273,7 +27472,7 @@
 
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27286,8 +27485,8 @@
 	
 	var _ = __webpack_require__(15),
 		
-		Utilities = __webpack_require__(25),
-		Model = __webpack_require__(26),
+		Utilities = __webpack_require__(26),
+		Model = __webpack_require__(23),
 		App = __webpack_require__(20),
 	
 		didInitialize,
@@ -27509,205 +27708,6 @@
 
 
 /***/ },
-/* 154 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(15),
-	
-	    App = __webpack_require__(20),
-	    Model = __webpack_require__(26),
-	
-	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
-	        };
-	    }
-	};
-	
-	createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
 /* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -27722,7 +27722,7 @@
 	var _ = __webpack_require__(15),
 	    Moment = __webpack_require__(30),
 	
-	    Model = __webpack_require__(26),
+	    Model = __webpack_require__(23),
 	    App = __webpack_require__(20),
 	
 	    didInitialize,
@@ -27923,6 +27923,493 @@
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/**
+	 * Defines a list of gear.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+	
+		Model = __webpack_require__(23),
+		Gear = __webpack_require__(153),
+		
+		didInitialize,
+	
+	    search,
+	    getUserGear,
+	    getUserRentals,
+	    getUserReservations,
+	    getGearItem,
+	    isEmpty,
+	    updateGearItem,
+	    loadFromArray;
+	
+	didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	search = function(location, gear, daterange, callback) {
+	    var view = this;
+	
+	    if (location === null || location === '') {
+	        location = 'all';
+	    }
+	    this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(searchResults);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserGear = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/gear', function(error, userGear) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userGear);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserRentals = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userRentals);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserReservations = function(userID, callback) {
+	    var view = this;
+	
+	    view.get('/users/' + userID + '/gearreservations', function(error, userReservations) {
+	        if (error) {
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userReservations);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getGearItem = function(property, key) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].data[property] === key) {
+	            return this.data[i];
+	        }
+	    }
+	    return null;
+	};
+	
+	isEmpty = function() {
+	    return this.data.length <= 0;
+	};
+	
+	updateGearItem = function(gearItem) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].id === gearItem.data.id) {
+	            this.data[i] = gearItem.data;
+	            return;
+	        }
+	    }
+	};
+	
+	loadFromArray = function(gearArray) {
+	    var i, gearItem;
+	
+	    this.data = [];
+	
+	    for (i = 0; i < gearArray.length; i++) {
+	        gearItem = new Gear.constructor({
+	            rootURL: this.rootURL
+	        });
+	        gearItem.initialize();
+	        _.extend(gearItem.data, gearArray[i]);
+	        this.data.push(gearItem);
+	    }
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	
+	    search: search,
+	    getUserGear: getUserGear,
+	    getUserRentals: getUserRentals,
+	    getUserReservations: getUserReservations,
+	    getGearItem: getGearItem,
+	    isEmpty: isEmpty,
+	    updateGearItem: updateGearItem,
+	    loadFromArray: loadFromArray
+	});
+
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a list of tech profiles.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+		Model = __webpack_require__(23),
+		TechProfile = __webpack_require__(152),
+		
+		didInitialize,
+	
+	    search,
+	    getUserTechProfiles,
+	    getUserTechProfileRentals,
+	    getUserTechProfileReservations,
+	    getTechProfileItem,
+	    isEmpty,
+	    updateTechProfileItem,
+	    loadFromArray;
+	
+	didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	search = function(location, gear, daterange, callback) {
+	    var view = this;
+	
+	    if (location === null || location === '') {
+	        location = 'all';
+	    }
+	    this.get('/roadies/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(searchResults);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserTechProfiles = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/roadies', function(error, userGear) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userGear);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserTechProfileRentals = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/roadierentals', function(error, userHires) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userHires);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserTechProfileReservations = function(userID, callback) {
+	    var view = this;
+	
+	    view.get('/users/' + userID + '/roadiereservations', function(error, userBookings) {
+	        if (error) {
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userBookings);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getTechProfileItem = function(property, key) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].data[property] === key) {
+	            return this.data[i];
+	        }
+	    }
+	    return null;
+	};
+	
+	isEmpty = function() {
+	    return this.data.length <= 0;
+	};
+	
+	updateTechProfileItem = function(techProfileItem) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].id === techProfileItem.data.id) {
+	            this.data[i] = techProfileItem.data;
+	            return;
+	        }
+	    }
+	};
+	
+	loadFromArray = function(techProfileArray) {
+	    var i, techProfileItem;
+	
+	    this.data = [];
+	
+	    for (i = 0; i < techProfileArray.length; i++) {
+	        techProfileItem = new TechProfile.constructor({
+	            rootURL: this.rootURL
+	        });
+	        techProfileItem.initialize();
+	        _.extend(techProfileItem.data, techProfileArray[i]);
+	        this.data.push(techProfileItem);
+	    }
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	
+	    search: search,
+	    getUserTechProfiles: getUserTechProfiles,
+	    getUserTechProfileRentals: getUserTechProfileRentals,
+	    getUserTechProfileReservations: getUserTechProfileReservations,
+	    getTechProfileItem: getTechProfileItem,
+	    isEmpty: isEmpty,
+	    updateTechProfileItem: updateTechProfileItem,
+	    loadFromArray: loadFromArray
+	});
+
+
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a list of vans.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+	
+	    Model = __webpack_require__(23),
+	    Van = __webpack_require__(154),
+	
+	    didInitialize,
+	
+	    search,
+	    getUserVans,
+	    getUserVanRentals,
+	    getUserVanReservations,
+	    getVanItem,
+	    isEmpty,
+	    updateVanItem,
+	    loadFromArray;
+	
+	didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	search = function(location, gear, daterange, callback) {
+	    var view = this;
+	
+	    if (location === null || location === '') {
+	        location = 'all';
+	    }
+	    this.get('/vans/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(searchResults);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserVans = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/vans', function(error, userGear) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userGear);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserVanRentals = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userRentals);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getUserVanReservations = function(userID, callback) {
+	    var view = this;
+	
+	    view.get('/users/' + userID + '/vanreservations', function(error, userReservations) {
+	        if (error) {
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userReservations);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	getVanItem = function(property, key) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].data[property] === key) {
+	            return this.data[i];
+	        }
+	    }
+	    return null;
+	};
+	
+	isEmpty = function() {
+	    return this.data.length <= 0;
+	};
+	
+	updateVanItem = function(vanItem) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].id === vanItem.data.id) {
+	            this.data[i] = vanItem.data;
+	            return;
+	        }
+	    }
+	};
+	
+	loadFromArray = function(vanArray) {
+	    var i, vanItem;
+	
+	    this.data = [];
+	
+	    for (i = 0; i < vanArray.length; i++) {
+	        vanItem = new Van.constructor({
+	            rootURL: this.rootURL
+	        });
+	        vanItem.initialize();
+	        _.extend(vanItem.data, vanArray[i]);
+	        this.data.push(vanItem);
+	    }
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	
+	    search: search,
+	    getUserVans: getUserVans,
+	    getUserVanRentals: getUserVanRentals,
+	    getUserVanReservations: getUserVanReservations,
+	    getVanItem: getVanItem,
+	    isEmpty: isEmpty,
+	    updateVanItem: updateVanItem,
+	    loadFromArray: loadFromArray
+	});
+
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a card object.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var mangoPay = __webpack_require__(191),
+		
+		Config = __webpack_require__(24),
+		Model = __webpack_require__(23),
+	
+	    didInitialize,
+	    registerCard;
+	
+	didInitialize = function() {
+	    if (Config.isProduction() === true) {
+	        mangoPay.cardRegistration.baseURL = 'https://api.mangopay.com'; //Production
+	    } else {
+	        mangoPay.cardRegistration.baseURL = 'https://api.sandbox.mangopay.com';
+	    }
+	    mangoPay.cardRegistration.clientId = 'sharingear';
+	};
+	
+	registerCard = function(userID, cardData, callback) {
+	    this.get('/users/' + userID + '/cardobject', function(error, data) {
+	        if (error) {
+	            console.log('Error getting card object: ' + error);
+	            return;
+	        }
+	        mangoPay.cardRegistration.init({
+	            cardRegistrationURL: data.cardRegistrationURL,
+	            preregistrationData: data.preregistrationData,
+	            accessKey: data.accessKey,
+	            Id: data.id
+	        });
+	        mangoPay.cardRegistration.registerCard(cardData, function(result) {
+	            callback(null, result.CardId);
+	        }, function(result) {
+	            var error = 'Error registering card: ' + result.ResultMessage;
+	            console.log(error);
+	            console.log(result);
+	            callback(error);
+	        });
+	    });
+	};
+	
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    registerCard: registerCard
+	});
+
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
 	module.exports = {
 	
 	  /**
@@ -27981,7 +28468,7 @@
 
 
 /***/ },
-/* 158 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -27991,7 +28478,7 @@
 	 * MIT Licensed
 	 */
 	
-	var config = __webpack_require__(157);
+	var config = __webpack_require__(161);
 	
 	module.exports = function (_chai, util) {
 	  /*!
@@ -28118,7 +28605,7 @@
 
 
 /***/ },
-/* 159 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -29658,7 +30145,7 @@
 
 
 /***/ },
-/* 160 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -29697,7 +30184,7 @@
 
 
 /***/ },
-/* 161 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -29801,7 +30288,7 @@
 
 
 /***/ },
-/* 162 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -31070,493 +31557,6 @@
 
 
 /***/ },
-/* 163 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a list of gear.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(15),
-	
-		Model = __webpack_require__(26),
-		Gear = __webpack_require__(152),
-		
-		didInitialize,
-	
-	    search,
-	    getUserGear,
-	    getUserRentals,
-	    getUserReservations,
-	    getGearItem,
-	    isEmpty,
-	    updateGearItem,
-	    loadFromArray;
-	
-	didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	search = function(location, gear, daterange, callback) {
-	    var view = this;
-	
-	    if (location === null || location === '') {
-	        location = 'all';
-	    }
-	    this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(searchResults);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserGear = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/gear', function(error, userGear) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userGear);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserRentals = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userRentals);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserReservations = function(userID, callback) {
-	    var view = this;
-	
-	    view.get('/users/' + userID + '/gearreservations', function(error, userReservations) {
-	        if (error) {
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userReservations);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getGearItem = function(property, key) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].data[property] === key) {
-	            return this.data[i];
-	        }
-	    }
-	    return null;
-	};
-	
-	isEmpty = function() {
-	    return this.data.length <= 0;
-	};
-	
-	updateGearItem = function(gearItem) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].id === gearItem.data.id) {
-	            this.data[i] = gearItem.data;
-	            return;
-	        }
-	    }
-	};
-	
-	loadFromArray = function(gearArray) {
-	    var i, gearItem;
-	
-	    this.data = [];
-	
-	    for (i = 0; i < gearArray.length; i++) {
-	        gearItem = new Gear.constructor({
-	            rootURL: this.rootURL
-	        });
-	        gearItem.initialize();
-	        _.extend(gearItem.data, gearArray[i]);
-	        this.data.push(gearItem);
-	    }
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	
-	    search: search,
-	    getUserGear: getUserGear,
-	    getUserRentals: getUserRentals,
-	    getUserReservations: getUserReservations,
-	    getGearItem: getGearItem,
-	    isEmpty: isEmpty,
-	    updateGearItem: updateGearItem,
-	    loadFromArray: loadFromArray
-	});
-
-
-/***/ },
-/* 164 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a list of tech profiles.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(15),
-		Model = __webpack_require__(26),
-		TechProfile = __webpack_require__(154),
-		
-		didInitialize,
-	
-	    search,
-	    getUserTechProfiles,
-	    getUserTechProfileRentals,
-	    getUserTechProfileReservations,
-	    getTechProfileItem,
-	    isEmpty,
-	    updateTechProfileItem,
-	    loadFromArray;
-	
-	didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	search = function(location, gear, daterange, callback) {
-	    var view = this;
-	
-	    if (location === null || location === '') {
-	        location = 'all';
-	    }
-	    this.get('/roadies/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(searchResults);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserTechProfiles = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/roadies', function(error, userGear) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userGear);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserTechProfileRentals = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/roadierentals', function(error, userHires) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userHires);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserTechProfileReservations = function(userID, callback) {
-	    var view = this;
-	
-	    view.get('/users/' + userID + '/roadiereservations', function(error, userBookings) {
-	        if (error) {
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userBookings);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getTechProfileItem = function(property, key) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].data[property] === key) {
-	            return this.data[i];
-	        }
-	    }
-	    return null;
-	};
-	
-	isEmpty = function() {
-	    return this.data.length <= 0;
-	};
-	
-	updateTechProfileItem = function(techProfileItem) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].id === techProfileItem.data.id) {
-	            this.data[i] = techProfileItem.data;
-	            return;
-	        }
-	    }
-	};
-	
-	loadFromArray = function(techProfileArray) {
-	    var i, techProfileItem;
-	
-	    this.data = [];
-	
-	    for (i = 0; i < techProfileArray.length; i++) {
-	        techProfileItem = new TechProfile.constructor({
-	            rootURL: this.rootURL
-	        });
-	        techProfileItem.initialize();
-	        _.extend(techProfileItem.data, techProfileArray[i]);
-	        this.data.push(techProfileItem);
-	    }
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	
-	    search: search,
-	    getUserTechProfiles: getUserTechProfiles,
-	    getUserTechProfileRentals: getUserTechProfileRentals,
-	    getUserTechProfileReservations: getUserTechProfileReservations,
-	    getTechProfileItem: getTechProfileItem,
-	    isEmpty: isEmpty,
-	    updateTechProfileItem: updateTechProfileItem,
-	    loadFromArray: loadFromArray
-	});
-
-
-/***/ },
-/* 165 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a list of vans.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(15),
-	
-	    Model = __webpack_require__(26),
-	    Van = __webpack_require__(153),
-	
-	    didInitialize,
-	
-	    search,
-	    getUserVans,
-	    getUserVanRentals,
-	    getUserVanReservations,
-	    getVanItem,
-	    isEmpty,
-	    updateVanItem,
-	    loadFromArray;
-	
-	didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	search = function(location, gear, daterange, callback) {
-	    var view = this;
-	
-	    if (location === null || location === '') {
-	        location = 'all';
-	    }
-	    this.get('/vans/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(searchResults);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserVans = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/vans', function(error, userGear) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userGear);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserVanRentals = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userRentals);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getUserVanReservations = function(userID, callback) {
-	    var view = this;
-	
-	    view.get('/users/' + userID + '/vanreservations', function(error, userReservations) {
-	        if (error) {
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userReservations);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	getVanItem = function(property, key) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].data[property] === key) {
-	            return this.data[i];
-	        }
-	    }
-	    return null;
-	};
-	
-	isEmpty = function() {
-	    return this.data.length <= 0;
-	};
-	
-	updateVanItem = function(vanItem) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].id === vanItem.data.id) {
-	            this.data[i] = vanItem.data;
-	            return;
-	        }
-	    }
-	};
-	
-	loadFromArray = function(vanArray) {
-	    var i, vanItem;
-	
-	    this.data = [];
-	
-	    for (i = 0; i < vanArray.length; i++) {
-	        vanItem = new Van.constructor({
-	            rootURL: this.rootURL
-	        });
-	        vanItem.initialize();
-	        _.extend(vanItem.data, vanArray[i]);
-	        this.data.push(vanItem);
-	    }
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	
-	    search: search,
-	    getUserVans: getUserVans,
-	    getUserVanRentals: getUserVanRentals,
-	    getUserVanReservations: getUserVanReservations,
-	    getVanItem: getVanItem,
-	    isEmpty: isEmpty,
-	    updateVanItem: updateVanItem,
-	    loadFromArray: loadFromArray
-	});
-
-
-/***/ },
-/* 166 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a card object.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var mangoPay = __webpack_require__(191),
-		
-		Config = __webpack_require__(21),
-		Model = __webpack_require__(26),
-	
-	    didInitialize,
-	    registerCard;
-	
-	didInitialize = function() {
-	    if (Config.isProduction() === true) {
-	        mangoPay.cardRegistration.baseURL = 'https://api.mangopay.com'; //Production
-	    } else {
-	        mangoPay.cardRegistration.baseURL = 'https://api.sandbox.mangopay.com';
-	    }
-	    mangoPay.cardRegistration.clientId = 'sharingear';
-	};
-	
-	registerCard = function(userID, cardData, callback) {
-	    this.get('/users/' + userID + '/cardobject', function(error, data) {
-	        if (error) {
-	            console.log('Error getting card object: ' + error);
-	            return;
-	        }
-	        mangoPay.cardRegistration.init({
-	            cardRegistrationURL: data.cardRegistrationURL,
-	            preregistrationData: data.preregistrationData,
-	            accessKey: data.accessKey,
-	            Id: data.id
-	        });
-	        mangoPay.cardRegistration.registerCard(cardData, function(result) {
-	            callback(null, result.CardId);
-	        }, function(result) {
-	            var error = 'Error registering card: ' + result.ResultMessage;
-	            console.log(error);
-	            console.log(result);
-	            callback(error);
-	        });
-	    });
-	};
-	
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    registerCard: registerCard
-	});
-
-
-/***/ },
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32294,8 +32294,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Config = __webpack_require__(21),
-		Model = __webpack_require__(26),
+	var Config = __webpack_require__(24),
+		Model = __webpack_require__(23),
 	
 		currencies = {},
 	    XChangeRates,
@@ -36016,7 +36016,7 @@
 	 */
 	
 	var inspect = __webpack_require__(177);
-	var config = __webpack_require__(157);
+	var config = __webpack_require__(161);
 	
 	/**
 	 * ### .objDisplay (object)
@@ -36458,7 +36458,7 @@
 	 * MIT Licensed
 	 */
 	
-	var config = __webpack_require__(157);
+	var config = __webpack_require__(161);
 	
 	/**
 	 * ### .addMethod (ctx, name, method)
@@ -36630,7 +36630,7 @@
 	
 	var transferFlags = __webpack_require__(180);
 	var flag = __webpack_require__(179);
-	var config = __webpack_require__(157);
+	var config = __webpack_require__(161);
 	
 	/*!
 	 * Module variables
