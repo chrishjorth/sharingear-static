@@ -98,13 +98,13 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    Router = __webpack_require__(6),
-	    Utilities = __webpack_require__(7),
+	    Config = __webpack_require__(6),
+	    Router = __webpack_require__(7),
+	    Utilities = __webpack_require__(8),
 	
-	    User = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(9),
-	    MessagePopup = __webpack_require__(10),
+	    User = __webpack_require__(9),
+	    ContentClassification = __webpack_require__(10),
+	    MessagePopup = __webpack_require__(11),
 	
 	    App,
 	
@@ -323,7 +323,7 @@
 	
 		App = __webpack_require__(1),
 	
-		HeaderController = __webpack_require__(11),
+		HeaderController = __webpack_require__(5),
 	    HeaderTemplate = __webpack_require__(14),
 	
 	    initialize,
@@ -331,7 +331,7 @@
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(21);
+	__webpack_require__(20);
 	__webpack_require__(12);
 	
 	initialize = function() {
@@ -11159,6 +11159,229 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Controller for the Sharingear header with navigation view.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var $ = __webpack_require__(4),
+	
+	    ViewController = __webpack_require__(15),
+	    Utilities = __webpack_require__(8),
+	    App = __webpack_require__(1),
+	
+	    defaultTitle,
+	
+	    didInitialize,
+	    didRender,
+	    didResize,
+	    populateMainMenu,
+	    renderProfilePicture,
+	    handleNavbarToggle,
+	    handleLogin,
+	    setTitle,
+	    _updateTitle,
+	    changeActiveState;
+	
+	/* Static variables */
+	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	
+	didInitialize = function() {
+	    this.isMobile = false;
+	    this.title = defaultTitle;
+	};
+	
+	didRender = function() {
+	    this._updateTitle();
+	    this.populateMainMenu();
+	    this.renderProfilePicture();
+	
+	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
+	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
+	};
+	
+	didResize = function(event) {
+	    var view = event.data;
+	    if (Utilities.isMobile() !== view.isMobile) {
+	        view.populateMainMenu();
+	    }
+	    view._updateTitle();
+	};
+	
+	populateMainMenu = function() {
+	    var html = '',
+	        $slideMenu, $dropdownMenu, $menuList;
+	
+	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
+	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
+	
+	    if (Utilities.isMobile() === true) {
+	        this.isMobile = true;
+	        $slideMenu.removeClass('hidden');
+	        if ($dropdownMenu.hasClass('hidden') === false) {
+	            $dropdownMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $slideMenu);
+	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	    } else {
+	        this.isMobile = false;
+	        $dropdownMenu.removeClass('hidden');
+	        if ($slideMenu.hasClass('hidden') === false) {
+	            $slideMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $dropdownMenu);
+	    }
+	
+	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
+	
+	    if (App.user && App.user.data.id !== null) {
+	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
+	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
+	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
+	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
+	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
+	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
+	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
+	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
+	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
+	    } else {
+	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
+	    }
+	
+	    $menuList.html(html);
+	};
+	
+	renderProfilePicture = function() {
+	    var view = this,
+	        img;
+	    if (App.user && App.user.data.image_url) {
+	        img = new Image();
+	        img.onload = function() {
+	            var isVertical, backgroundSize;
+	            isVertical = img.width < img.height;
+	            if (isVertical === true) {
+	                backgroundSize = '30px auto';
+	            } else {
+	                backgroundSize = 'auto 30px';
+	            }
+	            $('.profile-pic', view.$element).css({
+	                'background-image': 'url(' + img.src + ')',
+	                'background-size': backgroundSize
+	            });
+	        };
+	        img.src = App.user.data.image_url;
+	    }
+	};
+	
+	handleNavbarToggle = function(event) {
+	    var view = event.data,
+	        $this = $(this),
+	        $viewContainer = $('.view-container'),
+	        $navbar, $tabbar, handleTransition;
+	
+	    handleTransition = function() {
+	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
+	        $this.removeClass('sliding-right');
+	    };
+	
+	    $navbar = $('.sg-navbar', view.$element);
+	    $tabbar = $('.sg-tabbar-container', $viewContainer);
+	    if ($tabbar.css('position') !== 'fixed') {
+	        //We are not in a mobile situation
+	        $tabbar = $('');
+	    }
+	
+	    $navbar.addClass('sliding-right');
+	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $viewContainer.addClass('sliding-right');
+	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $tabbar.addClass('sliding-right');
+	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	
+	    if ($navbar.hasClass('slide-right') === true) {
+	        $navbar.removeClass('slide-right');
+	        $viewContainer.removeClass('slide-right');
+	        $tabbar.removeClass('slide-right');
+	    } else {
+	        $navbar.addClass('slide-right');
+	        $viewContainer.addClass('slide-right');
+	        $tabbar.addClass('slide-right');
+	    }
+	
+	    //Handle selection display
+	    if ($this.hasClass('list-group-item') === true) {
+	        view.changeActiveState($this);
+	    }
+	};
+	
+	handleLogin = function(event, callback) {
+	    var view = event.data,
+	        user = App.user;
+	
+	    user.login(function(error) {
+	        if (!error) {
+	            App.router.navigateTo('dashboard');
+	            view.render();
+	        } else {
+	            alert('Could not connect to Facebook.');
+	            console.log(error);
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback();
+	        }
+	    });
+	};
+	
+	/**
+	 * @param title: the text to display as title, if null title is set to default
+	 */
+	setTitle = function(title) {
+	    if (!title || title === null) {
+	        title = defaultTitle;
+	    }
+	    this.title = title;
+	    this._updateTitle();
+	};
+	
+	_updateTitle = function() {
+	    if (Utilities.isMobile() === true) {
+	        $('.sg-navbar-brand', this.$element).html(this.title);
+	    } else {
+	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
+	    }
+	};
+	
+	changeActiveState = function($menuItem) {
+	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
+	    $menuItem.addClass('list-group-item-selected');
+	};
+	
+	module.exports = ViewController.inherit({
+	    didInitialize: didInitialize,
+	    didRender: didRender,
+	    didResize: didResize,
+	    populateMainMenu: populateMainMenu,
+	    renderProfilePicture: renderProfilePicture,
+	    handleNavbarToggle: handleNavbarToggle,
+	    handleLogin: handleLogin,
+	    setTitle: setTitle,
+	    _updateTitle: _updateTitle,
+	    changeActiveState: changeActiveState
+	});
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Defines site configuration.
 	 * @author: Chris Hjorth
 	 */
@@ -11200,7 +11423,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11213,8 +11436,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-		ViewLoader = __webpack_require__(15),
-		Utilities = __webpack_require__(7);
+		ViewLoader = __webpack_require__(16),
+		Utilities = __webpack_require__(8);
 	
 	var Router,
 				
@@ -11394,7 +11617,7 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11564,7 +11787,7 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11576,10 +11799,10 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    FB = __webpack_require__(16),
-	    Localization = __webpack_require__(17),
-	    Model = __webpack_require__(18),
-	    Utilities = __webpack_require__(7),
+	    FB = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
+	    Model = __webpack_require__(19),
+	    Utilities = __webpack_require__(8),
 	
 	    didInitialize,
 	    getLoginStatus,
@@ -11850,7 +12073,7 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11864,7 +12087,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(19),
 	
 	    didInitialize,
 	    getClassification;
@@ -11903,7 +12126,7 @@
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11916,7 +12139,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(19),
+		PopupController = __webpack_require__(21),
 	
 		MessagePopupTemplate = __webpack_require__(22),
 	
@@ -11960,229 +12183,6 @@
 	
 	
 	module.exports = MessagePopup;
-
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Controller for the Sharingear header with navigation view.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var $ = __webpack_require__(4),
-	
-	    ViewController = __webpack_require__(20),
-	    Utilities = __webpack_require__(7),
-	    App = __webpack_require__(1),
-	
-	    defaultTitle,
-	
-	    didInitialize,
-	    didRender,
-	    didResize,
-	    populateMainMenu,
-	    renderProfilePicture,
-	    handleNavbarToggle,
-	    handleLogin,
-	    setTitle,
-	    _updateTitle,
-	    changeActiveState;
-	
-	/* Static variables */
-	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	
-	didInitialize = function() {
-	    this.isMobile = false;
-	    this.title = defaultTitle;
-	};
-	
-	didRender = function() {
-	    this._updateTitle();
-	    this.populateMainMenu();
-	    this.renderProfilePicture();
-	
-	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
-	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
-	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
-	};
-	
-	didResize = function(event) {
-	    var view = event.data;
-	    if (Utilities.isMobile() !== view.isMobile) {
-	        view.populateMainMenu();
-	    }
-	    view._updateTitle();
-	};
-	
-	populateMainMenu = function() {
-	    var html = '',
-	        $slideMenu, $dropdownMenu, $menuList;
-	
-	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
-	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
-	
-	    if (Utilities.isMobile() === true) {
-	        this.isMobile = true;
-	        $slideMenu.removeClass('hidden');
-	        if ($dropdownMenu.hasClass('hidden') === false) {
-	            $dropdownMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $slideMenu);
-	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	    } else {
-	        this.isMobile = false;
-	        $dropdownMenu.removeClass('hidden');
-	        if ($slideMenu.hasClass('hidden') === false) {
-	            $slideMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $dropdownMenu);
-	    }
-	
-	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
-	
-	    if (App.user && App.user.data.id !== null) {
-	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
-	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
-	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
-	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
-	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
-	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
-	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
-	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
-	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
-	    } else {
-	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
-	    }
-	
-	    $menuList.html(html);
-	};
-	
-	renderProfilePicture = function() {
-	    var view = this,
-	        img;
-	    if (App.user && App.user.data.image_url) {
-	        img = new Image();
-	        img.onload = function() {
-	            var isVertical, backgroundSize;
-	            isVertical = img.width < img.height;
-	            if (isVertical === true) {
-	                backgroundSize = '30px auto';
-	            } else {
-	                backgroundSize = 'auto 30px';
-	            }
-	            $('.profile-pic', view.$element).css({
-	                'background-image': 'url(' + img.src + ')',
-	                'background-size': backgroundSize
-	            });
-	        };
-	        img.src = App.user.data.image_url;
-	    }
-	};
-	
-	handleNavbarToggle = function(event) {
-	    var view = event.data,
-	        $this = $(this),
-	        $viewContainer = $('.view-container'),
-	        $navbar, $tabbar, handleTransition;
-	
-	    handleTransition = function() {
-	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
-	        $this.removeClass('sliding-right');
-	    };
-	
-	    $navbar = $('.sg-navbar', view.$element);
-	    $tabbar = $('.sg-tabbar-container', $viewContainer);
-	    if ($tabbar.css('position') !== 'fixed') {
-	        //We are not in a mobile situation
-	        $tabbar = $('');
-	    }
-	
-	    $navbar.addClass('sliding-right');
-	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $viewContainer.addClass('sliding-right');
-	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $tabbar.addClass('sliding-right');
-	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	
-	    if ($navbar.hasClass('slide-right') === true) {
-	        $navbar.removeClass('slide-right');
-	        $viewContainer.removeClass('slide-right');
-	        $tabbar.removeClass('slide-right');
-	    } else {
-	        $navbar.addClass('slide-right');
-	        $viewContainer.addClass('slide-right');
-	        $tabbar.addClass('slide-right');
-	    }
-	
-	    //Handle selection display
-	    if ($this.hasClass('list-group-item') === true) {
-	        view.changeActiveState($this);
-	    }
-	};
-	
-	handleLogin = function(event, callback) {
-	    var view = event.data,
-	        user = App.user;
-	
-	    user.login(function(error) {
-	        if (!error) {
-	            App.router.navigateTo('dashboard');
-	            view.render();
-	        } else {
-	            alert('Could not connect to Facebook.');
-	            console.log(error);
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback();
-	        }
-	    });
-	};
-	
-	/**
-	 * @param title: the text to display as title, if null title is set to default
-	 */
-	setTitle = function(title) {
-	    if (!title || title === null) {
-	        title = defaultTitle;
-	    }
-	    this.title = title;
-	    this._updateTitle();
-	};
-	
-	_updateTitle = function() {
-	    if (Utilities.isMobile() === true) {
-	        $('.sg-navbar-brand', this.$element).html(this.title);
-	    } else {
-	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
-	    }
-	};
-	
-	changeActiveState = function($menuItem) {
-	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
-	    $menuItem.addClass('list-group-item-selected');
-	};
-	
-	module.exports = ViewController.inherit({
-	    didInitialize: didInitialize,
-	    didRender: didRender,
-	    didResize: didResize,
-	    populateMainMenu: populateMainMenu,
-	    renderProfilePicture: renderProfilePicture,
-	    handleNavbarToggle: handleNavbarToggle,
-	    handleLogin: handleLogin,
-	    setTitle: setTitle,
-	    _updateTitle: _updateTitle,
-	    changeActiveState: changeActiveState
-	});
 
 
 /***/ },
@@ -12252,6 +12252,182 @@
 
 /***/ },
 /* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General view object with support for jQuery event autounbinding and localization.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+	
+		Utilities = __webpack_require__(8),
+	
+		initialize,
+	    render,
+	    setSubPath,
+	    _close,
+	    setupEvent,
+	    unbindEvents,
+	    on,
+	
+	    constructor, inherit;
+	
+	/**
+	 * Allows reinitializing a views data.
+	 */
+	initialize = function() {
+	    this.setSubPath();
+	    this.userEvents = [];
+	    this.events = {
+	        close: []
+	    };
+	
+	    if (_.isFunction(this.didInitialize) === true) {
+	        this.didInitialize();
+	    }
+	};
+	
+	render = function(callback) {
+	    var template = this.template(this.templateParameters);
+	
+	    //Unbind events to avoid double ups on multiple renders
+	    this.unbindEvents();
+	    if (_.isFunction(this.didResize) === true) {
+	        $(window).off('resize', this.didResize);
+	    }
+	
+	    this.$element.html(template);
+	
+	    //Did render event must be called before the callback so inheriting objects get the possibility to complete setup
+	    if (_.isFunction(this.didRender) === true) {
+	        this.didRender();
+	    }
+	
+	    if (_.isFunction(callback) === true) {
+	        callback();
+	    }
+	
+	    if (_.isFunction(this.didResize) === true) {
+	        $(window).on('resize', null, this, this.didResize);
+	    }
+	};
+	
+	setSubPath = function() {
+	    var slashIndex = -1;
+	    slashIndex = this.path.indexOf('/');
+	    if (slashIndex >= 0) {
+	        this.subPath = this.path.substring(slashIndex + 1);
+	    }
+	};
+	
+	/*function localize($containerElement) {
+			var $localizeElement = this.$element,
+				key, $element;
+			if($containerElement) {
+				$localizeElement = $containerElement;
+			}
+			for(key in this.labels) {
+				if(this.labels.hasOwnProperty(key)) {
+					$element = $('#' + key, $localizeElement);
+					if($element.is('input')) {
+						$element.attr('placeholder', this.labels[key]);
+					}
+					else {
+						$element.html(this.labels[key]);
+					}
+				}
+			}
+		}*/
+	
+	_close = function() {
+	    var i;
+	    for (i = 0; i < this.events.close.length; i++) {
+	        this.events.close[i](this);
+	    }
+	    this.unbindEvents();
+	    this.$element.empty();
+	    if (_.isFunction(this.didClose) === true) {
+	        this.didClose();
+	    }
+	};
+	
+	//A wrapper for jQuery events that allows automatic unbinding on view disposal
+	setupEvent = function(eventType, element, data, callback) {
+	    this.$element.on(eventType, element, data, callback);
+	    this.userEvents.push({
+	        eventType: eventType,
+	        element: element,
+	        callback: callback
+	    });
+	};
+	
+	unbindEvents = function() {
+	    var i, userEvent;
+	    for (i = this.userEvents.length - 1; i >= 0; i--) {
+	        userEvent = this.userEvents[i];
+	        this.$element.off(userEvent.eventType, userEvent.element, userEvent.callback);
+	        this.userEvents.pop();
+	    }
+	};
+	
+	on = function(eventType, callback) {
+	    switch (eventType) {
+	        case 'close':
+	            this.events.close.push(callback);
+	            break;
+	    }
+	};
+	
+	constructor = function(options) {
+	    var defaults = {
+	        name: '',
+	        $element: $(''),
+	        template: '', //A template string
+	        templateParameters: {},
+	        labels: {},
+	        path: '', //URL path in the following form mainView/subView fx dashboard/profile
+	        hasSubviews: false,
+	        $subViewContainer: $(''),
+	        subPath: '',
+	        passedData: {}, //stores extra data passed to the view
+	        ready: true,
+	
+	        initialize: initialize,
+	        render: render,
+	        setSubPath: setSubPath,
+	        //localize: localize,
+	        close: _close,
+	        setupEvent: setupEvent,
+	        unbindEvents: unbindEvents,
+	        on: on
+	    };
+	
+	    _.extend(this, defaults, options);
+	
+	    this.template = _.template(this.template);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12490,7 +12666,7 @@
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*jslint node: true */
@@ -12555,7 +12731,7 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12568,8 +12744,8 @@
 	
 	var Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    Model = __webpack_require__(18),
+	    Config = __webpack_require__(6),
+	    Model = __webpack_require__(19),
 	    XChangeRates = __webpack_require__(25),
 	    Localization,
 	
@@ -12755,7 +12931,7 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12769,7 +12945,7 @@
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
 	
-		Utilities = __webpack_require__(7),
+		Utilities = __webpack_require__(8),
 	
 		initialize,
 	    get,
@@ -12888,7 +13064,25 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
+	__webpack_require__(26)
+	__webpack_require__(27)
+	__webpack_require__(28)
+	__webpack_require__(29)
+	__webpack_require__(30)
+	__webpack_require__(31)
+	__webpack_require__(32)
+	__webpack_require__(33)
+	__webpack_require__(34)
+	__webpack_require__(35)
+	__webpack_require__(36)
+	__webpack_require__(37)
+
+/***/ },
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12902,8 +13096,8 @@
 	var _ = __webpack_require__(3),
 		$ = __webpack_require__(4),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(8),
+		ViewController = __webpack_require__(15),
 	
 		$popupLightbox = $('#popup-lightbox'),
 	    inherit, show, hide, setTitle;
@@ -12943,200 +13137,6 @@
 	    inherit: inherit
 	};
 
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General view object with support for jQuery event autounbinding and localization.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-	
-		Utilities = __webpack_require__(7),
-	
-		initialize,
-	    render,
-	    setSubPath,
-	    _close,
-	    setupEvent,
-	    unbindEvents,
-	    on,
-	
-	    constructor, inherit;
-	
-	/**
-	 * Allows reinitializing a views data.
-	 */
-	initialize = function() {
-	    this.setSubPath();
-	    this.userEvents = [];
-	    this.events = {
-	        close: []
-	    };
-	
-	    if (_.isFunction(this.didInitialize) === true) {
-	        this.didInitialize();
-	    }
-	};
-	
-	render = function(callback) {
-	    var template = this.template(this.templateParameters);
-	
-	    //Unbind events to avoid double ups on multiple renders
-	    this.unbindEvents();
-	    if (_.isFunction(this.didResize) === true) {
-	        $(window).off('resize', this.didResize);
-	    }
-	
-	    this.$element.html(template);
-	
-	    //Did render event must be called before the callback so inheriting objects get the possibility to complete setup
-	    if (_.isFunction(this.didRender) === true) {
-	        this.didRender();
-	    }
-	
-	    if (_.isFunction(callback) === true) {
-	        callback();
-	    }
-	
-	    if (_.isFunction(this.didResize) === true) {
-	        $(window).on('resize', null, this, this.didResize);
-	    }
-	};
-	
-	setSubPath = function() {
-	    var slashIndex = -1;
-	    slashIndex = this.path.indexOf('/');
-	    if (slashIndex >= 0) {
-	        this.subPath = this.path.substring(slashIndex + 1);
-	    }
-	};
-	
-	/*function localize($containerElement) {
-			var $localizeElement = this.$element,
-				key, $element;
-			if($containerElement) {
-				$localizeElement = $containerElement;
-			}
-			for(key in this.labels) {
-				if(this.labels.hasOwnProperty(key)) {
-					$element = $('#' + key, $localizeElement);
-					if($element.is('input')) {
-						$element.attr('placeholder', this.labels[key]);
-					}
-					else {
-						$element.html(this.labels[key]);
-					}
-				}
-			}
-		}*/
-	
-	_close = function() {
-	    var i;
-	    for (i = 0; i < this.events.close.length; i++) {
-	        this.events.close[i](this);
-	    }
-	    this.unbindEvents();
-	    this.$element.empty();
-	    if (_.isFunction(this.didClose) === true) {
-	        this.didClose();
-	    }
-	};
-	
-	//A wrapper for jQuery events that allows automatic unbinding on view disposal
-	setupEvent = function(eventType, element, data, callback) {
-	    this.$element.on(eventType, element, data, callback);
-	    this.userEvents.push({
-	        eventType: eventType,
-	        element: element,
-	        callback: callback
-	    });
-	};
-	
-	unbindEvents = function() {
-	    var i, userEvent;
-	    for (i = this.userEvents.length - 1; i >= 0; i--) {
-	        userEvent = this.userEvents[i];
-	        this.$element.off(userEvent.eventType, userEvent.element, userEvent.callback);
-	        this.userEvents.pop();
-	    }
-	};
-	
-	on = function(eventType, callback) {
-	    switch (eventType) {
-	        case 'close':
-	            this.events.close.push(callback);
-	            break;
-	    }
-	};
-	
-	constructor = function(options) {
-	    var defaults = {
-	        name: '',
-	        $element: $(''),
-	        template: '', //A template string
-	        templateParameters: {},
-	        labels: {},
-	        path: '', //URL path in the following form mainView/subView fx dashboard/profile
-	        hasSubviews: false,
-	        $subViewContainer: $(''),
-	        subPath: '',
-	        passedData: {}, //stores extra data passed to the view
-	        ready: true,
-	
-	        initialize: initialize,
-	        render: render,
-	        setSubPath: setSubPath,
-	        //localize: localize,
-	        close: _close,
-	        setupEvent: setupEvent,
-	        unbindEvents: unbindEvents,
-	        on: on
-	    };
-	
-	    _.extend(this, defaults, options);
-	
-	    this.template = _.template(this.template);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(26)
-	__webpack_require__(27)
-	__webpack_require__(28)
-	__webpack_require__(29)
-	__webpack_require__(30)
-	__webpack_require__(31)
-	__webpack_require__(32)
-	__webpack_require__(33)
-	__webpack_require__(34)
-	__webpack_require__(35)
-	__webpack_require__(36)
-	__webpack_require__(37)
 
 /***/ },
 /* 22 */
@@ -13179,7 +13179,7 @@
 		"./gearsearchform.js": 65,
 		"./home.js": 66,
 		"./insurance.js": 67,
-		"./navigation-header.js": 11,
+		"./navigation-header.js": 5,
 		"./payment.js": 68,
 		"./paymentsuccessful.js": 69,
 		"./pickupdeliverycalendar.js": 70,
@@ -13297,8 +13297,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Config = __webpack_require__(5),
-		Model = __webpack_require__(18),
+	var Config = __webpack_require__(6),
+		Model = __webpack_require__(19),
 	
 		currencies = {},
 	    XChangeRates,
@@ -15718,7 +15718,7 @@
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	
 	    testimonials,
 	
@@ -15861,11 +15861,11 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	    Gear = __webpack_require__(138),
 	
 	    subtypeDefault = 'Choose subtype:',
@@ -16667,11 +16667,11 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	    TechProfile = __webpack_require__(139),
 	
 	    countryDefault = 'Select country:',
@@ -17303,11 +17303,11 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	    Van = __webpack_require__(140),
 	
 	    countryDefault = 'Select country:',
@@ -18015,10 +18015,10 @@
 	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	
 	    didInitialize,
 	    didRender,
@@ -18529,12 +18529,12 @@
 	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(8),
+	    Localization = __webpack_require__(18),
+	    User = __webpack_require__(9),
 	    Booking = __webpack_require__(141),
 	
 	    didInitialize,
@@ -18827,11 +18827,11 @@
 	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	    Booking = __webpack_require__(141),
 	
 	    SelectTimePopup = __webpack_require__(142),
@@ -19052,7 +19052,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(15);
 	
 	module.exports = ViewController.inherit({});
 
@@ -19071,7 +19071,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 		
 	    didRender,
 	    loadFooter;
@@ -19119,11 +19119,11 @@
 	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -19443,10 +19443,10 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		didInitialize,
 	    didRender,
@@ -19532,8 +19532,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19654,8 +19654,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19803,8 +19803,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19948,8 +19948,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20093,8 +20093,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20236,8 +20236,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20343,8 +20343,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20488,8 +20488,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20631,8 +20631,8 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20749,7 +20749,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    subViewContainerID,
@@ -20837,8 +20837,8 @@
 	    GoogleMaps = __webpack_require__(13),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -21471,10 +21471,10 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
+	    Config = __webpack_require__(6),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -21985,8 +21985,8 @@
 	    Moment = __webpack_require__(137),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -22542,7 +22542,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(15);
 	module.exports = ViewController.inherit();
 
 
@@ -22560,9 +22560,9 @@
 	
 	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		didInitialize;
 	
@@ -22593,17 +22593,17 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-		FB = __webpack_require__(16),
+		FB = __webpack_require__(17),
 		GoogleMaps = __webpack_require__(13),
 	
-		Config = __webpack_require__(5),
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Config = __webpack_require__(6),
+		Utilities = __webpack_require__(8),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 		Gear = __webpack_require__(138),
-		User = __webpack_require__(8),
+		User = __webpack_require__(9),
 	
 		paymentSuccessModalOpen = false,
 	
@@ -22976,11 +22976,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(8),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -23387,7 +23387,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23530,7 +23530,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	
 	    didRender,
 	    loadFooter;
@@ -23575,11 +23575,11 @@
 		$ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(5),
-		ViewController = __webpack_require__(20),
+		Config = __webpack_require__(6),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 		Card = __webpack_require__(146),
 	
 		didInitialize,
@@ -24013,11 +24013,11 @@
 	var $ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(5),
+		Config = __webpack_require__(6),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
-		ViewController = __webpack_require__(20),
+		Localization = __webpack_require__(18),
+		ViewController = __webpack_require__(15),
 		Booking = __webpack_require__(141),
 	
 		didInitialize,
@@ -24154,10 +24154,10 @@
 		$ = __webpack_require__(4),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(8),
+		ViewController = __webpack_require__(15),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -24607,7 +24607,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 	
 	    didRender,
 	    loadFooter;
@@ -24652,14 +24652,14 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(16),
+	    FB = __webpack_require__(17),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    Utilities = __webpack_require__(8),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -25182,11 +25182,11 @@
 	    GoogleMaps = __webpack_require__(13),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
+	    Config = __webpack_require__(6),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
-	    MessagePopup = __webpack_require__(10),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(18),
+	    MessagePopup = __webpack_require__(11),
 	
 	    geocoder,
 	
@@ -25555,14 +25555,14 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(16),
+	    FB = __webpack_require__(17),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
+	    Config = __webpack_require__(6),
+	    Utilities = __webpack_require__(8),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(8),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(18),
+	    User = __webpack_require__(9),
 	    TechProfile = __webpack_require__(139),
 	
 	    paymentSuccessModalOpen = false,
@@ -25916,11 +25916,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(8),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -26311,7 +26311,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(15);
 	
 	module.exports = ViewController;
 
@@ -26331,10 +26331,10 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    ViewController = __webpack_require__(15),
 	
-	    User = __webpack_require__(8),
+	    User = __webpack_require__(9),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -26596,16 +26596,16 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    FB = __webpack_require__(16),
+	    FB = __webpack_require__(17),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(6),
+	    Utilities = __webpack_require__(8),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(8),
+	    Localization = __webpack_require__(18),
+	    User = __webpack_require__(9),
 	    Van = __webpack_require__(140),
 	
 	    paymentSuccessModalOpen = false,
@@ -26974,11 +26974,11 @@
 		GoogleMaps = __webpack_require__(13),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(8),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(18),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -27722,8 +27722,8 @@
 	
 	var _ = __webpack_require__(3),
 		
-		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(18),
+		Utilities = __webpack_require__(8),
+		Model = __webpack_require__(19),
 		App = __webpack_require__(1),
 		
 		didInitialize,
@@ -27970,7 +27970,7 @@
 	var _ = __webpack_require__(3),
 	
 	    App = __webpack_require__(1),
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(19),
 	
 	    didInitialize,
 	    createTechProfile,
@@ -28167,8 +28167,8 @@
 	
 	var _ = __webpack_require__(3),
 		
-		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(18),
+		Utilities = __webpack_require__(8),
+		Model = __webpack_require__(19),
 		App = __webpack_require__(1),
 	
 		didInitialize,
@@ -28404,7 +28404,7 @@
 	var _ = __webpack_require__(3),
 	    Moment = __webpack_require__(137),
 	
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -28543,7 +28543,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(19),
+		PopupController = __webpack_require__(21),
 		SelectTimePopupTemplate = __webpack_require__(148),
 	
 		SelectTimePopup,
@@ -28615,7 +28615,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-		Model = __webpack_require__(18),
+		Model = __webpack_require__(19),
 		Gear = __webpack_require__(138),
 		
 		didInitialize,
@@ -28757,7 +28757,7 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		Model = __webpack_require__(18),
+		Model = __webpack_require__(19),
 		TechProfile = __webpack_require__(139),
 		
 		didInitialize,
@@ -28900,7 +28900,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(19),
 	    Van = __webpack_require__(140),
 	
 	    didInitialize,
@@ -29043,8 +29043,8 @@
 	
 	var mangoPay = __webpack_require__(150),
 		
-		Config = __webpack_require__(5),
-		Model = __webpack_require__(18),
+		Config = __webpack_require__(6),
+		Model = __webpack_require__(19),
 	
 	    didInitialize,
 	    registerCard;
