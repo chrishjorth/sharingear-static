@@ -138,7 +138,7 @@ setCurrentLocation = function(location) {
     if (tab === 'vans') {
         $('#search-currentlocation', this.$element).html('Showing vehicles around ' + location);
     }
-    if (tab === 'technicians') {
+    else if (tab === 'technicians') {
         $('#search-currentlocation', this.$element).html('Showing technicians around ' + location);
     } else {
         $('#search-currentlocation', this.$element).html('Showing gear around ' + location);

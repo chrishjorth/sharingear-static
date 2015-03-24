@@ -46,8 +46,7 @@ createBooking = function(cardId, callback) {
 
     if (this.data.van_id && this.data.van_id !== null) {
         url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
-    }
-    if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
         url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
     } else {
         url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';

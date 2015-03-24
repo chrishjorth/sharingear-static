@@ -73,7 +73,6 @@ loadView = function(view, path, data, callback) {
         passedData: data
     });
     viewLoader.currentViewController.initialize();
-    viewLoader.currentViewController.render();
     //The ready property is so a controller can abort loading, useful if a redirect is being called
     if (viewLoader.currentViewController.ready === true) {
         viewLoader.currentViewController.render(function() {

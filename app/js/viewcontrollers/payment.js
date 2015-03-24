@@ -396,8 +396,7 @@ processPayment = function(cardNumber, expirationDate, CSC) {
         //Pre-authorize the card for the withdrawal
         view.booking.createBooking(cardId, function(error) {
             if (error) {
-                console.log('Error creating booking: ');
-                console.log(error);
+                console.log('Error creating booking: ' + error);
                 view.resetPayButton();
                 return;
             }
