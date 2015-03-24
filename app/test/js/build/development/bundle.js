@@ -54,7 +54,7 @@
 	
 	var _ = __webpack_require__(15);
 	
-	__webpack_require__(18);
+	__webpack_require__(16);
 	
 	__webpack_require__(1);
 	__webpack_require__(3);
@@ -86,10 +86,10 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(2)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -199,10 +199,10 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(4)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -255,10 +255,10 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(6)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -431,10 +431,10 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(8)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -619,10 +619,10 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(10)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -793,10 +793,10 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(12)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -904,10 +904,10 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(14)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -2602,30 +2602,6 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
-	
-	__webpack_require__(36);
-	__webpack_require__(28);
-
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
-		delete __webpack_require__.c[module.id];
-		if(typeof window !== "undefined" && window.mochaPhantomJS)
-			mochaPhantomJS.run();
-		else
-			mocha.run();
-	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(35)))
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
 	if (typeof Function.prototype.bind != 'function') {
 	    Function.prototype.bind = function bind(obj) {
 	        var args = Array.prototype.slice.call(arguments, 1),
@@ -2645,6 +2621,30 @@
 	    };
 	}
 
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
+	
+	__webpack_require__(36);
+	__webpack_require__(28);
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
+		delete __webpack_require__.c[module.id];
+		if(typeof window !== "undefined" && window.mochaPhantomJS)
+			mochaPhantomJS.run();
+		else
+			mocha.run();
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(35)))
 
 /***/ },
 /* 19 */
@@ -45056,8 +45056,8 @@
 	 */
 	
 	var base64 = __webpack_require__(283)
-	var ieee754 = __webpack_require__(281)
-	var isArray = __webpack_require__(282)
+	var ieee754 = __webpack_require__(282)
+	var isArray = __webpack_require__(281)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -46544,6 +46544,45 @@
 /* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
+	
+	/**
+	 * isArray
+	 */
+	
+	var isArray = Array.isArray;
+	
+	/**
+	 * toString
+	 */
+	
+	var str = Object.prototype.toString;
+	
+	/**
+	 * Whether or not the given `val`
+	 * is an array.
+	 *
+	 * example:
+	 *
+	 *        isArray([]);
+	 *        // > true
+	 *        isArray(arguments);
+	 *        // > false
+	 *        isArray('');
+	 *        // > false
+	 *
+	 * @param {mixed} val
+	 * @return {bool}
+	 */
+	
+	module.exports = isArray || function (val) {
+	  return !! val && '[object Array]' == str.call(val);
+	};
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
 	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
 	  var e, m,
 	      eLen = nBytes * 8 - mLen - 1,
@@ -46627,45 +46666,6 @@
 	  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8);
 	
 	  buffer[offset + i - d] |= s * 128;
-	};
-
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * isArray
-	 */
-	
-	var isArray = Array.isArray;
-	
-	/**
-	 * toString
-	 */
-	
-	var str = Object.prototype.toString;
-	
-	/**
-	 * Whether or not the given `val`
-	 * is an array.
-	 *
-	 * example:
-	 *
-	 *        isArray([]);
-	 *        // > true
-	 *        isArray(arguments);
-	 *        // > false
-	 *        isArray('');
-	 *        // > false
-	 *
-	 * @param {mixed} val
-	 * @return {bool}
-	 */
-	
-	module.exports = isArray || function (val) {
-	  return !! val && '[object Array]' == str.call(val);
 	};
 
 

@@ -324,14 +324,14 @@
 		App = __webpack_require__(1),
 	
 		HeaderController = __webpack_require__(11),
-	    HeaderTemplate = __webpack_require__(19),
+	    HeaderTemplate = __webpack_require__(14),
 	
 	    initialize,
 	
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(22);
+	__webpack_require__(21);
 	__webpack_require__(12);
 	
 	initialize = function() {
@@ -11213,7 +11213,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-		ViewLoader = __webpack_require__(14),
+		ViewLoader = __webpack_require__(15),
 		Utilities = __webpack_require__(7);
 	
 	var Router,
@@ -11576,9 +11576,9 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    FB = __webpack_require__(15),
-	    Localization = __webpack_require__(16),
-	    Model = __webpack_require__(17),
+	    FB = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
+	    Model = __webpack_require__(18),
 	    Utilities = __webpack_require__(7),
 	
 	    didInitialize,
@@ -11864,7 +11864,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(17),
+	    Model = __webpack_require__(18),
 	
 	    didInitialize,
 	    getClassification;
@@ -11916,9 +11916,9 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(18),
+		PopupController = __webpack_require__(20),
 	
-		MessagePopupTemplate = __webpack_require__(20),
+		MessagePopupTemplate = __webpack_require__(22),
 	
 		MessagePopup,
 	
@@ -11977,7 +11977,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    Utilities = __webpack_require__(7),
 	    App = __webpack_require__(1),
 	
@@ -12248,6 +12248,12 @@
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = "<nav class=\"sg-navbar\" role=\"navigation\">\n\t<div class=\"container-fluid\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-2\">\n\t\t\t\t<button type=\"button\" class=\"sg-navbar-toggle sg-btn-invisible-blue\" data-target=\"#navigation-header-menu-left\"><i class=\"fa fa-bars\"></i></button>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-8 col-sm-8 sg-blue sg-navbar-brand\"></div>\n\t\t\t<div class=\"col-sm-3 col-sm-offset-1 sg-navbar-dropdownmenu sg-navbar-dropdownmenu-left hidden\" id=\"navigation-header-dropdownmenu-left\">\n\t\t\t\t<div class=\"dropdown pull-right sg-no-mobile\">\n\t\t\t\t\t<button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-expanded=\"true\"><div src=\"\" class=\"profile-pic\"></div><div class=\"menu-text\">MENU</div><!--<span class=\"caret\"></span>--></button>\n\t\t\t\t\t<div class=\"dropdown-menu list-group\" role=\"menu\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</nav>\n\n<div class=\"sg-navbar-slidemenu sg-navbar-slidemenu-left\" id=\"navigation-header-slidemenu-left\">\n\t<div class=\"list-group\" role=\"menu\"></div>\n</div>\n";
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * Handles viewcontroller and template loading.
 	 * @author: Chris Hjorth
@@ -12484,7 +12490,7 @@
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*jslint node: true */
@@ -12549,7 +12555,7 @@
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12563,7 +12569,7 @@
 	var Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    Model = __webpack_require__(17),
+	    Model = __webpack_require__(18),
 	    XChangeRates = __webpack_require__(25),
 	    Localization,
 	
@@ -12749,7 +12755,7 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12882,76 +12888,7 @@
 
 
 /***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General popup object that inherits from ViewController.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
-	
-		$popupLightbox = $('#popup-lightbox'),
-	    inherit, show, hide, setTitle;
-	
-	show = function() {
-	    $popupLightbox.removeClass('hidden');
-	    this.templateParameters.title = this.title;
-	    this.render();
-	};
-	
-	hide = function() {
-	    $popupLightbox.addClass('hidden');
-	    this.close();
-	};
-	
-	setTitle = function(title) {
-	    this.title = title;
-	};
-	
-	inherit = function(inheritOptions) {
-	    var options = {
-	        $element: $('.popup-container', $popupLightbox),
-	        title: 'Popup',
-	
-	        show: show,
-	        hide: hide,
-	        setTitle: setTitle
-	    };
-	    _.extend(options, inheritOptions);
-	
-	    return {
-	        constructor: Utilities.inherit(ViewController.constructor, options)
-	    };
-	};
-	
-	module.exports = {
-	    inherit: inherit
-	};
-
-
-/***/ },
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<nav class=\"sg-navbar\" role=\"navigation\">\n\t<div class=\"container-fluid\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-2\">\n\t\t\t\t<button type=\"button\" class=\"sg-navbar-toggle sg-btn-invisible-blue\" data-target=\"#navigation-header-menu-left\"><i class=\"fa fa-bars\"></i></button>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-8 col-sm-8 sg-blue sg-navbar-brand\"></div>\n\t\t\t<div class=\"col-sm-3 col-sm-offset-1 sg-navbar-dropdownmenu sg-navbar-dropdownmenu-left hidden\" id=\"navigation-header-dropdownmenu-left\">\n\t\t\t\t<div class=\"dropdown pull-right sg-no-mobile\">\n\t\t\t\t\t<button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-expanded=\"true\"><div src=\"\" class=\"profile-pic\"></div><div class=\"menu-text\">MENU</div><!--<span class=\"caret\"></span>--></button>\n\t\t\t\t\t<div class=\"dropdown-menu list-group\" role=\"menu\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</nav>\n\n<div class=\"sg-navbar-slidemenu sg-navbar-slidemenu-left\" id=\"navigation-header-slidemenu-left\">\n\t<div class=\"list-group\" role=\"menu\"></div>\n</div>\n";
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-right\">\n\t\t\t<button class=\"cancel-btn sg-btn-round submerchant-message-close sg-white-bg sg-blue\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div id=\"popup-message\" class=\"message-pop\"></div>\n\t</div>\n</div>";
-
-/***/ },
-/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13127,7 +13064,64 @@
 
 
 /***/ },
-/* 22 */
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General popup object that inherits from ViewController.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+	
+		Utilities = __webpack_require__(7),
+		ViewController = __webpack_require__(19),
+	
+		$popupLightbox = $('#popup-lightbox'),
+	    inherit, show, hide, setTitle;
+	
+	show = function() {
+	    $popupLightbox.removeClass('hidden');
+	    this.templateParameters.title = this.title;
+	    this.render();
+	};
+	
+	hide = function() {
+	    $popupLightbox.addClass('hidden');
+	    this.close();
+	};
+	
+	setTitle = function(title) {
+	    this.title = title;
+	};
+	
+	inherit = function(inheritOptions) {
+	    var options = {
+	        $element: $('.popup-container', $popupLightbox),
+	        title: 'Popup',
+	
+	        show: show,
+	        hide: hide,
+	        setTitle: setTitle
+	    };
+	    _.extend(options, inheritOptions);
+	
+	    return {
+	        constructor: Utilities.inherit(ViewController.constructor, options)
+	    };
+	};
+	
+	module.exports = {
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
@@ -13143,6 +13137,12 @@
 	__webpack_require__(35)
 	__webpack_require__(36)
 	__webpack_require__(37)
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\n\t<div class=\"row\">\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-right\">\n\t\t\t<button class=\"cancel-btn sg-btn-round submerchant-message-close sg-white-bg sg-blue\">\n\t\t\t\t<i class=\"fa fa-times\"></i>\n\t\t\t</button>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<div id=\"popup-message\" class=\"message-pop\"></div>\n\t</div>\n</div>";
 
 /***/ },
 /* 23 */
@@ -13243,7 +13243,7 @@
 		"./gearsearchform.html": 108,
 		"./home.html": 109,
 		"./insurance.html": 110,
-		"./navigation-header.html": 19,
+		"./navigation-header.html": 14,
 		"./payment.html": 111,
 		"./paymentsuccessful.html": 112,
 		"./pickupdeliverycalendar.html": 113,
@@ -13298,7 +13298,7 @@
 	'use strict';
 	
 	var Config = __webpack_require__(5),
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(18),
 	
 		currencies = {},
 	    XChangeRates,
@@ -15718,7 +15718,7 @@
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	
 	    testimonials,
 	
@@ -15862,10 +15862,10 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
 	    Gear = __webpack_require__(138),
 	
 	    subtypeDefault = 'Choose subtype:',
@@ -16668,11 +16668,11 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
-	    TechProfile = __webpack_require__(140),
+	    Localization = __webpack_require__(17),
+	    TechProfile = __webpack_require__(139),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -17304,11 +17304,11 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
-	    Van = __webpack_require__(139),
+	    Localization = __webpack_require__(17),
+	    Van = __webpack_require__(140),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -18015,10 +18015,10 @@
 	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
 	
 	    didInitialize,
 	    didRender,
@@ -18530,10 +18530,10 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
 	    User = __webpack_require__(8),
 	    Booking = __webpack_require__(141),
 	
@@ -18828,10 +18828,10 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
 	    Booking = __webpack_require__(141),
 	
 	    SelectTimePopup = __webpack_require__(142),
@@ -19052,7 +19052,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(19);
 	
 	module.exports = ViewController.inherit({});
 
@@ -19071,7 +19071,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 		
 	    didRender,
 	    loadFooter;
@@ -19120,10 +19120,10 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -19443,10 +19443,10 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(17),
 	
 		didInitialize,
 	    didRender,
@@ -19533,7 +19533,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19655,7 +19655,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19804,7 +19804,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19949,7 +19949,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20094,7 +20094,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20237,7 +20237,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20344,7 +20344,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20489,7 +20489,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20632,7 +20632,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20749,7 +20749,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    subViewContainerID,
@@ -20837,8 +20837,8 @@
 	    GoogleMaps = __webpack_require__(13),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(19),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -21473,8 +21473,8 @@
 	
 	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(19),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -21985,8 +21985,8 @@
 	    Moment = __webpack_require__(137),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(19),
+	    Localization = __webpack_require__(17),
 	
 	    geocoder,
 	
@@ -22542,7 +22542,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(19);
 	module.exports = ViewController.inherit();
 
 
@@ -22560,9 +22560,9 @@
 	
 	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(17),
 	
 		didInitialize;
 	
@@ -22593,15 +22593,15 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-		FB = __webpack_require__(15),
+		FB = __webpack_require__(16),
 		GoogleMaps = __webpack_require__(13),
 	
 		Config = __webpack_require__(5),
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(17),
 		Gear = __webpack_require__(138),
 		User = __webpack_require__(8),
 	
@@ -22977,10 +22977,10 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(17),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -23387,7 +23387,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23530,7 +23530,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	
 	    didRender,
 	    loadFooter;
@@ -23576,10 +23576,10 @@
 		Moment = __webpack_require__(137),
 	
 		Config = __webpack_require__(5),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(17),
 		Card = __webpack_require__(146),
 	
 		didInitialize,
@@ -24016,8 +24016,8 @@
 		Config = __webpack_require__(5),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
-		ViewController = __webpack_require__(21),
+		Localization = __webpack_require__(17),
+		ViewController = __webpack_require__(19),
 		Booking = __webpack_require__(141),
 	
 		didInitialize,
@@ -24155,9 +24155,9 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(17),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -24607,7 +24607,7 @@
 	
 	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 	
 	    didRender,
 	    loadFooter;
@@ -24652,14 +24652,14 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(15),
+	    FB = __webpack_require__(16),
 	
 	    Config = __webpack_require__(5),
 	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -25184,8 +25184,8 @@
 	
 	    Config = __webpack_require__(5),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(19),
+	    Localization = __webpack_require__(17),
 	    MessagePopup = __webpack_require__(10),
 	
 	    geocoder,
@@ -25555,15 +25555,15 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(15),
+	    FB = __webpack_require__(16),
 	
 	    Config = __webpack_require__(5),
 	    Utilities = __webpack_require__(7),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(19),
+	    Localization = __webpack_require__(17),
 	    User = __webpack_require__(8),
-	    TechProfile = __webpack_require__(140),
+	    TechProfile = __webpack_require__(139),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -25917,10 +25917,10 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(17),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -26311,7 +26311,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(19);
 	
 	module.exports = ViewController;
 
@@ -26332,7 +26332,7 @@
 	    $ = __webpack_require__(4),
 	
 	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	
 	    User = __webpack_require__(8),
 	    GearList = __webpack_require__(143),
@@ -26596,17 +26596,17 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(4),
-	    FB = __webpack_require__(15),
+	    FB = __webpack_require__(16),
 	    GoogleMaps = __webpack_require__(13),
 	
 	    Config = __webpack_require__(5),
 	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(19),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(17),
 	    User = __webpack_require__(8),
-	    Van = __webpack_require__(139),
+	    Van = __webpack_require__(140),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -26975,10 +26975,10 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(19),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(17),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -27723,7 +27723,7 @@
 	var _ = __webpack_require__(3),
 		
 		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(18),
 		App = __webpack_require__(1),
 		
 		didInitialize,
@@ -27959,6 +27959,205 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(3),
+	
+	    App = __webpack_require__(1),
+	    Model = __webpack_require__(18),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Defines a van item.
 	 * @author: Chris Hjorth
 	 */
@@ -27969,7 +28168,7 @@
 	var _ = __webpack_require__(3),
 		
 		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(18),
 		App = __webpack_require__(1),
 	
 		didInitialize,
@@ -28191,205 +28390,6 @@
 
 
 /***/ },
-/* 140 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(3),
-	
-	    App = __webpack_require__(1),
-	    Model = __webpack_require__(17),
-	
-	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
-	        };
-	    }
-	};
-	
-	createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
 /* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28404,7 +28404,7 @@
 	var _ = __webpack_require__(3),
 	    Moment = __webpack_require__(137),
 	
-	    Model = __webpack_require__(17),
+	    Model = __webpack_require__(18),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -28543,7 +28543,7 @@
 	
 	var $ = __webpack_require__(4),
 	
-		PopupController = __webpack_require__(18),
+		PopupController = __webpack_require__(20),
 		SelectTimePopupTemplate = __webpack_require__(148),
 	
 		SelectTimePopup,
@@ -28615,7 +28615,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(18),
 		Gear = __webpack_require__(138),
 		
 		didInitialize,
@@ -28757,8 +28757,8 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		Model = __webpack_require__(17),
-		TechProfile = __webpack_require__(140),
+		Model = __webpack_require__(18),
+		TechProfile = __webpack_require__(139),
 		
 		didInitialize,
 	
@@ -28900,8 +28900,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(17),
-	    Van = __webpack_require__(139),
+	    Model = __webpack_require__(18),
+	    Van = __webpack_require__(140),
 	
 	    didInitialize,
 	
@@ -29044,7 +29044,7 @@
 	var mangoPay = __webpack_require__(150),
 		
 		Config = __webpack_require__(5),
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(18),
 	
 	    didInitialize,
 	    registerCard;
