@@ -59,8 +59,8 @@
 	    };
 	}
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
 	    app = __webpack_require__(1),
 	    rootVC = __webpack_require__(2);
@@ -95,16 +95,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    Router = __webpack_require__(6),
-	    Utilities = __webpack_require__(7),
+	    Config = __webpack_require__(7),
+	    Router = __webpack_require__(8),
+	    Utilities = __webpack_require__(9),
 	
-	    User = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(9),
-	    MessagePopup = __webpack_require__(10),
+	    User = __webpack_require__(10),
+	    ContentClassification = __webpack_require__(11),
+	    MessagePopup = __webpack_require__(12),
 	
 	    App,
 	
@@ -318,21 +318,21 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
 	
 		App = __webpack_require__(1),
 	
-		HeaderController = __webpack_require__(11),
-	    HeaderTemplate = __webpack_require__(14),
+		HeaderController = __webpack_require__(3),
+	    HeaderTemplate = __webpack_require__(13),
 	
 	    initialize,
 	
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(21);
-	__webpack_require__(12);
+	__webpack_require__(16);
+	__webpack_require__(4);
 	
 	initialize = function() {
 		var hash, route;
@@ -403,6 +403,282 @@
 
 /***/ },
 /* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Controller for the Sharingear header with navigation view.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var $ = __webpack_require__(6),
+	
+	    ViewController = __webpack_require__(15),
+	    Utilities = __webpack_require__(9),
+	    App = __webpack_require__(1),
+	
+	    defaultTitle,
+	
+	    didInitialize,
+	    didRender,
+	    didResize,
+	    populateMainMenu,
+	    renderProfilePicture,
+	    handleNavbarToggle,
+	    handleLogin,
+	    setTitle,
+	    _updateTitle,
+	    changeActiveState;
+	
+	/* Static variables */
+	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	
+	didInitialize = function() {
+	    this.isMobile = false;
+	    this.title = defaultTitle;
+	};
+	
+	didRender = function() {
+	    this._updateTitle();
+	    this.populateMainMenu();
+	    this.renderProfilePicture();
+	
+	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
+	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
+	};
+	
+	didResize = function(event) {
+	    var view = event.data;
+	    if (Utilities.isMobile() !== view.isMobile) {
+	        view.populateMainMenu();
+	    }
+	    view._updateTitle();
+	};
+	
+	populateMainMenu = function() {
+	    var html = '',
+	        $slideMenu, $dropdownMenu, $menuList;
+	
+	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
+	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
+	
+	    if (Utilities.isMobile() === true) {
+	        this.isMobile = true;
+	        $slideMenu.removeClass('hidden');
+	        if ($dropdownMenu.hasClass('hidden') === false) {
+	            $dropdownMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $slideMenu);
+	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+	    } else {
+	        this.isMobile = false;
+	        $dropdownMenu.removeClass('hidden');
+	        if ($slideMenu.hasClass('hidden') === false) {
+	            $slideMenu.addClass('hidden');
+	        }
+	        $menuList = $('.list-group', $dropdownMenu);
+	    }
+	
+	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
+	
+	    if (App.user && App.user.data.id !== null) {
+	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
+	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
+	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
+	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
+	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
+	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
+	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
+	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
+	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
+	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
+	    } else {
+	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
+	    }
+	
+	    $menuList.html(html);
+	};
+	
+	renderProfilePicture = function() {
+	    var view = this,
+	        img;
+	    if (App.user && App.user.data.image_url) {
+	        img = new Image();
+	        img.onload = function() {
+	            var isVertical, backgroundSize;
+	            isVertical = img.width < img.height;
+	            if (isVertical === true) {
+	                backgroundSize = '30px auto';
+	            } else {
+	                backgroundSize = 'auto 30px';
+	            }
+	            $('.profile-pic', view.$element).css({
+	                'background-image': 'url(' + img.src + ')',
+	                'background-size': backgroundSize
+	            });
+	        };
+	        img.src = App.user.data.image_url;
+	    }
+	};
+	
+	handleNavbarToggle = function(event) {
+	    var view = event.data,
+	        $this = $(this),
+	        $viewContainer = $('.view-container'),
+	        $navbar, $tabbar, handleTransition;
+	
+	    handleTransition = function() {
+	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
+	        $this.removeClass('sliding-right');
+	    };
+	
+	    $navbar = $('.sg-navbar', view.$element);
+	    $tabbar = $('.sg-tabbar-container', $viewContainer);
+	    if ($tabbar.css('position') !== 'fixed') {
+	        //We are not in a mobile situation
+	        $tabbar = $('');
+	    }
+	
+	    $navbar.addClass('sliding-right');
+	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $viewContainer.addClass('sliding-right');
+	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	    $tabbar.addClass('sliding-right');
+	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
+	
+	    if ($navbar.hasClass('slide-right') === true) {
+	        $navbar.removeClass('slide-right');
+	        $viewContainer.removeClass('slide-right');
+	        $tabbar.removeClass('slide-right');
+	    } else {
+	        $navbar.addClass('slide-right');
+	        $viewContainer.addClass('slide-right');
+	        $tabbar.addClass('slide-right');
+	    }
+	
+	    //Handle selection display
+	    if ($this.hasClass('list-group-item') === true) {
+	        view.changeActiveState($this);
+	    }
+	};
+	
+	handleLogin = function(event, callback) {
+	    var view = event.data,
+	        user = App.user;
+	
+	    user.login(function(error) {
+	        if (!error) {
+	            App.router.navigateTo('dashboard');
+	            view.render();
+	        } else {
+	            alert('Could not connect to Facebook.');
+	            console.log(error);
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback();
+	        }
+	    });
+	};
+	
+	/**
+	 * @param title: the text to display as title, if null title is set to default
+	 */
+	setTitle = function(title) {
+	    if (!title || title === null) {
+	        title = defaultTitle;
+	    }
+	    this.title = title;
+	    this._updateTitle();
+	};
+	
+	_updateTitle = function() {
+	    if (Utilities.isMobile() === true) {
+	        $('.sg-navbar-brand', this.$element).html(this.title);
+	    } else {
+	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
+	    }
+	};
+	
+	changeActiveState = function($menuItem) {
+	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
+	    $menuItem.addClass('list-group-item-selected');
+	};
+	
+	module.exports = ViewController.inherit({
+	    didInitialize: didInitialize,
+	    didRender: didRender,
+	    didResize: didResize,
+	    populateMainMenu: populateMainMenu,
+	    renderProfilePicture: renderProfilePicture,
+	    handleNavbarToggle: handleNavbarToggle,
+	    handleLogin: handleLogin,
+	    setTitle: setTitle,
+	    _updateTitle: _updateTitle,
+	    changeActiveState: changeActiveState
+	});
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(jQuery) {"function"!==typeof Object.create&&(Object.create=function(f){function g(){}g.prototype=f;return new g});
+	(function(f,g,k){var l={init:function(a,b){this.$elem=f(b);this.options=f.extend({},f.fn.owlCarousel.options,this.$elem.data(),a);this.userOptions=a;this.loadContent()},loadContent:function(){function a(a){var d,e="";if("function"===typeof b.options.jsonSuccess)b.options.jsonSuccess.apply(this,[a]);else{for(d in a.owl)a.owl.hasOwnProperty(d)&&(e+=a.owl[d].item);b.$elem.html(e)}b.logIn()}var b=this,e;"function"===typeof b.options.beforeInit&&b.options.beforeInit.apply(this,[b.$elem]);"string"===typeof b.options.jsonPath?
+	(e=b.options.jsonPath,f.getJSON(e,a)):b.logIn()},logIn:function(){this.$elem.data("owl-originalStyles",this.$elem.attr("style"));this.$elem.data("owl-originalClasses",this.$elem.attr("class"));this.$elem.css({opacity:0});this.orignalItems=this.options.items;this.checkBrowser();this.wrapperWidth=0;this.checkVisible=null;this.setVars()},setVars:function(){if(0===this.$elem.children().length)return!1;this.baseClass();this.eventTypes();this.$userItems=this.$elem.children();this.itemsAmount=this.$userItems.length;
+	this.wrapItems();this.$owlItems=this.$elem.find(".owl-item");this.$owlWrapper=this.$elem.find(".owl-wrapper");this.playDirection="next";this.prevItem=0;this.prevArr=[0];this.currentItem=0;this.customEvents();this.onStartup()},onStartup:function(){this.updateItems();this.calculateAll();this.buildControls();this.updateControls();this.response();this.moveEvents();this.stopOnHover();this.owlStatus();!1!==this.options.transitionStyle&&this.transitionTypes(this.options.transitionStyle);!0===this.options.autoPlay&&
+	(this.options.autoPlay=5E3);this.play();this.$elem.find(".owl-wrapper").css("display","block");this.$elem.is(":visible")?this.$elem.css("opacity",1):this.watchVisibility();this.onstartup=!1;this.eachMoveUpdate();"function"===typeof this.options.afterInit&&this.options.afterInit.apply(this,[this.$elem])},eachMoveUpdate:function(){!0===this.options.lazyLoad&&this.lazyLoad();!0===this.options.autoHeight&&this.autoHeight();this.onVisibleItems();"function"===typeof this.options.afterAction&&this.options.afterAction.apply(this,
+	[this.$elem])},updateVars:function(){"function"===typeof this.options.beforeUpdate&&this.options.beforeUpdate.apply(this,[this.$elem]);this.watchVisibility();this.updateItems();this.calculateAll();this.updatePosition();this.updateControls();this.eachMoveUpdate();"function"===typeof this.options.afterUpdate&&this.options.afterUpdate.apply(this,[this.$elem])},reload:function(){var a=this;g.setTimeout(function(){a.updateVars()},0)},watchVisibility:function(){var a=this;if(!1===a.$elem.is(":visible"))a.$elem.css({opacity:0}),
+	g.clearInterval(a.autoPlayInterval),g.clearInterval(a.checkVisible);else return!1;a.checkVisible=g.setInterval(function(){a.$elem.is(":visible")&&(a.reload(),a.$elem.animate({opacity:1},200),g.clearInterval(a.checkVisible))},500)},wrapItems:function(){this.$userItems.wrapAll('<div class="owl-wrapper">').wrap('<div class="owl-item"></div>');this.$elem.find(".owl-wrapper").wrap('<div class="owl-wrapper-outer">');this.wrapperOuter=this.$elem.find(".owl-wrapper-outer");this.$elem.css("display","block")},
+	baseClass:function(){var a=this.$elem.hasClass(this.options.baseClass),b=this.$elem.hasClass(this.options.theme);a||this.$elem.addClass(this.options.baseClass);b||this.$elem.addClass(this.options.theme)},updateItems:function(){var a,b;if(!1===this.options.responsive)return!1;if(!0===this.options.singleItem)return this.options.items=this.orignalItems=1,this.options.itemsCustom=!1,this.options.itemsDesktop=!1,this.options.itemsDesktopSmall=!1,this.options.itemsTablet=!1,this.options.itemsTabletSmall=
+	!1,this.options.itemsMobile=!1;a=f(this.options.responsiveBaseWidth).width();a>(this.options.itemsDesktop[0]||this.orignalItems)&&(this.options.items=this.orignalItems);if(!1!==this.options.itemsCustom)for(this.options.itemsCustom.sort(function(a,b){return a[0]-b[0]}),b=0;b<this.options.itemsCustom.length;b+=1)this.options.itemsCustom[b][0]<=a&&(this.options.items=this.options.itemsCustom[b][1]);else a<=this.options.itemsDesktop[0]&&!1!==this.options.itemsDesktop&&(this.options.items=this.options.itemsDesktop[1]),
+	a<=this.options.itemsDesktopSmall[0]&&!1!==this.options.itemsDesktopSmall&&(this.options.items=this.options.itemsDesktopSmall[1]),a<=this.options.itemsTablet[0]&&!1!==this.options.itemsTablet&&(this.options.items=this.options.itemsTablet[1]),a<=this.options.itemsTabletSmall[0]&&!1!==this.options.itemsTabletSmall&&(this.options.items=this.options.itemsTabletSmall[1]),a<=this.options.itemsMobile[0]&&!1!==this.options.itemsMobile&&(this.options.items=this.options.itemsMobile[1]);this.options.items>this.itemsAmount&&
+	!0===this.options.itemsScaleUp&&(this.options.items=this.itemsAmount)},response:function(){var a=this,b,e;if(!0!==a.options.responsive)return!1;e=f(g).width();a.resizer=function(){f(g).width()!==e&&(!1!==a.options.autoPlay&&g.clearInterval(a.autoPlayInterval),g.clearTimeout(b),b=g.setTimeout(function(){e=f(g).width();a.updateVars()},a.options.responsiveRefreshRate))};f(g).resize(a.resizer)},updatePosition:function(){this.jumpTo(this.currentItem);!1!==this.options.autoPlay&&this.checkAp()},appendItemsSizes:function(){var a=
+	this,b=0,e=a.itemsAmount-a.options.items;a.$owlItems.each(function(c){var d=f(this);d.css({width:a.itemWidth}).data("owl-item",Number(c));if(0===c%a.options.items||c===e)c>e||(b+=1);d.data("owl-roundPages",b)})},appendWrapperSizes:function(){this.$owlWrapper.css({width:this.$owlItems.length*this.itemWidth*2,left:0});this.appendItemsSizes()},calculateAll:function(){this.calculateWidth();this.appendWrapperSizes();this.loops();this.max()},calculateWidth:function(){this.itemWidth=Math.round(this.$elem.width()/
+	this.options.items)},max:function(){var a=-1*(this.itemsAmount*this.itemWidth-this.options.items*this.itemWidth);this.options.items>this.itemsAmount?this.maximumPixels=a=this.maximumItem=0:(this.maximumItem=this.itemsAmount-this.options.items,this.maximumPixels=a);return a},min:function(){return 0},loops:function(){var a=0,b=0,e,c;this.positionsInArray=[0];this.pagesInArray=[];for(e=0;e<this.itemsAmount;e+=1)b+=this.itemWidth,this.positionsInArray.push(-b),!0===this.options.scrollPerPage&&(c=f(this.$owlItems[e]),
+	c=c.data("owl-roundPages"),c!==a&&(this.pagesInArray[a]=this.positionsInArray[e],a=c))},buildControls:function(){if(!0===this.options.navigation||!0===this.options.pagination)this.owlControls=f('<div class="owl-controls"/>').toggleClass("clickable",!this.browser.isTouch).appendTo(this.$elem);!0===this.options.pagination&&this.buildPagination();!0===this.options.navigation&&this.buildButtons()},buildButtons:function(){var a=this,b=f('<div class="owl-buttons"/>');a.owlControls.append(b);a.buttonPrev=
+	f("<div/>",{"class":"owl-prev",html:a.options.navigationText[0]||""});a.buttonNext=f("<div/>",{"class":"owl-next",html:a.options.navigationText[1]||""});b.append(a.buttonPrev).append(a.buttonNext);b.on("touchstart.owlControls mousedown.owlControls",'div[class^="owl"]',function(a){a.preventDefault()});b.on("touchend.owlControls mouseup.owlControls",'div[class^="owl"]',function(b){b.preventDefault();f(this).hasClass("owl-next")?a.next():a.prev()})},buildPagination:function(){var a=this;a.paginationWrapper=
+	f('<div class="owl-pagination"/>');a.owlControls.append(a.paginationWrapper);a.paginationWrapper.on("touchend.owlControls mouseup.owlControls",".owl-page",function(b){b.preventDefault();Number(f(this).data("owl-page"))!==a.currentItem&&a.goTo(Number(f(this).data("owl-page")),!0)})},updatePagination:function(){var a,b,e,c,d,g;if(!1===this.options.pagination)return!1;this.paginationWrapper.html("");a=0;b=this.itemsAmount-this.itemsAmount%this.options.items;for(c=0;c<this.itemsAmount;c+=1)0===c%this.options.items&&
+	(a+=1,b===c&&(e=this.itemsAmount-this.options.items),d=f("<div/>",{"class":"owl-page"}),g=f("<span></span>",{text:!0===this.options.paginationNumbers?a:"","class":!0===this.options.paginationNumbers?"owl-numbers":""}),d.append(g),d.data("owl-page",b===c?e:c),d.data("owl-roundPages",a),this.paginationWrapper.append(d));this.checkPagination()},checkPagination:function(){var a=this;if(!1===a.options.pagination)return!1;a.paginationWrapper.find(".owl-page").each(function(){f(this).data("owl-roundPages")===
+	f(a.$owlItems[a.currentItem]).data("owl-roundPages")&&(a.paginationWrapper.find(".owl-page").removeClass("active"),f(this).addClass("active"))})},checkNavigation:function(){if(!1===this.options.navigation)return!1;!1===this.options.rewindNav&&(0===this.currentItem&&0===this.maximumItem?(this.buttonPrev.addClass("disabled"),this.buttonNext.addClass("disabled")):0===this.currentItem&&0!==this.maximumItem?(this.buttonPrev.addClass("disabled"),this.buttonNext.removeClass("disabled")):this.currentItem===
+	this.maximumItem?(this.buttonPrev.removeClass("disabled"),this.buttonNext.addClass("disabled")):0!==this.currentItem&&this.currentItem!==this.maximumItem&&(this.buttonPrev.removeClass("disabled"),this.buttonNext.removeClass("disabled")))},updateControls:function(){this.updatePagination();this.checkNavigation();this.owlControls&&(this.options.items>=this.itemsAmount?this.owlControls.hide():this.owlControls.show())},destroyControls:function(){this.owlControls&&this.owlControls.remove()},next:function(a){if(this.isTransition)return!1;
+	this.currentItem+=!0===this.options.scrollPerPage?this.options.items:1;if(this.currentItem>this.maximumItem+(!0===this.options.scrollPerPage?this.options.items-1:0))if(!0===this.options.rewindNav)this.currentItem=0,a="rewind";else return this.currentItem=this.maximumItem,!1;this.goTo(this.currentItem,a)},prev:function(a){if(this.isTransition)return!1;this.currentItem=!0===this.options.scrollPerPage&&0<this.currentItem&&this.currentItem<this.options.items?0:this.currentItem-(!0===this.options.scrollPerPage?
+	this.options.items:1);if(0>this.currentItem)if(!0===this.options.rewindNav)this.currentItem=this.maximumItem,a="rewind";else return this.currentItem=0,!1;this.goTo(this.currentItem,a)},goTo:function(a,b,e){var c=this;if(c.isTransition)return!1;"function"===typeof c.options.beforeMove&&c.options.beforeMove.apply(this,[c.$elem]);a>=c.maximumItem?a=c.maximumItem:0>=a&&(a=0);c.currentItem=c.owl.currentItem=a;if(!1!==c.options.transitionStyle&&"drag"!==e&&1===c.options.items&&!0===c.browser.support3d)return c.swapSpeed(0),
+	!0===c.browser.support3d?c.transition3d(c.positionsInArray[a]):c.css2slide(c.positionsInArray[a],1),c.afterGo(),c.singleItemTransition(),!1;a=c.positionsInArray[a];!0===c.browser.support3d?(c.isCss3Finish=!1,!0===b?(c.swapSpeed("paginationSpeed"),g.setTimeout(function(){c.isCss3Finish=!0},c.options.paginationSpeed)):"rewind"===b?(c.swapSpeed(c.options.rewindSpeed),g.setTimeout(function(){c.isCss3Finish=!0},c.options.rewindSpeed)):(c.swapSpeed("slideSpeed"),g.setTimeout(function(){c.isCss3Finish=!0},
+	c.options.slideSpeed)),c.transition3d(a)):!0===b?c.css2slide(a,c.options.paginationSpeed):"rewind"===b?c.css2slide(a,c.options.rewindSpeed):c.css2slide(a,c.options.slideSpeed);c.afterGo()},jumpTo:function(a){"function"===typeof this.options.beforeMove&&this.options.beforeMove.apply(this,[this.$elem]);a>=this.maximumItem||-1===a?a=this.maximumItem:0>=a&&(a=0);this.swapSpeed(0);!0===this.browser.support3d?this.transition3d(this.positionsInArray[a]):this.css2slide(this.positionsInArray[a],1);this.currentItem=
+	this.owl.currentItem=a;this.afterGo()},afterGo:function(){this.prevArr.push(this.currentItem);this.prevItem=this.owl.prevItem=this.prevArr[this.prevArr.length-2];this.prevArr.shift(0);this.prevItem!==this.currentItem&&(this.checkPagination(),this.checkNavigation(),this.eachMoveUpdate(),!1!==this.options.autoPlay&&this.checkAp());"function"===typeof this.options.afterMove&&this.prevItem!==this.currentItem&&this.options.afterMove.apply(this,[this.$elem])},stop:function(){this.apStatus="stop";g.clearInterval(this.autoPlayInterval)},
+	checkAp:function(){"stop"!==this.apStatus&&this.play()},play:function(){var a=this;a.apStatus="play";if(!1===a.options.autoPlay)return!1;g.clearInterval(a.autoPlayInterval);a.autoPlayInterval=g.setInterval(function(){a.next(!0)},a.options.autoPlay)},swapSpeed:function(a){"slideSpeed"===a?this.$owlWrapper.css(this.addCssSpeed(this.options.slideSpeed)):"paginationSpeed"===a?this.$owlWrapper.css(this.addCssSpeed(this.options.paginationSpeed)):"string"!==typeof a&&this.$owlWrapper.css(this.addCssSpeed(a))},
+	addCssSpeed:function(a){return{"-webkit-transition":"all "+a+"ms ease","-moz-transition":"all "+a+"ms ease","-o-transition":"all "+a+"ms ease",transition:"all "+a+"ms ease"}},removeTransition:function(){return{"-webkit-transition":"","-moz-transition":"","-o-transition":"",transition:""}},doTranslate:function(a){return{"-webkit-transform":"translate3d("+a+"px, 0px, 0px)","-moz-transform":"translate3d("+a+"px, 0px, 0px)","-o-transform":"translate3d("+a+"px, 0px, 0px)","-ms-transform":"translate3d("+
+	a+"px, 0px, 0px)",transform:"translate3d("+a+"px, 0px,0px)"}},transition3d:function(a){this.$owlWrapper.css(this.doTranslate(a))},css2move:function(a){this.$owlWrapper.css({left:a})},css2slide:function(a,b){var e=this;e.isCssFinish=!1;e.$owlWrapper.stop(!0,!0).animate({left:a},{duration:b||e.options.slideSpeed,complete:function(){e.isCssFinish=!0}})},checkBrowser:function(){var a=k.createElement("div");a.style.cssText="  -moz-transform:translate3d(0px, 0px, 0px); -ms-transform:translate3d(0px, 0px, 0px); -o-transform:translate3d(0px, 0px, 0px); -webkit-transform:translate3d(0px, 0px, 0px); transform:translate3d(0px, 0px, 0px)";
+	a=a.style.cssText.match(/translate3d\(0px, 0px, 0px\)/g);this.browser={support3d:null!==a&&1===a.length,isTouch:"ontouchstart"in g||g.navigator.msMaxTouchPoints}},moveEvents:function(){if(!1!==this.options.mouseDrag||!1!==this.options.touchDrag)this.gestures(),this.disabledEvents()},eventTypes:function(){var a=["s","e","x"];this.ev_types={};!0===this.options.mouseDrag&&!0===this.options.touchDrag?a=["touchstart.owl mousedown.owl","touchmove.owl mousemove.owl","touchend.owl touchcancel.owl mouseup.owl"]:
+	!1===this.options.mouseDrag&&!0===this.options.touchDrag?a=["touchstart.owl","touchmove.owl","touchend.owl touchcancel.owl"]:!0===this.options.mouseDrag&&!1===this.options.touchDrag&&(a=["mousedown.owl","mousemove.owl","mouseup.owl"]);this.ev_types.start=a[0];this.ev_types.move=a[1];this.ev_types.end=a[2]},disabledEvents:function(){this.$elem.on("dragstart.owl",function(a){a.preventDefault()});this.$elem.on("mousedown.disableTextSelect",function(a){return f(a.target).is("input, textarea, select, option")})},
+	gestures:function(){function a(a){if(void 0!==a.touches)return{x:a.touches[0].pageX,y:a.touches[0].pageY};if(void 0===a.touches){if(void 0!==a.pageX)return{x:a.pageX,y:a.pageY};if(void 0===a.pageX)return{x:a.clientX,y:a.clientY}}}function b(a){"on"===a?(f(k).on(d.ev_types.move,e),f(k).on(d.ev_types.end,c)):"off"===a&&(f(k).off(d.ev_types.move),f(k).off(d.ev_types.end))}function e(b){b=b.originalEvent||b||g.event;d.newPosX=a(b).x-h.offsetX;d.newPosY=a(b).y-h.offsetY;d.newRelativeX=d.newPosX-h.relativePos;
+	"function"===typeof d.options.startDragging&&!0!==h.dragging&&0!==d.newRelativeX&&(h.dragging=!0,d.options.startDragging.apply(d,[d.$elem]));(8<d.newRelativeX||-8>d.newRelativeX)&&!0===d.browser.isTouch&&(void 0!==b.preventDefault?b.preventDefault():b.returnValue=!1,h.sliding=!0);(10<d.newPosY||-10>d.newPosY)&&!1===h.sliding&&f(k).off("touchmove.owl");d.newPosX=Math.max(Math.min(d.newPosX,d.newRelativeX/5),d.maximumPixels+d.newRelativeX/5);!0===d.browser.support3d?d.transition3d(d.newPosX):d.css2move(d.newPosX)}
+	function c(a){a=a.originalEvent||a||g.event;var c;a.target=a.target||a.srcElement;h.dragging=!1;!0!==d.browser.isTouch&&d.$owlWrapper.removeClass("grabbing");d.dragDirection=0>d.newRelativeX?d.owl.dragDirection="left":d.owl.dragDirection="right";0!==d.newRelativeX&&(c=d.getNewPosition(),d.goTo(c,!1,"drag"),h.targetElement===a.target&&!0!==d.browser.isTouch&&(f(a.target).on("click.disable",function(a){a.stopImmediatePropagation();a.stopPropagation();a.preventDefault();f(a.target).off("click.disable")}),
+	a=f._data(a.target,"events").click,c=a.pop(),a.splice(0,0,c)));b("off")}var d=this,h={offsetX:0,offsetY:0,baseElWidth:0,relativePos:0,position:null,minSwipe:null,maxSwipe:null,sliding:null,dargging:null,targetElement:null};d.isCssFinish=!0;d.$elem.on(d.ev_types.start,".owl-wrapper",function(c){c=c.originalEvent||c||g.event;var e;if(3===c.which)return!1;if(!(d.itemsAmount<=d.options.items)){if(!1===d.isCssFinish&&!d.options.dragBeforeAnimFinish||!1===d.isCss3Finish&&!d.options.dragBeforeAnimFinish)return!1;
+	!1!==d.options.autoPlay&&g.clearInterval(d.autoPlayInterval);!0===d.browser.isTouch||d.$owlWrapper.hasClass("grabbing")||d.$owlWrapper.addClass("grabbing");d.newPosX=0;d.newRelativeX=0;f(this).css(d.removeTransition());e=f(this).position();h.relativePos=e.left;h.offsetX=a(c).x-e.left;h.offsetY=a(c).y-e.top;b("on");h.sliding=!1;h.targetElement=c.target||c.srcElement}})},getNewPosition:function(){var a=this.closestItem();a>this.maximumItem?a=this.currentItem=this.maximumItem:0<=this.newPosX&&(this.currentItem=
+	a=0);return a},closestItem:function(){var a=this,b=!0===a.options.scrollPerPage?a.pagesInArray:a.positionsInArray,e=a.newPosX,c=null;f.each(b,function(d,g){e-a.itemWidth/20>b[d+1]&&e-a.itemWidth/20<g&&"left"===a.moveDirection()?(c=g,a.currentItem=!0===a.options.scrollPerPage?f.inArray(c,a.positionsInArray):d):e+a.itemWidth/20<g&&e+a.itemWidth/20>(b[d+1]||b[d]-a.itemWidth)&&"right"===a.moveDirection()&&(!0===a.options.scrollPerPage?(c=b[d+1]||b[b.length-1],a.currentItem=f.inArray(c,a.positionsInArray)):
+	(c=b[d+1],a.currentItem=d+1))});return a.currentItem},moveDirection:function(){var a;0>this.newRelativeX?(a="right",this.playDirection="next"):(a="left",this.playDirection="prev");return a},customEvents:function(){var a=this;a.$elem.on("owl.next",function(){a.next()});a.$elem.on("owl.prev",function(){a.prev()});a.$elem.on("owl.play",function(b,e){a.options.autoPlay=e;a.play();a.hoverStatus="play"});a.$elem.on("owl.stop",function(){a.stop();a.hoverStatus="stop"});a.$elem.on("owl.goTo",function(b,e){a.goTo(e)});
+	a.$elem.on("owl.jumpTo",function(b,e){a.jumpTo(e)})},stopOnHover:function(){var a=this;!0===a.options.stopOnHover&&!0!==a.browser.isTouch&&!1!==a.options.autoPlay&&(a.$elem.on("mouseover",function(){a.stop()}),a.$elem.on("mouseout",function(){"stop"!==a.hoverStatus&&a.play()}))},lazyLoad:function(){var a,b,e,c,d;if(!1===this.options.lazyLoad)return!1;for(a=0;a<this.itemsAmount;a+=1)b=f(this.$owlItems[a]),"loaded"!==b.data("owl-loaded")&&(e=b.data("owl-item"),c=b.find(".lazyOwl"),"string"!==typeof c.data("src")?
+	b.data("owl-loaded","loaded"):(void 0===b.data("owl-loaded")&&(c.hide(),b.addClass("loading").data("owl-loaded","checked")),(d=!0===this.options.lazyFollow?e>=this.currentItem:!0)&&e<this.currentItem+this.options.items&&c.length&&this.lazyPreload(b,c)))},lazyPreload:function(a,b){function e(){a.data("owl-loaded","loaded").removeClass("loading");b.removeAttr("data-src");"fade"===d.options.lazyEffect?b.fadeIn(400):b.show();"function"===typeof d.options.afterLazyLoad&&d.options.afterLazyLoad.apply(this,
+	[d.$elem])}function c(){f+=1;d.completeImg(b.get(0))||!0===k?e():100>=f?g.setTimeout(c,100):e()}var d=this,f=0,k;"DIV"===b.prop("tagName")?(b.css("background-image","url("+b.data("src")+")"),k=!0):b[0].src=b.data("src");c()},autoHeight:function(){function a(){var a=f(e.$owlItems[e.currentItem]).height();e.wrapperOuter.css("height",a+"px");e.wrapperOuter.hasClass("autoHeight")||g.setTimeout(function(){e.wrapperOuter.addClass("autoHeight")},0)}function b(){d+=1;e.completeImg(c.get(0))?a():100>=d?g.setTimeout(b,
+	100):e.wrapperOuter.css("height","")}var e=this,c=f(e.$owlItems[e.currentItem]).find("img"),d;void 0!==c.get(0)?(d=0,b()):a()},completeImg:function(a){return!a.complete||"undefined"!==typeof a.naturalWidth&&0===a.naturalWidth?!1:!0},onVisibleItems:function(){var a;!0===this.options.addClassActive&&this.$owlItems.removeClass("active");this.visibleItems=[];for(a=this.currentItem;a<this.currentItem+this.options.items;a+=1)this.visibleItems.push(a),!0===this.options.addClassActive&&f(this.$owlItems[a]).addClass("active");
+	this.owl.visibleItems=this.visibleItems},transitionTypes:function(a){this.outClass="owl-"+a+"-out";this.inClass="owl-"+a+"-in"},singleItemTransition:function(){var a=this,b=a.outClass,e=a.inClass,c=a.$owlItems.eq(a.currentItem),d=a.$owlItems.eq(a.prevItem),f=Math.abs(a.positionsInArray[a.currentItem])+a.positionsInArray[a.prevItem],g=Math.abs(a.positionsInArray[a.currentItem])+a.itemWidth/2;a.isTransition=!0;a.$owlWrapper.addClass("owl-origin").css({"-webkit-transform-origin":g+"px","-moz-perspective-origin":g+
+	"px","perspective-origin":g+"px"});d.css({position:"relative",left:f+"px"}).addClass(b).on("webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend",function(){a.endPrev=!0;d.off("webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend");a.clearTransStyle(d,b)});c.addClass(e).on("webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend",function(){a.endCurrent=!0;c.off("webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend");a.clearTransStyle(c,e)})},clearTransStyle:function(a,
+	b){a.css({position:"",left:""}).removeClass(b);this.endPrev&&this.endCurrent&&(this.$owlWrapper.removeClass("owl-origin"),this.isTransition=this.endCurrent=this.endPrev=!1)},owlStatus:function(){this.owl={userOptions:this.userOptions,baseElement:this.$elem,userItems:this.$userItems,owlItems:this.$owlItems,currentItem:this.currentItem,prevItem:this.prevItem,visibleItems:this.visibleItems,isTouch:this.browser.isTouch,browser:this.browser,dragDirection:this.dragDirection}},clearEvents:function(){this.$elem.off(".owl owl mousedown.disableTextSelect");
+	f(k).off(".owl owl");f(g).off("resize",this.resizer)},unWrap:function(){0!==this.$elem.children().length&&(this.$owlWrapper.unwrap(),this.$userItems.unwrap().unwrap(),this.owlControls&&this.owlControls.remove());this.clearEvents();this.$elem.attr("style",this.$elem.data("owl-originalStyles")||"").attr("class",this.$elem.data("owl-originalClasses"))},destroy:function(){this.stop();g.clearInterval(this.checkVisible);this.unWrap();this.$elem.removeData()},reinit:function(a){a=f.extend({},this.userOptions,
+	a);this.unWrap();this.init(a,this.$elem)},addItem:function(a,b){var e;if(!a)return!1;if(0===this.$elem.children().length)return this.$elem.append(a),this.setVars(),!1;this.unWrap();e=void 0===b||-1===b?-1:b;e>=this.$userItems.length||-1===e?this.$userItems.eq(-1).after(a):this.$userItems.eq(e).before(a);this.setVars()},removeItem:function(a){if(0===this.$elem.children().length)return!1;a=void 0===a||-1===a?-1:a;this.unWrap();this.$userItems.eq(a).remove();this.setVars()}};f.fn.owlCarousel=function(a){return this.each(function(){if(!0===
+	f(this).data("owl-init"))return!1;f(this).data("owl-init",!0);var b=Object.create(l);b.init(a,this);f.data(this,"owlCarousel",b)})};f.fn.owlCarousel.options={items:5,itemsCustom:!1,itemsDesktop:[1199,4],itemsDesktopSmall:[979,3],itemsTablet:[768,2],itemsTabletSmall:!1,itemsMobile:[479,1],singleItem:!1,itemsScaleUp:!1,slideSpeed:200,paginationSpeed:800,rewindSpeed:1E3,autoPlay:!1,stopOnHover:!1,navigation:!1,navigationText:["prev","next"],rewindNav:!0,scrollPerPage:!1,pagination:!0,paginationNumbers:!1,
+	responsive:!0,responsiveRefreshRate:200,responsiveBaseWidth:g,baseClass:"owl-carousel",theme:"owl-theme",lazyLoad:!1,lazyFollow:!0,lazyEffect:"fade",autoHeight:!1,jsonPath:!1,jsonSuccess:!1,dragBeforeAnimFinish:!0,mouseDrag:!0,touchDrag:!0,addClassActive:!1,transitionStyle:!1,beforeUpdate:!1,afterUpdate:!1,beforeInit:!1,afterInit:!1,beforeMove:!1,afterMove:!1,afterAction:!1,startDragging:!1,afterLazyLoad:!1}})(jQuery,window,document);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.2
@@ -1944,7 +2220,7 @@
 
 
 /***/ },
-/* 4 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -11155,11 +11431,11 @@
 
 
 /***/ },
-/* 5 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Defines site configuration.
+	 * Defines site configuration. 
 	 * @author: Chris Hjorth
 	 */
 	
@@ -11200,7 +11476,7 @@
 
 
 /***/ },
-/* 6 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11211,10 +11487,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
+	var _ = __webpack_require__(5),
 	
-		ViewLoader = __webpack_require__(15),
-		Utilities = __webpack_require__(7);
+		ViewLoader = __webpack_require__(17),
+		Utilities = __webpack_require__(9);
 	
 	var Router,
 				
@@ -11394,7 +11670,7 @@
 
 
 /***/ },
-/* 7 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11405,9 +11681,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
+		GoogleMaps = __webpack_require__(14),
 		
 		geocoder,
 	    inherit,
@@ -11564,7 +11840,7 @@
 
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11575,11 +11851,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    FB = __webpack_require__(16),
-	    Localization = __webpack_require__(17),
-	    Model = __webpack_require__(18),
-	    Utilities = __webpack_require__(7),
+	var _ = __webpack_require__(5),
+	    FB = __webpack_require__(19),
+	    Localization = __webpack_require__(20),
+	    Model = __webpack_require__(21),
+	    Utilities = __webpack_require__(9),
 	
 	    didInitialize,
 	    getLoginStatus,
@@ -11850,7 +12126,7 @@
 
 
 /***/ },
-/* 9 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11862,9 +12138,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
+	var _ = __webpack_require__(5),
 	
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(21),
 	
 	    didInitialize,
 	    getClassification;
@@ -11903,7 +12179,7 @@
 
 
 /***/ },
-/* 10 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11914,9 +12190,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 	
-		PopupController = __webpack_require__(19),
+		PopupController = __webpack_require__(18),
 	
 		MessagePopupTemplate = __webpack_require__(22),
 	
@@ -11963,295 +12239,213 @@
 
 
 /***/ },
-/* 11 */
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<nav class=\"sg-navbar\" role=\"navigation\">\n\t<div class=\"container-fluid\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-2\">\n\t\t\t\t<button type=\"button\" class=\"sg-navbar-toggle sg-btn-invisible-blue\" data-target=\"#navigation-header-menu-left\"><i class=\"fa fa-bars\"></i></button>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-8 col-sm-8 sg-blue sg-navbar-brand\"></div>\n\t\t\t<div class=\"col-sm-3 col-sm-offset-1 sg-navbar-dropdownmenu sg-navbar-dropdownmenu-left hidden\" id=\"navigation-header-dropdownmenu-left\">\n\t\t\t\t<div class=\"dropdown pull-right sg-no-mobile\">\n\t\t\t\t\t<button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-expanded=\"true\"><div src=\"\" class=\"profile-pic\"></div><div class=\"menu-text\">MENU</div><!--<span class=\"caret\"></span>--></button>\n\t\t\t\t\t<div class=\"dropdown-menu list-group\" role=\"menu\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</nav>\n\n<div class=\"sg-navbar-slidemenu sg-navbar-slidemenu-left\" id=\"navigation-header-slidemenu-left\">\n\t<div class=\"list-group\" role=\"menu\"></div>\n</div>\n";
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = google.maps;
+
+/***/ },
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Controller for the Sharingear header with navigation view.
+	 * General view object with support for jQuery event autounbinding and localization.
 	 * @author: Chris Hjorth
 	 */
 	
 	/*jslint node: true */
 	'use strict';
 	
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
 	
-	var $ = __webpack_require__(4),
+		Utilities = __webpack_require__(9),
 	
-	    ViewController = __webpack_require__(20),
-	    Utilities = __webpack_require__(7),
-	    App = __webpack_require__(1),
+		initialize,
+	    render,
+	    setSubPath,
+	    _close,
+	    setupEvent,
+	    unbindEvents,
+	    on,
 	
-	    defaultTitle,
+	    constructor, inherit;
 	
-	    didInitialize,
-	    didRender,
-	    didResize,
-	    populateMainMenu,
-	    renderProfilePicture,
-	    handleNavbarToggle,
-	    handleLogin,
-	    setTitle,
-	    _updateTitle,
-	    changeActiveState;
-	
-	/* Static variables */
-	defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	
-	didInitialize = function() {
-	    this.isMobile = false;
-	    this.title = defaultTitle;
-	};
-	
-	didRender = function() {
-	    this._updateTitle();
-	    this.populateMainMenu();
-	    this.renderProfilePicture();
-	
-	    this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
-	    this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
-	    this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
-	};
-	
-	didResize = function(event) {
-	    var view = event.data;
-	    if (Utilities.isMobile() !== view.isMobile) {
-	        view.populateMainMenu();
-	    }
-	    view._updateTitle();
-	};
-	
-	populateMainMenu = function() {
-	    var html = '',
-	        $slideMenu, $dropdownMenu, $menuList;
-	
-	    $slideMenu = $('#navigation-header-slidemenu-left', this.$element);
-	    $dropdownMenu = $('#navigation-header-dropdownmenu-left', this.$element);
-	
-	    if (Utilities.isMobile() === true) {
-	        this.isMobile = true;
-	        $slideMenu.removeClass('hidden');
-	        if ($dropdownMenu.hasClass('hidden') === false) {
-	            $dropdownMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $slideMenu);
-	        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-	    } else {
-	        this.isMobile = false;
-	        $dropdownMenu.removeClass('hidden');
-	        if ($slideMenu.hasClass('hidden') === false) {
-	            $slideMenu.addClass('hidden');
-	        }
-	        $menuList = $('.list-group', $dropdownMenu);
-	    }
-	
-	    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
-	
-	    if (App.user && App.user.data.id !== null) {
-	        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
-	        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
-	        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
-	        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
-	        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
-	        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
-	        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
-	        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
-	        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
-	        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
-	    } else {
-	        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
-	    }
-	
-	    $menuList.html(html);
-	};
-	
-	renderProfilePicture = function() {
-	    var view = this,
-	        img;
-	    if (App.user && App.user.data.image_url) {
-	        img = new Image();
-	        img.onload = function() {
-	            var isVertical, backgroundSize;
-	            isVertical = img.width < img.height;
-	            if (isVertical === true) {
-	                backgroundSize = '30px auto';
-	            } else {
-	                backgroundSize = 'auto 30px';
-	            }
-	            $('.profile-pic', view.$element).css({
-	                'background-image': 'url(' + img.src + ')',
-	                'background-size': backgroundSize
-	            });
-	        };
-	        img.src = App.user.data.image_url;
-	    }
-	};
-	
-	handleNavbarToggle = function(event) {
-	    var view = event.data,
-	        $this = $(this),
-	        $viewContainer = $('.view-container'),
-	        $navbar, $tabbar, handleTransition;
-	
-	    handleTransition = function() {
-	        $this.off('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd');
-	        $this.removeClass('sliding-right');
+	/**
+	 * Allows reinitializing a views data.
+	 */
+	initialize = function() {
+	    this.setSubPath();
+	    this.userEvents = [];
+	    this.events = {
+	        close: []
 	    };
 	
-	    $navbar = $('.sg-navbar', view.$element);
-	    $tabbar = $('.sg-tabbar-container', $viewContainer);
-	    if ($tabbar.css('position') !== 'fixed') {
-	        //We are not in a mobile situation
-	        $tabbar = $('');
-	    }
-	
-	    $navbar.addClass('sliding-right');
-	    $navbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $viewContainer.addClass('sliding-right');
-	    $viewContainer.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	    $tabbar.addClass('sliding-right');
-	    $tabbar.on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', handleTransition);
-	
-	    if ($navbar.hasClass('slide-right') === true) {
-	        $navbar.removeClass('slide-right');
-	        $viewContainer.removeClass('slide-right');
-	        $tabbar.removeClass('slide-right');
-	    } else {
-	        $navbar.addClass('slide-right');
-	        $viewContainer.addClass('slide-right');
-	        $tabbar.addClass('slide-right');
-	    }
-	
-	    //Handle selection display
-	    if ($this.hasClass('list-group-item') === true) {
-	        view.changeActiveState($this);
+	    if (_.isFunction(this.didInitialize) === true) {
+	        this.didInitialize();
 	    }
 	};
 	
-	handleLogin = function(event, callback) {
-	    var view = event.data,
-	        user = App.user;
+	render = function(callback) {
+	    var template = this.template(this.templateParameters);
 	
-	    user.login(function(error) {
-	        if (!error) {
-	            App.router.navigateTo('dashboard');
-	            view.render();
-	        } else {
-	            alert('Could not connect to Facebook.');
-	            console.log(error);
-	        }
+	    //Unbind events to avoid double ups on multiple renders
+	    this.unbindEvents();
+	    if (_.isFunction(this.didResize) === true) {
+	        $(window).off('resize', this.didResize);
+	    }
 	
-	        if (callback && typeof callback === 'function') {
-	            callback();
-	        }
+	    this.$element.html(template);
+	
+	    //Did render event must be called before the callback so inheriting objects get the possibility to complete setup
+	    if (_.isFunction(this.didRender) === true) {
+	        this.didRender();
+	    }
+	
+	    if (_.isFunction(callback) === true) {
+	        callback();
+	    }
+	
+	    if (_.isFunction(this.didResize) === true) {
+	        $(window).on('resize', null, this, this.didResize);
+	    }
+	};
+	
+	setSubPath = function() {
+	    var slashIndex = -1;
+	    slashIndex = this.path.indexOf('/');
+	    if (slashIndex >= 0) {
+	        this.subPath = this.path.substring(slashIndex + 1);
+	    }
+	};
+	
+	/*function localize($containerElement) {
+			var $localizeElement = this.$element,
+				key, $element;
+			if($containerElement) {
+				$localizeElement = $containerElement;
+			}
+			for(key in this.labels) {
+				if(this.labels.hasOwnProperty(key)) {
+					$element = $('#' + key, $localizeElement);
+					if($element.is('input')) {
+						$element.attr('placeholder', this.labels[key]);
+					}
+					else {
+						$element.html(this.labels[key]);
+					}
+				}
+			}
+		}*/
+	
+	_close = function() {
+	    var i;
+	    for (i = 0; i < this.events.close.length; i++) {
+	        this.events.close[i](this);
+	    }
+	    this.unbindEvents();
+	    this.$element.empty();
+	    if (_.isFunction(this.didClose) === true) {
+	        this.didClose();
+	    }
+	};
+	
+	//A wrapper for jQuery events that allows automatic unbinding on view disposal
+	setupEvent = function(eventType, element, data, callback) {
+	    this.$element.on(eventType, element, data, callback);
+	    this.userEvents.push({
+	        eventType: eventType,
+	        element: element,
+	        callback: callback
 	    });
 	};
 	
-	/**
-	 * @param title: the text to display as title, if null title is set to default
-	 */
-	setTitle = function(title) {
-	    if (!title || title === null) {
-	        title = defaultTitle;
-	    }
-	    this.title = title;
-	    this._updateTitle();
-	};
-	
-	_updateTitle = function() {
-	    if (Utilities.isMobile() === true) {
-	        $('.sg-navbar-brand', this.$element).html(this.title);
-	    } else {
-	        $('.sg-navbar-brand', this.$element).html(defaultTitle);
+	unbindEvents = function() {
+	    var i, userEvent;
+	    for (i = this.userEvents.length - 1; i >= 0; i--) {
+	        userEvent = this.userEvents[i];
+	        this.$element.off(userEvent.eventType, userEvent.element, userEvent.callback);
+	        this.userEvents.pop();
 	    }
 	};
 	
-	changeActiveState = function($menuItem) {
-	    $('.list-group-item', this.$element).removeClass('list-group-item-selected');
-	    $menuItem.addClass('list-group-item-selected');
+	on = function(eventType, callback) {
+	    switch (eventType) {
+	        case 'close':
+	            this.events.close.push(callback);
+	            break;
+	    }
 	};
 	
-	module.exports = ViewController.inherit({
-	    didInitialize: didInitialize,
-	    didRender: didRender,
-	    didResize: didResize,
-	    populateMainMenu: populateMainMenu,
-	    renderProfilePicture: renderProfilePicture,
-	    handleNavbarToggle: handleNavbarToggle,
-	    handleLogin: handleLogin,
-	    setTitle: setTitle,
-	    _updateTitle: _updateTitle,
-	    changeActiveState: changeActiveState
-	});
+	constructor = function(options) {
+	    var defaults = {
+	        name: '',
+	        $element: $(''),
+	        template: '', //A template string
+	        templateParameters: {},
+	        labels: {},
+	        path: '', //URL path in the following form mainView/subView fx dashboard/profile
+	        hasSubviews: false,
+	        $subViewContainer: $(''),
+	        subPath: '',
+	        passedData: {}, //stores extra data passed to the view
+	        ready: true,
+	
+	        initialize: initialize,
+	        render: render,
+	        setSubPath: setSubPath,
+	        //localize: localize,
+	        close: _close,
+	        setupEvent: setupEvent,
+	        unbindEvents: unbindEvents,
+	        on: on
+	    };
+	
+	    _.extend(this, defaults, options);
+	
+	    this.template = _.template(this.template);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
 
 
 /***/ },
-/* 12 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(jQuery) {"function"!==typeof Object.create&&(Object.create=function(f){function g(){}g.prototype=f;return new g});
-	(function(f,g,k){var l={init:function(a,b){this.$elem=f(b);this.options=f.extend({},f.fn.owlCarousel.options,this.$elem.data(),a);this.userOptions=a;this.loadContent()},loadContent:function(){function a(a){var d,e="";if("function"===typeof b.options.jsonSuccess)b.options.jsonSuccess.apply(this,[a]);else{for(d in a.owl)a.owl.hasOwnProperty(d)&&(e+=a.owl[d].item);b.$elem.html(e)}b.logIn()}var b=this,e;"function"===typeof b.options.beforeInit&&b.options.beforeInit.apply(this,[b.$elem]);"string"===typeof b.options.jsonPath?
-	(e=b.options.jsonPath,f.getJSON(e,a)):b.logIn()},logIn:function(){this.$elem.data("owl-originalStyles",this.$elem.attr("style"));this.$elem.data("owl-originalClasses",this.$elem.attr("class"));this.$elem.css({opacity:0});this.orignalItems=this.options.items;this.checkBrowser();this.wrapperWidth=0;this.checkVisible=null;this.setVars()},setVars:function(){if(0===this.$elem.children().length)return!1;this.baseClass();this.eventTypes();this.$userItems=this.$elem.children();this.itemsAmount=this.$userItems.length;
-	this.wrapItems();this.$owlItems=this.$elem.find(".owl-item");this.$owlWrapper=this.$elem.find(".owl-wrapper");this.playDirection="next";this.prevItem=0;this.prevArr=[0];this.currentItem=0;this.customEvents();this.onStartup()},onStartup:function(){this.updateItems();this.calculateAll();this.buildControls();this.updateControls();this.response();this.moveEvents();this.stopOnHover();this.owlStatus();!1!==this.options.transitionStyle&&this.transitionTypes(this.options.transitionStyle);!0===this.options.autoPlay&&
-	(this.options.autoPlay=5E3);this.play();this.$elem.find(".owl-wrapper").css("display","block");this.$elem.is(":visible")?this.$elem.css("opacity",1):this.watchVisibility();this.onstartup=!1;this.eachMoveUpdate();"function"===typeof this.options.afterInit&&this.options.afterInit.apply(this,[this.$elem])},eachMoveUpdate:function(){!0===this.options.lazyLoad&&this.lazyLoad();!0===this.options.autoHeight&&this.autoHeight();this.onVisibleItems();"function"===typeof this.options.afterAction&&this.options.afterAction.apply(this,
-	[this.$elem])},updateVars:function(){"function"===typeof this.options.beforeUpdate&&this.options.beforeUpdate.apply(this,[this.$elem]);this.watchVisibility();this.updateItems();this.calculateAll();this.updatePosition();this.updateControls();this.eachMoveUpdate();"function"===typeof this.options.afterUpdate&&this.options.afterUpdate.apply(this,[this.$elem])},reload:function(){var a=this;g.setTimeout(function(){a.updateVars()},0)},watchVisibility:function(){var a=this;if(!1===a.$elem.is(":visible"))a.$elem.css({opacity:0}),
-	g.clearInterval(a.autoPlayInterval),g.clearInterval(a.checkVisible);else return!1;a.checkVisible=g.setInterval(function(){a.$elem.is(":visible")&&(a.reload(),a.$elem.animate({opacity:1},200),g.clearInterval(a.checkVisible))},500)},wrapItems:function(){this.$userItems.wrapAll('<div class="owl-wrapper">').wrap('<div class="owl-item"></div>');this.$elem.find(".owl-wrapper").wrap('<div class="owl-wrapper-outer">');this.wrapperOuter=this.$elem.find(".owl-wrapper-outer");this.$elem.css("display","block")},
-	baseClass:function(){var a=this.$elem.hasClass(this.options.baseClass),b=this.$elem.hasClass(this.options.theme);a||this.$elem.addClass(this.options.baseClass);b||this.$elem.addClass(this.options.theme)},updateItems:function(){var a,b;if(!1===this.options.responsive)return!1;if(!0===this.options.singleItem)return this.options.items=this.orignalItems=1,this.options.itemsCustom=!1,this.options.itemsDesktop=!1,this.options.itemsDesktopSmall=!1,this.options.itemsTablet=!1,this.options.itemsTabletSmall=
-	!1,this.options.itemsMobile=!1;a=f(this.options.responsiveBaseWidth).width();a>(this.options.itemsDesktop[0]||this.orignalItems)&&(this.options.items=this.orignalItems);if(!1!==this.options.itemsCustom)for(this.options.itemsCustom.sort(function(a,b){return a[0]-b[0]}),b=0;b<this.options.itemsCustom.length;b+=1)this.options.itemsCustom[b][0]<=a&&(this.options.items=this.options.itemsCustom[b][1]);else a<=this.options.itemsDesktop[0]&&!1!==this.options.itemsDesktop&&(this.options.items=this.options.itemsDesktop[1]),
-	a<=this.options.itemsDesktopSmall[0]&&!1!==this.options.itemsDesktopSmall&&(this.options.items=this.options.itemsDesktopSmall[1]),a<=this.options.itemsTablet[0]&&!1!==this.options.itemsTablet&&(this.options.items=this.options.itemsTablet[1]),a<=this.options.itemsTabletSmall[0]&&!1!==this.options.itemsTabletSmall&&(this.options.items=this.options.itemsTabletSmall[1]),a<=this.options.itemsMobile[0]&&!1!==this.options.itemsMobile&&(this.options.items=this.options.itemsMobile[1]);this.options.items>this.itemsAmount&&
-	!0===this.options.itemsScaleUp&&(this.options.items=this.itemsAmount)},response:function(){var a=this,b,e;if(!0!==a.options.responsive)return!1;e=f(g).width();a.resizer=function(){f(g).width()!==e&&(!1!==a.options.autoPlay&&g.clearInterval(a.autoPlayInterval),g.clearTimeout(b),b=g.setTimeout(function(){e=f(g).width();a.updateVars()},a.options.responsiveRefreshRate))};f(g).resize(a.resizer)},updatePosition:function(){this.jumpTo(this.currentItem);!1!==this.options.autoPlay&&this.checkAp()},appendItemsSizes:function(){var a=
-	this,b=0,e=a.itemsAmount-a.options.items;a.$owlItems.each(function(c){var d=f(this);d.css({width:a.itemWidth}).data("owl-item",Number(c));if(0===c%a.options.items||c===e)c>e||(b+=1);d.data("owl-roundPages",b)})},appendWrapperSizes:function(){this.$owlWrapper.css({width:this.$owlItems.length*this.itemWidth*2,left:0});this.appendItemsSizes()},calculateAll:function(){this.calculateWidth();this.appendWrapperSizes();this.loops();this.max()},calculateWidth:function(){this.itemWidth=Math.round(this.$elem.width()/
-	this.options.items)},max:function(){var a=-1*(this.itemsAmount*this.itemWidth-this.options.items*this.itemWidth);this.options.items>this.itemsAmount?this.maximumPixels=a=this.maximumItem=0:(this.maximumItem=this.itemsAmount-this.options.items,this.maximumPixels=a);return a},min:function(){return 0},loops:function(){var a=0,b=0,e,c;this.positionsInArray=[0];this.pagesInArray=[];for(e=0;e<this.itemsAmount;e+=1)b+=this.itemWidth,this.positionsInArray.push(-b),!0===this.options.scrollPerPage&&(c=f(this.$owlItems[e]),
-	c=c.data("owl-roundPages"),c!==a&&(this.pagesInArray[a]=this.positionsInArray[e],a=c))},buildControls:function(){if(!0===this.options.navigation||!0===this.options.pagination)this.owlControls=f('<div class="owl-controls"/>').toggleClass("clickable",!this.browser.isTouch).appendTo(this.$elem);!0===this.options.pagination&&this.buildPagination();!0===this.options.navigation&&this.buildButtons()},buildButtons:function(){var a=this,b=f('<div class="owl-buttons"/>');a.owlControls.append(b);a.buttonPrev=
-	f("<div/>",{"class":"owl-prev",html:a.options.navigationText[0]||""});a.buttonNext=f("<div/>",{"class":"owl-next",html:a.options.navigationText[1]||""});b.append(a.buttonPrev).append(a.buttonNext);b.on("touchstart.owlControls mousedown.owlControls",'div[class^="owl"]',function(a){a.preventDefault()});b.on("touchend.owlControls mouseup.owlControls",'div[class^="owl"]',function(b){b.preventDefault();f(this).hasClass("owl-next")?a.next():a.prev()})},buildPagination:function(){var a=this;a.paginationWrapper=
-	f('<div class="owl-pagination"/>');a.owlControls.append(a.paginationWrapper);a.paginationWrapper.on("touchend.owlControls mouseup.owlControls",".owl-page",function(b){b.preventDefault();Number(f(this).data("owl-page"))!==a.currentItem&&a.goTo(Number(f(this).data("owl-page")),!0)})},updatePagination:function(){var a,b,e,c,d,g;if(!1===this.options.pagination)return!1;this.paginationWrapper.html("");a=0;b=this.itemsAmount-this.itemsAmount%this.options.items;for(c=0;c<this.itemsAmount;c+=1)0===c%this.options.items&&
-	(a+=1,b===c&&(e=this.itemsAmount-this.options.items),d=f("<div/>",{"class":"owl-page"}),g=f("<span></span>",{text:!0===this.options.paginationNumbers?a:"","class":!0===this.options.paginationNumbers?"owl-numbers":""}),d.append(g),d.data("owl-page",b===c?e:c),d.data("owl-roundPages",a),this.paginationWrapper.append(d));this.checkPagination()},checkPagination:function(){var a=this;if(!1===a.options.pagination)return!1;a.paginationWrapper.find(".owl-page").each(function(){f(this).data("owl-roundPages")===
-	f(a.$owlItems[a.currentItem]).data("owl-roundPages")&&(a.paginationWrapper.find(".owl-page").removeClass("active"),f(this).addClass("active"))})},checkNavigation:function(){if(!1===this.options.navigation)return!1;!1===this.options.rewindNav&&(0===this.currentItem&&0===this.maximumItem?(this.buttonPrev.addClass("disabled"),this.buttonNext.addClass("disabled")):0===this.currentItem&&0!==this.maximumItem?(this.buttonPrev.addClass("disabled"),this.buttonNext.removeClass("disabled")):this.currentItem===
-	this.maximumItem?(this.buttonPrev.removeClass("disabled"),this.buttonNext.addClass("disabled")):0!==this.currentItem&&this.currentItem!==this.maximumItem&&(this.buttonPrev.removeClass("disabled"),this.buttonNext.removeClass("disabled")))},updateControls:function(){this.updatePagination();this.checkNavigation();this.owlControls&&(this.options.items>=this.itemsAmount?this.owlControls.hide():this.owlControls.show())},destroyControls:function(){this.owlControls&&this.owlControls.remove()},next:function(a){if(this.isTransition)return!1;
-	this.currentItem+=!0===this.options.scrollPerPage?this.options.items:1;if(this.currentItem>this.maximumItem+(!0===this.options.scrollPerPage?this.options.items-1:0))if(!0===this.options.rewindNav)this.currentItem=0,a="rewind";else return this.currentItem=this.maximumItem,!1;this.goTo(this.currentItem,a)},prev:function(a){if(this.isTransition)return!1;this.currentItem=!0===this.options.scrollPerPage&&0<this.currentItem&&this.currentItem<this.options.items?0:this.currentItem-(!0===this.options.scrollPerPage?
-	this.options.items:1);if(0>this.currentItem)if(!0===this.options.rewindNav)this.currentItem=this.maximumItem,a="rewind";else return this.currentItem=0,!1;this.goTo(this.currentItem,a)},goTo:function(a,b,e){var c=this;if(c.isTransition)return!1;"function"===typeof c.options.beforeMove&&c.options.beforeMove.apply(this,[c.$elem]);a>=c.maximumItem?a=c.maximumItem:0>=a&&(a=0);c.currentItem=c.owl.currentItem=a;if(!1!==c.options.transitionStyle&&"drag"!==e&&1===c.options.items&&!0===c.browser.support3d)return c.swapSpeed(0),
-	!0===c.browser.support3d?c.transition3d(c.positionsInArray[a]):c.css2slide(c.positionsInArray[a],1),c.afterGo(),c.singleItemTransition(),!1;a=c.positionsInArray[a];!0===c.browser.support3d?(c.isCss3Finish=!1,!0===b?(c.swapSpeed("paginationSpeed"),g.setTimeout(function(){c.isCss3Finish=!0},c.options.paginationSpeed)):"rewind"===b?(c.swapSpeed(c.options.rewindSpeed),g.setTimeout(function(){c.isCss3Finish=!0},c.options.rewindSpeed)):(c.swapSpeed("slideSpeed"),g.setTimeout(function(){c.isCss3Finish=!0},
-	c.options.slideSpeed)),c.transition3d(a)):!0===b?c.css2slide(a,c.options.paginationSpeed):"rewind"===b?c.css2slide(a,c.options.rewindSpeed):c.css2slide(a,c.options.slideSpeed);c.afterGo()},jumpTo:function(a){"function"===typeof this.options.beforeMove&&this.options.beforeMove.apply(this,[this.$elem]);a>=this.maximumItem||-1===a?a=this.maximumItem:0>=a&&(a=0);this.swapSpeed(0);!0===this.browser.support3d?this.transition3d(this.positionsInArray[a]):this.css2slide(this.positionsInArray[a],1);this.currentItem=
-	this.owl.currentItem=a;this.afterGo()},afterGo:function(){this.prevArr.push(this.currentItem);this.prevItem=this.owl.prevItem=this.prevArr[this.prevArr.length-2];this.prevArr.shift(0);this.prevItem!==this.currentItem&&(this.checkPagination(),this.checkNavigation(),this.eachMoveUpdate(),!1!==this.options.autoPlay&&this.checkAp());"function"===typeof this.options.afterMove&&this.prevItem!==this.currentItem&&this.options.afterMove.apply(this,[this.$elem])},stop:function(){this.apStatus="stop";g.clearInterval(this.autoPlayInterval)},
-	checkAp:function(){"stop"!==this.apStatus&&this.play()},play:function(){var a=this;a.apStatus="play";if(!1===a.options.autoPlay)return!1;g.clearInterval(a.autoPlayInterval);a.autoPlayInterval=g.setInterval(function(){a.next(!0)},a.options.autoPlay)},swapSpeed:function(a){"slideSpeed"===a?this.$owlWrapper.css(this.addCssSpeed(this.options.slideSpeed)):"paginationSpeed"===a?this.$owlWrapper.css(this.addCssSpeed(this.options.paginationSpeed)):"string"!==typeof a&&this.$owlWrapper.css(this.addCssSpeed(a))},
-	addCssSpeed:function(a){return{"-webkit-transition":"all "+a+"ms ease","-moz-transition":"all "+a+"ms ease","-o-transition":"all "+a+"ms ease",transition:"all "+a+"ms ease"}},removeTransition:function(){return{"-webkit-transition":"","-moz-transition":"","-o-transition":"",transition:""}},doTranslate:function(a){return{"-webkit-transform":"translate3d("+a+"px, 0px, 0px)","-moz-transform":"translate3d("+a+"px, 0px, 0px)","-o-transform":"translate3d("+a+"px, 0px, 0px)","-ms-transform":"translate3d("+
-	a+"px, 0px, 0px)",transform:"translate3d("+a+"px, 0px,0px)"}},transition3d:function(a){this.$owlWrapper.css(this.doTranslate(a))},css2move:function(a){this.$owlWrapper.css({left:a})},css2slide:function(a,b){var e=this;e.isCssFinish=!1;e.$owlWrapper.stop(!0,!0).animate({left:a},{duration:b||e.options.slideSpeed,complete:function(){e.isCssFinish=!0}})},checkBrowser:function(){var a=k.createElement("div");a.style.cssText="  -moz-transform:translate3d(0px, 0px, 0px); -ms-transform:translate3d(0px, 0px, 0px); -o-transform:translate3d(0px, 0px, 0px); -webkit-transform:translate3d(0px, 0px, 0px); transform:translate3d(0px, 0px, 0px)";
-	a=a.style.cssText.match(/translate3d\(0px, 0px, 0px\)/g);this.browser={support3d:null!==a&&1===a.length,isTouch:"ontouchstart"in g||g.navigator.msMaxTouchPoints}},moveEvents:function(){if(!1!==this.options.mouseDrag||!1!==this.options.touchDrag)this.gestures(),this.disabledEvents()},eventTypes:function(){var a=["s","e","x"];this.ev_types={};!0===this.options.mouseDrag&&!0===this.options.touchDrag?a=["touchstart.owl mousedown.owl","touchmove.owl mousemove.owl","touchend.owl touchcancel.owl mouseup.owl"]:
-	!1===this.options.mouseDrag&&!0===this.options.touchDrag?a=["touchstart.owl","touchmove.owl","touchend.owl touchcancel.owl"]:!0===this.options.mouseDrag&&!1===this.options.touchDrag&&(a=["mousedown.owl","mousemove.owl","mouseup.owl"]);this.ev_types.start=a[0];this.ev_types.move=a[1];this.ev_types.end=a[2]},disabledEvents:function(){this.$elem.on("dragstart.owl",function(a){a.preventDefault()});this.$elem.on("mousedown.disableTextSelect",function(a){return f(a.target).is("input, textarea, select, option")})},
-	gestures:function(){function a(a){if(void 0!==a.touches)return{x:a.touches[0].pageX,y:a.touches[0].pageY};if(void 0===a.touches){if(void 0!==a.pageX)return{x:a.pageX,y:a.pageY};if(void 0===a.pageX)return{x:a.clientX,y:a.clientY}}}function b(a){"on"===a?(f(k).on(d.ev_types.move,e),f(k).on(d.ev_types.end,c)):"off"===a&&(f(k).off(d.ev_types.move),f(k).off(d.ev_types.end))}function e(b){b=b.originalEvent||b||g.event;d.newPosX=a(b).x-h.offsetX;d.newPosY=a(b).y-h.offsetY;d.newRelativeX=d.newPosX-h.relativePos;
-	"function"===typeof d.options.startDragging&&!0!==h.dragging&&0!==d.newRelativeX&&(h.dragging=!0,d.options.startDragging.apply(d,[d.$elem]));(8<d.newRelativeX||-8>d.newRelativeX)&&!0===d.browser.isTouch&&(void 0!==b.preventDefault?b.preventDefault():b.returnValue=!1,h.sliding=!0);(10<d.newPosY||-10>d.newPosY)&&!1===h.sliding&&f(k).off("touchmove.owl");d.newPosX=Math.max(Math.min(d.newPosX,d.newRelativeX/5),d.maximumPixels+d.newRelativeX/5);!0===d.browser.support3d?d.transition3d(d.newPosX):d.css2move(d.newPosX)}
-	function c(a){a=a.originalEvent||a||g.event;var c;a.target=a.target||a.srcElement;h.dragging=!1;!0!==d.browser.isTouch&&d.$owlWrapper.removeClass("grabbing");d.dragDirection=0>d.newRelativeX?d.owl.dragDirection="left":d.owl.dragDirection="right";0!==d.newRelativeX&&(c=d.getNewPosition(),d.goTo(c,!1,"drag"),h.targetElement===a.target&&!0!==d.browser.isTouch&&(f(a.target).on("click.disable",function(a){a.stopImmediatePropagation();a.stopPropagation();a.preventDefault();f(a.target).off("click.disable")}),
-	a=f._data(a.target,"events").click,c=a.pop(),a.splice(0,0,c)));b("off")}var d=this,h={offsetX:0,offsetY:0,baseElWidth:0,relativePos:0,position:null,minSwipe:null,maxSwipe:null,sliding:null,dargging:null,targetElement:null};d.isCssFinish=!0;d.$elem.on(d.ev_types.start,".owl-wrapper",function(c){c=c.originalEvent||c||g.event;var e;if(3===c.which)return!1;if(!(d.itemsAmount<=d.options.items)){if(!1===d.isCssFinish&&!d.options.dragBeforeAnimFinish||!1===d.isCss3Finish&&!d.options.dragBeforeAnimFinish)return!1;
-	!1!==d.options.autoPlay&&g.clearInterval(d.autoPlayInterval);!0===d.browser.isTouch||d.$owlWrapper.hasClass("grabbing")||d.$owlWrapper.addClass("grabbing");d.newPosX=0;d.newRelativeX=0;f(this).css(d.removeTransition());e=f(this).position();h.relativePos=e.left;h.offsetX=a(c).x-e.left;h.offsetY=a(c).y-e.top;b("on");h.sliding=!1;h.targetElement=c.target||c.srcElement}})},getNewPosition:function(){var a=this.closestItem();a>this.maximumItem?a=this.currentItem=this.maximumItem:0<=this.newPosX&&(this.currentItem=
-	a=0);return a},closestItem:function(){var a=this,b=!0===a.options.scrollPerPage?a.pagesInArray:a.positionsInArray,e=a.newPosX,c=null;f.each(b,function(d,g){e-a.itemWidth/20>b[d+1]&&e-a.itemWidth/20<g&&"left"===a.moveDirection()?(c=g,a.currentItem=!0===a.options.scrollPerPage?f.inArray(c,a.positionsInArray):d):e+a.itemWidth/20<g&&e+a.itemWidth/20>(b[d+1]||b[d]-a.itemWidth)&&"right"===a.moveDirection()&&(!0===a.options.scrollPerPage?(c=b[d+1]||b[b.length-1],a.currentItem=f.inArray(c,a.positionsInArray)):
-	(c=b[d+1],a.currentItem=d+1))});return a.currentItem},moveDirection:function(){var a;0>this.newRelativeX?(a="right",this.playDirection="next"):(a="left",this.playDirection="prev");return a},customEvents:function(){var a=this;a.$elem.on("owl.next",function(){a.next()});a.$elem.on("owl.prev",function(){a.prev()});a.$elem.on("owl.play",function(b,e){a.options.autoPlay=e;a.play();a.hoverStatus="play"});a.$elem.on("owl.stop",function(){a.stop();a.hoverStatus="stop"});a.$elem.on("owl.goTo",function(b,e){a.goTo(e)});
-	a.$elem.on("owl.jumpTo",function(b,e){a.jumpTo(e)})},stopOnHover:function(){var a=this;!0===a.options.stopOnHover&&!0!==a.browser.isTouch&&!1!==a.options.autoPlay&&(a.$elem.on("mouseover",function(){a.stop()}),a.$elem.on("mouseout",function(){"stop"!==a.hoverStatus&&a.play()}))},lazyLoad:function(){var a,b,e,c,d;if(!1===this.options.lazyLoad)return!1;for(a=0;a<this.itemsAmount;a+=1)b=f(this.$owlItems[a]),"loaded"!==b.data("owl-loaded")&&(e=b.data("owl-item"),c=b.find(".lazyOwl"),"string"!==typeof c.data("src")?
-	b.data("owl-loaded","loaded"):(void 0===b.data("owl-loaded")&&(c.hide(),b.addClass("loading").data("owl-loaded","checked")),(d=!0===this.options.lazyFollow?e>=this.currentItem:!0)&&e<this.currentItem+this.options.items&&c.length&&this.lazyPreload(b,c)))},lazyPreload:function(a,b){function e(){a.data("owl-loaded","loaded").removeClass("loading");b.removeAttr("data-src");"fade"===d.options.lazyEffect?b.fadeIn(400):b.show();"function"===typeof d.options.afterLazyLoad&&d.options.afterLazyLoad.apply(this,
-	[d.$elem])}function c(){f+=1;d.completeImg(b.get(0))||!0===k?e():100>=f?g.setTimeout(c,100):e()}var d=this,f=0,k;"DIV"===b.prop("tagName")?(b.css("background-image","url("+b.data("src")+")"),k=!0):b[0].src=b.data("src");c()},autoHeight:function(){function a(){var a=f(e.$owlItems[e.currentItem]).height();e.wrapperOuter.css("height",a+"px");e.wrapperOuter.hasClass("autoHeight")||g.setTimeout(function(){e.wrapperOuter.addClass("autoHeight")},0)}function b(){d+=1;e.completeImg(c.get(0))?a():100>=d?g.setTimeout(b,
-	100):e.wrapperOuter.css("height","")}var e=this,c=f(e.$owlItems[e.currentItem]).find("img"),d;void 0!==c.get(0)?(d=0,b()):a()},completeImg:function(a){return!a.complete||"undefined"!==typeof a.naturalWidth&&0===a.naturalWidth?!1:!0},onVisibleItems:function(){var a;!0===this.options.addClassActive&&this.$owlItems.removeClass("active");this.visibleItems=[];for(a=this.currentItem;a<this.currentItem+this.options.items;a+=1)this.visibleItems.push(a),!0===this.options.addClassActive&&f(this.$owlItems[a]).addClass("active");
-	this.owl.visibleItems=this.visibleItems},transitionTypes:function(a){this.outClass="owl-"+a+"-out";this.inClass="owl-"+a+"-in"},singleItemTransition:function(){var a=this,b=a.outClass,e=a.inClass,c=a.$owlItems.eq(a.currentItem),d=a.$owlItems.eq(a.prevItem),f=Math.abs(a.positionsInArray[a.currentItem])+a.positionsInArray[a.prevItem],g=Math.abs(a.positionsInArray[a.currentItem])+a.itemWidth/2;a.isTransition=!0;a.$owlWrapper.addClass("owl-origin").css({"-webkit-transform-origin":g+"px","-moz-perspective-origin":g+
-	"px","perspective-origin":g+"px"});d.css({position:"relative",left:f+"px"}).addClass(b).on("webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend",function(){a.endPrev=!0;d.off("webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend");a.clearTransStyle(d,b)});c.addClass(e).on("webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend",function(){a.endCurrent=!0;c.off("webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend");a.clearTransStyle(c,e)})},clearTransStyle:function(a,
-	b){a.css({position:"",left:""}).removeClass(b);this.endPrev&&this.endCurrent&&(this.$owlWrapper.removeClass("owl-origin"),this.isTransition=this.endCurrent=this.endPrev=!1)},owlStatus:function(){this.owl={userOptions:this.userOptions,baseElement:this.$elem,userItems:this.$userItems,owlItems:this.$owlItems,currentItem:this.currentItem,prevItem:this.prevItem,visibleItems:this.visibleItems,isTouch:this.browser.isTouch,browser:this.browser,dragDirection:this.dragDirection}},clearEvents:function(){this.$elem.off(".owl owl mousedown.disableTextSelect");
-	f(k).off(".owl owl");f(g).off("resize",this.resizer)},unWrap:function(){0!==this.$elem.children().length&&(this.$owlWrapper.unwrap(),this.$userItems.unwrap().unwrap(),this.owlControls&&this.owlControls.remove());this.clearEvents();this.$elem.attr("style",this.$elem.data("owl-originalStyles")||"").attr("class",this.$elem.data("owl-originalClasses"))},destroy:function(){this.stop();g.clearInterval(this.checkVisible);this.unWrap();this.$elem.removeData()},reinit:function(a){a=f.extend({},this.userOptions,
-	a);this.unWrap();this.init(a,this.$elem)},addItem:function(a,b){var e;if(!a)return!1;if(0===this.$elem.children().length)return this.$elem.append(a),this.setVars(),!1;this.unWrap();e=void 0===b||-1===b?-1:b;e>=this.$userItems.length||-1===e?this.$userItems.eq(-1).after(a):this.$userItems.eq(e).before(a);this.setVars()},removeItem:function(a){if(0===this.$elem.children().length)return!1;a=void 0===a||-1===a?-1:a;this.unWrap();this.$userItems.eq(a).remove();this.setVars()}};f.fn.owlCarousel=function(a){return this.each(function(){if(!0===
-	f(this).data("owl-init"))return!1;f(this).data("owl-init",!0);var b=Object.create(l);b.init(a,this);f.data(this,"owlCarousel",b)})};f.fn.owlCarousel.options={items:5,itemsCustom:!1,itemsDesktop:[1199,4],itemsDesktopSmall:[979,3],itemsTablet:[768,2],itemsTabletSmall:!1,itemsMobile:[479,1],singleItem:!1,itemsScaleUp:!1,slideSpeed:200,paginationSpeed:800,rewindSpeed:1E3,autoPlay:!1,stopOnHover:!1,navigation:!1,navigationText:["prev","next"],rewindNav:!0,scrollPerPage:!1,pagination:!0,paginationNumbers:!1,
-	responsive:!0,responsiveRefreshRate:200,responsiveBaseWidth:g,baseClass:"owl-carousel",theme:"owl-theme",lazyLoad:!1,lazyFollow:!0,lazyEffect:"fade",autoHeight:!1,jsonPath:!1,jsonSuccess:!1,dragBeforeAnimFinish:!0,mouseDrag:!0,touchDrag:!0,addClassActive:!1,transitionStyle:!1,beforeUpdate:!1,afterUpdate:!1,beforeInit:!1,afterInit:!1,beforeMove:!1,afterMove:!1,afterAction:!1,startDragging:!1,afterLazyLoad:!1}})(jQuery,window,document);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
+	__webpack_require__(25)
+	__webpack_require__(26)
+	__webpack_require__(27)
+	__webpack_require__(28)
+	__webpack_require__(29)
+	__webpack_require__(30)
+	__webpack_require__(31)
+	__webpack_require__(32)
+	__webpack_require__(33)
+	__webpack_require__(34)
+	__webpack_require__(35)
+	__webpack_require__(36)
 
 /***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = google.maps;
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<nav class=\"sg-navbar\" role=\"navigation\">\n\t<div class=\"container-fluid\">\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-2\">\n\t\t\t\t<button type=\"button\" class=\"sg-navbar-toggle sg-btn-invisible-blue\" data-target=\"#navigation-header-menu-left\"><i class=\"fa fa-bars\"></i></button>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-8 col-sm-8 sg-blue sg-navbar-brand\"></div>\n\t\t\t<div class=\"col-sm-3 col-sm-offset-1 sg-navbar-dropdownmenu sg-navbar-dropdownmenu-left hidden\" id=\"navigation-header-dropdownmenu-left\">\n\t\t\t\t<div class=\"dropdown pull-right sg-no-mobile\">\n\t\t\t\t\t<button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-expanded=\"true\"><div src=\"\" class=\"profile-pic\"></div><div class=\"menu-text\">MENU</div><!--<span class=\"caret\"></span>--></button>\n\t\t\t\t\t<div class=\"dropdown-menu list-group\" role=\"menu\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</nav>\n\n<div class=\"sg-navbar-slidemenu sg-navbar-slidemenu-left\" id=\"navigation-header-slidemenu-left\">\n\t<div class=\"list-group\" role=\"menu\"></div>\n</div>\n";
-
-/***/ },
-/* 15 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12263,8 +12457,8 @@
 	'use strict';
 	
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
 	    ViewLoader,
 	    mainViewContainer,
@@ -12490,7 +12684,64 @@
 
 
 /***/ },
-/* 16 */
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General popup object that inherits from ViewController.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
+	
+		Utilities = __webpack_require__(9),
+		ViewController = __webpack_require__(15),
+	
+		$popupLightbox = $('#popup-lightbox'),
+	    inherit, show, hide, setTitle;
+	
+	show = function() {
+	    $popupLightbox.removeClass('hidden');
+	    this.templateParameters.title = this.title;
+	    this.render();
+	};
+	
+	hide = function() {
+	    $popupLightbox.addClass('hidden');
+	    this.close();
+	};
+	
+	setTitle = function(title) {
+	    this.title = title;
+	};
+	
+	inherit = function(inheritOptions) {
+	    var options = {
+	        $element: $('.popup-container', $popupLightbox),
+	        title: 'Popup',
+	
+	        show: show,
+	        hide: hide,
+	        setTitle: setTitle
+	    };
+	    _.extend(options, inheritOptions);
+	
+	    return {
+	        constructor: Utilities.inherit(ViewController.constructor, options)
+	    };
+	};
+	
+	module.exports = {
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*jslint node: true */
@@ -12555,7 +12806,7 @@
 
 
 /***/ },
-/* 17 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12568,9 +12819,9 @@
 	
 	var Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    Model = __webpack_require__(18),
-	    XChangeRates = __webpack_require__(25),
+	    Config = __webpack_require__(7),
+	    Model = __webpack_require__(21),
+	    XChangeRates = __webpack_require__(37),
 	    Localization,
 	
 	    didInitialize,
@@ -12755,7 +13006,7 @@
 
 
 /***/ },
-/* 18 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12766,10 +13017,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
 	
-		Utilities = __webpack_require__(7),
+		Utilities = __webpack_require__(9),
 	
 		initialize,
 	    get,
@@ -12888,257 +13139,6 @@
 
 
 /***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General popup object that inherits from ViewController.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
-	
-		$popupLightbox = $('#popup-lightbox'),
-	    inherit, show, hide, setTitle;
-	
-	show = function() {
-	    $popupLightbox.removeClass('hidden');
-	    this.templateParameters.title = this.title;
-	    this.render();
-	};
-	
-	hide = function() {
-	    $popupLightbox.addClass('hidden');
-	    this.close();
-	};
-	
-	setTitle = function(title) {
-	    this.title = title;
-	};
-	
-	inherit = function(inheritOptions) {
-	    var options = {
-	        $element: $('.popup-container', $popupLightbox),
-	        title: 'Popup',
-	
-	        show: show,
-	        hide: hide,
-	        setTitle: setTitle
-	    };
-	    _.extend(options, inheritOptions);
-	
-	    return {
-	        constructor: Utilities.inherit(ViewController.constructor, options)
-	    };
-	};
-	
-	module.exports = {
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General view object with support for jQuery event autounbinding and localization.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-	
-		Utilities = __webpack_require__(7),
-	
-		initialize,
-	    render,
-	    setSubPath,
-	    _close,
-	    setupEvent,
-	    unbindEvents,
-	    on,
-	
-	    constructor, inherit;
-	
-	/**
-	 * Allows reinitializing a views data.
-	 */
-	initialize = function() {
-	    this.setSubPath();
-	    this.userEvents = [];
-	    this.events = {
-	        close: []
-	    };
-	
-	    if (_.isFunction(this.didInitialize) === true) {
-	        this.didInitialize();
-	    }
-	};
-	
-	render = function(callback) {
-	    var template = this.template(this.templateParameters);
-	
-	    //Unbind events to avoid double ups on multiple renders
-	    this.unbindEvents();
-	    if (_.isFunction(this.didResize) === true) {
-	        $(window).off('resize', this.didResize);
-	    }
-	
-	    this.$element.html(template);
-	
-	    //Did render event must be called before the callback so inheriting objects get the possibility to complete setup
-	    if (_.isFunction(this.didRender) === true) {
-	        this.didRender();
-	    }
-	
-	    if (_.isFunction(callback) === true) {
-	        callback();
-	    }
-	
-	    if (_.isFunction(this.didResize) === true) {
-	        $(window).on('resize', null, this, this.didResize);
-	    }
-	};
-	
-	setSubPath = function() {
-	    var slashIndex = -1;
-	    slashIndex = this.path.indexOf('/');
-	    if (slashIndex >= 0) {
-	        this.subPath = this.path.substring(slashIndex + 1);
-	    }
-	};
-	
-	/*function localize($containerElement) {
-			var $localizeElement = this.$element,
-				key, $element;
-			if($containerElement) {
-				$localizeElement = $containerElement;
-			}
-			for(key in this.labels) {
-				if(this.labels.hasOwnProperty(key)) {
-					$element = $('#' + key, $localizeElement);
-					if($element.is('input')) {
-						$element.attr('placeholder', this.labels[key]);
-					}
-					else {
-						$element.html(this.labels[key]);
-					}
-				}
-			}
-		}*/
-	
-	_close = function() {
-	    var i;
-	    for (i = 0; i < this.events.close.length; i++) {
-	        this.events.close[i](this);
-	    }
-	    this.unbindEvents();
-	    this.$element.empty();
-	    if (_.isFunction(this.didClose) === true) {
-	        this.didClose();
-	    }
-	};
-	
-	//A wrapper for jQuery events that allows automatic unbinding on view disposal
-	setupEvent = function(eventType, element, data, callback) {
-	    this.$element.on(eventType, element, data, callback);
-	    this.userEvents.push({
-	        eventType: eventType,
-	        element: element,
-	        callback: callback
-	    });
-	};
-	
-	unbindEvents = function() {
-	    var i, userEvent;
-	    for (i = this.userEvents.length - 1; i >= 0; i--) {
-	        userEvent = this.userEvents[i];
-	        this.$element.off(userEvent.eventType, userEvent.element, userEvent.callback);
-	        this.userEvents.pop();
-	    }
-	};
-	
-	on = function(eventType, callback) {
-	    switch (eventType) {
-	        case 'close':
-	            this.events.close.push(callback);
-	            break;
-	    }
-	};
-	
-	constructor = function(options) {
-	    var defaults = {
-	        name: '',
-	        $element: $(''),
-	        template: '', //A template string
-	        templateParameters: {},
-	        labels: {},
-	        path: '', //URL path in the following form mainView/subView fx dashboard/profile
-	        hasSubviews: false,
-	        $subViewContainer: $(''),
-	        subPath: '',
-	        passedData: {}, //stores extra data passed to the view
-	        ready: true,
-	
-	        initialize: initialize,
-	        render: render,
-	        setSubPath: setSubPath,
-	        //localize: localize,
-	        close: _close,
-	        setupEvent: setupEvent,
-	        unbindEvents: unbindEvents,
-	        on: on
-	    };
-	
-	    _.extend(this, defaults, options);
-	
-	    this.template = _.template(this.template);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(26)
-	__webpack_require__(27)
-	__webpack_require__(28)
-	__webpack_require__(29)
-	__webpack_require__(30)
-	__webpack_require__(31)
-	__webpack_require__(32)
-	__webpack_require__(33)
-	__webpack_require__(34)
-	__webpack_require__(35)
-	__webpack_require__(36)
-	__webpack_require__(37)
-
-/***/ },
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -13179,7 +13179,7 @@
 		"./gearsearchform.js": 65,
 		"./home.js": 66,
 		"./insurance.js": 67,
-		"./navigation-header.js": 11,
+		"./navigation-header.js": 3,
 		"./payment.js": 68,
 		"./paymentsuccessful.js": 69,
 		"./pickupdeliverycalendar.js": 70,
@@ -13243,7 +13243,7 @@
 		"./gearsearchform.html": 108,
 		"./home.html": 109,
 		"./insurance.html": 110,
-		"./navigation-header.html": 14,
+		"./navigation-header.html": 13,
 		"./payment.html": 111,
 		"./paymentsuccessful.html": 112,
 		"./pickupdeliverycalendar.html": 113,
@@ -13287,51 +13287,6 @@
 
 /***/ },
 /* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a currency conversion model.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var Config = __webpack_require__(5),
-		Model = __webpack_require__(18),
-	
-		currencies = {},
-	    XChangeRates,
-	
-	    getRate;
-	
-	getRate = function(fromCurrency, toCurrency, callback) {
-	    var code = fromCurrency + toCurrency;
-	    if (currencies[code]) {
-	        callback(null, currencies[code]);
-	        return;
-	    }
-	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        currencies[code] = data.rate;
-	        callback(null, data.rate);
-	    });
-	};
-	
-	XChangeRates = Model.inherit({
-	    getRate: getRate
-	});
-	XChangeRates = new XChangeRates.constructor({
-	    rootURL: Config.API_URL
-	});
-	module.exports = XChangeRates;
-
-
-/***/ },
-/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13394,10 +13349,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13495,10 +13450,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13618,10 +13573,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13862,10 +13817,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14080,10 +14035,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14248,10 +14203,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14594,10 +14549,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15077,10 +15032,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15192,10 +15147,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15371,10 +15326,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15531,10 +15486,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15700,7 +15655,52 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a currency conversion model.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var Config = __webpack_require__(7),
+		Model = __webpack_require__(21),
+	
+		currencies = {},
+	    XChangeRates,
+	
+	    getRate;
+	
+	getRate = function(fromCurrency, toCurrency, callback) {
+	    var code = fromCurrency + toCurrency;
+	    if (currencies[code]) {
+	        callback(null, currencies[code]);
+	        return;
+	    }
+	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        currencies[code] = data.rate;
+	        callback(null, data.rate);
+	    });
+	};
+	
+	XChangeRates = Model.inherit({
+	    getRate: getRate
+	});
+	XChangeRates = new XChangeRates.constructor({
+	    rootURL: Config.API_URL
+	});
+	module.exports = XChangeRates;
+
 
 /***/ },
 /* 38 */
@@ -15714,11 +15714,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	
 	    testimonials,
 	
@@ -15856,16 +15856,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(20),
 	    Gear = __webpack_require__(138),
 	
 	    subtypeDefault = 'Choose subtype:',
@@ -16662,16 +16662,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(20),
 	    TechProfile = __webpack_require__(139),
 	
 	    countryDefault = 'Select country:',
@@ -17298,16 +17298,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(20),
 	    Van = __webpack_require__(140),
 	
 	    countryDefault = 'Select country:',
@@ -18012,13 +18012,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(20),
 	
 	    didInitialize,
 	    didRender,
@@ -18525,16 +18525,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(8),
+	    Localization = __webpack_require__(20),
+	    User = __webpack_require__(10),
 	    Booking = __webpack_require__(141),
 	
 	    didInitialize,
@@ -18824,14 +18824,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(20),
 	    Booking = __webpack_require__(141),
 	
 	    SelectTimePopup = __webpack_require__(142),
@@ -19052,7 +19052,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(15);
 	
 	module.exports = ViewController.inherit({});
 
@@ -19069,9 +19069,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 		
 	    didRender,
 	    loadFooter;
@@ -19115,15 +19115,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(20),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -19441,12 +19441,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(20),
 	
 		didInitialize,
 	    didRender,
@@ -19529,11 +19529,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19651,11 +19651,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19800,11 +19800,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19945,11 +19945,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20090,11 +20090,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20233,11 +20233,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20340,11 +20340,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20485,11 +20485,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20628,11 +20628,11 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20747,9 +20747,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    subViewContainerID,
@@ -20831,14 +20831,14 @@
 	'use strict';
 	
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	    Moment = __webpack_require__(137),
-	    GoogleMaps = __webpack_require__(13),
+	    GoogleMaps = __webpack_require__(14),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(20),
 	
 	    geocoder,
 	
@@ -21466,15 +21466,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
+	    Config = __webpack_require__(7),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(20),
 	
 	    geocoder,
 	
@@ -21979,14 +21979,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
 	    Moment = __webpack_require__(137),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(20),
 	
 	    geocoder,
 	
@@ -22542,7 +22542,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(15);
 	module.exports = ViewController.inherit();
 
 
@@ -22560,9 +22560,9 @@
 	
 	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(20),
 	
 		didInitialize;
 	
@@ -22591,19 +22591,19 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-		FB = __webpack_require__(16),
-		GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+		FB = __webpack_require__(19),
+		GoogleMaps = __webpack_require__(14),
 	
-		Config = __webpack_require__(5),
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Config = __webpack_require__(7),
+		Utilities = __webpack_require__(9),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(20),
 		Gear = __webpack_require__(138),
-		User = __webpack_require__(8),
+		User = __webpack_require__(10),
 	
 		paymentSuccessModalOpen = false,
 	
@@ -22971,16 +22971,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
+		GoogleMaps = __webpack_require__(14),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(9),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(20),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -23385,9 +23385,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23528,9 +23528,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 	
-	    ViewController = __webpack_require__(20),
+	    ViewController = __webpack_require__(15),
 	
 	    didRender,
 	    loadFooter;
@@ -23571,15 +23571,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(5),
-		ViewController = __webpack_require__(20),
+		Config = __webpack_require__(7),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(20),
 		Card = __webpack_require__(146),
 	
 		didInitialize,
@@ -24010,14 +24010,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 		Moment = __webpack_require__(137),
 	
-		Config = __webpack_require__(5),
+		Config = __webpack_require__(7),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
-		ViewController = __webpack_require__(20),
+		Localization = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 		Booking = __webpack_require__(141),
 	
 		didInitialize,
@@ -24150,14 +24150,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(9),
+		ViewController = __webpack_require__(15),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(20),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -24605,9 +24605,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 		
-		ViewController = __webpack_require__(20),
+		ViewController = __webpack_require__(15),
 	
 	    didRender,
 	    loadFooter;
@@ -24649,17 +24649,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(16),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
+	    FB = __webpack_require__(19),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    Utilities = __webpack_require__(9),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
+	    Localization = __webpack_require__(20),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -25177,16 +25177,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
 	    Moment = __webpack_require__(137),
 	
-	    Config = __webpack_require__(5),
+	    Config = __webpack_require__(7),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
-	    MessagePopup = __webpack_require__(10),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(20),
+	    MessagePopup = __webpack_require__(12),
 	
 	    geocoder,
 	
@@ -25552,17 +25552,17 @@
 	'use strict';
 	
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(16),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    GoogleMaps = __webpack_require__(14),
+	    FB = __webpack_require__(19),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
+	    Config = __webpack_require__(7),
+	    Utilities = __webpack_require__(9),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(20),
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(8),
+	    ViewController = __webpack_require__(15),
+	    Localization = __webpack_require__(20),
+	    User = __webpack_require__(10),
 	    TechProfile = __webpack_require__(139),
 	
 	    paymentSuccessModalOpen = false,
@@ -25911,16 +25911,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
+		GoogleMaps = __webpack_require__(14),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(9),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(20),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -26311,7 +26311,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(20);
+	var ViewController = __webpack_require__(15);
 	
 	module.exports = ViewController;
 
@@ -26328,13 +26328,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    ViewController = __webpack_require__(15),
 	
-	    User = __webpack_require__(8),
+	    User = __webpack_require__(10),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -26594,18 +26594,18 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-	    $ = __webpack_require__(4),
-	    FB = __webpack_require__(16),
-	    GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+	    $ = __webpack_require__(6),
+	    FB = __webpack_require__(19),
+	    GoogleMaps = __webpack_require__(14),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(20),
+	    Config = __webpack_require__(7),
+	    Utilities = __webpack_require__(9),
+	    ViewController = __webpack_require__(15),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(17),
-	    User = __webpack_require__(8),
+	    Localization = __webpack_require__(20),
+	    User = __webpack_require__(10),
 	    Van = __webpack_require__(140),
 	
 	    paymentSuccessModalOpen = false,
@@ -26969,16 +26969,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(13),
+	var _ = __webpack_require__(5),
+		$ = __webpack_require__(6),
+		GoogleMaps = __webpack_require__(14),
 		Moment = __webpack_require__(137),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(20),
+		Utilities = __webpack_require__(9),
+		ViewController = __webpack_require__(15),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(17),
+		Localization = __webpack_require__(20),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -27720,10 +27720,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
+	var _ = __webpack_require__(5),
 		
-		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(18),
+		Utilities = __webpack_require__(9),
+		Model = __webpack_require__(21),
 		App = __webpack_require__(1),
 		
 		didInitialize,
@@ -27967,10 +27967,10 @@
 	'use strict';
 	
 	
-	var _ = __webpack_require__(3),
+	var _ = __webpack_require__(5),
 	
 	    App = __webpack_require__(1),
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(21),
 	
 	    didInitialize,
 	    createTechProfile,
@@ -28165,10 +28165,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
+	var _ = __webpack_require__(5),
 		
-		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(18),
+		Utilities = __webpack_require__(9),
+		Model = __webpack_require__(21),
 		App = __webpack_require__(1),
 	
 		didInitialize,
@@ -28401,10 +28401,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
+	var _ = __webpack_require__(5),
 	    Moment = __webpack_require__(137),
 	
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(21),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -28541,9 +28541,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(4),
+	var $ = __webpack_require__(6),
 	
-		PopupController = __webpack_require__(19),
+		PopupController = __webpack_require__(18),
 		SelectTimePopupTemplate = __webpack_require__(148),
 	
 		SelectTimePopup,
@@ -28613,9 +28613,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
+	var _ = __webpack_require__(5),
 	
-		Model = __webpack_require__(18),
+		Model = __webpack_require__(21),
 		Gear = __webpack_require__(138),
 		
 		didInitialize,
@@ -28756,8 +28756,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
-		Model = __webpack_require__(18),
+	var _ = __webpack_require__(5),
+		Model = __webpack_require__(21),
 		TechProfile = __webpack_require__(139),
 		
 		didInitialize,
@@ -28898,9 +28898,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(3),
+	var _ = __webpack_require__(5),
 	
-	    Model = __webpack_require__(18),
+	    Model = __webpack_require__(21),
 	    Van = __webpack_require__(140),
 	
 	    didInitialize,
@@ -29043,8 +29043,8 @@
 	
 	var mangoPay = __webpack_require__(150),
 		
-		Config = __webpack_require__(5),
-		Model = __webpack_require__(18),
+		Config = __webpack_require__(7),
+		Model = __webpack_require__(21),
 	
 	    didInitialize,
 	    registerCard;
