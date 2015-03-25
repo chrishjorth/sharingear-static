@@ -228,7 +228,7 @@
 	
 	var chai = __webpack_require__(28),
 		
-		Config = __webpack_require__(24),
+		Config = __webpack_require__(21),
 	
 		expect;
 	
@@ -283,8 +283,8 @@
 	
 	var chai = __webpack_require__(28),
 	
-	    Router = __webpack_require__(21),
-	    ViewLoader = __webpack_require__(22),
+	    Router = __webpack_require__(22),
+	    ViewLoader = __webpack_require__(23),
 	
 	    expect;
 	
@@ -461,8 +461,8 @@
 		$ = __webpack_require__(31),
 		GoogleMaps = __webpack_require__(19),
 	
-		Router = __webpack_require__(21),
-		ViewLoader = __webpack_require__(22),
+		Router = __webpack_require__(22),
+		ViewLoader = __webpack_require__(23),
 		App = __webpack_require__(20),
 	
 		expect;
@@ -650,7 +650,7 @@
 		_ = __webpack_require__(15),
 		$ = __webpack_require__(31),
 	
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 		expect;
 	
@@ -823,7 +823,7 @@
 	var chai = __webpack_require__(28),
 		$ = __webpack_require__(31),
 	
-		Model = __webpack_require__(23),
+		Model = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		expect;
@@ -2667,8 +2667,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    Router = __webpack_require__(21),
+	    Config = __webpack_require__(21),
+	    Router = __webpack_require__(22),
 	    Utilities = __webpack_require__(26),
 	
 	    User = __webpack_require__(38),
@@ -2880,6 +2880,51 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Defines site configuration. 
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
+	    MIN_USER_AGE = 13,
+	    AVG_USER_AGE = 27,
+	    MIN_XP_START_YEAR = 1960,
+	    FB_APP_ID = '522375581240221',
+	    FB_STATUSCHECK_TIMEOUT = 5000,
+	    API_URL,
+	    isProduction;
+	
+	if (IS_PRODUCTION === true) {
+	    API_URL = 'https://prod-api.sharingear.com';
+	} else {
+	    API_URL = 'https://api.sharingear.com';
+	}
+	
+	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+	
+	isProduction = function() {
+	    return (this.IS_PRODUCTION === true);
+	};
+	
+	module.exports = {
+	    IS_PRODUCTION: IS_PRODUCTION,
+	    API_URL: API_URL,
+	    MIN_USER_AGE: MIN_USER_AGE,
+	    AVG_USER_AGE: AVG_USER_AGE,
+	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
+	    FB_APP_ID: FB_APP_ID,
+	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
+	    isProduction: isProduction
+	};
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Handles routing.
 	 * @author: Chris Hjorth
 	 */
@@ -2889,7 +2934,7 @@
 	
 	var _ = __webpack_require__(15),
 	
-		ViewLoader = __webpack_require__(22),
+		ViewLoader = __webpack_require__(23),
 		Utilities = __webpack_require__(26);
 	
 	var Router,
@@ -3070,7 +3115,7 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3309,185 +3354,7 @@
 
 
 /***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General model object with support for jQuery ajax.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(15),
-		$ = __webpack_require__(31),
-	
-		Utilities = __webpack_require__(26),
-	
-		initialize,
-	    get,
-	    post,
-	    put,
-	    del,
-	
-	    constructor, inherit;
-	
-	initialize = function() {
-	    if (this.didInitialize && typeof this.didInitialize == 'function') {
-	        this.didInitialize();
-	    }
-	};
-	
-	get = function(url, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'GET',
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR);
-	            console.log(textStatus);
-	            callback('Error executing GET request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                callback('Error retrieving resource from server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	post = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'POST',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing POST request: ' + errorThrown);
-	
-	        },
-	        success: function(data) {
-	
-	            if (data.error) {
-	                callback('Error sending resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	put = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'PUT',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing PUT request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                console.log(data.error);
-	                callback('Error putting resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	del = function() {
-	
-	};
-	
-	constructor = function(options) {
-	    var defaults, methods;
-	
-	    defaults = {
-	        rootURL: '',
-	        data: null
-	    };
-	
-	    methods = {
-	        initialize: initialize,
-	        get: get,
-	        post: post,
-	        put: put,
-	        del: del
-	    };
-	    _.extend(this, defaults, methods, options);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
 /* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines site configuration.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
-	    MIN_USER_AGE = 13,
-	    AVG_USER_AGE = 27,
-	    MIN_XP_START_YEAR = 1960,
-	    FB_APP_ID = '522375581240221',
-	    FB_STATUSCHECK_TIMEOUT = 5000,
-	    API_URL,
-	    isProduction;
-	
-	if (IS_PRODUCTION === true) {
-	    API_URL = 'https://prod-api.sharingear.com';
-	} else {
-	    API_URL = 'https://api.sharingear.com';
-	}
-	
-	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
-	
-	isProduction = function() {
-	    return (this.IS_PRODUCTION === true);
-	};
-	
-	module.exports = {
-	    IS_PRODUCTION: IS_PRODUCTION,
-	    API_URL: API_URL,
-	    MIN_USER_AGE: MIN_USER_AGE,
-	    AVG_USER_AGE: AVG_USER_AGE,
-	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
-	    FB_APP_ID: FB_APP_ID,
-	    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
-	    isProduction: isProduction
-	};
-
-
-/***/ },
-/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3646,6 +3513,139 @@
 	    _.extend(this, defaults, options);
 	
 	    this.template = _.template(this.template);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General model object with support for jQuery ajax.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(15),
+		$ = __webpack_require__(31),
+	
+		Utilities = __webpack_require__(26),
+	
+		initialize,
+	    get,
+	    post,
+	    put,
+	    del,
+	
+	    constructor, inherit;
+	
+	initialize = function() {
+	    if (this.didInitialize && typeof this.didInitialize == 'function') {
+	        this.didInitialize();
+	    }
+	};
+	
+	get = function(url, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'GET',
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            console.log(jqXHR);
+	            console.log(textStatus);
+	            callback('Error executing GET request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                callback('Error retrieving resource from server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	post = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'POST',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing POST request: ' + errorThrown);
+	
+	        },
+	        success: function(data) {
+	
+	            if (data.error) {
+	                callback('Error sending resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	put = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'PUT',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing PUT request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                console.log(data.error);
+	                callback('Error putting resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	del = function() {
+	
+	};
+	
+	constructor = function(options) {
+	    var defaults, methods;
+	
+	    defaults = {
+	        rootURL: '',
+	        data: null
+	    };
+	
+	    methods = {
+	        initialize: initialize,
+	        get: get,
+	        post: post,
+	        put: put,
+	        del: del
+	    };
+	    _.extend(this, defaults, methods, options);
 	};
 	
 	inherit = function(inheritOptions) {
@@ -13206,7 +13206,7 @@
 	var _ = __webpack_require__(15),
 	    FB = __webpack_require__(90),
 	    Localization = __webpack_require__(91),
-	    Model = __webpack_require__(23),
+	    Model = __webpack_require__(25),
 	    Utilities = __webpack_require__(26),
 	
 	    didInitialize,
@@ -13492,7 +13492,7 @@
 	
 	var _ = __webpack_require__(15),
 	
-	    Model = __webpack_require__(23),
+	    Model = __webpack_require__(25),
 	
 	    didInitialize,
 	    getClassification;
@@ -13943,7 +13943,7 @@
 	    $ = __webpack_require__(31),
 	    GoogleMaps = __webpack_require__(19),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	
 	    testimonials,
 	
@@ -14086,8 +14086,8 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -14892,8 +14892,8 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -15528,8 +15528,8 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -16240,7 +16240,7 @@
 	var $ = __webpack_require__(31),
 	    Moment = __webpack_require__(30),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -16754,8 +16754,8 @@
 	    $ = __webpack_require__(31),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -17052,8 +17052,8 @@
 	var $ = __webpack_require__(31),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -17277,7 +17277,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(25);
+	var ViewController = __webpack_require__(24);
 	
 	module.exports = ViewController.inherit({});
 
@@ -17296,7 +17296,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		
 	    didRender,
 	    loadFooter;
@@ -17344,8 +17344,8 @@
 	    $ = __webpack_require__(31),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -17668,7 +17668,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -17757,8 +17757,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
@@ -17879,8 +17879,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
@@ -18028,8 +18028,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    GearList = __webpack_require__(157),
@@ -18173,8 +18173,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
@@ -18318,8 +18318,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
@@ -18461,8 +18461,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    TechProfileList = __webpack_require__(158),
@@ -18568,8 +18568,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
@@ -18713,8 +18713,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
@@ -18856,8 +18856,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    VanList = __webpack_require__(159),
@@ -18974,7 +18974,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    subViewContainerID,
@@ -19062,7 +19062,7 @@
 	    GoogleMaps = __webpack_require__(19),
 	
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(91),
 	
 	    geocoder,
@@ -19696,9 +19696,9 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
+	    Config = __webpack_require__(21),
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(91),
 	
 	    geocoder,
@@ -20210,7 +20210,7 @@
 	    Moment = __webpack_require__(30),
 	
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(91),
 	
 	    geocoder,
@@ -20767,7 +20767,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(25);
+	var ViewController = __webpack_require__(24);
 	module.exports = ViewController.inherit();
 
 
@@ -20785,7 +20785,7 @@
 	
 	var Moment = __webpack_require__(30),
 		
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 		Localization = __webpack_require__(91),
 	
@@ -20821,9 +20821,9 @@
 		FB = __webpack_require__(90),
 		GoogleMaps = __webpack_require__(19),
 	
-		Config = __webpack_require__(24),
+		Config = __webpack_require__(21),
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -21202,7 +21202,7 @@
 		Moment = __webpack_require__(30),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -21612,7 +21612,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    didInitialize,
@@ -21755,7 +21755,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	
 	    didRender,
 	    loadFooter;
@@ -21799,7 +21799,7 @@
 	
 	var $ = __webpack_require__(31),
 	
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Utilities = __webpack_require__(26),
 	    App = __webpack_require__(20),
 	
@@ -22023,8 +22023,8 @@
 		$ = __webpack_require__(31),
 		Moment = __webpack_require__(30),
 	
-		Config = __webpack_require__(24),
-		ViewController = __webpack_require__(25),
+		Config = __webpack_require__(21),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -22461,11 +22461,11 @@
 	var $ = __webpack_require__(31),
 		Moment = __webpack_require__(30),
 	
-		Config = __webpack_require__(24),
+		Config = __webpack_require__(21),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		Booking = __webpack_require__(155),
 	
 		didInitialize,
@@ -22603,7 +22603,7 @@
 		Moment = __webpack_require__(30),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 		Localization = __webpack_require__(91),
 	
@@ -23055,7 +23055,7 @@
 	
 	var $ = __webpack_require__(31),
 		
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 	    didRender,
 	    loadFooter;
@@ -23102,9 +23102,9 @@
 	    GoogleMaps = __webpack_require__(19),
 	    FB = __webpack_require__(90),
 	
-	    Config = __webpack_require__(24),
+	    Config = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -23630,9 +23630,9 @@
 	    GoogleMaps = __webpack_require__(19),
 	    Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
+	    Config = __webpack_require__(21),
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(91),
 	    MessagePopup = __webpack_require__(40),
 	
@@ -24005,10 +24005,10 @@
 	    GoogleMaps = __webpack_require__(19),
 	    FB = __webpack_require__(90),
 	
-	    Config = __webpack_require__(24),
+	    Config = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
 	    App = __webpack_require__(20),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    Localization = __webpack_require__(91),
 	    User = __webpack_require__(38),
 	    TechProfile = __webpack_require__(152),
@@ -24365,7 +24365,7 @@
 		Moment = __webpack_require__(30),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -24759,7 +24759,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(25);
+	var ViewController = __webpack_require__(24);
 	
 	module.exports = ViewController;
 
@@ -24779,8 +24779,8 @@
 	var _ = __webpack_require__(15),
 	    $ = __webpack_require__(31),
 	
-	    Config = __webpack_require__(24),
-	    ViewController = __webpack_require__(25),
+	    Config = __webpack_require__(21),
+	    ViewController = __webpack_require__(24),
 	
 	    User = __webpack_require__(38),
 	    GearList = __webpack_require__(157),
@@ -25047,9 +25047,9 @@
 	    FB = __webpack_require__(90),
 	    GoogleMaps = __webpack_require__(19),
 	
-	    Config = __webpack_require__(24),
+	    Config = __webpack_require__(21),
 	    Utilities = __webpack_require__(26),
-	    ViewController = __webpack_require__(25),
+	    ViewController = __webpack_require__(24),
 	    App = __webpack_require__(20),
 	
 	    Localization = __webpack_require__(91),
@@ -25423,7 +25423,7 @@
 		Moment = __webpack_require__(30),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 		App = __webpack_require__(20),
 	
 		Localization = __webpack_require__(91),
@@ -26429,8 +26429,8 @@
 	
 	var Moment = __webpack_require__(30),
 	
-	    Config = __webpack_require__(24),
-	    Model = __webpack_require__(23),
+	    Config = __webpack_require__(21),
+	    Model = __webpack_require__(25),
 	    XChangeRates = __webpack_require__(169),
 	    Localization,
 	
@@ -26631,7 +26631,7 @@
 		$ = __webpack_require__(31),
 	
 		Utilities = __webpack_require__(26),
-		ViewController = __webpack_require__(25),
+		ViewController = __webpack_require__(24),
 	
 		$popupLightbox = $('#popup-lightbox'),
 	    inherit, show, hide, setTitle;
@@ -27042,7 +27042,7 @@
 	var _ = __webpack_require__(15),
 	
 	    App = __webpack_require__(20),
-	    Model = __webpack_require__(23),
+	    Model = __webpack_require__(25),
 	
 	    didInitialize,
 	    createTechProfile,
@@ -27240,7 +27240,7 @@
 	var _ = __webpack_require__(15),
 		
 		Utilities = __webpack_require__(26),
-		Model = __webpack_require__(23),
+		Model = __webpack_require__(25),
 		App = __webpack_require__(20),
 		
 		didInitialize,
@@ -27486,7 +27486,7 @@
 	var _ = __webpack_require__(15),
 		
 		Utilities = __webpack_require__(26),
-		Model = __webpack_require__(23),
+		Model = __webpack_require__(25),
 		App = __webpack_require__(20),
 	
 		didInitialize,
@@ -27722,7 +27722,7 @@
 	var _ = __webpack_require__(15),
 	    Moment = __webpack_require__(30),
 	
-	    Model = __webpack_require__(23),
+	    Model = __webpack_require__(25),
 	    App = __webpack_require__(20),
 	
 	    didInitialize,
@@ -27933,7 +27933,7 @@
 	
 	var _ = __webpack_require__(15),
 	
-		Model = __webpack_require__(23),
+		Model = __webpack_require__(25),
 		Gear = __webpack_require__(153),
 		
 		didInitialize,
@@ -28075,7 +28075,7 @@
 	'use strict';
 	
 	var _ = __webpack_require__(15),
-		Model = __webpack_require__(23),
+		Model = __webpack_require__(25),
 		TechProfile = __webpack_require__(152),
 		
 		didInitialize,
@@ -28218,7 +28218,7 @@
 	
 	var _ = __webpack_require__(15),
 	
-	    Model = __webpack_require__(23),
+	    Model = __webpack_require__(25),
 	    Van = __webpack_require__(154),
 	
 	    didInitialize,
@@ -28361,8 +28361,8 @@
 	
 	var mangoPay = __webpack_require__(191),
 		
-		Config = __webpack_require__(24),
-		Model = __webpack_require__(23),
+		Config = __webpack_require__(21),
+		Model = __webpack_require__(25),
 	
 	    didInitialize,
 	    registerCard;
@@ -32294,8 +32294,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var Config = __webpack_require__(24),
-		Model = __webpack_require__(23),
+	var Config = __webpack_require__(21),
+		Model = __webpack_require__(25),
 	
 		currencies = {},
 	    XChangeRates,
@@ -45056,8 +45056,8 @@
 	 */
 	
 	var base64 = __webpack_require__(283)
-	var ieee754 = __webpack_require__(281)
-	var isArray = __webpack_require__(282)
+	var ieee754 = __webpack_require__(282)
+	var isArray = __webpack_require__(281)
 	
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -46544,6 +46544,45 @@
 /* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
+	
+	/**
+	 * isArray
+	 */
+	
+	var isArray = Array.isArray;
+	
+	/**
+	 * toString
+	 */
+	
+	var str = Object.prototype.toString;
+	
+	/**
+	 * Whether or not the given `val`
+	 * is an array.
+	 *
+	 * example:
+	 *
+	 *        isArray([]);
+	 *        // > true
+	 *        isArray(arguments);
+	 *        // > false
+	 *        isArray('');
+	 *        // > false
+	 *
+	 * @param {mixed} val
+	 * @return {bool}
+	 */
+	
+	module.exports = isArray || function (val) {
+	  return !! val && '[object Array]' == str.call(val);
+	};
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
 	exports.read = function(buffer, offset, isLE, mLen, nBytes) {
 	  var e, m,
 	      eLen = nBytes * 8 - mLen - 1,
@@ -46627,45 +46666,6 @@
 	  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8);
 	
 	  buffer[offset + i - d] |= s * 128;
-	};
-
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * isArray
-	 */
-	
-	var isArray = Array.isArray;
-	
-	/**
-	 * toString
-	 */
-	
-	var str = Object.prototype.toString;
-	
-	/**
-	 * Whether or not the given `val`
-	 * is an array.
-	 *
-	 * example:
-	 *
-	 *        isArray([]);
-	 *        // > true
-	 *        isArray(arguments);
-	 *        // > false
-	 *        isArray('');
-	 *        // > false
-	 *
-	 * @param {mixed} val
-	 * @return {bool}
-	 */
-	
-	module.exports = isArray || function (val) {
-	  return !! val && '[object Array]' == str.call(val);
 	};
 
 

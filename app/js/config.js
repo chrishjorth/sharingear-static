@@ -1,5 +1,5 @@
 /**
- * Defines site configuration.
+ * Defines site configuration. 
  * @author: Chris Hjorth
  */
 
