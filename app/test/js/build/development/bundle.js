@@ -54,7 +54,7 @@
 	
 	var _ = __webpack_require__(15);
 	
-	__webpack_require__(18);
+	__webpack_require__(16);
 	
 	__webpack_require__(1);
 	__webpack_require__(3);
@@ -86,10 +86,10 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(2)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -112,7 +112,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		$ = __webpack_require__(32),
 	
 		App = __webpack_require__(20),
@@ -199,10 +199,10 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(4)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -226,7 +226,7 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		
 		Config = __webpack_require__(21),
 	
@@ -255,10 +255,10 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(6)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -281,7 +281,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 	
 	    Router = __webpack_require__(22),
 	    ViewLoader = __webpack_require__(23),
@@ -431,10 +431,10 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(8)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -457,7 +457,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		$ = __webpack_require__(32),
 		GoogleMaps = __webpack_require__(19),
 	
@@ -619,10 +619,10 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(10)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -646,7 +646,7 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		_ = __webpack_require__(15),
 		$ = __webpack_require__(32),
 	
@@ -793,10 +793,10 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(12)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -820,7 +820,7 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		$ = __webpack_require__(32),
 	
 		Model = __webpack_require__(25),
@@ -904,10 +904,10 @@
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(16);
+	__webpack_require__(17);
 	mocha.setup("bdd");
 	__webpack_require__(14)
-	__webpack_require__(17);
+	__webpack_require__(18);
 	if(false) {
 		module.hot.accept();
 		module.hot.dispose(function() {
@@ -931,7 +931,7 @@
 	'use strict';
 	
 	
-	var chai = __webpack_require__(27),
+	var chai = __webpack_require__(28),
 		_ = __webpack_require__(15),
 		$ = __webpack_require__(32),
 		Moment = __webpack_require__(29),
@@ -2602,30 +2602,6 @@
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
-	
-	__webpack_require__(36);
-	__webpack_require__(28);
-
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
-		delete __webpack_require__.c[module.id];
-		if(typeof window !== "undefined" && window.mochaPhantomJS)
-			mochaPhantomJS.run();
-		else
-			mocha.run();
-	});
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
 	if (typeof Function.prototype.bind != 'function') {
 	    Function.prototype.bind = function bind(obj) {
 	        var args = Array.prototype.slice.call(arguments, 1),
@@ -2645,6 +2621,30 @@
 	    };
 	}
 
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	if (! document.getElementById("mocha")) { document.write("<div id=\"mocha\"></div>"); }
+	
+	__webpack_require__(36);
+	__webpack_require__(27);
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {process.nextTick(function() {
+		delete __webpack_require__.c[module.id];
+		if(typeof window !== "undefined" && window.mochaPhantomJS)
+			mochaPhantomJS.run();
+		else
+			mocha.run();
+	});
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
 
 /***/ },
 /* 19 */
@@ -3836,21 +3836,21 @@
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(87);
-
+	__webpack_require__(33)(__webpack_require__(34))
 
 /***/ },
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(33)(__webpack_require__(34))
+	module.exports = __webpack_require__(87);
+
 
 /***/ },
 /* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var moment = module.exports = __webpack_require__(88);
-	moment.tz.load(__webpack_require__(168));
+	moment.tz.load(__webpack_require__(167));
 
 
 /***/ },
@@ -25835,7 +25835,7 @@
 	 * Utils for plugins (not exported)
 	 */
 	
-	var util = __webpack_require__(167);
+	var util = __webpack_require__(168);
 	
 	/**
 	 * # .use(function)
@@ -31560,138 +31560,6 @@
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*!
-	 * chai
-	 * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
-	 * MIT Licensed
-	 */
-	
-	/*!
-	 * Main exports
-	 */
-	
-	var exports = module.exports = {};
-	
-	/*!
-	 * test utility
-	 */
-	
-	exports.test = __webpack_require__(173);
-	
-	/*!
-	 * type utility
-	 */
-	
-	exports.type = __webpack_require__(174);
-	
-	/*!
-	 * message utility
-	 */
-	
-	exports.getMessage = __webpack_require__(175);
-	
-	/*!
-	 * actual utility
-	 */
-	
-	exports.getActual = __webpack_require__(176);
-	
-	/*!
-	 * Inspect util
-	 */
-	
-	exports.inspect = __webpack_require__(177);
-	
-	/*!
-	 * Object Display util
-	 */
-	
-	exports.objDisplay = __webpack_require__(178);
-	
-	/*!
-	 * Flag utility
-	 */
-	
-	exports.flag = __webpack_require__(179);
-	
-	/*!
-	 * Flag transferring utility
-	 */
-	
-	exports.transferFlags = __webpack_require__(180);
-	
-	/*!
-	 * Deep equal utility
-	 */
-	
-	exports.eql = __webpack_require__(192);
-	
-	/*!
-	 * Deep path value
-	 */
-	
-	exports.getPathValue = __webpack_require__(181);
-	
-	/*!
-	 * Deep path info
-	 */
-	
-	exports.getPathInfo = __webpack_require__(182);
-	
-	/*!
-	 * Check if a property exists
-	 */
-	
-	exports.hasProperty = __webpack_require__(183);
-	
-	/*!
-	 * Function name
-	 */
-	
-	exports.getName = __webpack_require__(184);
-	
-	/*!
-	 * add Property
-	 */
-	
-	exports.addProperty = __webpack_require__(185);
-	
-	/*!
-	 * add Method
-	 */
-	
-	exports.addMethod = __webpack_require__(186);
-	
-	/*!
-	 * overwrite Property
-	 */
-	
-	exports.overwriteProperty = __webpack_require__(187);
-	
-	/*!
-	 * overwrite Method
-	 */
-	
-	exports.overwriteMethod = __webpack_require__(188);
-	
-	/*!
-	 * Add a chainable method
-	 */
-	
-	exports.addChainableMethod = __webpack_require__(189);
-	
-	/*!
-	 * Overwrite chainable method
-	 */
-	
-	exports.overwriteChainableMethod = __webpack_require__(190);
-	
-
-
-/***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
 	module.exports = {
 		"version": "2015a",
 		"zones": [
@@ -32281,6 +32149,138 @@
 			"Pacific/Pohnpei|Pacific/Ponape"
 		]
 	}
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*!
+	 * chai
+	 * Copyright(c) 2011 Jake Luer <jake@alogicalparadox.com>
+	 * MIT Licensed
+	 */
+	
+	/*!
+	 * Main exports
+	 */
+	
+	var exports = module.exports = {};
+	
+	/*!
+	 * test utility
+	 */
+	
+	exports.test = __webpack_require__(173);
+	
+	/*!
+	 * type utility
+	 */
+	
+	exports.type = __webpack_require__(174);
+	
+	/*!
+	 * message utility
+	 */
+	
+	exports.getMessage = __webpack_require__(175);
+	
+	/*!
+	 * actual utility
+	 */
+	
+	exports.getActual = __webpack_require__(176);
+	
+	/*!
+	 * Inspect util
+	 */
+	
+	exports.inspect = __webpack_require__(177);
+	
+	/*!
+	 * Object Display util
+	 */
+	
+	exports.objDisplay = __webpack_require__(178);
+	
+	/*!
+	 * Flag utility
+	 */
+	
+	exports.flag = __webpack_require__(179);
+	
+	/*!
+	 * Flag transferring utility
+	 */
+	
+	exports.transferFlags = __webpack_require__(180);
+	
+	/*!
+	 * Deep equal utility
+	 */
+	
+	exports.eql = __webpack_require__(192);
+	
+	/*!
+	 * Deep path value
+	 */
+	
+	exports.getPathValue = __webpack_require__(181);
+	
+	/*!
+	 * Deep path info
+	 */
+	
+	exports.getPathInfo = __webpack_require__(182);
+	
+	/*!
+	 * Check if a property exists
+	 */
+	
+	exports.hasProperty = __webpack_require__(183);
+	
+	/*!
+	 * Function name
+	 */
+	
+	exports.getName = __webpack_require__(184);
+	
+	/*!
+	 * add Property
+	 */
+	
+	exports.addProperty = __webpack_require__(185);
+	
+	/*!
+	 * add Method
+	 */
+	
+	exports.addMethod = __webpack_require__(186);
+	
+	/*!
+	 * overwrite Property
+	 */
+	
+	exports.overwriteProperty = __webpack_require__(187);
+	
+	/*!
+	 * overwrite Method
+	 */
+	
+	exports.overwriteMethod = __webpack_require__(188);
+	
+	/*!
+	 * Add a chainable method
+	 */
+	
+	exports.addChainableMethod = __webpack_require__(189);
+	
+	/*!
+	 * Overwrite chainable method
+	 */
+	
+	exports.overwriteChainableMethod = __webpack_require__(190);
+	
+
 
 /***/ },
 /* 169 */
