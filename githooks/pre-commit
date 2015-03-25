@@ -5,11 +5,11 @@ PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
 #Build app
 cd app/js
-webpack
+webpack --optimize-minimize
 
 #Build test
 cd ../test/js
-webpack
+webpack --optimize-minimize
 
 #Stage build
 cd ../../../
