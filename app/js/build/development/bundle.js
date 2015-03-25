@@ -331,7 +331,7 @@
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(20);
+	__webpack_require__(21);
 	__webpack_require__(12);
 	
 	initialize = function() {
@@ -2002,7 +2002,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-		ViewLoader = __webpack_require__(18),
+		ViewLoader = __webpack_require__(15),
 		Utilities = __webpack_require__(6);
 	
 	var Router,
@@ -2365,9 +2365,9 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-	    FB = __webpack_require__(15),
-	    Localization = __webpack_require__(16),
-	    Model = __webpack_require__(17),
+	    FB = __webpack_require__(17),
+	    Localization = __webpack_require__(18),
+	    Model = __webpack_require__(16),
 	    Utilities = __webpack_require__(6),
 	
 	    didInitialize,
@@ -2653,7 +2653,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(17),
+	    Model = __webpack_require__(16),
 	
 	    didInitialize,
 	    getClassification;
@@ -11977,7 +11977,7 @@
 	
 	var $ = __webpack_require__(10),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    Utilities = __webpack_require__(6),
 	    App = __webpack_require__(1),
 	
@@ -12254,404 +12254,6 @@
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*jslint node: true */
-	'use strict';
-	
-	var getLoginStatus,
-	    login,
-	
-	    FB = null;
-	
-	window.FB = null;
-	
-	window.fbAsyncInit = function() {
-	    window.FB.init({
-	        appId: '522375581240221',
-	        xfbml: true,
-	        version: 'v2.1'
-	    });
-	
-	    FB = window.FB;
-	};
-	
-	(function(d, s, id) {
-	    var js, fjs = d.getElementsByTagName(s)[0];
-	    if (d.getElementById(id)) {
-	        return;
-	    }
-	    js = d.createElement(s);
-	    js.id = id;
-	    js.src = '//connect.facebook.net/en_US/sdk.js';
-	    fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-	
-	getLoginStatus = function(callback) {
-	    var module = this;
-	    if (FB === null) {
-	        setTimeout(function() {
-	            module.getLoginStatus(callback);
-	        }, 10);
-	        return;
-	    }
-	
-	    FB.getLoginStatus(callback);
-	};
-	
-	login = function(callback, options) {
-	    var module = this;
-	    if (FB === null) {
-	        setTimeout(function() {
-	            module.login(callback, options);
-	        }, 10);
-	        return;
-	    }
-	
-	    FB.login(callback, options);
-	};
-	
-	module.exports = {
-	    getLoginStatus: getLoginStatus,
-	    login: login
-	};
-
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a localization and locale data.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var Moment = __webpack_require__(137),
-	
-	    Config = __webpack_require__(4),
-	    Model = __webpack_require__(17),
-	    XChangeRates = __webpack_require__(25),
-	    Localization,
-	
-	    didInitialize,
-	    fetch,
-	    getCountries,
-	    getVAT,
-	    convertPrice,
-	    convertPrices,
-	    getTimeZones,
-	    getLocalTimeZone,
-	    getCurrentTimeZone,
-	    setCurrentTimeZone;
-	
-	didInitialize = function() {
-	    this.defaultTimeZone = this.getLocalTimeZone();
-	    this.currenTimezone = this.defaultTimeZone;
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	fetch = function() {
-	    var model = this;
-	    this.get('/localization', function(error, data) {
-	        if (error) {
-	            console.log('Error retrieving localization data.');
-	            return;
-	        }
-	        model.data = data;
-	    });
-	};
-	
-	getCountries = function() {
-	    var countriesArray = [],
-	        i;
-	    for (i = 0; i < this.data.length; i++) {
-	        countriesArray.push({
-	            name: this.data[i].name,
-	            code: this.data[i].code
-	        });
-	    }
-	    return countriesArray;
-	};
-	
-	getVAT = function(countryCode) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].code === countryCode) {
-	            return this.data[i].vat;
-	        }
-	    }
-	    return null;
-	};
-	
-	/**
-	 * @param price: the price in EURO to convert.
-	 * @param currency: the currency to convert to.
-	 */
-	convertPrice = function(price, currency, callback) {
-	    XChangeRates.getRate('EUR', currency, function(error, rate) {
-	        if (error) {
-	            callback('Error getting rate: ' + error);
-	            return;
-	        }
-	        callback(null, price * rate);
-	    });
-	};
-	
-	convertPrices = function(prices, fromCurrency, toCurrency, callback) {
-	    XChangeRates.getRate(fromCurrency, toCurrency, function(error, rate) {
-	        var i = 0,
-	            convertedPrices = [];
-	        if (error) {
-	            callback('Error getting rate: ' + error);
-	            return;
-	        }
-	        for (i = 0; i < prices.length; i++) {
-	            convertedPrices.push(prices[i] * rate);
-	        }
-	        callback(null, convertedPrices, rate);
-	    });
-	};
-	
-	getTimeZones = function() {
-	    var timezones = Moment.tz.names(),
-	        i, offset, j, temp;
-	    for (i = 0; i < timezones.length; i++) {
-	        offset = Moment.tz.zone(timezones[i]).offset(Moment.utc().valueOf()) * -1; //for some reason the offset is flipped
-	        offset /= 60; // convert to hours
-	        timezones[i] = {
-	            name: timezones[i],
-	            UTCOffset: offset
-	        };
-	        for (j = i; j > 0; j--) {
-	            if (timezones[j].UTCOffset < timezones[j - 1].UTCOffset) {
-	                temp = timezones[j];
-	                timezones[j] = timezones[j - 1];
-	                timezones[j - 1] = temp;
-	            } else if (timezones[j].UTCOffset === timezones[j - 1].UTCOffset && timezones[j].name < timezones[j - 1].name) {
-	                temp = timezones[j];
-	                timezones[j] = timezones[j - 1];
-	                timezones[j - 1] = temp;
-	            } else {
-	                j = 0;
-	            }
-	        }
-	    }
-	    return timezones;
-	};
-	
-	/**
-	 * Moment.js is missing a way to get the local timezone name.
-	 * See following links for problem info:
-	 * https://github.com/moment/moment-timezone/issues/138
-	 * http://codeofmatt.com/2013/06/07/javascript-date-type-is-horribly-broken/
-	 * This approach is based on https://github.com/Canop/tzdetect.js and optimized for speed since the version in the link is quite slow.
-	 * We use a naive approach and return the first match, since it is currently not possible to narrow down the results to one timezone anyhow.
-	 */
-	getLocalTimeZone = function() {
-	    var now = Date.now(),
-	        makekey, localkey, names, i;
-	
-	    //The key identifies a timezone by specific time points in a year. Note that this might become wrong when the timezones change for some reason as they sometimes do.
-	    makekey = function(id) {
-	        //return [0, 4, 8, -5 * 12, 4 - 5 * 12, 8 - 5 * 12, 4 - 2 * 12, 8 - 2 * 12].map(function(months) {
-	        return [0, 4, 8, -60, -56, -52, -20, -16].map(function(months) {
-	            //var m = new Moment(now + months * 30 * 24 * 60 * 60 * 1000);
-	            var m = new Moment(now + months * 2592000000);
-	            if (id) {
-	                m.tz(id);
-	            }
-	            return m.format('DDHHmm');
-	        }).join(' ');
-	    };
-	
-	    localkey = makekey();
-	
-	    names = Moment.tz.names();
-	
-	    i = 0;
-	    while (i < names.length) {
-	        if (makekey(names[i]) === localkey) {
-	            return names[i];
-	        }
-	        i++;
-	    }
-	
-	    return null;
-	};
-	
-	getCurrentTimeZone = function() {
-	    return this.currenTimezone;
-	};
-	
-	setCurrentTimeZone = function(timezone) {
-	    if (timezone !== null) {
-	        this.currenTimezone = timezone;
-	    } else {
-	        this.currenTimezone = this.defaultTimeZone;
-	    }
-	};
-	
-	Localization = Model.inherit({
-	    didInitialize: didInitialize,
-	    fetch: fetch,
-	    getCountries: getCountries,
-	    getVAT: getVAT,
-	    convertPrice: convertPrice,
-	    convertPrices: convertPrices,
-	    getTimeZones: getTimeZones,
-	    getLocalTimeZone: getLocalTimeZone,
-	    getCurrentTimeZone: getCurrentTimeZone,
-	    setCurrentTimeZone: setCurrentTimeZone
-	});
-	Localization = new Localization.constructor({
-	    rootURL: Config.API_URL
-	});
-	Localization.initialize();
-	Localization.fetch();
-	
-	module.exports = Localization;
-
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General model object with support for jQuery ajax.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(3),
-		$ = __webpack_require__(10),
-	
-		Utilities = __webpack_require__(6),
-	
-		initialize,
-	    get,
-	    post,
-	    put,
-	    del,
-	
-	    constructor, inherit;
-	
-	initialize = function() {
-	    if (this.didInitialize && typeof this.didInitialize == 'function') {
-	        this.didInitialize();
-	    }
-	};
-	
-	get = function(url, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'GET',
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR);
-	            console.log(textStatus);
-	            callback('Error executing GET request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                callback('Error retrieving resource from server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	post = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'POST',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing POST request: ' + errorThrown);
-	
-	        },
-	        success: function(data) {
-	
-	            if (data.error) {
-	                callback('Error sending resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	put = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'PUT',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing PUT request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                console.log(data.error);
-	                callback('Error putting resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	del = function() {
-	
-	};
-	
-	constructor = function(options) {
-	    var defaults, methods;
-	
-	    defaults = {
-	        rootURL: '',
-	        data: null
-	    };
-	
-	    methods = {
-	        initialize: initialize,
-	        get: get,
-	        post: post,
-	        put: put,
-	        del: del
-	    };
-	    _.extend(this, defaults, methods, options);
-	};
-	
-	inherit = function(inheritOptions) {
-	    var inherited = {
-	        constructor: Utilities.inherit(this.constructor, inheritOptions)
-	    };
-	    return inherited;
-	};
-	
-	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-	module.exports = {
-	    constructor: constructor,
-	    inherit: inherit
-	};
-
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/**
 	 * Handles viewcontroller and template loading.
 	 * @author: Chris Hjorth
@@ -12888,6 +12490,404 @@
 
 
 /***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General model object with support for jQuery ajax.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(10),
+	
+		Utilities = __webpack_require__(6),
+	
+		initialize,
+	    get,
+	    post,
+	    put,
+	    del,
+	
+	    constructor, inherit;
+	
+	initialize = function() {
+	    if (this.didInitialize && typeof this.didInitialize == 'function') {
+	        this.didInitialize();
+	    }
+	};
+	
+	get = function(url, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'GET',
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            console.log(jqXHR);
+	            console.log(textStatus);
+	            callback('Error executing GET request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                callback('Error retrieving resource from server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	post = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'POST',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing POST request: ' + errorThrown);
+	
+	        },
+	        success: function(data) {
+	
+	            if (data.error) {
+	                callback('Error sending resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	put = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'PUT',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing PUT request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                console.log(data.error);
+	                callback('Error putting resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	del = function() {
+	
+	};
+	
+	constructor = function(options) {
+	    var defaults, methods;
+	
+	    defaults = {
+	        rootURL: '',
+	        data: null
+	    };
+	
+	    methods = {
+	        initialize: initialize,
+	        get: get,
+	        post: post,
+	        put: put,
+	        del: del
+	    };
+	    _.extend(this, defaults, methods, options);
+	};
+	
+	inherit = function(inheritOptions) {
+	    var inherited = {
+	        constructor: Utilities.inherit(this.constructor, inheritOptions)
+	    };
+	    return inherited;
+	};
+	
+	//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
+	module.exports = {
+	    constructor: constructor,
+	    inherit: inherit
+	};
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*jslint node: true */
+	'use strict';
+	
+	var getLoginStatus,
+	    login,
+	
+	    FB = null;
+	
+	window.FB = null;
+	
+	window.fbAsyncInit = function() {
+	    window.FB.init({
+	        appId: '522375581240221',
+	        xfbml: true,
+	        version: 'v2.1'
+	    });
+	
+	    FB = window.FB;
+	};
+	
+	(function(d, s, id) {
+	    var js, fjs = d.getElementsByTagName(s)[0];
+	    if (d.getElementById(id)) {
+	        return;
+	    }
+	    js = d.createElement(s);
+	    js.id = id;
+	    js.src = '//connect.facebook.net/en_US/sdk.js';
+	    fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+	
+	getLoginStatus = function(callback) {
+	    var module = this;
+	    if (FB === null) {
+	        setTimeout(function() {
+	            module.getLoginStatus(callback);
+	        }, 10);
+	        return;
+	    }
+	
+	    FB.getLoginStatus(callback);
+	};
+	
+	login = function(callback, options) {
+	    var module = this;
+	    if (FB === null) {
+	        setTimeout(function() {
+	            module.login(callback, options);
+	        }, 10);
+	        return;
+	    }
+	
+	    FB.login(callback, options);
+	};
+	
+	module.exports = {
+	    getLoginStatus: getLoginStatus,
+	    login: login
+	};
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a localization and locale data.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var Moment = __webpack_require__(137),
+	
+	    Config = __webpack_require__(4),
+	    Model = __webpack_require__(16),
+	    XChangeRates = __webpack_require__(25),
+	    Localization,
+	
+	    didInitialize,
+	    fetch,
+	    getCountries,
+	    getVAT,
+	    convertPrice,
+	    convertPrices,
+	    getTimeZones,
+	    getLocalTimeZone,
+	    getCurrentTimeZone,
+	    setCurrentTimeZone;
+	
+	didInitialize = function() {
+	    this.defaultTimeZone = this.getLocalTimeZone();
+	    this.currenTimezone = this.defaultTimeZone;
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	fetch = function() {
+	    var model = this;
+	    this.get('/localization', function(error, data) {
+	        if (error) {
+	            console.log('Error retrieving localization data.');
+	            return;
+	        }
+	        model.data = data;
+	    });
+	};
+	
+	getCountries = function() {
+	    var countriesArray = [],
+	        i;
+	    for (i = 0; i < this.data.length; i++) {
+	        countriesArray.push({
+	            name: this.data[i].name,
+	            code: this.data[i].code
+	        });
+	    }
+	    return countriesArray;
+	};
+	
+	getVAT = function(countryCode) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].code === countryCode) {
+	            return this.data[i].vat;
+	        }
+	    }
+	    return null;
+	};
+	
+	/**
+	 * @param price: the price in EURO to convert.
+	 * @param currency: the currency to convert to.
+	 */
+	convertPrice = function(price, currency, callback) {
+	    XChangeRates.getRate('EUR', currency, function(error, rate) {
+	        if (error) {
+	            callback('Error getting rate: ' + error);
+	            return;
+	        }
+	        callback(null, price * rate);
+	    });
+	};
+	
+	convertPrices = function(prices, fromCurrency, toCurrency, callback) {
+	    XChangeRates.getRate(fromCurrency, toCurrency, function(error, rate) {
+	        var i = 0,
+	            convertedPrices = [];
+	        if (error) {
+	            callback('Error getting rate: ' + error);
+	            return;
+	        }
+	        for (i = 0; i < prices.length; i++) {
+	            convertedPrices.push(prices[i] * rate);
+	        }
+	        callback(null, convertedPrices, rate);
+	    });
+	};
+	
+	getTimeZones = function() {
+	    var timezones = Moment.tz.names(),
+	        i, offset, j, temp;
+	    for (i = 0; i < timezones.length; i++) {
+	        offset = Moment.tz.zone(timezones[i]).offset(Moment.utc().valueOf()) * -1; //for some reason the offset is flipped
+	        offset /= 60; // convert to hours
+	        timezones[i] = {
+	            name: timezones[i],
+	            UTCOffset: offset
+	        };
+	        for (j = i; j > 0; j--) {
+	            if (timezones[j].UTCOffset < timezones[j - 1].UTCOffset) {
+	                temp = timezones[j];
+	                timezones[j] = timezones[j - 1];
+	                timezones[j - 1] = temp;
+	            } else if (timezones[j].UTCOffset === timezones[j - 1].UTCOffset && timezones[j].name < timezones[j - 1].name) {
+	                temp = timezones[j];
+	                timezones[j] = timezones[j - 1];
+	                timezones[j - 1] = temp;
+	            } else {
+	                j = 0;
+	            }
+	        }
+	    }
+	    return timezones;
+	};
+	
+	/**
+	 * Moment.js is missing a way to get the local timezone name.
+	 * See following links for problem info:
+	 * https://github.com/moment/moment-timezone/issues/138
+	 * http://codeofmatt.com/2013/06/07/javascript-date-type-is-horribly-broken/
+	 * This approach is based on https://github.com/Canop/tzdetect.js and optimized for speed since the version in the link is quite slow.
+	 * We use a naive approach and return the first match, since it is currently not possible to narrow down the results to one timezone anyhow.
+	 */
+	getLocalTimeZone = function() {
+	    var now = Date.now(),
+	        makekey, localkey, names, i;
+	
+	    //The key identifies a timezone by specific time points in a year. Note that this might become wrong when the timezones change for some reason as they sometimes do.
+	    makekey = function(id) {
+	        //return [0, 4, 8, -5 * 12, 4 - 5 * 12, 8 - 5 * 12, 4 - 2 * 12, 8 - 2 * 12].map(function(months) {
+	        return [0, 4, 8, -60, -56, -52, -20, -16].map(function(months) {
+	            //var m = new Moment(now + months * 30 * 24 * 60 * 60 * 1000);
+	            var m = new Moment(now + months * 2592000000);
+	            if (id) {
+	                m.tz(id);
+	            }
+	            return m.format('DDHHmm');
+	        }).join(' ');
+	    };
+	
+	    localkey = makekey();
+	
+	    names = Moment.tz.names();
+	
+	    i = 0;
+	    while (i < names.length) {
+	        if (makekey(names[i]) === localkey) {
+	            return names[i];
+	        }
+	        i++;
+	    }
+	
+	    return null;
+	};
+	
+	getCurrentTimeZone = function() {
+	    return this.currenTimezone;
+	};
+	
+	setCurrentTimeZone = function(timezone) {
+	    if (timezone !== null) {
+	        this.currenTimezone = timezone;
+	    } else {
+	        this.currenTimezone = this.defaultTimeZone;
+	    }
+	};
+	
+	Localization = Model.inherit({
+	    didInitialize: didInitialize,
+	    fetch: fetch,
+	    getCountries: getCountries,
+	    getVAT: getVAT,
+	    convertPrice: convertPrice,
+	    convertPrices: convertPrices,
+	    getTimeZones: getTimeZones,
+	    getLocalTimeZone: getLocalTimeZone,
+	    getCurrentTimeZone: getCurrentTimeZone,
+	    setCurrentTimeZone: setCurrentTimeZone
+	});
+	Localization = new Localization.constructor({
+	    rootURL: Config.API_URL
+	});
+	Localization.initialize();
+	Localization.fetch();
+	
+	module.exports = Localization;
+
+
+/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -12903,7 +12903,7 @@
 		$ = __webpack_require__(10),
 	
 		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 	
 		$popupLightbox = $('#popup-lightbox'),
 	    inherit, show, hide, setTitle;
@@ -12946,24 +12946,6 @@
 
 /***/ },
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-	__webpack_require__(26)
-	__webpack_require__(27)
-	__webpack_require__(28)
-	__webpack_require__(29)
-	__webpack_require__(30)
-	__webpack_require__(31)
-	__webpack_require__(32)
-	__webpack_require__(33)
-	__webpack_require__(34)
-	__webpack_require__(35)
-	__webpack_require__(36)
-	__webpack_require__(37)
-
-/***/ },
-/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13139,6 +13121,24 @@
 
 
 /***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
+	__webpack_require__(26)
+	__webpack_require__(27)
+	__webpack_require__(28)
+	__webpack_require__(29)
+	__webpack_require__(30)
+	__webpack_require__(31)
+	__webpack_require__(32)
+	__webpack_require__(33)
+	__webpack_require__(34)
+	__webpack_require__(35)
+	__webpack_require__(36)
+	__webpack_require__(37)
+
+/***/ },
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -13298,7 +13298,7 @@
 	'use strict';
 	
 	var Config = __webpack_require__(4),
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(16),
 	
 		currencies = {},
 	    XChangeRates,
@@ -15718,7 +15718,7 @@
 	    $ = __webpack_require__(10),
 	    GoogleMaps = __webpack_require__(13),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	
 	    testimonials,
 	
@@ -15862,10 +15862,10 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(18),
 	    Gear = __webpack_require__(138),
 	
 	    subtypeDefault = 'Choose subtype:',
@@ -16668,11 +16668,11 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
-	    TechProfile = __webpack_require__(140),
+	    Localization = __webpack_require__(18),
+	    TechProfile = __webpack_require__(139),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -17304,11 +17304,11 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
-	    Van = __webpack_require__(139),
+	    Localization = __webpack_require__(18),
+	    Van = __webpack_require__(140),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -18015,10 +18015,10 @@
 	var $ = __webpack_require__(10),
 	    Moment = __webpack_require__(137),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(18),
 	
 	    didInitialize,
 	    didRender,
@@ -18530,10 +18530,10 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(18),
 	    User = __webpack_require__(7),
 	    Booking = __webpack_require__(141),
 	
@@ -18828,10 +18828,10 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(18),
 	    Booking = __webpack_require__(141),
 	
 	    SelectTimePopup = __webpack_require__(142),
@@ -19052,7 +19052,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(20);
 	
 	module.exports = ViewController.inherit({});
 
@@ -19071,7 +19071,7 @@
 	
 	var $ = __webpack_require__(10),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 		
 	    didRender,
 	    loadFooter;
@@ -19120,10 +19120,10 @@
 	    Moment = __webpack_require__(137),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(18),
 	
 	    didInitialize,
 	    handleImageUpload,
@@ -19443,10 +19443,10 @@
 	
 	var $ = __webpack_require__(10),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(18),
 	
 		didInitialize,
 	    didRender,
@@ -19533,7 +19533,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19655,7 +19655,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19804,7 +19804,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    GearList = __webpack_require__(143),
@@ -19949,7 +19949,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20094,7 +20094,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20237,7 +20237,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    TechProfileList = __webpack_require__(144),
@@ -20344,7 +20344,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20489,7 +20489,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20632,7 +20632,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    VanList = __webpack_require__(145),
@@ -20749,7 +20749,7 @@
 	
 	var $ = __webpack_require__(10),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    subViewContainerID,
@@ -20837,8 +20837,8 @@
 	    GoogleMaps = __webpack_require__(13),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -21473,8 +21473,8 @@
 	
 	    Config = __webpack_require__(4),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -21985,8 +21985,8 @@
 	    Moment = __webpack_require__(137),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(18),
 	
 	    geocoder,
 	
@@ -22542,7 +22542,7 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(20);
 	module.exports = ViewController.inherit();
 
 
@@ -22560,9 +22560,9 @@
 	
 	var Moment = __webpack_require__(137),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(18),
 	
 		didInitialize;
 	
@@ -22593,15 +22593,15 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(10),
-		FB = __webpack_require__(15),
+		FB = __webpack_require__(17),
 		GoogleMaps = __webpack_require__(13),
 	
 		Config = __webpack_require__(4),
 		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(18),
 		Gear = __webpack_require__(138),
 		User = __webpack_require__(7),
 	
@@ -22977,10 +22977,10 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(18),
 	
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -23387,7 +23387,7 @@
 	
 	var $ = __webpack_require__(10),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -23530,7 +23530,7 @@
 	
 	var $ = __webpack_require__(10),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	
 	    didRender,
 	    loadFooter;
@@ -23576,10 +23576,10 @@
 		Moment = __webpack_require__(137),
 	
 		Config = __webpack_require__(4),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(18),
 		Card = __webpack_require__(146),
 	
 		didInitialize,
@@ -24016,8 +24016,8 @@
 		Config = __webpack_require__(4),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
-		ViewController = __webpack_require__(21),
+		Localization = __webpack_require__(18),
+		ViewController = __webpack_require__(20),
 		Booking = __webpack_require__(141),
 	
 		didInitialize,
@@ -24155,9 +24155,9 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(18),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date',
@@ -24607,7 +24607,7 @@
 	
 	var $ = __webpack_require__(10),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 	
 	    didRender,
 	    loadFooter;
@@ -24652,14 +24652,14 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(10),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(15),
+	    FB = __webpack_require__(17),
 	
 	    Config = __webpack_require__(4),
 	    Utilities = __webpack_require__(6),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(18),
 	    GearList = __webpack_require__(143),
 	    TechProfileList = __webpack_require__(144),
 	    VanList = __webpack_require__(145),
@@ -25184,8 +25184,8 @@
 	
 	    Config = __webpack_require__(4),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(18),
 	    MessagePopup = __webpack_require__(9),
 	
 	    geocoder,
@@ -25555,15 +25555,15 @@
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(10),
 	    GoogleMaps = __webpack_require__(13),
-	    FB = __webpack_require__(15),
+	    FB = __webpack_require__(17),
 	
 	    Config = __webpack_require__(4),
 	    Utilities = __webpack_require__(6),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(16),
+	    ViewController = __webpack_require__(20),
+	    Localization = __webpack_require__(18),
 	    User = __webpack_require__(7),
-	    TechProfile = __webpack_require__(140),
+	    TechProfile = __webpack_require__(139),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -25917,10 +25917,10 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(18),
 	
 		numberOfTechProfileSuggestions = 5,
 	    geocoder,
@@ -26311,7 +26311,7 @@
 	
 	/*jslint node: true */
 	'use strict';
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(20);
 	
 	module.exports = ViewController;
 
@@ -26332,7 +26332,7 @@
 	    $ = __webpack_require__(10),
 	
 	    Config = __webpack_require__(4),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	
 	    User = __webpack_require__(7),
 	    GearList = __webpack_require__(143),
@@ -26596,17 +26596,17 @@
 	
 	var _ = __webpack_require__(3),
 	    $ = __webpack_require__(10),
-	    FB = __webpack_require__(15),
+	    FB = __webpack_require__(17),
 	    GoogleMaps = __webpack_require__(13),
 	
 	    Config = __webpack_require__(4),
 	    Utilities = __webpack_require__(6),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(20),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(16),
+	    Localization = __webpack_require__(18),
 	    User = __webpack_require__(7),
-	    Van = __webpack_require__(139),
+	    Van = __webpack_require__(140),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -26975,10 +26975,10 @@
 		Moment = __webpack_require__(137),
 	
 		Utilities = __webpack_require__(6),
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(20),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(16),
+		Localization = __webpack_require__(18),
 		
 		numberOfGearSuggestions = 5,
 	    geocoder,
@@ -27723,7 +27723,7 @@
 	var _ = __webpack_require__(3),
 		
 		Utilities = __webpack_require__(6),
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(16),
 		App = __webpack_require__(1),
 		
 		didInitialize,
@@ -27959,6 +27959,205 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(3),
+	
+	    App = __webpack_require__(1),
+	    Model = __webpack_require__(16),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * Defines a van item.
 	 * @author: Chris Hjorth
 	 */
@@ -27969,7 +28168,7 @@
 	var _ = __webpack_require__(3),
 		
 		Utilities = __webpack_require__(6),
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(16),
 		App = __webpack_require__(1),
 	
 		didInitialize,
@@ -28191,205 +28390,6 @@
 
 
 /***/ },
-/* 140 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(3),
-	
-	    App = __webpack_require__(1),
-	    Model = __webpack_require__(17),
-	
-	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
-	        };
-	    }
-	};
-	
-	createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
 /* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28404,7 +28404,7 @@
 	var _ = __webpack_require__(3),
 	    Moment = __webpack_require__(137),
 	
-	    Model = __webpack_require__(17),
+	    Model = __webpack_require__(16),
 	    App = __webpack_require__(1),
 	
 	    didInitialize,
@@ -28615,7 +28615,7 @@
 	
 	var _ = __webpack_require__(3),
 	
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(16),
 		Gear = __webpack_require__(138),
 		
 		didInitialize,
@@ -28757,8 +28757,8 @@
 	'use strict';
 	
 	var _ = __webpack_require__(3),
-		Model = __webpack_require__(17),
-		TechProfile = __webpack_require__(140),
+		Model = __webpack_require__(16),
+		TechProfile = __webpack_require__(139),
 		
 		didInitialize,
 	
@@ -28900,8 +28900,8 @@
 	
 	var _ = __webpack_require__(3),
 	
-	    Model = __webpack_require__(17),
-	    Van = __webpack_require__(139),
+	    Model = __webpack_require__(16),
+	    Van = __webpack_require__(140),
 	
 	    didInitialize,
 	
@@ -29044,7 +29044,7 @@
 	var mangoPay = __webpack_require__(150),
 		
 		Config = __webpack_require__(4),
-		Model = __webpack_require__(17),
+		Model = __webpack_require__(16),
 	
 	    didInitialize,
 	    registerCard;
