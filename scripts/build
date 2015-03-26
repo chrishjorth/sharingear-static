@@ -1,5 +1,22 @@
 #!/bin/sh
 
+# @args --no-optimize: Do not optimize JS 
+# @args --no-test: Skip building the tests
+
+optimizeFlag="--optimize-minimize"
+noTest=true
+
+while [ "$1" != "" ]; do
+	case $1 in
+		--no-optimize )	optimizeFlag=
+						;;
+		--no-test ) noTest=false
+					;;
+	esac
+	shift
+done
+
+
 #Add node modules to PATH
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
@@ -7,10 +24,19 @@ PATH=$PATH:/usr/local/bin:/usr/local/sbin
 cd ../app/css
 cleancss --skip-rebase -o sharingear.min.css sharingear.css
 
+echo "CSS minimized..."
+
 #Build app
 cd ../js
-webpack --optimize-minimize --progress
+webpack $optimizeFlag --progress
 
-#Build test
-cd ../test/js
-webpack --optimize-minimize --progress
+echo "App built..."
+
+if [ "$noTest" == true ]; then
+	#Build test
+	cd ../test/js
+	webpack $optimizeFlag --progress
+	echo "Tests built..."
+fi
+
+echo "Done."

@@ -9,7 +9,7 @@
 var _ = require('underscore'),
     $ = require('jquery'),
 	FB = require('../libraries/mscl-facebook.js'),
-	GoogleMaps = require('googlemaps'),
+	GoogleMaps = require('../libraries/mscl-googlemaps.js'),
 
 	Config = require('../config.js'),
 	Utilities = require('../utilities.js'),

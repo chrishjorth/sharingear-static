@@ -7,11 +7,11 @@
 'use strict';
 
 var _ = require('underscore'),
-	$ = require('jquery'),
+    $ = require('jquery'),
 
-	App = require('./app.js'),
+    App = require('./app.js'),
 
-	HeaderController = require('./viewcontrollers/navigation-header.js'),
+    HeaderController = require('./viewcontrollers/navigation-header.js'),
     HeaderTemplate = require('../templates/navigation-header.html'),
 
     initialize,
@@ -22,8 +22,8 @@ var _ = require('underscore'),
 require('bootstrap');
 require('./libraries/owl-carousel/owl.carousel.min.js');
 
-initialize = function() {
-	var hash, route;
+initialize = function(callback) {
+    var hash, route;
 
     //Load header and footer
     this.loadHeader($('.navigation-header'));
@@ -47,6 +47,10 @@ initialize = function() {
         document.cookie = 'cookie-consent=1';
         $('.cookie-opt-in').addClass('hidden');
     });
+
+    if (_.isFunction(callback) === true) {
+        callback();
+    }
 };
 
 /**

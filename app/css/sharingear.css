@@ -39,6 +39,7 @@
  *	8.r DASHBOARD-SETTINGS
  *	8.s VAN PROFILE
  *	8.t TECH PROFILE
+ *	8.u INDEX
  * 9. HELPERS
  * 10. ICONS
  *
@@ -3629,6 +3630,18 @@ text-align: left;
 		padding-bottom: 0;
 		width: auto;
 	}
+}
+
+/*------ 8.u INDEX ------*/
+.sg-loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+.sg-loader .col-xs-12 {
+	margin-top: 20%;
 }
 
 /******* 9. HELPERS *******/

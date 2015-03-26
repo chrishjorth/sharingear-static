@@ -8,7 +8,7 @@
 
 var _ = require('underscore'),
     $ = require('jquery'),
-    GoogleMaps = require('googlemaps'),
+    GoogleMaps = require('../libraries/mscl-googlemaps.js'),
     FB = require('../libraries/mscl-facebook.js'),
 
     Config = require('../config.js'),
@@ -24,7 +24,6 @@ var _ = require('underscore'),
     gearSearchBlockID = 'search-results-gear',
     techProfileSearchBlockID = 'search-results-techprofiles',
     vanSearchBlockID = 'search-results-vans',
-    geocoder,
 
     didInitialize,
     didRender,
@@ -41,9 +40,6 @@ var _ = require('underscore'),
     performTechProfileSearch,
     performVanSearch,
     populateSearchBlock;
-
-//Static variables
-geocoder = new GoogleMaps.Geocoder();
 
 didInitialize = function() {
     this.gearSearchFormVC = null;
@@ -97,7 +93,15 @@ didRender = function() {
 };
 
 renderMap = function(searchResults, latitude, longitude) {
-    var mapOptions, latlong, i, gear;
+    var view = this,
+        mapOptions, latlong, i, gear;
+
+    if (GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.renderMap(searchResults, latitude, longitude);
+        }, 10);
+        return;
+    }
 
     if (!latitude || !longitude) {
         latlong = new GoogleMaps.LatLng(40.746227, 14.656527);
@@ -137,8 +141,7 @@ setCurrentLocation = function(location) {
     }
     if (tab === 'vans') {
         $('#search-currentlocation', this.$element).html('Showing vehicles around ' + location);
-    }
-    else if (tab === 'technicians') {
+    } else if (tab === 'technicians') {
         $('#search-currentlocation', this.$element).html('Showing technicians around ' + location);
     } else {
         $('#search-currentlocation', this.$element).html('Showing gear around ' + location);
@@ -192,6 +195,14 @@ performGearSearch = function() {
         performSearch, searchParameters, gearSearchVC, gearSearchVT;
 
     performSearch = function(gear, location, dateRange) {
+        var geocoder;
+        if (GoogleMaps.isLoaded() === false) {
+            setTimeout(function() {
+                performSearch(gear, location, dateRange);
+            }, 10);
+            return;
+        }
+        geocoder = new GoogleMaps.Geocoder();
         App.user.setSearchInterval(dateRange);
         if (location === '' || location === 'all' || location === null) {
             location = 'all';
@@ -223,23 +234,18 @@ performGearSearch = function() {
         }
     };
 
-    if (this.gearSearchFormVC === null) {
-        gearSearchVC = require('./gearsearchform.js');
-        gearSearchVT = require('../../templates/gearsearchform.html');
+    gearSearchVC = require('./gearsearchform.js');
+    gearSearchVT = require('../../templates/gearsearchform.html');
 
-        view.gearSearchFormVC = new gearSearchVC.constructor({
-            name: 'gearsearchform',
-            $element: $('#search-searchform-gear .searchform-container', view.$element),
-            template: gearSearchVT
-        });
-        view.gearSearchFormVC.initialize();
-        view.gearSearchFormVC.render();
-        searchParameters = view.gearSearchFormVC.getSearchParameters();
-        performSearch(searchParameters.gearString, searchParameters.locationString, searchParameters.dateRangeString);
-    } else {
-        searchParameters = view.gearSearchFormVC.getSearchParameters();
-        performSearch(searchParameters.gearString, searchParameters.locationString, searchParameters.dateRangeString);
-    }
+    view.gearSearchFormVC = new gearSearchVC.constructor({
+        name: 'gearsearchform',
+        $element: $('#search-searchform-gear .searchform-container', view.$element),
+        template: gearSearchVT
+    });
+    view.gearSearchFormVC.initialize();
+    view.gearSearchFormVC.render();
+    searchParameters = view.gearSearchFormVC.getSearchParameters();
+    performSearch(searchParameters.gearString, searchParameters.locationString, searchParameters.dateRangeString);
 };
 
 performTechProfileSearch = function() {
@@ -247,6 +253,14 @@ performTechProfileSearch = function() {
         performSearch, searchParameters, techProfileSearchVC, techProfileSearchVT;
 
     performSearch = function(techProfile, location, dateRange) {
+        var geocoder;
+        if (GoogleMaps.isLoaded() === false) {
+            setTimeout(function() {
+                performSearch(techProfile, location, dateRange);
+            }, 10);
+            return;
+        }
+        geocoder = new GoogleMaps.Geocoder();
         App.user.setSearchInterval(dateRange);
         if (location === '' || location === 'all' || location === null) {
             location = 'all';
@@ -278,22 +292,17 @@ performTechProfileSearch = function() {
         }
     };
 
-    if (this.techProfileSearchFormVC === null) {
-        techProfileSearchVC = require('./techprofilesearchform.js');
-        techProfileSearchVT = require('../../templates/techprofilesearchform.html');
-        view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
-            name: 'techprofilesearchform',
-            $element: $('#search-searchform-technicians .searchform-container', view.$element),
-            template: techProfileSearchVT
-        });
-        view.techProfileSearchFormVC.initialize();
-        view.techProfileSearchFormVC.render();
-        searchParameters = view.techProfileSearchFormVC.getSearchParameters();
-        performSearch(searchParameters.techProfileString, searchParameters.locationString, searchParameters.dateRangeString);
-    } else {
-        searchParameters = view.techProfileSearchFormVC.getSearchParameters();
-        performSearch(searchParameters.techProfileString, searchParameters.locationString, searchParameters.dateRangeString);
-    }
+    techProfileSearchVC = require('./techprofilesearchform.js');
+    techProfileSearchVT = require('../../templates/techprofilesearchform.html');
+    view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
+        name: 'techprofilesearchform',
+        $element: $('#search-searchform-technicians .searchform-container', view.$element),
+        template: techProfileSearchVT
+    });
+    view.techProfileSearchFormVC.initialize();
+    view.techProfileSearchFormVC.render();
+    searchParameters = view.techProfileSearchFormVC.getSearchParameters();
+    performSearch(searchParameters.techProfileString, searchParameters.locationString, searchParameters.dateRangeString);
 };
 
 performVanSearch = function() {
@@ -301,6 +310,14 @@ performVanSearch = function() {
         performSearch, searchParameters, vanSearchVC, vanSearchVT;
 
     performSearch = function(vans, location, dateRange) {
+        var geocoder;
+        if (GoogleMaps.isLoaded() === false) {
+            setTimeout(function() {
+                performSearch(vans, location, dateRange);
+            }, 10);
+            return;
+        }
+        geocoder = new GoogleMaps.Geocoder();
         App.user.setSearchInterval(dateRange);
         if (location === '' || location === 'all' || location === null) {
             location = 'all';
@@ -332,22 +349,17 @@ performVanSearch = function() {
         }
     };
 
-    if (this.vanSearchFormVC === null) {
-        vanSearchVC = require('./vansearchform.js');
-        vanSearchVT = require('../../templates/vansearchform.html');
-        view.vanSearchFormVC = new vanSearchVC.constructor({
-            name: 'vansearchform',
-            $element: $('#search-searchform-vans .searchform-container', view.$element),
-            template: vanSearchVT
-        });
-        view.vanSearchFormVC.initialize();
-        view.vanSearchFormVC.render();
-        searchParameters = view.vanSearchFormVC.getSearchParameters();
-        performSearch(searchParameters.vanString, searchParameters.locationString, searchParameters.dateRangeString);
-    } else {
-        searchParameters = view.vanSearchFormVC.getSearchParameters();
-        performSearch(searchParameters.vanString, searchParameters.locationString, searchParameters.dateRangeString);
-    }
+    vanSearchVC = require('./vansearchform.js');
+    vanSearchVT = require('../../templates/vansearchform.html');
+    view.vanSearchFormVC = new vanSearchVC.constructor({
+        name: 'vansearchform',
+        $element: $('#search-searchform-vans .searchform-container', view.$element),
+        template: vanSearchVT
+    });
+    view.vanSearchFormVC.initialize();
+    view.vanSearchFormVC.render();
+    searchParameters = view.vanSearchFormVC.getSearchParameters();
+    performSearch(searchParameters.vanString, searchParameters.locationString, searchParameters.dateRangeString);
 };
 
 switchToTab = function($tabButton) {

@@ -3,8 +3,12 @@
 #Add node modules to PATH
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
+#Minimize CSS
+cd app/css
+cleancss --skip-rebase -o sharingear.min.css sharingear.css
+
 #Build app
-cd app/js
+cd ../js
 webpack --optimize-minimize
 
 #Build test

@@ -10,7 +10,7 @@
 var _ = require('underscore'),
     $ = require('jquery'),
     Moment = require('moment-timezone'),
-    GoogleMaps = require('googlemaps'),
+    GoogleMaps = require('../libraries/mscl-googlemaps.js'),
 
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),

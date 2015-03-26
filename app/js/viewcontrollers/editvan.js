@@ -8,7 +8,7 @@
 
 var _ = require('underscore'),
     $ = require('jquery'),
-    GoogleMaps = require('googlemaps'),
+    GoogleMaps = require('../libraries/mscl-googlemaps.js'),
     Moment = require('moment-timezone'),
 
     App = require('../app.js'),
