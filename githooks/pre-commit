@@ -3,9 +3,29 @@
 #Add node modules to PATH
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
+#If we are in a merging state we do not want to build
 MERGE_HEAD="$GIT_DIR/MERGE_HEAD"
 if [ -e "$MERGE_HEAD" ]; then
 	exit 0
+fi
+
+# Run JSHint validation before commit.
+files=$(git diff --cached --name-only --diff-filter=ACMR -- *.js **/*.js)
+pass=true
+if [ "$files" != "" ]; then
+    for file in ${files}; do
+        result=$(jshint ${file})
+
+        if [ "$result" != "" ]; then
+            echo $result
+            pass=false
+        fi
+    done
+fi
+
+if [ "$pass" = false ]; then
+	echo "JSHint failed."
+	exit 1
 fi
 
 #Minimize CSS
