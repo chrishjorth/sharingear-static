@@ -21,6 +21,7 @@ var _ = require('underscore'),
 
     constructor, inherit;
 
+
 /**
  * Allows reinitializing a views data.
  */
