@@ -73,6 +73,7 @@ body {
 	margin-left: 15px;
 }
 
+
 .sg-navbar .dropdown .btn-default {
 	border: none;
 }
@@ -3403,8 +3404,11 @@ text-align: left;
 	font-weight: bold;
 	text-transform: uppercase;
 }
+
 .techprofilelistborder{
 	border-top: 1px solid darkgray;
+	padding-top: 5px;
+	margin-top: 30px;
 }
 
 .techprofilelist{
