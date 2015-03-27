@@ -403,9 +403,6 @@ handleImageUpload = function(event) {
 
     view.toggleLoading();
 
-    console.log('WHERE AM I?');
-    console.log(view.newGear);
-
     view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
         var $thumbList, html;
         if (error) {
