@@ -448,12 +448,14 @@ populateSearchBlock = function(searchResults, $searchBlock, callback) {
 
     handleImageLoad = function() {
         var $result = $('#search-results-' + this.resultNum, $searchBlock);
+        $result.css('background-image', 'url("' + this.src + '")');
+
         if (this.width < this.height) {
             $result.addClass('search-result-gear-vertical');
         } else {
             $result.addClass('search-result-gear-horizontal');
         }
-        $result.css('background-image', 'url("' + this.src + '")');
+        
     };
 
     handlePrices = function(resultNum) {
@@ -503,8 +505,8 @@ populateSearchBlock = function(searchResults, $searchBlock, callback) {
 
         img = new Image();
         img.resultNum = i;
-        img.onload = handleImageLoad;
         img.src = searchResult.image;
+        img.onload = handleImageLoad;
     }
 
     $searchBlock.append(html);

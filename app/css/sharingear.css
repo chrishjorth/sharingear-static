@@ -2179,11 +2179,10 @@ button:active .sg-gray-bg {
 }
 .searchresults .search-result-gear-vertical {
 	background-size: 100% auto;
-	/*background-size: auto 100%;*/
+
 }
 .searchresults .search-result-gear-horizontal {
-	/*background-size: auto 100%;*/
-	background-size: 100% auto;
+	background-size: auto 100%;
 }
 .searchresults .search-results-gear .title {
 	font-size: 14px;
