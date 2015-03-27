@@ -4,16 +4,23 @@
 var load,
     isLoaded,
     getGeocoder,
-    getGeocoderStatus,
     getAutocomplete,
     getMap,
     getMarker,
     getLatLng,
 
+    container,
     googlemaps = null;
 
 window.mscl_googlemaps_initialize = function() {
     googlemaps = window.google.maps;
+    container.GeocoderStatus.OK = googlemaps.GeocoderStatus.OK;
+    container.GeocoderStatus.ERROR = googlemaps.GeocoderStatus.ERROR;
+    container.GeocoderStatus.INVALID_REQUEST = googlemaps.GeocoderStatus.INVALID_REQUEST;
+    container.GeocoderStatus.OVER_QUERY_LIMIT = googlemaps.GeocoderStatus.OVER_QUERY_LIMIT;
+    container.GeocoderStatus.REQUEST_DENIED = googlemaps.GeocoderStatus.REQUEST_DENIED;
+    container.GeocoderStatus.UNKNOWN_ERROR = googlemaps.GeocoderStatus.UNKNOWN_ERROR;
+    container.GeocoderStatus.ZERO_RESULTS = googlemaps.GeocoderStatus.ZERO_RESULTS;
 };
 
 load = function() {
@@ -43,15 +50,6 @@ getGeocoder = function() {
     }
 
     return new googlemaps.Geocoder();
-};
-
-getGeocoderStatus = function() {
-    if (googlemaps === null) {
-        console.error('mscl-googlemaps getGeocoder error: Google Maps not loaded.');
-        return null;
-    }
-
-    return googlemaps.GeocoderStatus;
 };
 
 getAutocomplete = function(inputElement, options) {
@@ -110,11 +108,11 @@ getLatLng = function(latitude, longitude) {
     return new googlemaps.LatLng(latitude, longitude);
 };
 
-module.exports = {
+container = {
     load: load,
     isLoaded: isLoaded,
     Geocoder: getGeocoder,
-    GeocoderStatus: getGeocoderStatus,
+    GeocoderStatus: {},
     places: {
         Autocomplete: getAutocomplete
     },
@@ -122,3 +120,5 @@ module.exports = {
     Marker: getMarker,
     LatLng: getLatLng
 };
+
+module.exports = container;

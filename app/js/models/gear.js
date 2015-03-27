@@ -98,6 +98,7 @@ createGear = function createGear(user, callback) {
  */
 uploadImage = function(file, filename, userID, callback) {
     var model = this;
+    console.log('UPLOAD IMAGE VIA GEAR');
     //Get filename and secret from backend
     console.log('Get filename from backend');
     this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {

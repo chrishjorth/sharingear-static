@@ -403,6 +403,9 @@ handleImageUpload = function(event) {
 
     view.toggleLoading();
 
+    console.log('WHERE AM I?');
+    console.log(view.newGear);
+
     view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
         var $thumbList, html;
         if (error) {
@@ -568,6 +571,7 @@ savePriceLocation = function() {
         geocoder.geocode({
             'address': addressOneliner
         }, function(results, status) {
+            console.log(GoogleMaps.GeocoderStatus);
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.newGear.data.longitude = results[0].geometry.location.lng();
                 view.newGear.data.latitude = results[0].geometry.location.lat();
