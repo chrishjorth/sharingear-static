@@ -2177,11 +2177,11 @@ button:active .sg-gray-bg {
 	background-color: #000000;
 	font-weight: bold;
 }
-.searchresults .search-result-gear-vertical {
+.search-result-gear-vertical {
 	background-size: 100% auto;
 
 }
-.searchresults .search-result-gear-horizontal {
+.search-result-gear-horizontal {
 	background-size: auto 100%;
 }
 .searchresults .search-results-gear .title {
