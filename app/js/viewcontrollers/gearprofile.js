@@ -261,7 +261,7 @@ handleBooking = function(event) {
             if (!error) {
                 view.initialize();
                 view.render();
-                App.header.render();
+                App.rootVC.header.render();
             } else {
                 alert('You need to be logged in, in order to book an instrument.');
             }

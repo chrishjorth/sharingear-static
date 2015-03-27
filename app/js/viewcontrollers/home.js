@@ -109,7 +109,7 @@ handleLogin = function() {
     App.user.login(function(error) {
         if (!error) {
             App.router.navigateTo('dashboard');
-            App.header.render();
+            App.rootVC.header.render();
             return;
         }
         console.log(error);

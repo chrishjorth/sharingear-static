@@ -131,7 +131,7 @@ didRender = function() {
     var preAuthorizationID, bookingID;
 
     if (App.header) {
-        App.header.setTitle(this.techProfile.data.roadie_type);
+        App.rootVC.header.setTitle(this.techProfile.data.roadie_type);
     }
 
     this.renderOwnerPicture();
@@ -227,7 +227,7 @@ handleBooking = function(event) {
             if (!error) {
                 view.initialize();
                 view.render();
-                App.header.render();
+                App.rootVC.header.render();
             } else {
                 alert('You need to be logged in, in order to hire a technician.');
             }
