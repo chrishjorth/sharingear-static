@@ -69,6 +69,8 @@ populateYourReservations = function(callback) {
     $reservationBlock = $('#' + reservationBlockID, view.$element);
 
     for (i = 0; i < yourReserv.length; i++) {
+        reservation = yourReserv[i];
+
         defaultReservation = {
             id: null,
             roadie_type: '',
@@ -80,9 +82,10 @@ populateYourReservations = function(callback) {
             images: '',
             img_url: 'images/placeholder_grey.png',
             price: 0,
-            city: ''
+            city: '',
+            icon: reservation.data.roadie_type.replace(/\s/g, '').toLowerCase()
         };
-        reservation = yourReserv[i];
+        
         _.extend(defaultReservation, reservation.data);
 
         if (defaultReservation.images.length > 0) {
@@ -90,10 +93,6 @@ populateYourReservations = function(callback) {
         }
 
         $reservationItem = $(yourReservationsItemTemplate(defaultReservation));
-        $('.sg-bg-image', $reservationItem).css({
-            'background-image': 'url("' + defaultReservation.img_url + '")'
-        });
-
 
         status = reservation.data.booking_status;
 

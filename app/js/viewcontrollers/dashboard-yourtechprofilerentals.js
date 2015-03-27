@@ -63,6 +63,9 @@ populateYourRentals = function(callback) {
     $techProfileBlock = $('#' + techProfileBlockID, view.$element);
 
     for (i = 0; i < yourRentals.length; i++) {
+        
+        techProfile = yourRentals[i];
+        
         defaultTechProfile = {
             id: null,
             roadie_type: '',
@@ -74,19 +77,15 @@ populateYourRentals = function(callback) {
             price_a: 0,
             price_b: 0,
             price_c: 0,
-            owner_id: null
+            owner_id: null,
+            icon: techProfile.data.roadie_type.replace(/\s/g, '').toLowerCase()
         };
-
-        techProfile = yourRentals[i];
+ 
         _.extend(defaultTechProfile, techProfile.data);
 
         defaultTechProfile.img_url = defaultTechProfile.image_url;
 
         $techProfileItem = $(yourRentalsItemTemplate(defaultTechProfile));
-        $('.sg-bg-image', $techProfileItem).css({
-            'background-image': 'url("' + defaultTechProfile.img_url + '")'
-        });
-
 
         status = techProfile.data.booking_status;
         if (status !== 'waiting') {
