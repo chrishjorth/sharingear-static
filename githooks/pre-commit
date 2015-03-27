@@ -3,6 +3,11 @@
 #Add node modules to PATH
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
+MERGE_HEAD="$GIT_DIR/MERGE_HEAD"
+if [ -e "$MERGE_HEAD" ]; then
+	exit 0
+fi
+
 #Minimize CSS
 cd app/css
 cleancss --skip-rebase -o sharingear.min.css sharingear.css
