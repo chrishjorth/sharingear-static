@@ -15995,7 +15995,7 @@
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
-	    Gear = __webpack_require__(138),
+	    Gear = __webpack_require__(139),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -16802,7 +16802,7 @@
 	    App = __webpack_require__(1),
 	
 	    Localization = __webpack_require__(17),
-	    TechProfile = __webpack_require__(139),
+	    TechProfile = __webpack_require__(138),
 	
 	    countryDefault = 'Select country:',
 	    geocoder,
@@ -22730,7 +22730,7 @@
 		App = __webpack_require__(1),
 	
 		Localization = __webpack_require__(17),
-		Gear = __webpack_require__(138),
+		Gear = __webpack_require__(139),
 		User = __webpack_require__(9),
 	
 		paymentSuccessModalOpen = false,
@@ -24945,6 +24945,10 @@
 	            searchParameters = view.vanSearchFormVC.getSearchParameters;
 	            item = searchParameters.vanString;
 	            break;
+	        case 'technicians':
+	            searchParameters = view.techProfileSearchFormVC.getSearchParameters;
+	            item = searchParameters.techProfileString;
+	            break;
 	    }
 	
 	    description = 'Hey, I am looking for a ' + item + ' near ' + searchParameters.locationString + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
@@ -25710,7 +25714,7 @@
 	    ViewController = __webpack_require__(20),
 	    Localization = __webpack_require__(17),
 	    User = __webpack_require__(9),
-	    TechProfile = __webpack_require__(139),
+	    TechProfile = __webpack_require__(138),
 	
 	    paymentSuccessModalOpen = false,
 	
@@ -27739,7 +27743,7 @@
 /* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"view search searchiefix\">\r\n  <div class=\"jumbotron\">\r\n    <div class=\"sg-tab-panel\" id=\"search-searchform-gear\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n\r\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-technicians\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n\r\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-vans\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"container-fluid search-results\">\r\n    <div class=\"row map-row\">\r\n\t\t  <div class=\"col-sm-6 map-col\">\r\n        <div class=\"searchmap\" id=\"search-map\"></div>  \r\n      </div>\r\n\t\t  <div class=\"col-xs-12 col-sm-6 search-results-col bs-reset\">\r\n        <ul class=\"sg-tabs sg-tabs-3 sg-darkergray-bg sg-white\">\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white active\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-gear\">\r\n              <div class=\"sg-icon icon-tabbar-gear\"></div>\r\n              <div class=\"sg-btn-text\">GEAR</div>\r\n            </button>\r\n          </li>\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-technicians\">\r\n              <div class=\"sg-icon icon-tabbar-technicians\"></div>\r\n              <div class=\"sg-btn-text\">TECHNICIANS</div>\r\n            </button>\r\n          </li>\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-vans\">\r\n              <div class=\"sg-icon icon-tabbar-vans\"></div>\r\n              <div class=\"sg-btn-text\">VANS &amp; BUSES</div>\r\n            </button>\r\n          </li>\r\n        </ul>\r\n        <div class=\"row bs-reset sg-darkergray-bg sg-white currentlocation-container\">\r\n\t\t\t\t  <div class=\"col-sm-12\" id=\"search-currentlocation\"></div>\r\n        </div>\r\n        <div class=\"row searchresults bs-reset\" id=\"search-results-gear\"></div>\r\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-techprofiles\"></div>\r\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-vans\"></div>\r\n        \r\n        <div class=\"no-results no-results-gear hidden\">\r\n          <div class=\"row sorry-section bs-reset\">\r\n            <h1>Sorry, no instruments matching your search were found.</h1>\r\n          </div>\r\n          <div class=\"row request-section bs-reset\">\r\n            <h2>Request an instrument: </h2>\r\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"no-results no-results-vans hidden\">\r\n          <div class=\"row sorry-section bs-reset\">\r\n            <h1>Sorry, no vehicles matching your search were found.</h1>\r\n          </div>\r\n          <div class=\"row request-section bs-reset\">\r\n            <h2>Request a vehicle: </h2>\r\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
+	module.exports = "<div class=\"view search searchiefix\">\r\n  <div class=\"jumbotron\">\r\n    <div class=\"sg-tab-panel\" id=\"search-searchform-gear\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n\r\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-technicians\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n\r\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-vans\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"container-fluid search-results\">\r\n    <div class=\"row map-row\">\r\n\t\t  <div class=\"col-sm-6 map-col\">\r\n        <div class=\"searchmap\" id=\"search-map\"></div>  \r\n      </div>\r\n\t\t  <div class=\"col-xs-12 col-sm-6 search-results-col bs-reset\">\r\n        <ul class=\"sg-tabs sg-tabs-3 sg-darkergray-bg sg-white\">\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white active\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-gear\">\r\n              <div class=\"sg-icon icon-tabbar-gear\"></div>\r\n              <div class=\"sg-btn-text\">GEAR</div>\r\n            </button>\r\n          </li>\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-technicians\">\r\n              <div class=\"sg-icon icon-tabbar-technicians\"></div>\r\n              <div class=\"sg-btn-text\">TECHNICIANS</div>\r\n            </button>\r\n          </li>\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-vans\">\r\n              <div class=\"sg-icon icon-tabbar-vans\"></div>\r\n              <div class=\"sg-btn-text\">VANS &amp; BUSES</div>\r\n            </button>\r\n          </li>\r\n        </ul>\r\n        <div class=\"row bs-reset sg-darkergray-bg sg-white currentlocation-container\">\r\n\t\t\t\t  <div class=\"col-sm-12\" id=\"search-currentlocation\"></div>\r\n        </div>\r\n        <div class=\"row searchresults bs-reset\" id=\"search-results-gear\"></div>\r\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-techprofiles\"></div>\r\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-vans\"></div>\r\n        \r\n        <div class=\"no-results no-results-gear hidden\">\r\n          <div class=\"row sorry-section bs-reset\">\r\n            <h1>Sorry, no instruments matching your search were found.</h1>\r\n          </div>\r\n          <div class=\"row request-section bs-reset\">\r\n            <h2>Request an instrument: </h2>\r\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"no-results no-results-technicians hidden\">\r\n          <div class=\"row sorry-section bs-reset\">\r\n            <h1>Sorry, no technicians matching your search were found.</h1>\r\n          </div>\r\n          <div class=\"row request-section bs-reset\">\r\n            <h2>Request a technician: </h2>\r\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"no-results no-results-vans hidden\">\r\n          <div class=\"row sorry-section bs-reset\">\r\n            <h1>Sorry, no vehicles matching your search were found.</h1>\r\n          </div>\r\n          <div class=\"row request-section bs-reset\">\r\n            <h2>Request a vehicle: </h2>\r\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
 
 /***/ },
 /* 117 */
@@ -27871,6 +27875,205 @@
 
 /***/ },
 /* 138 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(3),
+	
+	    App = __webpack_require__(1),
+	    Model = __webpack_require__(18),
+	
+	    didInitialize,
+	    createTechProfile,
+	    save,
+	    update,
+	    getAvailability,
+	    setAvailability;
+	
+	didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Model.inherit({
+	    didInitialize: didInitialize,
+	    createTechProfile: createTechProfile,
+	    save: save,
+	    update: update,
+	    getAvailability: getAvailability,
+	    setAvailability: setAvailability
+	});
+
+
+/***/ },
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28101,205 +28304,6 @@
 	    didInitialize: didInitialize,
 	    createGear: createGear,
 	    uploadImage: uploadImage,
-	    save: save,
-	    update: update,
-	    getAvailability: getAvailability,
-	    setAvailability: setAvailability
-	});
-
-
-/***/ },
-/* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(3),
-	
-	    App = __webpack_require__(1),
-	    Model = __webpack_require__(18),
-	
-	    didInitialize,
-	    createTechProfile,
-	    save,
-	    update,
-	    getAvailability,
-	    setAvailability;
-	
-	didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
-	        };
-	    }
-	};
-	
-	createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Model.inherit({
-	    didInitialize: didInitialize,
-	    createTechProfile: createTechProfile,
 	    save: save,
 	    update: update,
 	    getAvailability: getAvailability,
@@ -28763,7 +28767,7 @@
 	var _ = __webpack_require__(3),
 	
 		Model = __webpack_require__(18),
-		Gear = __webpack_require__(138),
+		Gear = __webpack_require__(139),
 		
 		didInitialize,
 	
@@ -28905,7 +28909,7 @@
 	
 	var _ = __webpack_require__(3),
 		Model = __webpack_require__(18),
-		TechProfile = __webpack_require__(139),
+		TechProfile = __webpack_require__(138),
 		
 		didInitialize,
 	

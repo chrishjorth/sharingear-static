@@ -167,6 +167,10 @@ handleFBShare = function(event) {
             searchParameters = view.vanSearchFormVC.getSearchParameters;
             item = searchParameters.vanString;
             break;
+        case 'technicians':
+            searchParameters = view.techProfileSearchFormVC.getSearchParameters;
+            item = searchParameters.techProfileString;
+            break;
     }
 
     description = 'Hey, I am looking for a ' + item + ' near ' + searchParameters.locationString + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
