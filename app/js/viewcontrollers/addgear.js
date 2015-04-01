@@ -8,7 +8,7 @@
 
 var _ = require('underscore'),
     $ = require('jquery'),
-    GoogleMaps = require('googlemaps'),
+    GoogleMaps = require('../libraries/mscl-googlemaps.js'),
     Moment = require('moment-timezone'),
 
     Config = require('../config.js'),
@@ -568,6 +568,7 @@ savePriceLocation = function() {
         geocoder.geocode({
             'address': addressOneliner
         }, function(results, status) {
+            console.log(GoogleMaps.GeocoderStatus);
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.newGear.data.longitude = results[0].geometry.location.lng();
                 view.newGear.data.latitude = results[0].geometry.location.lat();

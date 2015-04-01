@@ -7,6 +7,7 @@
 
 var chai = require('chai'),
 	$ = require('jquery'),
+    GoogleMaps = require('../../../js/libraries/mscl-googlemaps.js'),
 
 	App = require('../../../js/app.js'),
 
@@ -26,12 +27,14 @@ describe('App', function() {
             });
         });
         this.setUserLocationSpy = sinon.spy(App, 'setUserLocation');
+        this.GoogleMapsLoadStub = sinon.stub(GoogleMaps, 'load', function() {});
     });
 
     afterEach(function() {
         App.user.getLoginStatus.restore();
         App.setUserLocation.restore();
         this.$fixtures.empty();
+        GoogleMaps.load.restore();
     });
 
     it('Provides the app object', function() {

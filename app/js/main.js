@@ -28,9 +28,11 @@ _.templateSettings = {
 
 window.jQuery = $;
 
-$(document).ready(function() {
-    console.log('DOM ready.');
+console.log('Scripts loaded...');
 
+$(document).ready(function() {
+    console.log('Document ready...');
+    
     app.run(function() {
         rootVC.initialize();
     });

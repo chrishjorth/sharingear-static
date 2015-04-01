@@ -99,7 +99,6 @@ createGear = function createGear(user, callback) {
 uploadImage = function(file, filename, userID, callback) {
     var model = this;
     //Get filename and secret from backend
-    console.log('Get filename from backend');
     this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
         if (error) {
             if (callback && typeof callback === 'function') {
@@ -107,8 +106,6 @@ uploadImage = function(file, filename, userID, callback) {
             }
             return;
         }
-        console.log('got filename data:');
-        console.log(data);
         Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
             var postData;
             if (error) {
@@ -123,8 +120,6 @@ uploadImage = function(file, filename, userID, callback) {
                 gear_id: model.data.id,
                 image_url: data.url
             };
-            console.log('File upload success. Add url to backend:');
-            console.log(postData);
             model.post('/gear/image', postData, function(error, images) {
                 if (error) {
                     //TODO: In this case the image should be deleted from the server
@@ -133,8 +128,6 @@ uploadImage = function(file, filename, userID, callback) {
                     }
                     return;
                 }
-                console.log('Upload complete:');
-                console.log(images);
                 model.data.images = images.images;
                 callback(null, data.url);
             });

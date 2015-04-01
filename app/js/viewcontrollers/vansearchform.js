@@ -8,7 +8,7 @@
 
 var _ = require('underscore'),
 	$ = require('jquery'),
-	GoogleMaps = require('googlemaps'),
+	GoogleMaps = require('../libraries/mscl-googlemaps.js'),
 	Moment = require('moment-timezone'),
 
 	Utilities = require('../utilities.js'),
@@ -18,10 +18,10 @@ var _ = require('underscore'),
 	Localization = require('../models/localization.js'),
 	
 	numberOfGearSuggestions = 5,
-    geocoder,
 
     didInitialize,
     didRender,
+    loadLocationAutoComplete,
     prefillForm,
 
     handlePickupDate,
@@ -39,9 +39,6 @@ var _ = require('underscore'),
 
     getSearchParameters;
 
-//Static variables
-geocoder = new GoogleMaps.Geocoder();
-
 didInitialize = function() {
     this.vanSelectionIndex = 0;
     this.vanInputString = '';
@@ -57,9 +54,7 @@ didRender = function() {
     $searchPickup = $('#vansearch-pickup', view.$element);
     $searchReturn = $('#vansearch-return', view.$element);
 
-    new GoogleMaps.places.Autocomplete($('#vansearch-location', view.$element)[0], {
-        types: ['geocode']
-    });
+    this.loadLocationAutoComplete();
 
     this.prefillForm();
 
@@ -71,6 +66,17 @@ didRender = function() {
     this.setupEvent('focusout', '#vansearch-van', this, view.searchVanLoseFocus);
     this.setupEvent('focusin', '#vansearch-van', this, view.searchVanGainFocus);
     this.setupEvent('mousedown touchstart', '.suggestion', this, view.setVanSuggestion);
+};
+
+loadLocationAutoComplete = function() {
+    if(GoogleMaps.isLoaded() === false) {
+        setTimeout(this.loadLocationAutoComplete, 10);
+        return;
+    }
+
+    new GoogleMaps.places.Autocomplete($('#vansearch-location', this.$element)[0], {
+        types: ['geocode']
+    });
 };
 
 prefillForm = function() {
@@ -376,6 +382,7 @@ getSearchParameters = function() {
 module.exports = ViewController.inherit({
     didInitialize: didInitialize,
     didRender: didRender,
+    loadLocationAutoComplete: loadLocationAutoComplete,
     prefillForm: prefillForm,
 
     handlePickupDate: handlePickupDate,

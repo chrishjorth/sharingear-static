@@ -7,14 +7,14 @@
 
 
 var chai = require('chai'),
-	_ = require('underscore'),
-	$ = require('jquery'),
-	Moment = require('moment-timezone'),
-	GoogleMaps = require('googlemaps'),
+    _ = require('underscore'),
+    $ = require('jquery'),
+    Moment = require('moment-timezone'),
+    GoogleMaps = require('../../../js/libraries/mscl-googlemaps.js'),
 
-	Utilities = require('../../../js/utilities.js'),
+    Utilities = require('../../../js/utilities.js'),
 
-	expect;
+    expect;
 
 expect = chai.expect;
 
@@ -26,15 +26,19 @@ describe('Utilities', function() {
             });
         });
         this.FormDataAppendStub = sinon.stub(FormData.prototype, 'append', function() {});
-        this.GeocoderStub = sinon.stub(GoogleMaps.Geocoder.prototype, 'geocode', function(latLng, callback) {
-            callback();
+        this.GeocoderStub = sinon.stub(GoogleMaps, 'Geocoder', function() {
+            this.geocode = function(latLng, callback) {
+                callback(null, null);
+            };
         });
+        this.LatLngStub = sinon.stub(GoogleMaps, 'LatLng', function() {});
     });
 
     afterEach(function() {
         $.ajax.restore();
         FormData.prototype.append.restore();
-        GoogleMaps.Geocoder.prototype.geocode.restore();
+        GoogleMaps.Geocoder.restore();
+        GoogleMaps.LatLng.restore();
     });
 
     it('Can inherit an object', function() {

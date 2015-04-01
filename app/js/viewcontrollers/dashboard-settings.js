@@ -35,8 +35,8 @@ populateTimeZones = function() {
         html = '',
         i, defaultTimezone;
 
-    if (App.header) {
-        App.header.setTitle('Settings');
+    if (App.rootVC.header) {
+        App.rootVC.header.setTitle('Settings');
     }
 
     for (i = 0; i < timezones.length; i++) {

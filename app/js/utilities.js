@@ -8,9 +8,8 @@
 
 var _ = require('underscore'),
 	$ = require('jquery'),
-	GoogleMaps = require('googlemaps'),
+	GoogleMaps = require('./libraries/mscl-googlemaps.js'),
 	
-	geocoder,
     inherit,
     getBaseURL,
     ajajFileUpload,
@@ -20,8 +19,6 @@ var _ = require('underscore'),
     capitalizeString,
     isMomentBetween,
     isMobile;
-
-geocoder = new GoogleMaps.Geocoder();
 
 /**
  * @return A new object that has the same properties as object but with the added properties inheritOptions

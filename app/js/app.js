@@ -7,7 +7,7 @@
 'use strict';
 
 var _ = require('underscore'),
-    $ = require('jquery'),
+    GoogleMaps = require('./libraries/mscl-googlemaps.js'),
 
     Config = require('./config.js'),
     Router = require('./router.js'),
@@ -35,8 +35,9 @@ var _ = require('underscore'),
  * @param callback: A function that will be called once the app is initialized.
  */
 run = function(callback) {
-    var router = this.router,
-        loginDeferred = $.Deferred();
+    var router = this.router;
+
+    GoogleMaps.load();
 
     router.addRoutes(
         'home',
@@ -78,14 +79,17 @@ run = function(callback) {
         // if login was unsuccessful
         if (response.status !== 'connected') {
             console.log('User not logged in.');
-            loginDeferred.resolve();
-        } else {
-            console.log('Logging into backend.');
-            App.user.loginToBackend(response, function() {
-                console.log('User logged in.');
-                loginDeferred.resolve();
-            });
+            return;
         }
+        console.log('Logging into backend.');
+        App.user.loginToBackend(response, function() {
+            console.log('User logged in.');
+            //TODO: Create a function in rootVC that reinitialized the entire view hierarchy, like a refresh. This is needed for async login combined with content reserved for login state.
+            App.rootVC.header.initialize();
+            App.rootVC.header.render();
+            App.router.currentViewController.initialize();
+            App.router.currentViewController.render();
+        });
     });
 
     App.contentClassification = new ContentClassification.constructor({
@@ -95,25 +99,25 @@ run = function(callback) {
 
     App.setUserLocation();
 
-    $.when(loginDeferred).then(function() {
-        console.log('Sharingear loaded and ready.');
+    if (!window.history.pushState) {
 
-        if (!window.history.pushState) {
+        //show message if pushState is not defined
+        var messagePopup = new MessagePopup.constructor(),
+            message = 'Your browser is outdated and does not support some important features. Please dowload the latest version of your browser of preference.';
 
-            //show message if pushState is not defined
-            var messagePopup = new MessagePopup.constructor(),
-                message = 'Your browser is outdated and does not support some important features. Please dowload the latest version of your browser of preference.';
+        messagePopup.initialize();
+        messagePopup.show();
+        messagePopup.setMessage(message);
 
-            messagePopup.initialize();
-            messagePopup.show();
-            messagePopup.setMessage(message);
+    }
 
-        }
+    //$.when(loginDeferred).then(function() {
+    //console.log('Sharingear loaded and ready.');
 
-        if (_.isFunction(callback)) {
-            callback();
-        }
-    });
+    if (_.isFunction(callback)) {
+        callback();
+    }
+    //});
 };
 
 setUserLocation = function(location, callback) {

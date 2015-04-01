@@ -21,6 +21,7 @@ var _ = require('underscore'),
 
     constructor, inherit;
 
+
 /**
  * Allows reinitializing a views data.
  */
@@ -43,6 +44,10 @@ render = function(callback) {
     this.unbindEvents();
     if (_.isFunction(this.didResize) === true) {
         $(window).off('resize', this.didResize);
+    }
+
+    if(_.isFunction(this.willRender) === true) {
+        this.willRender();
     }
 
     this.$element.html(template);

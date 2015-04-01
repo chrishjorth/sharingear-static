@@ -26,6 +26,7 @@ describe('ViewController', function() {
             template: '<div>Test Template</div>',
 
             didInitialize: function() {},
+            willRender: function() {},
             didRender: function() {},
             didClose: function() {},
             didResize: function() {}
@@ -61,12 +62,15 @@ describe('ViewController', function() {
 
     it('Can render', function() {
         var unbindEventsSpy = sinon.spy(this.vc, 'unbindEvents'),
+            willRenderSpy = sinon.spy(this.vc, 'willRender'),
             didRenderSpy = sinon.spy(this.vc, 'didRender');
         this.vc.render();
         sinon.assert.calledOnce(unbindEventsSpy);
         expect(this.$fixtures.html()).to.equal('<div>Test Template</div>');
+        sinon.assert.calledOnce(willRenderSpy);
         sinon.assert.calledOnce(didRenderSpy);
         this.vc.unbindEvents.restore();
+        this.vc.willRender.restore();
         this.vc.didRender.restore();
     });
 

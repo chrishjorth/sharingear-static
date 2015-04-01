@@ -40,6 +40,5 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery'
         })
-    ],
-    devtool: 'sourcemap'
+    ]
 };

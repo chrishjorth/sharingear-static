@@ -3,8 +3,37 @@
 #Add node modules to PATH
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 
+#If we are in a merging state we do not want to build
+MERGE_HEAD="$GIT_DIR/MERGE_HEAD"
+if [ -e "$MERGE_HEAD" ]; then
+	exit 0
+fi
+
+# Run JSHint validation before commit.
+#files=$(git diff --cached --name-only --diff-filter=ACMR -- *.js **/*.js)
+files=$(git diff --cached --name-only --diff-filter=ACMR -- *.js **/*.js | grep -vF -e app/js/build/* -e app/test/js/build/*)
+pass=true
+if [ "$files" != "" ]; then
+    for file in ${files}; do
+        result=$(jshint ${file})
+        if [ "$result" != "" ]; then
+            echo $result
+            pass=false
+        fi
+    done
+fi
+
+if [ "$pass" = false ]; then
+	echo "JSHint failed."
+	exit 1
+fi
+
+#Minimize CSS
+cd app/css
+cleancss --skip-rebase -o sharingear.min.css sharingear.css
+
 #Build app
-cd app/js
+cd ../js
 webpack --optimize-minimize
 
 #Build test
@@ -13,10 +42,10 @@ webpack --optimize-minimize
 
 #Stage build
 cd ../../../
-git add --refresh
+git add --refresh .
 git add .
 
-git stash -q --keep-index
+#git stash -q --keep-index
 
 #Run test
 cd app/test
@@ -24,7 +53,7 @@ mocha-phantomjs ./index.html
 RETVAL=$?
 cd ../../
 
-git stash pop -q
+#git stash pop -q
 
 if [ $RETVAL -ne 0 ]
 then

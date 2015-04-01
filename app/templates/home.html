@@ -1,142 +1,146 @@
 <div class="view home">
-  <div class="jumbotron sg-banner">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-12">
-          <h2 class="sg-h1 text-center sg-white">THE ULTIMATE MARKETPLACE FOR TOURING MUSICIANS</h2>
+    <div class="jumbotron sg-banner">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="sg-h1 text-center sg-white">THE ULTIMATE MARKETPLACE FOR TOURING MUSICIANS</h2>
+                </div>
+            </div>
+            <div class="row sg-tabbar-container bs-reset">
+                <div class="col-sm-2 bs-reset">
+                    <div class="sg-fill sg-blue-bg-50"></div>
+                </div>
+                <div class="col-sm-8 bs-reset">
+                    <div class="sg-tabbar sg-tabbar-3">
+                        <ul>
+                            <li>
+                                <button class="sg-btn-square sg-white selected" id="home-tab-gear">
+                                    <div class="sg-icon icon-tabbar-gear"></div>
+                                    <div class="sg-btn-text">GEAR</div>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="sg-btn-square sg-white" id="home-tab-techprofiles">
+                                    <div class="sg-icon icon-tabbar-technicians"></div>
+                                    <div class="sg-btn-text">TECHNICIANS</div>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="sg-btn-square sg-white" id="home-tab-vans">
+                                    <div class="sg-icon icon-tabbar-vans"></div>
+                                    <div class="sg-btn-text">VANS &amp; BUSES</div>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-2 bs-reset">
+                    <div class="sg-fill sg-blue-bg-50"></div>
+                </div>
+            </div>
+            <div class="row sg-tab-panel sg-darkblue-bg-transparent" id="home-searchform-gear">
+                <div class="col-sm-12 searchform-container">
+                </div>
+            </div>
+            <div class="row sg-tab-panel sg-darkblue-bg-transparent hidden" id="home-searchform-techprofiles">
+                <div class="col-sm-12 searchform-container">
+                </div>
+            </div>
+            <div class="row sg-tab-panel sg-darkblue-bg-transparent hidden" id="home-searchform-vans">
+                <div class="col-sm-12 searchform-container">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button class="sg-btn-invisible sg-white" id="home-scroll-btn">Scroll down <i class="fa fa-arrow-circle-o-down"></i> to see more</button>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="row sg-tabbar-container bs-reset">
-        <div class="col-sm-2 bs-reset"><div class="sg-fill sg-blue-bg-50"></div></div>
-        <div class="col-sm-8 bs-reset">
-          <div class="sg-tabbar sg-tabbar-3">
-            <ul>
-              <li>
-                <button class="sg-btn-square sg-white selected" id="home-tab-gear"><div class="sg-icon icon-tabbar-gear"></div><div class="sg-btn-text">GEAR</div></button>
-              </li>
-              <li>
-                <button class="sg-btn-square sg-white" id="home-tab-techprofiles"><div class="sg-icon icon-tabbar-technicians"></div><div class="sg-btn-text">TECHNICIANS</div></button>
-              </li>
-              <li>
-                <button class="sg-btn-square sg-white" id="home-tab-vans"><div class="sg-icon icon-tabbar-vans"></div><div class="sg-btn-text">VANS &amp; BUSES</div></button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-sm-2 bs-reset"><div class="sg-fill sg-blue-bg-50"></div></div>
-      </div>
-
-      <div class="row sg-tab-panel sg-darkblue-bg-transparent" id="home-searchform-gear">
-        <div class="col-sm-12 searchform-container">
-        </div>
-      </div>
-
-      <div class="row sg-tab-panel sg-darkblue-bg-transparent hidden" id="home-searchform-techprofiles">
-        <div class="col-sm-12 searchform-container">
-        </div>
-      </div>
-
-      <div class="row sg-tab-panel sg-darkblue-bg-transparent hidden" id="home-searchform-vans">
-        <div class="col-sm-12 searchform-container">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12 text-center">
-          <button class="sg-btn-invisible sg-white" id="home-scroll-btn">Scroll down <i class="fa fa-arrow-circle-o-down"></i> to see more</button>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <div class="container-fluid" id="home-whatsay">
-    <div class="row testimonials-title-row">
-      <div class="col-md-12 testimonials-title">
-        <h3 class="text-center text-uppercase">What other musicians say</h3>
-      </div>
-    </div>
-
-    <div class="row testimonials-row">
-      <div class="col-xs-12 col-sm-4 testimonials-video">
-        <iframe src="//player.vimeo.com/video/107903629" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-      </div>
-      <div class="col-xs-12 testimonials-name">
-        <div class="h5 text-uppercase">Stephen Carpenter</div>
-        <div class="h3 text-uppercase">Deftones</div>
-      </div>
-      <div class="col-xs-12 col-sm-4 testimonials-video">
-        <iframe src="//player.vimeo.com/video/117566193" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-      </div>
-      <div class="col-xs-12 testimonials-name">
-        <div class="h5 text-uppercase">Jeff Walker</div>
-        <div class="h3 text-uppercase">Carcass</div>
-      </div>
-      <div class="col-xs-12 col-sm-4 testimonials-video">
-        <iframe src="//player.vimeo.com/video/109912371" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-      </div>
-      <div class="col-xs-12 testimonials-name">
-        <div class="h5 text-uppercase">Peter Dolving</div>
-        <div class="h3 text-uppercase">IAMFIRE</div>
-      </div>
-    </div>
-
-    <div class="row testimonials-big-name-container">
-      <div class="col-xs-12 col-sm-4 testimonials-big-name">
-        <div class="h5 text-uppercase">Stephen Carpenter</div>
-        <div class="h3 text-uppercase">Deftones</div>
-      </div>
-      <div class="col-xs-12 col-sm-4 testimonials-big-name">
-        <div class="h5 text-uppercase">Jeff Walker</div>
-        <div class="h3 text-uppercase">Carcass</div>
-      </div>
-      <div class="col-xs-12 col-sm-4 testimonials-big-name">
-        <div class="h5 text-uppercase">Peter Dolving</div>
-        <div class="h3 text-uppercase">IAMFIRE</div>
-      </div>
-    </div>
-
-    <div class="row references-row">
-      <div class="col-sm-8">
-        <div class="row">
-          <div class="col-xs-offset-1 col-sm-12">
-            <h6 class="text-uppercase sg-gray">As featured on</h6>
-          </div>
+    <div class="container-fluid" id="home-whatsay">
+        <div class="row testimonials-title-row">
+            <div class="col-md-12 testimonials-title">
+                <h3 class="text-center text-uppercase">What other musicians say</h3>
+            </div>
         </div>
-        <div class="row reference-images-row">
-          <div class="col-xs-offset-1 col-xs-2 reference-box">
-            <span class="helper"></span><img class="references-image" src="images/metalhammer@2x.png">
-          </div>
-          <div class="col-xs-2 reference-box">
-            <span class="helper"></span><img class="references-image" style="width:85%" src="images/betalist@2x.png" alt="Beta List">
-          </div>
-          <div class="col-xs-2 reference-box">
-            <span class="helper"></span><img class="references-image" style="width:85%" src="images/bandsoftomorrow@2x.png" alt="Bands of Tomorrow">
-          </div>
-          <div class="col-xs-2 reference-box">
-            <span class="helper"></span><img class="references-image" style="width:100%" src="images/geargods@2x.png" alt="Gear Gods">
-          </div>
-          <div class="col-xs-2 reference-box">
-            <span class="helper"></span><img class="references-image" src="images/arcticstartup@2x.png" alt="Artic Startup">
-          </div>
+        <div class="row testimonials-row">
+            <div class="col-xs-12 col-sm-4 testimonials-video">
+                <iframe src="//player.vimeo.com/video/107903629" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+            <div class="col-xs-12 testimonials-name">
+                <div class="h5 text-uppercase">Stephen Carpenter</div>
+                <div class="h3 text-uppercase">Deftones</div>
+            </div>
+            <div class="col-xs-12 col-sm-4 testimonials-video">
+                <iframe src="//player.vimeo.com/video/117566193" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+            <div class="col-xs-12 testimonials-name">
+                <div class="h5 text-uppercase">Jeff Walker</div>
+                <div class="h3 text-uppercase">Carcass</div>
+            </div>
+            <div class="col-xs-12 col-sm-4 testimonials-video">
+                <iframe src="//player.vimeo.com/video/109912371" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+            <div class="col-xs-12 testimonials-name">
+                <div class="h5 text-uppercase">Peter Dolving</div>
+                <div class="h3 text-uppercase">IAMFIRE</div>
+            </div>
         </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="row">
-          <div class="col-sm-12">
-            <h6 class="text-uppercase sg-gray">Partnered with</h6>
-          </div>
+        <div class="row testimonials-big-name-container">
+            <div class="col-xs-12 col-sm-4 testimonials-big-name">
+                <div class="h5 text-uppercase">Stephen Carpenter</div>
+                <div class="h3 text-uppercase">Deftones</div>
+            </div>
+            <div class="col-xs-12 col-sm-4 testimonials-big-name">
+                <div class="h5 text-uppercase">Jeff Walker</div>
+                <div class="h3 text-uppercase">Carcass</div>
+            </div>
+            <div class="col-xs-12 col-sm-4 testimonials-big-name">
+                <div class="h5 text-uppercase">Peter Dolving</div>
+                <div class="h3 text-uppercase">IAMFIRE</div>
+            </div>
         </div>
-        <div class="row">
-          <div class="col-xs-6 col-sm-6 reference-box">
-            <span class="helper"></span><img class="references-image" src="images/royalbeer@2x.png" alt="Royal Beer">
-          </div>
-          <div class="col-xs-4 col-sm-4 reference-box">
-            <span class="helper"></span><img class="references-image" src="images/ora@2x.png" alt="ORA">
-          </div>
+        <div class="row references-row">
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-xs-offset-1 col-sm-12">
+                        <h6 class="text-uppercase sg-gray">As featured on</h6>
+                    </div>
+                </div>
+                <div class="row reference-images-row">
+                    <div class="col-xs-offset-1 col-xs-2 reference-box">
+                        <span class="helper"></span><img class="references-image" src="images/metalhammer@2x.png">
+                    </div>
+                    <div class="col-xs-2 reference-box">
+                        <span class="helper"></span><img class="references-image" style="width:85%" src="images/betalist@2x.png" alt="Beta List">
+                    </div>
+                    <div class="col-xs-2 reference-box">
+                        <span class="helper"></span><img class="references-image" style="width:85%" src="images/bandsoftomorrow@2x.png" alt="Bands of Tomorrow">
+                    </div>
+                    <div class="col-xs-2 reference-box">
+                        <span class="helper"></span><img class="references-image" style="width:100%" src="images/geargods@2x.png" alt="Gear Gods">
+                    </div>
+                    <div class="col-xs-2 reference-box">
+                        <span class="helper"></span><img class="references-image" src="images/arcticstartup@2x.png" alt="Artic Startup">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h6 class="text-uppercase sg-gray">Partnered with</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 reference-box">
+                        <span class="helper"></span><img class="references-image" src="images/royalbeer@2x.png" alt="Royal Beer">
+                    </div>
+                    <div class="col-xs-4 col-sm-4 reference-box">
+                        <span class="helper"></span><img class="references-image" src="images/ora@2x.png" alt="ORA">
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <footer></footer>
+    <footer></footer>
 </div>

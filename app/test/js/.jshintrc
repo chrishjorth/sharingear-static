@@ -1,4 +1,5 @@
 {
+	"browser": true,
 	"devel": true,
 	"globals": {
 		"define": false,

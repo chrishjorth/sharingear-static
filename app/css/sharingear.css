@@ -39,6 +39,7 @@
  *	8.r DASHBOARD-SETTINGS
  *	8.s VAN PROFILE
  *	8.t TECH PROFILE
+ *	8.u INDEX
  * 9. HELPERS
  * 10. ICONS
  *
@@ -71,6 +72,7 @@ body {
 	margin-right: 0;
 	margin-left: 15px;
 }
+
 
 .sg-navbar .dropdown .btn-default {
 	border: none;
@@ -2175,13 +2177,12 @@ button:active .sg-gray-bg {
 	background-color: #000000;
 	font-weight: bold;
 }
-.searchresults .search-result-gear-vertical {
+.search-result-gear-vertical {
 	background-size: 100% auto;
-	/*background-size: auto 100%;*/
+
 }
-.searchresults .search-result-gear-horizontal {
-	/*background-size: auto 100%;*/
-	background-size: 100% auto;
+.search-result-gear-horizontal {
+	background-size: auto 100%;
 }
 .searchresults .search-results-gear .title {
 	font-size: 14px;
@@ -3402,8 +3403,11 @@ text-align: left;
 	font-weight: bold;
 	text-transform: uppercase;
 }
+
 .techprofilelistborder{
 	border-top: 1px solid darkgray;
+	padding-top: 5px;
+	margin-top: 30px;
 }
 
 .techprofilelist{
@@ -3629,6 +3633,18 @@ text-align: left;
 		padding-bottom: 0;
 		width: auto;
 	}
+}
+
+/*------ 8.u INDEX ------*/
+.sg-loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+.sg-loader .col-xs-12 {
+	margin-top: 20%;
 }
 
 /******* 9. HELPERS *******/
