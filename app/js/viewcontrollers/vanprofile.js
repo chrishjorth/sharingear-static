@@ -140,7 +140,7 @@ didRender = function() {
     //Check for querystring sent by a booking payment process
     preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
     bookingID = Utilities.getQueryStringParameterValue(window.location.search, 'booking_id');
-    if (paymentSuccessModalOpen === false && preAuthorizationID && bookingID && this.van.data.van_type !== '') {
+    if (paymentSuccessModalOpen === false && preAuthorizationID && bookingID && this.van.data.van_type !== ''  && App.user.data.id !== null) {
         App.router.openModalView('paymentsuccessful', {
             preAuthorizationID: preAuthorizationID,
             bookingID: bookingID,
