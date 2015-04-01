@@ -42,7 +42,7 @@ webpack --optimize-minimize
 
 #Stage build
 cd ../../../
-git add --refresh
+git add --refresh .
 git add .
 
 #git stash -q --keep-index
