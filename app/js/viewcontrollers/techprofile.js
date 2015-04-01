@@ -130,7 +130,7 @@ didInitialize = function() {
 didRender = function() {
     var preAuthorizationID, bookingID;
 
-    if (App.header) {
+    if (App.rootVC.header) {
         App.rootVC.header.setTitle(this.techProfile.data.roadie_type);
     }
 
