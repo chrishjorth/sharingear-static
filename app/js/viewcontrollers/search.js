@@ -396,7 +396,12 @@ switchToTab = function($tabButton) {
 };
 
 getCurrentTab = function() {
-    return $('.sg-tabs .active .sg-btn-invisible', this.$element).attr('id').substring(11); //11 is the length of 'search-tab-'
+    var currentTabID = $('.sg-tabs .active .sg-btn-invisible', this.$element).attr('id'),
+        currentTab = 'gear';
+    if (currentTabID) {
+        currentTab = currentTabID.substring(11); //11 is the length of 'search-tab-'
+    }
+    return currentTab;
 };
 
 /**
@@ -455,7 +460,7 @@ populateSearchBlock = function(searchResults, $searchBlock, callback) {
         } else {
             $result.addClass('search-result-gear-horizontal');
         }
-        
+
     };
 
     handlePrices = function(resultNum) {
