@@ -46,6 +46,10 @@ render = function(callback) {
         $(window).off('resize', this.didResize);
     }
 
+    if(_.isFunction(this.willRender) === true) {
+        this.willRender();
+    }
+
     this.$element.html(template);
 
     //Did render event must be called before the callback so inheriting objects get the possibility to complete setup

@@ -35,7 +35,7 @@ echo "App built..."
 if [ "$noTest" == true ]; then
 	#Build test
 	cd ../test/js
-	webpack $optimizeFlag --progress
+	webpack --progress
 	echo "Tests built..."
 fi
 

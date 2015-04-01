@@ -84,7 +84,10 @@ run = function(callback) {
         console.log('Logging into backend.');
         App.user.loginToBackend(response, function() {
             console.log('User logged in.');
+            //TODO: Create a function in rootVC that reinitialized the entire view hierarchy, like a refresh. This is needed for async login combined with content reserved for login state.
+            App.rootVC.header.initialize();
             App.rootVC.header.render();
+            App.router.currentViewController.initialize();
             App.router.currentViewController.render();
         });
     });

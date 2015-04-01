@@ -69,7 +69,7 @@ didInitialize = function() {
     if (view.passedData) {
         //No need to fetch tech profile from backend
         view.techProfile = this.passedData;
-        view.renderPricing();
+        view.render();
     } else {
         if (view.techProfile === null) {
             //In this case the view is loaded the first time, and not returning from a modal fx
@@ -82,6 +82,9 @@ didInitialize = function() {
         }
 
         view.techProfile.update(App.user.data.id, function(error) {
+            var publicInfoDeferred = $.Deferred(), 
+                availabilityDeferred = $.Deferred();
+
             if (error) {
                 console.log(error);
                 return;
@@ -112,7 +115,7 @@ didInitialize = function() {
                     location: techProfileData.city + ', ' + techProfileData.country,
                     owner_id: techProfileData.owner_id
                 });
-                view.renderPricing();
+                publicInfoDeferred.resolve();
             });
 
             view.techProfile.getAvailability(function(error, result) {
@@ -121,6 +124,10 @@ didInitialize = function() {
                     return;
                 }
                 view.availability = result;
+                availabilityDeferred.resolve();
+            });
+
+            $.when(publicInfoDeferred, availabilityDeferred).then(function() {
                 view.render();
             });
         });
@@ -134,6 +141,7 @@ didRender = function() {
         App.rootVC.header.setTitle(this.techProfile.data.roadie_type);
     }
 
+    this.renderPricing();
     this.renderOwnerPicture();
     this.renderMap();
 
@@ -193,10 +201,9 @@ renderPricing = function() {
             console.log('Could not convert prices: ' + error);
             return;
         }
-        view.templateParameters.displayed_price_a = Math.ceil(convertedPrices[0]);
-        view.templateParameters.displayed_price_b = Math.ceil(convertedPrices[1]);
-        view.templateParameters.displayed_price_c = Math.ceil(convertedPrices[2]);
-        view.render();
+        $('#techprofile-displayed_price_a', view.$element).html(Math.ceil(convertedPrices[0]));
+        $('#techprofile-displayed_price_b', view.$element).html(Math.ceil(convertedPrices[0]));
+        $('#techprofile-displayed_price_c', view.$element).html(Math.ceil(convertedPrices[0]));
     });
 };
 
