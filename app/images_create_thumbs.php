@@ -25,5 +25,6 @@ $storage = new Google_Service_Storage($client);
 $list = $storage->objects->listObjects($bucket);
 
 foreach($list['items'] as $image) {
-	echo $image . '<br>';
+	var_dump($image);
+	exit();
 }
