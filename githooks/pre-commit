@@ -11,7 +11,7 @@ fi
 
 # Run JSHint validation before commit.
 #files=$(git diff --cached --name-only --diff-filter=ACMR -- *.js **/*.js)
-files=$(git diff --cached --name-only --diff-filter=ACMR -- *.js **/*.js | grep -vF -e app/js/build/* -e app/test/js/build/*)
+files=$(git diff --cached --name-only --diff-filter=ACMR -- *.js **/*.js | grep -vF -e app/js/build/* -e app/test/js/build/* -e app/node_modules/*)
 pass=true
 if [ "$files" != "" ]; then
     for file in ${files}; do
