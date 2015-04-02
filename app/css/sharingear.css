@@ -2031,7 +2031,6 @@ button:active .sg-gray-bg {
 		display:block;
 		padding-top: 25px;
 		padding-bottom: 25px;
-		border-bottom: 2px solid #00aeff;
 	}
 
 	.home .testimonials-big-name {
@@ -2039,6 +2038,15 @@ button:active .sg-gray-bg {
 	}
 }
 
+.home .sg-crowd-bg {
+	height: 500px;
+	border-bottom-width: 2px;
+	border-bottom-color: #00aeff;
+	border-bottom-style: solid;
+}
+.home .sg-crowd-bg .col-sm-12 {
+	margin-top: 100px;
+}
 
 .references-row {
 	padding-top: 20px;
@@ -3033,10 +3041,6 @@ text-align: left;
 .aboutus .sg-h2 {
 	padding-top: 40px;
 	padding-bottom: 40px;
-}
-
-.aboutus .sg-crowd-bg {
-	height: 500px;
 }
 
 .aboutus .map {
