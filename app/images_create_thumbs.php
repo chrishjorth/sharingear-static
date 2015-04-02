@@ -28,7 +28,9 @@ foreach($list['items'] as $item) {
 	$request = new Google_Http_Request($item->mediaLink, 'GET');
 	$signed_request = $client->getAuth()->sign($request);
 	$http_request = $client->getIo()->makeRequest($signed_request);
-	$image = new Imagick($http_request->getResponseBody());
+	$image = new Imagick();
+	$image->readImageBlob($http_request->getResponseBody());
+
 	var_dump($image->getSize());
 
 
