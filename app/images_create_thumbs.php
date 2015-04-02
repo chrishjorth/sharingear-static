@@ -24,4 +24,6 @@ if(IS_PRODUCTION) {
 $storage = new Google_Service_Storage($client);
 $list = $storage->objects->listObjects($bucket);
 
-var_dump($list);
+foreach($list['items'] as $image) {
+	echo $image . '<br>';
+}
