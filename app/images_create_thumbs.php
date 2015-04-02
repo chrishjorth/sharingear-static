@@ -22,6 +22,6 @@ if(IS_PRODUCTION) {
 }
 
 $storage = new Google_Service_Storage($client);
-$list = $storage->objects->list($bucket);
+$list = $storage->objects->listObjects($bucket);
 
 var_dump($list);
