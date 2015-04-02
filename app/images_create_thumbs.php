@@ -29,9 +29,11 @@ foreach($list['items'] as $item) {
 	$signed_request = $client->getAuth()->sign($request);
 	$http_request = $client->getIo()->makeRequest($signed_request);
 	$image = new Imagick();
-	$image->readImageBlob($http_request->getResponseBody());
+	var_dump($http_request->getResponseBody());
+	//$image->readImageBlob($http_request->getResponseBody());
 
-	var_dump($image->getSize());
+	//var_dump($image->getSize());
+
 
 
 	exit();
