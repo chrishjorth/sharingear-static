@@ -8,6 +8,7 @@ require_once 'autoload.php';
 define('IS_PRODUCTION', false);
 define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/google_api.p12');
 define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
+define('MAX_SIZE', 2048); //1024 in retina
 
 //Get Google authorization for service accounts
 $client = new Google_Client();
@@ -24,27 +25,44 @@ if(IS_PRODUCTION) {
 $storage = new Google_Service_Storage($client);
 $list = $storage->objects->listObjects($bucket);
 
-$scratch_file = '/home/chrishjorth/sharingear-static/app/uploads/scratch_file';
 foreach($list['items'] as $item) {
+	var_dump($item);
+	exit();
 	$request = new Google_Http_Request($item->mediaLink, 'GET');
 	$signed_request = $client->getAuth()->sign($request);
 	$http_request = $client->getIo()->makeRequest($signed_request);
-	
-	/*$result = file_put_contents($scratch_file, $http_request->getResponseBody());
-	if($result === false) {
-		echo 'Error writing image to scratch file.';
-		exit();
-	}*/
 
 	$image = new Imagick();
-
-
 	$image->readImageBlob($http_request->getResponseBody());
 
+	$width = $image->getImageWidth();
+	$height = $image->getImageHeight();
 
-	var_dump($image->getImageHeight());
+	if($width >= $height) {
+		if($width > MAX_SIZE) {
+			//resize by width
+			$image->scaleImage(MAX_SIZE, 0);
+		}
+	}
+	else {
+		if($height > MAX_SIZE) {
+			//resize by height
+			$image->scaleImage(0, MAX_SIZE);
+		}
+	}
 
 
+
+	$obj = new Google_Service_Storage_StorageObject();
+	$obj->setName($filename);
+	$storage->objects->insert(
+    	$bucket,
+    	$obj,
+    	['name' => $filename, 'data' => $image->getImageBlob(), 'uploadType' => 'media']
+	);
+
+	$image->clear();
+	$image->destroy();
 
 	exit();
 }
