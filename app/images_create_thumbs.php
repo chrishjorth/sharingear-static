@@ -24,15 +24,25 @@ if(IS_PRODUCTION) {
 $storage = new Google_Service_Storage($client);
 $list = $storage->objects->listObjects($bucket);
 
+$scratch_file = '/home/chrishjorth/scratch_file';
 foreach($list['items'] as $item) {
 	$request = new Google_Http_Request($item->mediaLink, 'GET');
 	$signed_request = $client->getAuth()->sign($request);
 	$http_request = $client->getIo()->makeRequest($signed_request);
-	$image = new Imagick();
-	var_dump($http_request->getResponseBody());
+	
+	$result = file_put_contents($scratch_file, $http_request->getResponseBody());
+	if($result === false) {
+		echo 'Error writing image to scratch file.';
+		exit();
+	}
+
+	$image = new Imagick($scratch_file);
+
+
 	//$image->readImageBlob($http_request->getResponseBody());
 
-	//var_dump($image->getSize());
+
+	var_dump($image->getSize());
 
 
 
