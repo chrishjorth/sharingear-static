@@ -27,14 +27,14 @@ $storage = new Google_Service_Storage($client);
 $list = $storage->objects->listObjects($bucket);
 
 foreach($list['items'] as $item) {
+	echo 'Working on ' . $item->name . ' <br>';
+	
 	$request = new Google_Http_Request($item->mediaLink, 'GET');
 	$signed_request = $client->getAuth()->sign($request);
 	$http_request = $client->getIo()->makeRequest($signed_request);
 
 	$image = new Imagick();
 	$image->readImageBlob($http_request->getResponseBody());
-
-	echo 'Working on ' . $item->name . ' <br>';
 
 	$width = $image->getImageWidth();
 	$height = $image->getImageHeight();
