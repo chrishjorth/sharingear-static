@@ -30,16 +30,16 @@ foreach($list['items'] as $item) {
 	$signed_request = $client->getAuth()->sign($request);
 	$http_request = $client->getIo()->makeRequest($signed_request);
 	
-	$result = file_put_contents($scratch_file, $http_request->getResponseBody());
+	/*$result = file_put_contents($scratch_file, $http_request->getResponseBody());
 	if($result === false) {
 		echo 'Error writing image to scratch file.';
 		exit();
-	}
+	}*/
 
-	$image = new Imagick($scratch_file);
+	$image = new Imagick();
 
 
-	//$image->readImageBlob($http_request->getResponseBody());
+	$image->readImageBlob($http_request->getResponseBody());
 
 
 	var_dump($image->getImageHeight());
