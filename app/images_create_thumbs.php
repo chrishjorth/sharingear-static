@@ -53,22 +53,21 @@ foreach($list['items'] as $item) {
 		}
 	}
 
+	//Create thumbs
+	
+
 	echo 'Save file.<br>';
 
 	$obj = new Google_Service_Storage_StorageObject();
-	//$obj->setName($item->name);
-	$obj->setName('test');
+	$obj->setName($item->name);
 	$storage->objects->insert(
     	$bucket,
     	$obj,
-    	//['name' => $item->name, 'data' => $image->getImageBlob(), 'uploadType' => 'media']
-    	['name' => 'test', 'data' => $image->getImageBlob(), 'uploadType' => 'media']
+    	['name' => $item->name, 'data' => $image->getImageBlob(), 'uploadType' => 'media']
 	);
 
 	$image->clear();
 	$image->destroy();
 
 	echo 'Done.<br><br>';
-
-	exit();
 }
