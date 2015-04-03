@@ -11,6 +11,8 @@ define('SHARINGEAR_SECRET', '95b95a4a2e59ddc98136ce54b8a0f8d2');
 define('SG_MAX_FILE_SIZE', 4000000); //4MB
 define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/google_api.p12');
 define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
+define('MAX_SIZE', 2048); //1024 in retina
+define('THUMB_SIZE', 512);
 
 $bucket = 'gearimages';
 $accepted_host = 'dev.sharingear.com';
@@ -109,9 +111,26 @@ switch($orientation) {
         break;
 }
 $img->setImageOrientation(imagick::ORIENTATION_TOPLEFT);
+
+//Scale down image if needed
+$width = $img->getImageWidth();
+$height = $img->getImageHeight();
+
+if($width >= $height) {
+    if($width > MAX_SIZE) {
+        //resize by width
+        $img->scaleImage(MAX_SIZE, 0);
+    }
+}
+else {
+    if($height > MAX_SIZE) {
+        //resize by height
+        $img->scaleImage(0, MAX_SIZE);
+    }
+}
+
 $img->writeImage($tmpPath);
-$img->clear();
-$img->destroy();
+
 
 //Get Google authorization for service accounts
 $client = new Google_Client();
@@ -129,6 +148,47 @@ $storage->objects->insert(
     $obj,
     ['name' => $filename, 'data' => file_get_contents($tmpPath), 'uploadType' => 'media']
 );
+
+//Create thumbs
+$thumb1 = clone $img;
+$thumb2 = clone $img;
+
+if($width >= $height) {
+    $thumb1->thumbnailImage(THUMB_SIZE, 0);
+    $thumb2->thumbnailImage(THUMB_SIZE * 2, 0);
+}
+else {
+    $thumb1->thumbnailImage(0, THUMB_SIZE);
+    $thumb2->thumbnailImage(0, THUMB_SIZE * 2);
+}
+
+$filename_components = explode('.', $filename);
+$name = $filename_components[0];
+$ext = $filename_components[1];
+
+$obj_thumb1 = new Google_Service_Storage_StorageObject();
+$obj_thumb1->setName($name . '_thumb.' . $ext);
+$storage->objects->insert(
+    $bucket,
+    $obj_thumb1,
+    ['name' => $name . '_thumb.' . $ext, 'data' => $thumb1->getImageBlob(), 'uploadType' => 'media']
+);
+
+$obj_thumb2 = new Google_Service_Storage_StorageObject();
+$obj_thumb2->setName($name . '_thumb@2x.' . $ext);
+$storage->objects->insert(
+    $bucket,
+    $obj_thumb2,
+    ['name' => $name . '_thumb@2x.' . $ext, 'data' => $thumb2->getImageBlob(), 'uploadType' => 'media']
+);
+
+//Clean up Imagick objects
+$img->clear();
+$img->destroy();
+$thumb1->clear();
+$thumb1->destroy();
+$thumb2->clear();
+$thumb2->destroy();
 
 //Delete file
 @unlink($tmpPath);
