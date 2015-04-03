@@ -26,8 +26,6 @@ $storage = new Google_Service_Storage($client);
 $list = $storage->objects->listObjects($bucket);
 
 foreach($list['items'] as $item) {
-	var_dump($item);
-	exit();
 	$request = new Google_Http_Request($item->mediaLink, 'GET');
 	$signed_request = $client->getAuth()->sign($request);
 	$http_request = $client->getIo()->makeRequest($signed_request);
