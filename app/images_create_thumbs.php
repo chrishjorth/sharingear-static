@@ -9,6 +9,7 @@ define('IS_PRODUCTION', false);
 define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/google_api.p12');
 define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
 define('MAX_SIZE', 2048); //1024 in retina
+define('THUMB_SIZE', 512);
 
 //Get Google authorization for service accounts
 $client = new Google_Client();
@@ -54,9 +55,19 @@ foreach($list['items'] as $item) {
 	}
 
 	//Create thumbs
-	
+	$thumb1 = clone $image;
+	$thumb2 = clone $image;
 
-	echo 'Save file.<br>';
+	if($width >= $height) {
+		$thumb1->thumbnailImage(THUMB_SIZE, 0);
+		$thumb2->thumbnailImage(THUMB_SIZE * 2, 0);
+	}
+	else {
+		$thumb1->thumbnailImage(0, THUMB_SIZE);
+		$thumb2->thumbnailImage(0, THUMB_SIZE * 2);
+	}
+
+	echo 'Save files.<br>';
 
 	$obj = new Google_Service_Storage_StorageObject();
 	$obj->setName($item->name);
@@ -66,8 +77,32 @@ foreach($list['items'] as $item) {
     	['name' => $item->name, 'data' => $image->getImageBlob(), 'uploadType' => 'media']
 	);
 
+	$filename_components = explode('.', $item->name);
+	$filename = $filename_components[0];
+	$ext = $filename_components[1];
+
+	$obj_thumb1 = new Google_Service_Storage_StorageObject();
+	$obj_thumb1->setName($filename . '_thumb.' . $ext);
+	$storage->objects->insert(
+    	$bucket,
+    	$obj_thumb1,
+    	['name' => $filename . '_thumb.' . $ext, 'data' => $thumb1->getImageBlob(), 'uploadType' => 'media']
+	);
+
+	$obj_thumb2 = new Google_Service_Storage_StorageObject();
+	$obj_thumb2->setName($filename . '_thumb@2x.' . $ext);
+	$storage->objects->insert(
+    	$bucket,
+    	$obj_thumb2,
+    	['name' => $filename . '_thumb@2x.' . $ext, 'data' => $thumb2->getImageBlob(), 'uploadType' => 'media']
+	);
+
 	$image->clear();
 	$image->destroy();
+	$thumb1->clear();
+	$thumb1->destroy();
+	$thumb2->clear();
+	$thumb2->destroy();
 
 	echo 'Done.<br><br>';
 }
