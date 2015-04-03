@@ -35,34 +35,42 @@ foreach($list['items'] as $item) {
 	$image = new Imagick();
 	$image->readImageBlob($http_request->getResponseBody());
 
+	echo 'Working on ' . $item->name . ' <br>';
+
 	$width = $image->getImageWidth();
 	$height = $image->getImageHeight();
 
 	if($width >= $height) {
 		if($width > MAX_SIZE) {
 			//resize by width
+			echo 'Scale by width.<br>';
 			$image->scaleImage(MAX_SIZE, 0);
 		}
 	}
 	else {
 		if($height > MAX_SIZE) {
 			//resize by height
+			echo 'Scale by height.<br>';
 			$image->scaleImage(0, MAX_SIZE);
 		}
 	}
 
-
+	echo 'Save file.<br>';
 
 	$obj = new Google_Service_Storage_StorageObject();
-	$obj->setName($filename);
+	//$obj->setName($item->name);
+	$obj->setName('test');
 	$storage->objects->insert(
     	$bucket,
     	$obj,
-    	['name' => $filename, 'data' => $image->getImageBlob(), 'uploadType' => 'media']
+    	//['name' => $item->name, 'data' => $image->getImageBlob(), 'uploadType' => 'media']
+    	['name' => 'test', 'data' => $image->getImageBlob(), 'uploadType' => 'media']
 	);
 
 	$image->clear();
 	$image->destroy();
+
+	echo 'Done.<br><br>';
 
 	exit();
 }
