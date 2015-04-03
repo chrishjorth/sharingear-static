@@ -5,7 +5,7 @@
  */
 require_once 'autoload.php';
 
-define('IS_PRODUCTION', false);
+define('IS_PRODUCTION', true);
 define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/google_api.p12');
 define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
 define('MAX_SIZE', 2048); //1024 in retina
