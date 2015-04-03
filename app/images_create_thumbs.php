@@ -24,7 +24,7 @@ if(IS_PRODUCTION) {
 $storage = new Google_Service_Storage($client);
 $list = $storage->objects->listObjects($bucket);
 
-$scratch_file = '/home/chrishjorth/scratch_file';
+$scratch_file = '/home/chrishjorth/sharingear-static/app/uploads/scratch_file';
 foreach($list['items'] as $item) {
 	$request = new Google_Http_Request($item->mediaLink, 'GET');
 	$signed_request = $client->getAuth()->sign($request);
