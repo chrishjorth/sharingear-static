@@ -42,7 +42,7 @@ foreach($list['items'] as $item) {
 	//$image->readImageBlob($http_request->getResponseBody());
 
 
-	var_dump($image->getSize());
+	var_dump($image->getImageHeight());
 
 
 
