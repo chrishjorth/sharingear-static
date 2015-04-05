@@ -39,7 +39,9 @@ var _ = require('underscore'),
     performGearSearch,
     performTechProfileSearch,
     performVanSearch,
-    populateSearchBlock;
+    populateSearchBlock,
+
+    getThumbURL;
 
 didInitialize = function() {
     this.gearSearchFormVC = null;
@@ -510,7 +512,12 @@ populateSearchBlock = function(searchResults, $searchBlock, callback) {
 
         img = new Image();
         img.resultNum = i;
-        img.src = searchResult.image;
+        if(tab === 'technicians') {
+            img.src = searchResult.image;
+        }
+        else {
+            img.src = view.getThumbURL(searchResult.image);
+        }
         img.onload = handleImageLoad;
     }
 
@@ -524,6 +531,23 @@ populateSearchBlock = function(searchResults, $searchBlock, callback) {
     if (callback && typeof callback === 'function') {
         callback();
     }
+};
+
+getThumbURL = function(imageURL) {
+    var thumbURL, imgName, imgNameComponents, imgExt;
+
+    thumbURL = imageURL.split('/');
+    imgName = thumbURL.pop();
+    thumbURL = thumbURL.join('/');
+    imgNameComponents = imgName.split('.');
+    imgName = imgNameComponents[0];
+    imgExt = imgNameComponents[1];
+    if (window.window.devicePixelRatio > 1) {
+        thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+    } else {
+        thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+    }
+    return thumbURL;
 };
 
 module.exports = ViewController.inherit({
@@ -541,5 +565,7 @@ module.exports = ViewController.inherit({
     performGearSearch: performGearSearch,
     performTechProfileSearch: performTechProfileSearch,
     performVanSearch: performVanSearch,
-    populateSearchBlock: populateSearchBlock
+    populateSearchBlock: populateSearchBlock,
+
+    getThumbURL: getThumbURL
 });
