@@ -53,29 +53,9 @@ describe('Router', function() {
         expect(Router).to.have.property('currentModalViewController');
     });
 
-    it('Can verify that a route exists', function() {
-        expect(Router.routeExists).to.be.a('function');
-        expect(Router.routeExists('error')).to.equal(true);
-        expect(Router.routeExists('test')).to.equal(false);
-        expect(Router.routeExists()).to.equal(false);
-        expect(Router.routeExists('')).to.equal(false);
-        expect(Router.routeExists(null)).to.equal(false);
-        expect(Router.routeExists('Error')).to.equal(false);
-    });
-
-    /**
-     * @assertion: The app has a view, hence controller and template, for #home
-     */
-    it('Can add routes', function() {
-        expect(Router.addRoutes).to.be.a('function');
-        Router.addRoutes('home');
-        expect(Router.routeExists('home')).to.equal(true);
-    });
-
     it('Can get route', function() {
         expect(Router.getRoute('home')).to.equal('home');
-        expect(Router.getRoute('blahblah')).to.equal('error');
-        expect(Router.getRoute('')).to.equal('error');
+        expect(Router.getRoute('dashboard/profile')).to.equal('dashboard');
     });
 
     it('Can navigate to route and preserve querystring', function(done) {
@@ -89,7 +69,6 @@ describe('Router', function() {
     });
 
     it('Can navigate to path', function(done) {
-        Router.addRoutes('dashboard');
         Router.navigateTo('dashboard/profile', null, function() {
             expect(Router.currentViewController.name).to.equal('dashboard');
             done();
@@ -125,10 +104,6 @@ describe('Router', function() {
             sinon.assert.calledOnce(spec.closeModalViewStub);
             done();
         });
-    });
-
-    it('Has default error route', function() {
-        expect(Router.routeExists('error')).to.equal(true);
     });
 
     it('Can handle URL hash change', function(done) {

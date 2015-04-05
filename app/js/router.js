@@ -15,9 +15,9 @@ var Router,
 			
 	hashUpdated,
 
-	addRoutes,
+	//addRoutes,
 	getRoute,
-	routeExists,
+	//routeExists,
 	handleHashChange,
 	navigateTo,
 	openModalView,
@@ -27,12 +27,12 @@ var Router,
 		
 hashUpdated = false; //Semaphore variable
 
-addRoutes = function() {
+/*addRoutes = function() {
 	var i;
 	for(i = 0; i < arguments.length; i++) {
 		this.routes.push(arguments[i]);
 	}
-};
+};*/
 
 /**
  * Validates the route and returns error if route does not exist.
@@ -44,10 +44,10 @@ getRoute = function(route) {
 		routeRoot = route;
 	}
 
-	if(this.routeExists(routeRoot) === false) {
+	/*if(this.routeExists(routeRoot) === false) {
 		console.log('Error: no view for route "' + routeRoot + '".');
 		routeRoot = 'error';
-	}
+	}*/
 
 	return routeRoot;
 };
@@ -55,7 +55,7 @@ getRoute = function(route) {
 /**
  * @return true if the route exists, false in all other cases.
  */
-routeExists = function(route) {
+/*routeExists = function(route) {
 	var i = 0;
 	while(i < this.routes.length) {
 		if(route === this.routes[i]) {
@@ -64,7 +64,7 @@ routeExists = function(route) {
 		i++;
 	}
 	return false;
-};
+};*/
 
 /**
  * NOTE: This function is triggered when the hash in the URL changes, no matter wether it is by code or by user interaction.
@@ -172,9 +172,9 @@ Router = {
 	currentModalViewController: null,
 	viewLoader: ViewLoader,
 
-	addRoutes: addRoutes,
+	//addRoutes: addRoutes,
 	getRoute: getRoute,
-	routeExists: routeExists,
+	//routeExists: routeExists,
 	handleHashChange: handleHashChange,
 	navigateTo: navigateTo,
 	openModalView: openModalView,

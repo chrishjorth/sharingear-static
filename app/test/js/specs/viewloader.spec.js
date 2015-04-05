@@ -7,7 +7,7 @@
 
 var chai = require('chai'),
 	$ = require('jquery'),
-	GoogleMaps = require('googlemaps'),
+	GoogleMaps = require('../../../js/libraries/mscl-googlemaps.js'),
 
 	Router = require('../../../js/router.js'),
 	ViewLoader = require('../../../js/viewloader.js'),

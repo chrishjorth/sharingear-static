@@ -31,9 +31,11 @@ window.jQuery = $;
 console.log('Scripts loaded...');
 
 $(document).ready(function() {
-    console.log('Document ready...');
-    
+    rootVC.initialize(function(){
+        console.log('Root viewcontroller initialized.');
+    });
+
     app.run(function() {
-        rootVC.initialize();
+        console.log('App initialized.');
     });
 });

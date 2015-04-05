@@ -15,6 +15,7 @@ var _ = require('underscore'),
     HeaderTemplate = require('../templates/navigation-header.html'),
 
     initialize,
+    refresh,
 
     loadHeader,
     getCookie;
@@ -48,9 +49,14 @@ initialize = function(callback) {
         $('.cookie-opt-in').addClass('hidden');
     });
 
-    if (_.isFunction(callback) === true) {
-        callback();
-    }
+    callback();
+};
+
+refresh = function() {
+    this.header.initialize();
+    this.header.render();
+    App.router.currentViewController.initialize();
+    App.router.currentViewController.render();
 };
 
 /**
@@ -88,6 +94,7 @@ getCookie = function(cname) {
 
 module.exports = {
     initialize: initialize,
+    refresh: refresh,
     loadHeader: loadHeader,
     getCookie: getCookie
 };
