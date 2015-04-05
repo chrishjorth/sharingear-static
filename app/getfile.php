@@ -33,5 +33,7 @@ $file = $http_request->getResponseBody();
 
 header("Content-Type: image/" . $ext);
 header("Content-Length: " . $object->size);
+header("Expires: " . gmdate("D, d M Y H:i:s", time() + 3600) . " GMT");
+header("Cache-Control: max-age=3600");
 
 echo $file;
