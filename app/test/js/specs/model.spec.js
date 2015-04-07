@@ -46,6 +46,26 @@ describe('Model', function() {
         expect(this.model.data).to.equal(null);
     });
 
+    it('Can be inherited', function(done) {
+        var subModel = Model.inherit({
+            test: function() {
+                done();
+            }
+        });
+        expect(subModel).to.be.an('object');
+        expect(subModel).to.have.property('constructor');
+        expect(subModel).to.have.property('inherit');
+        subModel = new subModel.constructor();
+        subModel.test();
+    });
+
+    it('Can be initialized', function(done) {
+        this.model.didInitialize = function() {
+            done();
+        };
+        this.model.initialize();
+    });
+
     it('Can perform GET requests', function(done) {
         var spec = this;
         this.model.get('/someurl', function() {

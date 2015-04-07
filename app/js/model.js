@@ -115,7 +115,8 @@ constructor = function(options) {
 
 inherit = function(inheritOptions) {
     var inherited = {
-        constructor: Utilities.inherit(this.constructor, inheritOptions)
+        constructor: Utilities.inherit(this.constructor, inheritOptions),
+        inherit: this.inherit
     };
     return inherited;
 };
