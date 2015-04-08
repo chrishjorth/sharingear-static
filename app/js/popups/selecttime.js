@@ -11,40 +11,39 @@ var $ = require('jquery'),
 	PopupController = require('../popupcontroller'),
 	SelectTimePopupTemplate = require('./selecttime.html'),
 
-	SelectTimePopup,
+    wasClosed;
 
-    wasClosed,
-    didRender,
-    getSelectedTime,
-    getWasClosed,
+function SelectTime(options) {
+    PopupController.call(this, options);
+    this.template = SelectTimePopupTemplate;
+}
 
-    handleCancel,
-    handleConfirm;
+SelectTime.prototype = new PopupController();
 
-didRender = function() {
+SelectTime.prototype.didRender = function() {
     wasClosed = false;
     this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
     this.setupEvent('click', '.confirm-btn', this, this.handleConfirm);
 };
 
-getSelectedTime = function() {
+SelectTime.prototype.getSelectedTime = function() {
     return {
         hours: parseInt($('#selecttimepopup-hours', this.$element).val(), 10),
         minutes: parseInt($('#selecttimepopup-minutes', this.$element).val(), 10)
     };
 };
 
-getWasClosed = function() {
+SelectTime.prototype.getWasClosed = function() {
     return wasClosed;
 };
 
-handleConfirm = function(event) {
+SelectTime.prototype.handleConfirm = function(event) {
     var view = event.data;
     wasClosed = false;
     view.hide();
 };
 
-handleCancel = function(event) {
+SelectTime.prototype.handleCancel = function(event) {
     var view = event.data;
     wasClosed = true;
     $('#selecttimepopup-hours', this.$element).val('12');
@@ -52,15 +51,4 @@ handleCancel = function(event) {
     view.hide();
 };
 
-SelectTimePopup = PopupController.inherit({
-    template: SelectTimePopupTemplate,
-
-    didRender: didRender,
-    getSelectedTime: getSelectedTime,
-    getWasClosed: getWasClosed,
-    handleConfirm: handleConfirm,
-    handleCancel: handleCancel
-});
-
-
-module.exports = SelectTimePopup;
+module.exports = SelectTime;

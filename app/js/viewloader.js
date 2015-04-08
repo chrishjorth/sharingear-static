@@ -64,7 +64,7 @@ loadView = function(view, path, data, callback) {
     if (viewLoader.currentViewController !== null) {
         viewLoader.currentViewController.close();
     }
-    viewLoader.currentViewController = new ViewController.constructor({
+    viewLoader.currentViewController = new ViewController({
         name: view,
         $element: $(mainViewContainer),
         labels: {},
@@ -95,7 +95,7 @@ loadSubview = function(data, callback) {
     if (viewLoader.currentSubViewController !== null) {
         viewLoader.currentSubViewController.close();
     }
-    viewLoader.currentSubViewController = new SubViewController.constructor({
+    viewLoader.currentSubViewController = new SubViewController({
         name: viewString,
         $element: viewLoader.currentViewController.$subViewContainer,
         labels: {},
@@ -136,7 +136,7 @@ _loadModalView = function(view, path, data, callback) {
         $('.view-container').addClass('modal-open');
     }
 
-    viewLoader.currentModalViewController = new ViewController.constructor({
+    viewLoader.currentModalViewController = new ViewController({
         name: view,
         $element: $modalViewContainer,
         labels: {},

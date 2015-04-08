@@ -16,33 +16,15 @@ var _ = require('underscore'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
 
-    geocoder,
+    geocoder = new GoogleMaps.Geocoder();
 
-    didInitialize,
-    didRender,
+function EditTechProfile(options) {
+    ViewController.call(this, options);
+}
 
-    toggleLoading,
+EditTechProfile.prototype = new ViewController();
 
-    populateExperience,
-    populateYearsOfExperience,
-    populateLocation,
-    populateCountries,
-
-    populatePricing,
-    populatePriceSuggestions,
-    handleExperienceStartYearChange,
-
-    renderAvailability,
-    handleSubmerchantFormSubmit,
-
-    handlePriceChange,
-
-    handleCancel,
-    handleSave;
-
-geocoder = new GoogleMaps.Geocoder();
-
-didInitialize = function() {
+EditTechProfile.prototype.didInitialize = function() {
     Moment.locale('en-custom', {
         week: {
             dow: 1,
@@ -59,7 +41,7 @@ didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 };
 
-didRender = function() {
+EditTechProfile.prototype.didRender = function() {
     this.populateExperience();
     this.populateCountries($('#edittechprofilepricing-country', this.$element));
     this.populateLocation();
@@ -98,7 +80,7 @@ didRender = function() {
     this.setupEvent('click', '#edittechprofile-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
 };
 
-toggleLoading = function() {
+EditTechProfile.prototype.toggleLoading = function() {
     if (this.isLoading === true) {
         $('#edittechprofile-save-btn', this.$element).html('Save');
         this.isLoading = false;
@@ -108,7 +90,7 @@ toggleLoading = function() {
     }
 };
 
-renderAvailability = function() {
+EditTechProfile.prototype.renderAvailability = function() {
     var view = this,
         $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
 
@@ -120,7 +102,7 @@ renderAvailability = function() {
     if (App.user.isSubMerchant() === true) {
         calendarVC = require('./availabilitycalendar.js');
         calendarVT = require('../../templates/availabilitycalendar.html');
-        view.calendarVC = new calendarVC.constructor({
+        view.calendarVC = new calendarVC({
             name: 'availabilitycalendar',
             $element: $calendarContainer,
             template: calendarVT,
@@ -136,7 +118,7 @@ renderAvailability = function() {
     } else {
         submerchantFormVC = require('./submerchantregistration.js');
         submerchantFormVT = require('../../templates/submerchantregistration.html');
-        view.submerchantFormVC = new submerchantFormVC.constructor({
+        view.submerchantFormVC = new submerchantFormVC({
             name: 'submerchantform',
             $element: $calendarContainer,
             template: submerchantFormVT
@@ -147,7 +129,7 @@ renderAvailability = function() {
     }
 };
 
-handleSubmerchantFormSubmit = function(event) {
+EditTechProfile.prototype.handleSubmerchantFormSubmit = function(event) {
     var view = event.data,
         $button = $(this);
     $button.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
@@ -172,7 +154,7 @@ handleSubmerchantFormSubmit = function(event) {
     }
 };
 
-populateExperience = function() {
+EditTechProfile.prototype.populateExperience = function() {
     var xp_years = this.techProfile.data.xp_years.split('-'),
         level = 5;
     switch (this.techProfile.data.experience) {
@@ -203,7 +185,7 @@ populateExperience = function() {
     }
 };
 
-populateYearsOfExperience = function() {
+EditTechProfile.prototype.populateYearsOfExperience = function() {
     var $startYear = $('#edittechprofile-startyear', this.$element),
         $endYear = $('#edittechprofile-endyear', this.$element),
         startYearSelectHTML = '',
@@ -237,19 +219,19 @@ populateYearsOfExperience = function() {
     $endYear.val(endYear);
 };
 
-handleExperienceStartYearChange = function(event) {
+EditTechProfile.prototype.handleExperienceStartYearChange = function(event) {
     var view = event.data;
     view.populateYearsOfExperience();
 };
 
-populateLocation = function() {
+EditTechProfile.prototype.populateLocation = function() {
     $('#edittechprofilepricing-city', this.$element).val(this.techProfile.data.city);
     $('#edittechprofilepricing-address', this.$element).val(this.techProfile.data.address);
     $('#edittechprofilepricing-postalcode', this.$element).val(this.techProfile.data.postal_code);
     $('#edittechprofilepricing-region', this.$element).val(this.techProfile.data.region);
 };
 
-populateCountries = function($select) {
+EditTechProfile.prototype.populateCountries = function($select) {
     var countriesArray = Localization.getCountries(),
         html = $('option', $select).first()[0].outerHTML,
         i;
@@ -261,7 +243,7 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-populatePricing = function() {
+EditTechProfile.prototype.populatePricing = function() {
     var view = this;
     Localization.convertPrices([this.techProfile.data.price_a, this.techProfile.data.price_b, this.techProfile.data.price_c], this.techProfile.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
@@ -274,7 +256,7 @@ populatePricing = function() {
     });
 };
 
-populatePriceSuggestions = function() {
+EditTechProfile.prototype.populatePriceSuggestions = function() {
     var techProfileClassification = App.contentClassification.data.roadieClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
@@ -298,7 +280,7 @@ populatePriceSuggestions = function() {
     });
 };
 
-handlePriceChange = function() {
+EditTechProfile.prototype.handlePriceChange = function() {
     var $this = $(this),
         price;
     price = parseInt($this.val(), 10);
@@ -308,7 +290,7 @@ handlePriceChange = function() {
     $this.val(price);
 };
 
-handleCancel = function() {
+EditTechProfile.prototype.handleCancel = function() {
     var currentVerticalPosition = $(window).scrollTop();
     App.router.closeModalView();
     $('body, html').animate({
@@ -316,7 +298,7 @@ handleCancel = function() {
     }, 50);
 };
 
-handleSave = function(event) {
+EditTechProfile.prototype.handleSave = function(event) {
     var view = event.data,
         isLocationSame = false,
         currentAddress = view.techProfile.data.address,
@@ -483,25 +465,4 @@ handleSave = function(event) {
     }
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    toggleLoading: toggleLoading,
-
-    populateExperience: populateExperience,
-    populateYearsOfExperience: populateYearsOfExperience,
-    handleExperienceStartYearChange: handleExperienceStartYearChange,
-    populateLocation: populateLocation,
-    populateCountries: populateCountries,
-    handlePriceChange: handlePriceChange,
-
-    renderAvailability: renderAvailability,
-    handleSubmerchantFormSubmit: handleSubmerchantFormSubmit,
-
-    populatePricing: populatePricing,
-    populatePriceSuggestions: populatePriceSuggestions,
-
-    handleCancel: handleCancel,
-    handleSave: handleSave
-});
+module.exports = EditTechProfile;

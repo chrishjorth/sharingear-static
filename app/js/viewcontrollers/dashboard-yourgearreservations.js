@@ -15,20 +15,17 @@ var _ = require('underscore'),
 
     GearList = require('../models/gearlist.js'),
 
-    reservationBlockID,
+    reservationBlockID = 'yourreservations-gear-block';
 
-    didInitialize,
-    didRender,
+function DashboardYourGearReservations(options) {
+    ViewController.call(this, options);
+}
 
-    populateYourReservations,
+DashboardYourGearReservations.prototype = new ViewController();
 
-    handleBooking;
-
-reservationBlockID = 'yourreservations-gear-block';
-
-didInitialize = function() {
+DashboardYourGearReservations.prototype.didInitialize = function() {
     var view = this;
-    view.gearList = new GearList.constructor({
+    view.gearList = new GearList({
         rootURL: Config.API_URL
     });
     view.gearList.initialize();
@@ -38,7 +35,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+DashboardYourGearReservations.prototype.didRender = function() {
     if(App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Gear reservations');
     }
@@ -49,7 +46,7 @@ didRender = function() {
     this.setupEvent('click', '#yourreservations-gear-block .sg-list-item button', this, this.handleBooking);
 };
 
-populateYourReservations = function(callback) {
+DashboardYourGearReservations.prototype.populateYourReservations = function(callback) {
     var view = this,
         YourReservationsItemTemplate;
     YourReservationsItemTemplate = require('../../templates/yourgearreservations-item.html');
@@ -117,7 +114,7 @@ populateYourReservations = function(callback) {
     }
 };
 
-handleBooking = function(event) {
+DashboardYourGearReservations.prototype.handleBooking = function(event) {
     var view = event.data,
         bookingID = $(this).data('bookingid'),
         gear, passedData;
@@ -131,9 +128,4 @@ handleBooking = function(event) {
     App.router.openModalView('booking', passedData);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourReservations: populateYourReservations,
-    handleBooking: handleBooking
-});
+module.exports = DashboardYourGearReservations;

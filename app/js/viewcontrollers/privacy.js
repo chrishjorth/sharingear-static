@@ -8,22 +8,25 @@
 
 var $ = require('jquery'),
 	
-	ViewController = require('../viewcontroller.js'),
+	ViewController = require('../viewcontroller.js');
 
-    didRender,
-    loadFooter;
+function Privacy(options) {
+    ViewController.call(this, options);
+}
 
-didRender = function() {
+Privacy.prototype = new ViewController();
+
+Privacy.prototype.didRender = function() {
     this.loadFooter();
 };
 
-loadFooter = function() {
+Privacy.prototype.loadFooter = function() {
     var view = this,
         FooterController, FooterTemplate;
     FooterController = require('./footer.js');
     FooterTemplate = require('../../templates/footer.html');
 
-    view.footer = new FooterController.constructor({
+    view.footer = new FooterController({
         name: 'footer',
         $element: $('footer', view.$element),
         template: FooterTemplate
@@ -32,7 +35,4 @@ loadFooter = function() {
     view.footer.render();
 };
 
-module.exports = ViewController.inherit({
-    didRender: didRender,
-    loadFooter: loadFooter
-});
+module.exports = Privacy;

@@ -8,21 +8,24 @@
 
 var $ = require('jquery'),
 
-    ViewController = require('../viewcontroller.js'),
+    ViewController = require('../viewcontroller.js');
 
-    didRender,
-    loadFooter;
+function Insurance(options) {
+    ViewController.call(this, options);
+}
 
-didRender = function() {
+Insurance.prototype = new ViewController();
+
+Insurance.prototype.didRender = function() {
     this.loadFooter();
 };
 
-loadFooter = function() {
+Insurance.prototype.loadFooter = function() {
     var view = this,
         FooterController, FooterTemplate;
     FooterController = require('./footer.js');
     FooterTemplate = require('../../templates/footer.html');
-    view.footer = new FooterController.constructor({
+    view.footer = new FooterController({
         name: 'footer',
         $element: $('footer', view.$element),
         template: FooterTemplate
@@ -31,7 +34,4 @@ loadFooter = function() {
     view.footer.render();
 };
 
-module.exports = ViewController.inherit({
-    didRender: didRender,
-    loadFooter: loadFooter
-});
+module.exports = Insurance;

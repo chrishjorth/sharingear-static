@@ -16,20 +16,15 @@ var $ = require('jquery'),
     Localization = require('../models/localization.js'),
     Booking = require('../models/booking.js'),
 
-    SelectTimePopup = require('../popups/selecttime.js'),
+    SelectTimePopup = require('../popups/selecttime.js');
 
-    didInitialize,
-    didRender,
-    renderCalendar,
-    renderPricing,
-    calculatePrice,
+function BookingRequest(options) {
+    ViewController.call(this, options);
+}
 
-    handleCancel,
-    handlePickupSelection,
-    handleDeliverySelection,
-    handleNext;
+BookingRequest.prototype = new ViewController();
 
-didInitialize = function() {
+BookingRequest.prototype.didInitialize = function() {
     var view = this;
 
     Moment.locale('en-custom', {
@@ -51,7 +46,7 @@ didInitialize = function() {
     if (this.passedData.booking) {
         this.newBooking = this.passedData.booking;
     } else {
-        this.newBooking = new Booking.constructor({
+        this.newBooking = new Booking({
             rootURL: Config.API_URL
         });
         this.newBooking.initialize();
@@ -66,7 +61,7 @@ didInitialize = function() {
     }
 };
 
-didRender = function() {
+BookingRequest.prototype.didRender = function() {
     this.renderPricing();
     this.calculatePrice();
     this.renderCalendar();
@@ -74,7 +69,7 @@ didRender = function() {
     this.setupEvent('click', '#bookingrequest-next', this, this.handleNext);
 };
 
-renderCalendar = function() {
+BookingRequest.prototype.renderCalendar = function() {
     var view = this,
         $calendarContainer, passedData, calendarVC, calendarVT;
 
@@ -88,7 +83,7 @@ renderCalendar = function() {
     calendarVC = require('./pickupdeliverycalendar.js');
     calendarVT = require('../../templates/pickupdeliverycalendar.html');
 
-    view.calendarVC = new calendarVC.constructor({
+    view.calendarVC = new calendarVC({
         name: 'pickupdeliverycalendar',
         $element: $calendarContainer,
         template: calendarVT,
@@ -98,7 +93,7 @@ renderCalendar = function() {
     view.calendarVC.render();
 };
 
-renderPricing = function() {
+BookingRequest.prototype.renderPricing = function() {
     var view = this;
     Localization.convertPrices([this.passedData.price_a, this.passedData.price_b, this.passedData.price_c], this.passedData.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
@@ -111,7 +106,7 @@ renderPricing = function() {
     });
 };
 
-calculatePrice = function() {
+BookingRequest.prototype.calculatePrice = function() {
     var view = this,
         startMoment = new Moment.tz(this.newBooking.data.start_time, Localization.getCurrentTimeZone()),
         endMoment = new Moment.tz(this.newBooking.data.end_time, Localization.getCurrentTimeZone()),
@@ -143,13 +138,13 @@ calculatePrice = function() {
     });
 };
 
-handleCancel = function() {
+BookingRequest.prototype.handleCancel = function() {
     App.router.closeModalView();
 };
 
-handlePickupSelection = function(calendarVC, callback) {
+BookingRequest.prototype.handlePickupSelection = function(calendarVC, callback) {
     var view = this,
-        selectTimePopup = new SelectTimePopup.constructor();
+        selectTimePopup = new SelectTimePopup();
     selectTimePopup.initialize();
     selectTimePopup.setTitle('Select pickup time');
     selectTimePopup.show();
@@ -166,7 +161,7 @@ handlePickupSelection = function(calendarVC, callback) {
     });
 };
 
-handleDeliverySelection = function(calendarVC, isTimeSelected, callback) {
+BookingRequest.prototype.handleDeliverySelection = function(calendarVC, isTimeSelected, callback) {
     var view = this,
         selectTimePopup;
     if (isTimeSelected === true) {
@@ -174,7 +169,7 @@ handleDeliverySelection = function(calendarVC, isTimeSelected, callback) {
         view.calculatePrice();
         return;
     }
-    selectTimePopup = new SelectTimePopup.constructor();
+    selectTimePopup = new SelectTimePopup();
     selectTimePopup.initialize();
     selectTimePopup.setTitle('Select delivery time');
     selectTimePopup.show();
@@ -190,7 +185,7 @@ handleDeliverySelection = function(calendarVC, isTimeSelected, callback) {
     });
 };
 
-handleNext = function(event) {
+BookingRequest.prototype.handleNext = function(event) {
     var view = event.data,
         passedData;
 
@@ -208,15 +203,4 @@ handleNext = function(event) {
     App.router.openModalSiblingView('payment', passedData);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    renderCalendar: renderCalendar,
-    renderPricing: renderPricing,
-    calculatePrice: calculatePrice,
-
-    handleCancel: handleCancel,
-    handlePickupSelection: handlePickupSelection,
-    handleDeliverySelection: handleDeliverySelection,
-    handleNext: handleNext
-});
+module.exports = BookingRequest;

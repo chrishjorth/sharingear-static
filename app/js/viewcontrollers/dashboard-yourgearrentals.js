@@ -15,21 +15,19 @@ var _ = require('underscore'),
 
     GearList = require('../models/gearlist.js'),
 
-    gearBlockID,
+    gearBlockID = 'yourrentals-gear-block';
 
-    didInitialize,
-    didRender,
-    populateYourRentals,
+function DashboardYourGearRentals(options) {
+    ViewController.call(this, options);
+}
 
-    handleBooking;
+DashboardYourGearRentals.prototype = new ViewController();
 
-gearBlockID = 'yourrentals-gear-block';
-
-didInitialize = function() {
+DashboardYourGearRentals.prototype.didInitialize = function() {
     var view = this;
 
     this.didFetch = false;
-    this.gearList = new GearList.constructor({
+    this.gearList = new GearList({
         rootURL: Config.API_URL
     });
     this.gearList.initialize();
@@ -39,7 +37,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+DashboardYourGearRentals.prototype.didRender = function() {
     if(App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Gear rentals');
     }
@@ -51,7 +49,7 @@ didRender = function() {
     this.setupEvent('click', '#yourrentals-gear-block .sg-list-item button', this, this.handleBooking);
 };
 
-populateYourRentals = function(callback) {
+DashboardYourGearRentals.prototype.populateYourRentals = function(callback) {
     var view = this,
         YourRentalsItemTemplate;
 
@@ -120,7 +118,7 @@ populateYourRentals = function(callback) {
     }
 };
 
-handleBooking = function(event) {
+DashboardYourGearRentals.prototype.handleBooking = function(event) {
     var view = event.data,
         bookingID = $(this).data('bookingid'),
         gear, passedData;
@@ -134,10 +132,4 @@ handleBooking = function(event) {
     App.router.openModalView('booking', passedData);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourRentals: populateYourRentals,
-
-    handleBooking: handleBooking
-});
+module.exports = DashboardYourGearRentals;

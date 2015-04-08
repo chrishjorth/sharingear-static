@@ -12,35 +12,15 @@ var $ = require('jquery'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
 
-    Localization = require('../models/localization.js'),
+    Localization = require('../models/localization.js');
 
-    didInitialize,
-    didRender,
+function AvailabilityCalendar(options) {
+    ViewController.call(this, options);
+}
 
-    renderCalendar,
-    renderSelections,
+AvailabilityCalendar.prototype = new ViewController();
 
-    populateCalendar,
-
-    clearSelections,
-
-    handlePrev,
-    handleNext,
-    handleAlwaysAvailable,
-    handleNeverAvailable,
-    handleDayStartSelect,
-    handleDayMoveSelect,
-    handleDayEndSelect,
-
-    setAlwaysState,
-    setSelections,
-    isBeforeOrSameDay,
-    isAfterOrSameDay,
-
-    getSelections,
-    getAlwaysFlag;
-
-didInitialize = function() {
+AvailabilityCalendar.prototype.didInitialize = function() {
     var view = this,
         handleAvailability;
 
@@ -95,7 +75,7 @@ didInitialize = function() {
     }
 };
 
-didRender = function() {
+AvailabilityCalendar.prototype.didRender = function() {
     var $calendarContainer = $('.calendar', this.$element);
     this.renderCalendar($calendarContainer);
     this.populateCalendar(this.shownMoment, $calendarContainer);
@@ -110,7 +90,7 @@ didRender = function() {
     this.setupEvent('mousedown touchstart', '.calendar .day', this, this.handleDayStartSelect);
 };
 
-renderCalendar = function($monthCalendarContainer) {
+AvailabilityCalendar.prototype.renderCalendar = function($monthCalendarContainer) {
     var header, dayRows, i;
     header = '<div class="row calendar-header">';
     header += '<div class="col">Mo</div>';
@@ -136,7 +116,7 @@ renderCalendar = function($monthCalendarContainer) {
     $monthCalendarContainer.append(header + dayRows);
 };
 
-renderSelections = function() {
+AvailabilityCalendar.prototype.renderSelections = function() {
     var selections = this.selections[this.shownMoment.year() + '-' + (this.shownMoment.month() + 1)],
         $calendarContainer = $('.calendar', this.$element),
         i, startMoment, endMoment, momentIterator, dayIDString;
@@ -179,7 +159,7 @@ renderSelections = function() {
     }
 };
 
-populateCalendar = function(moment, $calendarContainer) {
+AvailabilityCalendar.prototype.populateCalendar = function(moment, $calendarContainer) {
     var startDay = moment.date(1).weekday(),
         iteratorMoment, $dayBox, row, col, date;
 
@@ -228,11 +208,11 @@ populateCalendar = function(moment, $calendarContainer) {
     }
 };
 
-clearSelections = function() {
+AvailabilityCalendar.prototype.clearSelections = function() {
     $('.day', this.$element).removeClass('selected');
 };
 
-handlePrev = function(event) {
+AvailabilityCalendar.prototype.handlePrev = function(event) {
     var view = event.data,
         $calendarContainer;
 
@@ -246,7 +226,7 @@ handlePrev = function(event) {
     return false;
 };
 
-handleNext = function(event) {
+AvailabilityCalendar.prototype.handleNext = function(event) {
     var view = event.data,
         $calendarContainer;
 
@@ -260,7 +240,7 @@ handleNext = function(event) {
     return false;
 };
 
-handleAlwaysAvailable = function(event) {
+AvailabilityCalendar.prototype.handleAlwaysAvailable = function(event) {
     var view = event.data;
 
     view.setAlwaysState(1);
@@ -271,7 +251,7 @@ handleAlwaysAvailable = function(event) {
     return false;
 };
 
-handleNeverAvailable = function(event) {
+AvailabilityCalendar.prototype.handleNeverAvailable = function(event) {
     var view = event.data;
 
     view.setAlwaysState(0);
@@ -282,7 +262,7 @@ handleNeverAvailable = function(event) {
     return false;
 };
 
-handleDayStartSelect = function(event) {
+AvailabilityCalendar.prototype.handleDayStartSelect = function(event) {
     var view = event.data,
         $this = $(this);
 
@@ -313,7 +293,7 @@ handleDayStartSelect = function(event) {
     return false;
 };
 
-handleDayMoveSelect = function(event) {
+AvailabilityCalendar.prototype.handleDayMoveSelect = function(event) {
     //Check if mouse is over a box, if yes add selected between start selection and current, remove rest on current table, besides those that are after another start
     var view = event.data,
         $calendarContainer, selectionX, selectionY;
@@ -349,7 +329,7 @@ handleDayMoveSelect = function(event) {
     });
 };
 
-handleDayEndSelect = function(event) {
+AvailabilityCalendar.prototype.handleDayEndSelect = function(event) {
     var view = event.data,
         key, monthSelections, i, j, currentSelection, didSplice, startMomentA, endMomentA, startMomentB, endMomentB;
 
@@ -441,7 +421,7 @@ handleDayEndSelect = function(event) {
     view.renderSelections();
 };
 
-setAlwaysState = function(flag) {
+AvailabilityCalendar.prototype.setAlwaysState = function(flag) {
     var $alwaysBtn = $('.always-btn', this.$element),
         $neverBtn = $('.never-btn', this.$element);
     if (flag !== this.alwaysFlag) {
@@ -457,50 +437,24 @@ setAlwaysState = function(flag) {
     }
 };
 
-setSelections = function(selections) {
+AvailabilityCalendar.prototype.setSelections = function(selections) {
     this.selections = selections;
 };
 
-getSelections = function() {
+AvailabilityCalendar.prototype.getSelections = function() {
     return this.selections;
 };
 
-getAlwaysFlag = function() {
+AvailabilityCalendar.prototype.getAlwaysFlag = function() {
     return this.alwaysFlag;
 };
 
-isBeforeOrSameDay = function(momentA, momentB) {
+AvailabilityCalendar.prototype.isBeforeOrSameDay = function(momentA, momentB) {
     return momentA.isBefore(momentB, 'day') || momentA.isSame(momentB, 'day');
 };
 
-isAfterOrSameDay = function(momentA, momentB) {
+AvailabilityCalendar.prototype.isAfterOrSameDay = function(momentA, momentB) {
     return momentA.isAfter(momentB, 'day') || momentA.isSame(momentB, 'day');
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    renderCalendar: renderCalendar,
-    renderSelections: renderSelections,
-
-    populateCalendar: populateCalendar,
-
-    clearSelections: clearSelections,
-
-    handlePrev: handlePrev,
-    handleNext: handleNext,
-    handleAlwaysAvailable: handleAlwaysAvailable,
-    handleNeverAvailable: handleNeverAvailable,
-    handleDayStartSelect: handleDayStartSelect,
-    handleDayMoveSelect: handleDayMoveSelect,
-    handleDayEndSelect: handleDayEndSelect,
-
-    setAlwaysState: setAlwaysState,
-    setSelections: setSelections,
-    isBeforeOrSameDay: isBeforeOrSameDay,
-    isAfterOrSameDay: isAfterOrSameDay,
-
-    getSelections: getSelections,
-    getAlwaysFlag: getAlwaysFlag
-});
+module.exports = AvailabilityCalendar;

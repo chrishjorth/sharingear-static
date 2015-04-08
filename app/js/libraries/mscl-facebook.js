@@ -1,7 +1,8 @@
 /*jslint node: true */
 'use strict';
 
-var getLoginStatus,
+var load,
+    getLoginStatus,
     login,
 
     FB = null;
@@ -18,16 +19,18 @@ window.fbAsyncInit = function() {
     FB = window.FB;
 };
 
-(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {
-        return;
-    }
-    js = d.createElement(s);
-    js.id = id;
-    js.src = '//connect.facebook.net/en_US/sdk.js';
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
+load = function() {
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = '//connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+};
 
 getLoginStatus = function(callback) {
     var module = this;
@@ -54,6 +57,7 @@ login = function(callback, options) {
 };
 
 module.exports = {
+    load: load,
     getLoginStatus: getLoginStatus,
     login: login
 };

@@ -8,47 +8,36 @@
 
 var $ = require('jquery'),
 
-	PopupController = require('../popupcontroller.js'),
+    PopupController = require('../popupcontroller.js'),
 
-	MessagePopupTemplate = require('./messagepopup.html'),
+    MessagePopupTemplate = require('./messagepopup.html'),
 
-	MessagePopup,
+    wasClosed;
 
-    setMessage,
-    wasClosed,
-    didRender,
-    getWasClosed,
+function MessagePopup(options) {
+    PopupController.call(this, options);
+    this.template = MessagePopupTemplate;
+}
 
-    handleCancel;
+MessagePopup.prototype = new PopupController();
 
-didRender = function() {
+MessagePopup.prototype.didRender = function() {
     wasClosed = false;
     this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
 };
 
-setMessage = function(message) {
+MessagePopup.prototype.setMessage = function(message) {
     $('#popup-message', this.$element).html(message);
 };
 
-getWasClosed = function() {
+MessagePopup.prototype.getWasClosed = function() {
     return wasClosed;
 };
 
-handleCancel = function(event) {
+MessagePopup.prototype.handleCancel = function(event) {
     var view = event.data;
     wasClosed = true;
     view.hide();
 };
-
-MessagePopup = PopupController.inherit({
-    template: MessagePopupTemplate,
-
-    didRender: didRender,
-    setMessage: setMessage,
-
-    getWasClosed: getWasClosed,
-    handleCancel: handleCancel
-});
-
 
 module.exports = MessagePopup;

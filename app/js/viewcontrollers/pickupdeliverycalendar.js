@@ -16,26 +16,15 @@ var _ = require('underscore'),
 	Localization = require('../models/localization.js'),
 
 	pickupHintText = 'Select a pickup date',
-    deliveryHintText = 'Select a delivery date',
-    didInitialize,
-    didRender,
+    deliveryHintText = 'Select a delivery date';
 
-    renderMonthCalendar,
-    populateMonthCalendar,
-    clearSelections,
+function PickupDeliveryCalendar(options) {
+    ViewController.call(this, options);
+}
 
-    handlePrev,
-    handleNext,
-    handleDaySelection,
-    handlePickupDateClick,
-    handleDeliveryDateClick,
+PickupDeliveryCalendar.prototype = new ViewController();
 
-    switchToDeliveryTab,
-
-    isDayInAvailability,
-    isIntervalAvailable;
-
-didInitialize = function() {
+PickupDeliveryCalendar.prototype.didInitialize = function() {
     Moment.locale('en-custom', {
         week: {
             dow: 1,
@@ -84,7 +73,7 @@ didInitialize = function() {
     this.deliveryDateConfirmed = false; //Flag that confirms the user has selected a new deliverydate
 };
 
-didRender = function() {
+PickupDeliveryCalendar.prototype.didRender = function() {
     var $calendarContainer = $('.calendar', this.$element),
         $pickupTab, $deliveryTab;
 
@@ -124,7 +113,7 @@ didRender = function() {
     this.setupEvent('click', '#pickupdeliverycalendar-deliverydate', this, this.handleDeliveryDateClick);
 };
 
-renderMonthCalendar = function($monthCalendarContainer) {
+PickupDeliveryCalendar.prototype.renderMonthCalendar = function($monthCalendarContainer) {
     var header, dayRows, i;
     header = '<div class="row bs-reset calendar-header">';
     header += '<div class="col">Mo</div>';
@@ -150,7 +139,7 @@ renderMonthCalendar = function($monthCalendarContainer) {
     $monthCalendarContainer.append(header + dayRows);
 };
 
-populateMonthCalendar = function(moment, $calendarContainer) {
+PickupDeliveryCalendar.prototype.populateMonthCalendar = function(moment, $calendarContainer) {
     var startDay = moment.date(1).weekday(),
         iteratorMoment, disable, isInInterval, $dayBox, row, col, date;
 
@@ -232,12 +221,12 @@ populateMonthCalendar = function(moment, $calendarContainer) {
     }
 };
 
-clearSelections = function() {
+PickupDeliveryCalendar.prototype.clearSelections = function() {
     $('.day', this.$element).removeClass('selected');
     $('.day', this.$element).removeClass('pickup');
 };
 
-handlePrev = function(event) {
+PickupDeliveryCalendar.prototype.handlePrev = function(event) {
     var view = event.data,
         $calendarContainer;
 
@@ -253,7 +242,7 @@ handlePrev = function(event) {
     }
 };
 
-handleNext = function(event) {
+PickupDeliveryCalendar.prototype.handleNext = function(event) {
     var view = event.data,
         $calendarContainer;
 
@@ -270,7 +259,7 @@ handleNext = function(event) {
     }
 };
 
-handleDaySelection = function(event) {
+PickupDeliveryCalendar.prototype.handleDaySelection = function(event) {
     var view = event.data,
         $dayBox = $(this),
         $pickupTab, $deliveryTab;
@@ -330,7 +319,7 @@ handleDaySelection = function(event) {
 
 };
 
-handlePickupDateClick = function(event) {
+PickupDeliveryCalendar.prototype.handlePickupDateClick = function(event) {
     var view = event.data,
         $pickupTab, $deliveryTab;
 
@@ -347,7 +336,7 @@ handlePickupDateClick = function(event) {
     }
 };
 
-handleDeliveryDateClick = function(event) {
+PickupDeliveryCalendar.prototype.handleDeliveryDateClick = function(event) {
     var view = event.data;
 
     if (view.pickupActive === true && view.pickupDate !== null) {
@@ -355,7 +344,7 @@ handleDeliveryDateClick = function(event) {
     }
 };
 
-switchToDeliveryTab = function() {
+PickupDeliveryCalendar.prototype.switchToDeliveryTab = function() {
     var $pickupTab, $deliveryTab;
 
     $pickupTab = $('#pickupdeliverycalendar-pickupdate', this.$element);
@@ -383,7 +372,7 @@ switchToDeliveryTab = function() {
     this.populateMonthCalendar(this.displayedDeliveryMonth, $('.calendar', this.$element));
 };
 
-isDayInAvailability = function(moment) {
+PickupDeliveryCalendar.prototype.isDayInAvailability = function(moment) {
     var i, startMoment, endMoment;
     for (i = 0; i < this.availability.length; i++) {
         startMoment = new Moment.tz(this.availability[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
@@ -400,7 +389,7 @@ isDayInAvailability = function(moment) {
  * and must not separate the two moments.
  * @assertion: startMoment and endMoment are available dates.
  */
-isIntervalAvailable = function(startMoment, endMoment) {
+PickupDeliveryCalendar.prototype.isIntervalAvailable = function(startMoment, endMoment) {
     var foundInterval = false,
         i = 0,
         intervalStartMoment, intervalEndMoment;
@@ -428,22 +417,4 @@ isIntervalAvailable = function(startMoment, endMoment) {
     }
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    renderMonthCalendar: renderMonthCalendar,
-    populateMonthCalendar: populateMonthCalendar,
-    clearSelections: clearSelections,
-
-    handlePrev: handlePrev,
-    handleNext: handleNext,
-    handleDaySelection: handleDaySelection,
-    handlePickupDateClick: handlePickupDateClick,
-    handleDeliveryDateClick: handleDeliveryDateClick,
-
-    switchToDeliveryTab: switchToDeliveryTab,
-
-    isDayInAvailability: isDayInAvailability,
-    isIntervalAvailable: isIntervalAvailable
-});
+module.exports = PickupDeliveryCalendar;

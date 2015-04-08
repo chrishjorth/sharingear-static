@@ -13,28 +13,20 @@ var $ = require('jquery'),
     Utilities = require('../utilities.js'),
     App = require('../app.js'),
 
-    defaultTitle,
+    defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
 
-    didInitialize,
-    didRender,
-    didResize,
-    populateMainMenu,
-    renderProfilePicture,
-    handleNavbarToggle,
-    handleLogin,
-    setTitle,
-    _updateTitle,
-    changeActiveState;
+function NavigationHeader(options) {
+    ViewController.call(this, options);
+}
 
-/* Static variables */
-defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+NavigationHeader.prototype = new ViewController();
 
-didInitialize = function() {
+NavigationHeader.prototype.didInitialize = function() {
     this.isMobile = false;
     this.title = defaultTitle;
 };
 
-didRender = function() {
+NavigationHeader.prototype.didRender = function() {
     this._updateTitle();
     this.populateMainMenu();
     this.renderProfilePicture();
@@ -44,7 +36,7 @@ didRender = function() {
     this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
 };
 
-didResize = function(event) {
+NavigationHeader.prototype.didResize = function(event) {
     var view = event.data;
     if (Utilities.isMobile() !== view.isMobile) {
         view.populateMainMenu();
@@ -52,7 +44,7 @@ didResize = function(event) {
     view._updateTitle();
 };
 
-populateMainMenu = function() {
+NavigationHeader.prototype.populateMainMenu = function() {
     var html = '',
         $slideMenu, $dropdownMenu, $menuList;
 
@@ -97,7 +89,7 @@ populateMainMenu = function() {
     $menuList.html(html);
 };
 
-renderProfilePicture = function() {
+NavigationHeader.prototype.renderProfilePicture = function() {
     var view = this,
         img;
     if (App.user && App.user.data.image_url) {
@@ -119,7 +111,7 @@ renderProfilePicture = function() {
     }
 };
 
-handleNavbarToggle = function(event) {
+NavigationHeader.prototype.handleNavbarToggle = function(event) {
     var view = event.data,
         $this = $(this),
         $viewContainer = $('.view-container'),
@@ -160,7 +152,7 @@ handleNavbarToggle = function(event) {
     }
 };
 
-handleLogin = function(event, callback) {
+NavigationHeader.prototype.handleLogin = function(event, callback) {
     var view = event.data,
         user = App.user;
 
@@ -182,7 +174,7 @@ handleLogin = function(event, callback) {
 /**
  * @param title: the text to display as title, if null title is set to default
  */
-setTitle = function(title) {
+NavigationHeader.prototype.setTitle = function(title) {
     if (!title || title === null) {
         title = defaultTitle;
     }
@@ -190,7 +182,7 @@ setTitle = function(title) {
     this._updateTitle();
 };
 
-_updateTitle = function() {
+NavigationHeader.prototype._updateTitle = function() {
     if (Utilities.isMobile() === true) {
         $('.sg-navbar-brand', this.$element).html(this.title);
     } else {
@@ -198,20 +190,9 @@ _updateTitle = function() {
     }
 };
 
-changeActiveState = function($menuItem) {
+NavigationHeader.prototype.changeActiveState = function($menuItem) {
     $('.list-group-item', this.$element).removeClass('list-group-item-selected');
     $menuItem.addClass('list-group-item-selected');
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    didResize: didResize,
-    populateMainMenu: populateMainMenu,
-    renderProfilePicture: renderProfilePicture,
-    handleNavbarToggle: handleNavbarToggle,
-    handleLogin: handleLogin,
-    setTitle: setTitle,
-    _updateTitle: _updateTitle,
-    changeActiveState: changeActiveState
-});
+module.exports = NavigationHeader;

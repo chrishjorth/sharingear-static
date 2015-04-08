@@ -63,7 +63,7 @@ refresh = function() {
  * Loads the header portion of the site. The header contains Sharingear's main navigation and is the same across the app.
  */
 loadHeader = function($headerContainer, callback) {
-    this.header = new HeaderController.constructor({
+    this.header = new HeaderController({
         name: 'header',
         $element: $headerContainer,
         labels: {},

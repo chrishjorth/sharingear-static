@@ -17,29 +17,15 @@ var _ = require('underscore'),
 
 	Localization = require('../models/localization.js'),
 
-	numberOfGearSuggestions = 5,
+	numberOfGearSuggestions = 5;
 
-    didInitialize,
-    didRender,
-    loadLocationAutoComplete,
-    prefillForm,
+function GearSearchForm(options) {
+    ViewController.call(this, options);
+}
 
-    handlePickupDate,
-    handleDeliveryDate,
-    handlePickupSelection,
-    handleDeliverySelection,
+GearSearchForm.prototype = new ViewController();
 
-    handleSearch,
-    showGearSuggestions,
-    drawGearSuggestions,
-    gearInputArrowKeypress,
-    searchGearLoseFocus,
-    searchGearGainFocus,
-    setGearSuggestion,
-
-    getSearchParameters;
-
-didInitialize = function() {
+GearSearchForm.prototype.didInitialize = function() {
     this.gearSelectionIndex = 0;
     this.gearInputString = '';
     this.gearSuggestionsArray = null; // array of strings
@@ -49,7 +35,7 @@ didInitialize = function() {
     this.deliveryDate = null;
 };
 
-didRender = function() {
+GearSearchForm.prototype.didRender = function() {
     var view = this,
         $searchPickup, $searchReturn;
 
@@ -70,7 +56,7 @@ didRender = function() {
     this.setupEvent('mousedown touchstart', '.suggestion', this, view.setGearSuggestion);
 };
 
-loadLocationAutoComplete = function() {
+GearSearchForm.prototype.loadLocationAutoComplete = function() {
     if(GoogleMaps.isLoaded() === false) {
         setTimeout(this.loadLocationAutoComplete, 10);
         return;
@@ -81,7 +67,7 @@ loadLocationAutoComplete = function() {
     });
 };
 
-prefillForm = function() {
+GearSearchForm.prototype.prefillForm = function() {
     var view = this,
         $searchPickup, $searchReturn,
         queryString, previousSearchGear, previousSearchLocation, previousSearchDateRange, startDate, endDate;
@@ -89,7 +75,7 @@ prefillForm = function() {
     $searchPickup = $('#search-pickup', view.$element);
     $searchReturn = $('#search-return', view.$element);
 
-    if (App.user.data && App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
+    if (App.user && App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
         $('#search-location', view.$element).attr('placeholder', App.user.data.currentCity);
     }
 
@@ -114,7 +100,7 @@ prefillForm = function() {
     $searchReturn.val(endDate.format('DD/MM/YYYY'));
 };
 
-handlePickupDate = function(event) {
+GearSearchForm.prototype.handlePickupDate = function(event) {
     var view = event.data,
         passedData, pickupInputString, deliveryInputString;
 
@@ -137,7 +123,7 @@ handlePickupDate = function(event) {
     App.router.openModalView('pickupdeliverycalendar', passedData);
 };
 
-handleDeliveryDate = function(event) {
+GearSearchForm.prototype.handleDeliveryDate = function(event) {
     var view = event.data,
         passedData, pickupInputString, deliveryInputString;
 
@@ -160,7 +146,7 @@ handleDeliveryDate = function(event) {
     App.router.openModalView('pickupdeliverycalendar', passedData);
 };
 
-handlePickupSelection = function(vc, callback) {
+GearSearchForm.prototype.handlePickupSelection = function(vc, callback) {
     $('#search-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
     this.deliveryDateConfirmed = false;
     if (_.isFunction(callback) === true) {
@@ -168,7 +154,7 @@ handlePickupSelection = function(vc, callback) {
     }
 };
 
-handleDeliverySelection = function(vc, callback) {
+GearSearchForm.prototype.handleDeliverySelection = function(vc, callback) {
     $('#search-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
     if (vc.deliveryDateConfirmed === true) {
         App.router.closeModalView();
@@ -191,7 +177,7 @@ handleDeliverySelection = function(vc, callback) {
  * @param callback: callback function
  * @return Always false to avoid triggering HTML form
  */
-handleSearch = function(event) {
+GearSearchForm.prototype.handleSearch = function(event) {
     var view = event.data,
         searchParams, queryString;
 
@@ -206,7 +192,7 @@ handleSearch = function(event) {
     return false;
 };
 
-showGearSuggestions = function(event) {
+GearSearchForm.prototype.showGearSuggestions = function(event) {
     var view = event.data,
         $searchGear = $('#search-gear', view.$element),
         searchString, gearClassificationList, gearBrandList, brandsSuggestions, classificationSuggestions;
@@ -249,7 +235,7 @@ showGearSuggestions = function(event) {
     view.drawGearSuggestions();
 };
 
-drawGearSuggestions = function() {
+GearSearchForm.prototype.drawGearSuggestions = function() {
     var view = this,
         $gearSuggestionBox = $('#gear-suggestions-box', view.$element),
         $searchField, suggestions, i, html, j;
@@ -298,7 +284,7 @@ drawGearSuggestions = function() {
     }
 };
 
-gearInputArrowKeypress = function(event) {
+GearSearchForm.prototype.gearInputArrowKeypress = function(event) {
     var view = event.data,
         $searchGear,
         possibleSelections, i;
@@ -346,24 +332,24 @@ gearInputArrowKeypress = function(event) {
     return false;
 };
 
-searchGearLoseFocus = function(event) {
+GearSearchForm.prototype.searchGearLoseFocus = function(event) {
     var view = event.data;
     // clears suggestion box when losing focus
     $('#gear-suggestions-box', view.$element).hide();
 };
 
-searchGearGainFocus = function(event) {
+GearSearchForm.prototype.searchGearGainFocus = function(event) {
     var view = event.data;
     $('#gear-suggestions-box', view.$element).show();
 };
 
-setGearSuggestion = function(event) {
+GearSearchForm.prototype.setGearSuggestion = function(event) {
     var view = event.data;
     $('#search-gear', view.$element).val($(event.target).text());
     $('#gear-suggestions-box', view.$element).hide();
 };
 
-getSearchParameters = function() {
+GearSearchForm.prototype.getSearchParameters = function() {
     var view = this,
         $locationContainer,
         location, searchString, dateRange, pickupDate, returnDate, searchParameters;
@@ -392,24 +378,4 @@ getSearchParameters = function() {
     return searchParameters;
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    loadLocationAutoComplete: loadLocationAutoComplete,
-    prefillForm: prefillForm,
-
-    handlePickupDate: handlePickupDate,
-    handleDeliveryDate: handleDeliveryDate,
-    handlePickupSelection: handlePickupSelection,
-    handleDeliverySelection: handleDeliverySelection,
-
-    handleSearch: handleSearch,
-    showGearSuggestions: showGearSuggestions,
-    drawGearSuggestions: drawGearSuggestions,
-    gearInputArrowKeypress: gearInputArrowKeypress,
-    searchGearLoseFocus: searchGearLoseFocus,
-    searchGearGainFocus: searchGearGainFocus,
-    setGearSuggestion: setGearSuggestion,
-
-    getSearchParameters: getSearchParameters
-});
+module.exports = GearSearchForm;

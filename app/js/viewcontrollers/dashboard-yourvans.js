@@ -15,20 +15,17 @@ var _ = require('underscore'),
 
     VanList = require('../models/vanlist.js'),
 
-    vanBlockID,
+    vanBlockID = 'yourvans-vans-block';
 
-    didInitialize,
-    didRender,
-    populateYourVans,
+function DashboardYourVans(options) {
+    ViewController.call(this, options);
+}
 
-    handleAddVan,
-    handleEditVanItem;
+DashboardYourVans.prototype = new ViewController();
 
-vanBlockID = 'yourvans-vans-block';
-
-didInitialize = function() {
+DashboardYourVans.prototype.didInitialize = function() {
     var view = this;
-    view.vanList = new VanList.constructor({
+    view.vanList = new VanList({
         rootURL: Config.API_URL
     });
     view.vanList.initialize();
@@ -37,7 +34,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+DashboardYourVans.prototype.didRender = function() {
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your vans');
     }
@@ -52,7 +49,7 @@ didRender = function() {
     this.setupEvent('click', '.yourvan-item-edit-btn', this, this.handleEditVanItem);
 };
 
-populateYourVans = function(callback) {
+DashboardYourVans.prototype.populateYourVans = function(callback) {
     var view = this,
         YourVansItemTemplate;
     YourVansItemTemplate = require('../../templates/yourvans-item.html');
@@ -92,22 +89,15 @@ populateYourVans = function(callback) {
     }
 };
 
-handleAddVan = function() {
+DashboardYourVans.prototype.handleAddVan = function() {
     App.router.openModalView('addvan');
 };
 
-handleEditVanItem = function(event) {
+DashboardYourVans.prototype.handleEditVanItem = function(event) {
     var view = event.data,
         van;
     van = view.vanList.getVanItem('id', $(this).data('yourvanid'));
     App.router.openModalView('editvan', van);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourVans: populateYourVans,
-
-    handleAddVan: handleAddVan,
-    handleEditVanItem: handleEditVanItem
-});
+module.exports = DashboardYourVans;

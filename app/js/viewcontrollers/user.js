@@ -15,20 +15,15 @@ var _ = require('underscore'),
     User = require('../models/user.js'),
     GearList = require('../models/gearlist.js'),
     TechProfileList = require('../models/techprofilelist.js'),
-    VanList = require('../models/vanlist.js'),
+    VanList = require('../models/vanlist.js');
 
-    didInitialize,
-    didRender,
+function User(options) {
+    ViewController.call(this, options);
+}
 
-    renderProfilePic,
-    populateGear,
-    populateTechProfiles,
-    populateVans,
-    renderTabs,
+User.prototype = new ViewController();
 
-    handleTab;
-
-didInitialize = function() {
+User.prototype.didInitialize = function() {
     var view = this,
         pathSections, gearID;
 
@@ -41,7 +36,7 @@ didInitialize = function() {
     }
     this.subPath = ''; //To avoid rendering a subview based on the gear id
 
-    this.user = new User.constructor({
+    this.user = new User({
         rootURL: Config.API_URL,
         data: {
             id: gearID
@@ -66,7 +61,7 @@ didInitialize = function() {
         view.render();
     });
 
-    this.userGear = new GearList.constructor({
+    this.userGear = new GearList({
         rootURL: Config.API_URL
     });
     this.userGear.initialize();
@@ -74,7 +69,7 @@ didInitialize = function() {
         view.render();
     });
 
-    this.userTechProfiles = new TechProfileList.constructor({
+    this.userTechProfiles = new TechProfileList({
         rootURL: Config.API_URL
     });
     this.userTechProfiles.initialize();
@@ -82,7 +77,7 @@ didInitialize = function() {
         view.render();
     });
 
-    this.userVans = new VanList.constructor({
+    this.userVans = new VanList({
         rootURL: Config.API_URL
     });
     this.userVans.initialize();
@@ -91,7 +86,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+User.prototype.didRender = function() {
     this.renderProfilePic();
     this.renderTabs();
     this.populateGear();
@@ -101,7 +96,7 @@ didRender = function() {
     this.setupEvent('click', '.sg-tabs button', this, this.handleTab);
 };
 
-renderProfilePic = function() {
+User.prototype.renderProfilePic = function() {
     var view = this,
         img;
 
@@ -125,7 +120,7 @@ renderProfilePic = function() {
     img.src = this.user.data.image_url;
 };
 
-populateGear = function() {
+User.prototype.populateGear = function() {
     var view = this,
         GearItemTemplate;
 
@@ -159,7 +154,7 @@ populateGear = function() {
     }
 };
 
-populateTechProfiles = function() {
+User.prototype.populateTechProfiles = function() {
     var view = this,
         TechProfilesItemTemplate;
     TechProfilesItemTemplate = require('../../templates/user-techprofiles-item.html');
@@ -183,7 +178,7 @@ populateTechProfiles = function() {
     }
 };
 
-populateVans = function() {
+User.prototype.populateVans = function() {
     var view = this,
         VanItemTemplate;
     VanItemTemplate = require('../../templates/user-vans-item.html');
@@ -216,7 +211,7 @@ populateVans = function() {
     }
 };
 
-renderTabs = function() {
+User.prototype.renderTabs = function() {
     var view = this;
     $('.sg-tab-panel', view.$element).each(function() {
         var $this = $(this),
@@ -240,21 +235,10 @@ renderTabs = function() {
     $('#sg-tabs-' + view.currentTab, view.$element).addClass('active');
 };
 
-handleTab = function(event) {
+User.prototype.handleTab = function(event) {
     var view = event.data;
     view.currentTab = $(this).parent().attr('id').substring(8); //8 is the length of 'sg-tabs-'
     view.renderTabs();
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    renderProfilePic: renderProfilePic,
-    populateGear: populateGear,
-    populateTechProfiles: populateTechProfiles,
-    populateVans: populateVans,
-    renderTabs: renderTabs,
-
-    handleTab: handleTab
-});
+module.exports = User;

@@ -7,39 +7,25 @@
 'use strict';
 
 var _ = require('underscore'),
-	$ = require('jquery'),
-	GoogleMaps = require('../libraries/mscl-googlemaps.js'),
-	Moment = require('moment-timezone'),
+    $ = require('jquery'),
+    GoogleMaps = require('../libraries/mscl-googlemaps.js'),
+    Moment = require('moment-timezone'),
 
-	Utilities = require('../utilities.js'),
-	ViewController = require('../viewcontroller.js'),
-	App = require('../app.js'),
+    Utilities = require('../utilities.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-	Localization = require('../models/localization.js'),
-	
-	numberOfGearSuggestions = 5,
+    Localization = require('../models/localization.js'),
 
-    didInitialize,
-    didRender,
-    loadLocationAutoComplete,
-    prefillForm,
+    numberOfGearSuggestions = 5;
 
-    handlePickupDate,
-    handleDeliveryDate,
-    handlePickupSelection,
-    handleDeliverySelection,
+function VanSearchForm(options) {
+    ViewController.call(this, options);
+}
 
-    handleSearch,
-    showVanSuggestions,
-    drawVanSuggestions,
-    vanInputArrowKeypress,
-    searchVanLoseFocus,
-    searchVanGainFocus,
-    setVanSuggestion,
+VanSearchForm.prototype = new ViewController();
 
-    getSearchParameters;
-
-didInitialize = function() {
+VanSearchForm.prototype.didInitialize = function() {
     this.vanSelectionIndex = 0;
     this.vanInputString = '';
     this.vanSuggestionsArray = []; // array of strings
@@ -47,7 +33,7 @@ didInitialize = function() {
     this.calendarVC = null;
 };
 
-didRender = function() {
+VanSearchForm.prototype.didRender = function() {
     var view = this,
         $searchPickup, $searchReturn;
 
@@ -68,8 +54,8 @@ didRender = function() {
     this.setupEvent('mousedown touchstart', '.suggestion', this, view.setVanSuggestion);
 };
 
-loadLocationAutoComplete = function() {
-    if(GoogleMaps.isLoaded() === false) {
+VanSearchForm.prototype.loadLocationAutoComplete = function() {
+    if (GoogleMaps.isLoaded() === false) {
         setTimeout(this.loadLocationAutoComplete, 10);
         return;
     }
@@ -79,7 +65,7 @@ loadLocationAutoComplete = function() {
     });
 };
 
-prefillForm = function() {
+VanSearchForm.prototype.prefillForm = function() {
     var view = this,
         $searchPickup, $searchReturn,
         queryString, previousSearchVan, previousSearchLocation, previousSearchDateRange, startDate, endDate;
@@ -87,7 +73,7 @@ prefillForm = function() {
     $searchPickup = $('#vansearch-pickup', view.$element);
     $searchReturn = $('#vansearch-return', view.$element);
 
-    if (App.user.data && App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
+    if (App.user && App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
         $('#vansearch-location', view.$element).attr('placeholder', App.user.data.currentCity);
     }
 
@@ -112,7 +98,7 @@ prefillForm = function() {
     $searchReturn.val(endDate.format('DD/MM/YYYY'));
 };
 
-handlePickupDate = function(event) {
+VanSearchForm.prototype.handlePickupDate = function(event) {
     var view = event.data,
         passedData, pickupInputString, deliveryInputString;
 
@@ -135,7 +121,7 @@ handlePickupDate = function(event) {
     App.router.openModalView('pickupdeliverycalendar', passedData);
 };
 
-handleDeliveryDate = function(event) {
+VanSearchForm.prototype.handleDeliveryDate = function(event) {
     var view = event.data,
         passedData, pickupInputString, deliveryInputString;
 
@@ -159,7 +145,7 @@ handleDeliveryDate = function(event) {
     App.router.openModalView('pickupdeliverycalendar', passedData);
 };
 
-handlePickupSelection = function(vc, callback) {
+VanSearchForm.prototype.handlePickupSelection = function(vc, callback) {
     $('#vansearch-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
     this.deliveryDateConfirmed = false;
     if (_.isFunction(callback) === true) {
@@ -167,7 +153,7 @@ handlePickupSelection = function(vc, callback) {
     }
 };
 
-handleDeliverySelection = function(vc, callback) {
+VanSearchForm.prototype.handleDeliverySelection = function(vc, callback) {
     $('#vansearch-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
     if (this.deliveryDateConfirmed === true) {
         App.router.closeModalView();
@@ -191,7 +177,7 @@ handleDeliverySelection = function(vc, callback) {
  * @param callback: callback function
  * @return Always false to avoid triggering HTML form
  */
-handleSearch = function(event) {
+VanSearchForm.prototype.handleSearch = function(event) {
     var view = event.data,
         searchParams, queryString;
 
@@ -206,7 +192,7 @@ handleSearch = function(event) {
     return false;
 };
 
-showVanSuggestions = function(event) {
+VanSearchForm.prototype.showVanSuggestions = function(event) {
     var view = event.data,
         $searchVan = $('#vansearch-van', view.$element),
         searchString, vanClassificationList, classificationSuggestions;
@@ -236,7 +222,7 @@ showVanSuggestions = function(event) {
     view.drawVanSuggestions();
 };
 
-drawVanSuggestions = function() {
+VanSearchForm.prototype.drawVanSuggestions = function() {
     var view = this,
         $vansSuggestionBox = $('#vans-suggestions-box', view.$element),
         $searchField, suggestions, i, html, j;
@@ -285,7 +271,7 @@ drawVanSuggestions = function() {
     }
 };
 
-vanInputArrowKeypress = function(event) {
+VanSearchForm.prototype.vanInputArrowKeypress = function(event) {
     var view = event.data,
         $searchVan,
         possibleSelections, i;
@@ -333,24 +319,24 @@ vanInputArrowKeypress = function(event) {
     return false;
 };
 
-searchVanLoseFocus = function(event) {
+VanSearchForm.prototype.searchVanLoseFocus = function(event) {
     var view = event.data;
     // clears suggestion box when losing focus
     $('#vans-suggestions-box', view.$element).hide();
 };
 
-searchVanGainFocus = function(event) {
+VanSearchForm.prototype.searchVanGainFocus = function(event) {
     var view = event.data;
     $('#vans-suggestions-box', view.$element).show();
 };
 
-setVanSuggestion = function(event) {
+VanSearchForm.prototype.setVanSuggestion = function(event) {
     var view = event.data;
     $('#vansearch-van', view.$element).val($(event.target).text());
     $('#vans-suggestions-box', view.$element).hide();
 };
 
-getSearchParameters = function() {
+VanSearchForm.prototype.getSearchParameters = function() {
     var view = this,
         $locationContainer,
         location, searchString, dateRange, pickupDate, returnDate, searchParameters;
@@ -379,24 +365,4 @@ getSearchParameters = function() {
     return searchParameters;
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    loadLocationAutoComplete: loadLocationAutoComplete,
-    prefillForm: prefillForm,
-
-    handlePickupDate: handlePickupDate,
-    handleDeliveryDate: handleDeliveryDate,
-    handlePickupSelection: handlePickupSelection,
-    handleDeliverySelection: handleDeliverySelection,
-
-    handleSearch: handleSearch,
-    showVanSuggestions: showVanSuggestions,
-    drawVanSuggestions: drawVanSuggestions,
-    vanInputArrowKeypress: vanInputArrowKeypress,
-    searchVanLoseFocus: searchVanLoseFocus,
-    searchVanGainFocus: searchVanGainFocus,
-    setVanSuggestion: setVanSuggestion,
-
-    getSearchParameters: getSearchParameters
-});
+module.exports = VanSearchForm;

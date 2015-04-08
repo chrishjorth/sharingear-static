@@ -15,21 +15,19 @@ var _ = require('underscore'),
 
     VanList = require('../models/vanlist.js'),
 
-    vanBlockID,
+    vanBlockID = 'yourrentals-van-block';
 
-    didInitialize,
-    didRender,
-    populateYourRentals,
+function DashboardYourVanRentals(options) {
+    ViewController.call(this, options);
+}
 
-    handleBooking;
+DashboardYourVanRentals.prototype = new ViewController();
 
-vanBlockID = 'yourrentals-van-block';
-
-didInitialize = function() {
+DashboardYourVanRentals.prototype.didInitialize = function() {
     var view = this;
 
     this.didFetch = false;
-    this.vanList = new VanList.constructor({
+    this.vanList = new VanList({
         rootURL: Config.API_URL
     });
     this.vanList.initialize();
@@ -39,7 +37,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+DashboardYourVanRentals.prototype.didRender = function() {
     if(App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Van rentals');
     }
@@ -51,7 +49,7 @@ didRender = function() {
     this.setupEvent('click', '#yourrentals-van-block .sg-list-item button', this, this.handleBooking);
 };
 
-populateYourRentals = function(callback) {
+DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
     var view = this,
         YourRentalsItemTemplate;
     YourRentalsItemTemplate = require('../../templates/yourvanrentals-item.html');
@@ -116,7 +114,7 @@ populateYourRentals = function(callback) {
     }
 };
 
-handleBooking = function(event) {
+DashboardYourVanRentals.prototype.handleBooking = function(event) {
     var view = event.data,
         bookingID = $(this).data('bookingid'),
         van, passedData;
@@ -130,10 +128,4 @@ handleBooking = function(event) {
     App.router.openModalView('booking', passedData);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourRentals: populateYourRentals,
-
-    handleBooking: handleBooking
-});
+module.exports = DashboardYourVanRentals;

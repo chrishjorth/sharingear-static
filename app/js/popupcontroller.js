@@ -6,46 +6,34 @@
 /*jslint node: true */
 'use strict';
 
-var _ = require('underscore'),
-	$ = require('jquery'),
+var $ = require('jquery'),
 
-	Utilities = require('./utilities.js'),
-	ViewController = require('./viewcontroller.js'),
+    ViewController = require('./viewcontroller.js'),
 
-	$popupLightbox = $('#popup-lightbox'),
-    inherit, show, hide, setTitle;
+    $popupLightbox = $('#popup-lightbox'),
+    PopupController;
 
-show = function() {
+function PopupController(options) {
+    ViewController.call(this, options);
+    this.$element = $('.popup-container', $popupLightbox);
+    this.title = 'Popup';
+}
+
+PopupController.prototype = new ViewController();
+
+PopupController.prototype.show = function() {
     $popupLightbox.removeClass('hidden');
     this.templateParameters.title = this.title;
     this.render();
 };
 
-hide = function() {
+PopupController.prototype.hide = function() {
     $popupLightbox.addClass('hidden');
     this.close();
 };
 
-setTitle = function(title) {
+PopupController.prototype.setTitle = function(title) {
     this.title = title;
 };
 
-inherit = function(inheritOptions) {
-    var options = {
-        $element: $('.popup-container', $popupLightbox),
-        title: 'Popup',
-
-        show: show,
-        hide: hide,
-        setTitle: setTitle
-    };
-    _.extend(options, inheritOptions);
-
-    return {
-        constructor: Utilities.inherit(ViewController.constructor, options)
-    };
-};
-
-module.exports = {
-    inherit: inherit
-};
+module.exports = PopupController;

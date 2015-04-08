@@ -19,43 +19,17 @@ var _ = require('underscore'),
     Van = require('../models/van.js'),
 
     countryDefault = 'Select country:',
-    geocoder,
-
-    didInitialize,
-    didRender,
-
-    getTabID,
-    toggleLoading,
-
-    addVanIcons,
-    renderAccessories,
-    prepopulateVan,
-    handleVanRadio,
-    saveVan,
-
-    populatePhotos,
-    handleImageUpload,
-
-    populateCountries,
-    populatePriceSuggestions,
-    handlePriceChange,
-    handleDeliveryCheckbox,
-    savePriceLocation,
-
-    renderAvailability,
-    renderSubmerchantForm,
-    saveAvailability,
-
-    handleCancel,
-    handleNext,
-    handleViewVanProfile,
-    handleAddMoreVans,
-
-    showPanel;
+    geocoder;
 
 geocoder = new GoogleMaps.Geocoder();
 
-didInitialize = function() {
+function AddVan(options) {
+    ViewController.call(this, options);
+}
+
+AddVan.prototype = new ViewController();
+
+AddVan.prototype.didInitialize = function() {
     if (App.user.data.id === null) {
         this.ready = false;
         App.router.navigateTo('home');
@@ -76,7 +50,7 @@ didInitialize = function() {
         currency: App.user.data.currency
     };
 
-    this.newVan = new Van.constructor({
+    this.newVan = new Van({
         rootURL: Config.API_URL
     });
     this.newVan.initialize();
@@ -89,7 +63,7 @@ didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 };
 
-didRender = function() {
+AddVan.prototype.didRender = function() {
     var $accessoriesContainer = $('#addvan-accessories', this.$element);
     if ($accessoriesContainer.hasClass('hidden') === false) {
         $accessoriesContainer.addClass('hidden');
@@ -115,7 +89,7 @@ didRender = function() {
     this.setupEvent('change', '#van-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 };
 
-getTabID = function() {
+AddVan.prototype.getTabID = function() {
     var tabID = null;
     $('.addvan-panel').each(function() {
         var $this = $(this);
@@ -126,7 +100,7 @@ getTabID = function() {
     return tabID;
 };
 
-populatePriceSuggestions = function() {
+AddVan.prototype.populatePriceSuggestions = function() {
     var vanClassification = App.contentClassification.data.vanClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
@@ -150,7 +124,7 @@ populatePriceSuggestions = function() {
     });
 };
 
-toggleLoading = function() {
+AddVan.prototype.toggleLoading = function() {
     if (this.isLoading === true) {
         $('.next-btn', this.$element).html('Next <i class="fa fa-arrow-circle-right"></i>');
         this.isLoading = false;
@@ -160,7 +134,7 @@ toggleLoading = function() {
     }
 };
 
-addVanIcons = function() {
+AddVan.prototype.addVanIcons = function() {
     var view = this,
         vanClassification = App.contentClassification.data.vanClassification,
         html = '',
@@ -180,7 +154,7 @@ addVanIcons = function() {
     $('.vanbuttonlist-container', view.$element).append(html);
 };
 
-renderAccessories = function() {
+AddVan.prototype.renderAccessories = function() {
     var view = this,
         vanClassification = App.contentClassification.data.vanClassification,
         html = '',
@@ -211,7 +185,7 @@ renderAccessories = function() {
 /**
  * Prefills the form with passed data.
  */
-prepopulateVan = function() {
+AddVan.prototype.prepopulateVan = function() {
     var van;
     if (!this.passedData || this.passedData === null) {
         return;
@@ -238,13 +212,13 @@ prepopulateVan = function() {
 /**
  * @assertion: vanClassification has been loaded
  */
-handleVanRadio = function(event) {
+AddVan.prototype.handleVanRadio = function(event) {
     var view = event.data;
     $('.hint1', view.$element).addClass('hidden');
     view.renderAccessories();
 };
 
-saveVan = function() {
+AddVan.prototype.saveVan = function() {
     var view = this,
         accessoriesArray = [],
         newData;
@@ -295,7 +269,7 @@ saveVan = function() {
 
 };
 
-populatePhotos = function() {
+AddVan.prototype.populatePhotos = function() {
     var images = this.newVan.data.images.split(','),
         html = '',
         i;
@@ -308,7 +282,7 @@ populatePhotos = function() {
     $('#dashboard-addvanphotos-form .thumb-list-container ul', this.$element).append(html);
 };
 
-handleImageUpload = function(event) {
+AddVan.prototype.handleImageUpload = function(event) {
     var view = event.data,
         $file = $(this);
 
@@ -331,7 +305,7 @@ handleImageUpload = function(event) {
     });
 };
 
-populateCountries = function($select) {
+AddVan.prototype.populateCountries = function($select) {
     var html = $('option', $select).first()[0].outerHTML,
         countriesArray, i;
     countriesArray = Localization.getCountries();
@@ -344,7 +318,7 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-handlePriceChange = function() {
+AddVan.prototype.handlePriceChange = function() {
     var $this = $(this),
         price;
     price = parseInt($this.val(), 10);
@@ -354,7 +328,7 @@ handlePriceChange = function() {
     $this.val(price);
 };
 
-handleDeliveryCheckbox = function(event) {
+AddVan.prototype.handleDeliveryCheckbox = function(event) {
     var view = event.data;
     if (this.checked === true) {
         view.hasDelivery = true;
@@ -365,7 +339,7 @@ handleDeliveryCheckbox = function(event) {
     }
 };
 
-savePriceLocation = function() {
+AddVan.prototype.savePriceLocation = function() {
     var view = this,
         isLocationSame, addressOneliner, newVanData, saveCall,
         currentAddress, currentPostalCode, currentCity, currentRegion, currentCountry, didLocationChange;
@@ -495,7 +469,7 @@ savePriceLocation = function() {
     }
 };
 
-renderAvailability = function() {
+AddVan.prototype.renderAvailability = function() {
     var view = this,
         $calendarContainer, calendarVC, calendarVT;
 
@@ -509,7 +483,7 @@ renderAvailability = function() {
     calendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
 
-    view.calendarVC = new calendarVC.constructor({
+    view.calendarVC = new calendarVC({
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
@@ -545,7 +519,7 @@ renderAvailability = function() {
     });
 };
 
-renderSubmerchantForm = function() {
+AddVan.prototype.renderSubmerchantForm = function() {
     var $submerchantFormContainer = $('#addvan-availability-calendar', this.$element),
         view = this,
         submerchantFormVC, submerchantFormVT;
@@ -553,7 +527,7 @@ renderSubmerchantForm = function() {
     submerchantFormVC = require('./submerchantregistration.js');
     submerchantFormVT = require('../../templates/submerchantregistration.html');
 
-    view.submerchantFormVC = new submerchantFormVC.constructor({
+    view.submerchantFormVC = new submerchantFormVC({
         name: 'submerchantform',
         $element: $submerchantFormContainer,
         template: submerchantFormVT
@@ -562,7 +536,7 @@ renderSubmerchantForm = function() {
     view.submerchantFormVC.render();
 };
 
-saveAvailability = function() {
+AddVan.prototype.saveAvailability = function() {
     var view = this,
         availabilityArray = [],
         selections, alwaysFlag, month, monthSelections, selection, j;
@@ -607,11 +581,11 @@ saveAvailability = function() {
     });
 };
 
-handleCancel = function() {
+AddVan.prototype.handleCancel = function() {
     App.router.closeModalView();
 };
 
-handleNext = function(event) {
+AddVan.prototype.handleNext = function(event) {
     var view = event.data,
         currentTabID;
 
@@ -651,18 +625,18 @@ handleNext = function(event) {
     }
 };
 
-handleViewVanProfile = function(event) {
+AddVan.prototype.handleViewVanProfile = function(event) {
     var view = event.data;
     App.router.closeModalView();
     App.router.navigateTo('vanprofile/' + view.newVan.data.id);
 };
 
-handleAddMoreVans = function() {
+AddVan.prototype.handleAddMoreVans = function() {
     App.router.closeModalView();
     App.router.openModalView('addvan');
 };
 
-showPanel = function(panelID) {
+AddVan.prototype.showPanel = function(panelID) {
     $('.addvan-panel', this.$element).each(function() {
         var $this = $(this);
         if ($this.hasClass('hidden') === false) {
@@ -672,37 +646,4 @@ showPanel = function(panelID) {
     $(panelID, this.$element).removeClass('hidden');
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    getTabID: getTabID,
-    toggleLoading: toggleLoading,
-
-    addVanIcons: addVanIcons,
-    renderAccessories: renderAccessories,
-    prepopulateVan: prepopulateVan,
-    handleVanRadio: handleVanRadio,
-    saveVan: saveVan,
-
-    populatePhotos: populatePhotos,
-    handleImageUpload: handleImageUpload,
-
-    populatePriceSuggestions: populatePriceSuggestions,
-
-    populateCountries: populateCountries,
-    handlePriceChange: handlePriceChange,
-    handleDeliveryCheckbox: handleDeliveryCheckbox,
-    savePriceLocation: savePriceLocation,
-
-    renderAvailability: renderAvailability,
-    renderSubmerchantForm: renderSubmerchantForm,
-    saveAvailability: saveAvailability,
-
-    handleCancel: handleCancel,
-    handleNext: handleNext,
-    handleViewVanProfile: handleViewVanProfile,
-    handleAddMoreVans: handleAddMoreVans,
-
-    showPanel: showPanel
-});
+module.exports = AddVan;

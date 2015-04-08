@@ -15,41 +15,15 @@ var _ = require('underscore'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
 
-    geocoder,
+    geocoder = new GoogleMaps.Geocoder();
 
-    didInitialize,
-    didRender,
+function EditVan(options) {
+    ViewController.call(this, options);
+}
 
-    toggleLoading,
+EditVan.prototype = new ViewController();
 
-    populateBrandSelect,
-    populateSubtypeSelect,
-    populateAccessories,
-    handleSubtypeChange,
-
-    populateImages,
-    handleImageUpload,
-
-    populateLocation,
-    populateCountries,
-    populateDelivery,
-    handleDeliveryCheckbox,
-
-    initAccessories,
-    populatePricing,
-    populatePriceSuggestions,
-
-    renderAvailability,
-    handleSubmerchantFormSubmit,
-
-    handlePriceChange,
-
-    handleCancel,
-    handleSave;
-
-geocoder = new GoogleMaps.Geocoder();
-
-didInitialize = function() {
+EditVan.prototype.didInitialize = function() {
     Moment.locale('en-custom', {
         week: {
             dow: 1,
@@ -66,7 +40,7 @@ didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 };
 
-didRender = function() {
+EditVan.prototype.didRender = function() {
     this.populateImages();
     this.populateCountries($('#editvanpricing-country', this.$element));
     this.populateLocation();
@@ -105,7 +79,7 @@ didRender = function() {
     this.setupEvent('click', '#editvan-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
 };
 
-toggleLoading = function() {
+EditVan.prototype.toggleLoading = function() {
     if (this.isLoading === true) {
         $('#editvan-save-btn', this.$element).html('Save');
         this.isLoading = false;
@@ -115,7 +89,7 @@ toggleLoading = function() {
     }
 };
 
-populateDelivery = function() {
+EditVan.prototype.populateDelivery = function() {
     var price = this.van.data.delivery_price ? this.van.data.delivery_price : '',
         distance = this.van.data.delivery_distance ? this.van.data.delivery_distance : '';
 
@@ -123,7 +97,7 @@ populateDelivery = function() {
     $('#editvanpricingloc-form #delivery_distance').val(distance);
 };
 
-initAccessories = function() {
+EditVan.prototype.initAccessories = function() {
     var vanClassification = App.contentClassification.data.vanClassification,
         view = this,
         html = '',
@@ -146,7 +120,7 @@ initAccessories = function() {
     $('#editvan-accessories-container', view.$element).html(html);
 };
 
-renderAvailability = function() {
+EditVan.prototype.renderAvailability = function() {
     var view = this,
         $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
 
@@ -158,7 +132,7 @@ renderAvailability = function() {
     if (App.user.isSubMerchant() === true) {
         calendarVC = require('./availabilitycalendar.js');
         calendarVT = require('../../templates/availabilitycalendar.html');
-        view.calendarVC = new calendarVC.constructor({
+        view.calendarVC = new calendarVC({
             name: 'availabilitycalendar',
             $element: $calendarContainer,
             template: calendarVT,
@@ -174,7 +148,7 @@ renderAvailability = function() {
     } else {
         submerchantFormVC = require('./submerchantregistration.js');
         submerchantFormVT = require('../../templates/submerchantregistration.html');
-        view.submerchantFormVC = new submerchantFormVC.constructor({
+        view.submerchantFormVC = new submerchantFormVC({
             name: 'submerchantform',
             $element: $calendarContainer,
             template: submerchantFormVT
@@ -185,7 +159,7 @@ renderAvailability = function() {
     }
 };
 
-handleSubmerchantFormSubmit = function(event) {
+EditVan.prototype.handleSubmerchantFormSubmit = function(event) {
     var view = event.data,
         $button = $(this);
     $button.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
@@ -210,14 +184,14 @@ handleSubmerchantFormSubmit = function(event) {
     }
 };
 
-populateLocation = function() {
+EditVan.prototype.populateLocation = function() {
     $('#editvanpricing-city', this.$element).val(this.van.data.city);
     $('#editvanpricing-address', this.$element).val(this.van.data.address);
     $('#editvanpricing-postalcode', this.$element).val(this.van.data.postal_code);
     $('#editvanpricing-region', this.$element).val(this.van.data.region);
 };
 
-populateCountries = function($select) {
+EditVan.prototype.populateCountries = function($select) {
     var countriesArray = Localization.getCountries(),
         html = $('option', $select).first()[0].outerHTML,
         i;
@@ -229,7 +203,7 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-populateImages = function() {
+EditVan.prototype.populateImages = function() {
     var images = this.van.data.images.split(','),
         html = '',
         i;
@@ -242,7 +216,7 @@ populateImages = function() {
     $('#editvan-photos-form .thumb-list-container ul', this.$element).append(html);
 };
 
-populatePricing = function() {
+EditVan.prototype.populatePricing = function() {
     var view = this;
     Localization.convertPrices([this.van.data.price_a, this.van.data.price_b, this.van.data.price_c], this.van.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
@@ -255,7 +229,7 @@ populatePricing = function() {
     });
 };
 
-populatePriceSuggestions = function() {
+EditVan.prototype.populatePriceSuggestions = function() {
     var vanClassification = App.contentClassification.data.vanClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
@@ -279,7 +253,7 @@ populatePriceSuggestions = function() {
     });
 };
 
-populateAccessories = function(event) {
+EditVan.prototype.populateAccessories = function(event) {
     var vanClassification = App.contentClassification.data.vanClassification,
         view = event.data,
         html = '',
@@ -303,7 +277,7 @@ populateAccessories = function(event) {
     $('#editvan-accessories-container', view.$element).html(html);
 };
 
-handleDeliveryCheckbox = function() {
+EditVan.prototype.handleDeliveryCheckbox = function() {
     if (this.checked === true) {
         $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled');
     } else {
@@ -311,7 +285,7 @@ handleDeliveryCheckbox = function() {
     }
 };
 
-handlePriceChange = function() {
+EditVan.prototype.handlePriceChange = function() {
     var $this = $(this),
         price;
     price = parseInt($this.val(), 10);
@@ -321,7 +295,7 @@ handlePriceChange = function() {
     $this.val(price);
 };
 
-handleCancel = function() {
+EditVan.prototype.handleCancel = function() {
     var currentVerticalPosition = $(window).scrollTop();
     App.router.closeModalView();
     $('body, html').animate({
@@ -329,7 +303,7 @@ handleCancel = function() {
     }, 50);
 };
 
-handleImageUpload = function(event) {
+EditVan.prototype.handleImageUpload = function(event) {
     var view = event.data,
         $file = $(this);
 
@@ -353,7 +327,7 @@ handleImageUpload = function(event) {
     });
 };
 
-handleSave = function(event) {
+EditVan.prototype.handleSave = function(event) {
     var view = event.data,
         isLocationSame = false,
         currentAddress = view.van.data.address,
@@ -525,33 +499,4 @@ handleSave = function(event) {
     }
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    toggleLoading: toggleLoading,
-
-    populateBrandSelect: populateBrandSelect,
-    populateSubtypeSelect: populateSubtypeSelect,
-    populateAccessories: populateAccessories,
-    handleSubtypeChange: handleSubtypeChange,
-
-    populateImages: populateImages,
-    handleImageUpload: handleImageUpload,
-
-    populateLocation: populateLocation,
-    populateCountries: populateCountries,
-    populateDelivery: populateDelivery,
-    handleDeliveryCheckbox: handleDeliveryCheckbox,
-    handlePriceChange: handlePriceChange,
-
-    initAccessories: initAccessories,
-    renderAvailability: renderAvailability,
-    handleSubmerchantFormSubmit: handleSubmerchantFormSubmit,
-
-    populatePricing: populatePricing,
-    populatePriceSuggestions: populatePriceSuggestions,
-
-    handleCancel: handleCancel,
-    handleSave: handleSave
-});
+module.exports = EditVan;

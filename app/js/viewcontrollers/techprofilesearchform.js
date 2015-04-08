@@ -7,39 +7,25 @@
 'use strict';
 
 var _ = require('underscore'),
-	$ = require('jquery'),
-	GoogleMaps = require('../libraries/mscl-googlemaps.js'),
-	Moment = require('moment-timezone'),
+    $ = require('jquery'),
+    GoogleMaps = require('../libraries/mscl-googlemaps.js'),
+    Moment = require('moment-timezone'),
 
-	Utilities = require('../utilities.js'),
-	ViewController = require('../viewcontroller.js'),
-	App = require('../app.js'),
+    Utilities = require('../utilities.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-	Localization = require('../models/localization.js'),
+    Localization = require('../models/localization.js'),
 
-	numberOfTechProfileSuggestions = 5,
+    numberOfTechProfileSuggestions = 5;
 
-    didInitialize,
-    didRender,
-    loadLocationAutoComplete,
-    prefillForm,
+function TechProfileSearchForm(options) {
+    ViewController.call(this, options);
+}
 
-    handlePickupDate,
-    handleDeliveryDate,
-    handlePickupSelection,
-    handleDeliverySelection,
+TechProfileSearchForm.prototype = new ViewController();
 
-    handleSearch,
-    showTechProfileSuggestions,
-    drawTechProfileSuggestions,
-    techProfileInputArrowKeypress,
-    searchTechProfileLoseFocus,
-    searchTechProfileGainFocus,
-    setTechProfileSuggestion,
-
-    getSearchParameters;
-
-didInitialize = function() {
+TechProfileSearchForm.prototype.didInitialize = function() {
     this.techProfileSelectionIndex = 0;
     this.techProfileInputString = '';
     this.techProfileSuggestionsArray = []; // array of strings
@@ -47,7 +33,7 @@ didInitialize = function() {
     this.calendarVC = null;
 };
 
-didRender = function() {
+TechProfileSearchForm.prototype.didRender = function() {
     var view = this,
         $searchPickup, $searchReturn;
 
@@ -68,8 +54,8 @@ didRender = function() {
     this.setupEvent('mousedown touchstart', '.suggestion', this, view.setTechProfileSuggestion);
 };
 
-loadLocationAutoComplete = function() {
-    if(GoogleMaps.isLoaded() !== true) {
+TechProfileSearchForm.prototype.loadLocationAutoComplete = function() {
+    if (GoogleMaps.isLoaded() !== true) {
         setTimeout(this.loadLocationAutoComplete, 10);
         return;
     }
@@ -79,7 +65,7 @@ loadLocationAutoComplete = function() {
     });
 };
 
-prefillForm = function() {
+TechProfileSearchForm.prototype.prefillForm = function() {
     var view = this,
         $searchPickup, $searchReturn,
         queryString, previousSearchVan, previousSearchLocation, previousSearchDateRange, startDate, endDate;
@@ -87,7 +73,7 @@ prefillForm = function() {
     $searchPickup = $('#techprofilesearch-pickup', view.$element);
     $searchReturn = $('#techprofilesearch-return', view.$element);
 
-    if (App.user.data && App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
+    if (App.user && App.user.data.currentCity !== null && App.user.data.currentCity !== '') {
         $('#techprofilesearch-location', view.$element).attr('placeholder', App.user.data.currentCity);
     }
 
@@ -112,7 +98,7 @@ prefillForm = function() {
     $searchReturn.val(endDate.format('DD/MM/YYYY'));
 };
 
-handlePickupDate = function(event) {
+TechProfileSearchForm.prototype.handlePickupDate = function(event) {
     var view = event.data,
         passedData, pickupInputString, deliveryInputString;
 
@@ -135,7 +121,7 @@ handlePickupDate = function(event) {
     App.router.openModalView('pickupdeliverycalendar', passedData);
 };
 
-handleDeliveryDate = function(event) {
+TechProfileSearchForm.prototype.handleDeliveryDate = function(event) {
     var view = event.data,
         passedData, pickupInputString, deliveryInputString;
 
@@ -159,7 +145,7 @@ handleDeliveryDate = function(event) {
     App.router.openModalView('pickupdeliverycalendar', passedData);
 };
 
-handlePickupSelection = function(vc, callback) {
+TechProfileSearchForm.prototype.handlePickupSelection = function(vc, callback) {
     $('#techprofilesearch-pickup', this.$element).val(vc.pickupDate.format('DD/MM/YYYY'));
     this.deliveryDateConfirmed = false;
     if (_.isFunction(callback) === true) {
@@ -167,7 +153,7 @@ handlePickupSelection = function(vc, callback) {
     }
 };
 
-handleDeliverySelection = function(vc, callback) {
+TechProfileSearchForm.prototype.handleDeliverySelection = function(vc, callback) {
     $('#techprofilesearch-return', this.$element).val(vc.deliveryDate.format('DD/MM/YYYY'));
     if (this.deliveryDateConfirmed === true) {
         App.router.closeModalView();
@@ -191,7 +177,7 @@ handleDeliverySelection = function(vc, callback) {
  * @param callback: callback function
  * @return Always false to avoid triggering HTML form
  */
-handleSearch = function(event) {
+TechProfileSearchForm.prototype.handleSearch = function(event) {
     var view = event.data,
         searchParams, queryString;
 
@@ -206,7 +192,7 @@ handleSearch = function(event) {
     return false;
 };
 
-showTechProfileSuggestions = function(event) {
+TechProfileSearchForm.prototype.showTechProfileSuggestions = function(event) {
     var view = event.data,
         $searchTechProfile = $('#techprofilesearch-techprofile', view.$element),
         searchString, techProfileClassificationList, classificationSuggestions;
@@ -236,7 +222,7 @@ showTechProfileSuggestions = function(event) {
     view.drawTechProfileSuggestions();
 };
 
-drawTechProfileSuggestions = function() {
+TechProfileSearchForm.prototype.drawTechProfileSuggestions = function() {
     var view = this,
         $techProfilesSuggestionBox = $('#techprofiles-suggestions-box', view.$element),
         $searchField, suggestions, i, html, j;
@@ -285,7 +271,7 @@ drawTechProfileSuggestions = function() {
     }
 };
 
-techProfileInputArrowKeypress = function(event) {
+TechProfileSearchForm.prototype.techProfileInputArrowKeypress = function(event) {
     var view = event.data,
         $searchVan,
         possibleSelections, i;
@@ -333,24 +319,24 @@ techProfileInputArrowKeypress = function(event) {
     return false;
 };
 
-searchTechProfileLoseFocus = function(event) {
+TechProfileSearchForm.prototype.searchTechProfileLoseFocus = function(event) {
     var view = event.data;
     // clears suggestion box when losing focus
     $('#techprofiles-suggestions-box', view.$element).hide();
 };
 
-searchTechProfileGainFocus = function(event) {
+TechProfileSearchForm.prototype.searchTechProfileGainFocus = function(event) {
     var view = event.data;
     $('#techprofiles-suggestions-box', view.$element).show();
 };
 
-setTechProfileSuggestion = function(event) {
+TechProfileSearchForm.prototype.setTechProfileSuggestion = function(event) {
     var view = event.data;
     $('#techprofilesearch-techprofile', view.$element).val($(event.target).text());
     $('#techprofiles-suggestions-box', view.$element).hide();
 };
 
-getSearchParameters = function() {
+TechProfileSearchForm.prototype.getSearchParameters = function() {
     var view = this,
         $locationContainer,
         location, searchString, dateRange, pickupDate, returnDate, searchParameters;
@@ -379,24 +365,4 @@ getSearchParameters = function() {
     return searchParameters;
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    loadLocationAutoComplete: loadLocationAutoComplete,
-    prefillForm: prefillForm,
-
-    handlePickupDate: handlePickupDate,
-    handleDeliveryDate: handleDeliveryDate,
-    handlePickupSelection: handlePickupSelection,
-    handleDeliverySelection: handleDeliverySelection,
-
-    handleSearch: handleSearch,
-    showTechProfileSuggestions: showTechProfileSuggestions,
-    drawTechProfileSuggestions: drawTechProfileSuggestions,
-    techProfileInputArrowKeypress: techProfileInputArrowKeypress,
-    searchTechProfileLoseFocus: searchTechProfileLoseFocus,
-    searchTechProfileGainFocus: searchTechProfileGainFocus,
-    setTechProfileSuggestion: setTechProfileSuggestion,
-
-    getSearchParameters: getSearchParameters
-});
+module.exports = TechProfileSearchForm;

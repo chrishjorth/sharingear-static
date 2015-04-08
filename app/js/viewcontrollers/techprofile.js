@@ -20,21 +20,19 @@ var _ = require('underscore'),
     User = require('../models/user.js'),
     TechProfile = require('../models/techprofile.js'),
 
-    paymentSuccessModalOpen = false,
+    paymentSuccessModalOpen = false;
 
-    didInitialize,
-    didRender,
-    renderOwnerPicture,
-    renderPricing,
-    renderMap,
-    renderActionButton,
-    renderTechProfileList,
-    handleBooking,
-    handleEditProfile,
-    handleFacebookShare,
-    handleTwitterShare;
+function TechProfile(options) {
+    ViewController.call(this, options);
+    this.hasSubviews = false;
+    this.techProfile = null;
+    this.owner = null;
+    this.map = null;
+}
 
-didInitialize = function() {
+TechProfile.prototype = new ViewController();
+
+TechProfile.prototype.didInitialize = function() {
     var view = this;
 
     Localization.getCurrentTimeZone();
@@ -59,7 +57,7 @@ didInitialize = function() {
         owner_id: ''
     };
 
-    view.owner = new User.constructor({
+    view.owner = new User({
         rootURL: Config.API_URL
     });
     view.owner.initialize();
@@ -73,7 +71,7 @@ didInitialize = function() {
     } else {
         if (view.techProfile === null) {
             //In this case the view is loaded the first time, and not returning from a modal fx
-            view.techProfile = new TechProfile.constructor({
+            view.techProfile = new TechProfile({
                 rootURL: Config.API_URL
             });
             view.techProfile.initialize();
@@ -134,7 +132,7 @@ didInitialize = function() {
     }
 };
 
-didRender = function() {
+TechProfile.prototype.didRender = function() {
     var preAuthorizationID, bookingID;
 
     if (App.rootVC.header) {
@@ -172,7 +170,7 @@ didRender = function() {
     }
 };
 
-renderOwnerPicture = function() {
+TechProfile.prototype.renderOwnerPicture = function() {
     var view = this,
         img, isVertical, backgroundSize;
     if (!this.owner.data.image_url) {
@@ -194,7 +192,7 @@ renderOwnerPicture = function() {
     img.src = this.owner.data.image_url;
 };
 
-renderPricing = function() {
+TechProfile.prototype.renderPricing = function() {
     var view = this;
     Localization.convertPrices([this.techProfile.data.price_a, this.techProfile.data.price_b, this.techProfile.data.price_c], this.techProfile.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
@@ -207,7 +205,7 @@ renderPricing = function() {
     });
 };
 
-renderMap = function() {
+TechProfile.prototype.renderMap = function() {
     var techProfile = this.techProfile.data,
         mapOptions, latlong, marker;
     if (techProfile.latitude !== null && techProfile.longitude !== null) {
@@ -226,7 +224,7 @@ renderMap = function() {
     }
 };
 
-handleBooking = function(event) {
+TechProfile.prototype.handleBooking = function(event) {
     var view = event.data,
         user = App.user;
     if (user.data.id === null) {
@@ -263,12 +261,12 @@ handleBooking = function(event) {
     }
 };
 
-handleEditProfile = function(event) {
+TechProfile.prototype.handleEditProfile = function(event) {
     var view = event.data;
     App.router.openModalView('edittechprofile', view.techProfile);
 };
 
-handleFacebookShare = function(event) {
+TechProfile.prototype.handleFacebookShare = function(event) {
     var view = event.data;
     var url, description;
 
@@ -283,7 +281,7 @@ handleFacebookShare = function(event) {
     });
 };
 
-handleTwitterShare = function(event) {
+TechProfile.prototype.handleTwitterShare = function(event) {
     var view = event.data,
         twtTitle = 'Check out this ' + view.techProfile.data.roadie_type + ' on www.sharingear.com',
         twtUrl = 'https://www.sharingear.com/#techprofile/' + view.techProfile.data.id,
@@ -296,7 +294,7 @@ handleTwitterShare = function(event) {
     window.open(twtLink);
 };
 
-renderTechProfileList = function() {
+TechProfile.prototype.renderTechProfileList = function() {
     var techProfile = this.techProfile.data,
         view = this,
         container = $('#techprofilelist', view.$element);
@@ -312,7 +310,7 @@ renderTechProfileList = function() {
 
 };
 
-renderActionButton = function() {
+TechProfile.prototype.renderActionButton = function() {
     var view = this;
 
     $('.button-container button', view.$element).each(function() {
@@ -341,21 +339,4 @@ renderActionButton = function() {
     }
 };
 
-module.exports = ViewController.inherit({
-    hasSubviews: false,
-    techProfile: null,
-    owner: null,
-    map: null,
-
-    didInitialize: didInitialize,
-    didRender: didRender,
-    renderPricing: renderPricing,
-    renderMap: renderMap,
-    renderOwnerPicture: renderOwnerPicture,
-    renderActionButton: renderActionButton,
-    renderTechProfileList: renderTechProfileList,
-    handleBooking: handleBooking,
-    handleEditProfile: handleEditProfile,
-    handleFacebookShare: handleFacebookShare,
-    handleTwitterShare: handleTwitterShare
-});
+module.exports = TechProfile;

@@ -8,11 +8,13 @@
 
 var _ = require('underscore'),
     GoogleMaps = require('./libraries/mscl-googlemaps.js'),
+    Facebook = require('./libraries/mscl-facebook.js'),
 
     Config = require('./config.js'),
     Router = require('./router.js'),
     Utilities = require('./utilities.js'),
 
+    Localization = require('./models/localization.js'),
     User = require('./models/user.js'),
     ContentClassification = require('./models/contentclassification.js'),
     MessagePopup = require('./popups/messagepopup.js'),
@@ -23,20 +25,29 @@ var _ = require('underscore'),
     setUserLocation;
 
 run = function(callback) {
-    var messagePopup = new MessagePopup.constructor(),
+    var app = this,
+        messagePopup = new MessagePopup(),
         message = 'Your browser is outdated and does not support some important features. Please dowload the latest version of your browser of preference.';
 
+    //Load libraries that require external data
+    Localization.fetch();
     GoogleMaps.load();
+    Facebook.load();
 
-    App.user.login(function() {
-        if(App.rootVC && App.rootVC !== null) {
-            App.rootVC.refresh();
+    this.user = new User({
+        rootURL: Config.API_URL
+    });
+    this.user.initialize();
+
+    this.user.login(function() {
+        if (app.rootVC && app.rootVC !== null) {
+            app.rootVC.refresh();
         }
     });
 
-    App.contentClassification.initialize();
+    ContentClassification.getClassification();
 
-    App.setUserLocation();
+    this.setUserLocation();
 
     if (!window.history.pushState) {
         //The browser is not supported. pushState is a feature available only in moderne (ie9+) browsers
@@ -75,19 +86,10 @@ App = {
     router: Router,
     user: null,
     rootVC: null,
-    gearClassification: null,
+    contentClassification: null,
 
     run: run,
     setUserLocation: setUserLocation
 };
-
-App.user = new User.constructor({
-    rootURL: Config.API_URL
-});
-App.user.initialize();
-
-App.contentClassification = new ContentClassification.constructor({
-    rootURL: Config.API_URL
-});
 
 module.exports = App;

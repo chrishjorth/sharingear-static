@@ -11,25 +11,25 @@ var $ = require('jquery'),
 	ViewController = require('../viewcontroller.js'),
 	App = require('../app.js'),
 
-	Localization = require('../models/localization.js'),
+	Localization = require('../models/localization.js');
 
-	didInitialize,
-    didRender,
-    populateTimeZones,
+function DashboardSettings(options) {
+    ViewController.call(this, options);
+}
 
-    handleSave;
+DashboardSettings.prototype = new ViewController();
 
-didInitialize = function() {
+DashboardSettings.prototype.didInitialize = function() {
     this.selectedTimeZone = Localization.getCurrentTimeZone();
 };
 
-didRender = function() {
+DashboardSettings.prototype.didRender = function() {
     this.populateTimeZones();
 
     this.setupEvent('submit', '#dashboard-settings-form', this, this.handleSave);
 };
 
-populateTimeZones = function() {
+DashboardSettings.prototype.populateTimeZones = function() {
     var timezones = Localization.getTimeZones(),
         $timezonesSelect = $('#dashboard-settings-timezone', this.$element),
         html = '',
@@ -48,7 +48,7 @@ populateTimeZones = function() {
     $timezonesSelect.val(defaultTimezone);
 };
 
-handleSave = function(event) {
+DashboardSettings.prototype.handleSave = function(event) {
     var view = event.data,
         selectedTimeZone, $successMessage, $saveBtn;
 
@@ -73,10 +73,4 @@ handleSave = function(event) {
     }
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateTimeZones: populateTimeZones,
-
-    handleSave: handleSave
-});
+module.exports = DashboardSettings;

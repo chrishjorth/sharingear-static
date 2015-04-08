@@ -10,25 +10,16 @@ var _ = require('underscore'),
     FB = require('../libraries/mscl-facebook.js'),
     Localization = require('./localization.js'),
     Model = require('../model.js'),
-    Utilities = require('../utilities.js'),
+    Utilities = require('../utilities.js');
 
-    didInitialize,
-    getLoginStatus,
-    login,
-    loginToBackend,
-    fetch,
-    update,
-    uploadProfilePicture,
-    getPublicInfo,
-    isSubMerchant,
-    updateBankDetails,
-    setSearchInterval,
-    getIntervalStart,
-    getIntervalEnd,
+function User(options) {
+    Model.call(this, options);
+    this.fbStatus = '';
+}
 
-    isLoggedIn;
+User.prototype = new Model();
 
-didInitialize = function() {
+User.prototype.didInitialize = function() {
     if (this.data === null) {
         this.data = {
             id: null,
@@ -44,12 +35,13 @@ didInitialize = function() {
             phone: null,
             nationality: null,
             currency: 'EUR',
-            time_zone: 'UTC'
+            time_zone: 'UTC',
+            currentCity: '' //Detected location
         };
     }
 };
 
-getLoginStatus = function(callback) {
+User.prototype.getLoginStatus = function(callback) {
     var user = this;
     if (!FB) {
         callback({
@@ -65,7 +57,7 @@ getLoginStatus = function(callback) {
     }); //Adding the true parameter forces a refresh from the FB servers, but also causes the login popup to be blocked, since it goes async and creates a new execution context
 };
 
-login = function(callback) {
+User.prototype.login = function(callback) {
     var user = this;
 
     if (!FB) {
@@ -107,7 +99,7 @@ login = function(callback) {
     });
 };
 
-loginToBackend = function(FBResponse, callback) {
+User.prototype.loginToBackend = function(FBResponse, callback) {
     var user = this,
         authData = FBResponse.authResponse,
         postData;
@@ -145,7 +137,7 @@ loginToBackend = function(FBResponse, callback) {
     });
 };
 
-fetch = function(callback) {
+User.prototype.fetch = function(callback) {
     var user = this;
     user.get('/users/' + user.data.id, function(error, data) {
         if (error) {
@@ -158,7 +150,7 @@ fetch = function(callback) {
     });
 };
 
-update = function(callback) {
+User.prototype.update = function(callback) {
     var user = this;
     user.put('/users/' + user.data.id, user.data, function(error, data) {
         if (error) {
@@ -171,7 +163,7 @@ update = function(callback) {
     });
 };
 
-uploadProfilePicture = function(file, filename, userID, callback) {
+User.prototype.uploadProfilePicture = function(file, filename, userID, callback) {
     var model = this;
     this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
         if (error) {
@@ -209,7 +201,7 @@ uploadProfilePicture = function(file, filename, userID, callback) {
     });
 };
 
-getPublicInfo = function(callback) {
+User.prototype.getPublicInfo = function(callback) {
     var model = this;
 
     this.get('/users/' + this.data.id, function(error, user) {
@@ -222,11 +214,11 @@ getPublicInfo = function(callback) {
     });
 };
 
-isSubMerchant = function() {
+User.prototype.isSubMerchant = function() {
     return this.data.hasBank;
 };
 
-updateBankDetails = function(callback) {
+User.prototype.updateBankDetails = function(callback) {
     var user = this;
     user.put('/users/' + user.data.id + '/bankdetails', user.data, function(error) {
         if (error) {
@@ -236,11 +228,11 @@ updateBankDetails = function(callback) {
     });
 };
 
-setSearchInterval = function(dateRange) {
+User.prototype.setSearchInterval = function(dateRange) {
     this.data.searchInterval = dateRange;
 };
 
-getIntervalStart = function() {
+User.prototype.getIntervalStart = function() {
     var date = null;
     if (this.data.searchInterval) {
         date = this.data.searchInterval.split('-')[0];
@@ -248,7 +240,7 @@ getIntervalStart = function() {
     return date;
 };
 
-getIntervalEnd = function() {
+User.prototype.getIntervalEnd = function() {
     var date = null;
     if (this.data.searchInterval) {
         date = this.data.searchInterval.split('-')[1];
@@ -256,25 +248,8 @@ getIntervalEnd = function() {
     return date;
 };
 
-isLoggedIn = function() {
+User.prototype.isLoggedIn = function() {
     return this.data.id !== null;
 };
 
-module.exports = Model.inherit({
-    fbStatus: '',
-
-    didInitialize: didInitialize,
-    getLoginStatus: getLoginStatus,
-    login: login,
-    loginToBackend: loginToBackend,
-    uploadProfilePicture: uploadProfilePicture,
-    fetch: fetch,
-    update: update,
-    getPublicInfo: getPublicInfo,
-    isSubMerchant: isSubMerchant,
-    updateBankDetails: updateBankDetails,
-    setSearchInterval: setSearchInterval,
-    getIntervalStart: getIntervalStart,
-    getIntervalEnd: getIntervalEnd,
-    isLoggedIn: isLoggedIn
-});
+module.exports = User;

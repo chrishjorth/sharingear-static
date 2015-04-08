@@ -15,20 +15,17 @@ var _ = require('underscore'),
 
     GearList = require('../models/gearlist.js'),
 
-    gearBlockID,
+    gearBlockID = 'yourgear-gear-block';
 
-    didInitialize,
-    didRender,
-    populateYourGear,
+function DashboardYourGear(options) {
+    ViewController.call(this, options);
+}
 
-    handleAddGear,
-    handleEditGearItem;
+DashboardYourGear.prototype = new ViewController();
 
-gearBlockID = 'yourgear-gear-block';
-
-didInitialize = function() {
+DashboardYourGear.prototype.didInitialize = function() {
     var view = this;
-    view.gearList = new GearList.constructor({
+    view.gearList = new GearList({
         rootURL: Config.API_URL
     });
     view.gearList.initialize();
@@ -37,7 +34,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+DashboardYourGear.prototype.didRender = function() {
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your gear');
     }
@@ -52,7 +49,7 @@ didRender = function() {
     this.setupEvent('click', '.yourgear-item-edit-btn', this, this.handleEditGearItem);
 };
 
-populateYourGear = function(callback) {
+DashboardYourGear.prototype.populateYourGear = function(callback) {
     var view = this,
         YourGearItemTemplate;
 
@@ -95,22 +92,15 @@ populateYourGear = function(callback) {
     }
 };
 
-handleAddGear = function() {
+DashboardYourGear.prototype.handleAddGear = function() {
     App.router.openModalView('addgear');
 };
 
-handleEditGearItem = function(event) {
+DashboardYourGear.prototype.handleEditGearItem = function(event) {
     var view = event.data,
         gear;
     gear = view.gearList.getGearItem('id', $(this).data('yourgearid'));
     App.router.openModalView('editgear', gear);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourGear: populateYourGear,
-
-    handleAddGear: handleAddGear,
-    handleEditGearItem: handleEditGearItem
-});
+module.exports = DashboardYourGear;

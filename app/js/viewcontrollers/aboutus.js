@@ -9,21 +9,20 @@
 var $ = require('jquery'),
     GoogleMaps = require('../libraries/mscl-googlemaps.js'),
 
-    ViewController = require('../viewcontroller'),
+    ViewController = require('../viewcontroller');
 
-    didInitialize,
-    didRender,
+function AboutUs(options) {
+    ViewController.call(this, options);
+}
 
-    renderTestimonials,
-    renderMap,
-    loadFooter;
+AboutUs.prototype = new ViewController();
 
-didRender = function() {
+AboutUs.prototype.didRender = function() {
     this.renderMap();
     this.loadFooter();
 };
 
-renderMap = function() {
+AboutUs.prototype.renderMap = function() {
     var mapOptions, latlong, marker;
     latlong = new GoogleMaps.LatLng(55.6805421, 12.6037284);
     mapOptions = {
@@ -39,13 +38,13 @@ renderMap = function() {
     });
 };
 
-loadFooter = function() {
+AboutUs.prototype.loadFooter = function() {
     var view = this,
         FooterController, FooterTemplate;
     FooterController = require('./footer.js');
     FooterTemplate = require('../../templates/footer.html');
 
-    view.footer = new FooterController.constructor({
+    view.footer = new FooterController({
         name: 'footer',
         $element: $('footer', view.$element),
         template: FooterTemplate
@@ -54,11 +53,4 @@ loadFooter = function() {
     view.footer.render();
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    renderTestimonials: renderTestimonials,
-    renderMap: renderMap,
-    loadFooter: loadFooter
-});
+module.exports = AboutUs;

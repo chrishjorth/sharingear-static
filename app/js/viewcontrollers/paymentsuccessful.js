@@ -14,14 +14,15 @@ var $ = require('jquery'),
 
 	Localization = require('../models/localization.js'),
 	ViewController = require('../viewcontroller.js'),
-	Booking = require('../models/booking.js'),
+	Booking = require('../models/booking.js');
 
-	didInitialize,
-    didRender,
+function PaymentSuccessful(options) {
+    ViewController.call(this, options);
+}
 
-    handleClose;
+PaymentSuccessful.prototype = new ViewController();
 
-didInitialize = function() {
+PaymentSuccessful.prototype.didInitialize = function() {
     var view = this,
         booking;
 
@@ -40,7 +41,7 @@ didInitialize = function() {
         total: ''
     };
 
-    booking = new Booking.constructor({
+    booking = new Booking({
         rootURL: Config.API_URL
     });
     booking.initialize();
@@ -111,7 +112,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+PaymentSuccessful.prototype.didRender = function() {
     if (this.paymentSuccessful === true) {
         $('.payment-success', this.$element).removeClass('hidden');
     }
@@ -121,14 +122,9 @@ didRender = function() {
     this.setupEvent('click', '#paymentsuccessful-close-btn', this, this.handleClose);
 };
 
-handleClose = function() {
+PaymentSuccessful.prototype.handleClose = function() {
     App.router.setQueryString('');
     App.router.closeModalView();
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    handleClose: handleClose
-});
+module.exports = PaymentSuccessful;

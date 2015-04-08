@@ -21,47 +21,17 @@ var _ = require('underscore'),
     subtypeDefault = 'Choose subtype:',
     brandDefault = 'Choose brand:',
     countryDefault = 'Select country:',
-    geocoder,
-
-    didInitialize,
-    didRender,
-
-    getTabID,
-    toggleLoading,
-
-    addGearIcons,
-    renderAccessories,
-    prepopulateInstrument,
-    populateSubtypeSelect,
-    populateBrandSelect,
-    handleGearRadio,
-    handleSelectSubtype,
-    handleSelectBrand,
-    saveInstrument,
-
-    populatePhotos,
-    handleImageUpload,
-
-    populateCountries,
-    populatePriceSuggestions,
-    handlePriceChange,
-    handleDeliveryCheckbox,
-    savePriceLocation,
-
-    renderAvailability,
-    renderSubmerchantForm,
-    saveAvailability,
-
-    handleCancel,
-    handleNext,
-    handleViewGearProfile,
-    handleAddMoreGear,
-
-    showPanel;
+    geocoder;
 
 geocoder = new GoogleMaps.Geocoder();
 
-didInitialize = function() {
+function AddGear(options) {
+    ViewController.call(this, options);
+}
+
+AddGear.prototype = new ViewController();
+
+AddGear.prototype.didInitialize = function() {
     if (App.user.data.id === null) {
         this.ready = false;
         App.router.navigateTo('home');
@@ -82,7 +52,7 @@ didInitialize = function() {
         currency: App.user.data.currency
     };
 
-    this.newGear = new Gear.constructor({
+    this.newGear = new Gear({
         rootURL: Config.API_URL
     });
     this.newGear.initialize();
@@ -95,7 +65,7 @@ didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 };
 
-didRender = function() {
+AddGear.prototype.didRender = function() {
     this.addGearIcons();
 
     this.prepopulateInstrument();
@@ -116,7 +86,7 @@ didRender = function() {
     this.setupEvent('change', '#gear-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
 };
 
-getTabID = function() {
+AddGear.prototype.getTabID = function() {
     var tabID = null;
     $('.addgear-panel').each(function() {
         var $this = $(this);
@@ -127,7 +97,7 @@ getTabID = function() {
     return tabID;
 };
 
-populatePriceSuggestions = function() {
+AddGear.prototype.populatePriceSuggestions = function() {
     var gearClassification = App.contentClassification.data.gearClassification,
         view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
 
@@ -165,7 +135,7 @@ populatePriceSuggestions = function() {
     });
 };
 
-toggleLoading = function() {
+AddGear.prototype.toggleLoading = function() {
     if (this.isLoading === true) {
         $('.next-btn', this.$element).html('Next <i class="fa fa-arrow-circle-right"></i>');
         this.isLoading = false;
@@ -175,7 +145,7 @@ toggleLoading = function() {
     }
 };
 
-addGearIcons = function() {
+AddGear.prototype.addGearIcons = function() {
     var view = this,
         gearClassification = App.contentClassification.data.gearClassification,
         html = '',
@@ -194,7 +164,7 @@ addGearIcons = function() {
     $('.gearbuttonlist-container', view.$element).append(html);
 };
 
-renderAccessories = function() {
+AddGear.prototype.renderAccessories = function() {
     var view = this,
         gearClassification = App.contentClassification.data.gearClassification,
         html = '',
@@ -222,7 +192,7 @@ renderAccessories = function() {
 /**
  * Prefills the form with passed data.
  */
-prepopulateInstrument = function() {
+AddGear.prototype.prepopulateInstrument = function() {
     var gear;
     if (!this.passedData || this.passedData === null) {
         return;
@@ -246,7 +216,7 @@ prepopulateInstrument = function() {
     $('#dashboard-addgear-form-description').val(gear.description);
 };
 
-populateSubtypeSelect = function(gearType) {
+AddGear.prototype.populateSubtypeSelect = function(gearType) {
     var gearClassification = App.contentClassification.data.gearClassification,
         html = '<option> ' + subtypeDefault + ' </option>',
         $subtypeSelect, $brandSelectContainer, $detailsContainer, gearSubtypes, i;
@@ -274,7 +244,7 @@ populateSubtypeSelect = function(gearType) {
     this.setupEvent('change', '#addgear-form-subtype-container select', this, this.handleSelectSubtype);
 };
 
-populateBrandSelect = function() {
+AddGear.prototype.populateBrandSelect = function() {
     var brands = App.contentClassification.data.gearBrands,
         html = '<option> ' + brandDefault + ' </option>',
         $brandSelect, $detailsContainer, i;
@@ -299,24 +269,24 @@ populateBrandSelect = function() {
 /**
  * @assertion: gearClassification has been loaded
  */
-handleGearRadio = function(event) {
+AddGear.prototype.handleGearRadio = function(event) {
     var view = event.data;
     $('.hint1', view.$element).addClass('hidden');
     view.populateSubtypeSelect($(this).val());
 };
 
-handleSelectSubtype = function(event) {
+AddGear.prototype.handleSelectSubtype = function(event) {
     var view = event.data;
     view.populateBrandSelect();
     view.renderAccessories();
 };
 
-handleSelectBrand = function(event) {
+AddGear.prototype.handleSelectBrand = function(event) {
     var view = event.data;
     $('#addgear-form-geardetails-container', view.$element).removeClass('hidden');
 };
 
-saveInstrument = function() {
+AddGear.prototype.saveInstrument = function() {
     var view = this,
         accessoriesArray = [],
         newData, callback;
@@ -384,7 +354,7 @@ saveInstrument = function() {
     this.populatePriceSuggestions();
 };
 
-populatePhotos = function() {
+AddGear.prototype.populatePhotos = function() {
     var images = this.newGear.data.images.split(','),
         html = '',
         i;
@@ -397,7 +367,7 @@ populatePhotos = function() {
     $('#dashboard-addgearphotos-form .thumb-list-container ul', this.$element).append(html);
 };
 
-handleImageUpload = function(event) {
+AddGear.prototype.handleImageUpload = function(event) {
     var view = event.data,
         $file = $(this);
 
@@ -420,7 +390,7 @@ handleImageUpload = function(event) {
     });
 };
 
-populateCountries = function($select) {
+AddGear.prototype.populateCountries = function($select) {
     var html = $('option', $select).first()[0].outerHTML,
         countriesArray, i;
     countriesArray = Localization.getCountries();
@@ -433,7 +403,7 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-handlePriceChange = function() {
+AddGear.prototype.handlePriceChange = function() {
     var $this = $(this),
         price;
     price = parseInt($this.val(), 10);
@@ -443,7 +413,7 @@ handlePriceChange = function() {
     $this.val(price);
 };
 
-handleDeliveryCheckbox = function(event) {
+AddGear.prototype.handleDeliveryCheckbox = function(event) {
     var view = event.data;
     if (this.checked === true) {
         view.hasDelivery = true;
@@ -454,7 +424,7 @@ handleDeliveryCheckbox = function(event) {
     }
 };
 
-savePriceLocation = function() {
+AddGear.prototype.savePriceLocation = function() {
     var view = this,
         isLocationSame, addressOneliner, newGearData, saveCall,
         currentAddress, currentPostalCode, currentCity, currentRegion, currentCountry, didLocationChange;
@@ -584,7 +554,7 @@ savePriceLocation = function() {
     }
 };
 
-renderAvailability = function() {
+AddGear.prototype.renderAvailability = function() {
     var view = this,
         $calendarContainer, calendarVC, calendarVT;
 
@@ -598,7 +568,7 @@ renderAvailability = function() {
     calendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
 
-    view.calendarVC = new calendarVC.constructor({
+    view.calendarVC = new calendarVC({
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
@@ -634,7 +604,7 @@ renderAvailability = function() {
     });
 };
 
-renderSubmerchantForm = function() {
+AddGear.prototype.renderSubmerchantForm = function() {
     var $submerchantFormContainer = $('#addgear-availability-calendar', this.$element),
         view = this,
         submerchantFormVC, submerchantFormVT;
@@ -642,7 +612,7 @@ renderSubmerchantForm = function() {
     submerchantFormVC = require('./submerchantregistration.js');
     submerchantFormVT = require('../../templates/submerchantregistration.html');
 
-    view.submerchantFormVC = new submerchantFormVC.constructor({
+    view.submerchantFormVC = new submerchantFormVC({
         name: 'submerchantform',
         $element: $submerchantFormContainer,
         template: submerchantFormVT
@@ -651,7 +621,7 @@ renderSubmerchantForm = function() {
     view.submerchantFormVC.render();
 };
 
-saveAvailability = function() {
+AddGear.prototype.saveAvailability = function() {
     var view = this,
         availabilityArray = [],
         selections, alwaysFlag, month, monthSelections, selection, j;
@@ -696,11 +666,11 @@ saveAvailability = function() {
     });
 };
 
-handleCancel = function() {
+AddGear.prototype.handleCancel = function() {
     App.router.closeModalView();
 };
 
-handleNext = function(event) {
+AddGear.prototype.handleNext = function(event) {
     var view = event.data,
         currentTabID;
 
@@ -740,18 +710,18 @@ handleNext = function(event) {
     }
 };
 
-handleViewGearProfile = function(event) {
+AddGear.prototype.handleViewGearProfile = function(event) {
     var view = event.data;
     App.router.closeModalView();
     App.router.navigateTo('gearprofile/' + view.newGear.data.id);
 };
 
-handleAddMoreGear = function() {
+AddGear.prototype.handleAddMoreGear = function() {
     App.router.closeModalView();
     App.router.openModalView('addgear');
 };
 
-showPanel = function(panelID) {
+AddGear.prototype.showPanel = function(panelID) {
     $('.addgear-panel', this.$element).each(function() {
         var $this = $(this);
         if ($this.hasClass('hidden') === false) {
@@ -761,41 +731,4 @@ showPanel = function(panelID) {
     $(panelID, this.$element).removeClass('hidden');
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    getTabID: getTabID,
-    toggleLoading: toggleLoading,
-
-    addGearIcons: addGearIcons,
-    renderAccessories: renderAccessories,
-    prepopulateInstrument: prepopulateInstrument,
-    populateSubtypeSelect: populateSubtypeSelect,
-    populateBrandSelect: populateBrandSelect,
-    handleGearRadio: handleGearRadio,
-    handleSelectSubtype: handleSelectSubtype,
-    handleSelectBrand: handleSelectBrand,
-    saveInstrument: saveInstrument,
-
-    populatePhotos: populatePhotos,
-    handleImageUpload: handleImageUpload,
-
-    populatePriceSuggestions: populatePriceSuggestions,
-
-    populateCountries: populateCountries,
-    handlePriceChange: handlePriceChange,
-    handleDeliveryCheckbox: handleDeliveryCheckbox,
-    savePriceLocation: savePriceLocation,
-
-    renderAvailability: renderAvailability,
-    renderSubmerchantForm: renderSubmerchantForm,
-    saveAvailability: saveAvailability,
-
-    handleCancel: handleCancel,
-    handleNext: handleNext,
-    handleViewGearProfile: handleViewGearProfile,
-    handleAddMoreGear: handleAddMoreGear,
-
-    showPanel: showPanel
-});
+module.exports = AddGear;

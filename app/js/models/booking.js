@@ -10,14 +10,15 @@ var _ = require('underscore'),
     Moment = require('moment-timezone'),
 
     Model = require('../model.js'),
-    App = require('../app.js'),
+    App = require('../app.js');
 
-    didInitialize,
-    createBooking,
-    getBookingInfo,
-    update;
+function Booking(options) {
+    Model.call(this, options);
+}
 
-didInitialize = function() {
+Booking.prototype = new Model();
+
+Booking.prototype.didInitialize = function() {
     if (this.data === null) {
         this.data = {
             //The non-null id property determines the booking type
@@ -38,7 +39,7 @@ didInitialize = function() {
 };
 
 // POST: /users/:user_id/gear/:gear_id/bookings
-createBooking = function(cardId, callback) {
+Booking.prototype.createBooking = function(cardId, callback) {
     var model = this,
         newBooking = this.data,
         url,
@@ -71,7 +72,7 @@ createBooking = function(cardId, callback) {
     });
 };
 
-getBookingInfo = function(userID, callback) {
+Booking.prototype.getBookingInfo = function(userID, callback) {
     var model = this,
         url;
 
@@ -97,7 +98,7 @@ getBookingInfo = function(userID, callback) {
     });
 };
 
-update = function(userID, callback) {
+Booking.prototype.update = function(userID, callback) {
     var model = this,
         url, updateData;
 
@@ -126,9 +127,4 @@ update = function(userID, callback) {
     });
 };
 
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-    createBooking: createBooking,
-    getBookingInfo: getBookingInfo,
-    update: update
-});
+module.exports = Booking;
