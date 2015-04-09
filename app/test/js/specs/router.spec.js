@@ -123,4 +123,9 @@ describe('Router', function() {
         window.onhashchange = Router.handleHashChange;
         window.location.hash = '#aboutus';
     });
+
+    it('Can set query string', function() {
+        Router.setQueryString('testKey1=testValue1&testKey2=testValue2');
+        expect(window.location.search).to.equal('?testKey1=testValue1&testKey2=testValue2');
+    });
 });
