@@ -40,7 +40,7 @@ initialize = function(callback) {
     }
     App.router.navigateTo(route);
 
-    if (getCookie('cookie-consent') !== '1') {
+    if (this.getCookie('cookie-consent') !== '1') {
         $('.cookie-opt-in').removeClass('hidden');
     }
 
@@ -76,6 +76,7 @@ loadHeader = function($headerContainer, callback) {
     }
 };
 
+//TODO: Move this to utilities
 getCookie = function(cname) {
     var name = cname + '=',
         ca = document.cookie.split(';'),
@@ -93,6 +94,8 @@ getCookie = function(cname) {
 };
 
 module.exports = {
+    header: null,
+
     initialize: initialize,
     refresh: refresh,
     loadHeader: loadHeader,

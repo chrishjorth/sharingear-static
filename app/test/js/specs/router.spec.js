@@ -12,6 +12,8 @@ var chai = require('chai'),
 
     expect;
 
+require('script!../../../node_modules/sinon/pkg/sinon.js');
+
 expect = chai.expect;
 
 describe('Router', function() {
@@ -58,13 +60,32 @@ describe('Router', function() {
         expect(Router.getRoute('dashboard/profile')).to.equal('dashboard');
     });
 
-    it('Can navigate to route and preserve querystring', function(done) {
-        var oldHREF = window.location.href;
-        history.replaceState({}, '', window.location.pathname + '?test=1');
+    it('Can navigate to route', function(done) {
         Router.navigateTo('home', null, function() {
             expect(Router.currentViewController.name).to.equal('home');
-            expect(window.location.href).to.equal(oldHREF + '?test=1#home');
-            done();
+            
+            Router.navigateTo('home', null, function() {
+                expect(Router.currentViewController.name).to.equal('home');
+                
+                done();
+            });
+        });
+    });
+
+    it('Can navigate to route and preserve querystring', function(done) {
+        var oldQuery;
+        history.replaceState({}, '', window.location.pathname + '?test=1');
+        oldQuery = window.location.search;
+        Router.navigateTo('home', null, function() {
+            expect(Router.currentViewController.name).to.equal('home');
+            expect(window.location.search).to.equal(oldQuery);
+            
+            Router.navigateTo('home', null, function() {
+                expect(Router.currentViewController.name).to.equal('home');
+                expect(window.location.search).to.equal(oldQuery);
+                
+                done();
+            });
         });
     });
 

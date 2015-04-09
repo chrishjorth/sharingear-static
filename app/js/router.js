@@ -35,11 +35,6 @@ getRoute = function(route) {
 		routeRoot = route;
 	}
 
-	/*if(this.routeExists(routeRoot) === false) {
-		console.log('Error: no view for route "' + routeRoot + '".');
-		routeRoot = 'error';
-	}*/
-
 	return routeRoot;
 };
 
