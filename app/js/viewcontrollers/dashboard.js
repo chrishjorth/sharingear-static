@@ -17,7 +17,7 @@ function Dashboard(options) {
     ViewController.call(this, options);
 }
 
-Dashboard.prototype = new Dashboard();
+Dashboard.prototype = new ViewController();
 
 Dashboard.prototype.didInitialize = function() {
     if (App.user.data.id === null) {
