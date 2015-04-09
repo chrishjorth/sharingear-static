@@ -6,7 +6,8 @@
 /*jslint node: true */
 'use strict';
 
-var $ = require('jquery'),
+var _ = require('underscore'),
+    $ = require('jquery'),
 
     ViewController = require('./viewcontroller.js'),
 
@@ -17,6 +18,8 @@ function PopupController(options) {
     ViewController.call(this, options);
     this.$element = $('.popup-container', $popupLightbox);
     this.title = 'Popup';
+    _.extend(this, options);
+    this.initialize();
 }
 
 PopupController.prototype = new ViewController();
