@@ -26,7 +26,6 @@ require('./libraries/owl-carousel/owl.carousel.min.js');
 initialize = function(callback) {
     var hash, route;
 
-    //Load header and footer
     this.loadHeader($('.navigation-header'));
 
     App.rootVC = this;
