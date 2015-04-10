@@ -59,8 +59,8 @@
 	    };
 	}
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
 	    app = __webpack_require__(1),
 	    rootVC = __webpack_require__(2);
@@ -100,18 +100,18 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    GoogleMaps = __webpack_require__(3),
-	    Facebook = __webpack_require__(4),
+	var _ = __webpack_require__(3),
+	    GoogleMaps = __webpack_require__(7),
+	    Facebook = __webpack_require__(8),
 	
-	    Config = __webpack_require__(5),
-	    Router = __webpack_require__(6),
-	    Utilities = __webpack_require__(7),
+	    Config = __webpack_require__(9),
+	    Router = __webpack_require__(10),
+	    Utilities = __webpack_require__(11),
 	
-	    Localization = __webpack_require__(8),
-	    User = __webpack_require__(9),
-	    ContentClassification = __webpack_require__(10),
-	    MessagePopup = __webpack_require__(11),
+	    Localization = __webpack_require__(12),
+	    User = __webpack_require__(13),
+	    ContentClassification = __webpack_require__(14),
+	    MessagePopup = __webpack_require__(15),
 	
 	    App,
 	
@@ -200,12 +200,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
 	    App = __webpack_require__(1),
 	
-	    HeaderController = __webpack_require__(14),
+	    HeaderController = __webpack_require__(5),
 	    HeaderTemplate = __webpack_require__(16),
 	
 	    initialize,
@@ -214,8 +214,8 @@
 	    loadHeader,
 	    getCookie;
 	
-	__webpack_require__(22);
-	__webpack_require__(15);
+	__webpack_require__(18);
+	__webpack_require__(6);
 	
 	initialize = function(callback) {
 	    var hash, route;
@@ -298,1104 +298,6 @@
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*jslint node: true */
-	'use strict';
-	
-	var load,
-	    isLoaded,
-	    getGeocoder,
-	    getAutocomplete,
-	    getMap,
-	    getMarker,
-	    getLatLng,
-	
-	    container,
-	    googlemaps = null;
-	
-	window.mscl_googlemaps_initialize = function() {
-	    googlemaps = window.google.maps;
-	    container.GeocoderStatus.OK = googlemaps.GeocoderStatus.OK;
-	    container.GeocoderStatus.ERROR = googlemaps.GeocoderStatus.ERROR;
-	    container.GeocoderStatus.INVALID_REQUEST = googlemaps.GeocoderStatus.INVALID_REQUEST;
-	    container.GeocoderStatus.OVER_QUERY_LIMIT = googlemaps.GeocoderStatus.OVER_QUERY_LIMIT;
-	    container.GeocoderStatus.REQUEST_DENIED = googlemaps.GeocoderStatus.REQUEST_DENIED;
-	    container.GeocoderStatus.UNKNOWN_ERROR = googlemaps.GeocoderStatus.UNKNOWN_ERROR;
-	    container.GeocoderStatus.ZERO_RESULTS = googlemaps.GeocoderStatus.ZERO_RESULTS;
-	};
-	
-	load = function() {
-	    var script;
-	    if(googlemaps !== null) {
-	        return;
-	    }
-	    script = document.createElement('script');
-	    script.type = 'text/javascript';
-	    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' + '&signed_in=true&libraries=places&callback=mscl_googlemaps_initialize';
-	    document.body.appendChild(script);
-	};
-	
-	isLoaded = function() {
-	    return googlemaps !== null;
-	};
-	
-	getGeocoder = function() {
-	    if (!(this instanceof getGeocoder)) {
-	        console.error('mscl-googlemaps error: getGeocoder must be called with new.');
-	        return null;
-	    }
-	
-	    if (googlemaps === null) {
-	        console.error('mscl-googlemaps getGeocoder error: Google Maps not loaded.');
-	        return null;
-	    }
-	
-	    return new googlemaps.Geocoder();
-	};
-	
-	getAutocomplete = function(inputElement, options) {
-	    if (!(this instanceof getAutocomplete)) {
-	        console.error('mscl-googlemaps error: getAutocomplete must be called with new.');
-	        return null;
-	    }
-	
-	    if (googlemaps === null) {
-	        console.error('mscl-googlemaps getPlaces error: Google Maps not loaded.');
-	        return null;
-	    }
-	
-	    return new googlemaps.places.Autocomplete(inputElement, options);
-	};
-	
-	getMap = function(element, options) {
-	    if (!(this instanceof getMap)) {
-	        console.error('mscl-googlemaps error: getMap must be called with new.');
-	        return null;
-	    }
-	
-	    if (googlemaps === null) {
-	        console.error('mscl-googlemaps getMap error: Google Maps not loaded.');
-	        return null;
-	    }
-	
-	    return new googlemaps.Map(element, options);
-	};
-	
-	getMarker = function(options) {
-	    if (!(this instanceof getMarker)) {
-	        console.error('mscl-googlemaps error: getMarker must be called with new.');
-	        return null;
-	    }
-	
-	    if (googlemaps === null) {
-	        console.error('mscl-googlemaps getMarker error: Google Maps not loaded.');
-	        return null;
-	    }
-	
-	    return new googlemaps.Marker(options);
-	};
-	
-	getLatLng = function(latitude, longitude) {
-	    if (!(this instanceof getLatLng)) {
-	        console.error('mscl-googlemaps error: getLatLng must be called with new.');
-	        return null;
-	    }
-	
-	    if (googlemaps === null) {
-	        console.error('mscl-googlemaps getLatLng error: Google Maps not loaded.');
-	        return null;
-	    }
-	
-	    return new googlemaps.LatLng(latitude, longitude);
-	};
-	
-	container = {
-	    load: load,
-	    isLoaded: isLoaded,
-	    Geocoder: getGeocoder,
-	    GeocoderStatus: {},
-	    places: {
-	        Autocomplete: getAutocomplete
-	    },
-	    Map: getMap,
-	    Marker: getMarker,
-	    LatLng: getLatLng
-	};
-	
-	module.exports = container;
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*jslint node: true */
-	'use strict';
-	
-	var load,
-	    getLoginStatus,
-	    login,
-	
-	    FB = null;
-	
-	window.FB = null;
-	
-	window.fbAsyncInit = function() {
-	    window.FB.init({
-	        appId: '522375581240221',
-	        xfbml: true,
-	        version: 'v2.1'
-	    });
-	
-	    FB = window.FB;
-	};
-	
-	load = function() {
-	    (function(d, s, id) {
-	        var js, fjs = d.getElementsByTagName(s)[0];
-	        if (d.getElementById(id)) {
-	            return;
-	        }
-	        js = d.createElement(s);
-	        js.id = id;
-	        js.src = '//connect.facebook.net/en_US/sdk.js';
-	        fjs.parentNode.insertBefore(js, fjs);
-	    }(document, 'script', 'facebook-jssdk'));
-	};
-	
-	getLoginStatus = function(callback) {
-	    var module = this;
-	    if (FB === null) {
-	        setTimeout(function() {
-	            module.getLoginStatus(callback);
-	        }, 10);
-	        return;
-	    }
-	
-	    FB.getLoginStatus(callback);
-	};
-	
-	login = function(callback, options) {
-	    var module = this;
-	    if (FB === null) {
-	        setTimeout(function() {
-	            module.login(callback, options);
-	        }, 10);
-	        return;
-	    }
-	
-	    FB.login(callback, options);
-	};
-	
-	module.exports = {
-	    load: load,
-	    getLoginStatus: getLoginStatus,
-	    login: login
-	};
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines site configuration.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
-	    MIN_USER_AGE = 13,
-	    AVG_USER_AGE = 27,
-	    MIN_XP_START_YEAR = 1960,
-	    API_URL,
-	    isProduction;
-	
-	if (IS_PRODUCTION === true) {
-	    API_URL = 'https://prod-api.sharingear.com';
-	} else {
-	    API_URL = 'https://api.sharingear.com';
-	}
-	
-	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
-	
-	isProduction = function() {
-	    return (this.IS_PRODUCTION === true);
-	};
-	
-	module.exports = {
-	    IS_PRODUCTION: IS_PRODUCTION,
-	    API_URL: API_URL,
-	    MIN_USER_AGE: MIN_USER_AGE,
-	    AVG_USER_AGE: AVG_USER_AGE,
-	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
-	    isProduction: isProduction
-	};
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Handles routing.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	
-		ViewLoader = __webpack_require__(17),
-		Utilities = __webpack_require__(7);
-	
-	var Router,
-				
-		hashUpdated,
-	
-		getRoute,
-		handleHashChange,
-		navigateTo,
-		openModalView,
-		openModalSiblingView,
-		closeModalView,
-		setQueryString;
-			
-	hashUpdated = false; //Semaphore variable
-	
-	/**
-	 * Validates the route and returns error if route does not exist.
-	 */
-	getRoute = function(route) {
-		//Extract route root
-		var routeRoot = route.substring(0, route.indexOf('/'));
-		if(routeRoot.length <= 0) {
-			routeRoot = route;
-		}
-	
-		return routeRoot;
-	};
-	
-	/**
-	 * NOTE: This function is triggered when the hash in the URL changes, no matter wether it is by code or by user interaction.
-	 */
-	handleHashChange = function() {
-		hashUpdated = true;
-		Router.navigateTo(window.location.hash.substring(1));
-	};
-	
-	navigateTo = function(route, data, callback) {
-		var router = this,
-			queryIndex, newLocation, queryString;
-		if(hashUpdated === false) {
-			//Hash change event not fired
-			//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
-			if(window.location.hash !== '#' + route) {
-				newLocation = window.location.pathname;
-				queryString = Utilities.getQueryString();
-				if(queryString) {
-					newLocation += '?' + queryString;
-				}
-				newLocation += '#' + route;
-				history.pushState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
-			}
-		}
-		else {
-			//Hash change event fired
-			hashUpdated = false;
-		}
-	
-		//Strip querystring from route
-		queryIndex = route.indexOf('?');
-		if(queryIndex >= 0) {
-			route = route.substring(0, queryIndex);
-		}
-	
-		ViewLoader.loadView(this.getRoute(route), route, data, function(error, loadedViewController) {
-			if(!error) {
-				router.currentViewController = loadedViewController;
-			}
-			if(_.isFunction(callback)) {
-				callback();
-			}
-		});
-	};
-	
-	openModalView = function(route, data, callback) {
-		var router = this,
-			view = this.getRoute(route);
-				
-		ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
-			if(!error) {
-				router.currentModalViewController = loadedViewController;
-			}
-			if(_.isFunction(callback)) {
-				callback();
-			}
-		});
-	};
-	
-	/**
-	 * Opens a modal view by closing any current open modals.
-	 */
-	openModalSiblingView = function(route, data, callback) {
-		var router = this,
-			view = this.getRoute(route);
-	
-		ViewLoader.loadModalViewSibling(view, route, data, function(error, loadedViewController) {
-			if(!error) {
-				router.currentModalViewController = loadedViewController;
-			}
-			if(_.isFunction(callback)) {
-				callback();
-			}
-		});
-	};
-	
-	closeModalView = function(callback) {
-		var router = this;
-		ViewLoader.closeModalView(function(error, currentModalViewController) {
-			if(!error) {
-				router.currentModalViewController = currentModalViewController;
-			}
-			if(_.isFunction(callback)) {
-				callback();
-			}
-		});
-	};
-	
-	setQueryString = function(queryString) {
-		var hash = window.location.hash,
-			newLocation;
-		if(!queryString || queryString === '') {
-			newLocation = window.location.pathname + hash;
-		}
-		else {
-			newLocation = window.location.pathname + '?' + queryString + hash;
-		}
-		history.replaceState({}, '', newLocation);
-	};
-	
-	Router = {
-		routes: ['error'], //The default error route must always be present for error handling
-		currentViewController: null,
-		currentModalViewController: null,
-		viewLoader: ViewLoader,
-	
-		getRoute: getRoute,
-		handleHashChange: handleHashChange,
-		navigateTo: navigateTo,
-		openModalView: openModalView,
-		openModalSiblingView: openModalSiblingView,
-		closeModalView: closeModalView,
-		setQueryString: setQueryString
-	};
-	
-	window.onhashchange = Router.handleHashChange;
-	
-	module.exports = Router;
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * JavaScript utilities.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
-	
-	    getBaseURL,
-	    ajajFileUpload,
-	    getCityFromCoordinates,
-	    getQueryString,
-	    getQueryStringParameterValue,
-	    capitalizeString,
-	    isMomentBetween,
-	    isMobile;
-	
-	getBaseURL = function() {
-	    if (!window.location.origin) {
-	        window.location.origin = window.location.protocol + '//' + window.location.host;
-	    }
-	    return window.location.origin;
-	};
-	
-	/**
-	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
-	 * @param inputName: The name for the file expected on the backend
-	 */
-	ajajFileUpload = function(url, secretProof, fileName, file, callback) {
-	    var formData = new FormData();
-	    formData.append('uploadedfile', file);
-	    formData.append('fileName', fileName);
-	    formData.append('secretProof', secretProof);
-	
-	    $.ajax({
-	        url: url,
-	        type: 'POST',
-	        data: formData,
-	        dataType: 'json',
-	        //Options to tell jQuery not to process data or worry about content-type.
-	        cache: false,
-	        contentType: false,
-	        processData: false,
-	        success: function(data) {
-	            if (data.error) {
-	                callback(data.error);
-	                return;
-	            }
-	            if (data.code && data.code === '401') {
-	                callback(data.message);
-	                return;
-	            }
-	            callback(null, data);
-	        },
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            var error = 'Error uploading file with AJAX POST: ' + textStatus + '. ' + errorThrown;
-	            callback(error);
-	        }
-	    });
-	};
-	
-	getCityFromCoordinates = function(latitude, longitude, callback) {
-	    var geocoder = new GoogleMaps.Geocoder(),
-	        latLng = new GoogleMaps.LatLng(latitude, longitude);
-	    //Use Google Geocoder to translate the coordinates to city name
-	    geocoder.geocode({
-	        'latLng': latLng
-	    }, function(results, status) {
-	        var locationCity = null;
-	        if (status === GoogleMaps.GeocoderStatus.OK) {
-	            locationCity = results[0].address_components[2].long_name;
-	        }
-	        callback(locationCity);
-	    });
-	};
-	
-	getQueryString = function() {
-	    var queryString = window.location.href.split('?')[1];
-	    if (queryString) {
-	        queryString = queryString.split('#')[0];
-	    }
-	    return queryString;
-	};
-	
-	/**
-	 * Receives a query string and returns the value for the specified key.
-	 * Inspired by http://stackoverflow.com/a/1099670
-	 */
-	getQueryStringParameterValue = function(queryString, key) {
-	    var regEx = /[?&]?([^=]+)=([^&]*)/g,
-	        parameters = {},
-	        tokens;
-	    queryString = queryString.split('+').join(' ');
-	    while ((tokens = regEx.exec(queryString)) !== null) {
-	        parameters[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-	    }
-	    return parameters[key];
-	};
-	
-	capitalizeString = function(string) {
-	    return string.charAt(0).toUpperCase() + string.slice(1);
-	};
-	
-	/**
-	 * This function considers days as smallest time unit.
-	 * This function is inclusive.
-	 */
-	//TODO: rename to isDayMomentBetween
-	isMomentBetween = function(moment, intervalStart, intervalEnd) {
-	    return ((moment.isAfter(intervalStart, 'day') === true || moment.isSame(intervalStart, 'day') === true) && (moment.isBefore(intervalEnd, 'day') === true || moment.isSame(intervalEnd, 'day') === true));
-	};
-	
-	/**
-	 * Breakpoints are Bootstrap compatible.
-	 */
-	isMobile = function() {
-	    var breakpoints = [768, 992, 1200],
-	        viewWidth = $(document).width();
-	    return (viewWidth < breakpoints[0]);
-	};
-	
-	module.exports = {
-	    getBaseURL: getBaseURL,
-	    ajajFileUpload: ajajFileUpload,
-	    getCityFromCoordinates: getCityFromCoordinates,
-	    getQueryString: getQueryString,
-	    getQueryStringParameterValue: getQueryStringParameterValue,
-	    capitalizeString: capitalizeString,
-	    isMomentBetween: isMomentBetween,
-	    isMobile: isMobile
-	};
-
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a localization and locale data.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var Moment = __webpack_require__(24),
-	
-	    Config = __webpack_require__(5),
-	    Model = __webpack_require__(18),
-	    XChangeRates = __webpack_require__(19),
-	    Localization,
-	
-	    staticLocalization;
-	
-	function Localization(options) {
-	    Model.call(this, options);
-	}
-	
-	Localization.prototype = new Model();
-	
-	Localization.prototype.didInitialize = function() {
-	    this.defaultTimeZone = this.getLocalTimeZone();
-	    this.currenTimezone = this.defaultTimeZone;
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	Localization.prototype.fetch = function() {
-	    var model = this;
-	    this.get('/localization', function(error, data) {
-	        if (error) {
-	            console.log('Error retrieving localization data.');
-	            return;
-	        }
-	        model.data = data;
-	    });
-	};
-	
-	Localization.prototype.getCountries = function() {
-	    var countriesArray = [],
-	        i;
-	    for (i = 0; i < this.data.length; i++) {
-	        countriesArray.push({
-	            name: this.data[i].name,
-	            code: this.data[i].code
-	        });
-	    }
-	    return countriesArray;
-	};
-	
-	Localization.prototype.getVAT = function(countryCode) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].code === countryCode) {
-	            return this.data[i].vat;
-	        }
-	    }
-	    return null;
-	};
-	
-	/**
-	 * @param price: the price in EURO to convert.
-	 * @param currency: the currency to convert to.
-	 */
-	Localization.prototype.convertPrice = function(price, currency, callback) {
-	    XChangeRates.getRate('EUR', currency, function(error, rate) {
-	        if (error) {
-	            callback('Error getting rate: ' + error);
-	            return;
-	        }
-	        callback(null, price * rate);
-	    });
-	};
-	
-	Localization.prototype.convertPrices = function(prices, fromCurrency, toCurrency, callback) {
-	    XChangeRates.getRate(fromCurrency, toCurrency, function(error, rate) {
-	        var i = 0,
-	            convertedPrices = [];
-	        if (error) {
-	            callback('Error getting rate: ' + error);
-	            return;
-	        }
-	        for (i = 0; i < prices.length; i++) {
-	            convertedPrices.push(prices[i] * rate);
-	        }
-	        callback(null, convertedPrices, rate);
-	    });
-	};
-	
-	Localization.prototype.getTimeZones = function() {
-	    var timezones = Moment.tz.names(),
-	        i, offset, j, temp;
-	    for (i = 0; i < timezones.length; i++) {
-	        offset = Moment.tz.zone(timezones[i]).offset(Moment.utc().valueOf()) * -1; //for some reason the offset is flipped
-	        offset /= 60; // convert to hours
-	        timezones[i] = {
-	            name: timezones[i],
-	            UTCOffset: offset
-	        };
-	        for (j = i; j > 0; j--) {
-	            if (timezones[j].UTCOffset < timezones[j - 1].UTCOffset) {
-	                temp = timezones[j];
-	                timezones[j] = timezones[j - 1];
-	                timezones[j - 1] = temp;
-	            } else if (timezones[j].UTCOffset === timezones[j - 1].UTCOffset && timezones[j].name < timezones[j - 1].name) {
-	                temp = timezones[j];
-	                timezones[j] = timezones[j - 1];
-	                timezones[j - 1] = temp;
-	            } else {
-	                j = 0;
-	            }
-	        }
-	    }
-	    return timezones;
-	};
-	
-	/**
-	 * Moment.js is missing a way to get the local timezone name.
-	 * See following links for problem info:
-	 * https://github.com/moment/moment-timezone/issues/138
-	 * http://codeofmatt.com/2013/06/07/javascript-date-type-is-horribly-broken/
-	 * This approach is based on https://github.com/Canop/tzdetect.js and optimized for speed since the version in the link is quite slow.
-	 * We use a naive approach and return the first match, since it is currently not possible to narrow down the results to one timezone anyhow.
-	 */
-	Localization.prototype.getLocalTimeZone = function() {
-	    var now = Date.now(),
-	        makekey, localkey, names, i;
-	
-	    //The key identifies a timezone by specific time points in a year. Note that this might become wrong when the timezones change for some reason as they sometimes do.
-	    makekey = function(id) {
-	        //return [0, 4, 8, -5 * 12, 4 - 5 * 12, 8 - 5 * 12, 4 - 2 * 12, 8 - 2 * 12].map(function(months) {
-	        return [0, 4, 8, -60, -56, -52, -20, -16].map(function(months) {
-	            //var m = new Moment(now + months * 30 * 24 * 60 * 60 * 1000);
-	            var m = new Moment(now + months * 2592000000);
-	            if (id) {
-	                m.tz(id);
-	            }
-	            return m.format('DDHHmm');
-	        }).join(' ');
-	    };
-	
-	    localkey = makekey();
-	
-	    names = Moment.tz.names();
-	
-	    i = 0;
-	    while (i < names.length) {
-	        if (makekey(names[i]) === localkey) {
-	            return names[i];
-	        }
-	        i++;
-	    }
-	
-	    return null;
-	};
-	
-	Localization.prototype.getCurrentTimeZone = function() {
-	    return this.currenTimezone;
-	};
-	
-	Localization.prototype.setCurrentTimeZone = function(timezone) {
-	    if (timezone !== null) {
-	        this.currenTimezone = timezone;
-	    } else {
-	        this.currenTimezone = this.defaultTimeZone;
-	    }
-	};
-	
-	staticLocalization = new Localization({
-	    rootURL: Config.API_URL
-	});
-	staticLocalization.initialize();
-	
-	module.exports = staticLocalization;
-
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a Sharingear user. This can both be a logged in user or the owner of gear.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	    FB = __webpack_require__(4),
-	    Localization = __webpack_require__(8),
-	    Model = __webpack_require__(18),
-	    Utilities = __webpack_require__(7);
-	
-	function User(options) {
-	    Model.call(this, options);
-	    this.fbStatus = '';
-	}
-	
-	User.prototype = new Model();
-	
-	User.prototype.didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            name: '',
-	            surname: '',
-	            city: '',
-	            image_url: '',
-	            bio: '',
-	            birthdate: null,
-	            address: null,
-	            postal_code: null,
-	            country: null,
-	            phone: null,
-	            nationality: null,
-	            currency: 'EUR',
-	            time_zone: 'UTC',
-	            currentCity: '' //Detected location
-	        };
-	    }
-	};
-	
-	User.prototype.getLoginStatus = function(callback) {
-	    var user = this;
-	    if (!FB) {
-	        callback({
-	            status: 'Failed.'
-	        });
-	        return;
-	    }
-	    FB.getLoginStatus(function(response) {
-	        user.fbStatus = response.status;
-	        if (callback && typeof callback === 'function') {
-	            callback(response);
-	        }
-	    }); //Adding the true parameter forces a refresh from the FB servers, but also causes the login popup to be blocked, since it goes async and creates a new execution context
-	};
-	
-	User.prototype.login = function(callback) {
-	    var user = this;
-	
-	    if (!FB) {
-	        callback('Facebook library is not loaded or blocked.');
-	        return;
-	    }
-	
-	    //We need to make sure Facebook has not changed the status on their side.
-	    this.getLoginStatus(function(response) {
-	        if (user.fbStatus !== 'connected') {
-	            FB.login(function(response) {
-	                var error;
-	                //console.log(response);
-	                if (response.status === 'connected') {
-	                    error = null;
-	                    user.loginToBackend(response, callback);
-	                    return;
-	                } else if (response.status === 'not_authorized') {
-	                    error = {
-	                        error: 'FB App not authorized'
-	                    };
-	                } else {
-	                    error = {
-	                        error: 'FB login failed'
-	                    };
-	                }
-	
-	                user.fbStatus = response.status;
-	
-	                if (callback && typeof callback === 'function') {
-	                    callback(error);
-	                }
-	            }, {
-	                scope: 'email'
-	            });
-	        } else {
-	            user.loginToBackend(response, callback);
-	        }
-	    });
-	};
-	
-	User.prototype.loginToBackend = function(FBResponse, callback) {
-	    var user = this,
-	        authData = FBResponse.authResponse,
-	        postData;
-	
-	    if (_.isFunction(window.ga) === true) {
-	        window.ga('send', 'event', 'user action', 'login', 'fb login', 1);
-	    }
-	
-	    postData = {
-	        fbid: authData.userID,
-	        accesstoken: authData.accessToken
-	    };
-	    this.post('/users/login', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error logging into backend: ' + error);
-	            }
-	            return;
-	        }
-	        if (user.data === null) {
-	            user.data = {};
-	        }
-	        _.extend(user.data, data);
-	
-	        //Enable Google Analytics user tracking
-	        if (_.isFunction(window.ga) === true) {
-	            window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
-	        }
-	
-	        Localization.setCurrentTimeZone(user.data.time_zone);
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	User.prototype.fetch = function(callback) {
-	    var user = this;
-	    user.get('/users/' + user.data.id, function(error, data) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        _.extend(user.data, data);
-	        Localization.setCurrentTimeZone(user.data.time_zone);
-	        callback(null);
-	    });
-	};
-	
-	User.prototype.update = function(callback) {
-	    var user = this;
-	    user.put('/users/' + user.data.id, user.data, function(error, data) {
-	        if (error) {
-	            callback('Error updating user: ' + error);
-	            return;
-	        }
-	        _.extend(user.data, data);
-	        Localization.setCurrentTimeZone(user.data.time_zone);
-	        callback(null);
-	    });
-	};
-	
-	User.prototype.uploadProfilePicture = function(file, filename, userID, callback) {
-	    var model = this;
-	    this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error getting filename: ' + error);
-	            }
-	            return;
-	        }
-	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
-	            var postData;
-	            if (error) {
-	                if (callback && typeof callback === 'function') {
-	                    callback('Error uploading file: ' + error);
-	                }
-	                return;
-	            }
-	
-	            //Add image url to backend
-	            postData = {
-	                image_url: data.url
-	            };
-	
-	            model.put('/users/' + userID, postData, function(error, images) {
-	                if (error) {
-	                    if (callback && typeof callback === 'function') {
-	                        callback('Error uploading file: ' + error);
-	                    }
-	                    return;
-	                }
-	                model.data.images = images.images;
-	                callback(null, data.url);
-	            });
-	
-	        });
-	    });
-	};
-	
-	User.prototype.getPublicInfo = function(callback) {
-	    var model = this;
-	
-	    this.get('/users/' + this.data.id, function(error, user) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, user);
-	        callback(null);
-	    });
-	};
-	
-	User.prototype.isSubMerchant = function() {
-	    return this.data.hasBank;
-	};
-	
-	User.prototype.updateBankDetails = function(callback) {
-	    var user = this;
-	    user.put('/users/' + user.data.id + '/bankdetails', user.data, function(error) {
-	        if (error) {
-	            callback('Error updating bank details: ' + error);
-	        }
-	        callback(null);
-	    });
-	};
-	
-	User.prototype.setSearchInterval = function(dateRange) {
-	    this.data.searchInterval = dateRange;
-	};
-	
-	User.prototype.getIntervalStart = function() {
-	    var date = null;
-	    if (this.data.searchInterval) {
-	        date = this.data.searchInterval.split('-')[0];
-	    }
-	    return date;
-	};
-	
-	User.prototype.getIntervalEnd = function() {
-	    var date = null;
-	    if (this.data.searchInterval) {
-	        date = this.data.searchInterval.split('-')[1];
-	    }
-	    return date;
-	};
-	
-	User.prototype.isLoggedIn = function() {
-	    return this.data.id !== null;
-	};
-	
-	module.exports = User;
-
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines the Sharingear classification of gear, vans and techs.
-	 * @author: Chris Hjorth
-	 */
-	//TODO: Store the classification locally so that it is always ready on load after the first time
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	
-	    Config = __webpack_require__(5),
-	    Model = __webpack_require__(18),
-	
-	    staticContentClassification;
-	
-	function ContentClassification(options) {
-	    Model.call(this, options);
-	}
-	
-	ContentClassification.prototype = new Model();
-	
-	ContentClassification.prototype.didInitialize = function() {
-	    this.data = {};
-	};
-	
-	ContentClassification.prototype.getClassification = function(callback) {
-	    var model = this;
-	
-	    if (_.isEmpty(this.data) === false) {
-	        if (callback && typeof callback === 'function') {
-	            callback(this.data);
-	        }
-	        return;
-	    }
-	
-	    this.get('/contentclassification', function(error, contentClassification) {
-	        if (error) {
-	            console.log(error);
-	            return;
-	        }
-	        model.data = contentClassification;
-	        if (callback && typeof callback === 'function') {
-	            callback(model.data);
-	        }
-	    });
-	};
-	
-	staticContentClassification = new ContentClassification({
-	    rootURL: Config.API_URL
-	});
-	staticContentClassification.initialize();
-	
-	module.exports = staticContentClassification;
-
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Popup that requests a time.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var $ = __webpack_require__(13),
-	
-	    PopupController = __webpack_require__(20),
-	
-	    MessagePopupTemplate = __webpack_require__(23),
-	
-	    wasClosed;
-	
-	function MessagePopup(options) {
-	    PopupController.call(this, options);
-	    this.template = MessagePopupTemplate;
-	}
-	
-	MessagePopup.prototype = new PopupController();
-	
-	MessagePopup.prototype.didRender = function() {
-	    wasClosed = false;
-	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
-	};
-	
-	MessagePopup.prototype.setMessage = function(message) {
-	    $('#popup-message', this.$element).html(message);
-	};
-	
-	MessagePopup.prototype.getWasClosed = function() {
-	    return wasClosed;
-	};
-	
-	MessagePopup.prototype.handleCancel = function(event) {
-	    var view = event.data;
-	    wasClosed = true;
-	    view.hide();
-	};
-	
-	module.exports = MessagePopup;
-
-
-/***/ },
-/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.2
@@ -2937,7 +1839,7 @@
 
 
 /***/ },
-/* 13 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -12148,7 +11050,7 @@
 
 
 /***/ },
-/* 14 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12160,10 +11062,10 @@
 	'use strict';
 	
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(21),
-	    Utilities = __webpack_require__(7),
+	    ViewController = __webpack_require__(17),
+	    Utilities = __webpack_require__(11),
 	    App = __webpack_require__(1),
 	
 	    defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
@@ -12352,7 +11254,7 @@
 
 
 /***/ },
-/* 15 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {"function"!==typeof Object.create&&(Object.create=function(f){function g(){}g.prototype=f;return new g});
@@ -12402,7 +11304,1105 @@
 	a);this.unWrap();this.init(a,this.$elem)},addItem:function(a,b){var e;if(!a)return!1;if(0===this.$elem.children().length)return this.$elem.append(a),this.setVars(),!1;this.unWrap();e=void 0===b||-1===b?-1:b;e>=this.$userItems.length||-1===e?this.$userItems.eq(-1).after(a):this.$userItems.eq(e).before(a);this.setVars()},removeItem:function(a){if(0===this.$elem.children().length)return!1;a=void 0===a||-1===a?-1:a;this.unWrap();this.$userItems.eq(a).remove();this.setVars()}};f.fn.owlCarousel=function(a){return this.each(function(){if(!0===
 	f(this).data("owl-init"))return!1;f(this).data("owl-init",!0);var b=Object.create(l);b.init(a,this);f.data(this,"owlCarousel",b)})};f.fn.owlCarousel.options={items:5,itemsCustom:!1,itemsDesktop:[1199,4],itemsDesktopSmall:[979,3],itemsTablet:[768,2],itemsTabletSmall:!1,itemsMobile:[479,1],singleItem:!1,itemsScaleUp:!1,slideSpeed:200,paginationSpeed:800,rewindSpeed:1E3,autoPlay:!1,stopOnHover:!1,navigation:!1,navigationText:["prev","next"],rewindNav:!0,scrollPerPage:!1,pagination:!0,paginationNumbers:!1,
 	responsive:!0,responsiveRefreshRate:200,responsiveBaseWidth:g,baseClass:"owl-carousel",theme:"owl-theme",lazyLoad:!1,lazyFollow:!0,lazyEffect:"fade",autoHeight:!1,jsonPath:!1,jsonSuccess:!1,dragBeforeAnimFinish:!0,mouseDrag:!0,touchDrag:!0,addClassActive:!1,transitionStyle:!1,beforeUpdate:!1,afterUpdate:!1,beforeInit:!1,afterInit:!1,beforeMove:!1,afterMove:!1,afterAction:!1,startDragging:!1,afterLazyLoad:!1}})(jQuery,window,document);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*jslint node: true */
+	'use strict';
+	
+	var load,
+	    isLoaded,
+	    getGeocoder,
+	    getAutocomplete,
+	    getMap,
+	    getMarker,
+	    getLatLng,
+	
+	    container,
+	    googlemaps = null;
+	
+	window.mscl_googlemaps_initialize = function() {
+	    googlemaps = window.google.maps;
+	    container.GeocoderStatus.OK = googlemaps.GeocoderStatus.OK;
+	    container.GeocoderStatus.ERROR = googlemaps.GeocoderStatus.ERROR;
+	    container.GeocoderStatus.INVALID_REQUEST = googlemaps.GeocoderStatus.INVALID_REQUEST;
+	    container.GeocoderStatus.OVER_QUERY_LIMIT = googlemaps.GeocoderStatus.OVER_QUERY_LIMIT;
+	    container.GeocoderStatus.REQUEST_DENIED = googlemaps.GeocoderStatus.REQUEST_DENIED;
+	    container.GeocoderStatus.UNKNOWN_ERROR = googlemaps.GeocoderStatus.UNKNOWN_ERROR;
+	    container.GeocoderStatus.ZERO_RESULTS = googlemaps.GeocoderStatus.ZERO_RESULTS;
+	};
+	
+	load = function() {
+	    var script;
+	    if(googlemaps !== null) {
+	        return;
+	    }
+	    script = document.createElement('script');
+	    script.type = 'text/javascript';
+	    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' + '&signed_in=true&libraries=places&callback=mscl_googlemaps_initialize';
+	    document.body.appendChild(script);
+	};
+	
+	isLoaded = function() {
+	    return googlemaps !== null;
+	};
+	
+	getGeocoder = function() {
+	    if (!(this instanceof getGeocoder)) {
+	        console.error('mscl-googlemaps error: getGeocoder must be called with new.');
+	        return null;
+	    }
+	
+	    if (googlemaps === null) {
+	        console.error('mscl-googlemaps getGeocoder error: Google Maps not loaded.');
+	        return null;
+	    }
+	
+	    return new googlemaps.Geocoder();
+	};
+	
+	getAutocomplete = function(inputElement, options) {
+	    if (!(this instanceof getAutocomplete)) {
+	        console.error('mscl-googlemaps error: getAutocomplete must be called with new.');
+	        return null;
+	    }
+	
+	    if (googlemaps === null) {
+	        console.error('mscl-googlemaps getPlaces error: Google Maps not loaded.');
+	        return null;
+	    }
+	
+	    return new googlemaps.places.Autocomplete(inputElement, options);
+	};
+	
+	getMap = function(element, options) {
+	    if (!(this instanceof getMap)) {
+	        console.error('mscl-googlemaps error: getMap must be called with new.');
+	        return null;
+	    }
+	
+	    if (googlemaps === null) {
+	        console.error('mscl-googlemaps getMap error: Google Maps not loaded.');
+	        return null;
+	    }
+	
+	    return new googlemaps.Map(element, options);
+	};
+	
+	getMarker = function(options) {
+	    if (!(this instanceof getMarker)) {
+	        console.error('mscl-googlemaps error: getMarker must be called with new.');
+	        return null;
+	    }
+	
+	    if (googlemaps === null) {
+	        console.error('mscl-googlemaps getMarker error: Google Maps not loaded.');
+	        return null;
+	    }
+	
+	    return new googlemaps.Marker(options);
+	};
+	
+	getLatLng = function(latitude, longitude) {
+	    if (!(this instanceof getLatLng)) {
+	        console.error('mscl-googlemaps error: getLatLng must be called with new.');
+	        return null;
+	    }
+	
+	    if (googlemaps === null) {
+	        console.error('mscl-googlemaps getLatLng error: Google Maps not loaded.');
+	        return null;
+	    }
+	
+	    return new googlemaps.LatLng(latitude, longitude);
+	};
+	
+	container = {
+	    load: load,
+	    isLoaded: isLoaded,
+	    Geocoder: getGeocoder,
+	    GeocoderStatus: {},
+	    places: {
+	        Autocomplete: getAutocomplete
+	    },
+	    Map: getMap,
+	    Marker: getMarker,
+	    LatLng: getLatLng
+	};
+	
+	module.exports = container;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*jslint node: true */
+	'use strict';
+	
+	var load,
+	    getLoginStatus,
+	    login,
+	
+	    FB = null;
+	
+	window.FB = null;
+	
+	window.fbAsyncInit = function() {
+	    window.FB.init({
+	        appId: '522375581240221',
+	        xfbml: true,
+	        version: 'v2.1'
+	    });
+	
+	    FB = window.FB;
+	};
+	
+	load = function() {
+	    (function(d, s, id) {
+	        var js, fjs = d.getElementsByTagName(s)[0];
+	        if (d.getElementById(id)) {
+	            return;
+	        }
+	        js = d.createElement(s);
+	        js.id = id;
+	        js.src = '//connect.facebook.net/en_US/sdk.js';
+	        fjs.parentNode.insertBefore(js, fjs);
+	    }(document, 'script', 'facebook-jssdk'));
+	};
+	
+	getLoginStatus = function(callback) {
+	    var module = this;
+	    if (FB === null) {
+	        setTimeout(function() {
+	            module.getLoginStatus(callback);
+	        }, 10);
+	        return;
+	    }
+	
+	    FB.getLoginStatus(callback);
+	};
+	
+	login = function(callback, options) {
+	    var module = this;
+	    if (FB === null) {
+	        setTimeout(function() {
+	            module.login(callback, options);
+	        }, 10);
+	        return;
+	    }
+	
+	    FB.login(callback, options);
+	};
+	
+	module.exports = {
+	    load: load,
+	    getLoginStatus: getLoginStatus,
+	    login: login
+	};
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines site configuration.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var IS_PRODUCTION = false, //This variable should be set and saved according to the git branch: true for master and false for develop
+	    MIN_USER_AGE = 13,
+	    AVG_USER_AGE = 27,
+	    MIN_XP_START_YEAR = 1960,
+	    API_URL,
+	    isProduction;
+	
+	if (IS_PRODUCTION === true) {
+	    API_URL = 'https://prod-api.sharingear.com';
+	} else {
+	    API_URL = 'https://api.sharingear.com';
+	}
+	
+	//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+	
+	isProduction = function() {
+	    return (this.IS_PRODUCTION === true);
+	};
+	
+	module.exports = {
+	    IS_PRODUCTION: IS_PRODUCTION,
+	    API_URL: API_URL,
+	    MIN_USER_AGE: MIN_USER_AGE,
+	    AVG_USER_AGE: AVG_USER_AGE,
+	    MIN_XP_START_YEAR: MIN_XP_START_YEAR,
+	    isProduction: isProduction
+	};
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Handles routing.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	
+		ViewLoader = __webpack_require__(23),
+		Utilities = __webpack_require__(11);
+	
+	var Router,
+				
+		hashUpdated,
+	
+		getRoute,
+		handleHashChange,
+		navigateTo,
+		openModalView,
+		openModalSiblingView,
+		closeModalView,
+		setQueryString;
+			
+	hashUpdated = false; //Semaphore variable
+	
+	/**
+	 * Validates the route and returns error if route does not exist.
+	 */
+	getRoute = function(route) {
+		//Extract route root
+		var routeRoot = route.substring(0, route.indexOf('/'));
+		if(routeRoot.length <= 0) {
+			routeRoot = route;
+		}
+	
+		return routeRoot;
+	};
+	
+	/**
+	 * NOTE: This function is triggered when the hash in the URL changes, no matter wether it is by code or by user interaction.
+	 */
+	handleHashChange = function() {
+		hashUpdated = true;
+		Router.navigateTo(window.location.hash.substring(1));
+	};
+	
+	navigateTo = function(route, data, callback) {
+		var router = this,
+			queryIndex, newLocation, queryString;
+		if(hashUpdated === false) {
+			//Hash change event not fired
+			//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
+			if(window.location.hash !== '#' + route) {
+				newLocation = window.location.pathname;
+				queryString = Utilities.getQueryString();
+				if(queryString) {
+					newLocation += '?' + queryString;
+				}
+				newLocation += '#' + route;
+				history.pushState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
+			}
+		}
+		else {
+			//Hash change event fired
+			hashUpdated = false;
+		}
+	
+		//Strip querystring from route
+		queryIndex = route.indexOf('?');
+		if(queryIndex >= 0) {
+			route = route.substring(0, queryIndex);
+		}
+	
+		ViewLoader.loadView(this.getRoute(route), route, data, function(error, loadedViewController) {
+			if(!error) {
+				router.currentViewController = loadedViewController;
+			}
+			if(_.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	
+	openModalView = function(route, data, callback) {
+		var router = this,
+			view = this.getRoute(route);
+				
+		ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
+			if(!error) {
+				router.currentModalViewController = loadedViewController;
+			}
+			if(_.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	
+	/**
+	 * Opens a modal view by closing any current open modals.
+	 */
+	openModalSiblingView = function(route, data, callback) {
+		var router = this,
+			view = this.getRoute(route);
+	
+		ViewLoader.loadModalViewSibling(view, route, data, function(error, loadedViewController) {
+			if(!error) {
+				router.currentModalViewController = loadedViewController;
+			}
+			if(_.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	
+	closeModalView = function(callback) {
+		var router = this;
+		ViewLoader.closeModalView(function(error, currentModalViewController) {
+			if(!error) {
+				router.currentModalViewController = currentModalViewController;
+			}
+			if(_.isFunction(callback)) {
+				callback();
+			}
+		});
+	};
+	
+	setQueryString = function(queryString) {
+		var hash = window.location.hash,
+			newLocation;
+		if(!queryString || queryString === '') {
+			newLocation = window.location.pathname + hash;
+		}
+		else {
+			newLocation = window.location.pathname + '?' + queryString + hash;
+		}
+		history.replaceState({}, '', newLocation);
+	};
+	
+	Router = {
+		routes: ['error'], //The default error route must always be present for error handling
+		currentViewController: null,
+		currentModalViewController: null,
+		viewLoader: ViewLoader,
+	
+		getRoute: getRoute,
+		handleHashChange: handleHashChange,
+		navigateTo: navigateTo,
+		openModalView: openModalView,
+		openModalSiblingView: openModalSiblingView,
+		closeModalView: closeModalView,
+		setQueryString: setQueryString
+	};
+	
+	window.onhashchange = Router.handleHashChange;
+	
+	module.exports = Router;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * JavaScript utilities.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
+	
+	    getBaseURL,
+	    ajajFileUpload,
+	    getCityFromCoordinates,
+	    getQueryString,
+	    getQueryStringParameterValue,
+	    capitalizeString,
+	    isMomentBetween,
+	    isMobile;
+	
+	getBaseURL = function() {
+	    if (!window.location.origin) {
+	        window.location.origin = window.location.protocol + '//' + window.location.host;
+	    }
+	    return window.location.origin;
+	};
+	
+	/**
+	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
+	 * @param inputName: The name for the file expected on the backend
+	 */
+	ajajFileUpload = function(url, secretProof, fileName, file, callback) {
+	    var formData = new FormData();
+	    formData.append('uploadedfile', file);
+	    formData.append('fileName', fileName);
+	    formData.append('secretProof', secretProof);
+	
+	    $.ajax({
+	        url: url,
+	        type: 'POST',
+	        data: formData,
+	        dataType: 'json',
+	        //Options to tell jQuery not to process data or worry about content-type.
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+	        success: function(data) {
+	            if (data.error) {
+	                callback(data.error);
+	                return;
+	            }
+	            if (data.code && data.code === '401') {
+	                callback(data.message);
+	                return;
+	            }
+	            callback(null, data);
+	        },
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            var error = 'Error uploading file with AJAX POST: ' + textStatus + '. ' + errorThrown;
+	            callback(error);
+	        }
+	    });
+	};
+	
+	getCityFromCoordinates = function(latitude, longitude, callback) {
+	    var geocoder = new GoogleMaps.Geocoder(),
+	        latLng = new GoogleMaps.LatLng(latitude, longitude);
+	    //Use Google Geocoder to translate the coordinates to city name
+	    geocoder.geocode({
+	        'latLng': latLng
+	    }, function(results, status) {
+	        var locationCity = null;
+	        if (status === GoogleMaps.GeocoderStatus.OK) {
+	            locationCity = results[0].address_components[2].long_name;
+	        }
+	        callback(locationCity);
+	    });
+	};
+	
+	getQueryString = function() {
+	    var queryString = window.location.href.split('?')[1];
+	    if (queryString) {
+	        queryString = queryString.split('#')[0];
+	    }
+	    return queryString;
+	};
+	
+	/**
+	 * Receives a query string and returns the value for the specified key.
+	 * Inspired by http://stackoverflow.com/a/1099670
+	 */
+	getQueryStringParameterValue = function(queryString, key) {
+	    var regEx = /[?&]?([^=]+)=([^&]*)/g,
+	        parameters = {},
+	        tokens;
+	    queryString = queryString.split('+').join(' ');
+	    while ((tokens = regEx.exec(queryString)) !== null) {
+	        parameters[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+	    }
+	    return parameters[key];
+	};
+	
+	capitalizeString = function(string) {
+	    return string.charAt(0).toUpperCase() + string.slice(1);
+	};
+	
+	/**
+	 * This function considers days as smallest time unit.
+	 * This function is inclusive.
+	 */
+	//TODO: rename to isDayMomentBetween
+	isMomentBetween = function(moment, intervalStart, intervalEnd) {
+	    return ((moment.isAfter(intervalStart, 'day') === true || moment.isSame(intervalStart, 'day') === true) && (moment.isBefore(intervalEnd, 'day') === true || moment.isSame(intervalEnd, 'day') === true));
+	};
+	
+	/**
+	 * Breakpoints are Bootstrap compatible.
+	 */
+	isMobile = function() {
+	    var breakpoints = [768, 992, 1200],
+	        viewWidth = $(document).width();
+	    return (viewWidth < breakpoints[0]);
+	};
+	
+	module.exports = {
+	    getBaseURL: getBaseURL,
+	    ajajFileUpload: ajajFileUpload,
+	    getCityFromCoordinates: getCityFromCoordinates,
+	    getQueryString: getQueryString,
+	    getQueryStringParameterValue: getQueryStringParameterValue,
+	    capitalizeString: capitalizeString,
+	    isMomentBetween: isMomentBetween,
+	    isMobile: isMobile
+	};
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a localization and locale data.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var Moment = __webpack_require__(24),
+	
+	    Config = __webpack_require__(9),
+	    Model = __webpack_require__(19),
+	    XChangeRates = __webpack_require__(20),
+	    Localization,
+	
+	    staticLocalization;
+	
+	function Localization(options) {
+	    Model.call(this, options);
+	}
+	
+	Localization.prototype = new Model();
+	
+	Localization.prototype.didInitialize = function() {
+	    this.defaultTimeZone = this.getLocalTimeZone();
+	    this.currenTimezone = this.defaultTimeZone;
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	Localization.prototype.fetch = function() {
+	    var model = this;
+	    this.get('/localization', function(error, data) {
+	        if (error) {
+	            console.log('Error retrieving localization data.');
+	            return;
+	        }
+	        model.data = data;
+	    });
+	};
+	
+	Localization.prototype.getCountries = function() {
+	    var countriesArray = [],
+	        i;
+	    for (i = 0; i < this.data.length; i++) {
+	        countriesArray.push({
+	            name: this.data[i].name,
+	            code: this.data[i].code
+	        });
+	    }
+	    return countriesArray;
+	};
+	
+	Localization.prototype.getVAT = function(countryCode) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].code === countryCode) {
+	            return this.data[i].vat;
+	        }
+	    }
+	    return null;
+	};
+	
+	/**
+	 * @param price: the price in EURO to convert.
+	 * @param currency: the currency to convert to.
+	 */
+	Localization.prototype.convertPrice = function(price, currency, callback) {
+	    XChangeRates.getRate('EUR', currency, function(error, rate) {
+	        if (error) {
+	            callback('Error getting rate: ' + error);
+	            return;
+	        }
+	        callback(null, price * rate);
+	    });
+	};
+	
+	Localization.prototype.convertPrices = function(prices, fromCurrency, toCurrency, callback) {
+	    XChangeRates.getRate(fromCurrency, toCurrency, function(error, rate) {
+	        var i = 0,
+	            convertedPrices = [];
+	        if (error) {
+	            callback('Error getting rate: ' + error);
+	            return;
+	        }
+	        for (i = 0; i < prices.length; i++) {
+	            convertedPrices.push(prices[i] * rate);
+	        }
+	        callback(null, convertedPrices, rate);
+	    });
+	};
+	
+	Localization.prototype.getTimeZones = function() {
+	    var timezones = Moment.tz.names(),
+	        i, offset, j, temp;
+	    for (i = 0; i < timezones.length; i++) {
+	        offset = Moment.tz.zone(timezones[i]).offset(Moment.utc().valueOf()) * -1; //for some reason the offset is flipped
+	        offset /= 60; // convert to hours
+	        timezones[i] = {
+	            name: timezones[i],
+	            UTCOffset: offset
+	        };
+	        for (j = i; j > 0; j--) {
+	            if (timezones[j].UTCOffset < timezones[j - 1].UTCOffset) {
+	                temp = timezones[j];
+	                timezones[j] = timezones[j - 1];
+	                timezones[j - 1] = temp;
+	            } else if (timezones[j].UTCOffset === timezones[j - 1].UTCOffset && timezones[j].name < timezones[j - 1].name) {
+	                temp = timezones[j];
+	                timezones[j] = timezones[j - 1];
+	                timezones[j - 1] = temp;
+	            } else {
+	                j = 0;
+	            }
+	        }
+	    }
+	    return timezones;
+	};
+	
+	/**
+	 * Moment.js is missing a way to get the local timezone name.
+	 * See following links for problem info:
+	 * https://github.com/moment/moment-timezone/issues/138
+	 * http://codeofmatt.com/2013/06/07/javascript-date-type-is-horribly-broken/
+	 * This approach is based on https://github.com/Canop/tzdetect.js and optimized for speed since the version in the link is quite slow.
+	 * We use a naive approach and return the first match, since it is currently not possible to narrow down the results to one timezone anyhow.
+	 */
+	Localization.prototype.getLocalTimeZone = function() {
+	    var now = Date.now(),
+	        makekey, localkey, names, i;
+	
+	    //The key identifies a timezone by specific time points in a year. Note that this might become wrong when the timezones change for some reason as they sometimes do.
+	    makekey = function(id) {
+	        //return [0, 4, 8, -5 * 12, 4 - 5 * 12, 8 - 5 * 12, 4 - 2 * 12, 8 - 2 * 12].map(function(months) {
+	        return [0, 4, 8, -60, -56, -52, -20, -16].map(function(months) {
+	            //var m = new Moment(now + months * 30 * 24 * 60 * 60 * 1000);
+	            var m = new Moment(now + months * 2592000000);
+	            if (id) {
+	                m.tz(id);
+	            }
+	            return m.format('DDHHmm');
+	        }).join(' ');
+	    };
+	
+	    localkey = makekey();
+	
+	    names = Moment.tz.names();
+	
+	    i = 0;
+	    while (i < names.length) {
+	        if (makekey(names[i]) === localkey) {
+	            return names[i];
+	        }
+	        i++;
+	    }
+	
+	    return null;
+	};
+	
+	Localization.prototype.getCurrentTimeZone = function() {
+	    return this.currenTimezone;
+	};
+	
+	Localization.prototype.setCurrentTimeZone = function(timezone) {
+	    if (timezone !== null) {
+	        this.currenTimezone = timezone;
+	    } else {
+	        this.currenTimezone = this.defaultTimeZone;
+	    }
+	};
+	
+	staticLocalization = new Localization({
+	    rootURL: Config.API_URL
+	});
+	staticLocalization.initialize();
+	
+	module.exports = staticLocalization;
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a Sharingear user. This can both be a logged in user or the owner of gear.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	    FB = __webpack_require__(8),
+	    Localization = __webpack_require__(12),
+	    Model = __webpack_require__(19),
+	    Utilities = __webpack_require__(11);
+	
+	function User(options) {
+	    Model.call(this, options);
+	    this.fbStatus = '';
+	}
+	
+	User.prototype = new Model();
+	
+	User.prototype.didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            name: '',
+	            surname: '',
+	            city: '',
+	            image_url: '',
+	            bio: '',
+	            birthdate: null,
+	            address: null,
+	            postal_code: null,
+	            country: null,
+	            phone: null,
+	            nationality: null,
+	            currency: 'EUR',
+	            time_zone: 'UTC',
+	            currentCity: '' //Detected location
+	        };
+	    }
+	};
+	
+	User.prototype.getLoginStatus = function(callback) {
+	    var user = this;
+	    if (!FB) {
+	        callback({
+	            status: 'Failed.'
+	        });
+	        return;
+	    }
+	    FB.getLoginStatus(function(response) {
+	        user.fbStatus = response.status;
+	        if (callback && typeof callback === 'function') {
+	            callback(response);
+	        }
+	    }); //Adding the true parameter forces a refresh from the FB servers, but also causes the login popup to be blocked, since it goes async and creates a new execution context
+	};
+	
+	User.prototype.login = function(callback) {
+	    var user = this;
+	
+	    if (!FB) {
+	        callback('Facebook library is not loaded or blocked.');
+	        return;
+	    }
+	
+	    //We need to make sure Facebook has not changed the status on their side.
+	    this.getLoginStatus(function(response) {
+	        if (user.fbStatus !== 'connected') {
+	            FB.login(function(response) {
+	                var error;
+	                //console.log(response);
+	                if (response.status === 'connected') {
+	                    error = null;
+	                    user.loginToBackend(response, callback);
+	                    return;
+	                } else if (response.status === 'not_authorized') {
+	                    error = {
+	                        error: 'FB App not authorized'
+	                    };
+	                } else {
+	                    error = {
+	                        error: 'FB login failed'
+	                    };
+	                }
+	
+	                user.fbStatus = response.status;
+	
+	                if (callback && typeof callback === 'function') {
+	                    callback(error);
+	                }
+	            }, {
+	                scope: 'email'
+	            });
+	        } else {
+	            user.loginToBackend(response, callback);
+	        }
+	    });
+	};
+	
+	User.prototype.loginToBackend = function(FBResponse, callback) {
+	    var user = this,
+	        authData = FBResponse.authResponse,
+	        postData;
+	
+	    if (_.isFunction(window.ga) === true) {
+	        window.ga('send', 'event', 'user action', 'login', 'fb login', 1);
+	    }
+	
+	    postData = {
+	        fbid: authData.userID,
+	        accesstoken: authData.accessToken
+	    };
+	    this.post('/users/login', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error logging into backend: ' + error);
+	            }
+	            return;
+	        }
+	        if (user.data === null) {
+	            user.data = {};
+	        }
+	        _.extend(user.data, data);
+	
+	        //Enable Google Analytics user tracking
+	        if (_.isFunction(window.ga) === true) {
+	            window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
+	        }
+	
+	        Localization.setCurrentTimeZone(user.data.time_zone);
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	User.prototype.fetch = function(callback) {
+	    var user = this;
+	    user.get('/users/' + user.data.id, function(error, data) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        _.extend(user.data, data);
+	        Localization.setCurrentTimeZone(user.data.time_zone);
+	        callback(null);
+	    });
+	};
+	
+	User.prototype.update = function(callback) {
+	    var user = this;
+	    user.put('/users/' + user.data.id, user.data, function(error, data) {
+	        if (error) {
+	            callback('Error updating user: ' + error);
+	            return;
+	        }
+	        _.extend(user.data, data);
+	        Localization.setCurrentTimeZone(user.data.time_zone);
+	        callback(null);
+	    });
+	};
+	
+	User.prototype.uploadProfilePicture = function(file, filename, userID, callback) {
+	    var model = this;
+	    this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error getting filename: ' + error);
+	            }
+	            return;
+	        }
+	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+	            var postData;
+	            if (error) {
+	                if (callback && typeof callback === 'function') {
+	                    callback('Error uploading file: ' + error);
+	                }
+	                return;
+	            }
+	
+	            //Add image url to backend
+	            postData = {
+	                image_url: data.url
+	            };
+	
+	            model.put('/users/' + userID, postData, function(error, images) {
+	                if (error) {
+	                    if (callback && typeof callback === 'function') {
+	                        callback('Error uploading file: ' + error);
+	                    }
+	                    return;
+	                }
+	                model.data.images = images.images;
+	                callback(null, data.url);
+	            });
+	
+	        });
+	    });
+	};
+	
+	User.prototype.getPublicInfo = function(callback) {
+	    var model = this;
+	
+	    this.get('/users/' + this.data.id, function(error, user) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, user);
+	        callback(null);
+	    });
+	};
+	
+	User.prototype.isSubMerchant = function() {
+	    return this.data.hasBank;
+	};
+	
+	User.prototype.updateBankDetails = function(callback) {
+	    var user = this;
+	    user.put('/users/' + user.data.id + '/bankdetails', user.data, function(error) {
+	        if (error) {
+	            callback('Error updating bank details: ' + error);
+	        }
+	        callback(null);
+	    });
+	};
+	
+	User.prototype.setSearchInterval = function(dateRange) {
+	    this.data.searchInterval = dateRange;
+	};
+	
+	User.prototype.getIntervalStart = function() {
+	    var date = null;
+	    if (this.data.searchInterval) {
+	        date = this.data.searchInterval.split('-')[0];
+	    }
+	    return date;
+	};
+	
+	User.prototype.getIntervalEnd = function() {
+	    var date = null;
+	    if (this.data.searchInterval) {
+	        date = this.data.searchInterval.split('-')[1];
+	    }
+	    return date;
+	};
+	
+	User.prototype.isLoggedIn = function() {
+	    return this.data.id !== null;
+	};
+	
+	module.exports = User;
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines the Sharingear classification of gear, vans and techs.
+	 * @author: Chris Hjorth
+	 */
+	//TODO: Store the classification locally so that it is always ready on load after the first time
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	
+	    Config = __webpack_require__(9),
+	    Model = __webpack_require__(19),
+	
+	    staticContentClassification;
+	
+	function ContentClassification(options) {
+	    Model.call(this, options);
+	}
+	
+	ContentClassification.prototype = new Model();
+	
+	ContentClassification.prototype.didInitialize = function() {
+	    this.data = {};
+	};
+	
+	ContentClassification.prototype.getClassification = function(callback) {
+	    var model = this;
+	
+	    if (_.isEmpty(this.data) === false) {
+	        if (callback && typeof callback === 'function') {
+	            callback(this.data);
+	        }
+	        return;
+	    }
+	
+	    this.get('/contentclassification', function(error, contentClassification) {
+	        if (error) {
+	            console.log(error);
+	            return;
+	        }
+	        model.data = contentClassification;
+	        if (callback && typeof callback === 'function') {
+	            callback(model.data);
+	        }
+	    });
+	};
+	
+	staticContentClassification = new ContentClassification({
+	    rootURL: Config.API_URL
+	});
+	staticContentClassification.initialize();
+	
+	module.exports = staticContentClassification;
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Popup that requests a time.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var $ = __webpack_require__(4),
+	
+	    PopupController = __webpack_require__(21),
+	
+	    MessagePopupTemplate = __webpack_require__(22),
+	
+	    wasClosed;
+	
+	function MessagePopup(options) {
+	    PopupController.call(this, options);
+	    this.template = MessagePopupTemplate;
+	}
+	
+	MessagePopup.prototype = new PopupController();
+	
+	MessagePopup.prototype.didRender = function() {
+	    wasClosed = false;
+	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+	};
+	
+	MessagePopup.prototype.setMessage = function(message) {
+	    $('#popup-message', this.$element).html(message);
+	};
+	
+	MessagePopup.prototype.getWasClosed = function() {
+	    return wasClosed;
+	};
+	
+	MessagePopup.prototype.handleCancel = function(event) {
+	    var view = event.data;
+	    wasClosed = true;
+	    view.hide();
+	};
+	
+	module.exports = MessagePopup;
+
 
 /***/ },
 /* 16 */
@@ -12415,441 +12415,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Handles viewcontroller and template loading.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	
-	    ViewLoader,
-	    mainViewContainer,
-	    $modalViewLightbox,
-	    modalViewContainer,
-	
-	    loadView,
-	    loadSubview,
-	    loadModalView,
-	    loadModalViewSibling,
-	    closeModalView,
-	
-	    _loadModalView;
-	
-	mainViewContainer = '.view-container';
-	$modalViewLightbox = $('#modal-view-lightbox');
-	modalViewContainer = '.modal-view-container';
-	
-	/**
-	 * Note that a path for a subviews could also simply be a content reference, fx gear/1
-	 */
-	//TODO: Consider turning this into recursive for the case of subviews
-	loadView = function(view, path, data, callback) {
-	    var viewLoader = this,
-	        renderSubviews, ViewController, ViewTemplate;
-	
-	    renderSubviews = function() {
-	        var subview = viewLoader.currentViewController.subPath;
-	        if (subview !== null && subview !== '') {
-	            viewLoader.loadSubview(data, function() {
-	                if (_.isFunction(callback) === true) {
-	                    callback(null, viewLoader.currentViewController);
-	                }
-	            });
-	        } else {
-	            if (_.isFunction(callback) === true) {
-	                callback(null, viewLoader.currentViewController);
-	            }
-	        }
-	    };
-	    //If the view is already loaded just update the path and call render subviews
-	    if (this.currentViewController !== null && this.currentViewController.name === view && this.currentViewController.hasSubviews === true) {
-	        this.currentViewController.path = path;
-	        this.currentViewController.setSubPath();
-	        renderSubviews();
-	        return;
-	    }
-	
-	    ViewController = __webpack_require__(25)("./" + view + '.js');
-	    ViewTemplate = __webpack_require__(26)("./" + view + '.html');
-	
-	    //Close the previous controller properly before loading a new one
-	    if (viewLoader.currentViewController !== null) {
-	        viewLoader.currentViewController.close();
-	    }
-	    viewLoader.currentViewController = new ViewController({
-	        name: view,
-	        $element: $(mainViewContainer),
-	        labels: {},
-	        template: ViewTemplate,
-	        path: path,
-	        passedData: data
-	    });
-	    viewLoader.currentViewController.initialize();
-	    //The ready property is so a controller can abort loading, useful if a redirect is being called
-	    if (viewLoader.currentViewController.ready === true) {
-	        viewLoader.currentViewController.render(function() {
-	            renderSubviews();
-	        });
-	    } else {
-	        callback('Loading of view was aborted by controller.');
-	    }
-	};
-	
-	loadSubview = function(data, callback) {
-	    var viewLoader = this,
-	        subview = this.currentViewController.subPath,
-	        viewString = this.currentViewController.name + '-' + subview,
-	        SubViewController, SubViewTemplate;
-	
-	    SubViewController = __webpack_require__(25)("./" + viewString + '.js');
-	    SubViewTemplate = __webpack_require__(26)("./" + viewString + '.html');
-	
-	    if (viewLoader.currentSubViewController !== null) {
-	        viewLoader.currentSubViewController.close();
-	    }
-	    viewLoader.currentSubViewController = new SubViewController({
-	        name: viewString,
-	        $element: viewLoader.currentViewController.$subViewContainer,
-	        labels: {},
-	        template: SubViewTemplate,
-	        path: viewLoader.currentViewController.path,
-	        passedData: data
-	    });
-	    viewLoader.currentSubViewController.initialize();
-	    viewLoader.currentSubViewController.render(function() {
-	        if (_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
-	            viewLoader.currentViewController.didRenderSubview();
-	        }
-	    });
-	    if (_.isFunction(callback) === true) {
-	        callback(null, viewLoader.currentSubViewController);
-	    }
-	};
-	
-	/**
-	 * Does the heavy lifting regardless of the openModalViews array.
-	 */
-	_loadModalView = function(view, path, data, callback) {
-	    var viewLoader = ViewLoader,
-	        $modalViewContainer = $(modalViewContainer),
-	        ViewController, ViewTemplate;
-	
-	    ViewController = __webpack_require__(25)("./" + view + '.js');
-	    ViewTemplate = __webpack_require__(26)("./" + view + '.html');
-	
-	    if (viewLoader.currentModalViewController !== null) {
-	        viewLoader.currentModalViewController.close();
-	        viewLoader.openModalViews.pop();
-	    }
-	
-	    if ($modalViewLightbox.hasClass('hidden') === true) {
-	        $modalViewLightbox.removeClass('hidden');
-	        $('body').addClass('modal-open');
-	        $('.view-container').addClass('modal-open');
-	    }
-	
-	    viewLoader.currentModalViewController = new ViewController({
-	        name: view,
-	        $element: $modalViewContainer,
-	        labels: {},
-	        template: ViewTemplate,
-	        path: path,
-	        passedData: data
-	    });
-	    viewLoader.currentModalViewController.initialize();
-	    if (viewLoader.currentModalViewController.ready === true) {
-	        viewLoader.currentModalViewController.render(function(error, subview, $subViewContainer) {
-	            if (!error && subview && subview !== null) {
-	                viewLoader.loadSubview(subview, $subViewContainer, data);
-	            }
-	        });
-	    }
-	
-	    callback(null, viewLoader.currentModalViewController);
-	};
-	
-	loadModalView = function(view, path, data, callback) {
-	    var viewLoader = this;
-	
-	    viewLoader.openModalViews.unshift({
-	        view: view,
-	        path: path,
-	        data: data,
-	        callback: callback
-	    });
-	
-	    if (viewLoader.openModalViews.length <= 1) {
-	        _loadModalView(view, path, data, callback);
-	    } else {
-	        callback(null, viewLoader.currentModalViewController);
-	    }
-	};
-	
-	loadModalViewSibling = function(view, path, data, callback) {
-	    this.openModalViews.unshift({
-	        view: view,
-	        path: path,
-	        data: data,
-	        callback: callback
-	    });
-	    _loadModalView(view, path, data, callback);
-	};
-	
-	closeModalView = function(callback) {
-	    var viewLoader = this,
-	        previousModal = null;
-	
-	    if (this.currentModalViewController !== null) {
-	        this.currentModalViewController.close();
-	        this.currentModalViewController = null;
-	    }
-	    if ($modalViewLightbox.hasClass('hidden') === false) {
-	        $modalViewLightbox.addClass('hidden');
-	        $('body').removeClass('modal-open');
-	        $('.view-container').removeClass('modal-open');
-	    }
-	
-	    //Remove modal from queue
-	    this.openModalViews.pop();
-	
-	    if (this.openModalViews.length > 0) {
-	        previousModal = this.openModalViews[this.openModalViews.length - 1];
-	        _loadModalView(previousModal.view, previousModal.path, previousModal.data, function(error, loadedModalViewController) {
-	            if (_.isFunction(previousModal.callback) === true) {
-	                previousModal.callback();
-	            }
-	            callback(null, loadedModalViewController);
-	        });
-	    } else {
-	        //Render the underlying view again so that data gets updated
-	        this.loadView(viewLoader.currentViewController.name, viewLoader.currentViewController.path, viewLoader.currentViewController.passedData, function() {
-	            if (_.isFunction(callback)) {
-	                callback(null, previousModal);
-	            }
-	        });
-	    }
-	};
-	
-	ViewLoader = {
-	    currentViewController: null,
-	    currentSubViewController: null,
-	    currentModalViewController: null,
-	    openModalViews: [],
-	
-	    loadView: loadView,
-	    loadSubview: loadSubview,
-	    loadModalView: loadModalView,
-	    loadModalViewSibling: loadModalViewSibling,
-	    closeModalView: closeModalView
-	};
-	module.exports = ViewLoader;
-
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General model object with support for jQuery ajax.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13);
-	
-	function Model(options) {
-	    this.rootURL = '';
-	    this.data = null;
-	    _.extend(this, options);
-	}
-	
-	Model.prototype.initialize = function() {
-	    if (this.didInitialize && typeof this.didInitialize == 'function') {
-	        this.didInitialize();
-	    }
-	};
-	
-	Model.prototype.get = function(url, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'GET',
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            console.log(jqXHR);
-	            console.log(textStatus);
-	            callback('Error executing GET request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                callback('Error retrieving resource from server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	Model.prototype.post = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'POST',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing POST request: ' + errorThrown);
-	
-	        },
-	        success: function(data) {
-	
-	            if (data.error) {
-	                callback('Error sending resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	Model.prototype.put = function(url, data, callback) {
-	    var encodedURL = encodeURI(this.rootURL + url);
-	
-	    $.ajax({
-	        dataType: 'json',
-	        type: 'PUT',
-	        data: data,
-	        url: encodedURL,
-	        error: function(jqXHR, textStatus, errorThrown) {
-	            callback('Error executing PUT request: ' + errorThrown);
-	        },
-	        success: function(data) {
-	            if (data.error) {
-	                console.log(data.error);
-	                callback('Error putting resource to server: ' + data.error);
-	            } else {
-	                callback(null, data);
-	            }
-	        }
-	    });
-	};
-	
-	Model.prototype.del = function() {
-	
-	};
-	
-	module.exports = Model;
-
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a currency conversion model.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var Config = __webpack_require__(5),
-		Model = __webpack_require__(18),
-	
-		currencies = {},
-	
-	    staticXChangeRates;
-	
-	function XChangeRates(options) {
-	    Model.call(this, options);
-	}
-	
-	XChangeRates.prototype = new Model();
-	
-	XChangeRates.prototype.getRate = function(fromCurrency, toCurrency, callback) {
-	    var code = fromCurrency + toCurrency;
-	    if (currencies[code]) {
-	        callback(null, currencies[code]);
-	        return;
-	    }
-	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        currencies[code] = data.rate;
-	        callback(null, data.rate);
-	    });
-	};
-	
-	staticXChangeRates = new XChangeRates({
-	    rootURL: Config.API_URL
-	});
-	
-	module.exports = staticXChangeRates;
-
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * General popup object that inherits from ViewController.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	
-	    ViewController = __webpack_require__(21),
-	
-	    $popupLightbox = $('#popup-lightbox'),
-	    PopupController;
-	
-	function PopupController(options) {
-	    ViewController.call(this, options);
-	    this.$element = $('.popup-container', $popupLightbox);
-	    this.title = 'Popup';
-	    _.extend(this, options);
-	    this.initialize();
-	}
-	
-	PopupController.prototype = new ViewController();
-	
-	PopupController.prototype.show = function() {
-	    $popupLightbox.removeClass('hidden');
-	    this.templateParameters.title = this.title;
-	    this.render();
-	};
-	
-	PopupController.prototype.hide = function() {
-	    $popupLightbox.addClass('hidden');
-	    this.close();
-	};
-	
-	PopupController.prototype.setTitle = function(title) {
-	    this.title = title;
-	};
-	
-	module.exports = PopupController;
-
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * General view object with support for jQuery event autounbinding and localization.
 	 * @author: Chris Hjorth
 	 */
@@ -12857,8 +12422,8 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13);
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4);
 	
 	    //Utilities = require('./utilities.js');
 	
@@ -12994,10 +12559,12 @@
 
 
 /***/ },
-/* 22 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
+	__webpack_require__(25)
+	__webpack_require__(26)
 	__webpack_require__(27)
 	__webpack_require__(28)
 	__webpack_require__(29)
@@ -13008,166 +12575,458 @@
 	__webpack_require__(34)
 	__webpack_require__(35)
 	__webpack_require__(36)
-	__webpack_require__(37)
-	__webpack_require__(38)
 
 /***/ },
-/* 23 */
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General model object with support for jQuery ajax.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4);
+	
+	function Model(options) {
+	    this.rootURL = '';
+	    this.data = null;
+	    _.extend(this, options);
+	}
+	
+	Model.prototype.initialize = function() {
+	    if (this.didInitialize && typeof this.didInitialize == 'function') {
+	        this.didInitialize();
+	    }
+	};
+	
+	Model.prototype.get = function(url, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'GET',
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            console.log(jqXHR);
+	            console.log(textStatus);
+	            callback('Error executing GET request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                callback('Error retrieving resource from server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	Model.prototype.post = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'POST',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing POST request: ' + errorThrown);
+	
+	        },
+	        success: function(data) {
+	
+	            if (data.error) {
+	                callback('Error sending resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	Model.prototype.put = function(url, data, callback) {
+	    var encodedURL = encodeURI(this.rootURL + url);
+	
+	    $.ajax({
+	        dataType: 'json',
+	        type: 'PUT',
+	        data: data,
+	        url: encodedURL,
+	        error: function(jqXHR, textStatus, errorThrown) {
+	            callback('Error executing PUT request: ' + errorThrown);
+	        },
+	        success: function(data) {
+	            if (data.error) {
+	                console.log(data.error);
+	                callback('Error putting resource to server: ' + data.error);
+	            } else {
+	                callback(null, data);
+	            }
+	        }
+	    });
+	};
+	
+	Model.prototype.del = function() {
+	
+	};
+	
+	module.exports = Model;
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a currency conversion model.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var Config = __webpack_require__(9),
+		Model = __webpack_require__(19),
+	
+		currencies = {},
+	
+	    staticXChangeRates;
+	
+	function XChangeRates(options) {
+	    Model.call(this, options);
+	}
+	
+	XChangeRates.prototype = new Model();
+	
+	XChangeRates.prototype.getRate = function(fromCurrency, toCurrency, callback) {
+	    var code = fromCurrency + toCurrency;
+	    if (currencies[code]) {
+	        callback(null, currencies[code]);
+	        return;
+	    }
+	    this.get('/exchangerates/' + fromCurrency + '/' + toCurrency, function(error, data) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        currencies[code] = data.rate;
+	        callback(null, data.rate);
+	    });
+	};
+	
+	staticXChangeRates = new XChangeRates({
+	    rootURL: Config.API_URL
+	});
+	
+	module.exports = staticXChangeRates;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * General popup object that inherits from ViewController.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	
+	    ViewController = __webpack_require__(17),
+	
+	    $popupLightbox = $('#popup-lightbox'),
+	    PopupController;
+	
+	function PopupController(options) {
+	    ViewController.call(this, options);
+	    this.$element = $('.popup-container', $popupLightbox);
+	    this.title = 'Popup';
+	    _.extend(this, options);
+	    this.initialize();
+	}
+	
+	PopupController.prototype = new ViewController();
+	
+	PopupController.prototype.show = function() {
+	    $popupLightbox.removeClass('hidden');
+	    this.templateParameters.title = this.title;
+	    this.render();
+	};
+	
+	PopupController.prototype.hide = function() {
+	    $popupLightbox.addClass('hidden');
+	    this.close();
+	};
+	
+	PopupController.prototype.setTitle = function(title) {
+	    this.title = title;
+	};
+	
+	module.exports = PopupController;
+
+
+/***/ },
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"popup container-fluid selecttime-popup\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-xs-12 sg-blue-bg sg-white text-right\">\r\n\t\t\t<button class=\"cancel-btn sg-btn-round submerchant-message-close sg-white-bg sg-blue\">\r\n\t\t\t\t<i class=\"fa fa-times\"></i>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div id=\"popup-message\" class=\"message-pop\"></div>\r\n\t</div>\r\n</div>";
 
 /***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Handles viewcontroller and template loading.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	
+	    ViewLoader,
+	    mainViewContainer,
+	    $modalViewLightbox,
+	    modalViewContainer,
+	
+	    loadView,
+	    loadSubview,
+	    loadModalView,
+	    loadModalViewSibling,
+	    closeModalView,
+	
+	    _loadModalView;
+	
+	mainViewContainer = '.view-container';
+	$modalViewLightbox = $('#modal-view-lightbox');
+	modalViewContainer = '.modal-view-container';
+	
+	/**
+	 * Note that a path for a subviews could also simply be a content reference, fx gear/1
+	 */
+	//TODO: Consider turning this into recursive for the case of subviews
+	loadView = function(view, path, data, callback) {
+	    var viewLoader = this,
+	        renderSubviews, ViewController, ViewTemplate;
+	
+	    renderSubviews = function() {
+	        var subview = viewLoader.currentViewController.subPath;
+	        if (subview !== null && subview !== '') {
+	            viewLoader.loadSubview(data, function() {
+	                if (_.isFunction(callback) === true) {
+	                    callback(null, viewLoader.currentViewController);
+	                }
+	            });
+	        } else {
+	            if (_.isFunction(callback) === true) {
+	                callback(null, viewLoader.currentViewController);
+	            }
+	        }
+	    };
+	    //If the view is already loaded just update the path and call render subviews
+	    if (this.currentViewController !== null && this.currentViewController.name === view && this.currentViewController.hasSubviews === true) {
+	        this.currentViewController.path = path;
+	        this.currentViewController.setSubPath();
+	        renderSubviews();
+	        return;
+	    }
+	
+	    ViewController = __webpack_require__(38)("./" + view + '.js');
+	    ViewTemplate = __webpack_require__(39)("./" + view + '.html');
+	
+	    //Close the previous controller properly before loading a new one
+	    if (viewLoader.currentViewController !== null) {
+	        viewLoader.currentViewController.close();
+	    }
+	    viewLoader.currentViewController = new ViewController({
+	        name: view,
+	        $element: $(mainViewContainer),
+	        labels: {},
+	        template: ViewTemplate,
+	        path: path,
+	        passedData: data
+	    });
+	    viewLoader.currentViewController.initialize();
+	    //The ready property is so a controller can abort loading, useful if a redirect is being called
+	    if (viewLoader.currentViewController.ready === true) {
+	        viewLoader.currentViewController.render(function() {
+	            renderSubviews();
+	        });
+	    } else {
+	        callback('Loading of view was aborted by controller.');
+	    }
+	};
+	
+	loadSubview = function(data, callback) {
+	    var viewLoader = this,
+	        subview = this.currentViewController.subPath,
+	        viewString = this.currentViewController.name + '-' + subview,
+	        SubViewController, SubViewTemplate;
+	
+	    SubViewController = __webpack_require__(38)("./" + viewString + '.js');
+	    SubViewTemplate = __webpack_require__(39)("./" + viewString + '.html');
+	
+	    if (viewLoader.currentSubViewController !== null) {
+	        viewLoader.currentSubViewController.close();
+	    }
+	    viewLoader.currentSubViewController = new SubViewController({
+	        name: viewString,
+	        $element: viewLoader.currentViewController.$subViewContainer,
+	        labels: {},
+	        template: SubViewTemplate,
+	        path: viewLoader.currentViewController.path,
+	        passedData: data
+	    });
+	    viewLoader.currentSubViewController.initialize();
+	    viewLoader.currentSubViewController.render(function() {
+	        if (_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
+	            viewLoader.currentViewController.didRenderSubview();
+	        }
+	    });
+	    if (_.isFunction(callback) === true) {
+	        callback(null, viewLoader.currentSubViewController);
+	    }
+	};
+	
+	/**
+	 * Does the heavy lifting regardless of the openModalViews array.
+	 */
+	_loadModalView = function(view, path, data, callback) {
+	    var viewLoader = ViewLoader,
+	        $modalViewContainer = $(modalViewContainer),
+	        ViewController, ViewTemplate;
+	
+	    ViewController = __webpack_require__(38)("./" + view + '.js');
+	    ViewTemplate = __webpack_require__(39)("./" + view + '.html');
+	
+	    if (viewLoader.currentModalViewController !== null) {
+	        viewLoader.currentModalViewController.close();
+	        viewLoader.openModalViews.pop();
+	    }
+	
+	    if ($modalViewLightbox.hasClass('hidden') === true) {
+	        $modalViewLightbox.removeClass('hidden');
+	        $('body').addClass('modal-open');
+	        $('.view-container').addClass('modal-open');
+	    }
+	
+	    viewLoader.currentModalViewController = new ViewController({
+	        name: view,
+	        $element: $modalViewContainer,
+	        labels: {},
+	        template: ViewTemplate,
+	        path: path,
+	        passedData: data
+	    });
+	    viewLoader.currentModalViewController.initialize();
+	    if (viewLoader.currentModalViewController.ready === true) {
+	        viewLoader.currentModalViewController.render(function(error, subview, $subViewContainer) {
+	            if (!error && subview && subview !== null) {
+	                viewLoader.loadSubview(subview, $subViewContainer, data);
+	            }
+	        });
+	    }
+	
+	    callback(null, viewLoader.currentModalViewController);
+	};
+	
+	loadModalView = function(view, path, data, callback) {
+	    var viewLoader = this;
+	
+	    viewLoader.openModalViews.unshift({
+	        view: view,
+	        path: path,
+	        data: data,
+	        callback: callback
+	    });
+	
+	    if (viewLoader.openModalViews.length <= 1) {
+	        _loadModalView(view, path, data, callback);
+	    } else {
+	        callback(null, viewLoader.currentModalViewController);
+	    }
+	};
+	
+	loadModalViewSibling = function(view, path, data, callback) {
+	    this.openModalViews.unshift({
+	        view: view,
+	        path: path,
+	        data: data,
+	        callback: callback
+	    });
+	    _loadModalView(view, path, data, callback);
+	};
+	
+	closeModalView = function(callback) {
+	    var viewLoader = this,
+	        previousModal = null;
+	
+	    if (this.currentModalViewController !== null) {
+	        this.currentModalViewController.close();
+	        this.currentModalViewController = null;
+	    }
+	    if ($modalViewLightbox.hasClass('hidden') === false) {
+	        $modalViewLightbox.addClass('hidden');
+	        $('body').removeClass('modal-open');
+	        $('.view-container').removeClass('modal-open');
+	    }
+	
+	    //Remove modal from queue
+	    this.openModalViews.pop();
+	
+	    if (this.openModalViews.length > 0) {
+	        previousModal = this.openModalViews[this.openModalViews.length - 1];
+	        _loadModalView(previousModal.view, previousModal.path, previousModal.data, function(error, loadedModalViewController) {
+	            if (_.isFunction(previousModal.callback) === true) {
+	                previousModal.callback();
+	            }
+	            callback(null, loadedModalViewController);
+	        });
+	    } else {
+	        //Render the underlying view again so that data gets updated
+	        this.loadView(viewLoader.currentViewController.name, viewLoader.currentViewController.path, viewLoader.currentViewController.passedData, function() {
+	            if (_.isFunction(callback)) {
+	                callback(null, previousModal);
+	            }
+	        });
+	    }
+	};
+	
+	ViewLoader = {
+	    currentViewController: null,
+	    currentSubViewController: null,
+	    currentModalViewController: null,
+	    openModalViews: [],
+	
+	    loadView: loadView,
+	    loadSubview: loadSubview,
+	    loadModalView: loadModalView,
+	    loadModalViewSibling: loadModalViewSibling,
+	    closeModalView: closeModalView
+	};
+	module.exports = ViewLoader;
+
+
+/***/ },
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var moment = module.exports = __webpack_require__(138);
-	moment.tz.load(__webpack_require__(148));
+	var moment = module.exports = __webpack_require__(37);
+	moment.tz.load(__webpack_require__(139));
 
 
 /***/ },
 /* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./aboutus.js": 39,
-		"./addgear.js": 40,
-		"./addtechprofile.js": 41,
-		"./addvan.js": 42,
-		"./availabilitycalendar.js": 43,
-		"./booking.js": 44,
-		"./bookingrequest.js": 45,
-		"./contactus.js": 46,
-		"./copyright.js": 47,
-		"./dashboard-profile.js": 48,
-		"./dashboard-settings.js": 49,
-		"./dashboard-yourgear.js": 50,
-		"./dashboard-yourgearrentals.js": 51,
-		"./dashboard-yourgearreservations.js": 52,
-		"./dashboard-yourtechprofilerentals.js": 53,
-		"./dashboard-yourtechprofilereservations.js": 54,
-		"./dashboard-yourtechprofiles.js": 55,
-		"./dashboard-yourvanrentals.js": 56,
-		"./dashboard-yourvanreservations.js": 57,
-		"./dashboard-yourvans.js": 58,
-		"./dashboard.js": 59,
-		"./editgear.js": 60,
-		"./edittechprofile.js": 61,
-		"./editvan.js": 62,
-		"./error.js": 63,
-		"./footer.js": 64,
-		"./gearprofile.js": 65,
-		"./gearsearchform.js": 66,
-		"./home.js": 67,
-		"./insurance.js": 68,
-		"./navigation-header.js": 14,
-		"./payment.js": 69,
-		"./paymentsuccessful.js": 70,
-		"./pickupdeliverycalendar.js": 71,
-		"./privacy.js": 72,
-		"./search.js": 73,
-		"./submerchantregistration.js": 74,
-		"./techprofile.js": 75,
-		"./techprofilesearchform.js": 76,
-		"./terms.js": 77,
-		"./user.js": 78,
-		"./vanprofile.js": 79,
-		"./vansearchform.js": 80
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 25;
-
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./aboutus.html": 81,
-		"./addgear.html": 82,
-		"./addtechprofile.html": 83,
-		"./addvan.html": 84,
-		"./availabilitycalendar.html": 85,
-		"./booking.html": 86,
-		"./bookingrequest.html": 87,
-		"./closedbeta.html": 88,
-		"./contactus.html": 89,
-		"./copyright.html": 90,
-		"./dashboard-profile.html": 91,
-		"./dashboard-settings.html": 92,
-		"./dashboard-yourgear.html": 93,
-		"./dashboard-yourgearrentals.html": 94,
-		"./dashboard-yourgearreservations.html": 95,
-		"./dashboard-yourtechprofilerentals.html": 96,
-		"./dashboard-yourtechprofilereservations.html": 97,
-		"./dashboard-yourtechprofiles.html": 98,
-		"./dashboard-yourvanrentals.html": 99,
-		"./dashboard-yourvanreservations.html": 100,
-		"./dashboard-yourvans.html": 101,
-		"./dashboard.html": 102,
-		"./editgear.html": 103,
-		"./edittechprofile.html": 104,
-		"./editvan.html": 105,
-		"./error.html": 106,
-		"./footer.html": 107,
-		"./gearprofile.html": 108,
-		"./gearsearchform.html": 109,
-		"./home.html": 110,
-		"./insurance.html": 111,
-		"./navigation-header.html": 16,
-		"./payment.html": 112,
-		"./paymentsuccessful.html": 113,
-		"./pickupdeliverycalendar.html": 114,
-		"./privacy.html": 115,
-		"./search-results.html": 116,
-		"./search.html": 117,
-		"./submerchantregistration.html": 118,
-		"./techprofile.html": 119,
-		"./techprofilesearchform.html": 120,
-		"./terms.html": 121,
-		"./testimonial.html": 122,
-		"./user-gear-item.html": 123,
-		"./user-techprofiles-item.html": 124,
-		"./user-vans-item.html": 125,
-		"./user.html": 126,
-		"./vanprofile.html": 127,
-		"./vansearchform.html": 128,
-		"./yourgear-item.html": 129,
-		"./yourgearrentals-item.html": 130,
-		"./yourgearreservations-item.html": 131,
-		"./yourtechprofilerentals-item.html": 132,
-		"./yourtechprofilereservations-item.html": 133,
-		"./yourtechprofiles-item.html": 134,
-		"./yourvanrentals-item.html": 135,
-		"./yourvanreservations-item.html": 136,
-		"./yourvans-item.html": 137
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 26;
-
-
-/***/ },
-/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13230,10 +13089,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 28 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13331,10 +13190,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 29 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13454,10 +13313,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 30 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13698,10 +13557,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 31 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -13916,10 +13775,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 32 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14084,10 +13943,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 33 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14430,10 +14289,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 34 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -14913,10 +14772,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 35 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15028,10 +14887,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 36 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15207,10 +15066,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 37 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15367,10 +15226,10 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 38 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -15536,10 +15395,575 @@
 	
 	}(jQuery);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//! moment-timezone.js
+	//! version : 0.3.1
+	//! author : Tim Wood
+	//! license : MIT
+	//! github.com/moment/moment-timezone
+	
+	(function (root, factory) {
+		"use strict";
+	
+		/*global define*/
+		if (true) {
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));                 // AMD
+		} else if (typeof exports === 'object') {
+			module.exports = factory(require('moment')); // Node
+		} else {
+			factory(root.moment);                        // Browser
+		}
+	}(this, function (moment) {
+		"use strict";
+	
+		// Do not load moment-timezone a second time.
+		if (moment.tz !== undefined) { return moment; }
+	
+		var VERSION = "0.3.1",
+			zones = {},
+			links = {},
+	
+			momentVersion = moment.version.split('.'),
+			major = +momentVersion[0],
+			minor = +momentVersion[1];
+	
+		// Moment.js version check
+		if (major < 2 || (major === 2 && minor < 6)) {
+			logError('Moment Timezone requires Moment.js >= 2.6.0. You are using Moment.js ' + moment.version + '. See momentjs.com');
+		}
+	
+		/************************************
+			Unpacking
+		************************************/
+	
+		function charCodeToInt(charCode) {
+			if (charCode > 96) {
+				return charCode - 87;
+			} else if (charCode > 64) {
+				return charCode - 29;
+			}
+			return charCode - 48;
+		}
+	
+		function unpackBase60(string) {
+			var i = 0,
+				parts = string.split('.'),
+				whole = parts[0],
+				fractional = parts[1] || '',
+				multiplier = 1,
+				num,
+				out = 0,
+				sign = 1;
+	
+			// handle negative numbers
+			if (string.charCodeAt(0) === 45) {
+				i = 1;
+				sign = -1;
+			}
+	
+			// handle digits before the decimal
+			for (i; i < whole.length; i++) {
+				num = charCodeToInt(whole.charCodeAt(i));
+				out = 60 * out + num;
+			}
+	
+			// handle digits after the decimal
+			for (i = 0; i < fractional.length; i++) {
+				multiplier = multiplier / 60;
+				num = charCodeToInt(fractional.charCodeAt(i));
+				out += num * multiplier;
+			}
+	
+			return out * sign;
+		}
+	
+		function arrayToInt (array) {
+			for (var i = 0; i < array.length; i++) {
+				array[i] = unpackBase60(array[i]);
+			}
+		}
+	
+		function intToUntil (array, length) {
+			for (var i = 0; i < length; i++) {
+				array[i] = Math.round((array[i - 1] || 0) + (array[i] * 60000)); // minutes to milliseconds
+			}
+	
+			array[length - 1] = Infinity;
+		}
+	
+		function mapIndices (source, indices) {
+			var out = [], i;
+	
+			for (i = 0; i < indices.length; i++) {
+				out[i] = source[indices[i]];
+			}
+	
+			return out;
+		}
+	
+		function unpack (string) {
+			var data = string.split('|'),
+				offsets = data[2].split(' '),
+				indices = data[3].split(''),
+				untils  = data[4].split(' ');
+	
+			arrayToInt(offsets);
+			arrayToInt(indices);
+			arrayToInt(untils);
+	
+			intToUntil(untils, indices.length);
+	
+			return {
+				name    : data[0],
+				abbrs   : mapIndices(data[1].split(' '), indices),
+				offsets : mapIndices(offsets, indices),
+				untils  : untils
+			};
+		}
+	
+		/************************************
+			Zone object
+		************************************/
+	
+		function Zone (packedString) {
+			if (packedString) {
+				this._set(unpack(packedString));
+			}
+		}
+	
+		Zone.prototype = {
+			_set : function (unpacked) {
+				this.name    = unpacked.name;
+				this.abbrs   = unpacked.abbrs;
+				this.untils  = unpacked.untils;
+				this.offsets = unpacked.offsets;
+			},
+	
+			_index : function (timestamp) {
+				var target = +timestamp,
+					untils = this.untils,
+					i;
+	
+				for (i = 0; i < untils.length; i++) {
+					if (target < untils[i]) {
+						return i;
+					}
+				}
+			},
+	
+			parse : function (timestamp) {
+				var target  = +timestamp,
+					offsets = this.offsets,
+					untils  = this.untils,
+					max     = untils.length - 1,
+					offset, offsetNext, offsetPrev, i;
+	
+				for (i = 0; i < max; i++) {
+					offset     = offsets[i];
+					offsetNext = offsets[i + 1];
+					offsetPrev = offsets[i ? i - 1 : i];
+	
+					if (offset < offsetNext && tz.moveAmbiguousForward) {
+						offset = offsetNext;
+					} else if (offset > offsetPrev && tz.moveInvalidForward) {
+						offset = offsetPrev;
+					}
+	
+					if (target < untils[i] - (offset * 60000)) {
+						return offsets[i];
+					}
+				}
+	
+				return offsets[max];
+			},
+	
+			abbr : function (mom) {
+				return this.abbrs[this._index(mom)];
+			},
+	
+			offset : function (mom) {
+				return this.offsets[this._index(mom)];
+			}
+		};
+	
+		/************************************
+			Global Methods
+		************************************/
+	
+		function normalizeName (name) {
+			return (name || '').toLowerCase().replace(/\//g, '_');
+		}
+	
+		function addZone (packed) {
+			var i, zone, zoneName;
+	
+			if (typeof packed === "string") {
+				packed = [packed];
+			}
+	
+			for (i = 0; i < packed.length; i++) {
+				zone = new Zone(packed[i]);
+				zoneName = normalizeName(zone.name);
+				zones[zoneName] = zone;
+				upgradeLinksToZones(zoneName);
+			}
+		}
+	
+		function getZone (name) {
+			return zones[normalizeName(name)] || null;
+		}
+	
+		function getNames () {
+			var i, out = [];
+	
+			for (i in zones) {
+				if (zones.hasOwnProperty(i) && zones[i]) {
+					out.push(zones[i].name);
+				}
+			}
+	
+			return out.sort();
+		}
+	
+		function addLink (aliases) {
+			var i, alias;
+	
+			if (typeof aliases === "string") {
+				aliases = [aliases];
+			}
+	
+			for (i = 0; i < aliases.length; i++) {
+				alias = aliases[i].split('|');
+				pushLink(alias[0], alias[1]);
+				pushLink(alias[1], alias[0]);
+			}
+		}
+	
+		function upgradeLinksToZones (zoneName) {
+			if (!links[zoneName]) {
+				return;
+			}
+	
+			var i,
+				zone = zones[zoneName],
+				linkNames = links[zoneName];
+	
+			for (i = 0; i < linkNames.length; i++) {
+				copyZoneWithName(zone, linkNames[i]);
+			}
+	
+			links[zoneName] = null;
+		}
+	
+		function copyZoneWithName (zone, name) {
+			var linkZone = zones[normalizeName(name)] = new Zone();
+			linkZone._set(zone);
+			linkZone.name = name;
+		}
+	
+		function pushLink (zoneName, linkName) {
+			zoneName = normalizeName(zoneName);
+	
+			if (zones[zoneName]) {
+				copyZoneWithName(zones[zoneName], linkName);
+			} else {
+				links[zoneName] = links[zoneName] || [];
+				links[zoneName].push(linkName);
+			}
+		}
+	
+		function loadData (data) {
+			addZone(data.zones);
+			addLink(data.links);
+			tz.dataVersion = data.version;
+		}
+	
+		function zoneExists (name) {
+			if (!zoneExists.didShowError) {
+				zoneExists.didShowError = true;
+					logError("moment.tz.zoneExists('" + name + "') has been deprecated in favor of !moment.tz.zone('" + name + "')");
+			}
+			return !!getZone(name);
+		}
+	
+		function needsOffset (m) {
+			return !!(m._a && (m._tzm === undefined));
+		}
+	
+		function logError (message) {
+			if (typeof console !== 'undefined' && typeof console.error === 'function') {
+				console.error(message);
+			}
+		}
+	
+		/************************************
+			moment.tz namespace
+		************************************/
+	
+		function tz (input) {
+			var args = Array.prototype.slice.call(arguments, 0, -1),
+				name = arguments[arguments.length - 1],
+				zone = getZone(name),
+				out  = moment.utc.apply(null, args);
+	
+			if (zone && !moment.isMoment(input) && needsOffset(out)) {
+				out.add(zone.parse(out), 'minutes');
+			}
+	
+			out.tz(name);
+	
+			return out;
+		}
+	
+		tz.version      = VERSION;
+		tz.dataVersion  = '';
+		tz._zones       = zones;
+		tz._links       = links;
+		tz.add          = addZone;
+		tz.link         = addLink;
+		tz.load         = loadData;
+		tz.zone         = getZone;
+		tz.zoneExists   = zoneExists; // deprecated in 0.1.0
+		tz.names        = getNames;
+		tz.Zone         = Zone;
+		tz.unpack       = unpack;
+		tz.unpackBase60 = unpackBase60;
+		tz.needsOffset  = needsOffset;
+		tz.moveInvalidForward   = true;
+		tz.moveAmbiguousForward = false;
+	
+		/************************************
+			Interface with Moment.js
+		************************************/
+	
+		var fn = moment.fn;
+	
+		moment.tz = tz;
+	
+		moment.defaultZone = null;
+	
+		moment.updateOffset = function (mom, keepTime) {
+			var offset;
+			if (mom._z === undefined) {
+				mom._z = moment.defaultZone;
+			}
+			if (mom._z) {
+				offset = mom._z.offset(mom);
+				if (Math.abs(offset) < 16) {
+					offset = offset / 60;
+				}
+				if (mom.utcOffset !== undefined) {
+					mom.utcOffset(-offset, keepTime);
+				} else {
+					mom.zone(offset, keepTime);
+				}
+			}
+		};
+	
+		fn.tz = function (name) {
+			if (name) {
+				this._z = getZone(name);
+				if (this._z) {
+					moment.updateOffset(this);
+				} else {
+					logError("Moment Timezone has no data for " + name + ". See http://momentjs.com/timezone/docs/#/data-loading/.");
+				}
+				return this;
+			}
+			if (this._z) { return this._z.name; }
+		};
+	
+		function abbrWrap (old) {
+			return function () {
+				if (this._z) { return this._z.abbr(this); }
+				return old.call(this);
+			};
+		}
+	
+		function resetZoneWrap (old) {
+			return function () {
+				this._z = null;
+				return old.apply(this, arguments);
+			};
+		}
+	
+		fn.zoneName = abbrWrap(fn.zoneName);
+		fn.zoneAbbr = abbrWrap(fn.zoneAbbr);
+		fn.utc      = resetZoneWrap(fn.utc);
+	
+		moment.tz.setDefault = function(name) {
+			if (major < 2 || (major === 2 && minor < 9)) {
+				logError('Moment Timezone setDefault() requires Moment.js >= 2.9.0. You are using Moment.js ' + moment.version + '.');
+			}
+			moment.defaultZone = name ? getZone(name) : null;
+			return moment;
+		};
+	
+		// Cloning a moment should include the _z property.
+		var momentProperties = moment.momentProperties;
+		if (Object.prototype.toString.call(momentProperties) === '[object Array]') {
+			// moment 2.8.1+
+			momentProperties.push('_z');
+			momentProperties.push('_a');
+		} else if (momentProperties) {
+			// moment 2.7.0
+			momentProperties._z = null;
+		}
+	
+		// INJECT DATA
+	
+		return moment;
+	}));
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./aboutus.js": 40,
+		"./addgear.js": 41,
+		"./addtechprofile.js": 42,
+		"./addvan.js": 43,
+		"./availabilitycalendar.js": 44,
+		"./booking.js": 45,
+		"./bookingrequest.js": 46,
+		"./contactus.js": 47,
+		"./copyright.js": 48,
+		"./dashboard-profile.js": 49,
+		"./dashboard-settings.js": 50,
+		"./dashboard-yourgear.js": 51,
+		"./dashboard-yourgearrentals.js": 52,
+		"./dashboard-yourgearreservations.js": 53,
+		"./dashboard-yourtechprofilerentals.js": 54,
+		"./dashboard-yourtechprofilereservations.js": 55,
+		"./dashboard-yourtechprofiles.js": 56,
+		"./dashboard-yourvanrentals.js": 57,
+		"./dashboard-yourvanreservations.js": 58,
+		"./dashboard-yourvans.js": 59,
+		"./dashboard.js": 60,
+		"./editgear.js": 61,
+		"./edittechprofile.js": 62,
+		"./editvan.js": 63,
+		"./error.js": 64,
+		"./footer.js": 65,
+		"./gearprofile.js": 66,
+		"./gearsearchform.js": 67,
+		"./home.js": 68,
+		"./insurance.js": 69,
+		"./navigation-header.js": 5,
+		"./payment.js": 70,
+		"./paymentsuccessful.js": 71,
+		"./pickupdeliverycalendar.js": 72,
+		"./privacy.js": 73,
+		"./search.js": 74,
+		"./submerchantregistration.js": 75,
+		"./techprofile.js": 76,
+		"./techprofilesearchform.js": 77,
+		"./terms.js": 78,
+		"./user.js": 79,
+		"./vanprofile.js": 80,
+		"./vansearchform.js": 81
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 38;
+
 
 /***/ },
 /* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./aboutus.html": 82,
+		"./addgear.html": 83,
+		"./addtechprofile.html": 84,
+		"./addvan.html": 85,
+		"./availabilitycalendar.html": 86,
+		"./booking.html": 87,
+		"./bookingrequest.html": 88,
+		"./closedbeta.html": 89,
+		"./contactus.html": 90,
+		"./copyright.html": 91,
+		"./dashboard-profile.html": 92,
+		"./dashboard-settings.html": 93,
+		"./dashboard-yourgear.html": 94,
+		"./dashboard-yourgearrentals.html": 95,
+		"./dashboard-yourgearreservations.html": 96,
+		"./dashboard-yourtechprofilerentals.html": 97,
+		"./dashboard-yourtechprofilereservations.html": 98,
+		"./dashboard-yourtechprofiles.html": 99,
+		"./dashboard-yourvanrentals.html": 100,
+		"./dashboard-yourvanreservations.html": 101,
+		"./dashboard-yourvans.html": 102,
+		"./dashboard.html": 103,
+		"./editgear.html": 104,
+		"./edittechprofile.html": 105,
+		"./editvan.html": 106,
+		"./error.html": 107,
+		"./footer.html": 108,
+		"./gearprofile.html": 109,
+		"./gearsearchform.html": 110,
+		"./home.html": 111,
+		"./insurance.html": 112,
+		"./navigation-header.html": 16,
+		"./payment.html": 113,
+		"./paymentsuccessful.html": 114,
+		"./pickupdeliverycalendar.html": 115,
+		"./privacy.html": 116,
+		"./search-results.html": 117,
+		"./search.html": 118,
+		"./submerchantregistration.html": 119,
+		"./techprofile.html": 120,
+		"./techprofilesearchform.html": 121,
+		"./terms.html": 122,
+		"./testimonial.html": 123,
+		"./user-gear-item.html": 124,
+		"./user-techprofiles-item.html": 125,
+		"./user-vans-item.html": 126,
+		"./user.html": 127,
+		"./vanprofile.html": 128,
+		"./vansearchform.html": 129,
+		"./yourgear-item.html": 130,
+		"./yourgearrentals-item.html": 131,
+		"./yourgearreservations-item.html": 132,
+		"./yourtechprofilerentals-item.html": 133,
+		"./yourtechprofilereservations-item.html": 134,
+		"./yourtechprofiles-item.html": 135,
+		"./yourvanrentals-item.html": 136,
+		"./yourvanreservations-item.html": 137,
+		"./yourvans-item.html": 138
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 39;
+
+
+/***/ },
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15550,10 +15974,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	
-	    ViewController = __webpack_require__(21);
+	    ViewController = __webpack_require__(17);
 	
 	function AboutUs(options) {
 	    ViewController.call(this, options);
@@ -15585,8 +16009,8 @@
 	AboutUs.prototype.loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(64);
-	    FooterTemplate = __webpack_require__(107);
+	    FooterController = __webpack_require__(65);
+	    FooterTemplate = __webpack_require__(108);
 	
 	    view.footer = new FooterController({
 	        name: 'footer',
@@ -15601,7 +16025,7 @@
 
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15612,18 +16036,18 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
-	    Gear = __webpack_require__(139),
+	    Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
+	    Gear = __webpack_require__(140),
 	
 	    subtypeDefault = 'Choose subtype:',
 	    brandDefault = 'Choose brand:',
@@ -16171,8 +16595,8 @@
 	    $('#addgear-darkgray-left', this.$element).hide();
 	    $('#addgear-darkgray-left-calendar', this.$element).removeClass('hidden');s
 	
-	    CalendarVC = __webpack_require__(43);
-	    calendarVT = __webpack_require__(85);
+	    CalendarVC = __webpack_require__(44);
+	    calendarVT = __webpack_require__(86);
 	
 	    view.calendarVC = new CalendarVC({
 	        name: 'availabilitycalendar',
@@ -16215,8 +16639,8 @@
 	        view = this,
 	        SubmerchantFormVC, submerchantFormVT;
 	
-	    SubmerchantFormVC = __webpack_require__(74);
-	    submerchantFormVT = __webpack_require__(118);
+	    SubmerchantFormVC = __webpack_require__(75);
+	    submerchantFormVT = __webpack_require__(119);
 	
 	    view.submerchantFormVC = new SubmerchantFormVC({
 	        name: 'submerchantform',
@@ -16341,7 +16765,7 @@
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16352,18 +16776,18 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
-	    TechProfile = __webpack_require__(140),
+	    Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
+	    TechProfile = __webpack_require__(141),
 	
 	    countryDefault = 'Select country:',
 	    geocoder;
@@ -16753,8 +17177,8 @@
 	    $('#addtechprofile-darkgray-left-calendar', this.$element).removeClass('hidden');
 	
 	
-	    CalendarVC = __webpack_require__(43);
-	    calendarVT = __webpack_require__(85);
+	    CalendarVC = __webpack_require__(44);
+	    calendarVT = __webpack_require__(86);
 	
 	    view.calendarVC = new CalendarVC({
 	        name: 'availabilitycalendar',
@@ -16797,8 +17221,8 @@
 	        view = this,
 	        SubmerchantFormVC, submerchantFormVT;
 	
-	    SubmerchantFormVC = __webpack_require__(74);
-	    submerchantFormVT = __webpack_require__(118);
+	    SubmerchantFormVC = __webpack_require__(75);
+	    submerchantFormVT = __webpack_require__(119);
 	    view.submerchantFormVC = new SubmerchantFormVC({
 	        name: 'submerchantform',
 	        $element: $submerchantFormContainer,
@@ -16921,7 +17345,7 @@
 
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16932,18 +17356,18 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
-	    Van = __webpack_require__(141),
+	    Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
+	    Van = __webpack_require__(142),
 	
 	    countryDefault = 'Select country:',
 	    geocoder;
@@ -17406,8 +17830,8 @@
 	    $('#addvan-darkgray-left', this.$element).hide();
 	    $('#addvan-darkgray-left-calendar', this.$element).removeClass('hidden');
 	    
-	    CalendarVC = __webpack_require__(43);
-	    calendarVT = __webpack_require__(85);
+	    CalendarVC = __webpack_require__(44);
+	    calendarVT = __webpack_require__(86);
 	
 	    view.calendarVC = new CalendarVC({
 	        name: 'availabilitycalendar',
@@ -17450,8 +17874,8 @@
 	        view = this,
 	        SubmerchantFormVC, submerchantFormVT;
 	
-	    SubmerchantFormVC = __webpack_require__(74);
-	    submerchantFormVT = __webpack_require__(118);
+	    SubmerchantFormVC = __webpack_require__(75);
+	    submerchantFormVT = __webpack_require__(119);
 	
 	    view.submerchantFormVC = new SubmerchantFormVC({
 	        name: 'submerchantform',
@@ -17576,7 +18000,7 @@
 
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17587,13 +18011,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(24),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8);
+	    Localization = __webpack_require__(12);
 	
 	function AvailabilityCalendar(options) {
 	    ViewController.call(this, options);
@@ -18042,7 +18466,7 @@
 
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18054,17 +18478,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    User = __webpack_require__(9),
-	    Booking = __webpack_require__(142);
+	    Localization = __webpack_require__(12),
+	    User = __webpack_require__(13),
+	    Booking = __webpack_require__(143);
 	
 	function Booking(options) {
 	    ViewController.call(this, options);
@@ -18324,7 +18748,7 @@
 
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18335,17 +18759,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    Booking = __webpack_require__(142),
+	    Localization = __webpack_require__(12),
+	    Booking = __webpack_require__(143),
 	
-	    SelectTimePopup = __webpack_require__(143);
+	    SelectTimePopup = __webpack_require__(144);
 	
 	function BookingRequest(options) {
 	    ViewController.call(this, options);
@@ -18409,8 +18833,8 @@
 	        parent: view
 	    };
 	
-	    calendarVC = __webpack_require__(71);
-	    calendarVT = __webpack_require__(114);
+	    calendarVC = __webpack_require__(72);
+	    calendarVT = __webpack_require__(115);
 	
 	    view.calendarVC = new calendarVC({
 	        name: 'pickupdeliverycalendar',
@@ -18536,7 +18960,7 @@
 
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18547,13 +18971,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(17);
 	
 	module.exports = ViewController;
 
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18564,9 +18988,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(21);
+		ViewController = __webpack_require__(17);
 	
 	function Copyright(options) {
 	    ViewController.call(this, options);
@@ -18582,8 +19006,8 @@
 	    var view = this,
 	        FooterController, FooterTemplate;
 	
-	    FooterController = __webpack_require__(64);
-	    FooterTemplate = __webpack_require__(107);
+	    FooterController = __webpack_require__(65);
+	    FooterTemplate = __webpack_require__(108);
 	
 	    view.footer = new FooterController({
 	        name: 'footer',
@@ -18598,7 +19022,7 @@
 
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18609,15 +19033,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8);
+	    Localization = __webpack_require__(12);
 	
 	function DashboardProfile(options) {
 	    ViewController.call(this, options);
@@ -18910,7 +19334,7 @@
 
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18921,12 +19345,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(8);
+		Localization = __webpack_require__(12);
 	
 	function DashboardSettings(options) {
 	    ViewController.call(this, options);
@@ -18992,7 +19416,7 @@
 
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19003,14 +19427,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    GearList = __webpack_require__(144),
+	    GearList = __webpack_require__(145),
 	
 	    gearBlockID = 'yourgear-gear-block';
 	
@@ -19050,7 +19474,7 @@
 	    var view = this,
 	        YourGearItemTemplate;
 	
-	    YourGearItemTemplate = __webpack_require__(129);
+	    YourGearItemTemplate = __webpack_require__(130);
 	    var yourGearItemTemplate = _.template(YourGearItemTemplate),
 	        yourGear = view.gearList.data,
 	        $gearBlock, defaultGear, gear, i, $gearItem;
@@ -19078,10 +19502,47 @@
 	        if (defaultGear.images.length > 0) {
 	            defaultGear.img_url = defaultGear.images.split(',')[0];
 	        }
+	
 	        $gearItem = $(yourGearItemTemplate(defaultGear));
+	
+	        //Add unique class for every image
+	        $('.sg-bg-image', $gearItem).addClass('gear-item-'+i);
+	
+	        // Create an image object
+	        var img = new Image();
+	        img.resultNum = i;
+	
+	        //Get thumbURL from the imageURL
+	        var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+	        imageURL = defaultGear.img_url;
+	        
+	        thumbURL = imageURL.split('/');
+	        imgName = thumbURL.pop();
+	        thumbURL = thumbURL.join('/');
+	        imgNameComponents = imgName.split('.');
+	        imgName = imgNameComponents[0];
+	        imgExt = imgNameComponents[1];
+	        if (window.window.devicePixelRatio > 1) {
+	            thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+	        } else {
+	            thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+	        }
+	
+	        //Assign the img source to the the thumbURL
 	        $('.sg-bg-image', $gearItem).css({
-	            'background-image': 'url("' + defaultGear.img_url + '")'
+	            'background-image': 'url("' + thumbURL + '")'
 	        });
+	        img.src = thumbURL;
+	
+	        //Make the pictures fit the boxes
+	        img.onload = function(){
+	                if (this.width < this.height) {
+	                    $('.gear-item-'+this.resultNum).addClass('search-result-gear-vertical');
+	                } else {
+	                    $('.gear-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+	                }
+	        };
+	
 	        $gearBlock.append($gearItem);
 	    }
 	    if (callback && typeof callback === 'function') {
@@ -19104,7 +19565,7 @@
 
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19115,14 +19576,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    GearList = __webpack_require__(144),
+	    GearList = __webpack_require__(145),
 	
 	    gearBlockID = 'yourrentals-gear-block';
 	
@@ -19162,7 +19623,7 @@
 	    var view = this,
 	        YourRentalsItemTemplate;
 	
-	    YourRentalsItemTemplate = __webpack_require__(130);
+	    YourRentalsItemTemplate = __webpack_require__(131);
 	
 	    var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 	        yourRentals = view.gearList.data,
@@ -19193,22 +19654,60 @@
 	            defaultGear.img_url = defaultGear.images.split(',')[0];
 	        }
 	        $gearItem = $(yourRentalsItemTemplate(defaultGear));
-	        $('.sg-bg-image', $gearItem).css({
-	            'background-image': 'url("' + defaultGear.img_url + '")'
-	        });
-	
 	
 	        status = gear.data.booking_status;
 	        if (status !== 'waiting') {
+	
 	            if (status === 'pending') {
 	                $('.request', $gearItem).removeClass('hidden');
 	            }
+	
 	            if (status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
 	                $('.accepted', $gearItem).removeClass('hidden');
 	            }
+	
 	            if (status === 'denied') {
 	                $('.denied', $gearItem).removeClass('hidden');
 	            }
+	
+	            //Add unique class for every image
+	            $('.sg-bg-image', $gearItem).addClass('gear-item-'+i);
+	
+	            // Create an image object
+	            var img = new Image();
+	            img.resultNum = i;
+	
+	            //Get thumbURL from the imageURL
+	            var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+	            imageURL = defaultGear.img_url;
+	            
+	            thumbURL = imageURL.split('/');
+	            imgName = thumbURL.pop();
+	            thumbURL = thumbURL.join('/');
+	            imgNameComponents = imgName.split('.');
+	            imgName = imgNameComponents[0];
+	            imgExt = imgNameComponents[1];
+	            if (window.window.devicePixelRatio > 1) {
+	                thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+	            } else {
+	                thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+	            }
+	
+	            //Assign the img source to the the thumbURL
+	            $('.sg-bg-image', $gearItem).css({
+	                'background-image': 'url("' + thumbURL + '")'
+	            });
+	            img.src = thumbURL;
+	
+	            //Make the pictures fit the boxes
+	            img.onload = function(){
+	                    if (this.width < this.height) {
+	                        $('.gear-item-'+this.resultNum).addClass('search-result-gear-vertical');
+	                    } else {
+	                        $('.gear-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+	                    }
+	            };
+	
 	
 	            $gearBlock.append($gearItem);
 	            displayedRentals++;
@@ -19245,7 +19744,7 @@
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19256,14 +19755,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    GearList = __webpack_require__(144),
+	    GearList = __webpack_require__(145),
 	
 	    reservationBlockID = 'yourreservations-gear-block';
 	
@@ -19299,7 +19798,7 @@
 	DashboardYourGearReservations.prototype.populateYourReservations = function(callback) {
 	    var view = this,
 	        YourReservationsItemTemplate;
-	    YourReservationsItemTemplate = __webpack_require__(131);
+	    YourReservationsItemTemplate = __webpack_require__(132);
 	    var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 	        yourReserv = view.gearList.data,
 	        $reservationBlock, defaultReservation, reservation, i, $reservationItem, status;
@@ -19339,10 +19838,6 @@
 	        }
 	
 	        $reservationItem = $(yourReservationsItemTemplate(defaultReservation));
-	        $('.sg-bg-image', $reservationItem).css({
-	            'background-image': 'url("' + defaultReservation.img_url + '")'
-	        });
-	
 	
 	        status = reservation.data.booking_status;
 	
@@ -19355,6 +19850,44 @@
 	        if (status === 'denied' || status === 'ended-denied') {
 	            $('.denied', $reservationItem).removeClass('hidden');
 	        }
+	
+	        //Add unique class for every image
+	        $('.sg-bg-image', $reservationItem).addClass('gear-reservation-item-'+i);
+	
+	        // Create an image object
+	        var img = new Image();
+	        img.resultNum = i;
+	
+	        //Get thumbURL from the imageURL
+	        var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+	        imageURL = defaultReservation.img_url;
+	        
+	        thumbURL = imageURL.split('/');
+	        imgName = thumbURL.pop();
+	        thumbURL = thumbURL.join('/');
+	        imgNameComponents = imgName.split('.');
+	        imgName = imgNameComponents[0];
+	        imgExt = imgNameComponents[1];
+	        if (window.window.devicePixelRatio > 1) {
+	            thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+	        } else {
+	            thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+	        }
+	
+	        //Assign the img source to the the thumbURL
+	        $('.sg-bg-image', $reservationItem).css({
+	            'background-image': 'url("' + thumbURL + '")'
+	        });
+	        img.src = thumbURL;
+	
+	        //Make the pictures fit the boxes
+	        img.onload = function(){
+	                if (this.width < this.height) {
+	                    $('.gear-reservation-item-'+this.resultNum).addClass('search-result-gear-vertical');
+	                } else {
+	                    $('.gear-reservation-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+	                }
+	        };
 	
 	        $reservationBlock.append($reservationItem);
 	    }
@@ -19382,7 +19915,7 @@
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19393,14 +19926,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    TechProfileList = __webpack_require__(145),
+	    TechProfileList = __webpack_require__(146),
 	
 	    techProfileBlockID = 'yourrentals-techprofile-block';
 	
@@ -19439,7 +19972,7 @@
 	YourTechProfileRentals.prototype.populateYourRentals = function(callback) {
 	    var view = this,
 	        YourRentalsItemTemplate;
-	    YourRentalsItemTemplate = __webpack_require__(132);
+	    YourRentalsItemTemplate = __webpack_require__(133);
 	    var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 	        yourRentals = view.techProfileList.data,
 	        displayedRentals = 0, //We do not display rentals with status waiting
@@ -19518,7 +20051,7 @@
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19529,14 +20062,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    TechProfileList = __webpack_require__(145),
+	    TechProfileList = __webpack_require__(146),
 	
 	    reservationBlockID = 'yourreservations-techprofile-block';
 	
@@ -19572,7 +20105,7 @@
 	YourTechProfileReservations.prototype.populateYourReservations = function(callback) {
 	    var view = this,
 	        YourReservationsItemTemplate;
-	    YourReservationsItemTemplate = __webpack_require__(133);
+	    YourReservationsItemTemplate = __webpack_require__(134);
 	
 	    var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 	        yourReserv = view.techProfileList.data,
@@ -19652,7 +20185,7 @@
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19663,14 +20196,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    TechProfileList = __webpack_require__(145),
+	    TechProfileList = __webpack_require__(146),
 	
 	    techprofilesBlockID = 'yourtechprofiles-techprofile-block';
 	
@@ -19709,7 +20242,7 @@
 	YourTechProfiles.prototype.populateYourTechProfiles = function(callback) {
 	    var view = this,
 	        YourTechProfilesItemTemplate;
-	    YourTechProfilesItemTemplate = __webpack_require__(134);
+	    YourTechProfilesItemTemplate = __webpack_require__(135);
 	    var yourTechProfilesItemTemplate = _.template(YourTechProfilesItemTemplate),
 	        yourTechProfiles = view.techProfilesList.data,
 	        $techProfilesBlock, defaultTechProfile, techProfile, i, $techProfileItem;
@@ -19749,7 +20282,7 @@
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19760,14 +20293,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    VanList = __webpack_require__(146),
+	    VanList = __webpack_require__(147),
 	
 	    vanBlockID = 'yourrentals-van-block';
 	
@@ -19806,7 +20339,7 @@
 	DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
 	    var view = this,
 	        YourRentalsItemTemplate;
-	    YourRentalsItemTemplate = __webpack_require__(135);
+	    YourRentalsItemTemplate = __webpack_require__(136);
 	    var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
 	        yourRentals = view.vanList.data,
 	        displayedRentals = 0, //We do not display rentals with status waiting
@@ -19835,10 +20368,6 @@
 	            defaultVan.img_url = defaultVan.images.split(',')[0];
 	        }
 	        $vanItem = $(yourRentalsItemTemplate(defaultVan));
-	        $('.sg-bg-image', $vanItem).css({
-	            'background-image': 'url("' + defaultVan.img_url + '")'
-	        });
-	
 	
 	        status = van.data.booking_status;
 	        if (status !== 'waiting') {
@@ -19851,6 +20380,44 @@
 	            if (status === 'denied') {
 	                $('.denied', $vanItem).removeClass('hidden');
 	            }
+	
+	            //Add unique class for every image
+	            $('.sg-bg-image', $vanItem).addClass('van-item-'+i);
+	
+	            // Create an image object
+	            var img = new Image();
+	            img.resultNum = i;
+	
+	            //Get thumbURL from the imageURL
+	            var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+	            imageURL = defaultVan.img_url;
+	            
+	            thumbURL = imageURL.split('/');
+	            imgName = thumbURL.pop();
+	            thumbURL = thumbURL.join('/');
+	            imgNameComponents = imgName.split('.');
+	            imgName = imgNameComponents[0];
+	            imgExt = imgNameComponents[1];
+	            if (window.window.devicePixelRatio > 1) {
+	                thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+	            } else {
+	                thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+	            }
+	
+	            //Assign the img source to the the thumbURL
+	            $('.sg-bg-image', $vanItem).css({
+	                'background-image': 'url("' + thumbURL + '")'
+	            });
+	            img.src = thumbURL;
+	
+	            //Make the pictures fit the boxes
+	            img.onload = function(){
+	                    if (this.width < this.height) {
+	                        $('.van-item-'+this.resultNum).addClass('search-result-gear-vertical');
+	                    } else {
+	                        $('.van-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+	                    }
+	            };
 	
 	            $vanBlock.append($vanItem);
 	            displayedRentals++;
@@ -19886,7 +20453,7 @@
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19897,14 +20464,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    VanList = __webpack_require__(146),
+	    VanList = __webpack_require__(147),
 	
 	    reservationBlockID = 'yourreservations-van-block';
 	
@@ -19940,7 +20507,7 @@
 	DashboardYourVanReservations.prototype.populateYourReservations = function(callback) {
 	    var view = this,
 	        YourReservationsItemTemplate;
-	    YourReservationsItemTemplate = __webpack_require__(136);
+	    YourReservationsItemTemplate = __webpack_require__(137);
 	
 	    var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
 	        yourReserv = view.vanList.data,
@@ -19978,10 +20545,6 @@
 	        }
 	
 	        $reservationItem = $(yourReservationsItemTemplate(defaultReservation));
-	        $('.sg-bg-image', $reservationItem).css({
-	            'background-image': 'url("' + defaultReservation.img_url + '")'
-	        });
-	
 	
 	        status = reservation.data.booking_status;
 	
@@ -19994,6 +20557,45 @@
 	        if (status === 'denied' || status === 'ended-denied') {
 	            $('.denied', $reservationItem).removeClass('hidden');
 	        }
+	
+	        //Add unique class for every image
+	        $('.sg-bg-image', $reservationItem).addClass('van-reservation-item-'+i);
+	
+	        // Create an image object
+	        var img = new Image();
+	        img.resultNum = i;
+	
+	        //Get thumbURL from the imageURL
+	        var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+	        imageURL = defaultReservation.img_url;
+	        
+	        thumbURL = imageURL.split('/');
+	        imgName = thumbURL.pop();
+	        thumbURL = thumbURL.join('/');
+	        imgNameComponents = imgName.split('.');
+	        imgName = imgNameComponents[0];
+	        imgExt = imgNameComponents[1];
+	        if (window.window.devicePixelRatio > 1) {
+	            thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+	        } else {
+	            thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+	        }
+	
+	        //Assign the img source to the the thumbURL
+	        $('.sg-bg-image', $reservationItem).css({
+	            'background-image': 'url("' + thumbURL + '")'
+	        });
+	
+	        img.src = thumbURL;
+	
+	        //Make the pictures fit the boxes
+	        img.onload = function(){
+	                if (this.width < this.height) {
+	                    $('.van-reservation-item-'+this.resultNum).addClass('search-result-gear-vertical');
+	                } else {
+	                    $('.van-reservation-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+	                }
+	        };
 	
 	        $reservationBlock.append($reservationItem);
 	    }
@@ -20021,7 +20623,7 @@
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20032,14 +20634,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    VanList = __webpack_require__(146),
+	    VanList = __webpack_require__(147),
 	
 	    vanBlockID = 'yourvans-vans-block';
 	
@@ -20078,7 +20680,7 @@
 	DashboardYourVans.prototype.populateYourVans = function(callback) {
 	    var view = this,
 	        YourVansItemTemplate;
-	    YourVansItemTemplate = __webpack_require__(137);
+	    YourVansItemTemplate = __webpack_require__(138);
 	
 	    var yourVansItemTemplate = _.template(YourVansItemTemplate),
 	        yourVans = view.vanList.data,
@@ -20105,9 +20707,46 @@
 	            defaultVan.img_url = defaultVan.images.split(',')[0];
 	        }
 	        $vanItem = $(yourVansItemTemplate(defaultVan));
+	
+	        //Add unique class for every image
+	        $('.sg-bg-image', $vanItem).addClass('van-item-'+i);
+	
+	        // Create an image object
+	        var img = new Image();
+	        img.resultNum = i;
+	
+	        //Get thumbURL from the imageURL
+	        var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+	        imageURL = defaultVan.img_url;
+	        
+	        thumbURL = imageURL.split('/');
+	        imgName = thumbURL.pop();
+	        thumbURL = thumbURL.join('/');
+	        imgNameComponents = imgName.split('.');
+	        imgName = imgNameComponents[0];
+	        imgExt = imgNameComponents[1];
+	        if (window.window.devicePixelRatio > 1) {
+	            thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+	        } else {
+	            thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+	        }
+	
+	        //Assign the img source to the the thumbURL
 	        $('.sg-bg-image', $vanItem).css({
-	            'background-image': 'url("' + defaultVan.img_url + '")'
+	            'background-image': 'url("' + thumbURL + '")'
 	        });
+	
+	        img.src = thumbURL;
+	
+	        //Make the pictures fit the boxes
+	        img.onload = function(){
+	                if (this.width < this.height) {
+	                    $('.van-item-'+this.resultNum).addClass('search-result-gear-vertical');
+	                } else {
+	                    $('.van-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+	                }
+	        };
+	
 	        $vanBlock.append($vanItem);
 	    }
 	    if (callback && typeof callback === 'function') {
@@ -20130,7 +20769,7 @@
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20141,9 +20780,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    subViewContainerID = 'dashboard-subview-container';
@@ -20200,7 +20839,7 @@
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20212,15 +20851,15 @@
 	'use strict';
 	
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(24),
-	    GoogleMaps = __webpack_require__(3),
+	    GoogleMaps = __webpack_require__(7),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
+	    ViewController = __webpack_require__(17),
+	    Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
 	
 	    geocoder = new GoogleMaps.Geocoder();
 	
@@ -20344,8 +20983,8 @@
 	    $submerchantFormBtn = $('#editgear-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        CalendarVC = __webpack_require__(43);
-	        calendarVT = __webpack_require__(85);
+	        CalendarVC = __webpack_require__(44);
+	        calendarVT = __webpack_require__(86);
 	        view.calendarVC = new CalendarVC({
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
@@ -20361,8 +21000,8 @@
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        SubmerchantFormVC = __webpack_require__(74);
-	        submerchantFormVT = __webpack_require__(118);
+	        SubmerchantFormVC = __webpack_require__(75);
+	        submerchantFormVT = __webpack_require__(119);
 	
 	        view.submerchantFormVC = new SubmerchantFormVC({
 	            name: 'submerchantform',
@@ -20782,7 +21421,7 @@
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20793,16 +21432,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
+	    Config = __webpack_require__(9),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
+	    ViewController = __webpack_require__(17),
+	    Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
 	
 	    geocoder = new GoogleMaps.Geocoder();
 	
@@ -20888,8 +21527,8 @@
 	    $submerchantFormBtn = $('#edittechprofile-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        CalendarVC = __webpack_require__(43);
-	        calendarVT = __webpack_require__(85);
+	        CalendarVC = __webpack_require__(44);
+	        calendarVT = __webpack_require__(86);
 	        view.calendarVC = new CalendarVC({
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
@@ -20904,8 +21543,8 @@
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        SubmerchantFormVC = __webpack_require__(74);
-	        submerchantFormVT = __webpack_require__(118);
+	        SubmerchantFormVC = __webpack_require__(75);
+	        submerchantFormVT = __webpack_require__(119);
 	        view.submerchantFormVC = new SubmerchantFormVC({
 	            name: 'submerchantform',
 	            $element: $calendarContainer,
@@ -21257,7 +21896,7 @@
 
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21268,15 +21907,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	    Moment = __webpack_require__(24),
 	
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
+	    ViewController = __webpack_require__(17),
+	    Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
 	
 	    geocoder = new GoogleMaps.Geocoder();
 	
@@ -21393,8 +22032,8 @@
 	    $submerchantFormBtn = $('#editvan-submerchantform-buttons', this.$element);
 	
 	    if (App.user.isSubMerchant() === true) {
-	        CalendarVC = __webpack_require__(43);
-	        calendarVT = __webpack_require__(85);
+	        CalendarVC = __webpack_require__(44);
+	        calendarVT = __webpack_require__(86);
 	        view.calendarVC = new CalendarVC({
 	            name: 'availabilitycalendar',
 	            $element: $calendarContainer,
@@ -21409,8 +22048,8 @@
 	            $submerchantFormBtn.addClass('hidden');
 	        }
 	    } else {
-	        SubmerchantFormVC = __webpack_require__(74);
-	        submerchantFormVT = __webpack_require__(118);
+	        SubmerchantFormVC = __webpack_require__(75);
+	        submerchantFormVT = __webpack_require__(119);
 	        view.submerchantFormVC = new SubmerchantFormVC({
 	            name: 'submerchantform',
 	            $element: $calendarContainer,
@@ -21766,7 +22405,7 @@
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21777,12 +22416,12 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(17);
 	module.exports = ViewController;
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21795,9 +22434,9 @@
 	
 	var Moment = __webpack_require__(24),
 		
-		ViewController = __webpack_require__(21),
+		ViewController = __webpack_require__(17),
 	
-		Localization = __webpack_require__(8);
+		Localization = __webpack_require__(12);
 	
 	function Footer(options) {
 		ViewController.call(this, options);
@@ -21817,7 +22456,7 @@
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21828,19 +22467,19 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-		FB = __webpack_require__(4),
-		GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+		FB = __webpack_require__(8),
+		GoogleMaps = __webpack_require__(7),
 	
-		Config = __webpack_require__(5),
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
+		Config = __webpack_require__(9),
+		Utilities = __webpack_require__(11),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(8),
-		Gear = __webpack_require__(139),
-		User = __webpack_require__(9),
+		Localization = __webpack_require__(12),
+		Gear = __webpack_require__(140),
+		User = __webpack_require__(13),
 	
 		paymentSuccessModalOpen = false;
 	
@@ -22182,7 +22821,7 @@
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22193,17 +22832,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-		$ = __webpack_require__(13),
-		GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
+		GoogleMaps = __webpack_require__(7),
 		Moment = __webpack_require__(24),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
+		Utilities = __webpack_require__(11),
+		ViewController = __webpack_require__(17),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
+		Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
 	
 		numberOfGearSuggestions = 5;
 	
@@ -22570,7 +23209,7 @@
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22581,10 +23220,10 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
 	    testimonials;
@@ -22655,8 +23294,8 @@
 	Home.prototype.loadSearchBar = function() {
 	    var view = this,
 	        gearSearchVC, gearSearchVT, techProfileSearchVC, techProfileSearchVT, vanSearchVC, vanSearchVT;
-	    gearSearchVC = __webpack_require__(66);
-	    gearSearchVT = __webpack_require__(109);
+	    gearSearchVC = __webpack_require__(67);
+	    gearSearchVT = __webpack_require__(110);
 	    view.gearSearchFormVC = new gearSearchVC({
 	        name: 'gearsearchform',
 	        $element: $('#home-searchform-gear .searchform-container', view.$element),
@@ -22665,8 +23304,8 @@
 	    view.gearSearchFormVC.initialize();
 	    view.gearSearchFormVC.render();
 	
-	    techProfileSearchVC = __webpack_require__(76);
-	    techProfileSearchVT = __webpack_require__(120);
+	    techProfileSearchVC = __webpack_require__(77);
+	    techProfileSearchVT = __webpack_require__(121);
 	    view.techProfileSearchFormVC = new techProfileSearchVC({
 	        name: 'techprofilesearchform',
 	        $element: $('#home-searchform-techprofiles .searchform-container', view.$element),
@@ -22675,8 +23314,8 @@
 	    view.techProfileSearchFormVC.initialize();
 	    view.techProfileSearchFormVC.render();
 	
-	    vanSearchVC = __webpack_require__(80);
-	    vanSearchVT = __webpack_require__(128);
+	    vanSearchVC = __webpack_require__(81);
+	    vanSearchVT = __webpack_require__(129);
 	    view.vanSearchFormVC = new vanSearchVC({
 	        name: 'vansearchform',
 	        $element: $('#home-searchform-vans .searchform-container', view.$element),
@@ -22690,7 +23329,7 @@
 	    var view = this,
 	        TestimonialTemplate;
 	
-	    TestimonialTemplate = __webpack_require__(122);
+	    TestimonialTemplate = __webpack_require__(123);
 	
 	    var testimonialTemplate = _.template(TestimonialTemplate),
 	        $owlContainer = $('.owl-carousel', view.$element),
@@ -22715,8 +23354,8 @@
 	Home.prototype.loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(64);
-	    FooterTemplate = __webpack_require__(107);
+	    FooterController = __webpack_require__(65);
+	    FooterTemplate = __webpack_require__(108);
 	    view.footer = new FooterController({
 	        name: 'footer',
 	        $element: $('footer', view.$element),
@@ -22767,7 +23406,7 @@
 
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22778,9 +23417,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 	
-	    ViewController = __webpack_require__(21);
+	    ViewController = __webpack_require__(17);
 	
 	function Insurance(options) {
 	    ViewController.call(this, options);
@@ -22795,8 +23434,8 @@
 	Insurance.prototype.loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(64);
-	    FooterTemplate = __webpack_require__(107);
+	    FooterController = __webpack_require__(65);
+	    FooterTemplate = __webpack_require__(108);
 	    view.footer = new FooterController({
 	        name: 'footer',
 	        $element: $('footer', view.$element),
@@ -22810,7 +23449,7 @@
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22821,16 +23460,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    Card = __webpack_require__(147);
+	    Localization = __webpack_require__(12),
+	    Card = __webpack_require__(148);
 	
 	function Payment(options) {
 	    ViewController.call(this, options);
@@ -23225,7 +23864,7 @@
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23236,15 +23875,15 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 		Moment = __webpack_require__(24),
 	
-		Config = __webpack_require__(5),
+		Config = __webpack_require__(9),
 		App = __webpack_require__(1),
 	
-		Localization = __webpack_require__(8),
-		ViewController = __webpack_require__(21),
-		Booking = __webpack_require__(142);
+		Localization = __webpack_require__(12),
+		ViewController = __webpack_require__(17),
+		Booking = __webpack_require__(143);
 	
 	function PaymentSuccessful(options) {
 	    ViewController.call(this, options);
@@ -23361,7 +24000,7 @@
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23372,14 +24011,14 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-		$ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+		$ = __webpack_require__(4),
 		Moment = __webpack_require__(24),
 	
-		Utilities = __webpack_require__(7),
-		ViewController = __webpack_require__(21),
+		Utilities = __webpack_require__(11),
+		ViewController = __webpack_require__(17),
 	
-		Localization = __webpack_require__(8),
+		Localization = __webpack_require__(12),
 	
 		pickupHintText = 'Select a pickup date',
 	    deliveryHintText = 'Select a delivery date';
@@ -23787,7 +24426,7 @@
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23798,9 +24437,9 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var $ = __webpack_require__(13),
+	var $ = __webpack_require__(4),
 		
-		ViewController = __webpack_require__(21);
+		ViewController = __webpack_require__(17);
 	
 	function Privacy(options) {
 	    ViewController.call(this, options);
@@ -23815,8 +24454,8 @@
 	Privacy.prototype.loadFooter = function() {
 	    var view = this,
 	        FooterController, FooterTemplate;
-	    FooterController = __webpack_require__(64);
-	    FooterTemplate = __webpack_require__(107);
+	    FooterController = __webpack_require__(65);
+	    FooterTemplate = __webpack_require__(108);
 	
 	    view.footer = new FooterController({
 	        name: 'footer',
@@ -23831,7 +24470,7 @@
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23842,20 +24481,20 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
-	    FB = __webpack_require__(4),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
+	    FB = __webpack_require__(8),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    Utilities = __webpack_require__(11),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    GearList = __webpack_require__(144),
-	    TechProfileList = __webpack_require__(145),
-	    VanList = __webpack_require__(146),
+	    Localization = __webpack_require__(12),
+	    GearList = __webpack_require__(145),
+	    TechProfileList = __webpack_require__(146),
+	    VanList = __webpack_require__(147),
 	
 	    gearSearchBlockID = 'search-results-gear',
 	    techProfileSearchBlockID = 'search-results-techprofiles',
@@ -24064,8 +24703,8 @@
 	        }
 	    };
 	
-	    gearSearchVC = __webpack_require__(66);
-	    gearSearchVT = __webpack_require__(109);
+	    gearSearchVC = __webpack_require__(67);
+	    gearSearchVT = __webpack_require__(110);
 	
 	    view.gearSearchFormVC = new gearSearchVC({
 	        name: 'gearsearchform',
@@ -24122,8 +24761,8 @@
 	        }
 	    };
 	
-	    techProfileSearchVC = __webpack_require__(76);
-	    techProfileSearchVT = __webpack_require__(120);
+	    techProfileSearchVC = __webpack_require__(77);
+	    techProfileSearchVT = __webpack_require__(121);
 	    view.techProfileSearchFormVC = new techProfileSearchVC({
 	        name: 'techprofilesearchform',
 	        $element: $('#search-searchform-technicians .searchform-container', view.$element),
@@ -24179,8 +24818,8 @@
 	        }
 	    };
 	
-	    vanSearchVC = __webpack_require__(80);
-	    vanSearchVT = __webpack_require__(128);
+	    vanSearchVC = __webpack_require__(81);
+	    vanSearchVT = __webpack_require__(129);
 	    view.vanSearchFormVC = new vanSearchVC({
 	        name: 'vansearchform',
 	        $element: $('#search-searchform-vans .searchform-container', view.$element),
@@ -24253,7 +24892,7 @@
 	    $searchBlock.removeClass('hidden');
 	    $searchBlock.empty();
 	
-	    SearchResultTemplate = __webpack_require__(116);
+	    SearchResultTemplate = __webpack_require__(117);
 	    var searchResultTemplate = _.template(SearchResultTemplate),
 	        html = '',
 	        defaultSearchResults, workingSearchResults, handleImageLoad, handlePrices, tab, searchResult, i, img;
@@ -24377,7 +25016,7 @@
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24388,16 +25027,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	    Moment = __webpack_require__(24),
 	
-	    Config = __webpack_require__(5),
+	    Config = __webpack_require__(9),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
-	    Localization = __webpack_require__(8),
-	    MessagePopup = __webpack_require__(11),
+	    ViewController = __webpack_require__(17),
+	    Localization = __webpack_require__(12),
+	    MessagePopup = __webpack_require__(15),
 	
 	    geocoder = new GoogleMaps.Geocoder();
 	
@@ -24725,7 +25364,7 @@
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24736,19 +25375,19 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
-	    FB = __webpack_require__(4),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
+	    FB = __webpack_require__(8),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
+	    Config = __webpack_require__(9),
+	    Utilities = __webpack_require__(11),
 	    App = __webpack_require__(1),
-	    ViewController = __webpack_require__(21),
+	    ViewController = __webpack_require__(17),
 	
-	    Localization = __webpack_require__(8),
-	    User = __webpack_require__(9),
-	    TechProfileModel = __webpack_require__(140),
+	    Localization = __webpack_require__(12),
+	    User = __webpack_require__(13),
+	    TechProfileModel = __webpack_require__(141),
 	
 	    paymentSuccessModalOpen = false;
 	
@@ -25073,7 +25712,7 @@
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25084,17 +25723,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	    Moment = __webpack_require__(24),
 	
-	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(21),
+	    Utilities = __webpack_require__(11),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
+	    Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
 	
 	    numberOfTechProfileSuggestions = 5;
 	
@@ -25448,7 +26087,7 @@
 
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25459,13 +26098,13 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var ViewController = __webpack_require__(21);
+	var ViewController = __webpack_require__(17);
 	
 	module.exports = ViewController;
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25476,16 +26115,16 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
 	
-	    Config = __webpack_require__(5),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    ViewController = __webpack_require__(17),
 	
-	    User = __webpack_require__(9),
-	    GearList = __webpack_require__(144),
-	    TechProfileList = __webpack_require__(145),
-	    VanList = __webpack_require__(146);
+	    User = __webpack_require__(13),
+	    GearList = __webpack_require__(145),
+	    TechProfileList = __webpack_require__(146),
+	    VanList = __webpack_require__(147);
 	
 	function User(options) {
 	    ViewController.call(this, options);
@@ -25594,7 +26233,7 @@
 	    var view = this,
 	        GearItemTemplate;
 	
-	    GearItemTemplate = __webpack_require__(123);
+	    GearItemTemplate = __webpack_require__(124);
 	    var gearItemTemplate = _.template(GearItemTemplate),
 	        gearList = view.userGear.data,
 	        $gearBlock, defaultGear, gear, i, $gearItem;
@@ -25627,7 +26266,7 @@
 	User.prototype.populateTechProfiles = function() {
 	    var view = this,
 	        TechProfilesItemTemplate;
-	    TechProfilesItemTemplate = __webpack_require__(124);
+	    TechProfilesItemTemplate = __webpack_require__(125);
 	
 	    var techProfilesItemTemplate = _.template(TechProfilesItemTemplate),
 	        techProfileList = view.userTechProfiles.data,
@@ -25651,7 +26290,7 @@
 	User.prototype.populateVans = function() {
 	    var view = this,
 	        VanItemTemplate;
-	    VanItemTemplate = __webpack_require__(125);
+	    VanItemTemplate = __webpack_require__(126);
 	    var vanItemTemplate = _.template(VanItemTemplate),
 	        vanList = view.userVans.data,
 	        $vanBlock, defaultVan, van, i, $vanItem;
@@ -25715,7 +26354,7 @@
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25726,19 +26365,19 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    FB = __webpack_require__(4),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    FB = __webpack_require__(8),
+	    GoogleMaps = __webpack_require__(7),
 	
-	    Config = __webpack_require__(5),
-	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(21),
+	    Config = __webpack_require__(9),
+	    Utilities = __webpack_require__(11),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    User = __webpack_require__(9),
-	    Van = __webpack_require__(141),
+	    Localization = __webpack_require__(12),
+	    User = __webpack_require__(13),
+	    Van = __webpack_require__(142),
 	
 	    paymentSuccessModalOpen = false;
 	
@@ -26075,7 +26714,7 @@
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26086,17 +26725,17 @@
 	/*jslint node: true */
 	'use strict';
 	
-	var _ = __webpack_require__(12),
-	    $ = __webpack_require__(13),
-	    GoogleMaps = __webpack_require__(3),
+	var _ = __webpack_require__(3),
+	    $ = __webpack_require__(4),
+	    GoogleMaps = __webpack_require__(7),
 	    Moment = __webpack_require__(24),
 	
-	    Utilities = __webpack_require__(7),
-	    ViewController = __webpack_require__(21),
+	    Utilities = __webpack_require__(11),
+	    ViewController = __webpack_require__(17),
 	    App = __webpack_require__(1),
 	
-	    Localization = __webpack_require__(8),
-	    ContentClassification = __webpack_require__(10),
+	    Localization = __webpack_require__(12),
+	    ContentClassification = __webpack_require__(14),
 	
 	    numberOfGearSuggestions = 5;
 	
@@ -26450,2046 +27089,349 @@
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"view aboutus\">\r\n  <div class=\"container-fluid sg-lightgray-bg\">\r\n    <div class=\"row sg-white-bg\">\r\n      <div class=\"col-sm-offset-1 col-sm-10\">\r\n        <h1 class=\"sg-h1 sg-blue\">About Us</h1>\r\n      </div>\r\n    </div>\r\n    \r\n    <div class=\"row\">\r\n      <div class=\"col-sm-offset-1 col-sm-10\">\r\n        <p>\r\n          <strong class=\"sg-darkgray\">Sharingear is the first trusted community marketplace for musicians and touring personnel.<br>\r\n          We know all there is about being in a touring band, tour production, concerts, festivals and logistics and we are creating a hub where everyone can meet, create deals and share experiences.<br>\r\n          Our vision is to create a marketplace to find the best and cheapest deals when it comes to concerts and touring.</strong>\r\n\t\t\t </p>\r\n        <ul>\r\n          <li><div class=\"sg-icon icon-addgear-guitar sg-darkgray\"></div><div>You as a musician have the opportunity to register and rent out your personal gear, or even rent gear that you are in need of from other musicians.</div></li>\r\n          <li><div class=\"sg-icon icon-tabbar-technicians sg-darkgray\"></div><div>Technicians have for the first time the opportunity to be payed upfront and online via their profiles and directly into their bank accounts. As a FOH engineer, tech, tour manager, production manager, merchandiser, stage-hands, etc., you have the possibility to create and showcase your profile to potential future employees.</div></li>\r\n          <li><div class=\"sg-icon icon-tabbar-vans sg-darkgray\"></div><div>Any van owner or company specialized in offering touring vehicles is now able to connect with any type of band without having to go through the hassle of word-of-mouth or spending large amounts of cash on marketing. Touring artists can now find the right type of transportation in order to lower productions costs.</div></li>\r\n          <li><div class=\"sg-icon icon-addgear-studio sg-darkgray\"></div><div>If you are in an up-and-coming band you have the opportunity to work with a high profile sound-engineer that has a great amount of touring experience under his/hers belt. Through personalized profiles, all users can add and manage their instrument rentals, bus/van orders, hire and connect with the right type of personnel.</div></li>\r\n        </ul>\r\n        <p>\r\n          In other words Sharingear is the ultimate community marketplace for touring musicians, managements, booking agencies, promoters and production companies.<br>\r\n          Its what the music industry has been in need of for years - a centralized platform with transparency and high quality service to enhance the live music experience.\r\n        </p>\r\n        <p>\r\n          <strong class=\"sg-darkgray\">Sharingear is build by musicians for musicians!</strong>\r\n        </p>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"row sg-white-bg\">\r\n      <div class=\"col-sm-offset-1 col-sm-10\">\r\n        <h3 class=\"sg-h3 sg-blue\">Our offices</h3>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"row\">\r\n      <div class=\"col-sm-offset-1 col-sm-10\">\r\n        <p>\r\n          We are located in the heart of Copenhagen, and our door is always open, therefore you are more than\r\n\t\t\t\t  welcome to drop by for a hot cop of coffee. We also love cake, and wouldnt mind if you are thinking of\r\n\t\t\t\t  bringing some with you.\r\n        </p>\r\n\t\t  </div>\r\n    </div>\r\n    \r\n    <div class=\"row\">\r\n\t\t  <div class=\"col-sm-offset-1 col-sm-10\">\r\n        <p>\r\n          Sharingear IVS<br>\r\n\t\t\t\t  Danneskiold-Samsøes Allé 41, 1,<br>\r\n\t\t\t\t  1434 Copenhagen K,<br>\r\n\t\t\t\t  Denmark<br><br>\r\n\t\t\t\t  E-mail:<a href=\"mailto:support@sharingear.com?Subject=Sent%20from%20Sharingear\" target=\"_top\">support@sharingear.com</a><br>\r\n\t\t\t\t  Phone number: +4540436536<br><br>\r\n\t\t\t\t  VAT# DK35845186\r\n        </p>\r\n      </div>\r\n    </div>\r\n    \r\n    <div class=\"row\">\r\n\t\t  <div class=\"col-sm-offset-1 col-sm-10\">\r\n        <div class=\"map\" id=\"aboutus-map\"></div>\r\n\t\t  </div>\r\n    </div>\r\n    \r\n    <div class=\"row sg-white-bg\">\r\n       <div class=\"col-sm-offset-1 col-sm-10\">\r\n         <h1 class=\"sg-h1 sg-blue\">Credits</h1>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"row\">\r\n      <div class=\"col-sm-offset-1 col-sm-10\">\r\n      <p>All photography on this Site is provided by concert and touring photographer Fiaz Farelly (www.fiazfarrelly.com).</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <footer></footer>\r\n</div>";
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view sidebarpanel-container addgear\">\r\n\r\n  <div class=\"row sidebar-panel addgear-panel\" id=\"addgear-panel-type\">\r\n    <form id=\"addgear-form-type\" onsubmit=\"return false;\">\r\n      <div class=\"col-sm-3 sg-darkgray-bg\">\r\n        <div class=\"gearbuttonlist-container\"></div>\r\n      </div>\r\n      <div class=\"col-sm-9\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12 hint1 text-center\">\r\n            Please select the gear type.\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n          <div class=\"form-group hidden\" id=\"addgear-form-subtype-container\">\r\n            <div class=\"col-sm-3\">\r\n              <label for=\"addgear-form-subtype\">Subtype:</label>\r\n            </div>\r\n            <div class=\"col-sm-9\">\r\n              <select class=\"form-control\" id=\"addgear-form-subtype\">\r\n              </select>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n          <div class=\"form-group hidden\" id=\"addgear-form-brand-container\">\r\n            <div class=\"col-sm-3\">\r\n              <label for=\"addgear-form-brand\">Brand:</label>\r\n            </div>\r\n            <div class=\"col-sm-9\">\r\n              <select class=\"form-control\" id=\"addgear-form-brand\">\r\n              </select>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"hidden\" id=\"addgear-form-geardetails-container\">\r\n          <div class=\"row\">\r\n            <div class=\"form-group\">\r\n              <div class=\"col-sm-3\">\r\n                <label for=\"addgear-form-model\">Model:</label>\r\n              </div>\r\n              <div class=\"col-sm-9\">\r\n                <input type=\"text\" id=\"addgear-form-model\" class=\"form-control\">\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"form-group\">\r\n              <div class=\"col-sm-3\">\r\n                <label for=\"addgear-form-description\">Description:</label>\r\n              </div>\r\n              <div class=\"col-sm-9\">\r\n                <textarea class=\"form-control\" id=\"addgear-form-description\"></textarea>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"form-group\">\r\n              <div class=\"col-sm-3\">\r\n                <label for=\"addgear-form-accessories\">Accessories:</label>\r\n              </div>\r\n              <div class=\"col-sm-9\">\r\n                <div id=\"addgear-accessories-container\"></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </div>\r\n\r\n  <div class=\"row addgear-panel hidden\" id=\"addgear-panel-photos\">\r\n  <div class=\"col-sm-12 full-height\">\r\n    <div class=\"row full-height\">\r\n      <div class=\"col-sm-3 full-height sg-darkgray-bg\">\r\n        <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/important.png\"/></div>\r\n              <div class=\"row text-center submerchant-sidebar-text\">\r\n                <div class=\"col-sm-12\">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>\r\n              </div>  \r\n        </div>\r\n      </div>\r\n      <div class=\"col-sm-9 full-height\">\r\n        \r\n        <form id=\"dashboard-addgearphotos-form\" onsubmit=\"return false;\">\r\n          <div class=\"col-sm-12\">\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12 addphotos-center\">\r\n                <div class=\"form-group\">\r\n                  <div class=\"row\"><img src=\"images/add-photos.png\"/></div>\r\n                  <div class=\"row\"><label class=\"sg-gray-headline\" for=\"dashboard-addgearphotos-form-imageupload\">Add a photo or two!</label></div>\r\n                  <div class=\"row\">\r\n                    <div class=\"addphotos-upload sg-btn-square sg-blue-bg\">\r\n                      <span>Add Photos</span>\r\n                      <input type=\"file\" id=\"dashboard-addgearphotos-form-imageupload\" name=\"gearpic\">  \r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12\">\r\n                <div class=\"thumb-list-container\">\r\n                  <ul>\r\n                  </ul>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </form>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n    \r\n  </div>\r\n\r\n  <div class=\"row addgear-panel hidden\" id=\"addgear-panel-pricelocation\">\r\n    <div class=\"col-sm-12 full-height\">\r\n    <div class=\"row full-height\">\r\n      <div class=\"col-sm-3 full-height sg-darkgray-bg\">\r\n      \r\n        <div class=\"vertical-align\">\r\n          <div class=\"row text-center\"><img src=\"images/light_bulb.png\"/></div>\r\n            <div class=\"row text-center submerchant-sidebar-text\">\r\n              <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of gear we recommend the following prices.</div>\r\n            <div class=\"row\">\r\n              <div class=\"col-xs-6 text-right\">Daily:</div>\r\n              <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_a-suggestion\"></span> {{currency}}</div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-xs-6 text-right\">Weekly:</div>\r\n              <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_b-suggestion\"></span> {{currency}}</div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-xs-6 text-right\">Monthly:</div>\r\n              <div class=\"col-xs-6 text-left\"><span id=\"addgear-price_c-suggestion\"></span> {{currency}}</div>\r\n            </div>\r\n            </div>    \r\n        </div>\r\n      </div>\r\n      \r\n      <div class=\"col-sm-9 full-height\">\r\n        <form id=\"dashboard-addgearprice-form\" onsubmit=\"return false;\">\r\n          <div class=\"col-sm-12\">\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-6 form-left\">\r\n                <div class=\"form-group\">\r\n                  <label for=\"price_a\">Daily rental price ({{currency}}):</label>\r\n                  <div class=\"form-control-price\"><input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\"></div>\r\n                  <label for=\"price_b\">Weekly rental price ({{currency}}):</label>\r\n                  <div class=\"form-control-price\"><input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\"></div>\r\n                  <label for=\"price_c\">Monthly rental price ({{currency}}):</label>\r\n                  <div class=\"form-control-price\"><input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\"></div>\r\n                </div>\r\n              </div>\r\n\r\n              <div class=\"col-sm-6 form-right\">\r\n                <div class=\"form-group\">\r\n                  <label for=\"dashboard-addgearprice-address\">Street</label>\r\n                  <input type=\"text\" name=\"address\" id=\"dashboard-addgearprice-address\" class=\"form-control\">\r\n                  <label for=\"dashboard-addgearprice-postalcode\">Postal code</label>\r\n                  <input type=\"text\" name=\"postalcode\" id=\"dashboard-addgearprice-postalcode\" class=\"form-control\">\r\n                  <label for=\"dashboard-addgearprice-city\">City</label>\r\n                  <input type=\"text\" name=\"city\" id=\"dashboard-addgearprice-city\" class=\"form-control\">\r\n                  <!--<label for=\"dashboard-addgearprice-region\">Region</label>\r\n                  <input type=\"text\" name=\"region\" id=\"dashboard-addgearprice-region\" class=\"form-control\">-->\r\n                  <label for=\"dashboard-addgearprice-country\">Country</label>\r\n                  <select name=\"country\" id=\"dashboard-addgearprice-country\" class=\"form-control\">\r\n                    <option value=\"\">Select country</option>\r\n                  </select>\r\n                </div>\r\n              </div>\r\n            </div>\r\n\r\n          </div>\r\n        </form>\r\n      </div>\r\n    </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row addgear-panel hidden\" id=\"addgear-panel-availability\">\r\n    \r\n    <div class=\"col-sm-12 submerchant-height\">\r\n      <div class=\"row submerchant-height\">\r\n      <div class=\"col-sm-3 sg-darkgray-bg submerchant-height\"  id=\"addgear-darkgray-left\">\r\n        <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\r\n              <div class=\"row text-center submerchant-sidebar-text\">\r\n                <div class=\"col-sm-12\">In order to put your gear up for rent we need some extra information about you so that we can pay you.</div>\r\n              </div>  \r\n        </div>\r\n      </div>\r\n      \r\n      <div class=\"col-sm-3 sg-darkgray-bg submerchant-height hidden\"  id=\"addgear-darkgray-left-calendar\">\r\n        <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\r\n              <div class=\"row text-center submerchant-sidebar-text\">\r\n                <div class=\"col-sm-12\">In order to put your gear up for rent, please select the period in which it will be available.</div>\r\n              </div>  \r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 submerchant-height\" id=\"addgear-availability-calendar\"></div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row addgear-panel hidden\" id=\"addgear-panel-final\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12\"><h3 class=\"text-center\">Gear added!</h3></div>\r\n      </div>\r\n      <div class=\"row actions\">\r\n        <div class=\"col-sm-6\"><button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View gear profile</button></div>\r\n        <div class=\"col-sm-6 right\"><button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more gear</button></div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row footer bs-reset\">\r\n    <div class=\"col-sm-3\">\r\n    </div>\r\n    <div class=\"col-sm-9 bs-reset\">\r\n      <div class=\"row sg-modal-header\">\r\n        <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\r\n          <button class=\"sg-btn-square sg-inherit-bg sg-blue cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\r\n        </div>\r\n        <div class=\"col-xs-8\"><h2 class=\"text-center\">Add gear</h2></div>\r\n        <div class=\"col-xs-2 col-sm-2 text-center\">\r\n          <button class=\"sg-btn-square sg-white-bg sg-blue next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</div>\r\n";
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view sidebarpanel-container addtechprofile\">\r\n\r\n  <div class=\"row addtechprofile-panel\" id=\"addtechprofile-panel-type\">\r\n    <form id=\"addtechprofile-form-type\" onsubmit=\"return false;\">\r\n      <div class=\"col-sm-3 sg-darkgray-bg\">\r\n        <div class=\"addtechprofilebuttonlist-container\"></div>\r\n      </div>\r\n      <div class=\"col-sm-9\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12 hint1 text-center\">\r\n            Please select the technician type.\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n          <div class=\"form-group\">\r\n            <div class=\"col-sm-3\">\r\n              <label for=\"addgtechprofile-form-description\">About:</label>\r\n            </div>\r\n            <div class=\"col-sm-9\">\r\n              <textarea class=\"form-control\" id=\"addtechprofile-form-about\"></textarea>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n          <div class=\"form-group\">\r\n            <div class=\"col-sm-3\">\r\n              <label>Currently working for:</label>\r\n            </div>\r\n            <div class=\"col-sm-9\">\r\n              <textarea class=\"form-control\" id=\"addtechprofile-form-currently\"></textarea>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n          <div class=\"form-group\">\r\n            <div class=\"col-sm-3\">\r\n              <label>Genres interested in:</label>\r\n            </div>\r\n            <div class=\"col-sm-9\">\r\n              <textarea class=\"form-control\" id=\"addtechprofile-form-genres\"></textarea>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        \r\n      </div>\r\n    </form>\r\n  </div>\r\n\r\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-experience\">\r\n    <form id=\"addtechprofile-experience-form\" onsubmit=\"return false;\">\r\n      <div class=\"col-sm-12\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-6 form-group\">\r\n            <label for=\"addtechprofile-level\">Experience:</label>\r\n            <div>\r\n              <select id=\"addtechprofile-experience\" class=\"form-control inline-select-small\">\r\n                <option value=\"5\">D</option>\r\n                <option value=\"4\">C</option>\r\n                <option value=\"3\">B</option>\r\n                <option value=\"2\">A</option>\r\n                <option value=\"1\">A+</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n          <div class=\"col-sm-6 form-group\">\r\n            <label for=\"addtechprofile-startyear\">Years of experience:</label>\r\n            <div>\r\n              <select id=\"addtechprofile-startyear\" class=\"form-control inline-select-small\"></select> - <select id=\"addtechprofile-endyear\" class=\"form-control inline-select-small\"></select>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-6 form-group\">\r\n            <label>Bands &amp; artists toured with:</label>\r\n            <textarea id=\"addtechprofile-tours\" class=\"form-control\"></textarea>\r\n          </div>\r\n          <div class=\"col-sm-6 form-group\">\r\n            <label>Companies, venues and festivals worked for:</label>\r\n            <textarea id=\"addtechprofile-companies\" class=\"form-control\"></textarea>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-6 form-group\">\r\n            <label>Bands worked for:</label>\r\n            <textarea id=\"addtechprofile-bands\" class=\"form-control\"></textarea>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </div>\r\n\r\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-pricelocation\">\r\n  <div class=\"col-sm-12 full-height\">\r\n    <div class=\"row full-height\">\r\n    <div class=\"col-sm-3 full-height sg-darkgray-bg\">\r\n        <div class=\"vertical-align\">\r\n          <div class=\"row text-center\"><img src=\"images/light_bulb.png\"/></div>\r\n            <div class=\"row text-center submerchant-sidebar-text\">\r\n              <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of technician we recommend the following prices.</div>\r\n            <div class=\"row\">\r\n              <div class=\"col-xs-6 text-right\">Daily:</div>\r\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_a-suggestion\"></span> {{currency}}</div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-xs-6 text-right\">Weekly:</div>\r\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_b-suggestion\"></span> {{currency}}</div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-xs-6 text-right\">Monthly:</div>\r\n              <div class=\"col-xs-6 text-left\"><span id=\"addtechprofile-price_c-suggestion\"></span> {{currency}}</div>\r\n            </div>\r\n            </div>    \r\n        </div>\r\n    </div>\r\n    <div class=\"col-sm-9 full-height\">\r\n      \r\n         <form id=\"dashboard-addtechprofileprice-form\" onsubmit=\"return false;\">\r\n      <div class=\"col-sm-12\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-6 form-left\">\r\n            <div class=\"form-group\">\r\n              <label for=\"price_a\">Daily hire price ({{currency}}):</label>\r\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\"></div>\r\n              <label for=\"price_b\">Weekly hire price ({{currency}}):</label>\r\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\"></div>\r\n              <label for=\"price_c\">Monthly hire price ({{currency}}):</label>\r\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\"></div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"col-sm-6 form-right\">\r\n            <div class=\"form-group\">\r\n              <label for=\"dashboard-addtechprofileprice-address\">Street</label>\r\n              <input type=\"text\" name=\"address\" id=\"dashboard-addtechprofileprice-address\" class=\"form-control\">\r\n              <label for=\"dashboard-addtechprofileprice-postalcode\">Postal code</label>\r\n              <input type=\"text\" name=\"postalcode\" id=\"dashboard-addtechprofileprice-postalcode\" class=\"form-control\">\r\n              <label for=\"dashboard-addtechprofileprice-city\">City</label>\r\n              <input type=\"text\" name=\"city\" id=\"dashboard-addtechprofileprice-city\" class=\"form-control\">\r\n              <label for=\"dashboard-addtechprofileprice-country\">Country</label>\r\n              <select name=\"country\" id=\"dashboard-addtechprofileprice-country\" class=\"form-control\">\r\n                <option value=\"\">Select country</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n    </form>\r\n\r\n    </div>\r\n    </div>\r\n  </div>\r\n  </div>\r\n\r\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-availability\">\r\n    <div class=\"col-sm-12 submerchant-height\">\r\n      <div class=\"row submerchant-height\">\r\n\r\n       <div id=\"addtechprofile-darkgray-left\" class=\"col-sm-3 sg-darkgray-bg submerchant-height\">\r\n        <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\r\n              <div class=\"row text-center submerchant-sidebar-text\">\r\n                <div class=\"col-sm-12\">In order to finish creating your technician profile and put it for rent, we need some extra information about you so that we can pay you.</div>\r\n              </div>  \r\n        </div>\r\n      </div>\r\n\r\n    <div id=\"addtechprofile-darkgray-left-calendar\" class=\"col-sm-3 sg-darkgray-bg submerchant-height hidden\">\r\n        <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\r\n              <div class=\"row text-center submerchant-sidebar-text\">\r\n                <div class=\"col-sm-12\">In order to finish creating your technician profile and put it for rent, please select the period in which you will be available.</div>\r\n              </div>  \r\n        </div>\r\n      </div>\r\n\r\n\r\n      <div class=\"col-sm-9 submerchant-height\" id=\"addtechprofile-availability-calendar\"></div>\r\n      \r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row addtechprofile-panel hidden\" id=\"addtechprofile-panel-final\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12\"><h3 class=\"text-center\">Technician profile added!</h3></div>\r\n      </div>\r\n      <div class=\"row actions\">\r\n        <div class=\"col-sm-6\"><button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View technician profile</button></div>\r\n        <div class=\"col-sm-6 right\"><button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more technician profiles</button></div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row footer bs-reset\">\r\n    <div class=\"col-sm-3\">\r\n    </div>\r\n    <div class=\"col-sm-9 bs-reset\">\r\n      <div class=\"row sg-modal-header\">\r\n        <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\r\n          <button class=\"sg-btn-square sg-inherit-bg sg-blue cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\r\n        </div>\r\n        <div class=\"col-xs-8\"><h2 class=\"text-center\">Add technician profile</h2></div>\r\n        <div class=\"col-xs-2 col-sm-2 text-center\">\r\n          <button class=\"sg-btn-square sg-white-bg sg-blue next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</div>\r\n";
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view sidebarpanel-container addvan\">\r\n\r\n  <div class=\"row addvan-panel\" id=\"addvan-panel-type\">\r\n    <form id=\"addvan-form-type\" onsubmit=\"return false;\">\r\n      <div class=\"col-sm-3 sg-darkgray-bg\">\r\n        <div class=\"vanbuttonlist-container\"></div>\r\n      </div>\r\n      <div class=\"col-sm-9\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12 hint1 text-center\">\r\n            Please select the van or bus type.\r\n          </div>\r\n        </div>\r\n\r\n        \r\n        <div class=\"row\">\r\n          <div class=\"form-group\">\r\n            <div class=\"col-sm-3\">\r\n              <label for=\"addvan-form-model\">Model:</label>\r\n            </div>\r\n            <div class=\"col-sm-9\">\r\n              <input type=\"text\" id=\"addvan-form-model\" class=\"form-control\">\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"form-group\">\r\n            <div class=\"col-sm-3\">\r\n              <label for=\"addgvan-form-description\">Description:</label>\r\n            </div>\r\n            <div class=\"col-sm-9\">\r\n              <textarea class=\"form-control\" id=\"addvan-form-description\"></textarea>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\" id=\"addvan-accessories\">\r\n          <div class=\"form-group\">\r\n            <div class=\"col-sm-3\">\r\n              <label for=\"addvan-form-accessories\">Accessories:</label>\r\n            </div>\r\n            <div class=\"col-sm-9\">\r\n              <div id=\"addvan-accessories-container\"></div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </div>\r\n\r\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-photos\">\r\n  <div class=\"col-sm-12 full-height\">\r\n    <div class=\"row full-height\">\r\n      <div class=\"col-sm-3 full-height sg-darkgray-bg\">\r\n        <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/important.png\"/></div>\r\n            <div class=\"row text-center submerchant-sidebar-text\">\r\n              <div class=\"col-sm-12\">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>\r\n            </div>  \r\n        </div>\r\n      </div>\r\n      <div class=\"col-sm-9 full-height\">\r\n        \r\n      <form id=\"dashboard-addvanphotos-form\" onsubmit=\"return false;\">\r\n        <div class=\"col-sm-12\">\r\n          <div class=\"row\">\r\n            <div class=\"col-sm-12 addphotos-center\">\r\n              <div class=\"form-group\">\r\n                  <div class=\"row\"><img src=\"images/add-photos.png\"/></div>\r\n                  <div class=\"row\"><label class=\"sg-gray-headline\" for=\"dashboard-addvanphotos-form-imageupload\">Add a photo or two!</label></div>\r\n                  <div class=\"row\">\r\n                    <div class=\"addphotos-upload sg-btn-square sg-blue-bg\">\r\n                      <span>Add Photos</span>  \r\n                      <input type=\"file\" id=\"dashboard-addvanphotos-form-imageupload\" name=\"vanpic\">\r\n                    </div>\r\n                  </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-sm-12\">\r\n              <div class=\"thumb-list-container\">\r\n                <ul>\r\n                </ul>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </form>\r\n  \r\n      </div>\r\n    </div>\r\n  </div>\r\n  </div>\r\n\r\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-pricelocation\">\r\n    <div class=\"col-sm-12 full-height\">\r\n      <div class=\"row full-height\">\r\n        <div class=\"col-sm-3 full-height sg-darkgray-bg\">\r\n          \r\n          <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/light_bulb.png\"/></div>\r\n            <div class=\"row text-center submerchant-sidebar-text\">\r\n              <div class=\"col-sm-12\" style=\"margin-bottom: 15px;\">For this type of vehicle we recommend the following prices.</div>\r\n              <div class=\"row\">\r\n                <div class=\"col-xs-6 text-right\">Daily:</div>\r\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_a-suggestion\"></span> {{currency}}</div>\r\n              </div>\r\n              <div class=\"row\">\r\n                <div class=\"col-xs-6 text-right\">Weekly:</div>\r\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_b-suggestion\"></span> {{currency}}</div>\r\n              </div>\r\n              <div class=\"row\">\r\n                <div class=\"col-xs-6 text-right\">Monthly:</div>\r\n                <div class=\"col-xs-6 text-left\"><span id=\"addvan-price_c-suggestion\"></span> {{currency}}</div>\r\n              </div>\r\n            </div>    \r\n          </div>\r\n        </div>\r\n        <div class=\"col-sm-9 full-height\">\r\n          <form id=\"dashboard-addvanprice-form\" onsubmit=\"return false;\">\r\n      <div class=\"col-sm-12\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-6 form-left\">\r\n            <div class=\"form-group\">\r\n              <label for=\"price_a\">Daily rental price ({{currency}}):</label>\r\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_a\" id=\"price_a\" class=\"form-control price\"></div>\r\n              <label for=\"price_b\">Weekly rental price ({{currency}}):</label>\r\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_b\" id=\"price_b\" class=\"form-control price\"></div>\r\n              <label for=\"price_c\">Monthly rental price ({{currency}}):</label>\r\n              <div class=\"form-control-price\"><input type=\"text\" name=\"price_c\" id=\"price_c\" class=\"form-control price\"></div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"col-sm-6 form-right\">\r\n            <div class=\"form-group\">\r\n              <label for=\"dashboard-addvanprice-address\">Street</label>\r\n              <input type=\"text\" name=\"address\" id=\"dashboard-addvanprice-address\" class=\"form-control\">\r\n              <label for=\"dashboard-addvanprice-postalcode\">Postal code</label>\r\n              <input type=\"text\" name=\"postalcode\" id=\"dashboard-addvanprice-postalcode\" class=\"form-control\">\r\n              <label for=\"dashboard-addvanprice-city\">City</label>\r\n              <input type=\"text\" name=\"city\" id=\"dashboard-addvanprice-city\" class=\"form-control\">\r\n              <!--<label for=\"dashboard-addvanprice-region\">Region</label>\r\n              <input type=\"text\" name=\"region\" id=\"dashboard-addvanprice-region\" class=\"form-control\">-->\r\n              <label for=\"dashboard-addvanprice-country\">Country</label>\r\n              <select name=\"country\" id=\"dashboard-addvanprice-country\" class=\"form-control\">\r\n                <option value=\"\">Select country</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n    </form>\r\n\r\n        </div>\r\n      </div>\r\n    </div>  \r\n  </div>\r\n\r\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-availability\">\r\n    <div class=\"col-sm-12 submerchant-height\">\r\n    <div class=\"row submerchant-height\">\r\n      \r\n       <div id=\"addvan-darkgray-left\" class=\"col-sm-3 sg-darkgray-bg submerchant-height\">\r\n        <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\r\n              <div class=\"row text-center submerchant-sidebar-text\">\r\n                <div class=\"col-sm-12\">In order to put your van up for rent we need some extra information about you so that we can pay you.</div>\r\n              </div>  \r\n        </div>\r\n      </div>\r\n\r\n      <div id=\"addvan-darkgray-left-calendar\" class=\"col-sm-3 sg-darkgray-bg submerchant-height hidden\">\r\n        <div class=\"vertical-align\">\r\n            <div class=\"row text-center\"><img src=\"images/submerchant.png\"/></div>\r\n              <div class=\"row text-center submerchant-sidebar-text\">\r\n                <div class=\"col-sm-12\">In order to put your van up for rent, please select the period in which it will be available.</div>\r\n              </div>  \r\n        </div>\r\n      </div>\r\n\r\n    <div class=\"col-sm-9 submerchant-height\" id=\"addvan-availability-calendar\"></div>\r\n\r\n    </div>      \r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row addvan-panel hidden\" id=\"addvan-panel-final\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12\"><h3 class=\"text-center\">Vehicle added!</h3></div>\r\n      </div>\r\n      <div class=\"row actions\">\r\n        <div class=\"col-sm-6\"><button class=\"sg-btn-square sg-blue-bg sg-white profile-btn\">View vehicle profile</button></div>\r\n        <div class=\"col-sm-6 right\"><button class=\"sg-btn-square sg-blue-bg sg-white addmore-btn\">Add more vans or busses</button></div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row footer bs-reset\">\r\n    <div class=\"col-sm-3\">\r\n    </div>\r\n    <div class=\"col-sm-9 bs-reset\">\r\n      <div class=\"row sg-modal-header\">\r\n        <div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center\">\r\n          <button class=\"sg-btn-square sg-inherit-bg sg-blue cancel-btn\">Cancel <i class=\"fa fa-times-circle\"></i></button>\r\n        </div>\r\n        <div class=\"col-xs-8\"><h2 class=\"text-center\">Add vans &amp; busses</h2></div>\r\n        <div class=\"col-xs-2 col-sm-2 text-center\">\r\n          <button class=\"sg-btn-square sg-white-bg sg-blue next-btn\">Next <i class=\"fa fa-arrow-circle-right\"></i></button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</div>\r\n";
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid availabilitycalendar\">\r\n\t<div class=\"row calendar-navigation\">\r\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray prev-btn\"><i class=\"fa fa-angle-left\"></i></button></div>\r\n\t\t<div class=\"col-xs-8 text-center\"><strong class=\"currentmonth\"></strong></div>\r\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray next-btn\"><i class=\"fa fa-angle-right\"></i></button></div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-xs-6 col-sm-3\">\r\n\t\t\t<div class=\"sg-darkergray-bg availability-legend-box\"></div>\r\n\t\t\t<div class=\"text-center availability-text-box\">Available</div>\r\n\t\t</div>\r\n\t\t<div class=\"col-xs-6 col-sm-4\">\r\n\t\t\t<div class=\"availability-legend-box\"></div>\r\n\t\t\t<div class=\"text-center sg-gray availability-text-box\">Not available</div>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"calendar\"></div>\r\n\t</div>\r\n\t<div class=\"row always-never\">\r\n\t\t<div class=\"col-sm-offset-2 col-sm-4\">\r\n\t\t\t<button class=\"sg-btn-square sg-green-bg sg-white always-btn\">Always available</button>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-4\">\r\n\t\t\t<button class=\"sg-btn-square sg-red-bg sg-white never-btn\">Never available</button>\r\n\t\t</div>\r\n\t</div>\r\n</div>";
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view booking\">\r\n  <div class=\"row sg-blue-bg sg-white sg-navbar\">\r\n    <div class=\"col-xs-2\"><div class=\"sg-icon icon-sg-logo\"></div></div>\r\n      <div class=\"col-xs-8 text-center\">Booking</div>\r\n    <div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"booking-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-12 text-center sg-darkergray gear\">\r\n      <h3 class=\"sg-h3\">{{item_name}}</h3>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-6 from-to\">\r\n      <div class=\"text-center\"><h5 class=\"sg-h5\">Rental period</h5></div>\r\n      <div class=\"sg-lightgray-bg\"><strong>From:</strong> {{start_time}}</div>\r\n      <div class=\"sg-lightgray-bg\"><strong>To:</strong> {{end_time}}</div>\r\n    </div>\r\n    <div class=\"col-sm-6\">\r\n      <div class=\"text-center\"><h5 class=\"sg-h5\">{{peer_role}}</h5></div>\r\n      <div class=\"profile-pic-container sg-lightgray-bg text-center\">\r\n        <div class=\"profile-pic\"></div>\r\n      </div>\r\n      <div class=\"name sg-darkergray text-center\">{{name}} {{surname}}</div>\r\n      <div class=\"tagline sg-gray text-center\">{{tagline}}</div>\r\n      <div class=\"email text-center\"><a href=\"mailto:{{email}}\">{{email}}</a></div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"sg-darkergray-bg sg-white total text-center\">TOTAL: {{total}} <span class=\"sg-super\">{{currency}}</span></div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row cancelled-owner hidden\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"sg-red text-center\">You have cancelled this booking request.</div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row cancelled-renter hidden\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"sg-red text-center\">Your booking request was cancelled by the owner.</div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row owner-returned hidden\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"text-center\">Waiting for the renter to end this booking.</div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row renter-returned hidden\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"text-center\">Waiting for the owner to end this booking.</div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row ended hidden\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"text-center\">This booking has ended successfully.</div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row error hidden\">\r\n    <div class=\"col-sm-12\">\r\n      <div class=\"sg-red text-center\">Something went wrong with this booking request. Please try to book the instrument again or contact support at <a href=\"mailto:support@sharingear\">support@sharingear.com</a>.</div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row sg-footerbar\">\r\n    <div class=\"accept-deny hidden\">\r\n      <div class=\"col-xs-6 bs-reset\">\r\n        <button class=\"sg-btn-square sg-red-bg sg-white\" id=\"booking-deny-btn\">deny</button>\r\n      </div>\r\n      <div class=\"col-xs-6 bs-reset\">\r\n        <button class=\"sg-btn-square sg-green-bg sg-white\" id=\"booking-confirm-btn\">confirm</button>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"sg-close hidden\">\r\n      <div class=\"col-sm-12 bs-reset\">\r\n        <button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"booking-close-btn\">close</button>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"end hidden\">\r\n      <div class=\"col-sm-12 bs-reset\">\r\n        <button class=\"sg-btn-square sg-green-bg sg-white\" id=\"booking-end-btn\">end booking</button>\r\n      </div>\r\n    </div>\r\n\r\n  </div>\r\n</div>\r\n";
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view bookingrequest\">\r\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\r\n\t\t<div class=\"col-xs-2\"><div class=\"sg-icon icon-sg-logo\"></div></div>\r\n\t\t<div class=\"col-xs-8\">Booking step 1</div>\r\n\t\t<div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"bookingrequest-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 text-center sg-darkergray\">\r\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-xs-8\">\r\n\t\t\t<table class=\"table table-bordered\">\r\n\t\t\t\t<tbody>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>Days (<span class=\"price_a\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\r\n\t\t\t\t\t\t<td id=\"bookingrequest-days\">0</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>Weeks (<span class=\"price_b\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\r\n\t\t\t\t\t\t<td id=\"bookingrequest-weeks\">0</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>Months (<span class=\"price_c\"></span> <span class=\"sg-super\">{{currency}}</span>)</td>\r\n\t\t\t\t\t\t<td id=\"bookingrequest-months\">0</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</tbody>\r\n\t\t\t</table>\r\n\t\t</div>\r\n\t\t<div class=\"col-xs-4 bs-reset sg-darkergray-bg total\">\r\n\t\t\t<div class=\"text-center sg-white\">Total</div>\r\n\t\t\t<div class=\"text-center sg-white\"><span id=\"bookingrequest-price\">0</span> <span class=\"sg-super\">{{currency}}</span></div>\r\n\t\t</div>\r\n\t</div>\r\n\t\r\n\t<div class=\"row\">\r\n\t\t<div class=\"pickupdeliverycalendar-container\"></div>\r\n\t</div>\r\n\r\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"bookingrequest-next\">next <i class=\"fa fa-arrow-circle-o-right\"></i></button>\r\n\t\t</div>\r\n\t</div>\r\n\r\n</div>\r\n";
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid closedbeta-view\">\r\n\t<div id=\"closedbeta-intro\">\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-md-12\">\r\n\t\t\t\t<h1 style=\"color:#00aeff;text-align: center\">Welcome to Sharingear!</h1>\r\n                <p>This is a closed Beta version and you are one of the first to test it! Since Sharingear is in it's first stages of life you might be experiencing some bugs or errors - don't despair because our team is working 24/7 to create the best service available. If you experience any issues or have some feedback or feature requests, shoot an email to the technical guru by using this email <a href=\"\" class=\"ctomail\"></a>.</p>\r\n                <p>If you want to get access, please send us an email at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a></p>\r\n                <p>We hope you enjoy the Sharingear website, and looking forward to be hearing from you,<br>The Sharingear Team</p>\r\n            </div>\r\n\t\t</div>\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-md-12\">\r\n\t\t\t\t<button class=\"btn editgear-save-button btn-primary btn-default\" id=\"closedbeta-login-btn\">Login</button>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\t<div id=\"closedbeta-noaccess\" class=\"hidden\">\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-md-12\">\r\n\t\t\t\t<p>\r\n                    Sorry, but we haven't arrived to you on the waiting list yet. You will receive an email as soon as we do. If you believe there is an error please contact our CTO <a href=\"\" class=\"ctomail\"></a>.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-md-12\">\r\n\t\t\t\t<a href=\"http://www.sharingear.com\">Return to sharingear.com</a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n</div>";
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div>Contact us dummy.</div>";
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"view aboutus\">\r\n\t<div class=\"container-fluid sg-lightgray-bg\">\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h1 class=\"sg-h1 sg-blue\">Sharingear copyright policy</h1>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tSharingear respects and expects its users to respect the intellectual property of others.\r\n\t\t\t\t\tAs setforth in detail in our Terms of Use, each Sharingear user is responsible for ensuring that the materials they upload to <a href=\"http://www.sharingear.com\">www.sharingear.com</a> (the “Website”) or via a Sharingear mobile application, if any, (the “Application”) do not infringe any third party copyright or other intellectual property right.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tSharingear will promptly remove or disable materials from the Site and Application in accordance with the Electronic Commerce Directive (EU) Copyright Directive 87/54/EEC(1) and Directive 96/9/EC(2) if notified in accordance with the requirements below that the materials infringe a third party's copyright.\r\n\t\t\t\t\tWhether or not we disable access to or remove materials, Sharingear may attempt to forward the written notification, including the complainant’s contact information, to the Sharingear user who posted the content and/or take other reasonable steps to notify the Sharingear user that Sharingear has received notice of an alleged violation of intellectual property rights or other content violation.\r\n\t\t\t\t\tSharingear may also, in its discretion, terminate the accounts of repeat copyright infringers or of those who post inaccurate or unlawful content.\r\n\t\t\t\t\tOur policies and procedures for removing or disabling access to content alleged to be infringing, inaccurate, or otherwise unlawful are at our sole discretion.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tPlease note that any notice or counter-notice you submit must be truthful and submitted under <u>penalty of perjury</u>.\r\n\t\t\t\t\tA false notice or counter-notice may give rise to personal liability.\r\n\t\t\t\t\tYou may therefore want to seek the advice of legal counsel before submitting a notice or a counter-notice.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Claims Regarding Copyright Infringement</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tIf you believe in good faith that your copyright has been infringed, please provide us with a written notice which contains:\r\n\t\t\t\t</p>\r\n\t\t\t\t<ol>\r\n\t\t\t\t\t<li>Your name, telephone number, address, and e-mail address (if any);</li>\r\n\t\t\t\t\t<li>A description of the copyrighted work that you claim has been infringed;</li>\r\n\t\t\t\t\t<li>A description of where on the Site the material that you claim is infringing may be found, sufficient for us to locate the material (e.g., the URL);</li>\r\n\t\t\t\t\t<li>A statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law;</li>\r\n\t\t\t\t\t<li>A statement by you, made under <u>penalty of perjury</u>, that the information in your notice is accurate and that you are the copyright owner or authorized to act on the copyright owner’s behalf; and</li>\r\n\t\t\t\t\t<li>Your electronic or physical signature.</li>\r\n\t\t\t\t</ol>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tPlease submit your notice to Sharingear as follows:<br>\r\n\t\t\t\t\tEmail: <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a><br>\r\n\t\t\t\t\tBy mail: Sharingear IVS, Danneskiold-Samsøes Allé 41, 1, 1434 Copenhagen K, Denmark\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Counter-Notice to Restore Removed Content</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tIf you believe that a notice of copyright infringement has been improperly submitted against you, you may submit a Counter-Notice, by providing Sharingear with a written notice which contains:\r\n\t\t\t\t</p>\r\n\t\t\t\t<ol>\r\n\t\t\t\t\t<li>Your name, telephone number, address, and e-mail address (if any);</li>\r\n\t\t\t\t\t<li>Identification of the material removed from the Site or to which access has been disabled;</li>\r\n\t\t\t\t\t<li>A statement under <u>penalty of perjury</u> that you have a good faith belief that removal or disablement of the material was a mistake or that the material was misidentified;</li>\r\n\t\t\t\t\t<li>A statement that you consent to the jurisdiction of the Federal District court (i) in the judicial district where your address is located if the address is in the United States, or (ii) if your address is located outside the United States, any judicial district in which Sharingear may be found and that you will accept service of process from the Complainant submitting the notice or his/her authorized agent; and</li>\r\n\t\t\t\t\t<li>Your physical or electronic signature;</li>\r\n\t\t\t\t</ol>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tPlease submit your counter-notice to Sharingear as follows:<br>\r\n\t\t\t\t\tEmail: <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a><br>\r\n\t\t\t\t\tBy mail: Sharingear IVS, Danneskiold-Samsøes Allé 41, 1, 1434 Copenhagen K, Denmark\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<footer></footer>\r\n</div>\r\n";
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"profile subview\">\r\n\t<div class=\"row dashboard-profile-row\">\r\n\t\t<div class=\"col-sm-3 dashboard-profile-pic-view sg-darkgray-bg\">\r\n\t\t\t<div class=\"row\">\r\n\t\t\t\t<div class=\"col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0\">\r\n\t\t\t\t\t<div class=\"dashboard-profile-pic\" id=\"dashboard-profile-pic\"></div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-4 col-xs-offset-4 col-sm-12 col-sm-offset-0 dashboard-profile-pic-upload\">\r\n\t\t\t\t\t<button class=\"btn btn-primary dashboard-profile-pic-upload-btn\">Upload photo</button>\r\n\t\t\t\t\t<div id=\"profileImageSuccessDiv\"></div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<input type=\"file\" name=\"profile-pic\" id=\"profile-pic\" style=\"visibility: hidden;\">\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"col-sm-9 dashboard-profile-form-view\">\r\n\t\t\t<form id=\"dashboard-profile-form\" class=\"form-horizontal\" onsubmit=\"return false;\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"name\" class=\"col-sm-3 dashboard-profile-form-label control-label\">First Name</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<input type=\"text\" name=\"name\" id=\"name\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"surname\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Last Name</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<input type=\"text\" name=\"surname\" id=\"surname\" class=\"form-control\">\r\n\t\t\t\t\t\t<p class=\"help-block\"><small>This is only shared after you have confirmed a booking with another Sharingear user.</small></p>\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"email\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Email Address</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<input type=\"text\" name=\"email\" id=\"email\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"dashboard-profile-birthdate-day\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Date of birth (private)</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<div class=\"birthday-select\">\r\n\t\t\t\t\t\t\t<select id=\"dashboard-profile-birthdate-date\" name=\"birthdate-day\"></select>/<select id=\"dashboard-profile-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"dashboard-profile-birthdate-year\" name=\"birthdate-year\"></select>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"dashboard-profile-address\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Address (private)</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"dashboard-profile-address\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"dashboard-profile-address\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Postal code (private)</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"dashboard-profile-postalcode\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"hometown\" class=\"col-sm-3 dashboard-profile-form-label control-label\">City</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<input type=\"text\" name=\"hometown\" id=\"hometown\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"dashboard-profile-country\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Country</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<select name=\"country\" id=\"dashboard-profile-country\" class=\"form-control\">\r\n\t\t\t\t\t\t\t<option value=\"\">Select your country</option>\r\n\t\t\t\t\t\t</select>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"dashboard-profile-phone\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Phone (private)</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<input type=\"text\" name=\"phone\" id=\"dashboard-profile-phone\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"dashboard-profile-nationalities\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Nationality</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<select name=\"nationality\" id=\"dashboard-profile-nationalities\" class=\"form-control\">\r\n\t\t\t\t\t\t\t<option value=\"\">Select your nationality</option>\r\n\t\t\t\t\t\t</select>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"bio\" class=\"col-sm-3 dashboard-profile-form-label control-label\">Describe Yourself</label>\r\n\t\t\t\t\t<div class=\"col-sm-8\">\r\n\t\t\t\t\t\t<textarea name=\"bio\" id=\"bio\" class=\"dashboard-profile-form-bio form-control\">{{bio}}</textarea>\r\n\t\t\t\t\t\t<button type=\"submit\" id=\"saveButton\" class=\"sg-btn sg-blue-bg sg-white sg-btn-save\">Save</button>\r\n\t\t\t\t\t\t<div id=\"saveSuccessDiv\"></div>\r\n\t\t\t\t\t\t<p class=\"help-block\"><small>Sharingear is built on relationships. Help others to get to know you.</small></p>\r\n\t\t\t\t\t\t<p class=\"help-block\"><small>Tell them about your achievements, and in what part of the industry you come from. If you are a musician, tell them about the tours you have done, your favourite instruments and how many records you have recorded.</small></p>\r\n\t\t\t\t\t\t<p class=\"help-block\"><small>If you are a technician, tell them about how many tours you have done, what bands have you worked with and what you would like to work more on.</small></p>\r\n\t\t\t\t\t\t<p class=\"help-block\"><small>If you have a van or a bus, tell them about which bands you have been on the road with, and what other tours or bands you would like to work with.</small></p>\r\n\t\t\t\t\t\t<p class=\"help-block\"><small>Tell them about you.</small></p>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\r\n\r\n\t\t\t</form>\r\n\t\t</div>\r\n\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"dashboard-settings subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\t<form id=\"dashboard-settings-form\" onsubmit=\"return false;\">\r\n\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t<label for=\"\">Set your timezone:</label>\r\n\t\t\t\t\t\t<select id=\"dashboard-settings-timezone\">\r\n\t\t\t\t\t\t</select>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t<div class=\"col-sm-3 col-sm-offset-9\">\r\n\t\t\t\t\t\t<button type=\"submit\" id=\"dashboard-settings-savebtn\" class=\"sg-btn sg-blue-bg sg-white sg-btn-save\">Save</button>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"row hidden\" id=\"dashboard-settings-savesuccess\">\r\n\t\t\t\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t\t\t\tSettings successfully saved.\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</form>\r\n\t\t</div>\r\n\t</div>\r\n</div>";
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourgear subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 no-gutter\">\r\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourgear-add-btn\">\r\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\r\n\t\t\t\t<div class=\"sg-btn-text\">Add gear</div>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row bs-reset\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourgear-gear-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourrentals subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-gear-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourreservations subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-gear-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourrentals subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-techprofile-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourreservations subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-techprofile-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourtechprofiles subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 no-gutter\">\r\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourtechprofiles-add-btn\">\r\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\r\n\t\t\t\t<div class=\"sg-btn-text\">Add technician profile</div>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row bs-reset\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourtechprofiles-techprofile-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourrentals subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourrentals-van-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourreservations subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourreservations-van-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"yourvans subview\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 no-gutter\">\r\n\t\t\t<button class=\"sg-btn-gray\" id=\"dashboard-yourvans-add-btn\">\r\n\t\t\t\t<div class=\"sg-iconbg-round-50 sg-action-blue-bg\"><div class=\"fa fa-plus\"></div></div>\r\n\t\t\t\t<div class=\"sg-btn-text\">Add vans &amp; busses</div>\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row bs-reset\">\r\n\t\t<div class=\"col-sm-12 sg-list-container\" id=\"yourvans-vans-block\"></div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"view dashboard container-fluid\">\r\n\t<div class=\"row\">\r\n\t\t<div id=\"dashboard-menu\" class=\"col-sm-3 dashboard-menu\">\r\n\t\t\t<div class=\"list-group\">\r\n\t\t\t\t<a href=\"#dashboard/profile\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-profile\"></div><div class=\"list-group-item-text\">Your profile</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourgear\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourgear\"></div><div class=\"list-group-item-text\">Your gear</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourtechprofiles\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourtechprofile\"></div><div class=\"list-group-item-text\">Your tech profiles</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourvans\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-yourvans\"></div><div class=\"list-group-item-text\">Your vans &amp; buses</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourgearrentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-gearrentals\"></div><div class=\"list-group-item-text\">Gear rentals</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourtechprofilerentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-techhires\"></div><div class=\"list-group-item-text\">Tech hires</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourvanrentals\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-vanrentals\"></div><div class=\"list-group-item-text\">Van rentals</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourgearreservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Gear reservations</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourtechprofilereservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Tech reservations</div></a>\r\n\t\t\t\t<a href=\"#dashboard/yourvanreservations\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-reservations\"></div><div class=\"list-group-item-text\">Van reservations</div></a>\r\n\t\t\t\t<a href=\"#dashboard/settings\" class=\"list-group-item\"><div class=\"sg-icon icon-dashboard-settings\"></div><div class=\"list-group-item-text\">Settings</div></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div id=\"dashboard-subview-container\" class=\"col-xs-12 col-sm-9 dashboard-subview-container bs-reset\"></div>\r\n\t</div>\r\n</div>\r\n\r\n\r\n";
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view editgear\">\r\n\t<div class=\"row\">\r\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\r\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Instrument</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#photos\" role=\"tab\" data-toggle=\"tab\">Photos</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\r\n\t\t</ul>\r\n\r\n\t\t<button id=\"editgear-cancel-symbol\" style=\"float: left;\" class=\"cancel-btn editgear-close-top sg-btn-round submerchant-message-close sg-darkgray-bg sg-white\">\r\n\t\t\t<i class=\"fa fa-times\"></i>\r\n\t\t</button>\r\n\r\n\t</div>\r\n\t\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\r\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\r\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\r\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{gear_type}}:</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form id=\"editgear-form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Subtype:*</label>\r\n\t\t\t\t\t\t\t\t\t\t<select name=\"subtype\" id=\"editgear-subtype\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t</select>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Brand:*</label>\r\n\t\t\t\t\t\t\t\t\t\t<select name=\"brand\" id=\"editgear-brand\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t</select>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"model\">Model:*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"editgear-model\" id=\"editgear-model\" value=\"{{model}}\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Accessories:</label>\r\n\t\t\t\t\t\t\t\t\t\t<div id=\"editgear-accessories-container\"></div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Description:</label>\r\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"editgear-description\" id=\"editgear-description\" class=\"form-control\">{{description}}</textarea>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"photos\">\r\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Photos:</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form id=\"editgear-photos-form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgear-form-imageupload\">Upload image:</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"file\" id=\"editgear-photos-form-imageupload\" name=\"gearpic\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"thumb-list-container editgear-photos-list\">\r\n\t\t\t\t\t\t\t\t\t\t\t<ul></ul>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\r\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Price your gear</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"editgearpricing-form\" role=\"form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Daily Rental Price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Weekly Rental Price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Monthly Rental Price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\r\n\r\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\r\n\t\t\t\t\t\t\t\t\t<p>For this type of gear we recommend the following prices.</p>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_a-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_b-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editgear-price_c-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\r\n\t\t\t\t\t<div class=\"container-fluid editgear-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form id=\"editgearpricingloc-form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-address\">Street*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"editgearpricing-address\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-postalcode\">Postal code*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"editgearpricing-postalcode\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-city\">City*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"editgearpricing-city\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<!--<label for=\"dashboard-addgearprice-region\">Region</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"region\" id=\"editgearpricing-region\" class=\"form-control\">-->\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addgearprice-country\">Country*</label>\r\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"editgearpricing-country\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\r\n\t\t\t\t\t\t\t\t\t\t</select>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter the exact location of the instrument.</p>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\r\n\t\t\t\t\t<div class=\"container-fluid\">\r\n\t\t\t\t\t\t<div id=\"editgear-availability-calendar\"></div>\r\n\t\t\t\t\t\t<div id=\"editgear-submerchantform-buttons\" class=\"hidden\">\r\n\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\r\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"editgear-submerchantform-submit\">Submit</button>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"row sg-modal-header\">\r\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 editgearcancel\">\r\n  \t\t<button class=\"sg-btn-square sg-inherit-bg sg-blue\" id=\"editgear-cancel-btn\">Cancel</button>\r\n  \t</div>\r\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit gear</h2></div>\r\n  \t<div class=\"col-sm-offset-10 col-xs-2 text-center\">\r\n  \t\t<button class=\"sg-btn-square sg-white-bg sg-blue editsavebutton\" id=\"editgear-save-btn\">Save</button>\r\n  \t</div>\r\n  </div>\r\n</div>\r\n";
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view edittechprofile\">\r\n\t<div class=\"row\">\r\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\r\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Technician</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#experience\" role=\"tab\" data-toggle=\"tab\">Experience</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\r\n\t\t</ul>\r\n\r\n\t\t<button id=\"edittechprofile-cancel-symbol\" style=\"float: left;\" class=\"cancel-btn editgear-close-top sg-btn-round submerchant-message-close sg-darkgray-bg sg-white\">\r\n\t\t\t<i class=\"fa fa-times\"></i>\r\n\t\t</button>\r\n\r\n\t</div>\r\n\t\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\r\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\r\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\r\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{roadie_type}}:</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form id=\"edittechprofile-form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-about\">About:</label>\r\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-about\" id=\"edittechprofile-about\" class=\"form-control\">{{about}}</textarea>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-currently\">Currently working for:</label>\r\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-currently\" id=\"edittechprofile-currently\" class=\"form-control\">{{currently}}</textarea>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-genres\">Genres interested in:</label>\r\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"edittechprofile-genres\" id=\"edittechprofile-genres\" class=\"form-control\">{{genres}}</textarea>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"experience\">\r\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\r\n\t\t\t\t\t\t<form id=\"edittechprofile-experience-form\" onsubmit=\"return false;\">\t\r\n\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\r\n\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-experience\">Experience:</label>\r\n\t\t\t\t\t\t\t\t\t<select id=\"edittechprofile-experience\" class=\"form-control inline-select-small\">\r\n                \t\t<option value=\"5\">D</option>\r\n                \t\t<option value=\"4\">C</option>\r\n                \t\t<option value=\"3\">B</option>\r\n                \t\t<option value=\"2\">A</option>\r\n                \t\t<option value=\"1\">A+</option>\r\n              \t\t</select>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\r\n\t\t\t\t\t\t\t\t\t<label for=\"edittechprofile-startyear\">Years of experience:</label>\r\n            \t\t\t<div>\r\n              \t\t\t<select id=\"edittechprofile-startyear\" class=\"form-control inline-select-small\"></select> - <select id=\"edittechprofile-endyear\" class=\"form-control inline-select-small\"></select>\r\n            \t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\r\n\t\t\t\t\t\t\t\t\t<label>Bands &amp; artists toured with:</label>\r\n            \t\t\t<textarea id=\"edittechprofile-tours\" class=\"form-control\">{{tours}}</textarea>\r\n            \t\t\t<label>Bands worked for:</label>\r\n            \t\t\t<textarea id=\"edittechprofile-bands\" class=\"form-control\">{{bands}}</textarea>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-group\">\r\n\t\t\t\t\t\t\t\t\t<label>Companies, venues and festivals worked for:</label>\r\n            \t\t\t<textarea id=\"edittechprofile-companies\" class=\"form-control\">{{companies}}</textarea>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</form>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\r\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Set your price</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"edittechprofilepricing-form\" role=\"form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Daily hire price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Weekly hire price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Monthly hire price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\r\n\r\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\r\n\t\t\t\t\t\t\t\t\t<p>For this type of technician we recommend the following prices.</p>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_a-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_b-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"edittechprofile-price_c-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\r\n\t\t\t\t\t<div class=\"container-fluid edittechprofile-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form id=\"edittechprofilepricingloc-form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-address\">Street*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"edittechprofilepricing-address\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-postalcode\">Postal code*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"edittechprofilepricing-postalcode\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-edittechprofileprice-city\">City*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"edittechprofilepricing-city\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"edittechprofilepricing-country\">Country*</label>\r\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"edittechprofilepricing-country\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\r\n\t\t\t\t\t\t\t\t\t\t</select>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter your exact location.</p>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\r\n\t\t\t\t\t<div class=\"container-fluid\">\r\n\t\t\t\t\t\t<div id=\"edittechprofile-availability-calendar\" class=\"hidden\"></div>\r\n\t\t\t\t\t\t<div id=\"edittechprofile-submerchantform-buttons\" class=\"hidden\">\r\n\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\r\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"edittechprofile-submerchantform-submit\">Submit</button>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"row sg-modal-header\">\r\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 editgearcancel\">\r\n  \t\t<button class=\"sg-btn-square sg-inherit-bg sg-blue\" id=\"edittechprofile-cancel-btn\">Cancel</button>\r\n  \t</div>\r\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit Vehicle</h2></div>\r\n  \t<div class=\"col-sm-offset-10 col-xs-2 text-center\">\r\n  \t\t<button class=\"sg-btn-square sg-white-bg sg-blue editsavebutton\" id=\"edittechprofile-save-btn\">Save</button>\r\n  \t</div>\r\n  </div>\r\n</div>\r\n";
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view editvan\">\r\n\t<div class=\"row\">\r\n\t\t<ul class=\"nav nav-tabs sg-toptab-container\" id=\"edit-tabs\" role=\"tablist\">\r\n\t\t\t<li class=\"sg-toptab active\"><a href=\"#instrument\" role=\"tab\" data-toggle=\"tab\">Vehicle</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#photos\" role=\"tab\" data-toggle=\"tab\">Photos</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#pricing\" role=\"tab\" data-toggle=\"tab\">Pricing</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#location\" role=\"tab\" data-toggle=\"tab\">Location</a></li>\r\n\t\t\t<li class=\"sg-toptab\"><a href=\"#availability\" role=\"tab\" data-toggle=\"tab\">Availability</a></li>\r\n\t\t</ul>\r\n\r\n\t\t<button id=\"editvan-cancel-symbol\" style=\"float: left;\" class=\"cancel-btn editgear-close-top sg-btn-round submerchant-message-close sg-darkgray-bg sg-white\">\r\n\t\t\t<i class=\"fa fa-times\"></i>\r\n\t\t</button>\r\n\r\n\t</div>\r\n\t\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\r\n\t\t\t<div id=\"edit-tabs-content\" class=\"tab-content\">\r\n\t\t\t\t<div class=\"tab-pane fade active in\" id=\"instrument\">\r\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>{{van_type}}:</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form id=\"editvan-form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"model\">Model:*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"editvan-model\" id=\"editvan-model\" value=\"{{model}}\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"\">Accessories:</label>\r\n\t\t\t\t\t\t\t\t\t\t<div id=\"editvan-accessories-container\"></div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-right\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Description:</label>\r\n\t\t\t\t\t\t\t\t\t\t<textarea name=\"editvan-description\" id=\"editvan-description\" class=\"form-control\">{{description}}</textarea>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"photos\">\r\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Photos:</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form id=\"editvan-photos-form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvan-form-imageupload\">Upload image:</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"file\" id=\"editvan-photos-form-imageupload\" name=\"vanpic\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"thumb-list-container editvan-photos-list\">\r\n\t\t\t\t\t\t\t\t\t\t\t<ul></ul>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"pricing\">\r\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Price your vehicle</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form class=\"form-horizontal\" id=\"editvanpricing-form\" role=\"form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left\">\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Daily Rental Price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_a\" class=\"col-md-10 form-control price-input-font price\" name=\"price_a\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_a\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Weekly Rental Price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_b\" class=\"col-md-10 form-control price-input-font price\" name=\"price_b\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_b\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group price-form\">\r\n\t\t\t\t\t\t\t\t\t\t<label>Monthly Rental Price*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input id=\"price_c\" class=\"col-md-10 form-control price-input-font price\" name=\"price_c\" size=\"7\" type=\"text\" value=\"\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"price_c\" class=\"col-md-2 price-input-font\">{{currency}}</label>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-sm-6 form-left bulp-background\">\r\n\r\n\t\t\t\t\t\t\t\t\t<h3>Setting the price:</h3>\r\n\t\t\t\t\t\t\t\t\t<p>For this type of vehicle we recommend the following prices.</p>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Daily:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_a-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Weekly:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_b-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-4 yellow-text-left\">Monthly:</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-xs-8 right yellow-text\"><span id=\"editvan-price_c-suggestion\"></span> {{currency}}</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"location\">\r\n\t\t\t\t\t<div class=\"container-fluid editvan-container-bottom-padding\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-12\"><h2>Location</h2></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<form id=\"editvanpricingloc-form\" onsubmit=\"return false;\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-address\">Street*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"editvanpricing-address\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-postalcode\">Postal code*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"postalcode\" id=\"editvanpricing-postalcode\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"dashboard-addvanprice-city\">City*</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"editvanpricing-city\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"editvanpricing-country\">Country*</label>\r\n\t\t\t\t\t\t\t\t\t\t<select name=\"country\" id=\"editvanpricing-country\" class=\"form-control\">\r\n\t\t\t\t\t\t\t\t\t\t\t<option value=\"\">Select country</option>\r\n\t\t\t\t\t\t\t\t\t\t</select>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6 form-left\">\r\n\t\t\t\t\t\t\t\t\t<p>We suggest that you enter the exact location of the vehicle.</p>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"tab-pane fade\" id=\"availability\">\r\n\t\t\t\t\t<div class=\"container-fluid\">\r\n\t\t\t\t\t\t<div id=\"editvan-availability-calendar\" class=\"hidden\"></div>\r\n\t\t\t\t\t\t<div id=\"editvan-submerchantform-buttons\" class=\"hidden\">\r\n\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t<div class=\"col-xs-4 col-xs-offset-8 text-right\">\r\n\t\t\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"editvan-submerchantform-submit\">Submit</button>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"row sg-modal-header\">\r\n  \t<div class=\"col-xs-offset-0 col-xs-2 col-sm-offset-8 editgearcancel\">\r\n  \t\t<button class=\"sg-btn-square sg-inherit-bg sg-blue\" id=\"editvan-cancel-btn\">Cancel</button>\r\n  \t</div>\r\n  \t<div class=\"col-xs-8\"><h2 class=\"text-center sg-blue\">Edit Vehicle</h2></div>\r\n  \t<div class=\"col-sm-offset-10 col-xs-2 text-center\">\r\n\t\t<button class=\"sg-btn-square sg-white-bg sg-blue editsavebutton\" id=\"editvan-save-btn\">Save</button>\r\n  \t</div>\r\n  </div>\r\n</div>\r\n";
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div>An error occurred.</div>";
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid sg-black-bg footer\">\r\n\t<div class=\"row sg-blue links\">\r\n\t\t<div class=\"col-sm-offset-1 col-sm-2 text-center\">\r\n\t\t\t<a href=\"#aboutus\">about us</a>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-2 text-center\">\r\n\t\t\t<a href=\"#insurance\">insurance</a>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-2 text-center\">\r\n\t\t\t<a href=\"#terms\">terms of service</a>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-2 text-center\">\r\n\t\t\t<a href=\"#copyright\">copyright policy</a>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-2 text-center\">\r\n\t\t\t<a href=\"#privacy\">privacy policy</a>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row sg-blue follow\">\r\n\t\t<div class=\"col-sm-12 text-center\">Follow us on</div>\r\n\t</div>\r\n\t<div class=\"row social\">\r\n\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t<a href=\"//www.facebook.com/sharingear\" target=\"new\"><img src=\"images/icon-fbicon.png\" alt=\"Facebook\"></a><a href=\"//twitter.com/sharingear\" target=\"new\"><img src=\"images/icon-twittericon.png\" alt=\"Twitter\"></a><a href=\"//instagram.com/sharingear\" target=\"new\"><img src=\"images/icon-igicon.png\" alt=\"Instagram\"></a>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row logo\">\r\n\t\t<div class=\"col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4 text-center\">\r\n\t\t\t<img src=\"images/logotop@2x.png\" alt=\"Sharingear logo\">\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row copyright\">\r\n\t\t<div class=\"col-sm-12 text-center sg-lightgray\">\r\n\t\t\t&copy; {{year}} Sharingear\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view gearprofile sg-lightgray-bg\">\r\n\t<div class=\"row bs-reset\">\r\n\t\t<div class=\"col-sm-8 bs-reset\">\r\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\r\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourgear\"></div>{{gear_type}}</div>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"row sg-card\">\r\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset gear\">\r\n\t\t\t\t\t<div class=\"sg-icon icon-addgear-{{gear_type}} sg-darkgray\"></div>\r\n\t\t\t\t\t<span class=\"gear-title\">{{brand}} {{subtype}} {{model}}</span>\r\n\t\t\t\t\t<div class=\"social sg-gray\">\r\n\t\t\t\t\t\t<div class=\"sharethis\">Share this profile</div>\r\n\t\t\t\t\t\t<button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-fb-btn\"><i class=\"fa fa-facebook\"></i>\r\n\t\t\t\t\t\t</button> | <button class=\"sg-btn-invisible sg-gray\" id=\"gearprofile-tw-btn\">\r\n\t\t\t\t\t\t<i class=\"fa fa-twitter\"></i>\r\n\t\t\t\t\t\t</button>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-4 bs-reset\">\r\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\r\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\r\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-displayed_price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\r\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-displayed_price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\r\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"gearprofile-displayed_price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\r\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"gearprofile-action-unavailable\">UNAVAILABLE</button>\r\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-book\">BOOK</button>\r\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"gearprofile-action-edit\">EDIT</button>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"row bs-reset\">\r\n\t\t<div class=\"col-sm-8 bs-reset\">\r\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\r\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\r\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<hr>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<h3>Description</h3>\r\n\t\t\t\t\t\t\t<p>\r\n\t\t\t\t\t\t\t\t{{description}}\r\n\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<hr>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\r\n\t\t\t\t\t\t\t<h3>Accessories</h3>\r\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-4 bs-reset\">\r\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\r\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\r\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\r\n\t\t\t\t\t\t\t{{location}}\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\" row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-xs-12\">\r\n\t\t\t\t\t\t\t<div class=\"map\" id=\"gearprofile-map\"></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\r\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\r\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<hr>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"searchform\">\r\n  <form class=\"form-inline\" id=\"home-search-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\r\n    <div class=\"form-group\">\r\n      <label class=\"sg-blue\">Find your gear</label>\r\n      <input type=\"search\" class=\"form-control\" id=\"search-gear\" placeholder=\"Guitars, amps, drums etc.\">\r\n      <div class=\"suggestion-box hidden\" id=\"gear-suggestions-box\"></div>\r\n    </div><div class=\"form-group\">\r\n      <label class=\"sg-blue\">Find a location</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"search-location\" placeholder=\"\">\r\n    </div><div class=\"form-group search-pickup-container\">\r\n      <label class=\"sg-blue\">Pickup</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"search-pickup\" placeholder=\"15/08/1969\" >\r\n    </div><div class=\"form-group search-return-container\">\r\n      <label class=\"sg-blue\">Delivery</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"search-return\" placeholder=\"18/08/1969\" >\r\n    </div><div class=\"form-group submit-container\">\r\n      <input type=\"submit\" id=\"home-submit-button-id\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\r\n    </div>\r\n  </form>\r\n</div>\r\n";
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"view home\">\r\n    <div class=\"jumbotron sg-banner\">\r\n        <div class=\"container-fluid\">\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12\">\r\n                    <h2 class=\"sg-h1 text-center sg-white\">THE ULTIMATE MARKETPLACE FOR TOURING MUSICIANS</h2>\r\n                </div>\r\n            </div>\r\n            <div class=\"row sg-tabbar-container bs-reset\">\r\n                <div class=\"col-sm-2 bs-reset\">\r\n                    <div class=\"sg-fill sg-blue-bg-50\"></div>\r\n                </div>\r\n                <div class=\"col-sm-8 bs-reset\">\r\n                    <div class=\"sg-tabbar sg-tabbar-3\">\r\n                        <ul>\r\n                            <li>\r\n                                <button class=\"sg-btn-square sg-white selected\" id=\"home-tab-gear\">\r\n                                    <div class=\"sg-icon icon-tabbar-gear\"></div>\r\n                                    <div class=\"sg-btn-text\">GEAR</div>\r\n                                </button>\r\n                            </li>\r\n                            <li>\r\n                                <button class=\"sg-btn-square sg-white\" id=\"home-tab-techprofiles\">\r\n                                    <div class=\"sg-icon icon-tabbar-technicians\"></div>\r\n                                    <div class=\"sg-btn-text\">TECHNICIANS</div>\r\n                                </button>\r\n                            </li>\r\n                            <li>\r\n                                <button class=\"sg-btn-square sg-white\" id=\"home-tab-vans\">\r\n                                    <div class=\"sg-icon icon-tabbar-vans\"></div>\r\n                                    <div class=\"sg-btn-text\">VANS &amp; BUSES</div>\r\n                                </button>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n                <div class=\"col-sm-2 bs-reset\">\r\n                    <div class=\"sg-fill sg-blue-bg-50\"></div>\r\n                </div>\r\n            </div>\r\n            <div class=\"row sg-tab-panel sg-darkblue-bg-transparent\" id=\"home-searchform-gear\">\r\n                <div class=\"col-sm-12 searchform-container\">\r\n                </div>\r\n            </div>\r\n            <div class=\"row sg-tab-panel sg-darkblue-bg-transparent hidden\" id=\"home-searchform-techprofiles\">\r\n                <div class=\"col-sm-12 searchform-container\">\r\n                </div>\r\n            </div>\r\n            <div class=\"row sg-tab-panel sg-darkblue-bg-transparent hidden\" id=\"home-searchform-vans\">\r\n                <div class=\"col-sm-12 searchform-container\">\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"col-sm-12 text-center\">\r\n                    <button class=\"sg-btn-invisible sg-white\" id=\"home-scroll-btn\">Scroll down <i class=\"fa fa-arrow-circle-o-down\"></i> to see more</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"container-fluid\" id=\"home-whatsay\">\r\n        <div class=\"row testimonials-title-row\">\r\n            <div class=\"col-md-12 testimonials-title\">\r\n                <h3 class=\"text-center text-uppercase\">What other musicians say</h3>\r\n            </div>\r\n        </div>\r\n        <div class=\"row testimonials-row\">\r\n            <div class=\"col-xs-12 col-sm-4 testimonials-video\">\r\n                <iframe src=\"//player.vimeo.com/video/107903629\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\r\n            </div>\r\n            <div class=\"col-xs-12 testimonials-name\">\r\n                <div class=\"h5 text-uppercase\">Stephen Carpenter</div>\r\n                <div class=\"h3 text-uppercase\">Deftones</div>\r\n            </div>\r\n            <div class=\"col-xs-12 col-sm-4 testimonials-video\">\r\n                <iframe src=\"//player.vimeo.com/video/117566193\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\r\n            </div>\r\n            <div class=\"col-xs-12 testimonials-name\">\r\n                <div class=\"h5 text-uppercase\">Jeff Walker</div>\r\n                <div class=\"h3 text-uppercase\">Carcass</div>\r\n            </div>\r\n            <div class=\"col-xs-12 col-sm-4 testimonials-video\">\r\n                <iframe src=\"//player.vimeo.com/video/109912371\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\r\n            </div>\r\n            <div class=\"col-xs-12 testimonials-name\">\r\n                <div class=\"h5 text-uppercase\">Peter Dolving</div>\r\n                <div class=\"h3 text-uppercase\">IAMFIRE</div>\r\n            </div>\r\n        </div>\r\n        <div class=\"row testimonials-big-name-container\">\r\n            <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\r\n                <div class=\"h5 text-uppercase\">Stephen Carpenter</div>\r\n                <div class=\"h3 text-uppercase\">Deftones</div>\r\n            </div>\r\n            <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\r\n                <div class=\"h5 text-uppercase\">Jeff Walker</div>\r\n                <div class=\"h3 text-uppercase\">Carcass</div>\r\n            </div>\r\n            <div class=\"col-xs-12 col-sm-4 testimonials-big-name\">\r\n                <div class=\"h5 text-uppercase\">Peter Dolving</div>\r\n                <div class=\"h3 text-uppercase\">IAMFIRE</div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"row sg-crowd-bg\">\r\n            <div class=\"col-sm-12\">\r\n                <div class=\"owl-carousel\"></div>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"row references-row\">\r\n            <div class=\"col-sm-8\">\r\n                <div class=\"row\">\r\n                    <div class=\"col-xs-offset-1 col-sm-12\">\r\n                        <h6 class=\"text-uppercase sg-gray\">As featured on</h6>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row reference-images-row\">\r\n                    <div class=\"col-xs-offset-1 col-xs-2 reference-box\">\r\n                        <span class=\"helper\"></span><img class=\"references-image\" src=\"images/metalhammer@2x.png\">\r\n                    </div>\r\n                    <div class=\"col-xs-2 reference-box\">\r\n                        <span class=\"helper\"></span><img class=\"references-image\" style=\"width:85%\" src=\"images/betalist@2x.png\" alt=\"Beta List\">\r\n                    </div>\r\n                    <div class=\"col-xs-2 reference-box\">\r\n                        <span class=\"helper\"></span><img class=\"references-image\" style=\"width:85%\" src=\"images/bandsoftomorrow@2x.png\" alt=\"Bands of Tomorrow\">\r\n                    </div>\r\n                    <div class=\"col-xs-2 reference-box\">\r\n                        <span class=\"helper\"></span><img class=\"references-image\" style=\"width:100%\" src=\"images/geargods@2x.png\" alt=\"Gear Gods\">\r\n                    </div>\r\n                    <div class=\"col-xs-2 reference-box\">\r\n                        <span class=\"helper\"></span><img class=\"references-image\" src=\"images/arcticstartup@2x.png\" alt=\"Artic Startup\">\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-sm-4\">\r\n                <div class=\"row\">\r\n                    <div class=\"col-sm-12\">\r\n                        <h6 class=\"text-uppercase sg-gray\">Partnered with</h6>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-xs-6 col-sm-6 reference-box\">\r\n                        <span class=\"helper\"></span><img class=\"references-image\" src=\"images/royalbeer@2x.png\" alt=\"Royal Beer\">\r\n                    </div>\r\n                    <div class=\"col-xs-4 col-sm-4 reference-box\">\r\n                        <span class=\"helper\"></span><img class=\"references-image\" src=\"images/ora@2x.png\" alt=\"ORA\">\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <footer></footer>\r\n</div>\r\n";
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"view insurance\">\r\n\t<div class=\"container-fluid\">\r\n\t\t<div class=\"row sg-rehearsal-bg\">\r\n\t\t\t<div class=\"col-xs-12 col-sm-4 text-center insurance-stamp\">\r\n\t\t\t\t<img src=\"images/insurance_stamp.png\" alt=\"Insurance stamp\">\r\n\t\t\t</div>\r\n\t\t\t<div class=\"col-xs-12 col-sm-7 sg-yellow\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThe Sharingear Guarantee<br>\r\n\t\t\t\t\tWe’re constantly working to make Sharingear a safe place for renters and owners.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p class=\"text-center sg-blue message\">\r\n\t\t\t\t\tWe want you to be comfortable listing your instruments and backline on Sharingear.<br>\r\n\t\t\t\t\tThat's why we're guaranteeing your gear’s safety on our system. If your gear is damaged or stolen during a rental period and the renter is unable to reimburse you for the fair value of your gear, we'll cover the cost up to 10,000€ for instruments listed on our platform. \r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<hr>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h1 class=\"sg-h1 sg-darkergray text-center\">How we build trust</h1>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t<div class=\"col-sm-4\">\r\n\t\t\t\t\t\t<div class=\"title sg-blue\">\r\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> ID Verification\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<p>\r\n\t\t\t\t\t\t\tRenters and owners verify their Sharingear accounts with their Credit Card, mobile phone number, Twitter and Facebook. The verification validates your online identity to help people get a better idea of who they’re renting to or from. Verifying your account helps others trust you and makes your ride show up higher in search results.\r\n\t\t\t\t\t\t</p>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"col-sm-4\">\r\n\t\t\t\t\t\t<div class=\"title sg-blue\">\r\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> Community reviews\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<p>\r\n\t\t\t\t\t\t\tReviews are collected from the owner and the renter following every rental in order to self regulate our community. Reviews are left for the owner, the renter, and the gear, so you can hear first hand about other people's experiences with the great people on Sharingear.\r\n\t\t\t\t\t\t</p>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"col-sm-4\">\r\n\t\t\t\t\t\t<div class=\"title sg-blue\">\r\n\t\t\t\t\t\t\t<div class=\"sg-icon icon-booking-accepted\"></div> Keep your privacy\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<p>\r\n\t\t\t\t\t\t\tWe never share your information with anyone until you confirm their rental. You can keep all communications in our secure, private messaging system so you don’t need to share your contact info and you can choose where you’d like to meet renters if you’d rather not share your address.\r\n\t\t\t\t\t\t</p>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<footer></footer>\r\n</div>";
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view payment\">\r\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\r\n\t\t<div class=\"col-xs-2\"><button class=\"sg-btn-invisible sg-white\" id=\"payment-back-btn\"><i class=\"fa fa-arrow-circle-o-left\"></i></button></div>\r\n\t\t<div class=\"col-xs-8\">Booking step 2</div>\r\n\t\t<div class=\"col-xs-2 text-right\"><button class=\"sg-btn-round sg-white-bg sg-blue\" id=\"payment-cancel-btn\"><i class=\"fa fa-times\"></i></button></div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 text-center sg-darkergray gear\">\r\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 bs-reset\">\r\n\t\t\t<table class=\"table\">\r\n\t\t\t\t<tbody>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>From:</strong> {{start_date}}</td>\r\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>To:</strong> {{end_date}}</td>\r\n\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</tbody>\r\n\t\t\t\t<tfoot>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>Price: {{price}} <span class=\"sg-super\">{{currency}}</span></td>\r\n\t\t\t\t\t\t<!--<td>VAT({{vat}}%): {{price_vat}} <span class=\"sg-super\">{{currency}}</span>-->\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td>Fee: {{fee}} <span class=\"sg-super\">{{currency}}</span></td>\r\n\t\t\t\t\t\t<!--<td>VAT({{vat}}%): {{fee_vat}} <span class=\"sg-super\">{{currency}}</span></td>-->\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</tfoot>\r\n\t\t\t</table>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row sg-darkergray-bg sg-white total\">\r\n\t\t<div class=\"col-xs-6\">TOTAL:</div>\r\n\t\t<div class=\"col-xs-6\">{{total}}<span class=\"sg-super\">{{currency}}</span></div>\r\n\t</div>\r\n\t<div class=\"row xchange-rate\">\r\n\t\t<div class=\"col-xs-12 text-center sg-mediumblue-bg sg-yellow\">The exchange rate for the booking in this listing is 1 {{currency}} to {{xchange}} {{owner_currency}} (your owner's listing currency).</div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 bs-reset\">\r\n\t\t\t<ul class=\"sg-tabs sg-tabs-3\">\r\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray active\"><button>VISA</button></li>\r\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray disabled\"><button>MasterCard</button></li>\r\n\t\t\t\t<li class=\"sg-lightgray-bg sg-darker-gray disabled\"><button>PayPal</button></li>\r\n\t\t\t</ul>\r\n\t\t</div>\r\n\t</div>\r\n\t\r\n\t<div id=\"payment-visa-block\">\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t<form id=\"payment-form-visa\" onsubmit=\"return false;\">\r\n\t\t\t\t\t<div class=\"form-group missing-userdata\" id=\"payment-birthdate\">\r\n\t\t\t\t\t\t<label for=\"payment-birthdate-day\">Date of birth:</label>\r\n\t\t\t\t\t\t<div class=\"birthday-select\">\r\n\t\t\t\t\t\t\t<select id=\"payment-birthdate-day\" name=\"birthdate-day\"></select>/<select id=\"payment-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"payment-birthdate-year\" name=\"birthdate-year\"></select>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\r\n\t\t\t\t\t\t<label for=\"payment-address\">Address:</label>\r\n\t\t\t\t\t\t<input type=\"text\" name=\"address\" id=\"payment-address\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\r\n\t\t\t\t\t\t<label for=\"payment-postalcode\">Postal code:</label>\r\n\t\t\t\t\t\t<input type=\"text\" name=\"postal_code\" id=\"payment-postalcode\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\r\n\t\t\t\t\t\t<label for=\"payment-city\">City:</label>\r\n\t\t\t\t\t\t<input type=\"text\" name=\"city\" id=\"payment-city\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\r\n\t\t\t\t\t\t<select name=\"country\" id=\"payment-country\" class=\"form-control\">\r\n\t\t\t\t\t\t\t<option value=\"\">Select your country</option>\r\n\t\t\t\t\t\t</select>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\r\n\t\t\t\t\t\t<select name=\"nationality\" id=\"payment-nationality\" class=\"form-control\">\r\n\t\t\t\t\t\t\t<option value=\"\">Select your nationality</option>\r\n\t\t\t\t\t\t</select>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group missing-userdata\">\r\n\t\t\t\t\t\t<label for=\"payment-phone\">Phone:</label>\r\n\t\t\t\t\t\t<input type=\"text\" name=\"phone\" id=\"payment-phone\" class=\"form-control\">\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t<label for=\"payment-form-visa-cardholder\">Cardholder name:</label>\r\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" id=\"payment-form-visa-cardholder\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t<label for=\"payment-form-visa-cardnumber\">Card number:</label>\r\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" id=\"payment-form-visa-cardnumber\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t<label for=\"payment-form-visa-month\">Expiration date:</label>\r\n\t\t\t\t\t\t<select class=\"form-control\" id=\"payment-form-visa-month\"></select>/<select class=\"form-control\" id=\"payment-form-visa-year\"></select>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t<label>Security code:</label>\r\n\t\t\t\t\t\t<input type=\"text\" id=\"payment-form-visa-csc\">\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t\tWe will only withdraw the money once the owner has accepted your booking.\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</form>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"payment-next-btn\">next <i class=\"fa fa-arrow-circle-o-right\"></i></button>\r\n\t\t</div>\r\n\t</div>\r\n\r\n</div>\r\n";
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid paymentsuccessful\">\r\n\t<div class=\"row sg-blue-bg sg-white sg-navbar\">\r\n\t\t<div class=\"col-xs-offset-1 col-xs-10\">Booking step 3</div>\r\n\t</div>\r\n\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12 text-center sg-darkergray gear\">\r\n\t\t\t<h3 class=\"sg-h3\">{{item_name}}</h3>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"payment-success hidden\">\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-md-12 booking-confirm-header text-center\">\r\n\t\t\t\t<h1>{{item_name}} was successfully booked.</h1>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row text-center\">\r\n\t\t\t<div class=\"col-md-8 col-md-offset-2 booking-confirm-warning\">\r\n\t\t\t\t<h3>\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t<span class=\"fa fa-exclamation-circle\" aria-hidden=\"true\"></span>&nbsp;&nbsp;The owner must first confirm your booking before it becomes valid\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t<table class=\"table\">\r\n\t\t\t\t\t<tbody>\r\n\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>Booked from:</strong> {{start_date}}</td>\r\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\r\n\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"><strong>Booked to:</strong> {{end_date}}</td>\r\n\t\t\t\t\t\t\t<td class=\"sg-lightgray-bg\"></td>\r\n\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t</tbody>\r\n\t\t\t\t\t<tfoot>\r\n\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t<td>Price: {{price}} <span class=\"sg-super\">{{currency}}</span></td>\r\n\t\t\t\t\t\t\t<!--<td>Price VAT({{vat}}%): {{price_vat}} <span class=\"sg-super\">{{currency}}</span>-->\r\n\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t<td>Sharingear fee: {{fee}} <span class=\"sg-super\">{{currency}}</span></td>\r\n\t\t\t\t\t\t\t<!--<td>Fee VAT({{vat}}%): {{fee_vat}} <span class=\"sg-super\">{{currency}}</span></td>-->\r\n\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t</tfoot>\r\n\t\t\t\t</table>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-md-8 col-md-offset-2 col-xs-12 text-center booking-confirm-table\">\r\n\t\t\t\t<h3><strong>Total:</strong> {{total}} {{currency}}</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-xs-8 col-xs-offset-2 text-center\">\r\n\t\t\t\t<h4>The total is reserved on your card, and will be charged upon gear owner's confirmation.</h4>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"payment-failure hidden\">\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-md-12 booking-confirm-header text-center\">\r\n\t\t\t\t<h1>Your booking could not be completed.</h1>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"row text-center\">\r\n\t\t\t<div class=\"col-md-8 col-md-offset-2 booking-error-warning\">\r\n\t\t\t\t<h3>\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t<span class=\"fa fa-exclamation-circle\" aria-hidden=\"true\"></span>&nbsp;&nbsp;Payment failed. No money has been charged.\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"row sg-footerbar sg-blue-bg sg-white\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\t<button class=\"sg-btn-square sg-blue-bg sg-white\" id=\"paymentsuccessful-close-btn\">close <i class=\"fa fa-times sg-white-bg sg-blue\"></i></button>\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid pickupdeliverycalendar\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-xs-6 sg-toptab sg-toptab-active\" id=\"pickupdeliverycalendar-pickupdate\">\r\n\t\t\t<i class=\"col-xs-2 fa fa-calendar\"></i>\r\n\t\t\t<span class=\"col-xs-2 text-left\">From</span>\r\n\t\t\t<div class=\"col-xs-8 text-center\"> - </div>\r\n\t\t</div>\r\n\t\t<div class=\"col-xs-6 sg-toptab\" id=\"pickupdeliverycalendar-deliverydate\">\r\n\t\t\t<i class=\"col-xs-2 fa fa-calendar\"></i>\r\n\t\t\t<span class=\"col-xs-2 text-left\">To</span>\r\n\t\t\t<div class=\"col-xs-8 text-center\"> - </div>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"text-center hint\">Select from date</div>\r\n\t<div class=\"row calendar-navigation\">\r\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray\" id=\"pickupdeliverycalendar-prev\"><i class=\"fa fa-angle-left\"></i></button></div>\r\n\t\t<div class=\"col-xs-8 text-center\"><strong id=\"pickupdeliverycalendar-currentmonth\"></strong></div>\r\n\t\t<div class=\"col-xs-2 text-center\"><button class=\"sg-btn-invisible-gray\" id=\"pickupdeliverycalendar-next\"><i class=\"fa fa-angle-right\"></i></button></div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"calendar\">\r\n\t\t</div>\r\n\t</div>\r\n</div>";
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"view privacy\">\r\n\t<div class=\"container-fluid sg-lightgray-bg\">\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h1 class=\"sg-h1 sg-blue\">SharingearPrivacy Policy</h1>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tLast Updated: November 28, 2014\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThese privacy policies (the “Privacy Policy”) explain how Sharingear IVS (“we,” “us,” “our,” or “Sharingear”) collects, stores, uses, and discloses your personal information when you use  <a href=\"http://www.sharingear.com\">www.sharingear.com</a> (the “Site”), our mobile and desktop apps, if any (the “Application”), and all related sites, widgets, tools, apps, data, software and other services provided by Sharingear (collectively, the “Services”) (the Site, Application, and Services shall be sometimes collectively referred to herein as the “Platform”).\r\n\t\t\t\t\tWe encourage you to read this Privacy Policy thoroughly prior to use of the Platform.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tBy using the Platform, you agree and consent to the terms and practices described in this Privacy Policy.\r\n\t\t\t\t\t<strong>If you do not agree to any of the provisions outlinedin this Privacy Policy, you should not use the Platform.</strong>\r\n\t\t\t\t\tIf you have any questions about this Privacy Policy, please contact <a href=\"mailto:legal@sharingear.com\">legal@sharingear.com</a>.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tUnless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our <a href=\"#terms\">Terms of Service</a>.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\t\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">1. Information we collect</h3>\r\n\t\t\t</div>\r\n\t\t</div>\t\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\tWhen you use the Platform, we may collect personal information that can identify you, such as your name and email address, and other information that does not identify you.\r\n\t\t\t\tOur primary purposes in collecting information are to provide and improve the Platform, to administer your use of the Platform, and to enable users to enjoy and easily navigate the Platform.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information you provide</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\tWhen you register for an account through the Site or Application and become a Member, when you choose to post a Gear profile or book a Gear, or when you wish to contact another Member, we will ask you for personally identifiable information that can be used to contact or identify you, such as your full name, phone number, home address, email address, and social security number (SSN).\r\n\t\t\t\tIn order to process transactions through the Site and Application, we may also ask you for your credit card, bank details, and other billing information.\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tTo register for an account via the Site or Application, you will be required to either:\r\n\t\t\t\t</p>\r\n\t\t\t\t<ol class=\"sg-romanlist\">\r\n\t\t\t\t\t<li>provide your first name, last name, and email address and choose a password; or</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\tprovide information by logging into your online account with a third party service provider (“SNS”), such as Facebook, (each such account, a “Third Party Account”), linking such account to your Sharingear account, and allowing Sharingear to obtain information from your Third Party Account to create your Sharingear account and profile page (for more information, please see Section 4 in our Terms of Service).\r\n\t\t\t\t\t\tDepending on the Third Party Accounts you choose to link with your Sharingear account, and subject to your privacy settings in such Third Party Accounts, you understand and agree that by granting us access to the Third Party Accounts, we will access, obtain, make available, and store (if applicable and as permitted by the SNS) the information in your Third Party Accounts (such as your full name, email address, profile picture, names of contacts on your Third Party Account (“Friends”), photographs, and/or other information you make publicly available or authorize us to access by authorizing the SNS to provide such information) so that it is available on and through your Sharingear account on the Platform.\r\n\t\t\t\t\t\tThis may include information about your “friends” or people with whom you are associated on your Third Party Account (depending on the privacy settings such people have with the applicable SNS).\r\n\t\t\t\t\t\tYou represent that you are entitled to disclose your Third Party Account login information to Sharingear and/or grant Sharingear access to your Third Party Account (including, but not limited to, for the purposes described herein) without breach by you of any of the terms and conditions that govern your use of the applicable Third Party Account and without obligating Sharingear to pay any fees or making Sharingear subject to any usage limitations imposed by the applicable SNS.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ol>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tYou may choose to provide additional personal information for your Sharingear Profile, such as photograph(s), biographical information, and website URLs. You may choose to provide additional information when you create a Gear, such as photographs and descriptions of your listed item(s). If any of the content you upload, share, and/or distribute via the Platform contains personal information about yourself and/or others, such information may be stored as well.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThe Platform may provide a referral service that allows you to invite your friends and contacts to use the Platform or write a reference about you, to be published on your public profile. We may integrate the Platform with third-party sites such as Facebook, so that you can send invitation messages or requests for references via the third-party site itself.\r\n\t\t\t\t\tThese messages will be sent by the third-party site, and Sharingear does not collect or retain the contact information that is used to send them.\r\n\t\t\t\t\tYou may also send invitation/request emails via the Platform, in which case we will ask you for the email addresses to send these emails to.\r\n\t\t\t\t\tWe will use the information sent to us for the purpose of sending your friends and contacts a one-time email, inviting him or her to visit the Platform or to write a reference for you.\r\n\t\t\t\t\tWith respect to referrals, we will also store the email addresses of your invitees to track if your friends join Sharingear in response to your referral.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information we collect automatically</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tWe may collect some information automatically as a result of your use of the Platform or through the use of web analytics services. This information may include:\r\n\t\t\t\t</p>\r\n\t\t\t\t<ol class=\"sg-romanlist\">\r\n\t\t\t\t\t<li>the Internet Protocol (IP) address of the device from which you access the Site or Application;</li>\r\n\t\t\t\t\t<li>the specific actions you take on the Site or Application, including the pages you visit, content you upload, accounts you link, content you share with others, comments and feedback you post, your communications with other users, and searches you perform;</li>\r\n\t\t\t\t\t<li>any search terms you may enter on the Site or Application;</li>\r\n\t\t\t\t\t<li>the time, frequency, and duration of your visits to the Site and Application;</li>\r\n\t\t\t\t\t<li>your browser type, operating system, and the nature of the device from which you are accessing the Platform;</li>\r\n\t\t\t\t\t<li>information collected through cookies and similar technology; and</li>\r\n\t\t\t\t\t<li>information regarding your interaction with email messages.</li>\r\n\t\t\t\t</ol>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Information we collect using cookies</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tSharingear uses “cookies” in conjunction with the Platform to obtain information.\r\n\t\t\t\t\tA cookie is a small data file that is transferred to your device (e.g., your phone or computer) for record-keeping purposes.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tWhen you visit the Platform, we may assign your device one or more cookies, to facilitate access to the Platform, streamline the functioning of the Platform, monitor and analyze the performance and operation of the Platform, and personalize your experience.\r\n\t\t\t\t\tWe use cookies to collect site data, such as when you visit the Site and use our Application, the links you click, and pages you visit.\r\n\t\t\t\t\tWe may, either directly or through third party companies and individuals we engage to provide services to us, also continue to track your behavior on the Platform for purposes of our own customer support, analytics, research, product development, fraud prevention, risk assessment, regulatory compliance, investigation, as well as to enable you to use and access the Platform and pay for your activities on the Platform.\r\n\t\t\t\t\tWe may also use other Internet technology, such as web beacons, to track your use of our site and in e-mail messages or newsletters.\r\n\t\t\t\t\tThis Privacy Police will apply to our treatment of the information we obtain via our cookies and other Internet technology.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tWe may also allow our business partners to place cookies on your device.\r\n\t\t\t\t\tFor example, we use Google Analytics for web analytics, and so Google may also set cookies on your device.\r\n\t\t\t\t\tThird parties may also place cookies on your device for advertising purposes.\r\n\t\t\t\t\tThird parties that use cookies and other tracking technologies to deliver targeted advertisements on the Platform and/or third party websites may offer you a way to prevent such targeted advertisements by opting-out at the websites of certain industry groups or such third parties.\r\n\t\t\t\t\tPlease note that even if you choose to opt-out of receiving targeted advertising, you may still receive advertising on the Platform – it just will not be tailored to your interests.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tMost browsers have an option for turning off cookies; however, if you disable cookies, you may not be able to sign into your account or use most of the Platform content and features.\r\n\t\t\t\t\tBy choosing to use the Platform without blocking or disabling cookies or other similar technologies, you indicate your consent to our use of these technologies and to our use (in accordance with this Privacy Policy) of any personal information that we collect using these technologies.\r\n\t\t\t\t\tThis Privacy policy covers our and our business partners’ use of cookies and does not cover the use of cookies by other third parties.\r\n\t\t\t\t\tWe do not control when or how third parties place cookies on your computer.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">Third-Party social media plugins</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThe Platform may use third-party social plugins that are provided and operated by third-party companies, such as Facebook’s “Like” button or Pinterest’s “Pin It” button.\r\n\t\t\t\t\tBy utilizing these features, you may send to the third-party company the information that you are viewing on a certain part of our Platform.\r\n\t\t\t\t\tIf you are not logged into your account with the third-party company, then the third party may not know your identity.\r\n\t\t\t\t\tIf you are logged into your account with the third-party company, then the third party may be able to link information about your visit to the Platform to your account with them and your interactions with the social plugin may be recorded by the third party.\r\n\t\t\t\t\tPlease reference the third party’s privacy policy for information about its data practices, such as what data is collected about you and how it is used.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">2. How we use your information</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tWe use the information that we collect about you for the following general purposes:\r\n\t\t\t\t</p>\r\n\t\t\t\t<ul>\r\n\t\t\t\t\t<li>To operate and maintain your Sharingear account and to provide you with access to the Platform.</li>\r\n\t\t\t\t\t<li>To identify you as the creator of the content that you upload, the ratings that you post, the Gears that you make, and/or the other contributions that you make to the Platform.</li>\r\n\t\t\t\t\t<li>To operate, protect, improve, and optimize the Platform, our business, and our users’ experience, such as to perform analytics, conduct research, and for advertising and marketing.</li>\r\n\t\t\t\t\t<li>To send you service, support, and administrative messages, reminders, technical notices, updates, security alerts, and information requested by you.</li>\r\n\t\t\t\t\t<li>To customize your use of the Platform.</li>\r\n\t\t\t\t\t<li>To administer rewards, surveys, sweepstakes, contests, or other promotional activities or events sponsored or managed by Sharingear or our business partners.</li>\r\n\t\t\t\t\t<li>To comply with our legal obligations, resolve any disputes that we may have with any of our users, enforce our agreements with third parties, and prevent or take action against activities that are, or may be, in breach of our <strong>Terms of Service</strong> or applicable law.</li>\r\n\t\t\t\t\t<li>For other purposes, provided that we disclose this to you at the relevant time and provided that you agree to the proposed use of your personal information.</li>\r\n\t\t\t\t</ul>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tWe may also use the information for the following purposes:\r\n\t\t\t\t</p>\r\n\t\t\t\t<ul>\r\n\t\t\t\t\t<li>Your email address and password are used to identify you when you log into the Site.</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\tAdditional personal information that you provide as part of your profile, such as your name, Gear, uploaded content (such as photographs), and links to your website and other social media profiles (but not your email address or phone number), will be published on your profile page.\r\n\t\t\t\t\t\tThis information will be publicly accessible to and may be viewed by anyone accessing the Platform.\r\n\t\t\t\t\t\tParts of your public profile page that may contain personal information may be displayed in other parts of the Platform to other users for marketing purposes.\r\n\t\t\t\t\t\tPlease keep this in mind when considering whether to provide any additional information about yourself.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\tEach of your Gear profile pages will always include some minimum information such as the city and neighborhood where the Equipment in the Gear is located, your public profile photo, first name, and location.\r\n\t\t\t\t\t\tParts of your Gear pages may be displayed in other parts of the Platform to other users for marketing purposes.\r\n\t\t\t\t\t\tThe Platform may also display the approximate geographic location of your listed items on a map, including on the Gear page, in search results or otherwise, so that a user can see the general area of the listed tem.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\tThe Platform allows your public profile and public Gear profile pages to be included in search engines, in which case your public profile and public Gear profile pages will be indexed by search engines and may be published as search results.\r\n\t\t\t\t\t\tIf you change the information on your public profile or public Gear profile pages, third-party search engines may not update their databases quickly or at all.\r\n\t\t\t\t\t\tWe do not control the practices of third-party search engines, and they may use caches containing outdated information, including any information indexed by the search engine before you change your settings or the information on your public profile or public Gear profile pages.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>When you submit a reservation request for Gear, your delivery address, if any, will become visible to the Owner.</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\tWhen your request to book Gear is accepted by the Owner or when you accept a Renter’s request to book your Gear, we will disclose some of your personal information to the Owner or Renter, which may include, without limitation, your address (e.g., for delivery or pick up), e-mail address, and phone number.\r\n\t\t\t\t\t\tHowever, your billing information will never be shared with another user.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\tWhen a Renter rents your Gear or when you rent an Owner’s Gear, we will ask you to review the Renter or Gear.\r\n\t\t\t\t\t\tIf you choose to provide a review, your review may be public on the Platform.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\tIf you choose to link your Account to a SNS:\r\n\t\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t\t<li>some of the information you provide to use from the linking of your accounts may be published on your Sharingear account profile;</li>\r\n\t\t\t\t\t\t\t<li>your activities on the Platform may be displayed to your Friends on the Platform and/or that third party site;</li>\r\n\t\t\t\t\t\t\t<li>other Sharingear users may be able to see any common Friends that you may have with them, or that you are a Friend of their Friend, if applicable;</li>\r\n\t\t\t\t\t\t\t<li>other Sharingear users may be able to see your information listed on your social networking site(s) profile, such as schools, hometowns, or groups you have in common; and</li>\r\n\t\t\t\t\t\t\t<li>the information you provide us from the linking of your accounts may be stored, processed, and transmitted for fraud prevention and risk assessment purposes.</li>\r\n\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>We may distribute parts of the Platform (including your Gear and information from your public profile page) for display on sites operated by Sharingear’s business partners.</li>\r\n\t\t\t\t\t<li>In order to verify and confirm your postal address or the postal address of Gear, we may send you a code via postal mail to the address provided by you in your account, if any, or to the address contained in a Gear profile and ask that you enter the code via the Site.</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\tWe may review, scan, or analyze your communications with other users exchanged via the Platform for fraud prevention, regulatory compliance, risk assessment, investigation, product development, research, and customer support purposes.\r\n\t\t\t\t\t\tFor example, as part of our fraud prevention efforts, the Platform may scan and analyze messages to mask contact information and references to other websites.\r\n\t\t\t\t\t\tWe may also scan, review, or analyze messages for research and product development purposes to help make search, reservations, and user communications more efficient and effective, as well as to debug product offerings.\r\n\t\t\t\t\t\tWe will carry out these reviews or analyses either through automated methods or manually.\r\n\t\t\t\t\t\tBy using the Platform, you consent that Sharingear, in its sole discretion, may review, scan, analyze, and store your communications, whether done manually or through automated means.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">3. Sharing your information</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tWhen you use the Platform, your data may be sent to the United States and possibly other countries. Laws vary from jurisdiction to jurisdiction, so the privacy laws applicable to the places where your information is transferred to, stored, used or processed, may be different from the privacy laws applicable to the place where you are a resident.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThere are circumstances where we may need to share some of the personal information we collect about you or which you provide to us, such as the following:\r\n\t\t\t\t</p>\r\n\t\t\t\t<ul>\r\n\t\t\t\t\t<li><i>Other Users of the Platform</i>: Any personal information in your member profile (other than your last name, email address, phone number, postal address, and all account details related to receiving payments such as your social security number and bank account number) will be publicly accessible, and anyone may view your profile information, send you messages, view and save your Gear, and make requests to book your Gear.</li>\r\n\t\t\t\t\t<li><i>Renters Who Reserve Your Gear and Owners of Gear You Reserve</i>: Once a reservation requested by a Renter is approved by the Owner, that Owner and Renter’s phone number, address, and e-mail address may be made available to the other.</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\t<i>Sharingear Related Entities</i>:\r\n\t\t\t\t\t\tWe may allow our related entities such as our subsidiaries, and their employees, to use and process your personal information in the same way and to the same extent that we are permitted to under this Privacy Policy.\r\n\t\t\t\t\t\tThese related entities comply with the same obligations that we have to protect your personal information under this Privacy Policy.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\t<i>Service Providers</i>:\r\n\t\t\t\t\t\tWe may engage certain third party companies and individuals to provide us with services related to the Platform, such as processing credit card payments, verifying your identification, or to conduct checks against databases such as public government databases (where legally allowed).\r\n\t\t\t\t\t\tThese third parties may have access to your personal information but only when it is necessary in order for those third parties to provide those services to us.\r\n\t\t\t\t\t\tWe will use commercially reasonable efforts to ensure that such third parties are obligated to protect your personal information and to not use it for unrelated purposes.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\t<i>As Aggregated Data</i>:\r\n\t\t\t\t\t\tWe may aggregate the information we collect, including your personal data, with similar data relating to other users of the Platform in order to create statistical and analytic information regarding the Platform and its use, which we may then share with third parties or make publicly available.\r\n\t\t\t\t\t\tHowever, none of this information would include your address, email address, or other contact information, or anything that could be used to identify you individually, either online or in real life.\r\n\t\t\t\t\t\tWe may publish, disclose, and use this aggregated information and non-personal information for industry analysis, demographic profiling, marketing and advertising, and other business purposes.\r\n\t\t\t\t\t\tThis information may also be used to develop website content and services that you and other users will find of interest and to target content and advertising.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\t<i>As Required by Law</i>:\r\n\t\t\t\t\t\tWe will disclose your personal information if we believe in good faith that we are permitted or required to do so by law, including in response to a court order, subpoena, or other legal demand or request.\r\n\t\t\t\t\t\tWe will use commercially reasonable efforts to notify users about law enforcement requests for their data unless prohibited by law or by the government request, or if doing so would be futile or ineffective.\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\t<i>To Protect Our Interests</i>:\r\n\t\t\t\t\t\tWe may access, preserve, and disclose your personal information if we in good faith believe it is necessary:\r\n\t\t\t\t\t\t<ol class=\"sg-alphalist\">\r\n\t\t\t\t\t\t\t<li>to respond to claims asserted against Sharingear;</li>\r\n\t\t\t\t\t\t\t<li>to enforce and administer our agreements with users, such as our <strong>Terms of Service</strong>;</li>\r\n\t\t\t\t\t\t\t<li>for fraud prevention, risk assessment, investigation, customer support, product development and de-bugging purposes; or</li>\r\n\t\t\t\t\t\t\t<li>to protect or defend the rights, property, interests, and personal safety of Sharingear, its employees, directors, shareholders, partners, affiliates, users, and members of the general public.</li>\r\n\t\t\t\t\t\t</ol>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li><i>In a Business Transfer</i>: We may sell, transfer, or share your personal information to any person or company that acquires all or substantially all of the assets or business of Sharingear, or on a merger, acquisition, or reorganization of our business, or in the event of our insolvency.</li>\r\n\t\t\t\t\t<li><i>With Your Consent</i>: We may disclose your personal information other than as described in this Privacy Policy if you have explicitly agreed that we may do so. We will make this clear to you prior to any such disclosure.</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">4. Third-party websites</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThere are a number of places on the Platform where you may click on a link to access other websites that are not owned or controlled by Sharingear and do not operate under this Privacy Policy.\r\n\t\t\t\t\tThese third-party websites may place their own cookies, web beacons and files on your device, or independently solicit and collect information, including personal information, from you.\r\n\t\t\t\t\tWe recommend that you consult the privacy policies of all third-party websites you visit.\r\n\t\t\t\t</p>\r\n\t\t\t\t<p>\r\n\t\t\t\t\tSome portions of the Platform implement Google Maps/Earth mapping services, including Google Maps API(s).\r\n\t\t\t\t\tYour use of Google Maps/Earth through the Platform is subject to Google’s terms of use (located at <a href=\"http://www.google.com/intl/en_us/help/terms_maps.html\">http://www.google.com/intl/en_us/help/terms_maps.html</a>) and Google’s privacy policy (located at <a href=\"http://www.google.com/policies/privacy/\">http://www.google.com/policies/privacy/</a>), as may be amended by Google from time to time.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">5. Your choices</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tYou may review, update, or correct the personal information in your Sharingear account by logging into your account.\r\n\t\t\t\t\tYou can choose to not provide us with certain information but that may result in you being unable to use certain features of the Platform.\r\n\t\t\t\t\tYou can request for us to delete your account entirely by emailing us at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\r\n\t\t\t\t\tPlease note that reviews, forum postings and similar materials posted by you may continue to be publicly available on the Platform in association with your first name, even after your Sharingear account is cancelled.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">6. Security of your personal information</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tWe have implemented reasonable administrative, technical, and physical security measures to protect your Personal Information against unauthorized access, destruction, or alteration; however, no method of transmission over the Internet, and no method of storing electronic information, can be 100% secure, so we cannot guarantee the absolute security of your transmissions to use and of your personal information that we store.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">7. Children</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThis Platform is not intended for use by children.\r\n\t\t\t\t\tAnyone under the age of 13 is not permitted to use the Platform and must not attempt to register an account or submit any personal information to us.\r\n\t\t\t\t\tWe do not knowingly collect any personal information from any person who is under the age of 13 or allow them to register an account.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">8. Using the platform from outside europe</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThis Privacy Policy is intended to cover collection of information on or via the Platform from residents of Europe.\r\n\t\t\t\t\tIf you are using the Platform from outside Europe, please be aware that your information may be transferred to, stored, and processed in the Europe where our servers are located and our central database is operated.\r\n\t\t\t\t\tThe data protection and other laws of Europe and other countries may not be as comprehensive as those in your country.\r\n\t\t\t\t\tBy using the Platform, you understand and agree that your information may be transferred to our facilities and those third parties with whom we share it as described in this Privacy Policy.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">9. No rights of third parties</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tThis Privacy Policy does not create rights enforceable by third parties or require disclosure of any personal information relating to users of the Platform.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">10. Changes to this Privacy Policy</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tWe will occasionally update this Privacy Policy to reflect changes in our practices and services.\r\n\t\t\t\t\tWhen we post changes to this Privacy Policy, we will revise the “Last Updated” date at the top of this Privacy Policy.\r\n\t\t\t\t\tIf we make any material changes in the way we collect, use, and/or share your personal information, we will notify you by posting a notice of the change on the Site or by sending an email to the email address you most recently provided us in your account, profile, or registration.\r\n\t\t\t\t\tWe recommend that you check the Site from time to time to inform yourself of any changes in this Privacy Policy or to any of our other policies.\r\n\t\t\t\t\tYour continued use of the Platform after we post any such change shall indicate your agreement to be bound by the revised terms.\r\n\t\t\t\t\tIf you do not wish to agree to the changed Privacy Policy, then we will not be able to continue providing the Platform to you, and your only option will be to stop accessing the Platform and deactivate your Sharingear account.\r\n\t\t\t\t\tTo deactivate your account, please email <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<h3 class=\"sg-h3 sg-blue\">11. Contact us</h3>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"row\">\r\n\t\t\t<div class=\"col-sm-offset-1 col-sm-10\">\r\n\t\t\t\t<p>\r\n\t\t\t\t\tIf you have questions or concerns about this Privacy Policy, please contact us by email at <a href=\"mailto:support@sharingear.com\">support@sharingear.com</a>.\r\n\t\t\t\t</p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t</div>\r\n\r\n\t<footer></footer>\r\n</div>\r\n";
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<a href=\"{{href}}\">\r\n    <div class=\"col-xs-12 col-sm-6 bs-reset search-results-gear\" id=\"search-results-{{resultNum}}\">\r\n        <div class=\"title sg-black-bg-25 sg-white\">{{item_type}}, {{model}}</div>\r\n        <div class=\"info sg-black-bg-25 sg-blue\">\r\n        \t<div class=\"price sg-blue-bg sg-white\"><div>From<br> <span class=\"price_a\"></span> <span class=\"sg-super currency\">{{currency}}</span></div></div>\r\n        \t<div class=\"location\">{{city}}, {{country}}</div>\r\n       \t</div>\r\n    </div>\r\n</a>\r\n";
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"view search searchiefix\">\r\n  <div class=\"jumbotron\">\r\n    <div class=\"sg-tab-panel\" id=\"search-searchform-gear\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n\r\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-technicians\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n\r\n    <div class=\"sg-tab-panel hidden\" id=\"search-searchform-vans\">\r\n      <div class=\"searchform-container sg-darkergray-bg\"></div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"container-fluid search-results\">\r\n    <div class=\"row map-row\">\r\n\t\t  <div class=\"col-sm-6 map-col\">\r\n        <div class=\"searchmap\" id=\"search-map\"></div>  \r\n      </div>\r\n\t\t  <div class=\"col-xs-12 col-sm-6 search-results-col bs-reset\">\r\n        <ul class=\"sg-tabs sg-tabs-3 sg-darkergray-bg sg-white\">\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white active\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-gear\">\r\n              <div class=\"sg-icon icon-tabbar-gear\"></div>\r\n              <div class=\"sg-btn-text\">GEAR</div>\r\n            </button>\r\n          </li>\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-technicians\">\r\n              <div class=\"sg-icon icon-tabbar-technicians\"></div>\r\n              <div class=\"sg-btn-text\">TECHNICIANS</div>\r\n            </button>\r\n          </li>\r\n    \t\t  <li class=\"sg-action-blue-bg sg-white\">\r\n            <button class=\"sg-btn-invisible\" id=\"search-tab-vans\">\r\n              <div class=\"sg-icon icon-tabbar-vans\"></div>\r\n              <div class=\"sg-btn-text\">VANS &amp; BUSES</div>\r\n            </button>\r\n          </li>\r\n        </ul>\r\n        <div class=\"row bs-reset sg-darkergray-bg sg-white currentlocation-container\">\r\n\t\t\t\t  <div class=\"col-sm-12\" id=\"search-currentlocation\"></div>\r\n        </div>\r\n        <div class=\"row searchresults bs-reset\" id=\"search-results-gear\"></div>\r\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-techprofiles\"></div>\r\n        <div class=\"row searchresults bs-reset hidden\" id=\"search-results-vans\"></div>\r\n        \r\n        <div class=\"no-results no-results-gear hidden\">\r\n          <div class=\"row sorry-section bs-reset\">\r\n            <h1>Sorry, no instruments matching your search were found.</h1>\r\n          </div>\r\n          <div class=\"row request-section bs-reset\">\r\n            <h2>Request an instrument: </h2>\r\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"no-results no-results-technicians hidden\">\r\n          <div class=\"row sorry-section bs-reset\">\r\n            <h1>Sorry, no technicians matching your search were found.</h1>\r\n          </div>\r\n          <div class=\"row request-section bs-reset\">\r\n            <h2>Request a technician: </h2>\r\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"no-results no-results-vans hidden\">\r\n          <div class=\"row sorry-section bs-reset\">\r\n            <h1>Sorry, no vehicles matching your search were found.</h1>\r\n          </div>\r\n          <div class=\"row request-section bs-reset\">\r\n            <h2>Request a vehicle: </h2>\r\n            <a href=\"javascript:;\" class=\"fb-share-btn\"><img src=\"images/fb_share_noitems.png\" class=\"responsive-img\"></a>\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row submerchant-container\" id=\"addgear-availability-submerchantform\">\r\n  <div class=\"col-sm-12 submerchant-height\">\r\n    \r\n    \r\n\r\n      <div class=\"col-sm-12 submerchant-height\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12\">\r\n            <form id=\"addgear-submerchantform\" onsubmit=\"return false;\">        \r\n              <div class=\"form-group col-sm-6\">\r\n                <label for=\"submerchantregistration-birthdate\">Date of birth:*</label>\r\n                <div class=\"birthday-select\" id=\"submerchantregistration-birthdate\">\r\n                  <select id=\"submerchantregistration-birthdate-date\" name=\"birthdate-day\"></select>/<select id=\"submerchantregistration-birthdate-month\" name=\"birthdate-month\"></select>/<select id=\"submerchantregistration-birthdate-year\" name=\"birthdate-year\"></select>\r\n                </div>\r\n              </div>\r\n              <div class=\"form-group col-sm-6\">\r\n                <label for=\"submerchantregistration-phone\">Phone:*</label>\r\n                <input type=\"text\" name=\"phone\" class=\"form-control\" id=\"submerchantregistration-phone\">\r\n              </div>\r\n              <div class=\"form-group col-sm-6\">\r\n                <label for=\"submerchantregistration-address\">Address:*</label>\r\n                <input type=\"text\" name=\"address\" class=\"form-control\" id=\"submerchantregistration-address\">\r\n              </div>\r\n              <div class=\"form-group col-sm-6\">\r\n                <label for=\"submerchantregistration-postalcode\">Postal code:*</label>\r\n                <input type=\"text\" class=\"form-control\" name=\"postal_code\" id=\"submerchantregistration-postalcode\">\r\n              </div>\r\n              <div class=\"form-group col-sm-6\">\r\n                <label for=\"submerchantregistration-city\">City:*</label>\r\n                <input type=\"text\" name=\"city\" class=\"form-control\" id=\"submerchantregistration-city\">\r\n              </div>\r\n              <div class=\"form-group col-sm-6\">\r\n                <label for=\"submerchantregistration-region\">Region:</label>\r\n                <input type=\"text\" name=\"region\" class=\"form-control\" id=\"submerchantregistration-region\">\r\n              </div>\r\n              <div class=\"form-group col-sm-6\">\r\n                <label for=\"submerchantregistration-region\">Country:</label>\r\n                <select class=\"form-control\" name=\"country\" id=\"submerchantregistration-country\">\r\n                  <option value=\"\">Select your country</option>\r\n                </select>\r\n              </div>\r\n              <div class=\"form-group col-sm-6\">\r\n                <label for=\"submerchantregistration-region\">Nationality:</label>\r\n                <select class=\"form-control\" name=\"nationality\" id=\"submerchantregistration-nationality\">\r\n                  <option value=\"\">Select your nationality</option>\r\n                </select>\r\n              </div>\r\n              <div class=\"hidden\" id=\"iban-container\">\r\n                <div class=\"form-group col-sm-6\">\r\n                  <label for=\"submerchantregistration-iban\">IBAN:<span id=\"iban-hint\" class=\"submerchant-hits\">[?]</span></label>\r\n                  <input type=\"text\" name=\"iban\" class=\"form-control\" id=\"submerchantregistration-iban\">\r\n                </div>\r\n                <div class=\"form-group col-sm-6\">\r\n                  <label for=\"submerchantregistration-swift\">BIC/SWIFT:<span id=\"swift-hint\" class=\"submerchant-hits\">[?]</span></label>\r\n                  <input type=\"text\" name=\"swift\" class=\"form-control\" id=\"submerchantregistration-swift\">\r\n                </div>\r\n              </div>\r\n              <div class=\"hidden\" id=\"aba-container\">\r\n                <div class=\"form-group col-sm-6\">\r\n                  <label for=\"submerchantregistration-accountnumber\">Account number:*</label>\r\n                  <input type=\"text\" name=\"iban\" class=\"form-control\" id=\"submerchantregistration-accountnumber\">\r\n                </div>\r\n                <div class=\"form-group col-sm-6\">\r\n                  <label for=\"submerchantregistration-aba\">ABA (routing transit number):*</label>\r\n                  <input type=\"text\" name=\"swift\" class=\"form-control\" id=\"submerchantregistration-aba\">\r\n                </div>\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </div>\r\n\r\n        <div id=\"submerchantregistration-terms\">\r\n          <div class=\"row submerchant-terms-styles\">\r\n            <div class=\"col-sm-12\">\r\n              <p class=\"text-center\">\r\n                By pressing accept you confirm that you have read and accepted the Sharingear Terms and Conditions.\r\n                If you press cancel your gear will be saved, but it will not be possible to rent it.\r\n              </p>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"row hidden\" id=\"submerchantregistration-terms-container\">\r\n      <div class=\"col-sm-12\">\r\n        \r\n      </div>\r\n    </div>\r\n\r\n  </div>\r\n</div>";
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view techprofile sg-lightgray-bg\">\r\n\t<div class=\"row bs-reset\">\r\n\t\t<div class=\"col-sm-4 bs-reset\">\r\n\t\t\t<div class=\"row sg-card sg-white-bg profile-container\">\r\n\t\t\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\r\n\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\r\n\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\r\n\t\t\t\t\t<hr>\r\n\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"row sg-card sg-white-bg\">\r\n\t\t\t\t<div class=\"col-sm-12 map-container\">\r\n\t\t\t\t\t<div class=\"sg-gray\"><i class=\"fa fa-home\"></i><span class=\"sg-darkergray\"> {{location}}</span></div>\r\n\t\t\t\t\t<div class=\"map\" id=\"techprofile-map\"></div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-8 bs-reset\">\r\n\t\t\t<div class=\"row sg-card sg-white-bg sg-no-mobile\">\r\n\t\t\t\t<div class=\"col-sm-12 sg-gray profile-type\">\r\n\t\t\t\t\t<div class=\"sg-icon icon-dashboard-yourtechprofile\"></div> TECHNICIAN PROFILE\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"row sg-card sg-white-bg\">\r\n\t\t\t\t<div class=\"col-sm-7 sg-darkergray title-container\">\r\n\t\t\t\t\t<div class=\"sg-icon icon-addtechprofile-{{icon}} sg-darkgray\"></div> <div class=\"techprofile-title\">{{roadie_type}}</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-sm-5\">\r\n\t\t\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\r\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\r\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-displayed_price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\r\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-displayed_price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\r\n\t\t\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"techprofile-displayed_price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\r\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"techprofile-action-unavailable\">UNAVAILABLE</button>\r\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-book\">BOOK</button>\r\n\t\t\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"techprofile-action-edit\">EDIT</button>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"row sg-card sg-white-bg experience\">\r\n\t\t\t\t<div class=\"col-xs-6\">\r\n\t\t\t\t\t\t<div class=\"sg-darkergray\">Experience: <span class=\"sg-yellow\">{{experience}}</span></div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-6\">\r\n\t\t\t\t\t<div class=\"social sg-gray text-right\"><div class=\"sharethistech\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"techprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"row sg-card sg-white-bg\">\r\n\t\t\t\t<div class=\"col-sm-12 profile-text\">\r\n\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">ABOUT</h4>\r\n\t\t\t\t\t\t\t<p>{{about}}</p>\r\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">CURRENTLY WORKING FOR</h4>\r\n\t\t\t\t\t\t\t<p>{{currently}}</p>\r\n\t\t\t\t\t\t\t<h4 class=\"sg-gray\">REFERENCES</h4>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t<div class=\"col-sm-4\">\r\n\t\t\t\t\t\t\t<h5>Bands &amp; artists toured with:</h5>\r\n\t\t\t\t\t\t\t<p>{{tours}}</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"col-sm-4\">\r\n\t\t\t\t\t\t\t<h5>Companies, venues and festivals worked for:</h5>\r\n\t\t\t\t\t\t\t<p>{{companies}}</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"col-sm-4\">\r\n\t\t\t\t\t\t\t<h5>Years of experience:</h5>\r\n\t\t\t\t\t\t\t<p>{{xp_years}}</p>\r\n\t\t\t\t\t\t\t<h5>Genres interested in:</h5>\r\n\t\t\t\t\t\t\t<p>{{genres}}</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t<div class=\"col-sm-4\">\r\n\t\t\t\t\t\t\t<h5>Bands worked for:</h5>\r\n\t\t\t\t\t\t\t<p>{{bands}}</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t<div class=\"row techprofilelistborder\">\r\n\t\t\t\t\t\t<div class=\"techprofilelistname\">{{name}} is also working as </div>\r\n\t\t\t\t\t\t<div id=\"techprofilelist\" class=\"techprofilelist\"></div>\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n</div>";
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"searchform\">\r\n  <form class=\"form-inline\" id=\"techprofilesearchform-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\r\n    <div class=\"form-group\">\r\n      <label class=\"sg-blue\">Find your technician</label>\r\n      <input type=\"search\" class=\"form-control\" id=\"techprofilesearch-techprofile\" placeholder=\"technician, manager, etc.\">\r\n      <div class=\"suggestion-box hidden\" id=\"techprofiles-suggestions-box\"></div>\r\n    </div><div class=\"form-group\">\r\n      <label class=\"sg-blue\">Find a location</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-location\" placeholder=\"\">\r\n    </div><div class=\"form-group search-pickup-container\">\r\n      <label class=\"sg-blue\">Pickup</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-pickup\" placeholder=\"15/08/1969\" >\r\n    </div><div class=\"form-group search-return-container\">\r\n      <label class=\"sg-blue\">Delivery</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"techprofilesearch-return\" placeholder=\"18/08/1969\" >\r\n    </div><div class=\"form-group submit-container\">\r\n      <input type=\"submit\" id=\"techprofilesearchform-submit-btn\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\r\n    </div>\r\n  </form>\r\n</div>\r\n";
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"billboard-wrapper wall-of-text\" style=\"padding-top:30px\">\n<div class=WordSection1><h1 style=\"color: #00aeff\">SHARINGEAR Terms of Service</h1>\n\n<p><span>Last Updated: 26 <sup>th</sup> of November 2014</span></p>\n\n<p><span>&nbsp;</span></p>\n\n<p><b> <span>Please readthe following terms of service carefully (the “Terms”). By accessing the Site,Applications or Services of Sharingear, you agree to be bound by these Terms,as amended from time to time. If you do not agree to these Terms, you areprohibited from using or accessing the Site, Application, or Services.</span>\n</b></p>\n\n<p><span>Sharingear IVS(hereafter referred to as “Sharingear” “we,” “us,” or “our”) provides an onlineplatform that connects owners of equipment, musical instruments and otherartistic tools (the “Equipment”) with people seeking to rent such Equipment(collectively, the “Services”), which Services are accessible at </span>\n\t<span>                <a href=\"http://www.sharingear.com\"> <span style=''>www.sharingear.com</span> </a>            </span>\n\t<span>and any other websites through which Sharingear makes the Services available(collectively, the “Site”) and via applications for mobile devices, if any (the“Application”). The Site, Application, and Services are sometimes collectivelyreferred to herein as the “Platform.” By using the Site and/or Application, youagree to comply with and be legally bound by the terms and conditions of theseTerms of Service (“Terms”), whether or not you become a registered user of theServices. These Terms govern your access to and use of the Site, Application,Services, and all Collective Content (defined below), and constitute a bindinglegal agreement between you and Sharingear. Please read carefully these Termsand our Privacy Policy which is incorporated by reference into these Terms. Ifyou do not agree to these Terms, you have no right to obtain information fromor otherwise continue to use the Platform. Failure to use the Platform inaccordance with these Terms may subject you to civil and criminal penalties.</span>\n</p>\n\n<p><span>Youunderstand and agree that Sharingear is not a party to any agreements enteredinto between Owners and Renters (defined below). Sharingear is not a broker,agent, or insurer and has no control over the conduct of Owners, Renters, andother users of the Platform or any Equipment, and disclaims all liability inthis regard.</span>\n</p>\n\n<p><b> <i> <span>KeyDefinitions</span> </i> </b></p>\n\n<p><span>- “Renter”means a Member who requests from an Owner a reservation of Equipment via thePlatform, or a Member who uses Equipment and is not the Owner of suchEquipment.</span>\n</p>\n\n<p><span>-“Collective Content” means Member Content and Sharingear Content.</span></p>\n\n<p><span>- “Content”means text, graphics, images, music, software (excluding the Site andApplication), audio, video, information, or other materials.</span>\n</p>\n\n<p><span>- “Gear”means Equipment that is listed by an Owner as available for rental via thePlatform.</span></p>\n\n<p><span>- “Member”means a person who completes Sharingear’s account registration process,including but not limited to Owners and Renters, as described under Section 4(“Your Account”) below.</span>\n</p>\n\n<p><span>- “MemberContent” means all Content that a Member posts, uploads, publishes, submits, ortransmits to be made available through the Platform.</span>\n</p>\n\n<p><span>- “Owner”means a Member who creates a Gear via the Platform.</span></p>\n\n<p><span>- “SharingearContent” means all Content that Sharingear makes available through the Platform,including any Content licensed from a third party, but excluding MemberContent.</span>\n</p>\n\n<p><span>- “Tax” or“Taxes” mean any sales taxes, value added taxes (VAT), goods and services taxes(GST), transient occupancy taxes, tourist or other visitor taxes, accommodationor lodging taxes, fees that equipment or accommodation providers may berequired by law to collect and remit to governmental agencies, and othersimilar municipal, state, federal, and national indirect or other withholdingtaxes, and personal or corporate income taxes.</span>\n</p>\n\n<p><b> <span>1.Modification</span> </b></p>\n\n<p><span>Sharingearreserves the right, in our sole discretion, to modify the Platform or to modifythese Terms, including the Service Fees (defined below), at any time andwithout prior notice. If we modify these Terms, we will post the modificationon the Site or via the Application to provide you with notice of themodification. We will also update the “Last Updated” date at the top of theseTerms. By continuing to access or use the Platform after we have posted amodification on the Site or via the Application or have provided you withnotice of a modification, you are indicating that you agree to be bound by themodified Terms. If the modified Terms are not acceptable to you, your onlyrecourse is to cease using the Platform.</span>\n</p>\n\n<p><b> <span>2.Eligibility</span> </b></p>\n\n<p><span>ThePlatform is intended for use solely by persons who are 18 years of age orolder. Any access to or use of the Platform by anyone under 18 is expresslyprohibited. By accessing or using the Platform you represent and warrant thatyou are 18 years of age or older.</span>\n</p>\n\n<p><b> <span>3. Services</span> </b></p>\n\n<p><span>As statedabove, Sharingear makes available an online platform or marketplace withrelated technology for Owners and Renters to meet online and arrange for thereservation of Equipment directly with each other via the Platform. You mayview Gear as an unregistered visitor to the Site or Application; however, youmust be a registered Member (defined below) to book or create a Gear.</span>\n</p>\n\n<p><span>Sharingearis not an owner of Equipment and does not own, sell, resell, furnish, provide,rent, re-rent, manage and/or control Equipment, including but not limited toreal property, instruments, and transportation, delivery, or travel services. Sharingear’sresponsibilities are limited to: (i) facilitating the availability of the Site,Application, and Services; and (ii) serving as the limited agent of each Ownerfor the purposes of accepting payments from Renters on behalf of the Owner.</span>\n</p>\n\n<p><span>SHARINGEARCANNOT AND DOES NOT CONTROL THE CONTENT CONTAINED IN ANY GEARS AND THECONDITION, LEGALITY, OR SUITABILITY OF ANY EQUIPMENT. SHARINGEAR IS NOT RESPONSIBLEFOR AND DISCLAIMS ANY AND ALL LIABILITY RELATED TO ANY AND ALL GEARS ANDEQUIPMENT. ALL RESERVATIONS ARE MADE AT THE OWNER’S AND RENTER’S OWN RISK.</span>\n</p>\n\n<p><b> <span>4. YourAccount</span> </b></p>\n\n<p><span>In order toaccess certain features of the Platform and to book or create a Gear profile,you must first become a Member by registering an account (“Account”), either byproviding your email address and setting a password or through certain thirdparty social networking sites (“SNS”), including, without limitation, Facebook,via the Site or application. As part of the functionality of the Platform, youmay link your Account with your SNS accounts (each such SNS account, a “ThirdParty Account”), by either: (i) providing your Third Party Account logininformation to Sharingear through the Platform; or (ii) allowing Sharingear toaccess your Third Party Account as permitted under the applicable terms andconditions that govern your use of each Third Party Account. You represent thatyou are entitled to disclose your Third Party Account login information to Sharingearand/or grant Sharingear access to your Third Party Account (including, but notlimited to, for use for the purposes described herein), without breach by youof any of the terms and conditions that govern your use of the applicable ThirdParty Account and without obligating Sharingear to pay any fees or making Sharingearsubject to any usage limitations imposed by such third party service providers.By granting Sharingear access to any Third Party Accounts, you understand thatSharingear will access, make available and store (if applicable) any text,graphics, images, information and other materials you have provided to andstored in your Third Party Account, subject to your privacy settings in suchThird Party Account, if any (“SNS Content”) so that it is available on andthrough the Platform via your Account and Account profile page. You have theability to disable the connection between your Account and your Third PartyAccounts, at any time, by contacting </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>. Pleasenote that your relationship with the SNS associated with your Third PartyAccounts is governed solely by your agreement(s) with such SNS. Sharingearmakes no effort to review any SNS Content for any purposes, including, but notlimited to, for accuracy, legality, or non-infringement, and Sharingear is notresponsible for any SNS Content.</span>\n</p>\n\n<p><span>We willcreate your Account and your Account profile page for your use of the Platformbased upon the personal information you provide to us or that we obtain via anSNS as described above. You may not have more than one (1) active Account. Youagree to provide accurate, current, and complete information during the registrationprocess and to update such information to keep it accurate, current, andcomplete. Sharingear reserves the right to suspend or terminate your Accountand your access to the Platform if you create more than one (1) SharingearAccount or if any information provided during the registration process orthereafter process to be inaccurate, not current, or incomplete. You areresponsible for safeguarding your password. You agree that you will notdisclose your password to any third party and that you will take soleresponsibility for any activities or actions under your Account, whether or notyou have authorized such activities or actions. You will immediately notify usof any unauthorized use of your Account.</span>\n</p>\n\n<p><b> <span>5. Gear</span> </b> <span></span></p>\n\n<p><span>As aMember, you may create Gear profiles. To create a Gear profile, you will beasked a variety of questions about the Equipment to be listed, including butnot limited to a description, the location, the condition, and availability ofthe Equipment, additional services or features that can be added to areservation request at the Renter’s option (i.e., “add-ons”), and pricing andrelated rules and financial terms. Gears will be made publicly available viathe Platform. Other Members will be able to book your Gear via the Platformbased upon the information provided in the Gear. You understand and agree thatonce a Renter requests a reservation of your Gear, you may not request theRenter to pay a higher price than in the reservation request.</span>\n</p>\n\n<p><span>Youacknowledge and agree that you are responsible for any and all Gear profilesyou post. Accordingly, you represent and warrant that any Gear you post and thereservation of, or a Renter’s use of, Equipment in a Gear profile you post: (i)will not breach any agreements you have entered into with any third parties,such as ownership, lease or rental agreements; and (ii) will (a) be incompliance with all applicable laws, Tax requirements, and rules andregulations that may apply to any Equipment included in a Gear profile you postand (b) not conflict with the rights of third parties. Please note that Sharingearassumes no responsibility for an Owner’s compliance with any agreements with orduties to third parties, applicable laws, rules and regulations. Sharingearreserves the right, at any time and without prior notice, to remove or disableaccess to any Gear profile for any reason, including Gear profiles that Sharingear,in its sole discretion, considers to be objectionable for any reason, inviolation of these Terms or otherwise harmful to the Platform.</span>\n</p>\n\n<p><span>If you arean Owner, you understand and agree that Sharingear does not act as an insureror as your contracting agent. If a Renter requests a reservation of yourEquipment and uses your Equipment, any agreement you enter into with suchRenter is between you and the Renter and Sharingear is not a party thereto.Notwithstanding the foregoing, Sharingear services as the limited authorizedpayment collection agent of the Owner for the purposes of accepting, on behalfof the Owner, payments from Renters of such amounts stipulated by the Owner(including delivery or other fees and/or Taxes).</span>\n</p>\n\n<p><span>If you arean Owner, Sharingear makes certain tools available to you to help you makeinformed decisions about which Members you choose to approve for booking yourEquipment. You acknowledge and agree that, as an Owner, you are responsible foryour own acts and omissions and are also responsible for the acts and omissionsof any individuals who may have access to the Equipment at your request orinvitation, excluding the Renter.</span>\n</p>\n\n<p><b> <span>&nbsp;</span> </b></p>\n\n<p><b> <span>6. NoEndorsement</span> </b> <span> .</span></p>\n\n<p><span>Sharingeardoes not endorse any Member or any Equipment. Members are required by theseTerms to provide accurate information, and although Sharingear may undertakeadditional checks and processes designed to help verify or check the identitiesor backgrounds of users, we do not make any representations about, confirm, orendorse any Member or the Member’s purported identity or background.</span>\n</p>\n\n<p><span>Anyreferences in the Platform to a Member being “verified” or “connected” (orsimilar language) only indicate that the Member has completed a relevantverification process and do not represent anything else. Any such descriptionis not an endorsement, certification or guarantee by Sharingear about anyMember, including of the Member’s identity and whether the Member istrustworthy, safe, or suitable. Instead, any such description is intended to beuseful information for you to evaluate when you make your own decisions aboutthe identity and suitability of others whom you contact or interact with viathe Platform. We recommend that you always exercise due diligence and care whendeciding whether to book from an Owner or accept a reservation request from aRenter, or to have any other interaction with any other Member. We are notresponsible for any damage or harm resulting from your interactions with otherMembers.</span>\n</p>\n\n<p><span>By usingthe Platform, you agree that any legal remedy or liability that you seek toobtain for actions and omissions of other Members or other third parties willbe limited to a claim against the particular Members or other third parties whocaused you harm. You agree not to attempt to impose liability on or seek anylegal remedy from Sharingear with respect to such actions or omissions.Accordingly, we encourage you to communicate directly with other Members on thePlatform regarding any reservations or Gears made by you. This limitation shallnot apply to any claim by an Owner against Sharingear regarding the remittanceof payments received from a Renter by Sharingear on behalf of an Owner, whichinstead shall be subject to the limitations described in Section 18 below(“Limitation of Liability”).</span>\n</p>\n\n<p><b> <span>7. Reservationsand Financial Terms</span> </b></p>\n\n<p><b> <i> <span>KeyDefinitions</span> </i> </b></p>\n\n<p><span>-“Equipment Fees” means the amounts that are due and payable by a Renter inexchange for that Renter’s rental of Equipment, inclusive of any and all“add-ons” (such as delivery or pick-up services) selected by the Renter. TheOwner alone, and not Sharingear, determines these amounts. The Owner may in hisor her sole discretion decide to include Taxes that the Owner determines thathe or she has to collect in connection with the reservation.</span>\n</p>\n\n<p><span>- “RenterFees” means the fee that Sharingear charges a Renter for the use of its onlineplatform, which is calculated as a fixed percentage on top of the applicableEquipment Fees. The Renter Fees will be displayed to the Renter when the Renteris asked whether to send a reservation request to an Owner.</span>\n</p>\n\n<p><span>- “OwnerFees” means the fee that Sharingear charges an Owner for the use of its onlineplatform, which is calculated as a fixed percentage on top of the applicableEquipment Fees. The Owner Fees will be displayed to the Owner when the Owner isasked whether to approve or reject a reservation request from a prospectiveRenter.</span>\n</p>\n\n<p><span>- “ServiceFees” means collectively the Renter Fees and Owner Fees.</span></p>\n\n<p><span>- “TotalFees” means collectively the Equipment Fees and the Renter Fees (plus any Taxesin respect of Renter Fees).</span>\n</p>\n\n<p><b> <i> <span>Reservationand Financial Terms for Owners</span> </i> </b></p>\n\n<p><span>If you arean Owner and a reservation is requested for your Equipment via the Platform,you will be required to either approve or reject the reservation within 24hours of when the reservation is requested (as determined by Sharingear in itssole discretion) (the “Reservation Request Period”) or the reservation requestwill be automatically cancelled. During the Reservation Request Period, untilthe Owner either approves or rejects the reservation, the Gear will be in abooked state and no other Member may make a reservation request for the samedays and times, until the Owner either approves or rejects the pendingreservation request or the Reservation Request Period has expired. When areservation for your Equipment is requested via the Platform, we will sharewith you (i) the first and last name of the Renter who has requested thereservation, (ii) a link to the Renter’s Account profile page, (iii) the Rentersaddress, and (iv) if the Renter has requested delivery of the Equipment, theaddress where the Equipment is requested to be delivered by the Owner, so thatyou can view such information before approving or rejecting the reservation. Ifyou are unable to approve or decide to reject a reservation request of yourEquipment within the Reservation Request Period, the requested reservation willbe cancelled by Sharingear and the credit card will not be charged and anypre-authorization of such credit card will be released, unless in Italy, Greeceand Spain, the pre-authorization has a particular running. In fact, thepre-authorized amount is debited from the bank account. Pre-authorized fundsare stored by the bank. The user will get his/her funds back within 7 days.When you approve a reservation requested by a Renter, the reservation is deemedconfirmed, and Sharingear will send you an email confirming such reservation.</span>\n</p>\n\n<p><span>Sharingear willcollect the Total Fees at the time of reservation confirmation (i.e., when theOwner approves the reservation request) and will initiate payment of theEquipment Fees (less Sharingear’s Owner Fees and any Taxes in respect of theOwner Fees) to the Owner when the Owner receives the Equipment from Renter andhas checked it for any damage and has made the confirmation for receiving onthe Sharingear platform. The time it takes for the Owner to receive payouts maydepend upon the method for receiving payouts chosen by the Owner. Some methodsinvolve the use of third-party payment processors, who may impose their ownadditional charges for the use of their services on the Owner, including bydeducting their charges from the payout amount.</span>\n</p>\n\n<p><span>If you oweor agree to pay any amount to Sharingear (whether as a result of yourreservations or actions as a Renter or otherwise), then Sharingear may (but isnot obligated to) withhold the amount owing to Sharingear from any payoutamounts due to you as an Owner and use the withheld amount to setoff the amountowed by you to Sharingear. If Sharingear does so, then your obligation to pay Sharingearwill be extinguished to the extent of the amount withheld by Sharingear, and Sharingearwill cease to owe you any obligations, including, but not limited to, anyobligation to pay you, with respect to the amount withheld.</span>\n</p>\n\n<p><b> <i> <span>Appointmentof Sharingear as Limited Payment Collection Agent for Owner</span> </i> </b></p>\n\n<p><span>Each Ownerhereby appoints Sharingear as the Owner’s limited payment collection agentsolely for the purposes of accepting the Equipment Fees from Renters.</span>\n</p>\n\n<p><span>Each Owneragrees that payment made by a Renter through Sharingear shall be considered thesame as a payment made directly to the Owner, and the Owner will make theEquipment available to the Renter in the agreed-upon manner as if the Owner hasreceived the Equipment Fees. Each Owner agrees that Sharingear may, inaccordance with the Sharingear cancellation policy set forth below(“Cancellation and Refunds”), (i) permit the Renter to cancel the reservationand (ii) refund to the Renter that portion of the Equipment Fees specified inthe applicable cancellation policy. Each Owner understands that as Sharingearaccepts payments from Renters as the Owner’s limited payment collection agent,Sharingear’s obligation to pay the Owner is subject to and conditional upon Sharingearsuccessfully receiving the payments from Renters. Sharingear does not guaranteepayments to Owners for amounts that have not been successfully received fromRenters. In accepting appointment as the limited authorized agent of the Owner,Sharingear assumes no liability for any acts or omissions of the Owner.</span>\n</p>\n\n<p><span>If you arean Owner, and as a condition of your appointment of Sharingear as your limitedpayment collection agent, you understand that you may be deemed a sub-merchantof Sharingear under its agreement with its third party payment service providerand that you may be subject to terms and conditions governing use of that thirdparty’s service and that third-party’s personal information collectionpractices.</span>\n</p>\n\n<p><span>Please notethat Sharingear does not currently charge fees for the creation of Gearprofiles or to be a Member. However, you as an Owner acknowledge and agree thatSharingear reserves the right, in its sole discretion, to charge you for andcollect fees from you for the creation of Gear profiles or for being a Member.Please note that Sharingear will provide notice of any Gear fee collection viathe Platform prior to implementing such a Gear fee feature.</span>\n</p>\n\n<p><b> <i> <span>Reservationsand Financial Terms for Renters</span> </i> </b></p>\n\n<p><span>The Owners,not Sharingear, are solely responsible for honoring any confirmed reservationsand making available any Equipment booked through the Platform. If you, as aRenter, choose to enter into a transaction with an Owner for the reservation ofEquipment, you agree and understand that you will be required to enter into anagreement with the Owner and you agree to accept any terms, conditions, rulesand restrictions associated with such Equipment imposed by the Owner. Youacknowledge and agree that you, and not Sharingear, will be responsible forperforming the obligations of any such agreements, that Sharingear is not aparty to such agreements, and that, with the exception of its payment obligationshereunder, Sharingear disclaims all liability arising from or related to anysuch agreements. You further acknowledge and agree that, notwithstanding thefact that Sharingear is not a party to the agreement between you and the Owner,Sharingear acts as the Owner’s payment collection agent for the limited purposeof accepting payments from you on behalf of the Owner. Upon your payment of theTotal Fees to Sharingear, your payment obligation to the Owner for theEquipment Fees is extinguished, and Sharingear is responsible for remitting theEquipment Fees (less Sharingear’s Owner Fees and any Taxes in respect of theOwner Fees), in the manner described in these Terms. In the event that Sharingeardoes not remit any such amounts as described in these Terms, such Owner willhave recourse only against Sharingear.</span>\n</p>\n\n<p><span>The TotalFees payable will be displayed to a Renter before the Renter sends areservation request to an Owner. As noted above, the Owner is required toeither approve or reject the reservation request within the Reservation RequestPeriod, otherwise the reservation request will be automatically cancelled. If areservation request is cancelled (i.e., not approved by the applicable Owner),any amounts collected by Sharingear will be refunded to such Renter, dependingon the selections the Renter makes via the Site and/or Application, and anypre-authorization of such Renter’s credit card will be released, if applicable</span>\n</p>\n\n<p><span>You, as aRenter, agree to pay Sharingear for the Total Fees for all reservationsrequested in connection with your Sharingear Account if such requestedreservations are approved by the applicable Owner. In order to establish areservation pending the applicable Owner’s confirmation of your requestedreservation, you understand and agree that Sharingear, on behalf of the Owner,reserves the right, in its sole discretion, to (i) obtain a pre-authorizationvia your credit card for the Total Fees or (ii) charge your card a nominalamount, not to exceed one ($1) dollar, or a similar sum in the currency inwhich you are transacting (e.g., one euro or one British pound), to verify yourcredit card. Once Sharingear receives approval of your reservation from theapplicable Owner, Sharingear will collect the Total Fees in accordance withthese Terms and the pricing terms set forth in the applicable Gear profile. Atthis time Sharingear may also collect the Security Deposit (defined below) or aportion thereof, in its sole discretion. Please note that Sharingear cannotcontrol any fees that may be charged to a Renter by his or her bank related toSharingear’s collection of the Total Fees, and Sharingear disclaims allliability in this regard.</span>\n</p>\n\n<p><span>Inconnection with your requested reservation, you will be asked to providecustomary billing information such as name, billing address, and credit cardinformation either to Sharingear or its third-party payment processor. Youagree to pay Sharingear for any approved reservations made in connection withyour Sharingear Account in accordance with these Terms by one of the methodsdescribed on the Site or Application, e.g. by PayPal or credit card. You herebyauthorize the collection of such amounts by charging the credit card providedas part of requesting the reservation, either by Sharingear or indirectly, viaa third-party online payment processor or by one of the payment methods describedon the Site or Application. If you are directed to Sharingear’s third-partypayment processor, you may be subject to terms and conditions governing use ofthat third party’s service and that third-party’s personal informationcollection practices. Please review such terms and conditions and privacypolicy before using the services. Once your confirmed reservation transactionis complete, you will receive a confirmation email summarizing your confirmedreservation.</span>\n</p>\n\n<p><b> <i> <span>SecurityDeposits</span> </i> </b></p>\n\n<p><span>Sharingear choosesto include a security deposit in the reservation billing (“Security Deposits”),based on a fixed amount of the actual value of the respective Equipment in the Gearprofile. Each reservation billing will describe the Security Deposit amount as afixed percentage of the value of each respective Equipment. Sharingear will, inits capacity as the payment collection agent of the Owner, use its commerciallyreasonable efforts to either: (i) charge the Renter’s credit card at the timeof reservation confirmation the Security Deposit amount, or (ii) obtain apre-authorization of the Renter’s credit card in the amount of the SecurityDeposit, at the time of reservation confirmation or within a reasonable timeprior to the Renter’s use of the Owner’s Equipment. Sharingear will also useits commercially reasonable efforts to address Owner’s requests and claimsrelated to Security Deposits, but Sharingear is not responsible foradministering or accepting any claims by Owners related to Security Depositsand disclaims any and all liability in this regard.</span>\n</p>\n\n<p><b> <i> <span>ServiceFees</span> </i> </b></p>\n\n<p><span>In considerationfor the use of Sharingear’s online marketplace and Platform, Sharingear chargesthe Services Fees. Where applicable, Taxes may also be charged in respect ofthe Owner Fees and Renter Fees. Sharingear deducts the Owner Fees from theEquipment Fees before remitting the balance to the Owner as described in theseTerms. Renter Fees are, as noted above, included in the Total Fees.</span>\n</p>\n\n<p><span>Balanceswill be remitted by Sharingear to Owners via direct deposit or other paymentmethods described on the Site or via the Application, depending on the currencyselections the Owner makes via the Platform. Amounts may be rounded up or downas described in the “Rounding Off “ section below.</span>\n</p>\n\n<p><span>Please notethat Sharingear may impose or deduct foreign currency processing costs on orfrom any remittances by Sharingear in currencies other than Euros. Except asotherwise provided herein, Service Fees are non-refundable.</span>\n</p>\n\n<p><b> <i> <span>&nbsp;</span> </i> </b></p>\n\n<p><b> <i> <span>EquipmentDamage, Theft or Loss - RENTER</span> </i> </b></p>\n\n<p><span>Youacknowledge and agree that, as a Renter, you are responsible for your own actsand omissions and are also responsible for the acts and omissions of anyindividuals whom you allow to use, invite to, or otherwise provide access tothe Equipment. As a Renter, you are responsible for returning or leaving theEquipment, as applicable, in the condition it was in when you arrived and/orreceived it, as applicable. In the event that an Owner claims otherwise andprovides evidence of damage, loss, or theft, including but not limited tophotographs, Owner agrees to contact Sharingear by sending a Damage reportthrough the Sharingear contact form. After being notified of the claim andgiven forty-eight (48) hours to respond, the payment (in addition to any thirdparty transaction fees incurred by Sharingear in connection therewith) and the SecurityDeposit held by Sharingear, if any, and the balance due, if any, will becharged to and                <span>taken from the credit card onfile in Renters Sharingear Account. Sharingear also reserves the right tocharge the credit card on file in your Sharingear Account, or otherwise collectpayment from you and pursue any avenues available to Sharingear in this regard,including Security Deposits, in situations in which you have been determined,in Sharingear’s sole discretion, to have damaged, lost, or misappropriated anyEquipment, in relation to any payments made by Sharingear to Owners, plus anythird party payment transaction fees incurred in connection therewith</span>.If we are unable to charge the credit card on file or otherwise collect paymentfrom you, you agree to remit payment to the applicable Owner or to Sharingear,if applicable.            </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>BothRenters and Owners agree to cooperate with and assist Sharingear in good faithand to provide Sharingear with such information and take such actions as may bereasonably requested by Sharingear, in connection with any complaints or claimsmade by Members relating to the Equipment or any personal or other propertyused or available in connection with the Equipment or with respect to anyinvestigation undertaken by Sharingear or a representative of Sharingearregarding use or abuse of the Platform. If you are a Renter, upon Sharingear’sreasonable request, and to the extent you are reasonably able to do so, youagree to participate in mediation or similar resolution process with an Owner,at no cost to you, which process will be conducted by Sharingear or a thirdparty selected by Sharingear, with respect to losses for which the Owner isrequesting payment from Sharingear in connection with your reservation ofEquipment or use of the Platform.</span>\n</p>\n\n<p><span>If you area Renter, you understand and agree that Sharingear reserves the right, in itssole discretion, to withdraw deposit and make a claim related to any damage orloss that you may have caused or been responsible for to Equipment or anypersonal or other property used or available in connection with the Equipment.You agree to cooperate with and assist Sharingear in good faith, and to provideSharingear with such information as may be reasonably requested by Sharingear. </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>If you area Renter and you do not return the Equipment to the Owner at the conclusion ofthe reservation and you do not agree within twenty-four (24) hours to schedulea new return time, or do not return the Equipment at such rescheduled returntime, then Owner agrees to file a report with the applicable police departmentand provide a copy of such report to Sharingear. In filing the report, Owner isrequired to notify the police department of the Security Deposit and that Sharingearmay ultimately be subrogated to Owner’s right to recovery of the Equipment. TheOwner must also authorize the police department to discuss and provide anyinformation regarding the case with Sharingear.</span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><b> <i> <span>GeneralReservation and Financial Terms</span> </i> </b></p>\n\n<p><u> <span>Cancellationsand Refunds</span> </u></p>\n\n<p><span>If, as aRenter, you cancel your requested reservation before the requested reservationis confirmed by an Owner, Sharingear will cancel any pre-authorization to yourcredit card but will not refund any nominal amounts charged to your credit cardin connection with the requested reservation. If the cancellation is madewithin the twenty-four hour of the requested reservation by the Renter and therequested reservation is not confirmed by an Owner, Sharingear will deduct 50% ofthe Security Deposit from the Renters account. A 25% refund will be transferredto the Owner and the remaining 25% refund will be transferred to Sharingear.  </span>\n</p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>&nbsp;</span></p>\n\n<p><span>If an Ownercancels a confirmed reservation made via the Platform, (i) Sharingear willrefund the Total Fees for such reservation to the applicable Renter within acommercially reasonable time of the cancellation and (ii) the Renter mayreceive an email or other communication from Sharingear containing alternative Gearprofiles and other related information. If the Renter requests a reservationfrom one of the alternative Gear profiles and the Owner associated with suchalternative Gear profiles confirms the Renter’s requested reservation, then theRenter agrees to pay Sharingear the Total Fees relating to the confirmedreservation for the Equipment in the alternative Gear profile, in accordancewith these terms. If an Owner cancelled a confirmed reservation and you, as aRenter, have not received an email or other communication from Sharingear,please contact Sharingear at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>.</span></p>\n\n<p><span>If, as anOwner, you cancel a confirmed reservation, Sharingear may apply penalties orconsequences to you or your Gear profile, including (i) publishing an automatedreview on your Gear profile indicating that a reservation was cancelled, (ii)keeping the calendar for your Gear unavailable or blocked for the dates of thecancelled reservation, or (iii) imposing a cancellation fee (to be withheldfrom your future payouts). You will be notified of the situations in which acancellation fee applies before you decide to cancel.</span>\n</p>\n\n<p><span>If, as aRenter, you want to cancel a reservation due to an Equipment Issue (definedbelow), within twenty-four hours after the start of your reservation, we agree,at our discretion, to use our reasonable efforts to find and book you otherEquipment for the time left in your reservation which in our determination isreasonably comparable to the Equipment described in your original reservationin terms of type, features, and quality. All determinations of Sharingear withrespect to refunds requested related to Equipment Issues, including withoutlimitation the size of any refund, shall be final and binding on the Rentersand Owners. An “Equipment Issue” means any one of the following: (a) the Ownerof the Equipment (i) cancels a reservation shortly before the scheduled startof the reservation, or (ii) fails to provide the Renter with the reasonableability to access the Equipment; or (b) the description of the Equipment in theGear profile on the Site is materially inaccurate with respect to: (i) the makeand/or model of the Equipment, (ii) the condition of the Equipment, to theextent it affects the Renter’s ability to utilize the Equipment as intended,(iii) special amenities or features represented in the Gear description are notprovided or do not function, or (iv) the physical location of the Equipment(proximity). Only a Renter may submit a claim for an Equipment Issue. To submita claim: (a) You must bring the Equipment Issue to our attention in writing to </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>and provide us with information, including photographs or other evidence, aboutthe Equipment and the circumstances of the Equipment Issue, within twenty-four(24) hours after the start of your reservation, and must respond to anyrequests by us for additional information or cooperation on the EquipmentIssue; (b) you must not have directly or indirectly caused the Equipment Issue(through your action, omission, or negligence); and (c) you must have usedreasonable efforts to try and remedy the circumstances of the Equipment Issuewith the Owner prior to making a claim for an Equipment Issue.</span>\n</p>\n\n<p><span>If you arean Owner, you are responsible for ensuring that the Equipment you list on theSite meets minimum quality standards regarding access, adequacy of thedescription on the Site, and does not present a Renter with Equipment Issues.During the 24-hour period after the start of a Renter’s reservation, Ownersshould be available, or make a third-party available, in order to try, in goodfaith, to resolve Equipment Issues. If you are an Owner, and if (i) Sharingeardetermines that a Renter has suffered an Equipment Issue related to Equipmentlisted by you and (ii) Sharingear either reimburses that Renter any amount upto the amount paid by the Renter through the Platform for the Equipment orprovides alternative Equipment to the Renter, you agree to reimburse Sharingearup to the amount paid by Sharingear within thirty (30) days of Sharingear’srequest. You also agree that in order for you to reimburse Sharingear up to theamount paid by Sharingear, Sharingear may off-set or reduce any amounts owed bySharingear to you by this amount. If the Renter uses the Equipment for part orall of the reservation despite the Equipment Issue, the Renter may receive arefund that will reduce the amount of the Equipment Fees ultimately paid toyou. If the Renter uses alternative Equipment, you may lose part or all of theEquipment Fee payment for the reservation and you may be responsible forreasonable additional costs incurred in order for the Renter to use thealternate Equipment. The rights of the Renters relating to Equipment Issuessupersedes the Sharingear cancellation policy or the cancellation policy set bythe Owner, if any. If you dispute the Equipment Issue, you may notify us inwriting to </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>and provide us with information, including photographs or other evidence,disputing the claims regarding the Equipment Issue, provided you must have usedreasonable and good faith efforts to try to remedy the Equipment Issue with theRenter prior to disputing the Equipment Issue claim. In the event of one ormore Equipment Issues, Sharingear, in its discretion, may elect to takeadditional actions, including, without limitation, negatively affecting your Gearprofile ranking, automated reviews indicating Equipment Issues, cancellingfuture reservations, suspending or removing the Gear profile of the Equipmentor imposing penalties or fees for the administrative burden associated with theEquipment Issue. All determinations of Sharingear with respect to EquipmentIssue claims, including without limitation the size of any refund to theRenter, shall be final and binding on the Renters and Owners.</span>\n</p>\n\n<p><span>In certaincircumstances, Sharingear may decide, in its sole discretion, that it is necessaryor desirable to cancel a confirmed reservation made via the Platform andoverride the cancellation policy applicable to such reservation, in whole or inpart. Such circumstances include death in the Owner’s or Renter’s family,serious illness of the Renter or Renter’s family member, natural disaster inthe country where the Equipment is located, political unrest in the countrywhere the Equipment is located, jury duty other similar civil obligations, orfor any other reason, contingent in all cases on proper documentation, wherevalid.</span>\n</p>\n\n<p><u> <span>RoundingOff</span> </u></p>\n\n<p><span>Sharingearmay, in its sole discretion, round up or round down amounts that are payablefrom or to Renters or Owners to the nearest whole functional base unit in whichthe currency is denominated (e.g., to the nearest dollar, euro, or othersupported currency); for example, Sharingear may round up an amount of €101.50to €102.00, and €101.49 to €101.00.</span>\n</p>\n\n<p><span>Somecurrencies are denominated in large numbers. In those cases, Sharingear maydetermine the functional base unit in which those currencies are denominated tobe 10, 100, or 1,000 of the currency; the corresponding examples for suchcurrencies would be for Sharingear to round up an amount of 2,025 up to 2,030and 2,024 down to 2,020, or 48,750 to you 48,700 and 48,749 down to 48,700, or675,500 up to 676,000 and 675,499 down to 675,000.</span>\n</p>\n\n<p><u> <span>Donations</span> </u></p>\n\n<p><span>Some Ownersmay pledge to donate a portion of the funds they receive from confirmedreservations made via the Platform to a particular cause or charity. Sharingeardoes not control, and will not take any responsibility or liability for,whether the Owner does in fact make the donation he or she pledged to make.</span>\n</p>\n\n<p><u> <span>Taxes</span> </u></p>\n\n<p><span>Taxregulations may require us to collect appropriate tax information from ourOwners, or to withhold taxes from payouts to Owners, or both. For instance, IRSregulations may stipulate that Sharingear must collect IRS Form W-9 from USOwners or an appropriate IRS Form W-8 from non-US Owners with at least one Gearprofile in the US. You as an Owner are solely responsible for keeping theinformation in your tax forms current, complete, and accurate. If you as anOwner fail to provide us with documentation that we determine to be sufficientto alleviate our obligation (if any) to withhold payments to you (e.g., whereyou are a US Owner and you fail to provide us with a completed IRS Form W-9),we reserve the right in our sole discretion to freeze all payouts to you untilresolution, to withhold such amounts as required by law, or to do both.</span>\n</p>\n\n<p><span>You as anOwner understand and agree that you are solely responsible for determining (i)your applicable Tax reporting requirements, and (ii) the Taxes that should beincluded, and for including Taxes to be collected or obligations relating toapplicable Taxes in Gears. You are also solely responsible for remitting to therelevant authority any Taxes included or received by you. Sharingear cannot anddoes not offer Tax-related advice to any Members.</span>\n</p>\n\n<p><b> <span>8. UserConduct</span> </b></p>\n\n<p><span>Youunderstand and agree that you are solely responsible for compliance with anyand all laws, rules, regulations, and Tax obligations that may apply to youruse of the Platform and Collective Content. In connection with your use of thePlatform and Collective Content, you may not and you agree that you will not:</span>\n</p>\n\n<p><span>&#9679;violate any local, state, provincial, national, or other law or regulation, orany order of a court, including, without limitation, Tax regulations;</span>\n</p>\n\n<p><span>&#9679; usemanual or automated software, devices, scripts, robots, or other means orprocesses to access, “scrape,” “crawl,” or “spider” any web pages or otherservices contained in the Platform or Collective Content ;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content for any commercial or other purposes thatare not expressly permitted by these Terms;</span>\n</p>\n\n<p><span>&#9679;copy, store, or otherwise access any information contained on the Platform or CollectiveContent for purposes not expressly permitted by these Terms;</span>\n</p>\n\n<p><span>&#9679;infringe the rights of any person or entity, including without limitation,their intellectual property, privacy, publicity, or contractual rights;</span>\n</p>\n\n<p><span>&#9679;interfere with or damage our Platform, including, without limitation, throughthe use of viruses, cancel bots, Trojan horses, harmful code, flood pings,denial-of-service attacks, packet or IP spoofing, forged routing, or electronicmail address information or similar methods or technology;</span>\n</p>\n\n<p><span>&#9679; usethe Platform to transmit, distribute, post, or submit any informationconcerning any other person or entity, including without limitation,photographs of others without their permission, personal contact information,or credit, debit, or account numbers;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content in connection with the distribution ofunsolicited commercial email (“spam”) or advertisements unrelated to rentingartistic tools, equipment, and space.</span>\n</p>\n\n<p><span>&#9679;“stalk” or harass any other user of the Platform or Collective Content, orcollect or store any personally identifiable information about any other userother than for purposes of transacting as a Sharingear Renter or Owner;</span>\n</p>\n\n<p><span>&#9679;offer, as an Owner, any Equipment, that you do not yourself own or havepermission to rent (without limiting the foregoing, you will not list Equipmentas an Owner if you are serving in the capacity as an agent for a third party);</span>\n</p>\n\n<p><span>&#9679;offer, as an Owner, any Equipment that may not be rented or subleased pursuantto the terms and conditions of an agreement with a third party, including, butnot limited to, a property rental agreement;</span>\n</p>\n\n<p><span>&#9679;register for more than one Sharingear Account or register for a SharingearAccount on behalf of an individual other than yourself;</span>\n</p>\n\n<p><span>&#9679;unless Sharingear explicitly permits otherwise, request or book a reservationof Equipment if you will not actually be the one using the Equipment yourself;</span>\n</p>\n\n<p><span>&#9679;contact an Owner for any purpose other than asking a question related to areservation or such Owner’s Equipment or Gears;</span>\n</p>\n\n<p><span>&#9679;contact a Renter for any purpose other than asking a question related to areservation or such Renter’s use of the Platform;</span>\n</p>\n\n<p><span>&#9679;recruit or otherwise solicit any Owner or other Member to join third-partyservices or websites that are competitive to Sharingear, without Sharingear’sprior written approval;</span>\n</p>\n\n<p><span>&#9679;impersonate any person or entity, or falsify or otherwise misrepresent yourselfor your affiliation with any person or entity;</span>\n</p>\n\n<p><span>&#9679; useautomated scripts to collect information from or otherwise interact with thePlatform or Collective Content;</span>\n</p>\n\n<p><span>&#9679; usethe Platform or Collective Content to find an Owner or Renter and then completea reservation of Equipment independent of the Platform, in order to circumventthe obligation to pay any Service Fees related to Sharingear’s provision of theServices or for any other reasons;</span>\n</p>\n\n<p><span>&#9679; asan Owner, submit any Gear with false or misleading price information or submitany Gear with a price that you do not intend to honor;</span>\n</p>\n\n<p><span>&#9679;post, upload, publish, submit, or transmit any Content that: (i) infringes,misappropriates, or violates a third party’s patent, copyright, trademark,trade secret, moral rights, or other intellectual property rights, or rights ofpublicity or privacy; (ii) violates, or encourages any conduct that wouldviolate, any applicable law or regulation or would give rise to civilliability; (iii) is fraudulent, false, misleading, or deceptive; (iv) isdefamatory, obscene, pornographic, vulgar, or offensive; (v) promotesdiscrimination, bigotry, racism, hatred, harassment, or harm against anyindividual or group; (vi) is violent or threatening or promotes violence oractions that are threatening to any other person; or (vii) promotes illegal orharmful activities or substances;</span>\n</p>\n\n<p><span>&#9679;systematically retrieve data or other content from our Platform to create orcompile, directly or indirectly, in single or multiple downloads, a collection,compilation, database, directory, or the like, whether by manual methods,through the use of bots, crawlers, or spiders, or otherwise;</span>\n</p>\n\n<p><span>&#9679;use, display, mirror, or frame the Platform or Collective Content, or anyindividual element within the Platform or Collective Content, Sharingear’sname, any trademark, logo, or other proprietary information, or the layout anddesign of any page or form contained on a page in the Platform, without Sharingear’sexpress written consent;</span>\n</p>\n\n<p><span>&#9679;access, tamper with, or use non-public areas of the Platform, Sharingear’scomputer systems, or the technical delivery systems of Sharingear’s providers;</span>\n</p>\n\n<p><span>&#9679;attempt to probe, scan, or test the vulnerability of any Sharingear system ornetwork or breach any security or authentication measures;</span>\n</p>\n\n<p><span>&#9679;avoid, bypass, remove, deactivate, impair, descramble, or otherwise circumventany technological measure implemented by Sharingearor any of Sharingear’sproviders or any other third party (including another user) to protect thePlatform or Collective Content;</span>\n</p>\n\n<p><span>&#9679;force any TCP/IP packet header or any part of the header information in anyemail or newsgroup posting, or in any way use the Platform or CollectiveContent to send altered, deceptive or false source-identifying information;</span>\n</p>\n\n<p><span>&#9679;attempt to decipher, decompile, disassemble, or reverse engineer any of thesoftware used to provide the Platform or Collective Content; or</span>\n</p>\n\n<p><span>&#9679;advocate, encourage, or assist any third party in doing any of the foregoing.</span></p>\n\n<p><span>Sharingear hasthe right to investigate and prosecute violations of any of the above to thefullest extent of the law.</span>\n</p>\n\n<p><span>Sharingearmay access, preserve, and disclose any of your information if we are requiredto do so by law, or if we believe in good faith that it is reasonably necessaryto: (i) respond to claims asserted against Sharingear or to comply with legalprocess (for example, subpoenas or warrants); (ii) enforce or administer our agreementswith users, such as these Terms); (iii) for fraud prevention, risk assessment,investigation, customer support, product development, and de-bugging purposes;or (iv) protect the rights, property, or safety of Sharingear, its users, ormembers of the public. You acknowledge that Sharingear has no obligation tomonitor your access to or use of the Platform or Collective Content or toreview or edit any Member Content, but has the right to do so for the purposesof operating and improving the Platform (including without limitation for fraudprevention, risk assessment, investigation, and customer support purposes), toensure your compliance with these Terms, to comply with applicable law or therequirement of a court, administrative agency, or other governmental body, torespond to content that it determines is otherwise objectionable, or as setforth in these Terms. Sharingear reserves the right, at any time and withoutprior notice, to remove or disable access to any Collective Content that Sharingear</span>\n</p>\n\n<p><span>, in itssole discretion, considers to be objectionable for any reason, in violation ofthese Terms, or otherwise harmful to the Platform.</span>\n</p>\n\n<p><b> <span>9. PrivacyPolicy</span> </b></p>\n\n<p><span>See Sharingear’sPrivacy Policy, at </span> <span>                <a\n\t\thref=\"http://www.sharingear.com/privacy\"> <span style=''>www.sharingear.com/privacy</span>\n</a>            </span>\n\t<span>,for information and notices concerning Sharingear’s collection and use of yourpersonal information.</span>\n</p>\n\n<p><b> <span>10.Proprietary Rights</span> </b></p>\n\n<p><span>ThePlatform and Collective Content are protected by copyright, trademark, andother laws of the United States and foreign countries. You acknowledge andagree that the Platform and Collective Content, including all associatedintellectual property rights, are the exclusive property of Sharingear and itslicensors. You will not remove, alter, or obscure any copyright, trademark,service mark, or other proprietary rights notices incorporated in oraccompanying the Platform or Collective Content.</span>\n</p>\n\n<p><span>Alltrademarks, service marks, logos, trade names, and any proprietary designationsof Sharingear used herein are trademarks or registered trademarks of Sharingear.Any other trademarks, service marks, logos, trade names, and other proprietarydesignations are the trademarks or registered trademarks of their respectiveparties.</span>\n</p>\n\n<p><b> <span>11. SharingearContent</span> </b></p>\n\n<p><span>Subject toyour compliance with these Terms, Sharingear grants you a limited,non-exclusive, non-transferable license to (i) access and view any SharingearContent solely for your personal and non-commercial purposes and (ii) accessand view any Member Content to which you are permitted access, solely for yourpersonal and non-commercial purposes. You have no rights to sublicense thelicense rights granted in this section.</span>\n</p>\n\n<p><span>You willnot use, copy, adapt, modify, prepare derivative works based upon, distribute,license, sell, transfer, publicly display, publicly perform, transmit,broadcast, or otherwise exploit the Platform or Collective Content, except asexpressly permitted in these Terms. No licenses or rights are granted to you byimplication or otherwise under any intellectual property rights owned orcontrolled by Sharingear its licensors, except for the licenses and rightsexpressly granted in these Terms.</span>\n</p>\n\n<p><b> <span>12. MemberContent</span> </b></p>\n\n<p><span>We may, inour sole discretion, permit you to post, upload, publish, submit, or transmitMember Content. By making available any Member Content on or through thePlatform, you hereby grant to Sharingear a worldwide, irrevocable, perpetual,non-exclusive, transferable, royalty-free license, with the right tosublicense, use, view, copy, adapt, modify, distribute, license, sell,transfer, publicly display, publicly perform, transmit, stream, broadcast,access, view, and otherwise exploit such Member Content on, through, by meansof, or to promote or market the Platform. Sharingear does not claim anyownership rights in such Member Content and nothing in these Terms will bedeemed to restrict any rights that you may have to use and exploit any suchMember Content.</span>\n</p>\n\n<p><span>Youacknowledge and agree that you are solely responsible for all Member Contentthat you make available through the Platform. Accordingly, you represent andwarrant that: (i) you either are the sole and exclusive owner of all MemberContent that you make available through the Platform or you have all rights,licenses, consents, and releases that are necessary to grant to Sharingear therights in such Member Content, as contemplated under these Terms; and (ii)neither the Member Content nor your posting, uploading, publication,submission, or transmittal of the Member Content or Sharingear’s use of theMember Content (or any portion thereof) on, through, or by means of thePlatform will infringe, misappropriate, or violate a third party’s patent,copyright, trademark, trade secret, moral rights, or other proprietary orintellectual property rights, or rights of publicity or privacy, or result inthe violation of any applicable law or regulation.</span>\n</p>\n\n<p><b> <span>13. Links</span> </b></p>\n\n<p><span>ThePlatform may contain links to third-party websites or resources. Youacknowledge and agree that Sharingear is not responsible or liable for: (i) theavailability or accuracy of such websites or resources; or (ii) the content,products, or services on or available from such websites or resources. Links tosuch websites or resources do not imply any endorsement by Sharingear of suchwebsites or resources or the content, products, or services available from suchwebsites or resources. You acknowledge sole responsibility for and assume allrisk arising from your use of any such websites or resources or the Content,products, or services on or available from such websites or resources.</span>\n</p>\n\n<p><span>Someportions of the Platform implement Google Maps/Earth mapping services,including Google Maps API(s). Your use of Google Maps/Earth is subject toGoogle’s terms of use, located at</span>\n<span>                <a href=\"http://www.google.com/intl/en_us/help/terms_maps.html\"> <u> <span>http://www.google.com/intl/en_us/help/terms_maps.html</span>\n</u> </a>            </span> <span>.</span></p>\n\n<p><b> <span>14.Feedback</span> </b></p>\n\n<p><span>We welcomeand encourage you to provide feedback, comments, and suggestions forimprovements to the Platform (“Feedback”). You may submit Feedback by emailingus at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span>or through a contact form on the Platform, if any. You acknowledge and agreethat all Feedback will be the sole and exclusive property of Sharingear and youhereby irrevocably assign to Sharingear all of your right, title, and interestin and to all Feedback, including without limitation all worldwide patent,copyright, trade secret, moral, and other proprietary or intellectual propertyrights therein. At Sharingear’s request and expense, you will execute documentsand take such further acts as Sharingear may reasonably request to assist Sharingearto acquire, perfect, and maintain its intellectual property rights and otherlegal protections for the Feedback.</span>\n</p>\n\n<p><b> <span>15.Copyright Policy</span> </b></p>\n\n<p><span>Sharingearrespects copyright law and expects its users to do the same. It is Sharingear’spolicy to terminate, in appropriate circumstances, the Sharingear Accounts ofMembers or other account holders who repeatedly infringe or are believed to berepeatedly infringing the rights of copyright holders. Please see Sharingear’sCopyright Policy, at </span>\n<span>                <a href=\"http://www.sharingear.com/copyright\"> <span style=''>www.sharingear.com/copyright</span>\n</a>            </span> <span>for further information.</span></p>\n\n<p><b> <span>16.Suspension, Termination, and Sharingear Account Cancellation</span> </b></p>\n\n<p><span>We may, inour discretion and without liability to you, with or without cause, with orwithout prior notice, and at any time, decide to limit, suspend, deactivate, orcancel your Sharingear Account. If we exercise our discretion under these Termsto do so, any or all of the following can occur with or without prior notice orexplanation to you: (a) your Sharingear Account will be deactivated orsuspended, your password will be disabled, and you will not be able to accessthe Platform, your Sharingear Account, or your Member Content or receiveassistance from Sharingear Customer Service; (b) any pending or accepted futurereservations as either Owner or Renter will be immediately terminated; (c) wemay communicate to your Renters or Owners that a potential or confirmedreservation has been cancelled; (d) we may refund your Renters in full for anyand all confirmed reservations, irrespective of preexisting cancellationpolicies; (e) we may contact your Renters to inform them about potentialalternate Equipment with other Owners that may be available on the Platform;and (f) you will not be entitled to any compensation for reservations (even ifconfirmed) that were cancelled as a result of a suspension, deactivation, ortermination of your Sharingear Account. You may cancel your Sharingear Accountat any time by emailing us at support@sharingear.com. Please note that if your SharingearAccount is cancelled, we do not have an obligation to delete or return to youany Content you have posted on the Platform, including but not limited to, anyreviews or Feedback.</span>\n</p>\n\n<p><b> <span>17.Disclaimers</span> </b></p>\n\n<p><span>IF YOUCHOOSE TO USE THE PLATFORM OR COLLECTIVE CONTENT, YOU DO SO AT YOUR SOLE RISK.YOU ACKNOWLEDGE AND AGREE THAT SHARINGEAR DOES NOT HAVE AN OBLIGATION TOCONDUCT BACKGROUND CHECKS ON ANY MEMBER, INCLUDING, BUT NOT LIMITED TO, RENTERSAND OWNERS, BUT MAY CONDUCT SUCH BACKGROUND CHECKS IN ITS SOLE DISCRETION. THEPLATFORM AND COLLECTIVE CONTENT ARE PROVIDED “AS IS,” WITHOUT WARRANTY OF ANYKIND, EITHER EXPRESS OR IMPLIED. WITHOUT LIMITING THE FOREGOING, SHARINGEAREXPLICITLY DISCLAIMS ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR APARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT, AND ANY WARRANTIESARISING OUT OF COURSE OF DEALING OR USAGE OF TRADE. SHARINGEAR MAKES NO WARRANTYTHAT THE PLATFORM OR COLLECTIVE CONTENT, INCLUDING, BUT NOT LIMITED TO, THE GEARSOR ANY EQUIPMENT, WILL MEET YOUR REQUIREMENTS OR BE AVAILABLE ON ANUNINTERRUPTED, SECURE, OR ERROR-FREE BASIS. SHARINGEAR MAKES NO WARRANTYREGARDING THE QUALITY OF ANY GEARS, EQUIPMENT, THE SERVICES, OR COLLECTIVECONTENT OR THE ACCURACY, TIMELINESS, TRUTHFULNESS, COMPLETENESS, OR RELIABILITYOF ANY COLLECTIVE CONTENT OBTAINED THROUGH THE PLATFORM.</span>\n</p>\n\n<p><span>NO ADVICEOR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED FROM SHARINGEAR OR THROUGHTHE PLATFORM OR COLLECTIVE CONTENT, WILL CREATE ANY WARRANTY NOT EXPRESSLY MADEHEREIN.</span>\n</p>\n\n<p><span>YOU ARESOLELY RESPONSIBLE FOR ALL OF YOUR COMMUNICATIONS AND INTERACTIONS WITH OTHERUSERS OF THE PLATFORM AND WITH OTHER PERSONS WITH WHOM YOU COMMUNICATE ORINTERACT AS A RESULT OF YOUR USE OF THE PLATFORM, INCLUDING, BUT NOT LIMITEDTO, ANY OWNERS OR RENTERS. YOU UNDERSTAND THAT SHARINGEAR DOES NOT MAKE ANYATTEMPT TO VERIFY THE STATEMENTS OF USERS OF THE PLATFORM OR TO REVIEW ANYEQUIPMENT. SHARINGEAR MAKES NO REPRESENTATIONS OR WARRANTIES AS TO THE CONDUCTOF USERS OF THE PLATFORM OR THEIR COMPATIBILITY WITH ANY CURRENT OR FUTUREUSERS OF THE PLATFORM. YOU AGREE TO TAKE REASONABLE PRECAUTIONS IN ALLCOMMUNICATIONS AND INTERACTIONS WITH OTHER USERS OF THE PLATFORM AND WITH OTHERPERSONS WITH WHOM YOU COMMUNICATE OR INTERACT AS A RESULT OF YOUR USE OF THEPLATFORM, INCLUDING, BUT NOT LIMITED TO, RENTERS AND OWNERS, PARTICULARLY IFYOU DECIDE TO MEET OFFLINE OR IN PERSON, REGARDLESS OF WHETHER SUCH MEETINGS AREORGANIZED BY SHARINGEAR. NOTWITHSTANDING SHARINGEAR’S APPOINTMENT AS THELIMITED PAYMENT COLLECTION AGENT OF THE OWNERS FOR THE PURPOSE OF ACCEPTINGPAYMENTS FROM RENTERS ON BEHALF OF THE OWNERS, SHARINGEAR EXPLICITLY DISCLAIMSALL LIABILITY FOR ANY ACT OR OMISSION OF ANY RENTER OR OTHER THIRD PARTY.</span>\n</p>\n\n<p><b> <span>18.Limitation of Liability</span> </b> <span> .</span></p>\n\n<p><span>YOUACKNOWLEDGE AND AGREE THAT, TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE ENTIRERISK ARISING OUT OF YOUR ACCESS TO AND USE OF THE PLATFORM AND COLLECTIVECONTENT, YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIA THE PLATFORM, AND ANYCONTACT YOU HAVE WITH OTHER USERS OF SHARINGEAR WHETHER IN PERSON OR ONLINEREMAINS WITH YOU. NEITHER SHARINGEAR NOR ANY OTHER PARTY INVOLVED IN CREATING,PRODUCING, OR DELIVERING THE PLATFORM OR COLLECTIVE CONTENT WILL BE LIABLE FORANY INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES, INCLUDING LOSTPROFITS, LOSS OF DATA OR LOSS OF GOODWILL, SERVICE INTERRUPTION, COMPUTERDAMAGE OR SYSTEM FAILURE, OR THE COST OF SUBSTITUTE PRODUCTS OR SERVICES, ORFOR ANY DAMAGES FOR PERSONAL OR BODILY INJURY OR EMOTIONAL DISTRESS ARISING OUTOF OR IN CONNECTION WITH THESE TERMS, FROM THE USE OR INABILITY TO USE THEPLATFORM OR OTHER PERSONS WITH WHOM YOU COMMUNICATE OR INTERACT AS A RESULT OFYOUR USE OF THE PLATFORM OR FROM YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIATHE PLATFORM, WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE),PRODUCT LIABILITY OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT SHARINGEAR HASBEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE, EVEN IF A LIMITED REMEDY SETFORTH HEREIN IS FOUND TO HAVE FAILED OF ITS ESSENTIAL PURPOSE.</span>\n</p>\n\n<p><span>EXCEPT FOROUR OBLIGATIONS TO PAY AMOUNTS TO APPLICABLE OWNERS PURSUANT TO THESE TERMS, INNO EVENT WILL SHARINGEAR’S AGGREGATE LIABILITY ARISING OUT OF OR IN CONNECTIONWITH THESE TERMS AND YOUR USE OF THE PLATFORM, INCLUDING, BUT NOT LIMITED TO,FROM YOUR GEAR OR RESERVATION OF ANY EQUIPMENT VIA THE PLATFORM, FROM THE USEOF OR INABILITY TO USE THE PLATFORM OR COLLECTIVE CONTENT, AND IN CONNECTION WITHANY EQUIPMENT OR INTERACTIONS WITH ANY OTHER MEMBERS, EXCEED THE AMOUNTS YOUHAVE PAID OR OWE FOR RESERVATIONS VIA THE PLATFORM AS A RENTER IN THE TWELVE(12) MONTH PERIOD PRIOR TO THE EVENT GIVING RISE TO THE LIABILITY, OR IF YOUARE AN OWNER, THE AMOUNTS PAID BY SHARINGEAR TO YOU IN THE TWELVE (12) MONTHPERIOD PRIOR TO THE EVENT GIVING RISE TO THE LIABILITY, OR ONE HUNDRED U.S.DOLLARS (US$100), IF NO SUCH PAYMENTS HAVE BEEN MADE, AS APPLICABLE. THELIMITATION OF DAMAGES SET FORTH ABOVE ARE FUNDAMENTAL ELEMENTS OF THE BASIS OFTHE BARGAIN BETWEEN SHARINGEAR AND YOU. SOME JURISDICTIONS DO NOT ALLOW THEEXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES,SO THE ABOVE LIMITATION MAY NOT APPLY TO YOU.</span>\n</p>\n\n<p><b> <span>19.Indemnification</span> </b> <span> .</span></p>\n\n<p><span>You agreeto release, defend, indemnify and hold Sharingear and its affiliates andsubsidiaries, and their officers, directors, employees, and agents, harmlessfrom and against any claims, liabilities, damages, losses, and expenses,including, without limitation, reasonable legal and accounting fees, arisingout of or in any way connected with (a) your access to or use of the Platformor Collective Content or your violation of these Terms; (b) your MemberContent; (c) your (i) interaction with any Member, (ii) reservation of Equipment,or (iii) creation of a Gear; and (d) the use, condition, or rental of Equipmentby you, including but not limited to any injuries, losses, or damages(compensatory, direct, incidental, consequential, or otherwise) of any kindarising in connection with or as a result of a rental, reservation, or use ofEquipment.</span>\n</p>\n\n<p><b> <span>20.Reporting Misconduct</span> </b> <span> .</span></p>\n\n<p><span>If youinteract with a Member, Renter or Owner, whether via the Platform, offline, orin person, in connection with a reservation of a Gear or Equipment, who youfeel is acting or has acted inappropriately, including but not limited toanyone who (i) engages in offensive, violent, or sexually inappropriatebehavior; (ii) you suspect of stealing from you; or (iii) engages in otherdisturbing conduct, you should immediately report such person to theappropriate authorities and then to Sharingear by contacting us with yourpolice station and report number at </span>\n<span>                <a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span> ; providedthat your report will not obligate us to take any action beyond that requiredby law (if any) or cause us to incur any liability to you.</span>\n</p>\n\n<p><b> <span>21.Miscellaneous.</span> </b></p>\n\n<p><b> <i> <span>EntireAgreement</span> </i> </b></p>\n\n<p><span>These Termsconstitute the entire and exclusive understanding and agreement between Sharingearand you regarding the Platform and Collective Content, and any reservations or Gearprofiles of Equipment made via the Platform, and these Terms supersede andreplace any and all prior oral or written understandings or agreements between Sharingearand you regarding reservations or Gear profiles of Equipment, the Platform, andCollective Content.</span>\n</p>\n\n<p><b> <i> <span>Assignment</span> </i> </b></p>\n\n<p><span>You may notassign or transfer these Terms, by operation of law or otherwise, without Sharingear’sprior written consent. Any attempt by you to assign or transfer these Terms,without such consent, will be null and of no effect. Sharingear may assign ortransfer these Terms, at its sole discretion, without restriction. Subject tothe foregoing, these Terms will bind and inure to the benefit of the parties,their successors and permitted assigns.</span>\n</p>\n\n<p><b> <i> <span>Notices</span> </i> </b></p>\n\n<p><span>Any noticesor other communications permitted or required hereunder, including thoseregarding modifications to these Terms, will be in writing and given by Sharingear(i) via email (in each case to the address that you provide) or (ii) by postingto the Site or via the Application. For notices made by e-mail, the date ofreceipt will be deemed the date on which such notice is transmitted.</span>\n</p>\n\n<p><b> <i> <span>ControllingLaw and Jurisdiction</span> </i> </b></p>\n\n<p><span>These Termswill be interpreted in accordance with the laws of Denmark, without regard toits conflict of law provisions. You and we submit to the personal jurisdictionor federal court in Copenhagen, Denmark for any actions for which the partiesretain the right to seek injunctive or other equitable relief in a court ofcompetent jurisdiction to prevent the actual or threatened infringement,misappropriation, or violation of a party’s copyrights, trademarks, tradesecrets, patents, or other intellectual property rights, as set forth in theDispute Resolution provision below.</span>\n</p>\n\n<p><b> <i> <span>DisputeResolution</span> </i> </b></p>\n\n<p><span>You and Sharingearagree that any dispute, claim, or controversy arising out of or relating tothese Terms or the breach, termination, enforcement, interpretation, orvalidity thereof, or to the use of the Platform (collectively, “Disputes”) willbe settled by binding arbitration, except that each party retains the right toseek injunctive or other equitable relief in a court of competent jurisdictionto prevent the actual or threatened infringement, misappropriation, or violationof a party’s copyrights, trademarks, trade secrets, patents, or otherintellectual property rights. You acknowledge and agree that you and Sharingearare each waiving the right to a trial by jury or to participate as a plaintiffor class member in any purported class action or representative proceeding.Further, unless both you and Sharingear otherwise agree in writing, thearbitrator may not consolidate more than one person’s claims and may nototherwise preside over any form of any class or representative proceeding. Ifthis specific paragraph is held unenforceable, then the entirety of this“Dispute Resolution” section will be deemed void.</span>\n</p>\n\n<p><b> <i> <span>Survival</span> </i> </b></p>\n\n<p><span>Theprovisions and terms of these Terms that by their nature should survivetermination of these Terms, including, without limitation, the “DisputeResolution” section and Section 18 (“Limitation of Liability”), shall surviveany termination or expiration of these Terms.</span>\n</p>\n\n<p><b> <i> <span>General</span> </i> </b></p>\n\n<p><span>The failureof Sharingear to enforce any right or provision of these Terms will notconstitute a waiver of future enforcement of that right or provision. Thewaiver of any such right or provision will be effective only if in writing andsigned by a duly authorized representative of Sharingear. Except as expresslyset forth in these Terms, the exercise by either party of any of its remediesunder these Terms will be without prejudice to its other remedies under theseTerms or otherwise. If for any reason an arbitrator or a court of competentjurisdiction finds any provision of these Terms invalid or unenforceable, thatprovision will be enforced to the maximum extent permissible and the otherprovisions of these Terms will remain in full force and effect.</span>\n</p>\n\n<p><b> <i> <span>Contacting Sharingear</span> </i> </b></p>\n\n<p><span>If you have any questions about these Terms, please contact Sharingearat </span> <span>\n\t<a href=\"mailto:support@sharingear.com\"> <span style=''>support@sharingear.com</span>\n</a>            </span> <span></span></p></div>\n</div>";
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"testimonial stephen-carpenter-deftones\">\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-offset-2 col-sm-8 text-center\">\r\n      <div class=\"profile-pic\"></div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-offset-2 col-sm-8\">\r\n      <p class=\"text-center sg-white\">\r\n        \"{{citation}}\"\r\n      </p>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-offset-2 col-sm-8\">\r\n      <hr>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-offset-2 col-sm-8 sg-white text-center name\">\r\n      {{name}}\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-offset-2 col-sm-8 sg-blue text-center\">\r\n      <span class=\"role\">{{role}}</span>, <span class=\"band\">{{band}}</span>\r\n    </div>\r\n  </div>\r\n</div>";
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"sg-bg-image\"></div>\r\n    </div>\r\n    <div class=\"col-xs-8\">\r\n        <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\r\n    </div>\r\n    <div class=\"col-xs-2 bs-reset\">\r\n    \t<div class=\"button-container\">\r\n        \t<a href=\"#gearprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourgear-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"sg-bg-image text-center\"><div class=\"sg-icon icon-addtechprofile-{{icon}}\"></div></div>\r\n    </div>\r\n    <div class=\"col-xs-8\">\r\n        <div class=\"sg-list-item-text\">{{roadie_type}}</div>\r\n    </div>\r\n    <div class=\"col-xs-2 bs-reset\">\r\n    \t<div class=\"button-container\">\r\n        \t<a href=\"#techprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourtechprofile-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"sg-bg-image\"></div>\r\n    </div>\r\n    <div class=\"col-xs-8\">\r\n        <div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\r\n    </div>\r\n    <div class=\"col-xs-2 bs-reset\">\r\n    \t<div class=\"button-container\">\r\n        \t<a href=\"#vanprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourvan-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view user sg-lightgray-bg\">\r\n  <div class=\"row sg-card bs-reset view-descriptor sg-no-mobile\">\r\n    <div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-profile\"></div> USER PROFILE</div>\r\n  </div>\r\n  <div class=\"row bs-reset\">\r\n    <div class=\"col-sm-4 bs-reset\">\r\n      <div class=\"row sg-card sg-card-follower\">\r\n        <div class=\"col-sm-12 bs-reset sg-white-bg\">\r\n          <div class=\"profile-pic-container sg-lightgray-bg\">\r\n            <div class=\"profile-pic\"></div>\r\n          </div>\r\n          <div class=\"name sg-darkergray text-center\">{{name}}</div>\r\n          <div class=\"tagline sg-gray text-center\">Sharingear first-mover</div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-sm-8 bs-reset\">\r\n      <div class=\"row sg-card sg-card-follower\">\r\n        <div class=\"col-sm-12 sg-white-bg\">\r\n          <ul class=\"sg-tabs sg-tabs-4\">\r\n            <li class=\"sg-blue active\" id=\"sg-tabs-info\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info\"></div></button></li>\r\n            <li class=\"sg-blue\" id=\"sg-tabs-gear\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear\"></div></button></li>\r\n            <li class=\"sg-blue\" id=\"sg-tabs-techprofiles\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile\"></div></button></li>\r\n            <li class=\"sg-blue\" id=\"sg-tabs-vans\"><button class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans\"></div></button></li>\r\n          </ul>\r\n\r\n          <div class=\"sg-tab-panel info\">\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12\">\r\n                <h3>Biography</h3>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12 bio\">\r\n                {{bio}}\r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"sg-tab-panel gear hidden\">\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12\">\r\n                <h3>Gear</h3>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12 bio\" id=\"user-gear-container\">\r\n                \r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"sg-tab-panel techprofiles hidden\">\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12\">\r\n                <h3>Technician profiles</h3>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12 bio\" id=\"user-techprofiles-container\">\r\n                \r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"sg-tab-panel vans hidden\">\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12\">\r\n                <h3>Vans</h3>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12 bio\" id=\"user-vans-container\">\r\n                \r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"container-fluid view vanprofile sg-lightgray-bg\">\r\n\t<div class=\"row bs-reset\">\r\n\t\t<div class=\"col-sm-8 bs-reset\">\r\n\t\t\t<div class=\"row sg-card sg-no-mobile\">\r\n\t\t\t\t<div class=\"col-sm-12 sg-white-bg sg-gray\"><div class=\"sg-icon icon-dashboard-yourvans\"></div>{{van_type}}</div>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"row sg-card\">\r\n\t\t\t\t<div class=\"col-xs-10 col-sm-12 sg-white-bg sg-darkergray bs-reset van\">\r\n\t\t\t\t\t<div class=\"sg-icon icon-addvan-{{van_type}} sg-darkgray\"></div><span class=\"van-title\">{{model}}</span> <div class=\"social sg-gray\"><div class=\"sharethis\">Share this profile</div><button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-fb-btn\"><i class=\"fa fa-facebook\"></i></button> | <button class=\"sg-btn-invisible sg-gray\" id=\"vanprofile-tw-btn\"><i class=\"fa fa-twitter\"></i></button></div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-2 sg-no-desktop bs-reset text-center profile-pic-container\"><div class=\"profile-pic\"></div></div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-4 bs-reset\">\r\n\t\t\t<div class=\"row pricing sg-card sg-card-sibling\">\r\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Day</div>\r\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-displayed_price_a\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Week</div>\r\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-displayed_price_b\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-3 col-sm-4\">\r\n\t\t\t\t\t<div class=\"sg-blue-bg\">\r\n\t\t\t\t\t\t<div class=\"text-center sg-darkergray\">Month</div>\r\n\t\t\t\t\t\t<div class=\"text-center sg-white\"><span id=\"vanprofile-displayed_price_c\"></span> <span class=\"currency\">{{currency}}</span></div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"col-xs-3 col-sm-12 button-container\">\r\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white disabled hidden\" id=\"vanprofile-action-unavailable\">UNAVAILABLE</button>\r\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-book\">BOOK</button>\r\n\t\t\t\t\t<button class=\"sg-btn-square sg-darkergray-bg sg-white hidden\" id=\"vanprofile-action-edit\">EDIT</button>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"row bs-reset\">\r\n\t\t<div class=\"col-sm-8 bs-reset\">\r\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg\">\r\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\r\n\t\t\t\t\t<div class=\"row bs-reset owl-carousel owl-theme\"></div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<hr>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<h3>Description</h3>\r\n\t\t\t\t\t\t\t<p>\r\n\t\t\t\t\t\t\t\t{{description}}\r\n\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<hr>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12 accessories\">\r\n\t\t\t\t\t\t\t<h3>Accessories</h3>\r\n\t\t\t\t\t\t\t<div id=\"accessories-holder\"></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"col-sm-4 bs-reset\">\r\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg map-container\">\r\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-xs-2 sg-gray\">\r\n\t\t\t\t\t\t\t<i class=\"fa fa-home\"></i>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"col-xs-10 sg-darkergray\">\r\n\t\t\t\t\t\t\t{{location}}\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\" row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-xs-12\">\r\n\t\t\t\t\t\t\t<div class=\"map\" id=\"vanprofile-map\"></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"row sg-card sg-card-follower sg-white-bg profile-container\">\r\n\t\t\t\t<div class=\"col-sm-12 bs-reset\">\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<div class=\"sg-lightgray-bg text-center\">\r\n\t\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\"><div class=\"profile-pic\"></div></a>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t\t\t\t\t<div class=\"sg-darkergray name\">{{name}}</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t\t\t\t\t<div class=\"sg-gray tagline\">Sharingear first-mover</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12\">\r\n\t\t\t\t\t\t\t<hr>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"row bs-reset\">\r\n\t\t\t\t\t\t<div class=\"col-sm-12 text-center\">\r\n\t\t\t\t\t\t\t<a href=\"#user/{{owner_id}}\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-info sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/gear\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourgear sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/techprofiles\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourtechprofile sg-darkergray\"></div></a><a href=\"#user/{{owner_id}}/vans\" class=\"sg-btn-invisible\"><div class=\"sg-icon icon-dashboard-yourvans sg-darkergray\"></div></a>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"searchform\">\r\n  <form class=\"form-inline\" id=\"vansearchform-form\" role=\"form\" autocomplete=\"off\" onsubmit=\"return false;\">\r\n    <div class=\"form-group\">\r\n      <label class=\"sg-blue\">Find your van or bus</label>\r\n      <input type=\"search\" class=\"form-control\" id=\"vansearch-van\" placeholder=\"van, splitter, etc.\">\r\n      <div class=\"suggestion-box hidden\" id=\"vans-suggestions-box\"></div>\r\n    </div><div class=\"form-group\">\r\n      <label class=\"sg-blue\">Find a location</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-location\" placeholder=\"\">\r\n    </div><div class=\"form-group search-pickup-container\">\r\n      <label class=\"sg-blue\">Pickup</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-pickup\" placeholder=\"15/08/1969\" >\r\n    </div><div class=\"form-group search-return-container\">\r\n      <label class=\"sg-blue\">Delivery</label>\r\n      <input type=\"text\" class=\"form-control\" id=\"vansearch-return\" placeholder=\"18/08/1969\" >\r\n    </div><div class=\"form-group submit-container\">\r\n      <input type=\"submit\" id=\"vansearchform-submit-btn\" class=\"sg-btn sg-blue-bg sg-white\" value=\"Search\">\r\n    </div>\r\n  </form>\r\n</div>\r\n";
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row bs-reset sg-list-item\">\r\n    <div class=\"col-xs-2 bs-reset\">\r\n        <div class=\"sg-bg-image\"></div>\r\n    </div>\r\n    <div class=\"col-xs-7\">\r\n        <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\r\n    </div>\r\n    <div class=\"col-xs-3 bs-reset\">\r\n        <div class=\"button-container\">\r\n            <a href=\"#gearprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourgear-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\r\n        </div>\r\n        <div class=\"button-container\">\r\n            <button class=\"sg-btn-invisible sg-white yourgear-item-edit-btn\" data-yourgearid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n  <div class=\"col-xs-2\">\r\n    <div class=\"sg-bg-image\"></div>\r\n  </div>\r\n  <div class=\"col-xs-8\">\r\n    <div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\r\n  </div>\r\n  <div class=\"col-xs-2\">\r\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-request\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking request</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking denied</div>\r\n    </button>\r\n  </div>\r\n</div>\r\n";
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n\t<div class=\"col-xs-2\">\r\n\t\t<div class=\"sg-bg-image\"></div>\r\n\t</div>\r\n\t<div class=\"col-xs-8\">\r\n\t\t<div class=\"sg-list-item-text\">{{brand}} {{subtype}} {{model}}</div>\r\n\t</div>\r\n\t<div class=\"col-xs-2\">\r\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-request\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking request</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking denied</div>\r\n    </button>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 132 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n  <div class=\"col-xs-2\">\r\n        <div class=\"sg-bg-image text-center\"><div class=\"sg-icon icon-addtechprofile-{{icon}}\"></div></div>\r\n  </div>\r\n  <div class=\"col-xs-8\">\r\n    <div class=\"sg-list-item-text\">{{roadie_type}}</div>\r\n  </div>\r\n  <div class=\"col-xs-2\">\r\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-request\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking request</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking denied</div>\r\n    </button>\r\n  </div>\r\n</div>\r\n";
 
 /***/ },
-/* 133 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n\t<div class=\"col-xs-2\">\r\n        <div class=\"sg-bg-image text-center\"><div class=\"sg-icon icon-addtechprofile-{{icon}}\"></div></div>\r\n\t</div>\r\n\t<div class=\"col-xs-8\">\r\n\t\t<div class=\"sg-list-item-text\">{{roadie_type}}</div>\r\n\t</div>\r\n\t<div class=\"col-xs-2\">\r\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-request\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking request</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking denied</div>\r\n    </button>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row bs-reset sg-list-item\">\r\n    <div class=\"col-xs-2 bs-reset\">\r\n        <div class=\"sg-bg-image text-center\"><div class=\"sg-icon icon-addtechprofile-{{icon}}\"></div></div>\r\n    </div>\r\n    <div class=\"col-xs-7\">\r\n        <div class=\"sg-list-item-text\">{{roadie_type}}</div>\r\n    </div>\r\n    <div class=\"col-xs-3 bs-reset\">\r\n        <div class=\"button-container\">\r\n            <a href=\"#techprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourtechprofiles-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\r\n        </div>\r\n        <div class=\"button-container\">\r\n            <button class=\"sg-btn-invisible sg-white yourtechprofiles-item-edit-btn\" data-yourtechprofileid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ },
-/* 135 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n  <div class=\"col-xs-2\">\r\n    <div class=\"sg-bg-image\"></div>\r\n  </div>\r\n  <div class=\"col-xs-8\">\r\n    <div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\r\n  </div>\r\n  <div class=\"col-xs-2\">\r\n    <button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-request\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking request</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking denied</div>\r\n    </button>\r\n  </div>\r\n</div>\r\n";
 
 /***/ },
-/* 136 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row sg-list-item\">\r\n\t<div class=\"col-xs-2\">\r\n\t\t<div class=\"sg-bg-image\"></div>\r\n\t</div>\r\n\t<div class=\"col-xs-8\">\r\n\t\t<div class=\"sg-list-item-text\">{{van_type}} {{model}}</div>\r\n\t</div>\r\n\t<div class=\"col-xs-2\">\r\n\t\t<button class=\"sg-btn-invisible-square request sg-blue hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-request\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking request</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square accepted sg-green hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-accepted\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking accepted</div>\r\n    </button>\r\n    <button class=\"sg-btn-invisible-square denied sg-red hidden\" data-bookingid=\"{{booking_id}}\">\r\n    \t<div class=\"sg-icon icon-booking-denied\"></div>\r\n    \t<div class=\"sg-btn-text\">Booking denied</div>\r\n    </button>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div class=\"row bs-reset sg-list-item\">\r\n    <div class=\"col-xs-2 bs-reset\">\r\n        <div class=\"sg-bg-image\"></div>\r\n    </div>\r\n    <div class=\"col-xs-7\">\r\n        <div class=\"sg-list-item-text\">{{model}}</div>\r\n    </div>\r\n    <div class=\"col-xs-3 bs-reset\">\r\n        <div class=\"button-container\">\r\n            <a href=\"#vanprofile/{{id}}\" class=\"sg-btn-invisible sg-white yourvan-item-view-btn\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-view\"></div></div><div class=\"sg-btn-text sg-gray\">View</div></a>\r\n        </div>\r\n        <div class=\"button-container\">\r\n            <button class=\"sg-btn-invisible sg-white yourvan-item-edit-btn\" data-yourvanid=\"{{id}}\"><div class=\"sg-iconbg-round-40 sg-gray-bg\"><div class=\"sg-icon icon-edit\"></div></div><div class=\"sg-btn-text sg-gray\">Edit</div></button>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ },
-/* 138 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//! moment-timezone.js
-	//! version : 0.3.1
-	//! author : Tim Wood
-	//! license : MIT
-	//! github.com/moment/moment-timezone
-	
-	(function (root, factory) {
-		"use strict";
-	
-		/*global define*/
-		if (true) {
-			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(149)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));                 // AMD
-		} else if (typeof exports === 'object') {
-			module.exports = factory(require('moment')); // Node
-		} else {
-			factory(root.moment);                        // Browser
-		}
-	}(this, function (moment) {
-		"use strict";
-	
-		// Do not load moment-timezone a second time.
-		if (moment.tz !== undefined) { return moment; }
-	
-		var VERSION = "0.3.1",
-			zones = {},
-			links = {},
-	
-			momentVersion = moment.version.split('.'),
-			major = +momentVersion[0],
-			minor = +momentVersion[1];
-	
-		// Moment.js version check
-		if (major < 2 || (major === 2 && minor < 6)) {
-			logError('Moment Timezone requires Moment.js >= 2.6.0. You are using Moment.js ' + moment.version + '. See momentjs.com');
-		}
-	
-		/************************************
-			Unpacking
-		************************************/
-	
-		function charCodeToInt(charCode) {
-			if (charCode > 96) {
-				return charCode - 87;
-			} else if (charCode > 64) {
-				return charCode - 29;
-			}
-			return charCode - 48;
-		}
-	
-		function unpackBase60(string) {
-			var i = 0,
-				parts = string.split('.'),
-				whole = parts[0],
-				fractional = parts[1] || '',
-				multiplier = 1,
-				num,
-				out = 0,
-				sign = 1;
-	
-			// handle negative numbers
-			if (string.charCodeAt(0) === 45) {
-				i = 1;
-				sign = -1;
-			}
-	
-			// handle digits before the decimal
-			for (i; i < whole.length; i++) {
-				num = charCodeToInt(whole.charCodeAt(i));
-				out = 60 * out + num;
-			}
-	
-			// handle digits after the decimal
-			for (i = 0; i < fractional.length; i++) {
-				multiplier = multiplier / 60;
-				num = charCodeToInt(fractional.charCodeAt(i));
-				out += num * multiplier;
-			}
-	
-			return out * sign;
-		}
-	
-		function arrayToInt (array) {
-			for (var i = 0; i < array.length; i++) {
-				array[i] = unpackBase60(array[i]);
-			}
-		}
-	
-		function intToUntil (array, length) {
-			for (var i = 0; i < length; i++) {
-				array[i] = Math.round((array[i - 1] || 0) + (array[i] * 60000)); // minutes to milliseconds
-			}
-	
-			array[length - 1] = Infinity;
-		}
-	
-		function mapIndices (source, indices) {
-			var out = [], i;
-	
-			for (i = 0; i < indices.length; i++) {
-				out[i] = source[indices[i]];
-			}
-	
-			return out;
-		}
-	
-		function unpack (string) {
-			var data = string.split('|'),
-				offsets = data[2].split(' '),
-				indices = data[3].split(''),
-				untils  = data[4].split(' ');
-	
-			arrayToInt(offsets);
-			arrayToInt(indices);
-			arrayToInt(untils);
-	
-			intToUntil(untils, indices.length);
-	
-			return {
-				name    : data[0],
-				abbrs   : mapIndices(data[1].split(' '), indices),
-				offsets : mapIndices(offsets, indices),
-				untils  : untils
-			};
-		}
-	
-		/************************************
-			Zone object
-		************************************/
-	
-		function Zone (packedString) {
-			if (packedString) {
-				this._set(unpack(packedString));
-			}
-		}
-	
-		Zone.prototype = {
-			_set : function (unpacked) {
-				this.name    = unpacked.name;
-				this.abbrs   = unpacked.abbrs;
-				this.untils  = unpacked.untils;
-				this.offsets = unpacked.offsets;
-			},
-	
-			_index : function (timestamp) {
-				var target = +timestamp,
-					untils = this.untils,
-					i;
-	
-				for (i = 0; i < untils.length; i++) {
-					if (target < untils[i]) {
-						return i;
-					}
-				}
-			},
-	
-			parse : function (timestamp) {
-				var target  = +timestamp,
-					offsets = this.offsets,
-					untils  = this.untils,
-					max     = untils.length - 1,
-					offset, offsetNext, offsetPrev, i;
-	
-				for (i = 0; i < max; i++) {
-					offset     = offsets[i];
-					offsetNext = offsets[i + 1];
-					offsetPrev = offsets[i ? i - 1 : i];
-	
-					if (offset < offsetNext && tz.moveAmbiguousForward) {
-						offset = offsetNext;
-					} else if (offset > offsetPrev && tz.moveInvalidForward) {
-						offset = offsetPrev;
-					}
-	
-					if (target < untils[i] - (offset * 60000)) {
-						return offsets[i];
-					}
-				}
-	
-				return offsets[max];
-			},
-	
-			abbr : function (mom) {
-				return this.abbrs[this._index(mom)];
-			},
-	
-			offset : function (mom) {
-				return this.offsets[this._index(mom)];
-			}
-		};
-	
-		/************************************
-			Global Methods
-		************************************/
-	
-		function normalizeName (name) {
-			return (name || '').toLowerCase().replace(/\//g, '_');
-		}
-	
-		function addZone (packed) {
-			var i, zone, zoneName;
-	
-			if (typeof packed === "string") {
-				packed = [packed];
-			}
-	
-			for (i = 0; i < packed.length; i++) {
-				zone = new Zone(packed[i]);
-				zoneName = normalizeName(zone.name);
-				zones[zoneName] = zone;
-				upgradeLinksToZones(zoneName);
-			}
-		}
-	
-		function getZone (name) {
-			return zones[normalizeName(name)] || null;
-		}
-	
-		function getNames () {
-			var i, out = [];
-	
-			for (i in zones) {
-				if (zones.hasOwnProperty(i) && zones[i]) {
-					out.push(zones[i].name);
-				}
-			}
-	
-			return out.sort();
-		}
-	
-		function addLink (aliases) {
-			var i, alias;
-	
-			if (typeof aliases === "string") {
-				aliases = [aliases];
-			}
-	
-			for (i = 0; i < aliases.length; i++) {
-				alias = aliases[i].split('|');
-				pushLink(alias[0], alias[1]);
-				pushLink(alias[1], alias[0]);
-			}
-		}
-	
-		function upgradeLinksToZones (zoneName) {
-			if (!links[zoneName]) {
-				return;
-			}
-	
-			var i,
-				zone = zones[zoneName],
-				linkNames = links[zoneName];
-	
-			for (i = 0; i < linkNames.length; i++) {
-				copyZoneWithName(zone, linkNames[i]);
-			}
-	
-			links[zoneName] = null;
-		}
-	
-		function copyZoneWithName (zone, name) {
-			var linkZone = zones[normalizeName(name)] = new Zone();
-			linkZone._set(zone);
-			linkZone.name = name;
-		}
-	
-		function pushLink (zoneName, linkName) {
-			zoneName = normalizeName(zoneName);
-	
-			if (zones[zoneName]) {
-				copyZoneWithName(zones[zoneName], linkName);
-			} else {
-				links[zoneName] = links[zoneName] || [];
-				links[zoneName].push(linkName);
-			}
-		}
-	
-		function loadData (data) {
-			addZone(data.zones);
-			addLink(data.links);
-			tz.dataVersion = data.version;
-		}
-	
-		function zoneExists (name) {
-			if (!zoneExists.didShowError) {
-				zoneExists.didShowError = true;
-					logError("moment.tz.zoneExists('" + name + "') has been deprecated in favor of !moment.tz.zone('" + name + "')");
-			}
-			return !!getZone(name);
-		}
-	
-		function needsOffset (m) {
-			return !!(m._a && (m._tzm === undefined));
-		}
-	
-		function logError (message) {
-			if (typeof console !== 'undefined' && typeof console.error === 'function') {
-				console.error(message);
-			}
-		}
-	
-		/************************************
-			moment.tz namespace
-		************************************/
-	
-		function tz (input) {
-			var args = Array.prototype.slice.call(arguments, 0, -1),
-				name = arguments[arguments.length - 1],
-				zone = getZone(name),
-				out  = moment.utc.apply(null, args);
-	
-			if (zone && !moment.isMoment(input) && needsOffset(out)) {
-				out.add(zone.parse(out), 'minutes');
-			}
-	
-			out.tz(name);
-	
-			return out;
-		}
-	
-		tz.version      = VERSION;
-		tz.dataVersion  = '';
-		tz._zones       = zones;
-		tz._links       = links;
-		tz.add          = addZone;
-		tz.link         = addLink;
-		tz.load         = loadData;
-		tz.zone         = getZone;
-		tz.zoneExists   = zoneExists; // deprecated in 0.1.0
-		tz.names        = getNames;
-		tz.Zone         = Zone;
-		tz.unpack       = unpack;
-		tz.unpackBase60 = unpackBase60;
-		tz.needsOffset  = needsOffset;
-		tz.moveInvalidForward   = true;
-		tz.moveAmbiguousForward = false;
-	
-		/************************************
-			Interface with Moment.js
-		************************************/
-	
-		var fn = moment.fn;
-	
-		moment.tz = tz;
-	
-		moment.defaultZone = null;
-	
-		moment.updateOffset = function (mom, keepTime) {
-			var offset;
-			if (mom._z === undefined) {
-				mom._z = moment.defaultZone;
-			}
-			if (mom._z) {
-				offset = mom._z.offset(mom);
-				if (Math.abs(offset) < 16) {
-					offset = offset / 60;
-				}
-				if (mom.utcOffset !== undefined) {
-					mom.utcOffset(-offset, keepTime);
-				} else {
-					mom.zone(offset, keepTime);
-				}
-			}
-		};
-	
-		fn.tz = function (name) {
-			if (name) {
-				this._z = getZone(name);
-				if (this._z) {
-					moment.updateOffset(this);
-				} else {
-					logError("Moment Timezone has no data for " + name + ". See http://momentjs.com/timezone/docs/#/data-loading/.");
-				}
-				return this;
-			}
-			if (this._z) { return this._z.name; }
-		};
-	
-		function abbrWrap (old) {
-			return function () {
-				if (this._z) { return this._z.abbr(this); }
-				return old.call(this);
-			};
-		}
-	
-		function resetZoneWrap (old) {
-			return function () {
-				this._z = null;
-				return old.apply(this, arguments);
-			};
-		}
-	
-		fn.zoneName = abbrWrap(fn.zoneName);
-		fn.zoneAbbr = abbrWrap(fn.zoneAbbr);
-		fn.utc      = resetZoneWrap(fn.utc);
-	
-		moment.tz.setDefault = function(name) {
-			if (major < 2 || (major === 2 && minor < 9)) {
-				logError('Moment Timezone setDefault() requires Moment.js >= 2.9.0. You are using Moment.js ' + moment.version + '.');
-			}
-			moment.defaultZone = name ? getZone(name) : null;
-			return moment;
-		};
-	
-		// Cloning a moment should include the _z property.
-		var momentProperties = moment.momentProperties;
-		if (Object.prototype.toString.call(momentProperties) === '[object Array]') {
-			// moment 2.8.1+
-			momentProperties.push('_z');
-			momentProperties.push('_a');
-		} else if (momentProperties) {
-			// moment 2.7.0
-			momentProperties._z = null;
-		}
-	
-		// INJECT DATA
-	
-		return moment;
-	}));
-
-
-/***/ },
 /* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a gear item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	
-	    Utilities = __webpack_require__(7),
-	    Model = __webpack_require__(18),
-	    App = __webpack_require__(1);
-	
-	function Gear(options) {
-	    Model.call(this, options);
-	}
-	
-	Gear.prototype = new Model();
-	
-	Gear.prototype.didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            gear_type: '',
-	            subtype: '',
-	            brand: '',
-	            model: '',
-	            description: '',
-	            images: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            delivery_price: '',
-	            delivery_distance: '',
-	            accessories: null,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null
-	        };
-	    }
-	};
-	
-	Gear.prototype.createGear = function createGear(user, callback) {
-	    var model = this,
-	        newGear = this.data,
-	        postData;
-	
-	    postData = {
-	        gear_type: newGear.gear_type,
-	        subtype: newGear.subtype,
-	        brand: newGear.brand,
-	        model: newGear.model,
-	        description: newGear.description,
-	        images: newGear.images,
-	        accessories: newGear.accessories,
-	        price_a: newGear.price_a,
-	        price_b: newGear.price_b,
-	        price_c: newGear.price_c,
-	        currency: newGear.currency,
-	        delivery_price: newGear.delivery_price,
-	        delivery_distance: newGear.delivery_distance,
-	        address: newGear.address,
-	        postal_code: newGear.postal_code,
-	        city: newGear.city,
-	        region: newGear.region,
-	        country: newGear.country,
-	        latitude: newGear.latitude,
-	        longitude: newGear.longitude,
-	        owner_id: user.data.id
-	    };
-	
-	    this.post('/gear', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	/**
-	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
-	 * @param filename: The name of the file
-	 */
-	Gear.prototype.uploadImage = function(file, filename, userID, callback) {
-	    var model = this;
-	    //Get filename and secret from backend
-	    this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error getting filename: ' + error);
-	            }
-	            return;
-	        }
-	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
-	            var postData;
-	            if (error) {
-	                if (callback && typeof callback === 'function') {
-	                    callback('Error uploading file: ' + error);
-	                }
-	                return;
-	            }
-	            //Add image url to backend
-	            postData = {
-	                user_id: userID,
-	                gear_id: model.data.id,
-	                image_url: data.url
-	            };
-	            model.post('/gear/image', postData, function(error, images) {
-	                if (error) {
-	                    //TODO: In this case the image should be deleted from the server
-	                    if (callback && typeof callback === 'function') {
-	                        callback('Error uploading file: ' + error);
-	                    }
-	                    return;
-	                }
-	                model.data.images = images.images;
-	                callback(null, data.url);
-	            });
-	        });
-	    });
-	};
-	
-	Gear.prototype.save = function(userID, callback) {
-	    var saveData = {
-	        subtype: this.data.subtype,
-	        brand: this.data.brand,
-	        model: this.data.model,
-	        description: this.data.description,
-	        images: this.data.images,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        delivery_price: this.data.delivery_price,
-	        delivery_distance: this.data.delivery_distance,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        accessories: JSON.stringify(this.data.accessories)
-	    };
-	
-	    this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	Gear.prototype.update = function(userID, callback) {
-	    var model = this;
-	    this.get('/gear/' + this.data.id, function(error, gear) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, gear);
-	        callback(null);
-	    });
-	};
-	
-	Gear.prototype.getAvailability = function(userID, callback) {
-	    if (userID === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	Gear.prototype.setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Gear;
-
-
-/***/ },
-/* 140 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a tech profile item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	
-	var _ = __webpack_require__(12),
-	
-	    App = __webpack_require__(1),
-	    Model = __webpack_require__(18);
-	
-	function TechProfile(options) {
-	    Model.call(this, options);
-	}
-	
-	TechProfile.prototype = new Model();
-	
-	TechProfile.prototype.didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            roadie_type: '',
-	            about: '',
-	            currently: '',
-	            genres: '',
-	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
-	            xp_years: '',
-	            tours: '',
-	            companies: '',
-	            bands: '',
-	            image: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null,
-	            techprofilelist: null
-	        };
-	    }
-	};
-	
-	TechProfile.prototype.createTechProfile = function createGear(callback) {
-	    var model = this,
-	        newTechProfile = this.data,
-	        postData;
-	
-	    postData = {
-	        roadie_type: newTechProfile.roadie_type,
-	        about: newTechProfile.about,
-	        currently: newTechProfile.currently,
-	        genres: newTechProfile.genres,
-	        experience: newTechProfile.experience,
-	        xp_years: newTechProfile.xp_years,
-	        tours: newTechProfile.tours,
-	        companies: newTechProfile.companies,
-	        bands: newTechProfile.bands,
-	        price_a: newTechProfile.price_a,
-	        price_b: newTechProfile.price_b,
-	        price_c: newTechProfile.price_c,
-	        currency: newTechProfile.currency,
-	        address: newTechProfile.address,
-	        postal_code: newTechProfile.postal_code,
-	        city: newTechProfile.city,
-	        region: newTechProfile.region,
-	        country: newTechProfile.country,
-	        latitude: newTechProfile.latitude,
-	        longitude: newTechProfile.longitude,
-	        owner_id: App.user.data.id,
-	        techprofilelist: newTechProfile.techprofilelist
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	TechProfile.prototype.save = function(callback) {
-	    var saveData = {
-	        about: this.data.about,
-	        currently: this.data.currently,
-	        genres: this.data.genres,
-	        experience: this.data.experience,
-	        xp_years: this.data.xp_years,
-	        tours: this.data.tours,
-	        companies: this.data.companies,
-	        bands: this.data.bands,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        techprofilelist: this.data.techprofilelist
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	TechProfile.prototype.update = function(userID, callback) {
-	    var model = this;
-	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, techProfile);
-	        callback(null);
-	    });
-	};
-	
-	TechProfile.prototype.getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	TechProfile.prototype.setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = TechProfile;
-
-
-/***/ },
-/* 141 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a van item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-		
-		Utilities = __webpack_require__(7),
-		Model = __webpack_require__(18),
-		App = __webpack_require__(1);
-	
-	function Van(options) {
-	    Model.call(this, options);
-	}
-	
-	Van.prototype = new Model();
-	
-	Van.prototype.didInitialize = function didInitialize() {
-	    if (this.data === null) {
-	        this.data = {
-	            id: null,
-	            van_type: '',
-	            model: '',
-	            description: '',
-	            images: '',
-	            price_a: '',
-	            price_b: '',
-	            price_c: '',
-	            currency: App.user.data.currency,
-	            accessories: null,
-	            address: '',
-	            postal_code: '',
-	            city: '',
-	            region: '',
-	            country: '',
-	            latitude: null,
-	            longitude: null,
-	            owner_id: null
-	        };
-	    }
-	};
-	
-	Van.prototype.createVan = function createGear(callback) {
-	    var model = this,
-	        newVan = this.data,
-	        postData;
-	
-	    postData = {
-	        van_type: newVan.van_type,
-	        model: newVan.model,
-	        description: newVan.description,
-	        images: newVan.images,
-	        accessories: newVan.accessories,
-	        price_a: newVan.price_a,
-	        price_b: newVan.price_b,
-	        price_c: newVan.price_c,
-	        currency: newVan.currency,
-	        address: newVan.address,
-	        postal_code: newVan.postal_code,
-	        city: newVan.city,
-	        region: newVan.region,
-	        country: newVan.country,
-	        latitude: newVan.latitude,
-	        longitude: newVan.longitude,
-	        owner_id: App.user.data.id
-	    };
-	
-	    this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        if (callback && typeof callback === 'function') {
-	            callback(null);
-	        }
-	    });
-	};
-	
-	/**
-	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
-	 * @param filename: The name of the file
-	 */
-	Van.prototype.uploadImage = function(file, filename, callback) {
-	    var model = this;
-	    //Get filename and secret from backend
-	    this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error getting filename: ' + error);
-	            }
-	            return;
-	        }
-	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
-	            var postData;
-	            if (error) {
-	                if (callback && typeof callback === 'function') {
-	                    callback('Error uploading file: ' + error);
-	                }
-	                return;
-	            }
-	            //Add image url to backend
-	            postData = {
-	                image_url: data.url
-	            };
-	            model.post('/users/' + App.user.data.id + '/vans/' + model.data.id + '/image', postData, function(error, images) {
-	                if (error) {
-	                    //TODO: In this case the image should be deleted from the server
-	                    if (callback && typeof callback === 'function') {
-	                        callback('Error uploading file: ' + error);
-	                    }
-	                    return;
-	                }
-	                model.data.images = images.images;
-	                callback(null, data.url);
-	            });
-	        });
-	    });
-	};
-	
-	Van.prototype.save = function(callback) {
-	    var saveData = {
-	        subtype: this.data.subtype,
-	        brand: this.data.brand,
-	        model: this.data.model,
-	        description: this.data.description,
-	        images: this.data.images,
-	        price_a: this.data.price_a,
-	        price_b: this.data.price_b,
-	        price_c: this.data.price_c,
-	        currency: this.data.currency,
-	        delivery_price: this.data.delivery_price,
-	        delivery_distance: this.data.delivery_distance,
-	        address: this.data.address,
-	        postal_code: this.data.postal_code,
-	        city: this.data.city,
-	        region: this.data.region,
-	        country: this.data.country,
-	        latitude: this.data.latitude,
-	        longitude: this.data.longitude,
-	        accessories: JSON.stringify(this.data.accessories)
-	    };
-	
-	    this.put('/users/' + App.user.data.id + '/vans/' + this.data.id, saveData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback('Error saving gear: ' + error);
-	            }
-	            return;
-	        }
-	
-	        if (callback && typeof callback === 'function') {
-	            callback(null, data);
-	        }
-	    });
-	};
-	
-	Van.prototype.update = function(userID, callback) {
-	    var model = this;
-	    this.get('/vans/' + this.data.id, function(error, vans) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, vans);
-	        callback(null);
-	    });
-	};
-	
-	Van.prototype.getAvailability = function(callback) {
-	    if (App.user.data.id === null) {
-	        callback(null, {
-	            alwaysFlag: 0,
-	            availabilityArray: []
-	        });
-	        return;
-	    }
-	    this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null, result);
-	    });
-	};
-	
-	/**
-	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
-	 */
-	Van.prototype.setAvailability = function(availabilityArray, alwaysFlag, callback) {
-	    var postData;
-	    postData = {
-	        availability: JSON.stringify(availabilityArray),
-	        alwaysFlag: alwaysFlag
-	    };
-	    this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Van;
-
-
-/***/ },
-/* 142 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a booking item.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	    Moment = __webpack_require__(24),
-	
-	    Model = __webpack_require__(18),
-	    App = __webpack_require__(1);
-	
-	function Booking(options) {
-	    Model.call(this, options);
-	}
-	
-	Booking.prototype = new Model();
-	
-	Booking.prototype.didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = {
-	            //The non-null id property determines the booking type
-	            gear_id: null,
-	            van_id: null,
-	            techprofile_id: null,
-	            item_name: '', //Displayed name of the booked item
-	            price_a: 0,
-	            price_b: 0,
-	            price_c: 0,
-	            currency: 0,
-	            start_time: null,
-	            end_time: null,
-	            cardId: null,
-	            returnURL: null
-	        };
-	    }
-	};
-	
-	// POST: /users/:user_id/gear/:gear_id/bookings
-	Booking.prototype.createBooking = function(cardId, callback) {
-	    var model = this,
-	        newBooking = this.data,
-	        url,
-	        postData;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
-	    } else {
-	        url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';
-	    }
-	
-	    postData = {
-	        start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-	        end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
-	        cardId: cardId,
-	        returnURL: window.location.href
-	    };
-	
-	    this.post(url, postData, function(error, data) {
-	        if (error) {
-	            if (callback && typeof callback === 'function') {
-	                callback(error);
-	            }
-	            return;
-	        }
-	        _.extend(model.data, data);
-	        callback(null);
-	    });
-	};
-	
-	Booking.prototype.getBookingInfo = function(userID, callback) {
-	    var model = this,
-	        url;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
-	    } else {
-	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
-	    }
-	
-	    this.get(url, function(error, booking) {
-	        if (error) {
-	            callback(error);
-	            return;
-	        }
-	        _.extend(model.data, booking);
-	
-	        model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
-	        model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
-	
-	        callback(null);
-	    });
-	};
-	
-	Booking.prototype.update = function(userID, callback) {
-	    var model = this,
-	        url, updateData;
-	
-	    if (this.data.van_id && this.data.van_id !== null) {
-	        url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
-	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
-	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
-	    } else {
-	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
-	    }
-	
-	    updateData = {
-	        booking_status: model.data.booking_status,
-	        preauth_id: model.data.preauth_id
-	    };
-	
-	    this.put(url, updateData, function(error, booking) {
-	        if (error) {
-	            console.log(error);
-	            callback(error);
-	            return;
-	        }
-	
-	        _.extend(model.data, booking);
-	        callback(null);
-	    });
-	};
-	
-	module.exports = Booking;
-
-
-/***/ },
-/* 143 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Popup that requests a time.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var $ = __webpack_require__(13),
-	
-		PopupController = __webpack_require__(20),
-		SelectTimePopupTemplate = __webpack_require__(150),
-	
-	    wasClosed;
-	
-	function SelectTime(options) {
-	    PopupController.call(this, options);
-	    this.template = SelectTimePopupTemplate;
-	}
-	
-	SelectTime.prototype = new PopupController();
-	
-	SelectTime.prototype.didRender = function() {
-	    wasClosed = false;
-	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
-	    this.setupEvent('click', '.confirm-btn', this, this.handleConfirm);
-	};
-	
-	SelectTime.prototype.getSelectedTime = function() {
-	    return {
-	        hours: parseInt($('#selecttimepopup-hours', this.$element).val(), 10),
-	        minutes: parseInt($('#selecttimepopup-minutes', this.$element).val(), 10)
-	    };
-	};
-	
-	SelectTime.prototype.getWasClosed = function() {
-	    return wasClosed;
-	};
-	
-	SelectTime.prototype.handleConfirm = function(event) {
-	    var view = event.data;
-	    wasClosed = false;
-	    view.hide();
-	};
-	
-	SelectTime.prototype.handleCancel = function(event) {
-	    var view = event.data;
-	    wasClosed = true;
-	    $('#selecttimepopup-hours', this.$element).val('12');
-	    $('#selecttimepopup-minutes', this.$element).val('00');
-	    view.hide();
-	};
-	
-	module.exports = SelectTime;
-
-
-/***/ },
-/* 144 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a list of gear.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	
-		Model = __webpack_require__(18),
-		Gear = __webpack_require__(139);
-	
-	function GearList(options) {
-	    Model.call(this, options);
-	}
-	
-	GearList.prototype = new Model();
-	
-	GearList.prototype.didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	GearList.prototype.search = function(location, gear, daterange, callback) {
-	    var view = this;
-	
-	    if (location === null || location === '') {
-	        location = 'all';
-	    }
-	    this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(searchResults);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	GearList.prototype.getUserGear = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/gear', function(error, userGear) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userGear);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	GearList.prototype.getUserRentals = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userRentals);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	GearList.prototype.getUserReservations = function(userID, callback) {
-	    var view = this;
-	
-	    view.get('/users/' + userID + '/gearreservations', function(error, userReservations) {
-	        if (error) {
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userReservations);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	GearList.prototype.getGearItem = function(property, key) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].data[property] === key) {
-	            return this.data[i];
-	        }
-	    }
-	    return null;
-	};
-	
-	GearList.prototype.isEmpty = function() {
-	    return this.data.length <= 0;
-	};
-	
-	GearList.prototype.updateGearItem = function(gearItem) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].id === gearItem.data.id) {
-	            this.data[i] = gearItem.data;
-	            return;
-	        }
-	    }
-	};
-	
-	GearList.prototype.loadFromArray = function(gearArray) {
-	    var i, gearItem;
-	
-	    this.data = [];
-	
-	    for (i = 0; i < gearArray.length; i++) {
-	        gearItem = new Gear({
-	            rootURL: this.rootURL
-	        });
-	        gearItem.initialize();
-	        _.extend(gearItem.data, gearArray[i]);
-	        this.data.push(gearItem);
-	    }
-	};
-	
-	module.exports = GearList;
-
-
-/***/ },
-/* 145 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a list of tech profiles.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-		Model = __webpack_require__(18),
-		TechProfile = __webpack_require__(140);
-	
-	function TechProfileList(options) {
-	    Model.call(this, options);
-	}
-	
-	TechProfileList.prototype = new Model();
-	
-	TechProfileList.prototype.didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	TechProfileList.prototype.search = function(location, gear, daterange, callback) {
-	    var view = this;
-	
-	    if (location === null || location === '') {
-	        location = 'all';
-	    }
-	    this.get('/roadies/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(searchResults);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	TechProfileList.prototype.getUserTechProfiles = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/roadies', function(error, userGear) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userGear);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	TechProfileList.prototype.getUserTechProfileRentals = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/roadierentals', function(error, userHires) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userHires);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	TechProfileList.prototype.getUserTechProfileReservations = function(userID, callback) {
-	    var view = this;
-	
-	    view.get('/users/' + userID + '/roadiereservations', function(error, userBookings) {
-	        if (error) {
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userBookings);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	TechProfileList.prototype.getTechProfileItem = function(property, key) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].data[property] === key) {
-	            return this.data[i];
-	        }
-	    }
-	    return null;
-	};
-	
-	TechProfileList.prototype.isEmpty = function() {
-	    return this.data.length <= 0;
-	};
-	
-	TechProfileList.prototype.updateTechProfileItem = function(techProfileItem) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].id === techProfileItem.data.id) {
-	            this.data[i] = techProfileItem.data;
-	            return;
-	        }
-	    }
-	};
-	
-	TechProfileList.prototype.loadFromArray = function(techProfileArray) {
-	    var i, techProfileItem;
-	
-	    this.data = [];
-	
-	    for (i = 0; i < techProfileArray.length; i++) {
-	        techProfileItem = new TechProfile({
-	            rootURL: this.rootURL
-	        });
-	        techProfileItem.initialize();
-	        _.extend(techProfileItem.data, techProfileArray[i]);
-	        this.data.push(techProfileItem);
-	    }
-	};
-	
-	module.exports = TechProfileList;
-
-
-/***/ },
-/* 146 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a list of vans.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var _ = __webpack_require__(12),
-	
-	    Model = __webpack_require__(18),
-	    Van = __webpack_require__(141);
-	
-	function VanList(options) {
-	    Model.call(this, options);
-	}
-	
-	VanList.prototype = new Model();
-	
-	VanList.prototype.didInitialize = function() {
-	    if (this.data === null) {
-	        this.data = [];
-	    }
-	};
-	
-	VanList.prototype.search = function(location, gear, daterange, callback) {
-	    var view = this;
-	
-	    if (location === null || location === '') {
-	        location = 'all';
-	    }
-	    this.get('/vans/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(searchResults);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	VanList.prototype.getUserVans = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/vans', function(error, userGear) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userGear);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	VanList.prototype.getUserVanRentals = function(userID, callback) {
-	    var view = this;
-	    this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
-	        if (error) {
-	            console.log(error);
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userRentals);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	VanList.prototype.getUserVanReservations = function(userID, callback) {
-	    var view = this;
-	
-	    view.get('/users/' + userID + '/vanreservations', function(error, userReservations) {
-	        if (error) {
-	            callback([]);
-	        } else {
-	            view.loadFromArray(userReservations);
-	            callback(view.data);
-	        }
-	    });
-	};
-	
-	VanList.prototype.getVanItem = function(property, key) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].data[property] === key) {
-	            return this.data[i];
-	        }
-	    }
-	    return null;
-	};
-	
-	VanList.prototype.isEmpty = function() {
-	    return this.data.length <= 0;
-	};
-	
-	VanList.prototype.updateVanItem = function(vanItem) {
-	    var i;
-	    for (i = 0; i < this.data.length; i++) {
-	        if (this.data[i].id === vanItem.data.id) {
-	            this.data[i] = vanItem.data;
-	            return;
-	        }
-	    }
-	};
-	
-	VanList.prototype.loadFromArray = function(vanArray) {
-	    var i, vanItem;
-	
-	    this.data = [];
-	
-	    for (i = 0; i < vanArray.length; i++) {
-	        vanItem = new Van({
-	            rootURL: this.rootURL
-	        });
-	        vanItem.initialize();
-	        _.extend(vanItem.data, vanArray[i]);
-	        this.data.push(vanItem);
-	    }
-	};
-	
-	module.exports = VanList;
-
-
-/***/ },
-/* 147 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Defines a card object.
-	 * @author: Chris Hjorth
-	 */
-	
-	/*jslint node: true */
-	'use strict';
-	
-	var mangoPay = __webpack_require__(151),
-		
-		Config = __webpack_require__(5),
-		Model = __webpack_require__(18);
-	
-	function Card(options) {
-	    Model.call(this, options);
-	}
-	
-	Card.prototype = new Model();
-	
-	Card.prototype.didInitialize = function() {
-	    if (Config.isProduction() === true) {
-	        mangoPay.cardRegistration.baseURL = 'https://api.mangopay.com'; //Production
-	    } else {
-	        mangoPay.cardRegistration.baseURL = 'https://api.sandbox.mangopay.com';
-	    }
-	    mangoPay.cardRegistration.clientId = 'sharingear';
-	};
-	
-	Card.prototype.registerCard = function(userID, cardData, callback) {
-	    this.get('/users/' + userID + '/cardobject', function(error, data) {
-	        if (error) {
-	            console.log('Error getting card object: ' + error);
-	            return;
-	        }
-	        mangoPay.cardRegistration.init({
-	            cardRegistrationURL: data.cardRegistrationURL,
-	            preregistrationData: data.preregistrationData,
-	            accessKey: data.accessKey,
-	            Id: data.id
-	        });
-	        mangoPay.cardRegistration.registerCard(cardData, function(result) {
-	            callback(null, result.CardId);
-	        }, function(result) {
-	            var error = 'Error registering card: ' + result.ResultMessage;
-	            console.log(error);
-	            console.log(result);
-	            callback(error);
-	        });
-	    });
-	};
-	
-	module.exports = Card;
-
-
-/***/ },
-/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
@@ -29081,6 +28023,1279 @@
 			"Pacific/Pohnpei|Pacific/Ponape"
 		]
 	}
+
+/***/ },
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a gear item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	
+	    Utilities = __webpack_require__(11),
+	    Model = __webpack_require__(19),
+	    App = __webpack_require__(1);
+	
+	function Gear(options) {
+	    Model.call(this, options);
+	}
+	
+	Gear.prototype = new Model();
+	
+	Gear.prototype.didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            gear_type: '',
+	            subtype: '',
+	            brand: '',
+	            model: '',
+	            description: '',
+	            images: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            delivery_price: '',
+	            delivery_distance: '',
+	            accessories: null,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null
+	        };
+	    }
+	};
+	
+	Gear.prototype.createGear = function createGear(user, callback) {
+	    var model = this,
+	        newGear = this.data,
+	        postData;
+	
+	    postData = {
+	        gear_type: newGear.gear_type,
+	        subtype: newGear.subtype,
+	        brand: newGear.brand,
+	        model: newGear.model,
+	        description: newGear.description,
+	        images: newGear.images,
+	        accessories: newGear.accessories,
+	        price_a: newGear.price_a,
+	        price_b: newGear.price_b,
+	        price_c: newGear.price_c,
+	        currency: newGear.currency,
+	        delivery_price: newGear.delivery_price,
+	        delivery_distance: newGear.delivery_distance,
+	        address: newGear.address,
+	        postal_code: newGear.postal_code,
+	        city: newGear.city,
+	        region: newGear.region,
+	        country: newGear.country,
+	        latitude: newGear.latitude,
+	        longitude: newGear.longitude,
+	        owner_id: user.data.id
+	    };
+	
+	    this.post('/gear', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	/**
+	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
+	 * @param filename: The name of the file
+	 */
+	Gear.prototype.uploadImage = function(file, filename, userID, callback) {
+	    var model = this;
+	    //Get filename and secret from backend
+	    this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error getting filename: ' + error);
+	            }
+	            return;
+	        }
+	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+	            var postData;
+	            if (error) {
+	                if (callback && typeof callback === 'function') {
+	                    callback('Error uploading file: ' + error);
+	                }
+	                return;
+	            }
+	            //Add image url to backend
+	            postData = {
+	                user_id: userID,
+	                gear_id: model.data.id,
+	                image_url: data.url
+	            };
+	            model.post('/gear/image', postData, function(error, images) {
+	                if (error) {
+	                    //TODO: In this case the image should be deleted from the server
+	                    if (callback && typeof callback === 'function') {
+	                        callback('Error uploading file: ' + error);
+	                    }
+	                    return;
+	                }
+	                model.data.images = images.images;
+	                callback(null, data.url);
+	            });
+	        });
+	    });
+	};
+	
+	Gear.prototype.save = function(userID, callback) {
+	    var saveData = {
+	        subtype: this.data.subtype,
+	        brand: this.data.brand,
+	        model: this.data.model,
+	        description: this.data.description,
+	        images: this.data.images,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        delivery_price: this.data.delivery_price,
+	        delivery_distance: this.data.delivery_distance,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        accessories: JSON.stringify(this.data.accessories)
+	    };
+	
+	    this.put('/users/' + userID + '/gear/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	Gear.prototype.update = function(userID, callback) {
+	    var model = this;
+	    this.get('/gear/' + this.data.id, function(error, gear) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, gear);
+	        callback(null);
+	    });
+	};
+	
+	Gear.prototype.getAvailability = function(userID, callback) {
+	    if (userID === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	Gear.prototype.setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Gear;
+
+
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a tech profile item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	
+	var _ = __webpack_require__(3),
+	
+	    App = __webpack_require__(1),
+	    Model = __webpack_require__(19);
+	
+	function TechProfile(options) {
+	    Model.call(this, options);
+	}
+	
+	TechProfile.prototype = new Model();
+	
+	TechProfile.prototype.didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            roadie_type: '',
+	            about: '',
+	            currently: '',
+	            genres: '',
+	            experience: 5, //1=A+, 2=A, 3=B, 4=C, 5=D
+	            xp_years: '',
+	            tours: '',
+	            companies: '',
+	            bands: '',
+	            image: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null,
+	            techprofilelist: null
+	        };
+	    }
+	};
+	
+	TechProfile.prototype.createTechProfile = function createGear(callback) {
+	    var model = this,
+	        newTechProfile = this.data,
+	        postData;
+	
+	    postData = {
+	        roadie_type: newTechProfile.roadie_type,
+	        about: newTechProfile.about,
+	        currently: newTechProfile.currently,
+	        genres: newTechProfile.genres,
+	        experience: newTechProfile.experience,
+	        xp_years: newTechProfile.xp_years,
+	        tours: newTechProfile.tours,
+	        companies: newTechProfile.companies,
+	        bands: newTechProfile.bands,
+	        price_a: newTechProfile.price_a,
+	        price_b: newTechProfile.price_b,
+	        price_c: newTechProfile.price_c,
+	        currency: newTechProfile.currency,
+	        address: newTechProfile.address,
+	        postal_code: newTechProfile.postal_code,
+	        city: newTechProfile.city,
+	        region: newTechProfile.region,
+	        country: newTechProfile.country,
+	        latitude: newTechProfile.latitude,
+	        longitude: newTechProfile.longitude,
+	        owner_id: App.user.data.id,
+	        techprofilelist: newTechProfile.techprofilelist
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/roadies', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	TechProfile.prototype.save = function(callback) {
+	    var saveData = {
+	        about: this.data.about,
+	        currently: this.data.currently,
+	        genres: this.data.genres,
+	        experience: this.data.experience,
+	        xp_years: this.data.xp_years,
+	        tours: this.data.tours,
+	        companies: this.data.companies,
+	        bands: this.data.bands,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        techprofilelist: this.data.techprofilelist
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/roadies/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	TechProfile.prototype.update = function(userID, callback) {
+	    var model = this;
+	    this.get('/roadies/' + this.data.id, function(error, techProfile) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, techProfile);
+	        callback(null);
+	    });
+	};
+	
+	TechProfile.prototype.getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	TechProfile.prototype.setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = TechProfile;
+
+
+/***/ },
+/* 142 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a van item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		
+		Utilities = __webpack_require__(11),
+		Model = __webpack_require__(19),
+		App = __webpack_require__(1);
+	
+	function Van(options) {
+	    Model.call(this, options);
+	}
+	
+	Van.prototype = new Model();
+	
+	Van.prototype.didInitialize = function didInitialize() {
+	    if (this.data === null) {
+	        this.data = {
+	            id: null,
+	            van_type: '',
+	            model: '',
+	            description: '',
+	            images: '',
+	            price_a: '',
+	            price_b: '',
+	            price_c: '',
+	            currency: App.user.data.currency,
+	            accessories: null,
+	            address: '',
+	            postal_code: '',
+	            city: '',
+	            region: '',
+	            country: '',
+	            latitude: null,
+	            longitude: null,
+	            owner_id: null
+	        };
+	    }
+	};
+	
+	Van.prototype.createVan = function createGear(callback) {
+	    var model = this,
+	        newVan = this.data,
+	        postData;
+	
+	    postData = {
+	        van_type: newVan.van_type,
+	        model: newVan.model,
+	        description: newVan.description,
+	        images: newVan.images,
+	        accessories: newVan.accessories,
+	        price_a: newVan.price_a,
+	        price_b: newVan.price_b,
+	        price_c: newVan.price_c,
+	        currency: newVan.currency,
+	        address: newVan.address,
+	        postal_code: newVan.postal_code,
+	        city: newVan.city,
+	        region: newVan.region,
+	        country: newVan.country,
+	        latitude: newVan.latitude,
+	        longitude: newVan.longitude,
+	        owner_id: App.user.data.id
+	    };
+	
+	    this.post('/users/' + App.user.data.id + '/vans', postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        if (callback && typeof callback === 'function') {
+	            callback(null);
+	        }
+	    });
+	};
+	
+	/**
+	 * @param file: $('#upload-form input[type="file"]').get(0).files[0];
+	 * @param filename: The name of the file
+	 */
+	Van.prototype.uploadImage = function(file, filename, callback) {
+	    var model = this;
+	    //Get filename and secret from backend
+	    this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error getting filename: ' + error);
+	            }
+	            return;
+	        }
+	        Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
+	            var postData;
+	            if (error) {
+	                if (callback && typeof callback === 'function') {
+	                    callback('Error uploading file: ' + error);
+	                }
+	                return;
+	            }
+	            //Add image url to backend
+	            postData = {
+	                image_url: data.url
+	            };
+	            model.post('/users/' + App.user.data.id + '/vans/' + model.data.id + '/image', postData, function(error, images) {
+	                if (error) {
+	                    //TODO: In this case the image should be deleted from the server
+	                    if (callback && typeof callback === 'function') {
+	                        callback('Error uploading file: ' + error);
+	                    }
+	                    return;
+	                }
+	                model.data.images = images.images;
+	                callback(null, data.url);
+	            });
+	        });
+	    });
+	};
+	
+	Van.prototype.save = function(callback) {
+	    var saveData = {
+	        subtype: this.data.subtype,
+	        brand: this.data.brand,
+	        model: this.data.model,
+	        description: this.data.description,
+	        images: this.data.images,
+	        price_a: this.data.price_a,
+	        price_b: this.data.price_b,
+	        price_c: this.data.price_c,
+	        currency: this.data.currency,
+	        delivery_price: this.data.delivery_price,
+	        delivery_distance: this.data.delivery_distance,
+	        address: this.data.address,
+	        postal_code: this.data.postal_code,
+	        city: this.data.city,
+	        region: this.data.region,
+	        country: this.data.country,
+	        latitude: this.data.latitude,
+	        longitude: this.data.longitude,
+	        accessories: JSON.stringify(this.data.accessories)
+	    };
+	
+	    this.put('/users/' + App.user.data.id + '/vans/' + this.data.id, saveData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback('Error saving gear: ' + error);
+	            }
+	            return;
+	        }
+	
+	        if (callback && typeof callback === 'function') {
+	            callback(null, data);
+	        }
+	    });
+	};
+	
+	Van.prototype.update = function(userID, callback) {
+	    var model = this;
+	    this.get('/vans/' + this.data.id, function(error, vans) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, vans);
+	        callback(null);
+	    });
+	};
+	
+	Van.prototype.getAvailability = function(callback) {
+	    if (App.user.data.id === null) {
+	        callback(null, {
+	            alwaysFlag: 0,
+	            availabilityArray: []
+	        });
+	        return;
+	    }
+	    this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null, result);
+	    });
+	};
+	
+	/**
+	 * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
+	 */
+	Van.prototype.setAvailability = function(availabilityArray, alwaysFlag, callback) {
+	    var postData;
+	    postData = {
+	        availability: JSON.stringify(availabilityArray),
+	        alwaysFlag: alwaysFlag
+	    };
+	    this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Van;
+
+
+/***/ },
+/* 143 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a booking item.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	    Moment = __webpack_require__(24),
+	
+	    Model = __webpack_require__(19),
+	    App = __webpack_require__(1);
+	
+	function Booking(options) {
+	    Model.call(this, options);
+	}
+	
+	Booking.prototype = new Model();
+	
+	Booking.prototype.didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = {
+	            //The non-null id property determines the booking type
+	            gear_id: null,
+	            van_id: null,
+	            techprofile_id: null,
+	            item_name: '', //Displayed name of the booked item
+	            price_a: 0,
+	            price_b: 0,
+	            price_c: 0,
+	            currency: 0,
+	            start_time: null,
+	            end_time: null,
+	            cardId: null,
+	            returnURL: null
+	        };
+	    }
+	};
+	
+	// POST: /users/:user_id/gear/:gear_id/bookings
+	Booking.prototype.createBooking = function(cardId, callback) {
+	    var model = this,
+	        newBooking = this.data,
+	        url,
+	        postData;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + App.user.data.id + '/vans/' + newBooking.van_id + '/bookings';
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + App.user.data.id + '/roadies/' + newBooking.techprofile_id + '/bookings';
+	    } else {
+	        url = '/users/' + App.user.data.id + '/gear/' + newBooking.gear_id + '/bookings';
+	    }
+	
+	    postData = {
+	        start_time: newBooking.start_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+	        end_time: newBooking.end_time.tz('UTC').format('YYYY-MM-DD HH:mm:ss'),
+	        cardId: cardId,
+	        returnURL: window.location.href
+	    };
+	
+	    this.post(url, postData, function(error, data) {
+	        if (error) {
+	            if (callback && typeof callback === 'function') {
+	                callback(error);
+	            }
+	            return;
+	        }
+	        _.extend(model.data, data);
+	        callback(null);
+	    });
+	};
+	
+	Booking.prototype.getBookingInfo = function(userID, callback) {
+	    var model = this,
+	        url;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + userID + '/vans/' + this.data.van_id + '/bookings/' + this.data.id;
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+	    } else {
+	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+	    }
+	
+	    this.get(url, function(error, booking) {
+	        if (error) {
+	            callback(error);
+	            return;
+	        }
+	        _.extend(model.data, booking);
+	
+	        model.data.start_time = new Moment.tz(model.data.start_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+	        model.data.end_time = new Moment.tz(model.data.end_time, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+	
+	        callback(null);
+	    });
+	};
+	
+	Booking.prototype.update = function(userID, callback) {
+	    var model = this,
+	        url, updateData;
+	
+	    if (this.data.van_id && this.data.van_id !== null) {
+	        url = '/users/' + userID + '/vans/' + this.data.vans_id + '/bookings/' + this.data.id;
+	    } else if (this.data.techprofile_id && this.data.techprofile_id !== null) {
+	        url = '/users/' + userID + '/roadies/' + this.data.techprofile_id + '/bookings/' + this.data.id;
+	    } else {
+	        url = '/users/' + userID + '/gear/' + this.data.gear_id + '/bookings/' + this.data.id;
+	    }
+	
+	    updateData = {
+	        booking_status: model.data.booking_status,
+	        preauth_id: model.data.preauth_id
+	    };
+	
+	    this.put(url, updateData, function(error, booking) {
+	        if (error) {
+	            console.log(error);
+	            callback(error);
+	            return;
+	        }
+	
+	        _.extend(model.data, booking);
+	        callback(null);
+	    });
+	};
+	
+	module.exports = Booking;
+
+
+/***/ },
+/* 144 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Popup that requests a time.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var $ = __webpack_require__(4),
+	
+		PopupController = __webpack_require__(21),
+		SelectTimePopupTemplate = __webpack_require__(150),
+	
+	    wasClosed;
+	
+	function SelectTime(options) {
+	    PopupController.call(this, options);
+	    this.template = SelectTimePopupTemplate;
+	}
+	
+	SelectTime.prototype = new PopupController();
+	
+	SelectTime.prototype.didRender = function() {
+	    wasClosed = false;
+	    this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
+	    this.setupEvent('click', '.confirm-btn', this, this.handleConfirm);
+	};
+	
+	SelectTime.prototype.getSelectedTime = function() {
+	    return {
+	        hours: parseInt($('#selecttimepopup-hours', this.$element).val(), 10),
+	        minutes: parseInt($('#selecttimepopup-minutes', this.$element).val(), 10)
+	    };
+	};
+	
+	SelectTime.prototype.getWasClosed = function() {
+	    return wasClosed;
+	};
+	
+	SelectTime.prototype.handleConfirm = function(event) {
+	    var view = event.data;
+	    wasClosed = false;
+	    view.hide();
+	};
+	
+	SelectTime.prototype.handleCancel = function(event) {
+	    var view = event.data;
+	    wasClosed = true;
+	    $('#selecttimepopup-hours', this.$element).val('12');
+	    $('#selecttimepopup-minutes', this.$element).val('00');
+	    view.hide();
+	};
+	
+	module.exports = SelectTime;
+
+
+/***/ },
+/* 145 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a list of gear.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	
+		Model = __webpack_require__(19),
+		Gear = __webpack_require__(140);
+	
+	function GearList(options) {
+	    Model.call(this, options);
+	}
+	
+	GearList.prototype = new Model();
+	
+	GearList.prototype.didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	GearList.prototype.search = function(location, gear, daterange, callback) {
+	    var view = this;
+	
+	    if (location === null || location === '') {
+	        location = 'all';
+	    }
+	    this.get('/gear/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(searchResults);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	GearList.prototype.getUserGear = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/gear', function(error, userGear) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userGear);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	GearList.prototype.getUserRentals = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userRentals);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	GearList.prototype.getUserReservations = function(userID, callback) {
+	    var view = this;
+	
+	    view.get('/users/' + userID + '/gearreservations', function(error, userReservations) {
+	        if (error) {
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userReservations);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	GearList.prototype.getGearItem = function(property, key) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].data[property] === key) {
+	            return this.data[i];
+	        }
+	    }
+	    return null;
+	};
+	
+	GearList.prototype.isEmpty = function() {
+	    return this.data.length <= 0;
+	};
+	
+	GearList.prototype.updateGearItem = function(gearItem) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].id === gearItem.data.id) {
+	            this.data[i] = gearItem.data;
+	            return;
+	        }
+	    }
+	};
+	
+	GearList.prototype.loadFromArray = function(gearArray) {
+	    var i, gearItem;
+	
+	    this.data = [];
+	
+	    for (i = 0; i < gearArray.length; i++) {
+	        gearItem = new Gear({
+	            rootURL: this.rootURL
+	        });
+	        gearItem.initialize();
+	        _.extend(gearItem.data, gearArray[i]);
+	        this.data.push(gearItem);
+	    }
+	};
+	
+	module.exports = GearList;
+
+
+/***/ },
+/* 146 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a list of tech profiles.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+		Model = __webpack_require__(19),
+		TechProfile = __webpack_require__(141);
+	
+	function TechProfileList(options) {
+	    Model.call(this, options);
+	}
+	
+	TechProfileList.prototype = new Model();
+	
+	TechProfileList.prototype.didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	TechProfileList.prototype.search = function(location, gear, daterange, callback) {
+	    var view = this;
+	
+	    if (location === null || location === '') {
+	        location = 'all';
+	    }
+	    this.get('/roadies/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(searchResults);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	TechProfileList.prototype.getUserTechProfiles = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/roadies', function(error, userGear) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userGear);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	TechProfileList.prototype.getUserTechProfileRentals = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/roadierentals', function(error, userHires) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userHires);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	TechProfileList.prototype.getUserTechProfileReservations = function(userID, callback) {
+	    var view = this;
+	
+	    view.get('/users/' + userID + '/roadiereservations', function(error, userBookings) {
+	        if (error) {
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userBookings);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	TechProfileList.prototype.getTechProfileItem = function(property, key) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].data[property] === key) {
+	            return this.data[i];
+	        }
+	    }
+	    return null;
+	};
+	
+	TechProfileList.prototype.isEmpty = function() {
+	    return this.data.length <= 0;
+	};
+	
+	TechProfileList.prototype.updateTechProfileItem = function(techProfileItem) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].id === techProfileItem.data.id) {
+	            this.data[i] = techProfileItem.data;
+	            return;
+	        }
+	    }
+	};
+	
+	TechProfileList.prototype.loadFromArray = function(techProfileArray) {
+	    var i, techProfileItem;
+	
+	    this.data = [];
+	
+	    for (i = 0; i < techProfileArray.length; i++) {
+	        techProfileItem = new TechProfile({
+	            rootURL: this.rootURL
+	        });
+	        techProfileItem.initialize();
+	        _.extend(techProfileItem.data, techProfileArray[i]);
+	        this.data.push(techProfileItem);
+	    }
+	};
+	
+	module.exports = TechProfileList;
+
+
+/***/ },
+/* 147 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a list of vans.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var _ = __webpack_require__(3),
+	
+	    Model = __webpack_require__(19),
+	    Van = __webpack_require__(142);
+	
+	function VanList(options) {
+	    Model.call(this, options);
+	}
+	
+	VanList.prototype = new Model();
+	
+	VanList.prototype.didInitialize = function() {
+	    if (this.data === null) {
+	        this.data = [];
+	    }
+	};
+	
+	VanList.prototype.search = function(location, gear, daterange, callback) {
+	    var view = this;
+	
+	    if (location === null || location === '') {
+	        location = 'all';
+	    }
+	    this.get('/vans/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(searchResults);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	VanList.prototype.getUserVans = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/vans', function(error, userGear) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userGear);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	VanList.prototype.getUserVanRentals = function(userID, callback) {
+	    var view = this;
+	    this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
+	        if (error) {
+	            console.log(error);
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userRentals);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	VanList.prototype.getUserVanReservations = function(userID, callback) {
+	    var view = this;
+	
+	    view.get('/users/' + userID + '/vanreservations', function(error, userReservations) {
+	        if (error) {
+	            callback([]);
+	        } else {
+	            view.loadFromArray(userReservations);
+	            callback(view.data);
+	        }
+	    });
+	};
+	
+	VanList.prototype.getVanItem = function(property, key) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].data[property] === key) {
+	            return this.data[i];
+	        }
+	    }
+	    return null;
+	};
+	
+	VanList.prototype.isEmpty = function() {
+	    return this.data.length <= 0;
+	};
+	
+	VanList.prototype.updateVanItem = function(vanItem) {
+	    var i;
+	    for (i = 0; i < this.data.length; i++) {
+	        if (this.data[i].id === vanItem.data.id) {
+	            this.data[i] = vanItem.data;
+	            return;
+	        }
+	    }
+	};
+	
+	VanList.prototype.loadFromArray = function(vanArray) {
+	    var i, vanItem;
+	
+	    this.data = [];
+	
+	    for (i = 0; i < vanArray.length; i++) {
+	        vanItem = new Van({
+	            rootURL: this.rootURL
+	        });
+	        vanItem.initialize();
+	        _.extend(vanItem.data, vanArray[i]);
+	        this.data.push(vanItem);
+	    }
+	};
+	
+	module.exports = VanList;
+
+
+/***/ },
+/* 148 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Defines a card object.
+	 * @author: Chris Hjorth
+	 */
+	
+	/*jslint node: true */
+	'use strict';
+	
+	var mangoPay = __webpack_require__(152),
+		
+		Config = __webpack_require__(9),
+		Model = __webpack_require__(19);
+	
+	function Card(options) {
+	    Model.call(this, options);
+	}
+	
+	Card.prototype = new Model();
+	
+	Card.prototype.didInitialize = function() {
+	    if (Config.isProduction() === true) {
+	        mangoPay.cardRegistration.baseURL = 'https://api.mangopay.com'; //Production
+	    } else {
+	        mangoPay.cardRegistration.baseURL = 'https://api.sandbox.mangopay.com';
+	    }
+	    mangoPay.cardRegistration.clientId = 'sharingear';
+	};
+	
+	Card.prototype.registerCard = function(userID, cardData, callback) {
+	    this.get('/users/' + userID + '/cardobject', function(error, data) {
+	        if (error) {
+	            console.log('Error getting card object: ' + error);
+	            return;
+	        }
+	        mangoPay.cardRegistration.init({
+	            cardRegistrationURL: data.cardRegistrationURL,
+	            preregistrationData: data.preregistrationData,
+	            accessKey: data.accessKey,
+	            Id: data.id
+	        });
+	        mangoPay.cardRegistration.registerCard(cardData, function(result) {
+	            callback(null, result.CardId);
+	        }, function(result) {
+	            var error = 'Error registering card: ' + result.ResultMessage;
+	            console.log(error);
+	            console.log(result);
+	            callback(error);
+	        });
+	    });
+	};
+	
+	module.exports = Card;
+
 
 /***/ },
 /* 149 */
@@ -29916,7 +30131,7 @@
 	        if (!locales[name] && hasModule) {
 	            try {
 	                oldLocale = moment.locale();
-	                __webpack_require__(152)("./" + name);
+	                __webpack_require__(151)("./" + name);
 	                // because defineLocale currently also sets the global locale, we want to undo that for lazy loaded locales
 	                moment.locale(oldLocale);
 	            } catch (e) { }
@@ -32142,15 +32357,6 @@
 /* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mangoPay={cardRegistration:{baseURL:"https://api.sandbox.mangopay.com",clientId:"",init:function(a){this._cardRegisterData=a},registerCard:function(a,b,c){if(!mangoPay.browser.corsSupport()){c({"ResultCode":"009999","ResultMessage":"Browser does not support making cross-origin Ajax calls"});return}var d=mangoPay.cardRegistration._validateCardData(a);if(d!==true){c(d);return};mangoPay.cardRegistration._tokenizeCard(a,mangoPay.cardRegistration._finishRegistration,b,c)},_validateCardData:function(a){var b=mangoPay._validation._cardNumberValidator._validate(a.cardNumber);if(b!==true)return b;var c=mangoPay._validation._expirationDateValidator._validate(a.cardExpirationDate,new Date());if(c!==true)return c;var d=mangoPay._validation._cvvValidator._validate(a.cardCvx,a.cardType);if(d!==true)return d;return true},_tokenizeCard:function(c,d,e,f){mangoPay._networking._ajax({type:"post",url:this._cardRegisterData.cardRegistrationURL,crossDomain:true,data:{data:this._cardRegisterData.preregistrationData,accessKeyRef:this._cardRegisterData.accessKey,cardNumber:c.cardNumber,cardExpirationDate:c.cardExpirationDate,cardCvx:c.cardCvx},success:function(a){var b="";if(a===null){f({"ResultCode":"001599","ResultMessage":"Token processing error"});return}b={Id:mangoPay.cardRegistration._cardRegisterData.Id,RegistrationData:a};d(b,e,f)},error:function(a){f({"ResultCode":"001599","ResultMessage":"Token processing error"});return}})},_finishRegistration:function(d,e,f){mangoPay._networking._ajax({type:"post",crossDomain:true,url:mangoPay.cardRegistration.baseURL+'/v2/'+mangoPay.cardRegistration.clientId+'/CardRegistrations/'+d.Id,data:d,success:function(a){try{a=JSON.parse(a)}catch(err){f({"ResultCode":"101699","ResultMessage":"CardRegistration should return a valid JSON response"});return}if(a.ResultCode==="000000"){e(a)}else{f(a)}},error:function(a){var b="CardRegistration error";if(a.response){try{var c=JSON.parse(a.response);if(c.Message){b=c.Message}}catch(err){}}f({"ResultCode":"101699","ResultMessage":b})}})}},_validation:{_cvvValidator:{_validate:function(a,b){a=a?a.trim():"";b=b?b.trim():"";if(mangoPay._validation._helpers._validateNumericOnly(a)===true){if(b==="AMEX"&&(a.length===3||a.length===4)){return true}if(b==="CB_VISA_MASTERCARD"&&a.length===3){return true}}return{"ResultCode":"105204","ResultMessage":"CVV_FORMAT_ERROR"}}},_expirationDateValidator:{_validate:function(a,b){a=a?a.trim():"";if(a.length===4){var c=parseInt(a.substr(2,2))+2000;var d=parseInt(a.substr(0,2));if(d>0&&d<=12){var e=b.getFullYear();if(e<c)return true;if(e===c){var f=b.getMonth()+1;if(f<=d)return true}return{"ResultCode":"105203","ResultMessage":"PAST_EXPIRY_DATE_ERROR"}}}return{"ResultCode":"105203","ResultMessage":"EXPIRY_DATE_FORMAT_ERROR"}}},_cardNumberValidator:{_validate:function(a){a=a?a.trim():"";if(mangoPay._validation._helpers._validateNumericOnly(a)===false){return{"ResultCode":"105202","ResultMessage":"CARD_NUMBER_FORMAT_ERROR"}}if(this._validateCheckDigit(a)===false){return{"ResultCode":"105202","ResultMessage":"CARD_NUMBER_FORMAT_ERROR"}}return true},_validateCheckDigit:function(a){var b=0;var c=0;var d=false;var e=a.replace(/\D/g,"");for(var n=e.length-1;n>=0;n--){var f=e.charAt(n),c=parseInt(f,10);if(d){if((c*=2)>9)c-=9}b+=c;d=!d}return(b%10)===0},},_helpers:{_validateNumericOnly:function(a){var b=/^[0-9]+$/;if(a.match(b)){return true}return false}}},_networking:{_ajax:function(a){var b=new XMLHttpRequest();var c="";for(key in a.data){c+=(c.length>0?'&':'')+key+"="+encodeURIComponent(a.data[key])}var d=a.url;if(a.type==="get"){d=a.url+(a.url.indexOf("?")>-1?'&':'?')+c}if(a.crossDomain&&!("withCredentials"in b)&&window.XDomainRequest){xdr=new XDomainRequest();xdr.onerror=function(){a.error(xdr)};xdr.onload=function(){a.success(xdr.responseText)};xdr.open(a.type,d);xdr.send(a.type==="post"?c:null);return}b.onreadystatechange=function(){if(b.readyState==4){if(/^2[0-9][0-9]$/.test(b.status)){a.success(b.responseText)}else{a.error(b,b.status,b.statusText)}}};b.open(a.type,d,true);if(a.type==="post"){b.setRequestHeader("Content-type","application/x-www-form-urlencoded")}b.send(a.type==="post"?c:null)},},browser:{corsSupport:function(){if("withCredentials"in new XMLHttpRequest()){return true}if(window.XDomainRequest){return true}return false}}};if(!String.prototype.trim){String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g,'')}}
-	
-	/*** EXPORTS FROM exports-loader ***/
-	module.exports = mangoPay
-
-/***/ },
-/* 152 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var map = {
 		"./af": 153,
 		"./af.js": 153,
@@ -32324,8 +32530,17 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 152;
+	webpackContext.id = 151;
 
+
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var mangoPay={cardRegistration:{baseURL:"https://api.sandbox.mangopay.com",clientId:"",init:function(a){this._cardRegisterData=a},registerCard:function(a,b,c){if(!mangoPay.browser.corsSupport()){c({"ResultCode":"009999","ResultMessage":"Browser does not support making cross-origin Ajax calls"});return}var d=mangoPay.cardRegistration._validateCardData(a);if(d!==true){c(d);return};mangoPay.cardRegistration._tokenizeCard(a,mangoPay.cardRegistration._finishRegistration,b,c)},_validateCardData:function(a){var b=mangoPay._validation._cardNumberValidator._validate(a.cardNumber);if(b!==true)return b;var c=mangoPay._validation._expirationDateValidator._validate(a.cardExpirationDate,new Date());if(c!==true)return c;var d=mangoPay._validation._cvvValidator._validate(a.cardCvx,a.cardType);if(d!==true)return d;return true},_tokenizeCard:function(c,d,e,f){mangoPay._networking._ajax({type:"post",url:this._cardRegisterData.cardRegistrationURL,crossDomain:true,data:{data:this._cardRegisterData.preregistrationData,accessKeyRef:this._cardRegisterData.accessKey,cardNumber:c.cardNumber,cardExpirationDate:c.cardExpirationDate,cardCvx:c.cardCvx},success:function(a){var b="";if(a===null){f({"ResultCode":"001599","ResultMessage":"Token processing error"});return}b={Id:mangoPay.cardRegistration._cardRegisterData.Id,RegistrationData:a};d(b,e,f)},error:function(a){f({"ResultCode":"001599","ResultMessage":"Token processing error"});return}})},_finishRegistration:function(d,e,f){mangoPay._networking._ajax({type:"post",crossDomain:true,url:mangoPay.cardRegistration.baseURL+'/v2/'+mangoPay.cardRegistration.clientId+'/CardRegistrations/'+d.Id,data:d,success:function(a){try{a=JSON.parse(a)}catch(err){f({"ResultCode":"101699","ResultMessage":"CardRegistration should return a valid JSON response"});return}if(a.ResultCode==="000000"){e(a)}else{f(a)}},error:function(a){var b="CardRegistration error";if(a.response){try{var c=JSON.parse(a.response);if(c.Message){b=c.Message}}catch(err){}}f({"ResultCode":"101699","ResultMessage":b})}})}},_validation:{_cvvValidator:{_validate:function(a,b){a=a?a.trim():"";b=b?b.trim():"";if(mangoPay._validation._helpers._validateNumericOnly(a)===true){if(b==="AMEX"&&(a.length===3||a.length===4)){return true}if(b==="CB_VISA_MASTERCARD"&&a.length===3){return true}}return{"ResultCode":"105204","ResultMessage":"CVV_FORMAT_ERROR"}}},_expirationDateValidator:{_validate:function(a,b){a=a?a.trim():"";if(a.length===4){var c=parseInt(a.substr(2,2))+2000;var d=parseInt(a.substr(0,2));if(d>0&&d<=12){var e=b.getFullYear();if(e<c)return true;if(e===c){var f=b.getMonth()+1;if(f<=d)return true}return{"ResultCode":"105203","ResultMessage":"PAST_EXPIRY_DATE_ERROR"}}}return{"ResultCode":"105203","ResultMessage":"EXPIRY_DATE_FORMAT_ERROR"}}},_cardNumberValidator:{_validate:function(a){a=a?a.trim():"";if(mangoPay._validation._helpers._validateNumericOnly(a)===false){return{"ResultCode":"105202","ResultMessage":"CARD_NUMBER_FORMAT_ERROR"}}if(this._validateCheckDigit(a)===false){return{"ResultCode":"105202","ResultMessage":"CARD_NUMBER_FORMAT_ERROR"}}return true},_validateCheckDigit:function(a){var b=0;var c=0;var d=false;var e=a.replace(/\D/g,"");for(var n=e.length-1;n>=0;n--){var f=e.charAt(n),c=parseInt(f,10);if(d){if((c*=2)>9)c-=9}b+=c;d=!d}return(b%10)===0},},_helpers:{_validateNumericOnly:function(a){var b=/^[0-9]+$/;if(a.match(b)){return true}return false}}},_networking:{_ajax:function(a){var b=new XMLHttpRequest();var c="";for(key in a.data){c+=(c.length>0?'&':'')+key+"="+encodeURIComponent(a.data[key])}var d=a.url;if(a.type==="get"){d=a.url+(a.url.indexOf("?")>-1?'&':'?')+c}if(a.crossDomain&&!("withCredentials"in b)&&window.XDomainRequest){xdr=new XDomainRequest();xdr.onerror=function(){a.error(xdr)};xdr.onload=function(){a.success(xdr.responseText)};xdr.open(a.type,d);xdr.send(a.type==="post"?c:null);return}b.onreadystatechange=function(){if(b.readyState==4){if(/^2[0-9][0-9]$/.test(b.status)){a.success(b.responseText)}else{a.error(b,b.status,b.statusText)}}};b.open(a.type,d,true);if(a.type==="post"){b.setRequestHeader("Content-type","application/x-www-form-urlencoded")}b.send(a.type==="post"?c:null)},},browser:{corsSupport:function(){if("withCredentials"in new XMLHttpRequest()){return true}if(window.XDomainRequest){return true}return false}}};if(!String.prototype.trim){String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g,'')}}
+	
+	/*** EXPORTS FROM exports-loader ***/
+	module.exports = mangoPay
 
 /***/ },
 /* 153 */

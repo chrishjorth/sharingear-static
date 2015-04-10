@@ -87,10 +87,6 @@ DashboardYourVanReservations.prototype.populateYourReservations = function(callb
         }
 
         $reservationItem = $(yourReservationsItemTemplate(defaultReservation));
-        $('.sg-bg-image', $reservationItem).css({
-            'background-image': 'url("' + defaultReservation.img_url + '")'
-        });
-
 
         status = reservation.data.booking_status;
 
@@ -103,6 +99,45 @@ DashboardYourVanReservations.prototype.populateYourReservations = function(callb
         if (status === 'denied' || status === 'ended-denied') {
             $('.denied', $reservationItem).removeClass('hidden');
         }
+
+        //Add unique class for every image
+        $('.sg-bg-image', $reservationItem).addClass('van-reservation-item-'+i);
+
+        // Create an image object
+        var img = new Image();
+        img.resultNum = i;
+
+        //Get thumbURL from the imageURL
+        var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+        imageURL = defaultReservation.img_url;
+        
+        thumbURL = imageURL.split('/');
+        imgName = thumbURL.pop();
+        thumbURL = thumbURL.join('/');
+        imgNameComponents = imgName.split('.');
+        imgName = imgNameComponents[0];
+        imgExt = imgNameComponents[1];
+        if (window.window.devicePixelRatio > 1) {
+            thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+        } else {
+            thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+        }
+
+        //Assign the img source to the the thumbURL
+        $('.sg-bg-image', $reservationItem).css({
+            'background-image': 'url("' + thumbURL + '")'
+        });
+
+        img.src = thumbURL;
+
+        //Make the pictures fit the boxes
+        img.onload = function(){
+                if (this.width < this.height) {
+                    $('.van-reservation-item-'+this.resultNum).addClass('search-result-gear-vertical');
+                } else {
+                    $('.van-reservation-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+                }
+        };
 
         $reservationBlock.append($reservationItem);
     }
