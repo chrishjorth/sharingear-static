@@ -42,6 +42,7 @@ describe('ViewController', function() {
         expect(this.vc).to.have.property('$element');
         expect(this.vc).to.have.property('template');
         expect(this.vc).to.have.property('templateParameters');
+        expect(this.vc).to.have.property('templateFunction');
         expect(this.vc).to.have.property('labels');
         expect(this.vc).to.have.property('path');
         expect(this.vc).to.have.property('hasSubviews');
@@ -56,6 +57,7 @@ describe('ViewController', function() {
             didInitializeSpy = sinon.spy(this.vc, 'didInitialize');
         this.vc.initialize();
         expect(this.vc.userEvents).to.be.an('array');
+        expect(this.vc.templateFunction).to.be.a('function');
         sinon.assert.calledOnce(setSubPathSpy);
         sinon.assert.calledOnce(didInitializeSpy);
         this.vc.setSubPath.restore();
@@ -65,15 +67,18 @@ describe('ViewController', function() {
     it('Can render', function() {
         var unbindEventsSpy = sinon.spy(this.vc, 'unbindEvents'),
             willRenderSpy = sinon.spy(this.vc, 'willRender'),
-            didRenderSpy = sinon.spy(this.vc, 'didRender');
+            didRenderSpy = sinon.spy(this.vc, 'didRender'),
+            templateFunctionSpy = sinon.spy(this.vc, 'templateFunction');
         this.vc.render();
         sinon.assert.calledOnce(unbindEventsSpy);
         expect(this.$fixtures.html()).to.equal('<div>Test Template</div>');
         sinon.assert.calledOnce(willRenderSpy);
         sinon.assert.calledOnce(didRenderSpy);
+        sinon.assert.calledOnce(templateFunctionSpy);
         this.vc.unbindEvents.restore();
         this.vc.willRender.restore();
         this.vc.didRender.restore();
+        this.vc.templateFunction.restore();
     });
 
     it('Can handle window resize event', function(done) {
