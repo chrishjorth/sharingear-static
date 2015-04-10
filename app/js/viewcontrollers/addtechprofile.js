@@ -404,8 +404,8 @@ AddTechProfile.prototype.renderAvailability = function() {
     $calendarContainer.removeClass('hidden');
 
     $('#addtechprofile-darkgray-left', this.$element).hide();
-    $calendarContainer.removeClass('col-sm-9');
-    $calendarContainer.addClass('col-sm-12');
+    $('#addtechprofile-darkgray-left-calendar', this.$element).removeClass('hidden');
+
 
     CalendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
