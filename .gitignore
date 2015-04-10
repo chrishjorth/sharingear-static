@@ -2,3 +2,4 @@
 .idea
 /app/uploads
 .htaccess
+/app/node_modules/webpack
