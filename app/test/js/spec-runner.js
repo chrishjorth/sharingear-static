@@ -17,10 +17,9 @@ require('mocha!./specs/model.spec.js');
 require('mocha!./specs/popupcontroller.spec.js');
 require('mocha!./specs/rootviewcontroller.spec.js');
 require('mocha!./specs/router.spec.js');
+require('mocha!./specs/utilities.spec.js');
 require('mocha!./specs/viewloader.spec.js');
 require('mocha!./specs/viewcontroller.spec.js');
-
-//require('mocha!./specs/utilities.spec.js');
 
 //Sharingear viewcontroller tests
 //require('mocha!./specs')

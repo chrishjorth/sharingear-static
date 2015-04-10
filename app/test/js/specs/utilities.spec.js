@@ -41,24 +41,16 @@ describe('Utilities', function() {
         GoogleMaps.LatLng.restore();
     });
 
-    it('Can inherit an object', function() {
-        var testParent, TestChildConstructor, testChild;
-
-        function TestParentConstructor(options) {
-            this.testProperty = true;
-            _.extend(this, options);
-        }
-
-        TestChildConstructor = Utilities.inherit(TestParentConstructor, {
-            testProperty: false,
-            anotherTestProperty: true
-        });
-
-        testParent = new TestParentConstructor();
-        testChild = new TestChildConstructor();
-        expect(testParent.testProperty).to.equal(true);
-        expect(testChild.testProperty).to.equal(false);
-        expect(testChild.anotherTestProperty).to.equal(true);
+    it('Provides the utilities object', function() {
+        expect(Utilities).to.be.an('object');
+        expect(Utilities.getBaseURL).to.be.a('function');
+        expect(Utilities.ajajFileUpload).to.be.a('function');
+        expect(Utilities.getCityFromCoordinates).to.be.a('function');
+        expect(Utilities.getQueryString).to.be.a('function');
+        expect(Utilities.getQueryStringParameterValue).to.be.a('function');
+        expect(Utilities.capitalizeString).to.be.a('function');
+        expect(Utilities.isMomentBetween).to.be.a('function');
+        expect(Utilities.isMobile).to.be.a('function');
     });
 
     it('Can get base url from current url', function() {
