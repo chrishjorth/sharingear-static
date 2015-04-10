@@ -563,8 +563,7 @@ AddGear.prototype.renderAvailability = function() {
     $calendarContainer.removeClass('hidden');
 
     $('#addgear-darkgray-left', this.$element).hide();
-    $calendarContainer.removeClass('col-sm-9');
-    $calendarContainer.addClass('col-sm-12');
+    $('#addgear-darkgray-left-calendar', this.$element).removeClass('hidden');s
 
     CalendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');

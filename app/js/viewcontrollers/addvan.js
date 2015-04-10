@@ -478,9 +478,8 @@ AddVan.prototype.renderAvailability = function() {
     $calendarContainer.removeClass('hidden');
 
     $('#addvan-darkgray-left', this.$element).hide();
-    $calendarContainer.removeClass('col-sm-9');
-    $calendarContainer.addClass('col-sm-12');
-
+    $('#addvan-darkgray-left-calendar', this.$element).removeClass('hidden');
+    
     CalendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
 
