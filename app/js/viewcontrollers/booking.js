@@ -17,7 +17,7 @@ var _ = require('underscore'),
 
     Localization = require('../models/localization.js'),
     User = require('../models/user.js'),
-    Booking = require('../models/booking.js');
+    BookingModel = require('../models/booking.js');
 
 function Booking(options) {
     ViewController.call(this, options);
@@ -52,7 +52,7 @@ Booking.prototype.didInitialize = function() {
 
     this.peerUser = null;
 
-    this.booking = new Booking({
+    this.booking = new BookingModel({
         rootURL: Config.API_URL
     });
     this.booking.initialize();

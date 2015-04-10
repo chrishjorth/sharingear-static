@@ -12,7 +12,7 @@ var _ = require('underscore'),
     Config = require('../config.js'),
     ViewController = require('../viewcontroller.js'),
 
-    User = require('../models/user.js'),
+    UserModel = require('../models/user.js'),
     GearList = require('../models/gearlist.js'),
     TechProfileList = require('../models/techprofilelist.js'),
     VanList = require('../models/vanlist.js');
@@ -36,7 +36,7 @@ User.prototype.didInitialize = function() {
     }
     this.subPath = ''; //To avoid rendering a subview based on the gear id
 
-    this.user = new User({
+    this.user = new UserModel({
         rootURL: Config.API_URL,
         data: {
             id: gearID
