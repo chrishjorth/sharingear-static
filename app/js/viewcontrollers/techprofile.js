@@ -6,7 +6,6 @@
 /*jslint node: true */
 'use strict';
 
-
 var _ = require('underscore'),
     $ = require('jquery'),
     GoogleMaps = require('../libraries/mscl-googlemaps.js'),
@@ -16,9 +15,10 @@ var _ = require('underscore'),
     Utilities = require('../utilities.js'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
+
     Localization = require('../models/localization.js'),
     User = require('../models/user.js'),
-    TechProfile = require('../models/techprofile.js'),
+    TechProfileModel = require('../models/techprofile.js'),
 
     paymentSuccessModalOpen = false;
 
@@ -71,7 +71,7 @@ TechProfile.prototype.didInitialize = function() {
     } else {
         if (view.techProfile === null) {
             //In this case the view is loaded the first time, and not returning from a modal fx
-            view.techProfile = new TechProfile({
+            view.techProfile = new TechProfileModel({
                 rootURL: Config.API_URL
             });
             view.techProfile.initialize();
