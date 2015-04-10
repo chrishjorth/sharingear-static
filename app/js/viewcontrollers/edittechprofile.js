@@ -15,6 +15,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
     geocoder = new GoogleMaps.Geocoder();
 
@@ -92,7 +93,7 @@ EditTechProfile.prototype.toggleLoading = function() {
 
 EditTechProfile.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
+        $calendarContainer, $submerchantFormBtn, CalendarVC, calendarVT, SubmerchantFormVC, submerchantFormVT;
 
     $calendarContainer = $('#edittechprofile-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
@@ -100,9 +101,9 @@ EditTechProfile.prototype.renderAvailability = function() {
     $submerchantFormBtn = $('#edittechprofile-submerchantform-buttons', this.$element);
 
     if (App.user.isSubMerchant() === true) {
-        calendarVC = require('./availabilitycalendar.js');
+        CalendarVC = require('./availabilitycalendar.js');
         calendarVT = require('../../templates/availabilitycalendar.html');
-        view.calendarVC = new calendarVC({
+        view.calendarVC = new CalendarVC({
             name: 'availabilitycalendar',
             $element: $calendarContainer,
             template: calendarVT,
@@ -116,9 +117,9 @@ EditTechProfile.prototype.renderAvailability = function() {
             $submerchantFormBtn.addClass('hidden');
         }
     } else {
-        submerchantFormVC = require('./submerchantregistration.js');
+        SubmerchantFormVC = require('./submerchantregistration.js');
         submerchantFormVT = require('../../templates/submerchantregistration.html');
-        view.submerchantFormVC = new submerchantFormVC({
+        view.submerchantFormVC = new SubmerchantFormVC({
             name: 'submerchantform',
             $element: $calendarContainer,
             template: submerchantFormVT
@@ -257,7 +258,7 @@ EditTechProfile.prototype.populatePricing = function() {
 };
 
 EditTechProfile.prototype.populatePriceSuggestions = function() {
-    var techProfileClassification = App.contentClassification.data.roadieClassification,
+    var techProfileClassification = ContentClassification.data.roadieClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
 

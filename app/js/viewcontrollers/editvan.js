@@ -14,6 +14,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
     geocoder = new GoogleMaps.Geocoder();
 
@@ -98,7 +99,7 @@ EditVan.prototype.populateDelivery = function() {
 };
 
 EditVan.prototype.initAccessories = function() {
-    var vanClassification = App.contentClassification.data.vanClassification,
+    var vanClassification = ContentClassification.data.vanClassification,
         view = this,
         html = '',
         i, j;
@@ -122,7 +123,7 @@ EditVan.prototype.initAccessories = function() {
 
 EditVan.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
+        $calendarContainer, $submerchantFormBtn, CalendarVC, calendarVT, SubmerchantFormVC, submerchantFormVT;
 
     $calendarContainer = $('#editvan-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
@@ -130,9 +131,9 @@ EditVan.prototype.renderAvailability = function() {
     $submerchantFormBtn = $('#editvan-submerchantform-buttons', this.$element);
 
     if (App.user.isSubMerchant() === true) {
-        calendarVC = require('./availabilitycalendar.js');
+        CalendarVC = require('./availabilitycalendar.js');
         calendarVT = require('../../templates/availabilitycalendar.html');
-        view.calendarVC = new calendarVC({
+        view.calendarVC = new CalendarVC({
             name: 'availabilitycalendar',
             $element: $calendarContainer,
             template: calendarVT,
@@ -146,9 +147,9 @@ EditVan.prototype.renderAvailability = function() {
             $submerchantFormBtn.addClass('hidden');
         }
     } else {
-        submerchantFormVC = require('./submerchantregistration.js');
+        SubmerchantFormVC = require('./submerchantregistration.js');
         submerchantFormVT = require('../../templates/submerchantregistration.html');
-        view.submerchantFormVC = new submerchantFormVC({
+        view.submerchantFormVC = new SubmerchantFormVC({
             name: 'submerchantform',
             $element: $calendarContainer,
             template: submerchantFormVT
@@ -230,7 +231,7 @@ EditVan.prototype.populatePricing = function() {
 };
 
 EditVan.prototype.populatePriceSuggestions = function() {
-    var vanClassification = App.contentClassification.data.vanClassification,
+    var vanClassification = ContentClassification.data.vanClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
 
@@ -254,7 +255,7 @@ EditVan.prototype.populatePriceSuggestions = function() {
 };
 
 EditVan.prototype.populateAccessories = function(event) {
-    var vanClassification = App.contentClassification.data.vanClassification,
+    var vanClassification = ContentClassification.data.vanClassification,
         view = event.data,
         html = '',
         vanType, i, j;

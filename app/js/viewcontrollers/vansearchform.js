@@ -16,6 +16,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
 
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
     numberOfGearSuggestions = 5;
 
@@ -209,7 +210,7 @@ VanSearchForm.prototype.showVanSuggestions = function(event) {
 
     searchString = searchString.toLowerCase().trim();
 
-    vanClassificationList = App.contentClassification.data.vanClassification;
+    vanClassificationList = ContentClassification.data.vanClassification;
     classificationSuggestions = _.filter(vanClassificationList, function(van) {
         var typeName = van.vanType.toLowerCase();
         return typeName.indexOf(searchString) >= 0;

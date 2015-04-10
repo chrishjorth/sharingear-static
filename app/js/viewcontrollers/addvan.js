@@ -16,6 +16,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
 
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
     Van = require('../models/van.js'),
 
     countryDefault = 'Select country:',
@@ -101,7 +102,7 @@ AddVan.prototype.getTabID = function() {
 };
 
 AddVan.prototype.populatePriceSuggestions = function() {
-    var vanClassification = App.contentClassification.data.vanClassification,
+    var vanClassification = ContentClassification.data.vanClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
 
@@ -136,7 +137,7 @@ AddVan.prototype.toggleLoading = function() {
 
 AddVan.prototype.addVanIcons = function() {
     var view = this,
-        vanClassification = App.contentClassification.data.vanClassification,
+        vanClassification = ContentClassification.data.vanClassification,
         html = '',
         vanType, i;
 
@@ -156,7 +157,7 @@ AddVan.prototype.addVanIcons = function() {
 
 AddVan.prototype.renderAccessories = function() {
     var view = this,
-        vanClassification = App.contentClassification.data.vanClassification,
+        vanClassification = ContentClassification.data.vanClassification,
         html = '',
         vanType, i, j;
 
@@ -471,7 +472,7 @@ AddVan.prototype.savePriceLocation = function() {
 
 AddVan.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, calendarVC, calendarVT;
+        $calendarContainer, CalendarVC, calendarVT;
 
     $calendarContainer = $('#addvan-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
@@ -480,10 +481,10 @@ AddVan.prototype.renderAvailability = function() {
     $calendarContainer.removeClass('col-sm-9');
     $calendarContainer.addClass('col-sm-12');
 
-    calendarVC = require('./availabilitycalendar.js');
+    CalendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
 
-    view.calendarVC = new calendarVC({
+    view.calendarVC = new CalendarVC({
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
@@ -522,12 +523,12 @@ AddVan.prototype.renderAvailability = function() {
 AddVan.prototype.renderSubmerchantForm = function() {
     var $submerchantFormContainer = $('#addvan-availability-calendar', this.$element),
         view = this,
-        submerchantFormVC, submerchantFormVT;
+        SubmerchantFormVC, submerchantFormVT;
 
-    submerchantFormVC = require('./submerchantregistration.js');
+    SubmerchantFormVC = require('./submerchantregistration.js');
     submerchantFormVT = require('../../templates/submerchantregistration.html');
 
-    view.submerchantFormVC = new submerchantFormVC({
+    view.submerchantFormVC = new SubmerchantFormVC({
         name: 'submerchantform',
         $element: $submerchantFormContainer,
         template: submerchantFormVT

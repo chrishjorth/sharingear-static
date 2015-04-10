@@ -15,6 +15,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
     geocoder = new GoogleMaps.Geocoder();
 
@@ -103,7 +104,7 @@ EditGear.prototype.populateDelivery = function() {
 };
 
 EditGear.prototype.initAccessories = function() {
-    var gearClassification = App.contentClassification.data.gearClassification,
+    var gearClassification = ContentClassification.data.gearClassification,
         html = '',
         view, gearSubtypes, i;
 
@@ -130,7 +131,7 @@ EditGear.prototype.initAccessories = function() {
 
 EditGear.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
+        $calendarContainer, $submerchantFormBtn, CalendarVC, calendarVT, SubmerchantFormVC, submerchantFormVT;
 
     $calendarContainer = $('#editgear-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
@@ -138,9 +139,9 @@ EditGear.prototype.renderAvailability = function() {
     $submerchantFormBtn = $('#editgear-submerchantform-buttons', this.$element);
 
     if (App.user.isSubMerchant() === true) {
-        calendarVC = require('./availabilitycalendar.js');
+        CalendarVC = require('./availabilitycalendar.js');
         calendarVT = require('../../templates/availabilitycalendar.html');
-        view.calendarVC = new calendarVC({
+        view.calendarVC = new CalendarVC({
             name: 'availabilitycalendar',
             $element: $calendarContainer,
             template: calendarVT,
@@ -155,10 +156,10 @@ EditGear.prototype.renderAvailability = function() {
             $submerchantFormBtn.addClass('hidden');
         }
     } else {
-        submerchantFormVC = require('./submerchantregistration.js');
+        SubmerchantFormVC = require('./submerchantregistration.js');
         submerchantFormVT = require('../../templates/submerchantregistration.html');
 
-        view.submerchantFormVC = new submerchantFormVC({
+        view.submerchantFormVC = new SubmerchantFormVC({
             name: 'submerchantform',
             $element: $calendarContainer,
             template: submerchantFormVT
@@ -215,7 +216,7 @@ EditGear.prototype.populateCountries = function($select) {
 };
 
 EditGear.prototype.populateBrandSelect = function() {
-    var brands = App.contentClassification.data.gearBrands,
+    var brands = ContentClassification.data.gearBrands,
         html = '<option> Choose brand: </option>',
         $brandSelect, i;
     if (!brands) {
@@ -232,7 +233,7 @@ EditGear.prototype.populateBrandSelect = function() {
 };
 
 EditGear.prototype.populateSubtypeSelect = function() {
-    var gearClassification = App.contentClassification.data.gearClassification,
+    var gearClassification = ContentClassification.data.gearClassification,
         html = '<option> Choose subtype: </option>',
         $subtypeSelect,
         gearSubtypes, i;
@@ -279,7 +280,7 @@ EditGear.prototype.populatePricing = function() {
 };
 
 EditGear.prototype.populatePriceSuggestions = function() {
-    var gearClassification = App.contentClassification.data.gearClassification,
+    var gearClassification = ContentClassification.data.gearClassification,
         view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
 
     view = this;
@@ -317,7 +318,7 @@ EditGear.prototype.populatePriceSuggestions = function() {
 };
 
 EditGear.prototype.populateAccessories = function(event) {
-    var gearClassification = App.contentClassification.data.gearClassification,
+    var gearClassification = ContentClassification.data.gearClassification,
         html = '',
         view, gearSubtypes, i;
 

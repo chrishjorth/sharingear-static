@@ -16,6 +16,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
 
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
     TechProfile = require('../models/techprofile.js'),
 
     countryDefault = 'Select country:',
@@ -93,7 +94,7 @@ AddTechProfile.prototype.getTabID = function() {
 };
 
 AddTechProfile.prototype.populatePriceSuggestions = function() {
-    var techProfileClassification = App.contentClassification.data.roadieClassification,
+    var techProfileClassification = ContentClassification.data.roadieClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
 
@@ -128,7 +129,7 @@ AddTechProfile.prototype.toggleLoading = function() {
 
 AddTechProfile.prototype.addTechProfileIcons = function() {
     var view = this,
-        techProfileClassification = App.contentClassification.data.roadieClassification,
+        techProfileClassification = ContentClassification.data.roadieClassification,
         html = '',
         techProfileType, i;
 
@@ -397,7 +398,7 @@ AddTechProfile.prototype.savePriceLocation = function() {
 
 AddTechProfile.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, calendarVC, calendarVT;
+        $calendarContainer, CalendarVC, calendarVT;
 
     $calendarContainer = $('#addtechprofile-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
@@ -406,10 +407,10 @@ AddTechProfile.prototype.renderAvailability = function() {
     $calendarContainer.removeClass('col-sm-9');
     $calendarContainer.addClass('col-sm-12');
 
-    calendarVC = require('./availabilitycalendar.js');
+    CalendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
 
-    view.calendarVC = new calendarVC({
+    view.calendarVC = new CalendarVC({
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
@@ -448,11 +449,11 @@ AddTechProfile.prototype.renderAvailability = function() {
 AddTechProfile.prototype.renderSubmerchantForm = function() {
     var $submerchantFormContainer = $('#addtechprofile-availability-calendar', this.$element),
         view = this,
-        submerchantFormVC, submerchantFormVT;
+        SubmerchantFormVC, submerchantFormVT;
 
-    submerchantFormVC = require('./submerchantregistration.js');
+    SubmerchantFormVC = require('./submerchantregistration.js');
     submerchantFormVT = require('../../templates/submerchantregistration.html');
-    view.submerchantFormVC = new submerchantFormVC({
+    view.submerchantFormVC = new SubmerchantFormVC({
         name: 'submerchantform',
         $element: $submerchantFormContainer,
         template: submerchantFormVT

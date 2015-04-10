@@ -16,6 +16,7 @@ var _ = require('underscore'),
 	App = require('../app.js'),
 
 	Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
 	numberOfGearSuggestions = 5;
 
@@ -209,7 +210,7 @@ GearSearchForm.prototype.showGearSuggestions = function(event) {
 
     searchString = searchString.toLowerCase().trim();
 
-    gearClassificationList = App.contentClassification.data.gearClassification;
+    gearClassificationList = ContentClassification.data.gearClassification;
     classificationSuggestions = _.map(gearClassificationList, function(value) {
         var gear;
         gear = _.filter(value, function(subtype) {
@@ -224,7 +225,7 @@ GearSearchForm.prototype.showGearSuggestions = function(event) {
     });
     classificationSuggestions = _.flatten(classificationSuggestions);
 
-    gearBrandList = App.contentClassification.data.gearBrands;
+    gearBrandList = ContentClassification.data.gearBrands;
     brandsSuggestions = _.filter(gearBrandList, function(brand) {
         var searchIndex = brand.toLowerCase().indexOf(searchString);
         return searchIndex >= 0;

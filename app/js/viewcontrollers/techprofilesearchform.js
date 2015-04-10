@@ -16,6 +16,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
 
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
     numberOfTechProfileSuggestions = 5;
 
@@ -209,7 +210,7 @@ TechProfileSearchForm.prototype.showTechProfileSuggestions = function(event) {
 
     searchString = searchString.toLowerCase().trim();
 
-    techProfileClassificationList = App.contentClassification.data.roadieClassification;
+    techProfileClassificationList = ContentClassification.data.roadieClassification;
     classificationSuggestions = _.filter(techProfileClassificationList, function(techProfile) {
         var typeName = techProfile.roadie_type.toLowerCase();
         return typeName.indexOf(searchString) >= 0;

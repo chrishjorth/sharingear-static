@@ -44,7 +44,6 @@ describe('App', function() {
         expect(App).to.have.property('router');
         expect(App).to.have.property('user');
         expect(App).to.have.property('rootVC');
-        expect(App).to.have.property('contentClassification');
     });
 
     it('Can initialize Sharingear', function(done) {

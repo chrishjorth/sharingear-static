@@ -86,7 +86,6 @@ App = {
     router: Router,
     user: null,
     rootVC: null,
-    contentClassification: null,
 
     run: run,
     setUserLocation: setUserLocation

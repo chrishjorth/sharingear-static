@@ -16,6 +16,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
 
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
     Gear = require('../models/gear.js'),
 
     subtypeDefault = 'Choose subtype:',
@@ -98,7 +99,7 @@ AddGear.prototype.getTabID = function() {
 };
 
 AddGear.prototype.populatePriceSuggestions = function() {
-    var gearClassification = App.contentClassification.data.gearClassification,
+    var gearClassification = ContentClassification.data.gearClassification,
         view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
 
     view = this;
@@ -147,7 +148,7 @@ AddGear.prototype.toggleLoading = function() {
 
 AddGear.prototype.addGearIcons = function() {
     var view = this,
-        gearClassification = App.contentClassification.data.gearClassification,
+        gearClassification = ContentClassification.data.gearClassification,
         html = '',
         gearType;
 
@@ -166,7 +167,7 @@ AddGear.prototype.addGearIcons = function() {
 
 AddGear.prototype.renderAccessories = function() {
     var view = this,
-        gearClassification = App.contentClassification.data.gearClassification,
+        gearClassification = ContentClassification.data.gearClassification,
         html = '',
         gearType, gearSubtypes, i, j;
 
@@ -217,7 +218,7 @@ AddGear.prototype.prepopulateInstrument = function() {
 };
 
 AddGear.prototype.populateSubtypeSelect = function(gearType) {
-    var gearClassification = App.contentClassification.data.gearClassification,
+    var gearClassification = ContentClassification.data.gearClassification,
         html = '<option> ' + subtypeDefault + ' </option>',
         $subtypeSelect, $brandSelectContainer, $detailsContainer, gearSubtypes, i;
 
@@ -245,7 +246,7 @@ AddGear.prototype.populateSubtypeSelect = function(gearType) {
 };
 
 AddGear.prototype.populateBrandSelect = function() {
-    var brands = App.contentClassification.data.gearBrands,
+    var brands = ContentClassification.data.gearBrands,
         html = '<option> ' + brandDefault + ' </option>',
         $brandSelect, $detailsContainer, i;
 
@@ -556,7 +557,7 @@ AddGear.prototype.savePriceLocation = function() {
 
 AddGear.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, calendarVC, calendarVT;
+        $calendarContainer, CalendarVC, calendarVT;
 
     $calendarContainer = $('#addgear-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
@@ -565,10 +566,10 @@ AddGear.prototype.renderAvailability = function() {
     $calendarContainer.removeClass('col-sm-9');
     $calendarContainer.addClass('col-sm-12');
 
-    calendarVC = require('./availabilitycalendar.js');
+    CalendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
 
-    view.calendarVC = new calendarVC({
+    view.calendarVC = new CalendarVC({
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
@@ -607,12 +608,12 @@ AddGear.prototype.renderAvailability = function() {
 AddGear.prototype.renderSubmerchantForm = function() {
     var $submerchantFormContainer = $('#addgear-availability-calendar', this.$element),
         view = this,
-        submerchantFormVC, submerchantFormVT;
+        SubmerchantFormVC, submerchantFormVT;
 
-    submerchantFormVC = require('./submerchantregistration.js');
+    SubmerchantFormVC = require('./submerchantregistration.js');
     submerchantFormVT = require('../../templates/submerchantregistration.html');
 
-    view.submerchantFormVC = new submerchantFormVC({
+    view.submerchantFormVC = new SubmerchantFormVC({
         name: 'submerchantform',
         $element: $submerchantFormContainer,
         template: submerchantFormVT
