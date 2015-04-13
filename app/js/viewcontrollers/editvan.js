@@ -338,7 +338,8 @@ EditVan.prototype.handleSave = function(event) {
         currentCountry = view.van.data.country,
         availabilityArray = [],
         accessoriesArray = [],
-        selections, alwaysFlag, updatedVanData, addressOneliner, updateCall, month, monthSelections, selection, j;
+        selections, alwaysFlag, updatedVanData, addressOneliner, updateCall, month, monthSelections, selection, j,
+        vanData, address, postal_code, city;
 
     if (view.isLoading === true) {
         return;
@@ -396,6 +397,8 @@ EditVan.prototype.handleSave = function(event) {
         country: $('#editvanpricing-country option:selected').val()
     };
 
+    vanData = view.van.data;
+
     if ($('#editvan-subtype', view.$element).selectedIndex === 0) {
         alert('The subtype field is required.');
         view.toggleLoading();
@@ -417,7 +420,7 @@ EditVan.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_a', this.$element).val()) % 1 !== 0) {
-        alert('The hourly rental price is invalid.');
+        alert('The daily rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -427,7 +430,7 @@ EditVan.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_b', this.$element).val()) % 1 !== 0) {
-        alert('The daily rental price is invalid.');
+        alert('The weekly rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -437,21 +440,24 @@ EditVan.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_c', this.$element).val()) % 1 !== 0) {
-        alert('The weekly rental price is invalid.');
+        alert('The monthly rental price is invalid.');
         view.toggleLoading();
         return;
     }
-    if ($('#editvanpricing-address', this.$element).val() === '') {
+    address = $('#editvanpricing-address', this.$element).val();
+    if (address === '' && address !== vanData.address) {
         alert('The address field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#editvanpricing-postalcode', this.$element).val() === '') {
+    postal_code = $('#editvanpricing-postalcode', this.$element).val();
+    if (postal_code === '' && postal_code !== vanData.postal_code) {
         alert('The postalcode field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#editvanpricing-city', this.$element).val() === '') {
+    city = $('#editvanpricing-city', this.$element).val();
+    if (city === '' && city !== vanData.city) {
         alert('The city field is required.');
         view.toggleLoading();
         return;
@@ -489,11 +495,8 @@ EditVan.prototype.handleSave = function(event) {
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.van.data.longitude = results[0].geometry.location.lng();
                 view.van.data.latitude = results[0].geometry.location.lat();
-                updateCall();
-            } else {
-                alert('Google Maps could not find your address. Please verify that it is correct.');
-                view.toggleLoading();
             }
+            updateCall();
         });
     } else {
         updateCall();

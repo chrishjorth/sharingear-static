@@ -402,7 +402,8 @@ EditGear.prototype.handleSave = function(event) {
         currentCountry = view.gear.data.country,
         availabilityArray = [],
         accessoriesArray = [],
-        selections, alwaysFlag, updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
+        selections, alwaysFlag, updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j,
+        gearData, address, postal_code, city;
 
     if (view.isLoading === true) {
         return;
@@ -460,6 +461,8 @@ EditGear.prototype.handleSave = function(event) {
         country: $('#editgearpricingloc-form #editgearpricing-country option:selected').val()
     };
 
+    gearData = view.gear.data;
+
     if ($('#editgear-subtype', view.$element).selectedIndex === 0) {
         alert('The subtype field is required.');
         view.toggleLoading();
@@ -481,7 +484,7 @@ EditGear.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#editgearpricing-form #price_a', this.$element).val()) % 1 !== 0) {
-        alert('The hourly rental price is invalid.');
+        alert('The daily rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -491,7 +494,7 @@ EditGear.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#editgearpricing-form #price_b', this.$element).val()) % 1 !== 0) {
-        alert('The daily rental price is invalid.');
+        alert('The weekly rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -501,21 +504,24 @@ EditGear.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#editgearpricing-form #price_c', this.$element).val()) % 1 !== 0) {
-        alert('The weekly rental price is invalid.');
+        alert('The monthly rental price is invalid.');
         view.toggleLoading();
         return;
     }
-    if ($('#editgearpricingloc-form #editgearpricing-address', this.$element).val() === '') {
+    address = $('#editgearpricingloc-form #editgearpricing-address', this.$element).val();
+    if (address === '' && address !== gearData.address) {
         alert('The address field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val() === '') {
+    postal_code = $('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val();
+    if (postal_code === '' && postal_code !== gearData.postal_code) {
         alert('The postalcode field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#editgearpricingloc-form #editgearpricing-city', this.$element).val() === '') {
+    city = $('#editgearpricingloc-form #editgearpricing-city', this.$element).val();
+    if (city === '' && city !== gearData.city) {
         alert('The city field is required.');
         view.toggleLoading();
         return;
@@ -528,14 +534,6 @@ EditGear.prototype.handleSave = function(event) {
     _.extend(view.gear.data, updatedGearData);
 
     updateCall = function() {
-        /*Localization.convertPrices([updatedGearData.price_a, updatedGearData.price_b, updatedGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
-            if(error) {
-                console.log('Error converting prices: ' + error);
-                return;
-            }
-            view.gear.data.price_a = convertedPrices[0];
-            view.gear.data.price_b = convertedPrices[1];
-            view.gear.data.price_c = convertedPrices[2];*/
         view.gear.save(App.user.data.id, function(error) {
             if (error) {
                 alert('Error updating gear.');
@@ -545,7 +543,6 @@ EditGear.prototype.handleSave = function(event) {
             }
             App.router.closeModalView();
         });
-        //});
     };
 
     isLocationSame = (currentAddress === updatedGearData.address &&
@@ -562,11 +559,8 @@ EditGear.prototype.handleSave = function(event) {
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.gear.data.longitude = results[0].geometry.location.lng();
                 view.gear.data.latitude = results[0].geometry.location.lat();
-                updateCall();
-            } else {
-                alert('Google Maps could not find your address. Please verify that it is correct.');
-                view.toggleLoading();
             }
+            updateCall();
         });
     } else {
         updateCall();

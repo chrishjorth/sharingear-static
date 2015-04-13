@@ -308,7 +308,8 @@ EditTechProfile.prototype.handleSave = function(event) {
         currentRegion = view.techProfile.data.region,
         currentCountry = view.techProfile.data.country,
         availabilityArray = [],
-        selections, alwaysFlag, updatedVanData, addressOneliner, updateCall, month, monthSelections, selection, j;
+        selections, alwaysFlag, updatedVanData, addressOneliner, updateCall, month, monthSelections, selection, j,
+        techProfileData, address, postal_code, city;
 
     if (view.isLoading === true) {
         return;
@@ -362,6 +363,8 @@ EditTechProfile.prototype.handleSave = function(event) {
         country: $('#edittechprofilepricing-country option:selected').val()
     };
 
+    techProfileData = view.techProfile.data;
+
     if ($('#edittechprofile-subtype', view.$element).selectedIndex === 0) {
         alert('The subtype field is required.');
         view.toggleLoading();
@@ -383,7 +386,7 @@ EditTechProfile.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_a', this.$element).val()) % 1 !== 0) {
-        alert('The hourly rental price is invalid.');
+        alert('The daily rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -393,7 +396,7 @@ EditTechProfile.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_b', this.$element).val()) % 1 !== 0) {
-        alert('The daily rental price is invalid.');
+        alert('The weekly rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -403,21 +406,24 @@ EditTechProfile.prototype.handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_c', this.$element).val()) % 1 !== 0) {
-        alert('The weekly rental price is invalid.');
+        alert('The monthly rental price is invalid.');
         view.toggleLoading();
         return;
     }
-    if ($('#edittechprofilepricing-address', this.$element).val() === '') {
+    address = $('#edittechprofilepricing-address', this.$element).val();
+    if (address === '' && address !== techProfileData.address) {
         alert('The address field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#edittechprofilepricing-postalcode', this.$element).val() === '') {
+    postal_code = $('#edittechprofilepricing-postalcode', this.$element).val();
+    if (postal_code === '' && postal_code !== techProfileData.postal_code) {
         alert('The postalcode field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#edittechprofilepricing-city', this.$element).val() === '') {
+    city = $('#edittechprofilepricing-city', this.$element).val();
+    if (city === '' && city !== techProfileData.city) {
         alert('The city field is required.');
         view.toggleLoading();
         return;
@@ -455,11 +461,8 @@ EditTechProfile.prototype.handleSave = function(event) {
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.techProfile.data.longitude = results[0].geometry.location.lng();
                 view.techProfile.data.latitude = results[0].geometry.location.lat();
-                updateCall();
-            } else {
-                alert('Google Maps could not find your address. Please verify that it is correct.');
-                view.toggleLoading();
             }
+            updateCall();
         });
     } else {
         updateCall();
