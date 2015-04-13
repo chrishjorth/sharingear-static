@@ -306,6 +306,8 @@ TechProfile.prototype.renderTechProfileList = function() {
                 return html + '<a href="#techprofile/' + entry.id + '">' + entry.roadie_type + '</a>  ';
             });
         });
+    }else{
+        $('.techprofilelistborder',view.$element).addClass('hidden');
     }
 
 };
