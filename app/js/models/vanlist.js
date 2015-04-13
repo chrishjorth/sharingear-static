@@ -9,26 +9,21 @@
 var _ = require('underscore'),
 
     Model = require('../model'),
-    Van = require('./van'),
+    Van = require('./van');
 
-    didInitialize,
+function VanList(options) {
+    Model.call(this, options);
+}
 
-    search,
-    getUserVans,
-    getUserVanRentals,
-    getUserVanReservations,
-    getVanItem,
-    isEmpty,
-    updateVanItem,
-    loadFromArray;
+VanList.prototype = new Model();
 
-didInitialize = function() {
+VanList.prototype.didInitialize = function() {
     if (this.data === null) {
         this.data = [];
     }
 };
 
-search = function(location, gear, daterange, callback) {
+VanList.prototype.search = function(location, gear, daterange, callback) {
     var view = this;
 
     if (location === null || location === '') {
@@ -45,7 +40,7 @@ search = function(location, gear, daterange, callback) {
     });
 };
 
-getUserVans = function(userID, callback) {
+VanList.prototype.getUserVans = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/vans', function(error, userGear) {
         if (error) {
@@ -58,7 +53,7 @@ getUserVans = function(userID, callback) {
     });
 };
 
-getUserVanRentals = function(userID, callback) {
+VanList.prototype.getUserVanRentals = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
         if (error) {
@@ -71,7 +66,7 @@ getUserVanRentals = function(userID, callback) {
     });
 };
 
-getUserVanReservations = function(userID, callback) {
+VanList.prototype.getUserVanReservations = function(userID, callback) {
     var view = this;
 
     view.get('/users/' + userID + '/vanreservations', function(error, userReservations) {
@@ -84,7 +79,7 @@ getUserVanReservations = function(userID, callback) {
     });
 };
 
-getVanItem = function(property, key) {
+VanList.prototype.getVanItem = function(property, key) {
     var i;
     for (i = 0; i < this.data.length; i++) {
         if (this.data[i].data[property] === key) {
@@ -94,11 +89,11 @@ getVanItem = function(property, key) {
     return null;
 };
 
-isEmpty = function() {
+VanList.prototype.isEmpty = function() {
     return this.data.length <= 0;
 };
 
-updateVanItem = function(vanItem) {
+VanList.prototype.updateVanItem = function(vanItem) {
     var i;
     for (i = 0; i < this.data.length; i++) {
         if (this.data[i].id === vanItem.data.id) {
@@ -108,13 +103,13 @@ updateVanItem = function(vanItem) {
     }
 };
 
-loadFromArray = function(vanArray) {
+VanList.prototype.loadFromArray = function(vanArray) {
     var i, vanItem;
 
     this.data = [];
 
     for (i = 0; i < vanArray.length; i++) {
-        vanItem = new Van.constructor({
+        vanItem = new Van({
             rootURL: this.rootURL
         });
         vanItem.initialize();
@@ -123,15 +118,4 @@ loadFromArray = function(vanArray) {
     }
 };
 
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-
-    search: search,
-    getUserVans: getUserVans,
-    getUserVanRentals: getUserVanRentals,
-    getUserVanReservations: getUserVanReservations,
-    getVanItem: getVanItem,
-    isEmpty: isEmpty,
-    updateVanItem: updateVanItem,
-    loadFromArray: loadFromArray
-});
+module.exports = VanList;

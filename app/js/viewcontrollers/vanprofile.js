@@ -20,22 +20,19 @@ var _ = require('underscore'),
     User = require('../models/user.js'),
     Van = require('../models/van.js'),
 
-    paymentSuccessModalOpen = false,
+    paymentSuccessModalOpen = false;
 
-    didInitialize,
-    didRender,
-    renderOwnerPicture,
-    renderVanPictures,
-    renderPricing,
-    renderMap,
-    renderAccessories,
-    renderActionButton,
-    handleBooking,
-    handleEditProfile,
-    handleFacebookShare,
-    handleTwitterShare;
+function VanProfile(options) {
+    ViewController.call(this, options);
+    this.hasSubviews = false;
+    this.van = null;
+    this.owner = null;
+    this.map = null;
+}
 
-didInitialize = function() {
+VanProfile.prototype = new ViewController();
+
+VanProfile.prototype.didInitialize = function() {
     var view = this;
 
     Localization.getCurrentTimeZone();
@@ -55,7 +52,7 @@ didInitialize = function() {
         owner_id: ''
     };
 
-    view.owner = new User.constructor({
+    view.owner = new User({
         rootURL: Config.API_URL
     });
     view.owner.initialize();
@@ -69,7 +66,7 @@ didInitialize = function() {
     } else {
         if (view.van === null) {
             //In this case the view is loaded the first time, and not returning from a modal fx
-            view.van = new Van.constructor({
+            view.van = new Van({
                 rootURL: Config.API_URL
             });
             view.van.initialize();
@@ -79,7 +76,7 @@ didInitialize = function() {
         }
 
         view.van.update(App.user.data.id, function(error) {
-            var publicInfoDeferred = $.Deferred(), 
+            var publicInfoDeferred = $.Deferred(),
                 availabilityDeferred = $.Deferred();
             if (error) {
                 console.log(error);
@@ -124,7 +121,7 @@ didInitialize = function() {
     }
 };
 
-didRender = function() {
+VanProfile.prototype.didRender = function() {
     var preAuthorizationID, bookingID;
 
     if (App.rootVC !== null && App.rootVC.header) {
@@ -147,7 +144,7 @@ didRender = function() {
     //Check for querystring sent by a booking payment process
     preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
     bookingID = Utilities.getQueryStringParameterValue(window.location.search, 'booking_id');
-    if (paymentSuccessModalOpen === false && preAuthorizationID && bookingID && this.van.data.van_type !== ''  && App.user.data.id !== null) {
+    if (paymentSuccessModalOpen === false && preAuthorizationID && bookingID && this.van.data.van_type !== '' && App.user.data.id !== null) {
         App.router.openModalView('paymentsuccessful', {
             preAuthorizationID: preAuthorizationID,
             bookingID: bookingID,
@@ -162,7 +159,7 @@ didRender = function() {
     }
 };
 
-renderAccessories = function() {
+VanProfile.prototype.renderAccessories = function() {
     var accessories = this.van.data.accessories,
         i, html = '';
 
@@ -180,7 +177,7 @@ renderAccessories = function() {
     $('#accessories-holder', this.$element).html(html);
 };
 
-renderOwnerPicture = function() {
+VanProfile.prototype.renderOwnerPicture = function() {
     var view = this,
         img, isVertical, backgroundSize;
     if (!this.owner.data.image_url) {
@@ -202,7 +199,7 @@ renderOwnerPicture = function() {
     img.src = this.owner.data.image_url;
 };
 
-renderVanPictures = function() {
+VanProfile.prototype.renderVanPictures = function() {
     var $owlContainer = $('.owl-carousel', this.$element),
         images = this.van.data.images.split(','),
         description = 'Van picture.',
@@ -223,7 +220,7 @@ renderVanPictures = function() {
     });
 };
 
-renderPricing = function() {
+VanProfile.prototype.renderPricing = function() {
     var view = this;
     Localization.convertPrices([this.van.data.price_a, this.van.data.price_b, this.van.data.price_c], this.van.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
@@ -231,12 +228,12 @@ renderPricing = function() {
             return;
         }
         $('#vanprofile-displayed_price_a', view.$element).html(Math.ceil(convertedPrices[0]));
-        $('#vanprofile-displayed_price_b', view.$element).html(Math.ceil(convertedPrices[0]));
-        $('#vanprofile-displayed_price_c', view.$element).html(Math.ceil(convertedPrices[0]));
+        $('#vanprofile-displayed_price_b', view.$element).html(Math.ceil(convertedPrices[1]));
+        $('#vanprofile-displayed_price_c', view.$element).html(Math.ceil(convertedPrices[2]));
     });
 };
 
-renderMap = function() {
+VanProfile.prototype.renderMap = function() {
     var van = this.van.data,
         mapOptions, latlong, marker;
     if (van.latitude !== null && van.longitude !== null) {
@@ -255,7 +252,7 @@ renderMap = function() {
     }
 };
 
-handleBooking = function(event) {
+VanProfile.prototype.handleBooking = function(event) {
     var view = event.data,
         user = App.user;
     if (user.data.id === null) {
@@ -292,12 +289,12 @@ handleBooking = function(event) {
     }
 };
 
-handleEditProfile = function(event) {
+VanProfile.prototype.handleEditProfile = function(event) {
     var view = event.data;
     App.router.openModalView('editvan', view.van);
 };
 
-handleFacebookShare = function(event) {
+VanProfile.prototype.handleFacebookShare = function(event) {
     var view = event.data;
     var url, description;
 
@@ -312,7 +309,7 @@ handleFacebookShare = function(event) {
     });
 };
 
-handleTwitterShare = function(event) {
+VanProfile.prototype.handleTwitterShare = function(event) {
     var view = event.data,
         twtTitle = 'Check out this ' + view.van.data.van_type + ' on www.sharingear.com',
         twtUrl = 'https://www.sharingear.com/#vanprofile/' + view.van.data.id,
@@ -325,7 +322,7 @@ handleTwitterShare = function(event) {
     window.open(twtLink);
 };
 
-renderActionButton = function() {
+VanProfile.prototype.renderActionButton = function() {
     var view = this;
 
     $('.button-container button', view.$element).each(function() {
@@ -354,22 +351,4 @@ renderActionButton = function() {
     }
 };
 
-module.exports = ViewController.inherit({
-    hasSubviews: false,
-    van: null,
-    owner: null,
-    map: null,
-
-    didInitialize: didInitialize,
-    didRender: didRender,
-    renderVanPictures: renderVanPictures,
-    renderPricing: renderPricing,
-    renderMap: renderMap,
-    renderAccessories: renderAccessories,
-    renderOwnerPicture: renderOwnerPicture,
-    renderActionButton: renderActionButton,
-    handleBooking: handleBooking,
-    handleEditProfile: handleEditProfile,
-    handleFacebookShare: handleFacebookShare,
-    handleTwitterShare: handleTwitterShare
-});
+module.exports = VanProfile;

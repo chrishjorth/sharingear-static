@@ -7,29 +7,27 @@
 
 
 var chai = require('chai'),
-	_ = require('underscore'),
-	$ = require('jquery'),
+    $ = require('jquery'),
 
-	ViewController = require('../../../js/viewcontroller.js'),
+    ViewController = require('../../../js/viewcontroller.js'),
 
-	expect;
+    expect;
+
+require('script!../../../node_modules/sinon/pkg/sinon.js');
 
 expect = chai.expect;
 
 describe('ViewController', function() {
     before(function() {
         this.$fixtures = $('#fixtures');
-        this.vc = new ViewController.constructor({
-            name: 'testVC',
+        this.vc = new ViewController({
             $element: this.$fixtures,
-            labels: {},
             template: '<div>Test Template</div>',
-
             didInitialize: function() {},
             willRender: function() {},
             didRender: function() {},
-            didClose: function() {},
-            didResize: function() {}
+            didResize: function() {},
+            didClose: function() {}
         });
     });
 
@@ -37,16 +35,21 @@ describe('ViewController', function() {
         this.$fixtures.empty();
     });
 
-    it('Provides the viewcontroller object', function() {
-        expect(ViewController).to.be.an('object');
-        expect(ViewController).to.have.property('constructor');
-        expect(ViewController).to.have.property('inherit');
-    });
-
     it('Can be constructed', function() {
-        expect(this.vc.name).to.equal('testVC');
-        expect(this.vc.$element).to.equal(this.$fixtures);
-        expect(this.vc.template.toString()).to.equal(_.template('<div>Test Template</div>').toString());
+        expect(ViewController).to.be.a('function');
+        expect(this.vc instanceof ViewController).to.equal(true);
+        expect(this.vc).to.have.property('name');
+        expect(this.vc).to.have.property('$element');
+        expect(this.vc).to.have.property('template');
+        expect(this.vc).to.have.property('templateParameters');
+        expect(this.vc).to.have.property('templateFunction');
+        expect(this.vc).to.have.property('labels');
+        expect(this.vc).to.have.property('path');
+        expect(this.vc).to.have.property('hasSubviews');
+        expect(this.vc).to.have.property('$subViewContainer');
+        expect(this.vc).to.have.property('subPath');
+        expect(this.vc).to.have.property('passedData');
+        expect(this.vc).to.have.property('ready');
     });
 
     it('Can initialize', function() {
@@ -54,6 +57,7 @@ describe('ViewController', function() {
             didInitializeSpy = sinon.spy(this.vc, 'didInitialize');
         this.vc.initialize();
         expect(this.vc.userEvents).to.be.an('array');
+        expect(this.vc.templateFunction).to.be.a('function');
         sinon.assert.calledOnce(setSubPathSpy);
         sinon.assert.calledOnce(didInitializeSpy);
         this.vc.setSubPath.restore();
@@ -63,15 +67,18 @@ describe('ViewController', function() {
     it('Can render', function() {
         var unbindEventsSpy = sinon.spy(this.vc, 'unbindEvents'),
             willRenderSpy = sinon.spy(this.vc, 'willRender'),
-            didRenderSpy = sinon.spy(this.vc, 'didRender');
+            didRenderSpy = sinon.spy(this.vc, 'didRender'),
+            templateFunctionSpy = sinon.spy(this.vc, 'templateFunction');
         this.vc.render();
         sinon.assert.calledOnce(unbindEventsSpy);
         expect(this.$fixtures.html()).to.equal('<div>Test Template</div>');
         sinon.assert.calledOnce(willRenderSpy);
         sinon.assert.calledOnce(didRenderSpy);
+        sinon.assert.calledOnce(templateFunctionSpy);
         this.vc.unbindEvents.restore();
         this.vc.willRender.restore();
         this.vc.didRender.restore();
+        this.vc.templateFunction.restore();
     });
 
     it('Can handle window resize event', function(done) {
@@ -127,17 +134,14 @@ describe('ViewController', function() {
     });
 
     it('Can register viewcontroller events', function(done) {
-        var testVC = new ViewController.constructor({
-            name: 'testVC2',
-            $element: this.$fixtures,
-            labels: {},
-            template: '<div>Test Template 2</div>',
-
-            didInitialize: function() {},
-            didRender: function() {},
-            didClose: function() {},
-            didResize: function() {}
-        });
+        var testVC = new ViewController();
+        testVC.name = 'testVC2';
+        testVC.$element = this.$fixtures;
+        testVC.template = '<div>Test Template 2</div>';
+        testVC.didInitialize = function() {};
+        testVC.didRender = function() {};
+        testVC.didClose = function() {};
+        testVC.didResize = function() {};
         testVC.initialize();
         expect(testVC.events).to.be.an('object');
         expect(testVC.events).to.have.property('close');

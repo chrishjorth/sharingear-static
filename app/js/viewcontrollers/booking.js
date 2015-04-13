@@ -17,21 +17,15 @@ var _ = require('underscore'),
 
     Localization = require('../models/localization.js'),
     User = require('../models/user.js'),
-    Booking = require('../models/booking.js'),
+    BookingModel = require('../models/booking.js');
 
-    didInitialize,
-    didRender,
+function Booking(options) {
+    ViewController.call(this, options);
+}
 
-    renderPeerPic,
+Booking.prototype = new ViewController();
 
-    toggleLoading,
-
-    handleDeny,
-    handleConfirm,
-    handleEnd,
-    handleClose;
-
-didInitialize = function() {
+Booking.prototype.didInitialize = function() {
     var view = this;
 
     this.isLoading = false;
@@ -58,7 +52,7 @@ didInitialize = function() {
 
     this.peerUser = null;
 
-    this.booking = new Booking.constructor({
+    this.booking = new BookingModel({
         rootURL: Config.API_URL
     });
     this.booking.initialize();
@@ -104,7 +98,7 @@ didInitialize = function() {
             currency: (view.passedData.mode === 'owner' ? view.booking.data.owner_currency : view.booking.data.renter_currency)
         });
 
-        view.peerUser = new User.constructor({
+        view.peerUser = new User({
             rootURL: Config.API_URL
         });
         view.peerUser.initialize();
@@ -127,7 +121,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+Booking.prototype.didRender = function() {
     if (this.booking.data.booking_status === 'pending' && this.passedData.mode === 'owner') {
         $('.accept-deny', this.$element).removeClass('hidden');
     } else if (this.booking.data.booking_status === 'accepted' || this.booking.data.booking_status === 'rented-out') {
@@ -172,7 +166,7 @@ didRender = function() {
     this.setupEvent('click', '#booking-end-btn', this, this.handleEnd);
 };
 
-renderPeerPic = function() {
+Booking.prototype.renderPeerPic = function() {
     var view = this,
         img;
 
@@ -196,7 +190,7 @@ renderPeerPic = function() {
     img.src = view.peerUser.data.image_url;
 };
 
-toggleLoading = function($selector, initstring) {
+Booking.prototype.toggleLoading = function($selector, initstring) {
     if (this.isLoading === true) {
         $selector.html(initstring);
         this.isLoading = false;
@@ -206,7 +200,7 @@ toggleLoading = function($selector, initstring) {
     }
 };
 
-handleDeny = function(event) {
+Booking.prototype.handleDeny = function(event) {
     var view = event.data;
 
     view.booking.data.booking_status = 'denied';
@@ -221,7 +215,7 @@ handleDeny = function(event) {
     });
 };
 
-handleConfirm = function(event) {
+Booking.prototype.handleConfirm = function(event) {
     var view = event.data;
 
     if (view.isLoading === true) {
@@ -243,7 +237,7 @@ handleConfirm = function(event) {
     });
 };
 
-handleEnd = function(event) {
+Booking.prototype.handleEnd = function(event) {
     var view = event.data;
     if (view.isLoading === true) {
         return;
@@ -264,7 +258,7 @@ handleEnd = function(event) {
     });
 };
 
-handleClose = function(event) {
+Booking.prototype.handleClose = function(event) {
     var view = event.data;
 
     App.router.closeModalView();
@@ -279,16 +273,4 @@ handleClose = function(event) {
     }
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    renderPeerPic: renderPeerPic,
-
-    toggleLoading: toggleLoading,
-
-    handleDeny: handleDeny,
-    handleConfirm: handleConfirm,
-    handleEnd: handleEnd,
-    handleClose: handleClose
-});
+module.exports = Booking;

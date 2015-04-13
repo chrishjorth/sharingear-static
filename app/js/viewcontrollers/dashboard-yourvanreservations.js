@@ -15,20 +15,17 @@ var _ = require('underscore'),
 
     VanList = require('../models/vanlist.js'),
 
-    reservationBlockID,
+    reservationBlockID = 'yourreservations-van-block';
 
-    didInitialize,
-    didRender,
+function DashboardYourVanReservations(options) {
+    ViewController.call(this, options);
+}
 
-    populateYourReservations,
+DashboardYourVanReservations.prototype = new ViewController();
 
-    handleBooking;
-
-reservationBlockID = 'yourreservations-van-block';
-
-didInitialize = function() {
+DashboardYourVanReservations.prototype.didInitialize = function() {
     var view = this;
-    view.vanList = new VanList.constructor({
+    view.vanList = new VanList({
         rootURL: Config.API_URL
     });
     view.vanList.initialize();
@@ -38,7 +35,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+DashboardYourVanReservations.prototype.didRender = function() {
     if(App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Van reservations');
     }
@@ -49,7 +46,7 @@ didRender = function() {
     this.setupEvent('click', '#yourreservations-van-block .sg-list-item button', this, this.handleBooking);
 };
 
-populateYourReservations = function(callback) {
+DashboardYourVanReservations.prototype.populateYourReservations = function(callback) {
     var view = this,
         YourReservationsItemTemplate;
     YourReservationsItemTemplate = require('../../templates/yourvanreservations-item.html');
@@ -90,10 +87,6 @@ populateYourReservations = function(callback) {
         }
 
         $reservationItem = $(yourReservationsItemTemplate(defaultReservation));
-        $('.sg-bg-image', $reservationItem).css({
-            'background-image': 'url("' + defaultReservation.img_url + '")'
-        });
-
 
         status = reservation.data.booking_status;
 
@@ -107,6 +100,45 @@ populateYourReservations = function(callback) {
             $('.denied', $reservationItem).removeClass('hidden');
         }
 
+        //Add unique class for every image
+        $('.sg-bg-image', $reservationItem).addClass('van-reservation-item-'+i);
+
+        // Create an image object
+        var img = new Image();
+        img.resultNum = i;
+
+        //Get thumbURL from the imageURL
+        var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+        imageURL = defaultReservation.img_url;
+        
+        thumbURL = imageURL.split('/');
+        imgName = thumbURL.pop();
+        thumbURL = thumbURL.join('/');
+        imgNameComponents = imgName.split('.');
+        imgName = imgNameComponents[0];
+        imgExt = imgNameComponents[1];
+        if (window.window.devicePixelRatio > 1) {
+            thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+        } else {
+            thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+        }
+
+        //Assign the img source to the the thumbURL
+        $('.sg-bg-image', $reservationItem).css({
+            'background-image': 'url("' + thumbURL + '")'
+        });
+
+        img.src = thumbURL;
+
+        //Make the pictures fit the boxes
+        img.onload = function(){
+                if (this.width < this.height) {
+                    $('.van-reservation-item-'+this.resultNum).addClass('search-result-gear-vertical');
+                } else {
+                    $('.van-reservation-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+                }
+        };
+
         $reservationBlock.append($reservationItem);
     }
 
@@ -115,7 +147,7 @@ populateYourReservations = function(callback) {
     }
 };
 
-handleBooking = function(event) {
+DashboardYourVanReservations.prototype.handleBooking = function(event) {
     var view = event.data,
         bookingID = $(this).data('bookingid'),
         van, passedData;
@@ -129,9 +161,4 @@ handleBooking = function(event) {
     App.router.openModalView('booking', passedData);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourReservations: populateYourReservations,
-    handleBooking: handleBooking
-});
+module.exports = DashboardYourVanReservations;

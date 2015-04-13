@@ -15,20 +15,17 @@ var _ = require('underscore'),
 
     GearList = require('../models/gearlist.js'),
 
-    gearBlockID,
+    gearBlockID = 'yourgear-gear-block';
 
-    didInitialize,
-    didRender,
-    populateYourGear,
+function DashboardYourGear(options) {
+    ViewController.call(this, options);
+}
 
-    handleAddGear,
-    handleEditGearItem;
+DashboardYourGear.prototype = new ViewController();
 
-gearBlockID = 'yourgear-gear-block';
-
-didInitialize = function() {
+DashboardYourGear.prototype.didInitialize = function() {
     var view = this;
-    view.gearList = new GearList.constructor({
+    view.gearList = new GearList({
         rootURL: Config.API_URL
     });
     view.gearList.initialize();
@@ -37,7 +34,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+DashboardYourGear.prototype.didRender = function() {
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your gear');
     }
@@ -52,7 +49,7 @@ didRender = function() {
     this.setupEvent('click', '.yourgear-item-edit-btn', this, this.handleEditGearItem);
 };
 
-populateYourGear = function(callback) {
+DashboardYourGear.prototype.populateYourGear = function(callback) {
     var view = this,
         YourGearItemTemplate;
 
@@ -84,10 +81,47 @@ populateYourGear = function(callback) {
         if (defaultGear.images.length > 0) {
             defaultGear.img_url = defaultGear.images.split(',')[0];
         }
+
         $gearItem = $(yourGearItemTemplate(defaultGear));
+
+        //Add unique class for every image
+        $('.sg-bg-image', $gearItem).addClass('gear-item-'+i);
+
+        // Create an image object
+        var img = new Image();
+        img.resultNum = i;
+
+        //Get thumbURL from the imageURL
+        var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+        imageURL = defaultGear.img_url;
+        
+        thumbURL = imageURL.split('/');
+        imgName = thumbURL.pop();
+        thumbURL = thumbURL.join('/');
+        imgNameComponents = imgName.split('.');
+        imgName = imgNameComponents[0];
+        imgExt = imgNameComponents[1];
+        if (window.window.devicePixelRatio > 1) {
+            thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+        } else {
+            thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+        }
+
+        //Assign the img source to the the thumbURL
         $('.sg-bg-image', $gearItem).css({
-            'background-image': 'url("' + defaultGear.img_url + '")'
+            'background-image': 'url("' + thumbURL + '")'
         });
+        img.src = thumbURL;
+
+        //Make the pictures fit the boxes
+        img.onload = function(){
+                if (this.width < this.height) {
+                    $('.gear-item-'+this.resultNum).addClass('search-result-gear-vertical');
+                } else {
+                    $('.gear-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+                }
+        };
+
         $gearBlock.append($gearItem);
     }
     if (callback && typeof callback === 'function') {
@@ -95,22 +129,15 @@ populateYourGear = function(callback) {
     }
 };
 
-handleAddGear = function() {
+DashboardYourGear.prototype.handleAddGear = function() {
     App.router.openModalView('addgear');
 };
 
-handleEditGearItem = function(event) {
+DashboardYourGear.prototype.handleEditGearItem = function(event) {
     var view = event.data,
         gear;
     gear = view.gearList.getGearItem('id', $(this).data('yourgearid'));
     App.router.openModalView('editgear', gear);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourGear: populateYourGear,
-
-    handleAddGear: handleAddGear,
-    handleEditGearItem: handleEditGearItem
-});
+module.exports = DashboardYourGear;

@@ -15,20 +15,17 @@ var _ = require('underscore'),
 
     TechProfileList = require('../models/techprofilelist.js'),
 
-    reservationBlockID,
+    reservationBlockID = 'yourreservations-techprofile-block';
 
-    didInitialize,
-    didRender,
+function YourTechProfileReservations(options) {
+    ViewController.call(this, options);
+}
 
-    populateYourReservations,
+YourTechProfileReservations.prototype = new ViewController();
 
-    handleBooking;
-
-reservationBlockID = 'yourreservations-techprofile-block';
-
-didInitialize = function() {
+YourTechProfileReservations.prototype.didInitialize = function() {
     var view = this;
-    view.techProfileList = new TechProfileList.constructor({
+    view.techProfileList = new TechProfileList({
         rootURL: Config.API_URL
     });
     view.techProfileList.initialize();
@@ -38,7 +35,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+YourTechProfileReservations.prototype.didRender = function() {
     if(App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Tech profile reservations');
     }
@@ -49,7 +46,7 @@ didRender = function() {
     this.setupEvent('click', '#yourreservations-techprofile-block .sg-list-item button', this, this.handleBooking);
 };
 
-populateYourReservations = function(callback) {
+YourTechProfileReservations.prototype.populateYourReservations = function(callback) {
     var view = this,
         YourReservationsItemTemplate;
     YourReservationsItemTemplate = require('../../templates/yourtechprofilereservations-item.html');
@@ -114,7 +111,7 @@ populateYourReservations = function(callback) {
     }
 };
 
-handleBooking = function(event) {
+YourTechProfileReservations.prototype.handleBooking = function(event) {
     var view = event.data,
         bookingID = $(this).data('bookingid'),
         techProfile, passedData;
@@ -128,9 +125,4 @@ handleBooking = function(event) {
     App.router.openModalView('booking', passedData);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourReservations: populateYourReservations,
-    handleBooking: handleBooking
-});
+module.exports = YourTechProfileReservations;

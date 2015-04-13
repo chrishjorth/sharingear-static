@@ -15,20 +15,17 @@ var _ = require('underscore'),
 
     TechProfileList = require('../models/techprofilelist.js'),
 
-    techprofilesBlockID,
+    techprofilesBlockID = 'yourtechprofiles-techprofile-block';
 
-    didInitialize,
-    didRender,
-    populateYourTechProfiles,
+function YourTechProfiles(options) {
+    ViewController.call(this, options);
+}
 
-    handleAddTechProfile,
-    handleEditTechProfileItem;
+YourTechProfiles.prototype = new ViewController();
 
-techprofilesBlockID = 'yourtechprofiles-techprofile-block';
-
-didInitialize = function() {
+YourTechProfiles.prototype.didInitialize = function() {
     var view = this;
-    view.techProfilesList = new TechProfileList.constructor({
+    view.techProfilesList = new TechProfileList({
         rootURL: Config.API_URL
     });
     view.techProfilesList.initialize();
@@ -37,7 +34,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+YourTechProfiles.prototype.didRender = function() {
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your technician profiles');
     }
@@ -52,7 +49,7 @@ didRender = function() {
     this.setupEvent('click', '.yourtechprofiles-item-edit-btn', this, this.handleEditTechProfileItem);
 };
 
-populateYourTechProfiles = function(callback) {
+YourTechProfiles.prototype.populateYourTechProfiles = function(callback) {
     var view = this,
         YourTechProfilesItemTemplate;
     YourTechProfilesItemTemplate = require('../../templates/yourtechprofiles-item.html');
@@ -80,22 +77,15 @@ populateYourTechProfiles = function(callback) {
     }
 };
 
-handleAddTechProfile = function() {
+YourTechProfiles.prototype.handleAddTechProfile = function() {
     App.router.openModalView('addtechprofile');
 };
 
-handleEditTechProfileItem = function(event) {
+YourTechProfiles.prototype.handleEditTechProfileItem = function(event) {
     var view = event.data,
         techProfile;
     techProfile = view.techProfilesList.getTechProfileItem('id', $(this).data('yourtechprofileid'));
     App.router.openModalView('edittechprofile', techProfile);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourTechProfiles: populateYourTechProfiles,
-
-    handleAddTechProfile: handleAddTechProfile,
-    handleEditTechProfileItem: handleEditTechProfileItem
-});
+module.exports = YourTechProfiles;

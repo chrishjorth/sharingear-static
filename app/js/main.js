@@ -31,9 +31,12 @@ window.jQuery = $;
 console.log('Scripts loaded...');
 
 $(document).ready(function() {
-    console.log('Document ready...');
-    
+    //We need to ensure basic data structures get created with default values before the views start loading
     app.run(function() {
-        rootVC.initialize();
+        console.log('App initialized.');
+    });
+
+    rootVC.initialize(function(){
+        console.log('Root viewcontroller initialized.');
     });
 });

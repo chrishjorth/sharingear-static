@@ -6,77 +6,73 @@
 'use strict';
 
 var chai = require('chai'),
-	$ = require('jquery'),
+    $ = require('jquery'),
     GoogleMaps = require('../../../js/libraries/mscl-googlemaps.js'),
+    Facebook = require('../../../js/libraries/mscl-facebook.js'),
 
-	App = require('../../../js/app.js'),
+    App = require('../../../js/app.js'),
+    User = require('../../../js/models/user.js'),
+    Localization = require('../../../js/models/localization.js'),
 
-	expect;
+    ContentClassification = require('../../../js/models/contentclassification.js'),
 
-expect = chai.expect;
+    expect;
 
 require('script!../../../node_modules/sinon/pkg/sinon.js');
+
+expect = chai.expect;
 
 describe('App', function() {
     beforeEach(function() {
         this.$fixtures = $('#fixtures');
-        this.$fixtures.html('<div class="navigation-header"></div><div class="footer"></div>');
-        this.loginStatusSpy = sinon.stub(App.user, 'getLoginStatus', function(callback) {
-            callback({
-                status: null //We simulate the situation of a user that is not logged in. The initialization of Sharingear is the same anyhow for this module.
-            });
-        });
         this.setUserLocationSpy = sinon.spy(App, 'setUserLocation');
         this.GoogleMapsLoadStub = sinon.stub(GoogleMaps, 'load', function() {});
+        this.FacebookLoadStub = sinon.stub(Facebook, 'load', function() {});
     });
 
     afterEach(function() {
-        App.user.getLoginStatus.restore();
         App.setUserLocation.restore();
         this.$fixtures.empty();
         GoogleMaps.load.restore();
+        Facebook.load.restore();
     });
 
     it('Provides the app object', function() {
         expect(App).to.be.an('object');
         expect(App.run).to.be.a('function');
+        expect(App.setUserLocation).to.be.a('function');
+        expect(App).to.have.property('router');
+        expect(App).to.have.property('user');
+        expect(App).to.have.property('rootVC');
     });
 
     it('Can initialize Sharingear', function(done) {
         var spec = this;
+        this.loginSpy = sinon.stub(User.prototype, 'login', function(callback) {
+            callback({
+                status: null //We simulate the situation of a user that is not logged in. The initialization of Sharingear is the same anyhow for this module.
+            });
+        });
+        this.localizationFetchStub = sinon.stub(Localization, 'fetch', function() {});
+        this.ContentClassificationStub = sinon.stub(ContentClassification, 'getClassification', function() {});
+
         App.run(function() {
-            expect(App.router).to.be.an('object');
-            expect(App.router.routes).to.be.an('array');
-            expect(App.user).to.be.an('object');
-            sinon.assert.calledOnce(spec.loginStatusSpy);
-            expect(App.contentClassification).to.be.an('object');
+            sinon.assert.calledOnce(spec.localizationFetchStub);
+            sinon.assert.calledOnce(spec.GoogleMapsLoadStub);
+            sinon.assert.calledOnce(spec.FacebookLoadStub);
+            
+            expect(App.user instanceof User).to.equal(true);
+            sinon.assert.calledOnce(spec.loginSpy);
+            
+            sinon.assert.calledOnce(spec.ContentClassificationStub);
+            
             sinon.assert.calledOnce(spec.setUserLocationSpy);
+            
+            User.prototype.login.restore();
+            Localization.fetch.restore();
+            ContentClassification.getClassification.restore();
             done();
         });
-    });
-
-    it('Has correct routes', function() {
-        var router = App.router;
-        expect(router.routeExists('home')).to.equal(true);
-        expect(router.routeExists('dashboard')).to.equal(true);
-        expect(router.routeExists('dashboard/profile')).to.equal(true);
-        expect(router.routeExists('dashboard/yourgear')).to.equal(true);
-        expect(router.routeExists('dashboard/yourgearrentals')).to.equal(true);
-        expect(router.routeExists('dashboard/yourgearreservations')).to.equal(true);
-        expect(router.routeExists('dashboard/settings')).to.equal(true);
-        expect(router.routeExists('gearprofile')).to.equal(true);
-        expect(router.routeExists('aboutus')).to.equal(true);
-        expect(router.routeExists('contactus')).to.equal(true);
-        expect(router.routeExists('terms')).to.equal(true);
-        expect(router.routeExists('copyright')).to.equal(true);
-        expect(router.routeExists('privacy')).to.equal(true);
-        expect(router.routeExists('editgear')).to.equal(true);
-        expect(router.routeExists('bookingrequest')).to.equal(true);
-        expect(router.routeExists('gearavailability')).to.equal(true);
-        expect(router.routeExists('booking')).to.equal(true);
-        expect(router.routeExists('payment')).to.equal(true);
-        expect(router.routeExists('paymentsuccessful')).to.equal(true);
-        expect(router.routeExists('submerchantregistration')).to.equal(true);
     });
 
     it('Can set user location', function(done) {
@@ -86,6 +82,4 @@ describe('App', function() {
             done();
         });
     });
-
-    it('Can handle cookie warning');
 });

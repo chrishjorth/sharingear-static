@@ -15,6 +15,7 @@ var _ = require('underscore'),
     HeaderTemplate = require('../templates/navigation-header.html'),
 
     initialize,
+    refresh,
 
     loadHeader,
     getCookie;
@@ -25,7 +26,6 @@ require('./libraries/owl-carousel/owl.carousel.min.js');
 initialize = function(callback) {
     var hash, route;
 
-    //Load header and footer
     this.loadHeader($('.navigation-header'));
 
     App.rootVC = this;
@@ -39,7 +39,7 @@ initialize = function(callback) {
     }
     App.router.navigateTo(route);
 
-    if (getCookie('cookie-consent') !== '1') {
+    if (this.getCookie('cookie-consent') !== '1') {
         $('.cookie-opt-in').removeClass('hidden');
     }
 
@@ -48,16 +48,21 @@ initialize = function(callback) {
         $('.cookie-opt-in').addClass('hidden');
     });
 
-    if (_.isFunction(callback) === true) {
-        callback();
-    }
+    callback();
+};
+
+refresh = function() {
+    this.header.initialize();
+    this.header.render();
+    App.router.currentViewController.initialize();
+    App.router.currentViewController.render();
 };
 
 /**
  * Loads the header portion of the site. The header contains Sharingear's main navigation and is the same across the app.
  */
 loadHeader = function($headerContainer, callback) {
-    this.header = new HeaderController.constructor({
+    this.header = new HeaderController({
         name: 'header',
         $element: $headerContainer,
         labels: {},
@@ -70,6 +75,7 @@ loadHeader = function($headerContainer, callback) {
     }
 };
 
+//TODO: Move this to utilities
 getCookie = function(cname) {
     var name = cname + '=',
         ca = document.cookie.split(';'),
@@ -87,7 +93,10 @@ getCookie = function(cname) {
 };
 
 module.exports = {
+    header: null,
+
     initialize: initialize,
+    refresh: refresh,
     loadHeader: loadHeader,
     getCookie: getCookie
 };

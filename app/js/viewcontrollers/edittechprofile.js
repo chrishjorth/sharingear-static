@@ -15,34 +15,17 @@ var _ = require('underscore'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
-    geocoder,
+    geocoder = new GoogleMaps.Geocoder();
 
-    didInitialize,
-    didRender,
+function EditTechProfile(options) {
+    ViewController.call(this, options);
+}
 
-    toggleLoading,
+EditTechProfile.prototype = new ViewController();
 
-    populateExperience,
-    populateYearsOfExperience,
-    populateLocation,
-    populateCountries,
-
-    populatePricing,
-    populatePriceSuggestions,
-    handleExperienceStartYearChange,
-
-    renderAvailability,
-    handleSubmerchantFormSubmit,
-
-    handlePriceChange,
-
-    handleCancel,
-    handleSave;
-
-geocoder = new GoogleMaps.Geocoder();
-
-didInitialize = function() {
+EditTechProfile.prototype.didInitialize = function() {
     Moment.locale('en-custom', {
         week: {
             dow: 1,
@@ -59,7 +42,7 @@ didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 };
 
-didRender = function() {
+EditTechProfile.prototype.didRender = function() {
     this.populateExperience();
     this.populateCountries($('#edittechprofilepricing-country', this.$element));
     this.populateLocation();
@@ -98,7 +81,7 @@ didRender = function() {
     this.setupEvent('click', '#edittechprofile-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
 };
 
-toggleLoading = function() {
+EditTechProfile.prototype.toggleLoading = function() {
     if (this.isLoading === true) {
         $('#edittechprofile-save-btn', this.$element).html('Save');
         this.isLoading = false;
@@ -108,9 +91,9 @@ toggleLoading = function() {
     }
 };
 
-renderAvailability = function() {
+EditTechProfile.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
+        $calendarContainer, $submerchantFormBtn, CalendarVC, calendarVT, SubmerchantFormVC, submerchantFormVT;
 
     $calendarContainer = $('#edittechprofile-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
@@ -118,9 +101,9 @@ renderAvailability = function() {
     $submerchantFormBtn = $('#edittechprofile-submerchantform-buttons', this.$element);
 
     if (App.user.isSubMerchant() === true) {
-        calendarVC = require('./availabilitycalendar.js');
+        CalendarVC = require('./availabilitycalendar.js');
         calendarVT = require('../../templates/availabilitycalendar.html');
-        view.calendarVC = new calendarVC.constructor({
+        view.calendarVC = new CalendarVC({
             name: 'availabilitycalendar',
             $element: $calendarContainer,
             template: calendarVT,
@@ -134,9 +117,9 @@ renderAvailability = function() {
             $submerchantFormBtn.addClass('hidden');
         }
     } else {
-        submerchantFormVC = require('./submerchantregistration.js');
+        SubmerchantFormVC = require('./submerchantregistration.js');
         submerchantFormVT = require('../../templates/submerchantregistration.html');
-        view.submerchantFormVC = new submerchantFormVC.constructor({
+        view.submerchantFormVC = new SubmerchantFormVC({
             name: 'submerchantform',
             $element: $calendarContainer,
             template: submerchantFormVT
@@ -147,7 +130,7 @@ renderAvailability = function() {
     }
 };
 
-handleSubmerchantFormSubmit = function(event) {
+EditTechProfile.prototype.handleSubmerchantFormSubmit = function(event) {
     var view = event.data,
         $button = $(this);
     $button.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
@@ -172,7 +155,7 @@ handleSubmerchantFormSubmit = function(event) {
     }
 };
 
-populateExperience = function() {
+EditTechProfile.prototype.populateExperience = function() {
     var xp_years = this.techProfile.data.xp_years.split('-'),
         level = 5;
     switch (this.techProfile.data.experience) {
@@ -203,7 +186,7 @@ populateExperience = function() {
     }
 };
 
-populateYearsOfExperience = function() {
+EditTechProfile.prototype.populateYearsOfExperience = function() {
     var $startYear = $('#edittechprofile-startyear', this.$element),
         $endYear = $('#edittechprofile-endyear', this.$element),
         startYearSelectHTML = '',
@@ -237,19 +220,19 @@ populateYearsOfExperience = function() {
     $endYear.val(endYear);
 };
 
-handleExperienceStartYearChange = function(event) {
+EditTechProfile.prototype.handleExperienceStartYearChange = function(event) {
     var view = event.data;
     view.populateYearsOfExperience();
 };
 
-populateLocation = function() {
+EditTechProfile.prototype.populateLocation = function() {
     $('#edittechprofilepricing-city', this.$element).val(this.techProfile.data.city);
     $('#edittechprofilepricing-address', this.$element).val(this.techProfile.data.address);
     $('#edittechprofilepricing-postalcode', this.$element).val(this.techProfile.data.postal_code);
     $('#edittechprofilepricing-region', this.$element).val(this.techProfile.data.region);
 };
 
-populateCountries = function($select) {
+EditTechProfile.prototype.populateCountries = function($select) {
     var countriesArray = Localization.getCountries(),
         html = $('option', $select).first()[0].outerHTML,
         i;
@@ -261,7 +244,7 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-populatePricing = function() {
+EditTechProfile.prototype.populatePricing = function() {
     var view = this;
     Localization.convertPrices([this.techProfile.data.price_a, this.techProfile.data.price_b, this.techProfile.data.price_c], this.techProfile.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
@@ -274,8 +257,8 @@ populatePricing = function() {
     });
 };
 
-populatePriceSuggestions = function() {
-    var techProfileClassification = App.contentClassification.data.roadieClassification,
+EditTechProfile.prototype.populatePriceSuggestions = function() {
+    var techProfileClassification = ContentClassification.data.roadieClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
 
@@ -298,7 +281,7 @@ populatePriceSuggestions = function() {
     });
 };
 
-handlePriceChange = function() {
+EditTechProfile.prototype.handlePriceChange = function() {
     var $this = $(this),
         price;
     price = parseInt($this.val(), 10);
@@ -308,7 +291,7 @@ handlePriceChange = function() {
     $this.val(price);
 };
 
-handleCancel = function() {
+EditTechProfile.prototype.handleCancel = function() {
     var currentVerticalPosition = $(window).scrollTop();
     App.router.closeModalView();
     $('body, html').animate({
@@ -316,7 +299,7 @@ handleCancel = function() {
     }, 50);
 };
 
-handleSave = function(event) {
+EditTechProfile.prototype.handleSave = function(event) {
     var view = event.data,
         isLocationSame = false,
         currentAddress = view.techProfile.data.address,
@@ -325,7 +308,8 @@ handleSave = function(event) {
         currentRegion = view.techProfile.data.region,
         currentCountry = view.techProfile.data.country,
         availabilityArray = [],
-        selections, alwaysFlag, updatedVanData, addressOneliner, updateCall, month, monthSelections, selection, j;
+        selections, alwaysFlag, updatedVanData, addressOneliner, updateCall, month, monthSelections, selection, j,
+        techProfileData, address, postal_code, city;
 
     if (view.isLoading === true) {
         return;
@@ -379,6 +363,8 @@ handleSave = function(event) {
         country: $('#edittechprofilepricing-country option:selected').val()
     };
 
+    techProfileData = view.techProfile.data;
+
     if ($('#edittechprofile-subtype', view.$element).selectedIndex === 0) {
         alert('The subtype field is required.');
         view.toggleLoading();
@@ -400,7 +386,7 @@ handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_a', this.$element).val()) % 1 !== 0) {
-        alert('The hourly rental price is invalid.');
+        alert('The daily rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -410,7 +396,7 @@ handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_b', this.$element).val()) % 1 !== 0) {
-        alert('The daily rental price is invalid.');
+        alert('The weekly rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -420,21 +406,24 @@ handleSave = function(event) {
         return;
     }
     if (parseFloat($('#price_c', this.$element).val()) % 1 !== 0) {
-        alert('The weekly rental price is invalid.');
+        alert('The monthly rental price is invalid.');
         view.toggleLoading();
         return;
     }
-    if ($('#edittechprofilepricing-address', this.$element).val() === '') {
+    address = $('#edittechprofilepricing-address', this.$element).val();
+    if (address === '' && address !== techProfileData.address) {
         alert('The address field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#edittechprofilepricing-postalcode', this.$element).val() === '') {
+    postal_code = $('#edittechprofilepricing-postalcode', this.$element).val();
+    if (postal_code === '' && postal_code !== techProfileData.postal_code) {
         alert('The postalcode field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#edittechprofilepricing-city', this.$element).val() === '') {
+    city = $('#edittechprofilepricing-city', this.$element).val();
+    if (city === '' && city !== techProfileData.city) {
         alert('The city field is required.');
         view.toggleLoading();
         return;
@@ -472,36 +461,12 @@ handleSave = function(event) {
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.techProfile.data.longitude = results[0].geometry.location.lng();
                 view.techProfile.data.latitude = results[0].geometry.location.lat();
-                updateCall();
-            } else {
-                alert('Google Maps could not find your address. Please verify that it is correct.');
-                view.toggleLoading();
             }
+            updateCall();
         });
     } else {
         updateCall();
     }
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    toggleLoading: toggleLoading,
-
-    populateExperience: populateExperience,
-    populateYearsOfExperience: populateYearsOfExperience,
-    handleExperienceStartYearChange: handleExperienceStartYearChange,
-    populateLocation: populateLocation,
-    populateCountries: populateCountries,
-    handlePriceChange: handlePriceChange,
-
-    renderAvailability: renderAvailability,
-    handleSubmerchantFormSubmit: handleSubmerchantFormSubmit,
-
-    populatePricing: populatePricing,
-    populatePriceSuggestions: populatePriceSuggestions,
-
-    handleCancel: handleCancel,
-    handleSave: handleSave
-});
+module.exports = EditTechProfile;

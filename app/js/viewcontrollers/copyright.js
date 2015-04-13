@@ -8,33 +8,32 @@
 
 var $ = require('jquery'),
 	
-	ViewController = require('../viewcontroller'),
-	
-    didRender,
-    loadFooter;
+	ViewController = require('../viewcontroller');
 
-didRender = function() {
+function Copyright(options) {
+    ViewController.call(this, options);
+}
+
+Copyright.prototype = new ViewController();
+
+Copyright.prototype.didRender = function() {
     this.loadFooter();
 };
 
-loadFooter = function() {
+Copyright.prototype.loadFooter = function() {
     var view = this,
         FooterController, FooterTemplate;
 
     FooterController = require('./footer.js');
     FooterTemplate = require('../../templates/footer.html');
 
-    view.footer = new FooterController.constructor({
+    view.footer = new FooterController({
         name: 'footer',
         $element: $('footer', view.$element),
         template: FooterTemplate
     });
     view.footer.initialize();
     view.footer.render();
-
 };
 
-module.exports = ViewController.inherit({
-    didRender: didRender,
-    loadFooter: loadFooter
-});
+module.exports = Copyright;

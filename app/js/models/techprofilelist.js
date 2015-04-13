@@ -8,26 +8,21 @@
 
 var _ = require('underscore'),
 	Model = require('../model.js'),
-	TechProfile = require('./techprofile.js'),
-	
-	didInitialize,
+	TechProfile = require('./techprofile.js');
 
-    search,
-    getUserTechProfiles,
-    getUserTechProfileRentals,
-    getUserTechProfileReservations,
-    getTechProfileItem,
-    isEmpty,
-    updateTechProfileItem,
-    loadFromArray;
+function TechProfileList(options) {
+    Model.call(this, options);
+}
 
-didInitialize = function() {
+TechProfileList.prototype = new Model();
+
+TechProfileList.prototype.didInitialize = function() {
     if (this.data === null) {
         this.data = [];
     }
 };
 
-search = function(location, gear, daterange, callback) {
+TechProfileList.prototype.search = function(location, gear, daterange, callback) {
     var view = this;
 
     if (location === null || location === '') {
@@ -44,7 +39,7 @@ search = function(location, gear, daterange, callback) {
     });
 };
 
-getUserTechProfiles = function(userID, callback) {
+TechProfileList.prototype.getUserTechProfiles = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/roadies', function(error, userGear) {
         if (error) {
@@ -57,7 +52,7 @@ getUserTechProfiles = function(userID, callback) {
     });
 };
 
-getUserTechProfileRentals = function(userID, callback) {
+TechProfileList.prototype.getUserTechProfileRentals = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/roadierentals', function(error, userHires) {
         if (error) {
@@ -70,7 +65,7 @@ getUserTechProfileRentals = function(userID, callback) {
     });
 };
 
-getUserTechProfileReservations = function(userID, callback) {
+TechProfileList.prototype.getUserTechProfileReservations = function(userID, callback) {
     var view = this;
 
     view.get('/users/' + userID + '/roadiereservations', function(error, userBookings) {
@@ -83,7 +78,7 @@ getUserTechProfileReservations = function(userID, callback) {
     });
 };
 
-getTechProfileItem = function(property, key) {
+TechProfileList.prototype.getTechProfileItem = function(property, key) {
     var i;
     for (i = 0; i < this.data.length; i++) {
         if (this.data[i].data[property] === key) {
@@ -93,11 +88,11 @@ getTechProfileItem = function(property, key) {
     return null;
 };
 
-isEmpty = function() {
+TechProfileList.prototype.isEmpty = function() {
     return this.data.length <= 0;
 };
 
-updateTechProfileItem = function(techProfileItem) {
+TechProfileList.prototype.updateTechProfileItem = function(techProfileItem) {
     var i;
     for (i = 0; i < this.data.length; i++) {
         if (this.data[i].id === techProfileItem.data.id) {
@@ -107,13 +102,13 @@ updateTechProfileItem = function(techProfileItem) {
     }
 };
 
-loadFromArray = function(techProfileArray) {
+TechProfileList.prototype.loadFromArray = function(techProfileArray) {
     var i, techProfileItem;
 
     this.data = [];
 
     for (i = 0; i < techProfileArray.length; i++) {
-        techProfileItem = new TechProfile.constructor({
+        techProfileItem = new TechProfile({
             rootURL: this.rootURL
         });
         techProfileItem.initialize();
@@ -122,15 +117,4 @@ loadFromArray = function(techProfileArray) {
     }
 };
 
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-
-    search: search,
-    getUserTechProfiles: getUserTechProfiles,
-    getUserTechProfileRentals: getUserTechProfileRentals,
-    getUserTechProfileReservations: getUserTechProfileReservations,
-    getTechProfileItem: getTechProfileItem,
-    isEmpty: isEmpty,
-    updateTechProfileItem: updateTechProfileItem,
-    loadFromArray: loadFromArray
-});
+module.exports = TechProfileList;

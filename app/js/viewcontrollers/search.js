@@ -23,42 +23,30 @@ var _ = require('underscore'),
 
     gearSearchBlockID = 'search-results-gear',
     techProfileSearchBlockID = 'search-results-techprofiles',
-    vanSearchBlockID = 'search-results-vans',
+    vanSearchBlockID = 'search-results-vans';
 
-    didInitialize,
-    didRender,
-    renderMap,
-    setCurrentLocation,
+function Search(options) {
+    ViewController.call(this, options);
+}
 
-    handleTab,
-    handleFBShare,
-    handleLogin,
+Search.prototype = new ViewController();
 
-    switchToTab,
-    getCurrentTab,
-    performGearSearch,
-    performTechProfileSearch,
-    performVanSearch,
-    populateSearchBlock,
-
-    getThumbURL;
-
-didInitialize = function() {
+Search.prototype.didInitialize = function() {
     this.gearSearchFormVC = null;
     this.techProfileSearchFormVC = null;
     this.vanSearchFormVC = null;
 
-    this.gearList = new GearList.constructor({
+    this.gearList = new GearList({
         rootURL: Config.API_URL
     });
     this.gearList.initialize();
 
-    this.techProfileList = new TechProfileList.constructor({
+    this.techProfileList = new TechProfileList({
         rootURL: Config.API_URL
     });
     this.techProfileList.initialize();
 
-    this.vanList = new VanList.constructor({
+    this.vanList = new VanList({
         rootURL: Config.API_URL
     });
     this.vanList.initialize();
@@ -67,7 +55,7 @@ didInitialize = function() {
     this.longitude = 0.0;
 };
 
-didRender = function() {
+Search.prototype.didRender = function() {
     var queryString;
 
     if (App.rootVC !== null && App.rootVC.header) {
@@ -94,7 +82,7 @@ didRender = function() {
     this.setupEvent('click', '.fb-share-btn', this, this.handleFBShare);
 };
 
-renderMap = function(searchResults, latitude, longitude) {
+Search.prototype.renderMap = function(searchResults, latitude, longitude) {
     var view = this,
         mapOptions, latlong, i, gear;
 
@@ -136,7 +124,7 @@ renderMap = function(searchResults, latitude, longitude) {
     }
 };
 
-setCurrentLocation = function(location) {
+Search.prototype.setCurrentLocation = function(location) {
     var tab = this.getCurrentTab();
     if (location === 'all' || location === '') {
         location = 'the world';
@@ -150,12 +138,12 @@ setCurrentLocation = function(location) {
     }
 };
 
-handleTab = function(event) {
+Search.prototype.handleTab = function(event) {
     var view = event.data;
     view.switchToTab($(this));
 };
 
-handleFBShare = function(event) {
+Search.prototype.handleFBShare = function(event) {
     var view = event.data,
         tab, item, searchParameters, description;
 
@@ -185,7 +173,7 @@ handleFBShare = function(event) {
     }, function() {});
 };
 
-handleLogin = function() {
+Search.prototype.handleLogin = function() {
     App.user.login(function(error) {
         if (!error) {
             App.router.navigateTo('dashboard');
@@ -196,7 +184,7 @@ handleLogin = function() {
     });
 };
 
-performGearSearch = function() {
+Search.prototype.performGearSearch = function() {
     var view = this,
         performSearch, searchParameters, gearSearchVC, gearSearchVT;
 
@@ -243,7 +231,7 @@ performGearSearch = function() {
     gearSearchVC = require('./gearsearchform.js');
     gearSearchVT = require('../../templates/gearsearchform.html');
 
-    view.gearSearchFormVC = new gearSearchVC.constructor({
+    view.gearSearchFormVC = new gearSearchVC({
         name: 'gearsearchform',
         $element: $('#search-searchform-gear .searchform-container', view.$element),
         template: gearSearchVT
@@ -254,7 +242,7 @@ performGearSearch = function() {
     performSearch(searchParameters.gearString, searchParameters.locationString, searchParameters.dateRangeString);
 };
 
-performTechProfileSearch = function() {
+Search.prototype.performTechProfileSearch = function() {
     var view = this,
         performSearch, searchParameters, techProfileSearchVC, techProfileSearchVT;
 
@@ -300,7 +288,7 @@ performTechProfileSearch = function() {
 
     techProfileSearchVC = require('./techprofilesearchform.js');
     techProfileSearchVT = require('../../templates/techprofilesearchform.html');
-    view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
+    view.techProfileSearchFormVC = new techProfileSearchVC({
         name: 'techprofilesearchform',
         $element: $('#search-searchform-technicians .searchform-container', view.$element),
         template: techProfileSearchVT
@@ -311,7 +299,7 @@ performTechProfileSearch = function() {
     performSearch(searchParameters.techProfileString, searchParameters.locationString, searchParameters.dateRangeString);
 };
 
-performVanSearch = function() {
+Search.prototype.performVanSearch = function() {
     var view = this,
         performSearch, searchParameters, vanSearchVC, vanSearchVT;
 
@@ -357,7 +345,7 @@ performVanSearch = function() {
 
     vanSearchVC = require('./vansearchform.js');
     vanSearchVT = require('../../templates/vansearchform.html');
-    view.vanSearchFormVC = new vanSearchVC.constructor({
+    view.vanSearchFormVC = new vanSearchVC({
         name: 'vansearchform',
         $element: $('#search-searchform-vans .searchform-container', view.$element),
         template: vanSearchVT
@@ -368,7 +356,7 @@ performVanSearch = function() {
     performSearch(searchParameters.vanString, searchParameters.locationString, searchParameters.dateRangeString);
 };
 
-switchToTab = function($tabButton) {
+Search.prototype.switchToTab = function($tabButton) {
     var id = $tabButton.attr('id'),
         tab;
 
@@ -397,7 +385,7 @@ switchToTab = function($tabButton) {
     }
 };
 
-getCurrentTab = function() {
+Search.prototype.getCurrentTab = function() {
     var currentTabID = $('.sg-tabs .active .sg-btn-invisible', this.$element).attr('id'),
         currentTab = 'gear';
     if (currentTabID) {
@@ -410,7 +398,7 @@ getCurrentTab = function() {
  * Generate the search results HTML and insert it into the search results block.
  * @param searchResults: an array of objects.
  */
-populateSearchBlock = function(searchResults, $searchBlock, callback) {
+Search.prototype.populateSearchBlock = function(searchResults, $searchBlock, callback) {
     var view = this,
         SearchResultTemplate;
 
@@ -512,10 +500,9 @@ populateSearchBlock = function(searchResults, $searchBlock, callback) {
 
         img = new Image();
         img.resultNum = i;
-        if(tab === 'technicians') {
+        if (tab === 'technicians') {
             img.src = searchResult.image;
-        }
-        else {
+        } else {
             img.src = view.getThumbURL(searchResult.image);
         }
         img.onload = handleImageLoad;
@@ -533,7 +520,7 @@ populateSearchBlock = function(searchResults, $searchBlock, callback) {
     }
 };
 
-getThumbURL = function(imageURL) {
+Search.prototype.getThumbURL = function(imageURL) {
     var thumbURL, imgName, imgNameComponents, imgExt;
 
     thumbURL = imageURL.split('/');
@@ -550,22 +537,4 @@ getThumbURL = function(imageURL) {
     return thumbURL;
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    renderMap: renderMap,
-    setCurrentLocation: setCurrentLocation,
-
-    handleTab: handleTab,
-    handleFBShare: handleFBShare,
-    handleLogin: handleLogin,
-
-    switchToTab: switchToTab,
-    getCurrentTab: getCurrentTab,
-    performGearSearch: performGearSearch,
-    performTechProfileSearch: performTechProfileSearch,
-    performVanSearch: performVanSearch,
-    populateSearchBlock: populateSearchBlock,
-
-    getThumbURL: getThumbURL
-});
+module.exports = Search;

@@ -9,17 +9,22 @@
 
 var _ = require('underscore'),
 
+    Config = require('../config.js'),
     Model = require('../model'),
 
-    didInitialize,
-    getClassification;
+    staticContentClassification;
 
-didInitialize = function() {
+function ContentClassification(options) {
+    Model.call(this, options);
+}
+
+ContentClassification.prototype = new Model();
+
+ContentClassification.prototype.didInitialize = function() {
     this.data = {};
-    this.getClassification();
 };
 
-getClassification = function(callback) {
+ContentClassification.prototype.getClassification = function(callback) {
     var model = this;
 
     if (_.isEmpty(this.data) === false) {
@@ -41,7 +46,9 @@ getClassification = function(callback) {
     });
 };
 
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-    getClassification: getClassification
+staticContentClassification = new ContentClassification({
+    rootURL: Config.API_URL
 });
+staticContentClassification.initialize();
+
+module.exports = staticContentClassification;

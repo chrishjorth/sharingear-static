@@ -7,4 +7,4 @@
 'use strict';
 
 var ViewController = require('../viewcontroller.js');
-module.exports = ViewController.inherit();
+module.exports = ViewController;

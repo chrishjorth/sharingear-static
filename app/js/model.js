@@ -7,25 +7,21 @@
 'use strict';
 
 var _ = require('underscore'),
-	$ = require('jquery'),
+    $ = require('jquery');
 
-	Utilities = require('./utilities.js'),
+function Model(options) {
+    this.rootURL = '';
+    this.data = null;
+    _.extend(this, options);
+}
 
-	initialize,
-    get,
-    post,
-    put,
-    del,
-
-    constructor, inherit;
-
-initialize = function() {
+Model.prototype.initialize = function() {
     if (this.didInitialize && typeof this.didInitialize == 'function') {
         this.didInitialize();
     }
 };
 
-get = function(url, callback) {
+Model.prototype.get = function(url, callback) {
     var encodedURL = encodeURI(this.rootURL + url);
     $.ajax({
         dataType: 'json',
@@ -46,7 +42,7 @@ get = function(url, callback) {
     });
 };
 
-post = function(url, data, callback) {
+Model.prototype.post = function(url, data, callback) {
     var encodedURL = encodeURI(this.rootURL + url);
 
     $.ajax({
@@ -69,7 +65,7 @@ post = function(url, data, callback) {
     });
 };
 
-put = function(url, data, callback) {
+Model.prototype.put = function(url, data, callback) {
     var encodedURL = encodeURI(this.rootURL + url);
 
     $.ajax({
@@ -91,37 +87,8 @@ put = function(url, data, callback) {
     });
 };
 
-del = function() {
+Model.prototype.del = function() {
 
 };
 
-constructor = function(options) {
-    var defaults, methods;
-
-    defaults = {
-        rootURL: '',
-        data: null
-    };
-
-    methods = {
-        initialize: initialize,
-        get: get,
-        post: post,
-        put: put,
-        del: del
-    };
-    _.extend(this, defaults, methods, options);
-};
-
-inherit = function(inheritOptions) {
-    var inherited = {
-        constructor: Utilities.inherit(this.constructor, inheritOptions)
-    };
-    return inherited;
-};
-
-//This pattern is because of require.js, which calls new on function modules and hence triggers object construction prematurely
-module.exports = {
-    constructor: constructor,
-    inherit: inherit
-};
+module.exports = Model;

@@ -15,42 +15,17 @@ var _ = require('underscore'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
-    geocoder,
+    geocoder = new GoogleMaps.Geocoder();
 
-    didInitialize,
-    didRender,
+function EditGear(options) {
+    ViewController.call(this, options);
+}
 
-    toggleLoading,
+EditGear.prototype = new ViewController();
 
-    populateBrandSelect,
-    populateSubtypeSelect,
-    populateAccessories,
-    handleSubtypeChange,
-
-    populateImages,
-    handleImageUpload,
-
-    populateLocation,
-    populateCountries,
-    populateDelivery,
-    handleDeliveryCheckbox,
-
-    initAccessories,
-    populatePricing,
-    populatePriceSuggestions,
-
-    renderAvailability,
-    handleSubmerchantFormSubmit,
-
-    handlePriceChange,
-
-    handleCancel,
-    handleSave;
-
-geocoder = new GoogleMaps.Geocoder();
-
-didInitialize = function() {
+EditGear.prototype.didInitialize = function() {
     Moment.locale('en-custom', {
         week: {
             dow: 1,
@@ -67,7 +42,7 @@ didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 };
 
-didRender = function() {
+EditGear.prototype.didRender = function() {
     this.populateBrandSelect();
     this.populateSubtypeSelect();
 
@@ -110,7 +85,7 @@ didRender = function() {
     this.setupEvent('click', '#editgear-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
 };
 
-toggleLoading = function() {
+EditGear.prototype.toggleLoading = function() {
     if (this.isLoading === true) {
         $('#editgear-save-btn', this.$element).html('Save');
         this.isLoading = false;
@@ -120,7 +95,7 @@ toggleLoading = function() {
     }
 };
 
-populateDelivery = function() {
+EditGear.prototype.populateDelivery = function() {
     var price = this.gear.data.delivery_price ? this.gear.data.delivery_price : '',
         distance = this.gear.data.delivery_distance ? this.gear.data.delivery_distance : '';
 
@@ -128,8 +103,8 @@ populateDelivery = function() {
     $('#editgearpricingloc-form #delivery_distance').val(distance);
 };
 
-initAccessories = function() {
-    var gearClassification = App.contentClassification.data.gearClassification,
+EditGear.prototype.initAccessories = function() {
+    var gearClassification = ContentClassification.data.gearClassification,
         html = '',
         view, gearSubtypes, i;
 
@@ -154,9 +129,9 @@ initAccessories = function() {
     $('#editgear-accessories-container', view.$element).html(html);
 };
 
-renderAvailability = function() {
+EditGear.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, $submerchantFormBtn, calendarVC, calendarVT, submerchantFormVC, submerchantFormVT;
+        $calendarContainer, $submerchantFormBtn, CalendarVC, calendarVT, SubmerchantFormVC, submerchantFormVT;
 
     $calendarContainer = $('#editgear-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
@@ -164,9 +139,9 @@ renderAvailability = function() {
     $submerchantFormBtn = $('#editgear-submerchantform-buttons', this.$element);
 
     if (App.user.isSubMerchant() === true) {
-        calendarVC = require('./availabilitycalendar.js');
+        CalendarVC = require('./availabilitycalendar.js');
         calendarVT = require('../../templates/availabilitycalendar.html');
-        view.calendarVC = new calendarVC.constructor({
+        view.calendarVC = new CalendarVC({
             name: 'availabilitycalendar',
             $element: $calendarContainer,
             template: calendarVT,
@@ -181,10 +156,10 @@ renderAvailability = function() {
             $submerchantFormBtn.addClass('hidden');
         }
     } else {
-        submerchantFormVC = require('./submerchantregistration.js');
+        SubmerchantFormVC = require('./submerchantregistration.js');
         submerchantFormVT = require('../../templates/submerchantregistration.html');
 
-        view.submerchantFormVC = new submerchantFormVC.constructor({
+        view.submerchantFormVC = new SubmerchantFormVC({
             name: 'submerchantform',
             $element: $calendarContainer,
             template: submerchantFormVT
@@ -196,7 +171,7 @@ renderAvailability = function() {
     }
 };
 
-handleSubmerchantFormSubmit = function(event) {
+EditGear.prototype.handleSubmerchantFormSubmit = function(event) {
     var view = event.data,
         $button = $(this);
     $button.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
@@ -221,14 +196,14 @@ handleSubmerchantFormSubmit = function(event) {
     }
 };
 
-populateLocation = function() {
+EditGear.prototype.populateLocation = function() {
     $('#editgearpricingloc-form #editgearpricing-city').val(this.gear.data.city);
     $('#editgearpricingloc-form #editgearpricing-address').val(this.gear.data.address);
     $('#editgearpricingloc-form #editgearpricing-postalcode').val(this.gear.data.postal_code);
     $('#editgearpricingloc-form #editgearpricing-region').val(this.gear.data.region);
 };
 
-populateCountries = function($select) {
+EditGear.prototype.populateCountries = function($select) {
     var countriesArray = Localization.getCountries(),
         html = $('option', $select).first()[0].outerHTML,
         i;
@@ -240,8 +215,8 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-populateBrandSelect = function() {
-    var brands = App.contentClassification.data.gearBrands,
+EditGear.prototype.populateBrandSelect = function() {
+    var brands = ContentClassification.data.gearBrands,
         html = '<option> Choose brand: </option>',
         $brandSelect, i;
     if (!brands) {
@@ -257,8 +232,8 @@ populateBrandSelect = function() {
     $brandSelect.append(html);
 };
 
-populateSubtypeSelect = function() {
-    var gearClassification = App.contentClassification.data.gearClassification,
+EditGear.prototype.populateSubtypeSelect = function() {
+    var gearClassification = ContentClassification.data.gearClassification,
         html = '<option> Choose subtype: </option>',
         $subtypeSelect,
         gearSubtypes, i;
@@ -272,13 +247,13 @@ populateSubtypeSelect = function() {
     $subtypeSelect.append(html);
 };
 
-handleSubtypeChange = function(event) {
+EditGear.prototype.handleSubtypeChange = function(event) {
     var view = event.data;
     view.populateAccessories();
     view.populatePriceSuggestions();
 };
 
-populateImages = function() {
+EditGear.prototype.populateImages = function() {
     var images = this.gear.data.images.split(','),
         html = '',
         i;
@@ -291,7 +266,7 @@ populateImages = function() {
     $('#editgear-photos-form .thumb-list-container ul', this.$element).append(html);
 };
 
-populatePricing = function() {
+EditGear.prototype.populatePricing = function() {
     var view = this;
     Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
@@ -304,8 +279,8 @@ populatePricing = function() {
     });
 };
 
-populatePriceSuggestions = function() {
-    var gearClassification = App.contentClassification.data.gearClassification,
+EditGear.prototype.populatePriceSuggestions = function() {
+    var gearClassification = ContentClassification.data.gearClassification,
         view, gearSubtypes, i, suggestionA, suggestionB, suggestionC;
 
     view = this;
@@ -342,8 +317,8 @@ populatePriceSuggestions = function() {
     });
 };
 
-populateAccessories = function(event) {
-    var gearClassification = App.contentClassification.data.gearClassification,
+EditGear.prototype.populateAccessories = function(event) {
+    var gearClassification = ContentClassification.data.gearClassification,
         html = '',
         view, gearSubtypes, i;
 
@@ -367,7 +342,7 @@ populateAccessories = function(event) {
     $('#editgear-accessories-container', this.$element).html(html);
 };
 
-handleDeliveryCheckbox = function() {
+EditGear.prototype.handleDeliveryCheckbox = function() {
     if (this.checked === true) {
         $(this).closest('#addDeliveryPriceContainer').find('fieldset').removeAttr('disabled');
     } else {
@@ -375,7 +350,7 @@ handleDeliveryCheckbox = function() {
     }
 };
 
-handlePriceChange = function() {
+EditGear.prototype.handlePriceChange = function() {
     var $this = $(this),
         price;
     price = parseInt($this.val(), 10);
@@ -385,7 +360,7 @@ handlePriceChange = function() {
     $this.val(price);
 };
 
-handleCancel = function() {
+EditGear.prototype.handleCancel = function() {
     var currentVerticalPosition = $(window).scrollTop();
     App.router.closeModalView();
     $('body, html').animate({
@@ -393,7 +368,7 @@ handleCancel = function() {
     }, 50);
 };
 
-handleImageUpload = function(event) {
+EditGear.prototype.handleImageUpload = function(event) {
     var view = event.data,
         $file = $(this);
 
@@ -417,7 +392,7 @@ handleImageUpload = function(event) {
     });
 };
 
-handleSave = function(event) {
+EditGear.prototype.handleSave = function(event) {
     var view = event.data,
         isLocationSame = false,
         currentAddress = view.gear.data.address,
@@ -427,7 +402,8 @@ handleSave = function(event) {
         currentCountry = view.gear.data.country,
         availabilityArray = [],
         accessoriesArray = [],
-        selections, alwaysFlag, updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j;
+        selections, alwaysFlag, updatedGearData, addressOneliner, updateCall, month, monthSelections, selection, j,
+        gearData, address, postal_code, city;
 
     if (view.isLoading === true) {
         return;
@@ -485,6 +461,8 @@ handleSave = function(event) {
         country: $('#editgearpricingloc-form #editgearpricing-country option:selected').val()
     };
 
+    gearData = view.gear.data;
+
     if ($('#editgear-subtype', view.$element).selectedIndex === 0) {
         alert('The subtype field is required.');
         view.toggleLoading();
@@ -506,7 +484,7 @@ handleSave = function(event) {
         return;
     }
     if (parseFloat($('#editgearpricing-form #price_a', this.$element).val()) % 1 !== 0) {
-        alert('The hourly rental price is invalid.');
+        alert('The daily rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -516,7 +494,7 @@ handleSave = function(event) {
         return;
     }
     if (parseFloat($('#editgearpricing-form #price_b', this.$element).val()) % 1 !== 0) {
-        alert('The daily rental price is invalid.');
+        alert('The weekly rental price is invalid.');
         view.toggleLoading();
         return;
     }
@@ -526,21 +504,24 @@ handleSave = function(event) {
         return;
     }
     if (parseFloat($('#editgearpricing-form #price_c', this.$element).val()) % 1 !== 0) {
-        alert('The weekly rental price is invalid.');
+        alert('The monthly rental price is invalid.');
         view.toggleLoading();
         return;
     }
-    if ($('#editgearpricingloc-form #editgearpricing-address', this.$element).val() === '') {
+    address = $('#editgearpricingloc-form #editgearpricing-address', this.$element).val();
+    if (address === '' && address !== gearData.address) {
         alert('The address field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val() === '') {
+    postal_code = $('#editgearpricingloc-form #editgearpricing-postalcode', this.$element).val();
+    if (postal_code === '' && postal_code !== gearData.postal_code) {
         alert('The postalcode field is required.');
         view.toggleLoading();
         return;
     }
-    if ($('#editgearpricingloc-form #editgearpricing-city', this.$element).val() === '') {
+    city = $('#editgearpricingloc-form #editgearpricing-city', this.$element).val();
+    if (city === '' && city !== gearData.city) {
         alert('The city field is required.');
         view.toggleLoading();
         return;
@@ -553,14 +534,6 @@ handleSave = function(event) {
     _.extend(view.gear.data, updatedGearData);
 
     updateCall = function() {
-        /*Localization.convertPrices([updatedGearData.price_a, updatedGearData.price_b, updatedGearData.price_c], App.user.data.currency, 'EUR', function(error, convertedPrices) {
-            if(error) {
-                console.log('Error converting prices: ' + error);
-                return;
-            }
-            view.gear.data.price_a = convertedPrices[0];
-            view.gear.data.price_b = convertedPrices[1];
-            view.gear.data.price_c = convertedPrices[2];*/
         view.gear.save(App.user.data.id, function(error) {
             if (error) {
                 alert('Error updating gear.');
@@ -570,7 +543,6 @@ handleSave = function(event) {
             }
             App.router.closeModalView();
         });
-        //});
     };
 
     isLocationSame = (currentAddress === updatedGearData.address &&
@@ -587,44 +559,12 @@ handleSave = function(event) {
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.gear.data.longitude = results[0].geometry.location.lng();
                 view.gear.data.latitude = results[0].geometry.location.lat();
-                updateCall();
-            } else {
-                alert('Google Maps could not find your address. Please verify that it is correct.');
-                view.toggleLoading();
             }
+            updateCall();
         });
     } else {
         updateCall();
     }
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    toggleLoading: toggleLoading,
-
-    populateBrandSelect: populateBrandSelect,
-    populateSubtypeSelect: populateSubtypeSelect,
-    populateAccessories: populateAccessories,
-    handleSubtypeChange: handleSubtypeChange,
-
-    populateImages: populateImages,
-    handleImageUpload: handleImageUpload,
-
-    populateLocation: populateLocation,
-    populateCountries: populateCountries,
-    populateDelivery: populateDelivery,
-    handleDeliveryCheckbox: handleDeliveryCheckbox,
-    handlePriceChange: handlePriceChange,
-
-    initAccessories: initAccessories,
-    renderAvailability: renderAvailability,
-    handleSubmerchantFormSubmit: handleSubmerchantFormSubmit,
-
-    populatePricing: populatePricing,
-    populatePriceSuggestions: populatePriceSuggestions,
-
-    handleCancel: handleCancel,
-    handleSave: handleSave
-});
+module.exports = EditGear;

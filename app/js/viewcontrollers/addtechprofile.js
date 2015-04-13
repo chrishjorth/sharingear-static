@@ -16,45 +16,21 @@ var _ = require('underscore'),
     App = require('../app.js'),
 
     Localization = require('../models/localization.js'),
+    ContentClassification = require('../models/contentclassification.js'),
     TechProfile = require('../models/techprofile.js'),
 
     countryDefault = 'Select country:',
-    geocoder,
-
-    didInitialize,
-    didRender,
-
-    getTabID,
-    toggleLoading,
-
-    addTechProfileIcons,
-    handleTechProfileRadio,
-    saveTechProfile,
-
-    populateYearsOfExperience,
-    handleExperienceStartYearChange,
-    saveExperience,
-
-    populateCountries,
-    populatePriceSuggestions,
-    handlePriceChange,
-    handleDeliveryCheckbox,
-    savePriceLocation,
-
-    renderAvailability,
-    renderSubmerchantForm,
-    saveAvailability,
-
-    handleCancel,
-    handleNext,
-    handleViewTechProfile,
-    handleAddMoreTechProfiles,
-
-    showPanel;
+    geocoder;
 
 geocoder = new GoogleMaps.Geocoder();
 
-didInitialize = function() {
+function AddTechProfile(options) {
+    ViewController.call(this, options);
+}
+
+AddTechProfile.prototype = new ViewController();
+
+AddTechProfile.prototype.didInitialize = function() {
     if (App.user.data.id === null) {
         this.ready = false;
         App.router.navigateTo('home');
@@ -75,7 +51,7 @@ didInitialize = function() {
         currency: App.user.data.currency
     };
 
-    this.newTechProfile = new TechProfile.constructor({
+    this.newTechProfile = new TechProfile({
         rootURL: Config.API_URL
     });
     this.newTechProfile.initialize();
@@ -88,7 +64,7 @@ didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 };
 
-didRender = function() {
+AddTechProfile.prototype.didRender = function() {
     this.addTechProfileIcons();
 
     this.populateCountries($('#dashboard-addtechprofileprice-country', this.$element));
@@ -106,7 +82,7 @@ didRender = function() {
     this.setupEvent('change', '.price', this, this.handlePriceChange);
 };
 
-getTabID = function() {
+AddTechProfile.prototype.getTabID = function() {
     var tabID = null;
     $('.addtechprofile-panel').each(function() {
         var $this = $(this);
@@ -117,8 +93,8 @@ getTabID = function() {
     return tabID;
 };
 
-populatePriceSuggestions = function() {
-    var techProfileClassification = App.contentClassification.data.roadieClassification,
+AddTechProfile.prototype.populatePriceSuggestions = function() {
+    var techProfileClassification = ContentClassification.data.roadieClassification,
         view = this,
         i, suggestionA, suggestionB, suggestionC;
 
@@ -141,7 +117,7 @@ populatePriceSuggestions = function() {
     });
 };
 
-toggleLoading = function() {
+AddTechProfile.prototype.toggleLoading = function() {
     if (this.isLoading === true) {
         $('.next-btn', this.$element).html('Next <i class="fa fa-arrow-circle-right"></i>');
         this.isLoading = false;
@@ -151,9 +127,9 @@ toggleLoading = function() {
     }
 };
 
-addTechProfileIcons = function() {
+AddTechProfile.prototype.addTechProfileIcons = function() {
     var view = this,
-        techProfileClassification = App.contentClassification.data.roadieClassification,
+        techProfileClassification = ContentClassification.data.roadieClassification,
         html = '',
         techProfileType, i;
 
@@ -174,12 +150,12 @@ addTechProfileIcons = function() {
 /**
  * @assertion: techProfileClassification has been loaded
  */
-handleTechProfileRadio = function(event) {
+AddTechProfile.prototype.handleTechProfileRadio = function(event) {
     var view = event.data;
     $('.hint1', view.$element).addClass('hidden');
 };
 
-saveTechProfile = function() {
+AddTechProfile.prototype.saveTechProfile = function() {
     var view = this,
         newData;
 
@@ -219,7 +195,7 @@ saveTechProfile = function() {
 
 };
 
-populateYearsOfExperience = function() {
+AddTechProfile.prototype.populateYearsOfExperience = function() {
     var $startYear = $('#addtechprofile-startyear', this.$element),
         $endYear = $('#addtechprofile-endyear', this.$element),
         startYearSelectHTML = '',
@@ -251,12 +227,12 @@ populateYearsOfExperience = function() {
     $endYear.val(endYear);
 };
 
-handleExperienceStartYearChange = function(event) {
+AddTechProfile.prototype.handleExperienceStartYearChange = function(event) {
     var view = event.data;
     view.populateYearsOfExperience();
 };
 
-saveExperience = function() {
+AddTechProfile.prototype.saveExperience = function() {
     _.extend(this.newTechProfile.data, {
         experience: $('#addtechprofile-experience', this.$element).val(),
         xp_years: $('#addtechprofile-startyear', this.$element).val() + '-' + $('#addtechprofile-endyear', this.$element).val(),
@@ -268,7 +244,7 @@ saveExperience = function() {
     this.showPanel('#addtechprofile-panel-pricelocation');
 };
 
-populateCountries = function($select) {
+AddTechProfile.prototype.populateCountries = function($select) {
     var html = $('option', $select).first()[0].outerHTML,
         countriesArray, i;
     countriesArray = Localization.getCountries();
@@ -281,7 +257,7 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-handlePriceChange = function() {
+AddTechProfile.prototype.handlePriceChange = function() {
     var $this = $(this),
         price;
     price = parseInt($this.val(), 10);
@@ -291,7 +267,7 @@ handlePriceChange = function() {
     $this.val(price);
 };
 
-savePriceLocation = function() {
+AddTechProfile.prototype.savePriceLocation = function() {
     var view = this,
         isLocationSame, addressOneliner, newTechProfileData, saveCall,
         currentAddress, currentPostalCode, currentCity, currentRegion, currentCountry, didLocationChange;
@@ -420,21 +396,21 @@ savePriceLocation = function() {
     }
 };
 
-renderAvailability = function() {
+AddTechProfile.prototype.renderAvailability = function() {
     var view = this,
-        $calendarContainer, calendarVC, calendarVT;
+        $calendarContainer, CalendarVC, calendarVT;
 
     $calendarContainer = $('#addtechprofile-availability-calendar', this.$element);
     $calendarContainer.removeClass('hidden');
 
     $('#addtechprofile-darkgray-left', this.$element).hide();
-    $calendarContainer.removeClass('col-sm-9');
-    $calendarContainer.addClass('col-sm-12');
+    $('#addtechprofile-darkgray-left-calendar', this.$element).removeClass('hidden');
 
-    calendarVC = require('./availabilitycalendar.js');
+
+    CalendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
 
-    view.calendarVC = new calendarVC.constructor({
+    view.calendarVC = new CalendarVC({
         name: 'availabilitycalendar',
         $element: $calendarContainer,
         template: calendarVT,
@@ -470,14 +446,14 @@ renderAvailability = function() {
     });
 };
 
-renderSubmerchantForm = function() {
+AddTechProfile.prototype.renderSubmerchantForm = function() {
     var $submerchantFormContainer = $('#addtechprofile-availability-calendar', this.$element),
         view = this,
-        submerchantFormVC, submerchantFormVT;
+        SubmerchantFormVC, submerchantFormVT;
 
-    submerchantFormVC = require('./submerchantregistration.js');
+    SubmerchantFormVC = require('./submerchantregistration.js');
     submerchantFormVT = require('../../templates/submerchantregistration.html');
-    view.submerchantFormVC = new submerchantFormVC.constructor({
+    view.submerchantFormVC = new SubmerchantFormVC({
         name: 'submerchantform',
         $element: $submerchantFormContainer,
         template: submerchantFormVT
@@ -486,7 +462,7 @@ renderSubmerchantForm = function() {
     view.submerchantFormVC.render();
 };
 
-saveAvailability = function() {
+AddTechProfile.prototype.saveAvailability = function() {
     var view = this,
         availabilityArray = [],
         selections, alwaysFlag, month, monthSelections, selection, j;
@@ -531,11 +507,11 @@ saveAvailability = function() {
     });
 };
 
-handleCancel = function() {
+AddTechProfile.prototype.handleCancel = function() {
     App.router.closeModalView();
 };
 
-handleNext = function(event) {
+AddTechProfile.prototype.handleNext = function(event) {
     var view = event.data,
         currentTabID;
 
@@ -574,18 +550,18 @@ handleNext = function(event) {
     }
 };
 
-handleViewTechProfile = function(event) {
+AddTechProfile.prototype.handleViewTechProfile = function(event) {
     var view = event.data;
     App.router.closeModalView();
     App.router.navigateTo('techprofile/' + view.newTechProfile.data.id);
 };
 
-handleAddMoreTechProfiles = function() {
+AddTechProfile.prototype.handleAddMoreTechProfiles = function() {
     App.router.closeModalView();
     App.router.openModalView('addtechprofile');
 };
 
-showPanel = function(panelID) {
+AddTechProfile.prototype.showPanel = function(panelID) {
     $('.addtechprofile-panel', this.$element).each(function() {
         var $this = $(this);
         if ($this.hasClass('hidden') === false) {
@@ -595,36 +571,4 @@ showPanel = function(panelID) {
     $(panelID, this.$element).removeClass('hidden');
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    getTabID: getTabID,
-    toggleLoading: toggleLoading,
-
-    addTechProfileIcons: addTechProfileIcons,
-    handleTechProfileRadio: handleTechProfileRadio,
-    saveTechProfile: saveTechProfile,
-
-    populateYearsOfExperience: populateYearsOfExperience,
-    handleExperienceStartYearChange: handleExperienceStartYearChange,
-    saveExperience: saveExperience,
-
-    populatePriceSuggestions: populatePriceSuggestions,
-
-    populateCountries: populateCountries,
-    handlePriceChange: handlePriceChange,
-    handleDeliveryCheckbox: handleDeliveryCheckbox,
-    savePriceLocation: savePriceLocation,
-
-    renderAvailability: renderAvailability,
-    renderSubmerchantForm: renderSubmerchantForm,
-    saveAvailability: saveAvailability,
-
-    handleCancel: handleCancel,
-    handleNext: handleNext,
-    handleViewTechProfile: handleViewTechProfile,
-    handleAddMoreTechProfiles: handleAddMoreTechProfiles,
-
-    showPanel: showPanel
-});
+module.exports = AddTechProfile;

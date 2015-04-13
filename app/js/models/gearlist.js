@@ -9,26 +9,21 @@
 var _ = require('underscore'),
 
 	Model = require('../model.js'),
-	Gear = require('./gear.js'),
-	
-	didInitialize,
+	Gear = require('./gear.js');
 
-    search,
-    getUserGear,
-    getUserRentals,
-    getUserReservations,
-    getGearItem,
-    isEmpty,
-    updateGearItem,
-    loadFromArray;
+function GearList(options) {
+    Model.call(this, options);
+}
 
-didInitialize = function() {
+GearList.prototype = new Model();
+
+GearList.prototype.didInitialize = function() {
     if (this.data === null) {
         this.data = [];
     }
 };
 
-search = function(location, gear, daterange, callback) {
+GearList.prototype.search = function(location, gear, daterange, callback) {
     var view = this;
 
     if (location === null || location === '') {
@@ -45,7 +40,7 @@ search = function(location, gear, daterange, callback) {
     });
 };
 
-getUserGear = function(userID, callback) {
+GearList.prototype.getUserGear = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/gear', function(error, userGear) {
         if (error) {
@@ -58,7 +53,7 @@ getUserGear = function(userID, callback) {
     });
 };
 
-getUserRentals = function(userID, callback) {
+GearList.prototype.getUserRentals = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/gearrentals', function(error, userRentals) {
         if (error) {
@@ -71,7 +66,7 @@ getUserRentals = function(userID, callback) {
     });
 };
 
-getUserReservations = function(userID, callback) {
+GearList.prototype.getUserReservations = function(userID, callback) {
     var view = this;
 
     view.get('/users/' + userID + '/gearreservations', function(error, userReservations) {
@@ -84,7 +79,7 @@ getUserReservations = function(userID, callback) {
     });
 };
 
-getGearItem = function(property, key) {
+GearList.prototype.getGearItem = function(property, key) {
     var i;
     for (i = 0; i < this.data.length; i++) {
         if (this.data[i].data[property] === key) {
@@ -94,11 +89,11 @@ getGearItem = function(property, key) {
     return null;
 };
 
-isEmpty = function() {
+GearList.prototype.isEmpty = function() {
     return this.data.length <= 0;
 };
 
-updateGearItem = function(gearItem) {
+GearList.prototype.updateGearItem = function(gearItem) {
     var i;
     for (i = 0; i < this.data.length; i++) {
         if (this.data[i].id === gearItem.data.id) {
@@ -108,13 +103,13 @@ updateGearItem = function(gearItem) {
     }
 };
 
-loadFromArray = function(gearArray) {
+GearList.prototype.loadFromArray = function(gearArray) {
     var i, gearItem;
 
     this.data = [];
 
     for (i = 0; i < gearArray.length; i++) {
-        gearItem = new Gear.constructor({
+        gearItem = new Gear({
             rootURL: this.rootURL
         });
         gearItem.initialize();
@@ -123,15 +118,4 @@ loadFromArray = function(gearArray) {
     }
 };
 
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-
-    search: search,
-    getUserGear: getUserGear,
-    getUserRentals: getUserRentals,
-    getUserReservations: getUserReservations,
-    getGearItem: getGearItem,
-    isEmpty: isEmpty,
-    updateGearItem: updateGearItem,
-    loadFromArray: loadFromArray
-});
+module.exports = GearList;

@@ -10,16 +10,18 @@ var chai = require('chai'),
 	$ = require('jquery'),
 
 	Model = require('../../../js/model.js'),
-	App = require('../../../js/app.js'),
+	Config = require('../../../js/config.js'),
 
 	expect;
+
+require('script!../../../node_modules/sinon/pkg/sinon.js');
 
 expect = chai.expect;
 
 describe('Model', function() {
     before(function() {
-        this.model = new Model.constructor({
-            rootURL: App.API_URL
+        this.model = new Model({
+            rootURL: Config.API_URL
         });
     });
 
@@ -35,15 +37,18 @@ describe('Model', function() {
         $.ajax.restore();
     });
 
-    it('Provides the model object', function() {
-        expect(Model).to.be.an('object');
-        expect(Model).to.have.property('constructor');
-        expect(Model).to.have.property('inherit');
+    it('Can be constructed', function() {
+        expect(Model).to.be.a('function');
+        expect(this.model instanceof Model).to.equal(true);
+        expect(this.model).to.have.property('rootURL');
+        expect(this.model).to.have.property('data');
     });
 
-    it('Can be constructed', function() {
-        expect(this.model.rootURL).to.equal(App.API_URL);
-        expect(this.model.data).to.equal(null);
+    it('Can be initialized', function(done) {
+        this.model.didInitialize = function() {
+            done();
+        };
+        this.model.initialize();
     });
 
     it('Can perform GET requests', function(done) {
@@ -51,7 +56,7 @@ describe('Model', function() {
         this.model.get('/someurl', function() {
             sinon.assert.calledOnce(spec.ajaxStub);
             expect(spec.ajaxStub.args[0][0].type).to.equal('GET');
-            expect(spec.ajaxStub.args[0][0].url).to.equal(App.API_URL + '/someurl');
+            expect(spec.ajaxStub.args[0][0].url).to.equal(Config.API_URL + '/someurl');
             done();
         });
     });
@@ -63,7 +68,7 @@ describe('Model', function() {
         }, function() {
             sinon.assert.calledOnce(spec.ajaxStub);
             expect(spec.ajaxStub.args[0][0].type).to.equal('POST');
-            expect(spec.ajaxStub.args[0][0].url).to.equal(App.API_URL + '/someurl');
+            expect(spec.ajaxStub.args[0][0].url).to.equal(Config.API_URL + '/someurl');
             expect(spec.ajaxStub.args[0][0].data.test).to.equal('test1');
             done();
         });
@@ -76,7 +81,7 @@ describe('Model', function() {
         }, function() {
             sinon.assert.calledOnce(spec.ajaxStub);
             expect(spec.ajaxStub.args[0][0].type).to.equal('PUT');
-            expect(spec.ajaxStub.args[0][0].url).to.equal(App.API_URL + '/someurl');
+            expect(spec.ajaxStub.args[0][0].url).to.equal(Config.API_URL + '/someurl');
             expect(spec.ajaxStub.args[0][0].data.test).to.equal('test2');
             done();
         });

@@ -13,18 +13,15 @@ var Moment = require('moment-timezone'),
     XChangeRates = require('./xchangerates.js'),
     Localization,
 
-    didInitialize,
-    fetch,
-    getCountries,
-    getVAT,
-    convertPrice,
-    convertPrices,
-    getTimeZones,
-    getLocalTimeZone,
-    getCurrentTimeZone,
-    setCurrentTimeZone;
+    staticLocalization;
 
-didInitialize = function() {
+function Localization(options) {
+    Model.call(this, options);
+}
+
+Localization.prototype = new Model();
+
+Localization.prototype.didInitialize = function() {
     this.defaultTimeZone = this.getLocalTimeZone();
     this.currenTimezone = this.defaultTimeZone;
     if (this.data === null) {
@@ -32,7 +29,7 @@ didInitialize = function() {
     }
 };
 
-fetch = function() {
+Localization.prototype.fetch = function() {
     var model = this;
     this.get('/localization', function(error, data) {
         if (error) {
@@ -43,7 +40,7 @@ fetch = function() {
     });
 };
 
-getCountries = function() {
+Localization.prototype.getCountries = function() {
     var countriesArray = [],
         i;
     for (i = 0; i < this.data.length; i++) {
@@ -55,7 +52,7 @@ getCountries = function() {
     return countriesArray;
 };
 
-getVAT = function(countryCode) {
+Localization.prototype.getVAT = function(countryCode) {
     var i;
     for (i = 0; i < this.data.length; i++) {
         if (this.data[i].code === countryCode) {
@@ -69,7 +66,7 @@ getVAT = function(countryCode) {
  * @param price: the price in EURO to convert.
  * @param currency: the currency to convert to.
  */
-convertPrice = function(price, currency, callback) {
+Localization.prototype.convertPrice = function(price, currency, callback) {
     XChangeRates.getRate('EUR', currency, function(error, rate) {
         if (error) {
             callback('Error getting rate: ' + error);
@@ -79,7 +76,7 @@ convertPrice = function(price, currency, callback) {
     });
 };
 
-convertPrices = function(prices, fromCurrency, toCurrency, callback) {
+Localization.prototype.convertPrices = function(prices, fromCurrency, toCurrency, callback) {
     XChangeRates.getRate(fromCurrency, toCurrency, function(error, rate) {
         var i = 0,
             convertedPrices = [];
@@ -94,7 +91,7 @@ convertPrices = function(prices, fromCurrency, toCurrency, callback) {
     });
 };
 
-getTimeZones = function() {
+Localization.prototype.getTimeZones = function() {
     var timezones = Moment.tz.names(),
         i, offset, j, temp;
     for (i = 0; i < timezones.length; i++) {
@@ -129,7 +126,7 @@ getTimeZones = function() {
  * This approach is based on https://github.com/Canop/tzdetect.js and optimized for speed since the version in the link is quite slow.
  * We use a naive approach and return the first match, since it is currently not possible to narrow down the results to one timezone anyhow.
  */
-getLocalTimeZone = function() {
+Localization.prototype.getLocalTimeZone = function() {
     var now = Date.now(),
         makekey, localkey, names, i;
 
@@ -161,11 +158,11 @@ getLocalTimeZone = function() {
     return null;
 };
 
-getCurrentTimeZone = function() {
+Localization.prototype.getCurrentTimeZone = function() {
     return this.currenTimezone;
 };
 
-setCurrentTimeZone = function(timezone) {
+Localization.prototype.setCurrentTimeZone = function(timezone) {
     if (timezone !== null) {
         this.currenTimezone = timezone;
     } else {
@@ -173,22 +170,9 @@ setCurrentTimeZone = function(timezone) {
     }
 };
 
-Localization = Model.inherit({
-    didInitialize: didInitialize,
-    fetch: fetch,
-    getCountries: getCountries,
-    getVAT: getVAT,
-    convertPrice: convertPrice,
-    convertPrices: convertPrices,
-    getTimeZones: getTimeZones,
-    getLocalTimeZone: getLocalTimeZone,
-    getCurrentTimeZone: getCurrentTimeZone,
-    setCurrentTimeZone: setCurrentTimeZone
-});
-Localization = new Localization.constructor({
+staticLocalization = new Localization({
     rootURL: Config.API_URL
 });
-Localization.initialize();
-Localization.fetch();
+staticLocalization.initialize();
 
-module.exports = Localization;
+module.exports = staticLocalization;

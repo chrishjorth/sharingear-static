@@ -10,17 +10,15 @@ var _ = require('underscore'),
 	
 	Utilities = require('../utilities.js'),
 	Model = require('../model.js'),
-	App = require('../app.js'),
+	App = require('../app.js');
 
-	didInitialize,
-    createVan,
-    uploadImage,
-    save,
-    update,
-    getAvailability,
-    setAvailability;
+function Van(options) {
+    Model.call(this, options);
+}
 
-didInitialize = function didInitialize() {
+Van.prototype = new Model();
+
+Van.prototype.didInitialize = function didInitialize() {
     if (this.data === null) {
         this.data = {
             id: null,
@@ -45,7 +43,7 @@ didInitialize = function didInitialize() {
     }
 };
 
-createVan = function createGear(callback) {
+Van.prototype.createVan = function createGear(callback) {
     var model = this,
         newVan = this.data,
         postData;
@@ -88,7 +86,7 @@ createVan = function createGear(callback) {
  * @param file: $('#upload-form input[type="file"]').get(0).files[0];
  * @param filename: The name of the file
  */
-uploadImage = function(file, filename, callback) {
+Van.prototype.uploadImage = function(file, filename, callback) {
     var model = this;
     //Get filename and secret from backend
     this.get('/users/' + App.user.data.id + '/newfilename/' + filename, function(error, data) {
@@ -125,7 +123,7 @@ uploadImage = function(file, filename, callback) {
     });
 };
 
-save = function(callback) {
+Van.prototype.save = function(callback) {
     var saveData = {
         subtype: this.data.subtype,
         brand: this.data.brand,
@@ -162,7 +160,7 @@ save = function(callback) {
     });
 };
 
-update = function(userID, callback) {
+Van.prototype.update = function(userID, callback) {
     var model = this;
     this.get('/vans/' + this.data.id, function(error, vans) {
         if (error) {
@@ -175,7 +173,7 @@ update = function(userID, callback) {
     });
 };
 
-getAvailability = function(callback) {
+Van.prototype.getAvailability = function(callback) {
     if (App.user.data.id === null) {
         callback(null, {
             alwaysFlag: 0,
@@ -196,7 +194,7 @@ getAvailability = function(callback) {
 /**
  * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
  */
-setAvailability = function(availabilityArray, alwaysFlag, callback) {
+Van.prototype.setAvailability = function(availabilityArray, alwaysFlag, callback) {
     var postData;
     postData = {
         availability: JSON.stringify(availabilityArray),
@@ -212,12 +210,4 @@ setAvailability = function(availabilityArray, alwaysFlag, callback) {
     });
 };
 
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-    createVan: createVan,
-    uploadImage: uploadImage,
-    save: save,
-    update: update,
-    getAvailability: getAvailability,
-    setAvailability: setAvailability
-});
+module.exports = Van;

@@ -14,19 +14,15 @@ var _ = require('underscore'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
 
-    Localization = require('../models/localization.js'),
+    Localization = require('../models/localization.js');
 
-    didInitialize,
-    handleImageUpload,
-    didRender,
-    populateBirthdateInput,
-    populateCountries,
+function DashboardProfile(options) {
+    ViewController.call(this, options);
+}
 
-    handleUploadPicButton,
-    handleBirthdateChange,
-    handleSave;
+DashboardProfile.prototype = new ViewController();
 
-didInitialize = function() {
+DashboardProfile.prototype.didInitialize = function() {
     var profileImgLoaded = $.Deferred(),
         userData;
 
@@ -53,7 +49,7 @@ didInitialize = function() {
     this.profileImg.src = this.user.data.image_url;
 };
 
-didRender = function() {
+DashboardProfile.prototype.didRender = function() {
     var view = this,
         userData = this.user.data,
         birthdate, $countriesSelect, $nationalitiesSelect;
@@ -110,7 +106,7 @@ didRender = function() {
     this.setupEvent('change', '#dashboard-profile-birthdate-year, #dashboard-profile-birthdate-month', this, this.handleBirthdateChange);
 };
 
-populateBirthdateInput = function() {
+DashboardProfile.prototype.populateBirthdateInput = function() {
     var $inputContainer = $('.birthday-select', this.$element),
         $selectDay = $('#dashboard-profile-birthdate-date', $inputContainer),
         $selectMonth = $('#dashboard-profile-birthdate-month', $inputContainer),
@@ -166,7 +162,7 @@ populateBirthdateInput = function() {
     html = '';
 };
 
-populateCountries = function($select) {
+DashboardProfile.prototype.populateCountries = function($select) {
     var countriesArray = Localization.getCountries(),
         html = $('option', $select).first()[0].outerHTML,
         i;
@@ -179,12 +175,12 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-handleUploadPicButton = function(event) {
+DashboardProfile.prototype.handleUploadPicButton = function(event) {
     var view = event.data;
     $('#profile-pic', view.$element).click();
 };
 
-handleImageUpload = function(event) {
+DashboardProfile.prototype.handleImageUpload = function(event) {
     var view = event.data;
     var $file = $(this);
 
@@ -208,12 +204,12 @@ handleImageUpload = function(event) {
     });
 };
 
-handleBirthdateChange = function(event) {
+DashboardProfile.prototype.handleBirthdateChange = function(event) {
     var view = event.data;
     view.populateBirthdateInput();
 };
 
-handleSave = function(event) {
+DashboardProfile.prototype.handleSave = function(event) {
     var view = event.data,
         birthdate, saveData;
 
@@ -307,14 +303,4 @@ handleSave = function(event) {
     });
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    handleImageUpload: handleImageUpload,
-    didRender: didRender,
-    populateBirthdateInput: populateBirthdateInput,
-    populateCountries: populateCountries,
-
-    handleUploadPicButton: handleUploadPicButton,
-    handleBirthdateChange: handleBirthdateChange,
-    handleSave: handleSave
-});
+module.exports = DashboardProfile;

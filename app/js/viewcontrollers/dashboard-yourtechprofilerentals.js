@@ -15,21 +15,19 @@ var _ = require('underscore'),
 
     TechProfileList = require('../models/techprofilelist.js'),
 
-    techProfileBlockID,
+    techProfileBlockID = 'yourrentals-techprofile-block';
 
-    didInitialize,
-    didRender,
-    populateYourRentals,
+function YourTechProfileRentals(options) {
+    ViewController.call(this, options);
+}
 
-    handleBooking;
+YourTechProfileRentals.prototype = new ViewController();
 
-techProfileBlockID = 'yourrentals-techprofile-block';
-
-didInitialize = function() {
+YourTechProfileRentals.prototype.didInitialize = function() {
     var view = this;
 
     this.didFetch = false;
-    this.techProfileList = new TechProfileList.constructor({
+    this.techProfileList = new TechProfileList({
         rootURL: Config.API_URL
     });
     this.techProfileList.initialize();
@@ -39,7 +37,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+YourTechProfileRentals.prototype.didRender = function() {
     if(App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Tech profile rentals');
     }
@@ -51,7 +49,7 @@ didRender = function() {
     this.setupEvent('click', '#yourrentals-techprofile-block .sg-list-item button', this, this.handleBooking);
 };
 
-populateYourRentals = function(callback) {
+YourTechProfileRentals.prototype.populateYourRentals = function(callback) {
     var view = this,
         YourRentalsItemTemplate;
     YourRentalsItemTemplate = require('../../templates/yourtechprofilerentals-item.html');
@@ -115,7 +113,7 @@ populateYourRentals = function(callback) {
     }
 };
 
-handleBooking = function(event) {
+YourTechProfileRentals.prototype.handleBooking = function(event) {
     var view = event.data,
         bookingID = $(this).data('bookingid'),
         techProfile, passedData;
@@ -129,10 +127,4 @@ handleBooking = function(event) {
     App.router.openModalView('booking', passedData);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    populateYourRentals: populateYourRentals,
-
-    handleBooking: handleBooking
-});
+module.exports = YourTechProfileRentals;

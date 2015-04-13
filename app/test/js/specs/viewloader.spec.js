@@ -6,14 +6,15 @@
 'use strict';
 
 var chai = require('chai'),
-	$ = require('jquery'),
-	GoogleMaps = require('googlemaps'),
+    $ = require('jquery'),
+    GoogleMaps = require('../../../js/libraries/mscl-googlemaps.js'),
 
-	Router = require('../../../js/router.js'),
-	ViewLoader = require('../../../js/viewloader.js'),
-	App = require('../../../js/app.js'),
+    Router = require('../../../js/router.js'),
+    ViewLoader = require('../../../js/viewloader.js'),
+    ViewController = require('../../../js/viewcontroller.js'),
+    App = require('../../../js/app.js'),
 
-	expect;
+    expect;
 
 require('script!../../../node_modules/sinon/pkg/sinon.js');
 
@@ -53,9 +54,13 @@ describe('ViewLoader', function() {
     });
 
     it('Can load a view', function(done) {
+        var initializeSpy = sinon.spy(ViewController.prototype, 'initialize');
         ViewLoader.loadView('error', 'error', {
             test: 'test'
         }, function(error, loadedViewController) {
+            sinon.assert.calledOnce(initializeSpy);
+            ViewController.prototype.initialize.restore();
+
             expect(loadedViewController.name).to.equal('error');
             expect(loadedViewController.path).to.equal('error');
             expect(loadedViewController.passedData.test).to.equal('test');
@@ -80,19 +85,23 @@ describe('ViewLoader', function() {
     });
 
     it('Can load a subview', function(done) {
-        ViewLoader.currentViewController.path = 'dashboard/yourgear';
-        ViewLoader.currentViewController.subPath = 'yourgear';
-        ViewLoader.loadSubview({
-            test: 'test2'
-        }, function(error, currentSubViewController) {
-            expect(ViewLoader.currentViewController.name).to.equal('dashboard');
-            expect(ViewLoader.currentViewController.path).to.equal('dashboard/yourgear');
-            expect(ViewLoader.currentViewController.passedData.test).to.equal('test');
+        ViewLoader.loadView('dashboard', 'dashboard/profile', {
+            test: 'test'
+        }, function() {
+            ViewLoader.currentViewController.path = 'dashboard/yourgear';
+            ViewLoader.currentViewController.subPath = 'yourgear';
+            ViewLoader.loadSubview({
+                test: 'test2'
+            }, function(error, currentSubViewController) {
+                expect(ViewLoader.currentViewController.name).to.equal('dashboard');
+                expect(ViewLoader.currentViewController.path).to.equal('dashboard/yourgear');
+                expect(ViewLoader.currentViewController.passedData.test).to.equal('test');
 
-            expect(currentSubViewController.name).to.equal('dashboard-yourgear');
-            expect(currentSubViewController.path).to.equal('dashboard/yourgear');
-            expect(currentSubViewController.passedData.test).to.equal('test2');
-            done();
+                expect(currentSubViewController.name).to.equal('dashboard-yourgear');
+                expect(currentSubViewController.path).to.equal('dashboard/yourgear');
+                expect(currentSubViewController.passedData.test).to.equal('test2');
+                done();
+            });
         });
     });
 

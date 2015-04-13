@@ -28,9 +28,6 @@ module.exports = {
             loader: 'html?attrs='
         }]
     },
-    externals: {
-        'googlemaps': 'google.maps'
-    },
     plugins: [
         //Timezone data needs to be required via a loader
         //new WebPack.IgnorePlugin(/^\.\/data\/packed\/latest\.json$/, /moment-timezone$/)
@@ -40,5 +37,6 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery'
         })
-    ]
+    ],
+    devtool: 'sourcemap'
 };

@@ -7,32 +7,23 @@
 'use strict';
 
 var _ = require('underscore'),
-	$ = require('jquery'),
-	Moment = require('moment-timezone'),
+    $ = require('jquery'),
+    Moment = require('moment-timezone'),
 
-	Config = require('../config.js'),
-	ViewController = require('../viewcontroller.js'),
-	App = require('../app.js'),
+    Config = require('../config.js'),
+    ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
-	Localization = require('../models/localization.js'),
-	Card = require('../models/card.js'),
+    Localization = require('../models/localization.js'),
+    Card = require('../models/card.js');
 
-	didInitialize,
-    didRender,
-    renderMissingDataInputs,
-    initExpiration,
-    populateCountries,
-    populateBirthdateInput,
+function Payment(options) {
+    ViewController.call(this, options);
+}
 
-    handleCancel,
-    handleBack,
-    handleNext,
-    handleBirthdateChange,
+Payment.prototype = new ViewController();
 
-    processPayment,
-    resetPayButton;
-
-didInitialize = function() {
+Payment.prototype.didInitialize = function() {
     //var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
     var view = this,
         startMoment, endMoment, duration, months, weeks, days, fee;
@@ -96,7 +87,7 @@ didInitialize = function() {
     });
 };
 
-didRender = function() {
+Payment.prototype.didRender = function() {
     this.renderMissingDataInputs();
     this.initExpiration();
 
@@ -110,7 +101,7 @@ didRender = function() {
     this.setupEvent('change', '#payment-birthdate-year, #payment-birthdate-month', this, this.handleBirthdateChange);
 };
 
-initExpiration = function() {
+Payment.prototype.initExpiration = function() {
     var monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         startYear = parseInt((new Moment.tz(Localization.getCurrentTimeZone())).year(), 10),
         html,
@@ -129,7 +120,7 @@ initExpiration = function() {
     $('#payment-form-visa-year', this.$element).html(html);
 };
 
-renderMissingDataInputs = function() {
+Payment.prototype.renderMissingDataInputs = function() {
     var user = App.user.data;
     if (user.birthdate && user.birthdate !== '') {
         $('#payment-birthdate', this.$element).addClass('hidden');
@@ -148,19 +139,19 @@ renderMissingDataInputs = function() {
     if (user.country && user.country !== '') {
         $('#payment-country', this.$element).parent().addClass('hidden');
     } else {
-        populateCountries($('#payment-country', this.$element));
+        this.populateCountries($('#payment-country', this.$element));
     }
     if (user.nationality && user.nationality !== '') {
         $('#payment-nationality', this.$element).parent().addClass('hidden');
     } else {
-        populateCountries($('#payment-nationality', this.$element));
+        this.populateCountries($('#payment-nationality', this.$element));
     }
     if (user.phone && user.phone !== '') {
         $('#payment-phone', this.$element).parent().addClass('hidden');
     }
 };
 
-populateCountries = function($select) {
+Payment.prototype.populateCountries = function($select) {
     var countriesArray = Localization.getCountries(),
         html = $('option', $select).first()[0].outerHTML,
         i;
@@ -173,7 +164,7 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-populateBirthdateInput = function() {
+Payment.prototype.populateBirthdateInput = function() {
     var $inputContainer = $('.birthday-select', this.$element),
         $selectDay = $('#payment-birthdate-day', $inputContainer),
         $selectMonth = $('#payment-birthdate-month', $inputContainer),
@@ -215,11 +206,11 @@ populateBirthdateInput = function() {
     html = '';
 };
 
-handleCancel = function() {
+Payment.prototype.handleCancel = function() {
     App.router.closeModalView();
 };
 
-handleBack = function(event) {
+Payment.prototype.handleBack = function(event) {
     var view = event.data,
         passedData;
     passedData = {
@@ -229,7 +220,7 @@ handleBack = function(event) {
     App.router.openModalSiblingView('bookingrequest', passedData);
 };
 
-handleNext = function(event) {
+Payment.prototype.handleNext = function(event) {
     var view = event.data,
         userData = App.user.data,
         needToUpdateUser = false,
@@ -364,19 +355,19 @@ handleNext = function(event) {
     }
 };
 
-handleBirthdateChange = function(event) {
+Payment.prototype.handleBirthdateChange = function(event) {
     var view = event.data;
     view.populateBirthdateInput();
 };
 
-processPayment = function(cardNumber, expirationDate, CSC) {
+Payment.prototype.processPayment = function(cardNumber, expirationDate, CSC) {
     var view = this,
         card, cardData;
 
     expirationDate = expirationDate.substring(0, 2) + expirationDate.substring(3); //Strip separation character, regardless of its type
 
     //Get card registration object
-    card = new Card.constructor({
+    card = new Card({
         rootURL: Config.API_URL
     });
     card.initialize();
@@ -410,24 +401,9 @@ processPayment = function(cardNumber, expirationDate, CSC) {
     });
 };
 
-resetPayButton = function() {
+Payment.prototype.resetPayButton = function() {
     this.isPaying = false;
     $('#payment-btn', this.$element).html(this.templateParameters.price + ' ' + this.templateParameters.currency);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-    renderMissingDataInputs: renderMissingDataInputs,
-    initExpiration: initExpiration,
-    populateCountries: populateCountries,
-    populateBirthdateInput: populateBirthdateInput,
-
-    handleCancel: handleCancel,
-    handleBack: handleBack,
-    handleNext: handleNext,
-    handleBirthdateChange: handleBirthdateChange,
-
-    processPayment: processPayment,
-    resetPayButton: resetPayButton
-});
+module.exports = Payment;

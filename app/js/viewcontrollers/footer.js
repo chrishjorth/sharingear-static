@@ -10,11 +10,15 @@ var Moment = require('moment-timezone'),
 	
 	ViewController = require('../viewcontroller.js'),
 
-	Localization = require('../models/localization.js'),
+	Localization = require('../models/localization.js');
 
-	didInitialize;
+function Footer(options) {
+	ViewController.call(this, options);
+}
 
-didInitialize = function() {
+Footer.prototype = new ViewController();
+
+Footer.prototype.didInitialize = function() {
     var today = new Moment.tz(Localization.getCurrentTimeZone());
 
     this.templateParameters = {
@@ -22,6 +26,4 @@ didInitialize = function() {
     };
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize
-});
+module.exports = Footer;

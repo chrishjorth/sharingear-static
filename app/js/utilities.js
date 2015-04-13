@@ -6,11 +6,9 @@
 /*jslint node: true */
 'use strict';
 
-var _ = require('underscore'),
-	$ = require('jquery'),
-	GoogleMaps = require('./libraries/mscl-googlemaps.js'),
-	
-    inherit,
+var $ = require('jquery'),
+    GoogleMaps = require('./libraries/mscl-googlemaps.js'),
+
     getBaseURL,
     ajajFileUpload,
     getCityFromCoordinates,
@@ -19,30 +17,6 @@ var _ = require('underscore'),
     capitalizeString,
     isMomentBetween,
     isMobile;
-
-/**
- * @return A new object that has the same properties as object but with the added properties inheritOptions
- */
-inherit = function(object, defaultOptions) {
-    var Inherited;
-
-    if (typeof defaultOptions !== 'object') {
-        defaultOptions = {};
-    }
-
-    //This becomes the actual contstructor
-    Inherited = function(options) {
-        if (typeof options !== 'object') {
-            options = {};
-        }
-        _.extend(options, defaultOptions); //Fill in missing defaults
-        object.call(this, options);
-    };
-
-    //Inherited.prototype = new object();
-    Inherited.prototype.constructor = Inherited;
-    return Inherited;
-};
 
 getBaseURL = function() {
     if (!window.location.origin) {
@@ -149,7 +123,6 @@ isMobile = function() {
 };
 
 module.exports = {
-    inherit: inherit,
     getBaseURL: getBaseURL,
     ajajFileUpload: ajajFileUpload,
     getCityFromCoordinates: getCityFromCoordinates,

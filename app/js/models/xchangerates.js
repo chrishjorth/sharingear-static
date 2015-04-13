@@ -10,11 +10,16 @@ var Config = require('../config'),
 	Model = require('../model'),
 
 	currencies = {},
-    XChangeRates,
 
-    getRate;
+    staticXChangeRates;
 
-getRate = function(fromCurrency, toCurrency, callback) {
+function XChangeRates(options) {
+    Model.call(this, options);
+}
+
+XChangeRates.prototype = new Model();
+
+XChangeRates.prototype.getRate = function(fromCurrency, toCurrency, callback) {
     var code = fromCurrency + toCurrency;
     if (currencies[code]) {
         callback(null, currencies[code]);
@@ -30,10 +35,8 @@ getRate = function(fromCurrency, toCurrency, callback) {
     });
 };
 
-XChangeRates = Model.inherit({
-    getRate: getRate
-});
-XChangeRates = new XChangeRates.constructor({
+staticXChangeRates = new XChangeRates({
     rootURL: Config.API_URL
 });
-module.exports = XChangeRates;
+
+module.exports = staticXChangeRates;

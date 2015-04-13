@@ -15,9 +15,7 @@ var Router,
 			
 	hashUpdated,
 
-	addRoutes,
 	getRoute,
-	routeExists,
 	handleHashChange,
 	navigateTo,
 	openModalView,
@@ -26,13 +24,6 @@ var Router,
 	setQueryString;
 		
 hashUpdated = false; //Semaphore variable
-
-addRoutes = function() {
-	var i;
-	for(i = 0; i < arguments.length; i++) {
-		this.routes.push(arguments[i]);
-	}
-};
 
 /**
  * Validates the route and returns error if route does not exist.
@@ -44,26 +35,7 @@ getRoute = function(route) {
 		routeRoot = route;
 	}
 
-	if(this.routeExists(routeRoot) === false) {
-		console.log('Error: no view for route "' + routeRoot + '".');
-		routeRoot = 'error';
-	}
-
 	return routeRoot;
-};
-
-/**
- * @return true if the route exists, false in all other cases.
- */
-routeExists = function(route) {
-	var i = 0;
-	while(i < this.routes.length) {
-		if(route === this.routes[i]) {
-			return true;
-		}
-		i++;
-	}
-	return false;
 };
 
 /**
@@ -172,9 +144,7 @@ Router = {
 	currentModalViewController: null,
 	viewLoader: ViewLoader,
 
-	addRoutes: addRoutes,
 	getRoute: getRoute,
-	routeExists: routeExists,
 	handleHashChange: handleHashChange,
 	navigateTo: navigateTo,
 	openModalView: openModalView,

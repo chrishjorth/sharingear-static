@@ -7,20 +7,18 @@
 'use strict';
 
 var _ = require('underscore'),
-	
-	Utilities = require('../utilities.js'),
-	Model = require('../model.js'),
-	App = require('../app.js'),
-	
-	didInitialize,
-    createGear,
-    uploadImage,
-    save,
-    update,
-    getAvailability,
-    setAvailability;
 
-didInitialize = function didInitialize() {
+    Utilities = require('../utilities.js'),
+    Model = require('../model.js'),
+    App = require('../app.js');
+
+function Gear(options) {
+    Model.call(this, options);
+}
+
+Gear.prototype = new Model();
+
+Gear.prototype.didInitialize = function didInitialize() {
     if (this.data === null) {
         this.data = {
             id: null,
@@ -49,7 +47,7 @@ didInitialize = function didInitialize() {
     }
 };
 
-createGear = function createGear(user, callback) {
+Gear.prototype.createGear = function createGear(user, callback) {
     var model = this,
         newGear = this.data,
         postData;
@@ -96,7 +94,7 @@ createGear = function createGear(user, callback) {
  * @param file: $('#upload-form input[type="file"]').get(0).files[0];
  * @param filename: The name of the file
  */
-uploadImage = function(file, filename, userID, callback) {
+Gear.prototype.uploadImage = function(file, filename, userID, callback) {
     var model = this;
     //Get filename and secret from backend
     this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
@@ -135,7 +133,7 @@ uploadImage = function(file, filename, userID, callback) {
     });
 };
 
-save = function(userID, callback) {
+Gear.prototype.save = function(userID, callback) {
     var saveData = {
         subtype: this.data.subtype,
         brand: this.data.brand,
@@ -172,7 +170,7 @@ save = function(userID, callback) {
     });
 };
 
-update = function(userID, callback) {
+Gear.prototype.update = function(userID, callback) {
     var model = this;
     this.get('/gear/' + this.data.id, function(error, gear) {
         if (error) {
@@ -185,7 +183,7 @@ update = function(userID, callback) {
     });
 };
 
-getAvailability = function(userID, callback) {
+Gear.prototype.getAvailability = function(userID, callback) {
     if (userID === null) {
         callback(null, {
             alwaysFlag: 0,
@@ -206,7 +204,7 @@ getAvailability = function(userID, callback) {
 /**
  * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
  */
-setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
+Gear.prototype.setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
     var postData;
     postData = {
         availability: JSON.stringify(availabilityArray),
@@ -222,12 +220,4 @@ setAvailability = function(userID, availabilityArray, alwaysFlag, callback) {
     });
 };
 
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-    createGear: createGear,
-    uploadImage: uploadImage,
-    save: save,
-    update: update,
-    getAvailability: getAvailability,
-    setAvailability: setAvailability
-});
+module.exports = Gear;

@@ -17,31 +17,19 @@ var _ = require('underscore'),
     Localization = require('../models/localization.js'),
     MessagePopup = require('../popups/messagepopup.js'),
 
-    geocoder,
+    geocoder = new GoogleMaps.Geocoder();
 
-    didInitialize,
-    didRender,
+function SubmerchantRegistration(options) {
+    ViewController.call(this, options);
+}
 
-    setupForm,
-    populateBirthdateInput,
-    populateCountries,
+SubmerchantRegistration.prototype = new ViewController();
 
-    handleBirthdateChange,
-    handleCountrySelect,
-
-    handleHintIBAN,
-    handleHintSwift,
-
-    submitForm,
-    acceptTerms;
-
-geocoder = new GoogleMaps.Geocoder();
-
-didInitialize = function() {
+SubmerchantRegistration.prototype.didInitialize = function() {
     this.formSubmitted = false;
 };
 
-didRender = function() {
+SubmerchantRegistration.prototype.didRender = function() {
     this.setupForm();
 
     this.setupEvent('change', '#submerchantregistration-birthdate-year, #submerchantregistration-birthdate-month', this, this.handleBirthdateChange);
@@ -50,8 +38,8 @@ didRender = function() {
     this.setupEvent('click', '#swift-hint', this, this.handleHintSwift);
 };
 
-handleHintIBAN = function() {
-    var messagePopup = new MessagePopup.constructor(),
+SubmerchantRegistration.prototype.handleHintIBAN = function() {
+    var messagePopup = new MessagePopup(),
         message = 'IBAN stands for International Bank Account Number and is a number attached to all accounts in the EU countries plus Norway, Switzerland, Liechtenstein and Hungary. The IBAN is made up of a code that identifies the country the account belongs to, the account holder\'s bank and the account number itself. The IBAN makes it easier and faster to process cross-border payments.';
 
     messagePopup.initialize();
@@ -59,8 +47,8 @@ handleHintIBAN = function() {
     messagePopup.setMessage(message);
 };
 
-handleHintSwift = function() {
-    var messagePopup = new MessagePopup.constructor(),
+SubmerchantRegistration.prototype.handleHintSwift = function() {
+    var messagePopup = new MessagePopup(),
         message = 'The SWIFT/BIC (Bank Identifier Code) is an international standard for the identification of banks. The IBAN is an extension of your existing account number for use when you make cross-border payments.';
 
     messagePopup.initialize();
@@ -68,7 +56,7 @@ handleHintSwift = function() {
     messagePopup.setMessage(message);
 };
 
-setupForm = function() {
+SubmerchantRegistration.prototype.setupForm = function() {
     var user = App.user.data;
 
     if (user.birthdate && user.birthdate !== '') {
@@ -108,7 +96,7 @@ setupForm = function() {
     }
 };
 
-populateBirthdateInput = function() {
+SubmerchantRegistration.prototype.populateBirthdateInput = function() {
     var $inputContainer = $('.birthday-select', this.$element),
         $selectDay = $('#submerchantregistration-birthdate-date', $inputContainer),
         $selectMonth = $('#submerchantregistration-birthdate-month', $inputContainer),
@@ -163,7 +151,7 @@ populateBirthdateInput = function() {
     html = '';
 };
 
-populateCountries = function($select) {
+SubmerchantRegistration.prototype.populateCountries = function($select) {
     var html = $('option', $select).first()[0].outerHTML,
         countriesArray, i;
     countriesArray = Localization.getCountries();
@@ -176,12 +164,12 @@ populateCountries = function($select) {
     $select.html(html);
 };
 
-handleBirthdateChange = function(event) {
+SubmerchantRegistration.prototype.handleBirthdateChange = function(event) {
     var view = event.data;
     view.populateBirthdateInput();
 };
 
-handleCountrySelect = function() {
+SubmerchantRegistration.prototype.handleCountrySelect = function() {
     var country = $(this).val();
     if (country === 'US') {
         $('#iban-container', this.$element).addClass('hidden');
@@ -192,7 +180,7 @@ handleCountrySelect = function() {
     }
 };
 
-submitForm = function(callback) {
+SubmerchantRegistration.prototype.submitForm = function(callback) {
     var view = this,
         user = App.user.data,
         tempUser = {},
@@ -327,7 +315,7 @@ submitForm = function(callback) {
     });
 };
 
-acceptTerms = function(callback) {
+SubmerchantRegistration.prototype.acceptTerms = function(callback) {
     App.user.update(function(error) {
         if (error) {
             alert('Error saving user data.');
@@ -351,18 +339,4 @@ acceptTerms = function(callback) {
     });
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    setupForm: setupForm,
-    populateBirthdateInput: populateBirthdateInput,
-    populateCountries: populateCountries,
-
-    handleBirthdateChange: handleBirthdateChange,
-    handleCountrySelect: handleCountrySelect,
-    handleHintIBAN: handleHintIBAN,
-    handleHintSwift: handleHintSwift,
-    submitForm: submitForm,
-    acceptTerms: acceptTerms
-});
+module.exports = SubmerchantRegistration;

@@ -10,8 +10,6 @@ var IS_PRODUCTION = true, //This variable should be set and saved according to t
     MIN_USER_AGE = 13,
     AVG_USER_AGE = 27,
     MIN_XP_START_YEAR = 1960,
-    FB_APP_ID = '522375581240221',
-    FB_STATUSCHECK_TIMEOUT = 5000,
     API_URL,
     isProduction;
 
@@ -33,7 +31,5 @@ module.exports = {
     MIN_USER_AGE: MIN_USER_AGE,
     AVG_USER_AGE: AVG_USER_AGE,
     MIN_XP_START_YEAR: MIN_XP_START_YEAR,
-    FB_APP_ID: FB_APP_ID,
-    FB_STATUSCHECK_TIMEOUT: FB_STATUSCHECK_TIMEOUT,
     isProduction: isProduction
 };

@@ -20,22 +20,19 @@ var _ = require('underscore'),
 	Gear = require('../models/gear.js'),
 	User = require('../models/user.js'),
 
-	paymentSuccessModalOpen = false,
+	paymentSuccessModalOpen = false;
 
-    didInitialize,
-    didRender,
-    renderOwnerPicture,
-    renderGearPictures,
-    renderPricing,
-    renderMap,
-    renderAccessories,
-    renderActionButton,
-    handleBooking,
-    handleEditProfile,
-    handleFacebookShare,
-    handleTwitterShare;
+function GearProfile(options) {
+    ViewController.call(this, options);
+    this.hasSubviews = false;
+    this.gear = null;
+    this.owner = null;
+    this.map = null;
+}
 
-didInitialize = function() {
+GearProfile.prototype = new ViewController();
+
+GearProfile.prototype.didInitialize = function() {
     var view = this;
 
     Localization.getCurrentTimeZone();
@@ -57,7 +54,7 @@ didInitialize = function() {
         owner_id: ''
     };
 
-    view.owner = new User.constructor({
+    view.owner = new User({
         rootURL: Config.API_URL
     });
     view.owner.initialize();
@@ -71,7 +68,7 @@ didInitialize = function() {
     } else {
         if (view.gear === null) {
             //In this case the view is loaded the first time, and not returning from a modal fx
-            view.gear = new Gear.constructor({
+            view.gear = new Gear({
                 rootURL: Config.API_URL
             });
             view.gear.initialize();
@@ -128,7 +125,7 @@ didInitialize = function() {
     }
 };
 
-didRender = function() {
+GearProfile.prototype.didRender = function() {
     var preAuthorizationID, bookingID;
 
     if (App.rootVC !== null && App.rootVC.header) {
@@ -166,7 +163,7 @@ didRender = function() {
     }
 };
 
-renderAccessories = function() {
+GearProfile.prototype.renderAccessories = function() {
     var accessories = this.gear.data.accessories,
         i, html = '';
 
@@ -184,7 +181,7 @@ renderAccessories = function() {
     $('#accessories-holder', this.$element).html(html);
 };
 
-renderOwnerPicture = function() {
+GearProfile.prototype.renderOwnerPicture = function() {
     var view = this,
         img, isVertical, backgroundSize;
     if (!this.owner.data.image_url) {
@@ -206,7 +203,7 @@ renderOwnerPicture = function() {
     img.src = this.owner.data.image_url;
 };
 
-renderGearPictures = function() {
+GearProfile.prototype.renderGearPictures = function() {
     var $owlContainer = $('.owl-carousel', this.$element),
         images = this.gear.data.images.split(','),
         description = 'Gear picture.',
@@ -227,7 +224,7 @@ renderGearPictures = function() {
     });
 };
 
-renderPricing = function() {
+GearProfile.prototype.renderPricing = function() {
     var view = this;
     Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
@@ -240,7 +237,7 @@ renderPricing = function() {
     });
 };
 
-renderMap = function() {
+GearProfile.prototype.renderMap = function() {
     var gear = this.gear.data,
         mapOptions, latlong, marker;
     if (gear.latitude !== null && gear.longitude !== null) {
@@ -259,7 +256,7 @@ renderMap = function() {
     }
 };
 
-handleBooking = function(event) {
+GearProfile.prototype.handleBooking = function(event) {
     var view = event.data,
         user = App.user;
     if (user.data.id === null) {
@@ -296,12 +293,12 @@ handleBooking = function(event) {
     }
 };
 
-handleEditProfile = function(event) {
+GearProfile.prototype.handleEditProfile = function(event) {
     var view = event.data;
     App.router.openModalView('editgear', view.gear);
 };
 
-handleFacebookShare = function(event) {
+GearProfile.prototype.handleFacebookShare = function(event) {
     var view = event.data;
     var url, instrument, description;
 
@@ -317,7 +314,7 @@ handleFacebookShare = function(event) {
     });
 };
 
-handleTwitterShare = function(event) {
+GearProfile.prototype.handleTwitterShare = function(event) {
     var view = event.data,
         twtTitle = 'Check out this ' + view.gear.data.brand + ' on www.sharingear.com',
         twtUrl = 'https://www.sharingear.com/#gearprofile/' + view.gear.data.id,
@@ -330,7 +327,7 @@ handleTwitterShare = function(event) {
     window.open(twtLink);
 };
 
-renderActionButton = function() {
+GearProfile.prototype.renderActionButton = function() {
     var view = this;
 
     $('.button-container button', view.$element).each(function() {
@@ -359,22 +356,4 @@ renderActionButton = function() {
     }
 };
 
-module.exports = ViewController.inherit({
-    hasSubviews: false,
-    gear: null,
-    owner: null,
-    map: null,
-
-    didInitialize: didInitialize,
-    didRender: didRender,
-    renderGearPictures: renderGearPictures,
-    renderPricing: renderPricing,
-    renderMap: renderMap,
-    renderAccessories: renderAccessories,
-    renderOwnerPicture: renderOwnerPicture,
-    renderActionButton: renderActionButton,
-    handleBooking: handleBooking,
-    handleEditProfile: handleEditProfile,
-    handleFacebookShare: handleFacebookShare,
-    handleTwitterShare: handleTwitterShare
-});
+module.exports = GearProfile;

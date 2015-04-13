@@ -12,6 +12,8 @@ var chai = require('chai'),
 
     expect;
 
+require('script!../../../node_modules/sinon/pkg/sinon.js');
+
 expect = chai.expect;
 
 describe('Router', function() {
@@ -53,43 +55,41 @@ describe('Router', function() {
         expect(Router).to.have.property('currentModalViewController');
     });
 
-    it('Can verify that a route exists', function() {
-        expect(Router.routeExists).to.be.a('function');
-        expect(Router.routeExists('error')).to.equal(true);
-        expect(Router.routeExists('test')).to.equal(false);
-        expect(Router.routeExists()).to.equal(false);
-        expect(Router.routeExists('')).to.equal(false);
-        expect(Router.routeExists(null)).to.equal(false);
-        expect(Router.routeExists('Error')).to.equal(false);
-    });
-
-    /**
-     * @assertion: The app has a view, hence controller and template, for #home
-     */
-    it('Can add routes', function() {
-        expect(Router.addRoutes).to.be.a('function');
-        Router.addRoutes('home');
-        expect(Router.routeExists('home')).to.equal(true);
-    });
-
     it('Can get route', function() {
         expect(Router.getRoute('home')).to.equal('home');
-        expect(Router.getRoute('blahblah')).to.equal('error');
-        expect(Router.getRoute('')).to.equal('error');
+        expect(Router.getRoute('dashboard/profile')).to.equal('dashboard');
+    });
+
+    it('Can navigate to route', function(done) {
+        Router.navigateTo('home', null, function() {
+            expect(Router.currentViewController.name).to.equal('home');
+            
+            Router.navigateTo('home', null, function() {
+                expect(Router.currentViewController.name).to.equal('home');
+                
+                done();
+            });
+        });
     });
 
     it('Can navigate to route and preserve querystring', function(done) {
-        var oldHREF = window.location.href;
+        var oldQuery;
         history.replaceState({}, '', window.location.pathname + '?test=1');
+        oldQuery = window.location.search;
         Router.navigateTo('home', null, function() {
             expect(Router.currentViewController.name).to.equal('home');
-            expect(window.location.href).to.equal(oldHREF + '?test=1#home');
-            done();
+            expect(window.location.search).to.equal(oldQuery);
+            
+            Router.navigateTo('home', null, function() {
+                expect(Router.currentViewController.name).to.equal('home');
+                expect(window.location.search).to.equal(oldQuery);
+                
+                done();
+            });
         });
     });
 
     it('Can navigate to path', function(done) {
-        Router.addRoutes('dashboard');
         Router.navigateTo('dashboard/profile', null, function() {
             expect(Router.currentViewController.name).to.equal('dashboard');
             done();
@@ -127,10 +127,6 @@ describe('Router', function() {
         });
     });
 
-    it('Has default error route', function() {
-        expect(Router.routeExists('error')).to.equal(true);
-    });
-
     it('Can handle URL hash change', function(done) {
         expect(window.onhashchange).to.be.a('function');
         sinon.stub(Router, 'handleHashChange', function() {
@@ -147,5 +143,10 @@ describe('Router', function() {
         //We need to re-register since the stub breaks the registration in Router.js
         window.onhashchange = Router.handleHashChange;
         window.location.hash = '#aboutus';
+    });
+
+    it('Can set query string', function() {
+        Router.setQueryString('testKey1=testValue1&testKey2=testValue2');
+        expect(window.location.search).to.equal('?testKey1=testValue1&testKey2=testValue2');
     });
 });

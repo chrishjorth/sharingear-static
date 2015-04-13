@@ -12,18 +12,7 @@ var _ = require('underscore'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
 
-    testimonials,
-
-    didInitialize,
-    didRender,
-
-    loadSearchBar,
-    renderTestimonials,
-    loadFooter,
-
-    handleTab,
-    handleLogin,
-    handleScrollDown;
+    testimonials;
 
 testimonials = [{
     image_file: 'images/testimonials/3.jpg',
@@ -63,13 +52,19 @@ testimonials = [{
     band: 'hobby musician'
 }];
 
-didInitialize = function() {
+function Home(options) {
+    ViewController.call(this, options);
+}
+
+Home.prototype = new ViewController();
+
+Home.prototype.didInitialize = function() {
     this.hasSubviews = true;
     this.gearSearchFormVC = null;
     this.vanSearchFormVC = null;
 };
 
-didRender = function() {
+Home.prototype.didRender = function() {
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle();
     }
@@ -82,12 +77,12 @@ didRender = function() {
     this.setupEvent('click', '#home-scroll-btn', this, this.handleScrollDown);
 };
 
-loadSearchBar = function() {
+Home.prototype.loadSearchBar = function() {
     var view = this,
         gearSearchVC, gearSearchVT, techProfileSearchVC, techProfileSearchVT, vanSearchVC, vanSearchVT;
     gearSearchVC = require('./gearsearchform.js');
     gearSearchVT = require('../../templates/gearsearchform.html');
-    view.gearSearchFormVC = new gearSearchVC.constructor({
+    view.gearSearchFormVC = new gearSearchVC({
         name: 'gearsearchform',
         $element: $('#home-searchform-gear .searchform-container', view.$element),
         template: gearSearchVT
@@ -97,7 +92,7 @@ loadSearchBar = function() {
 
     techProfileSearchVC = require('./techprofilesearchform.js');
     techProfileSearchVT = require('../../templates/techprofilesearchform.html');
-    view.techProfileSearchFormVC = new techProfileSearchVC.constructor({
+    view.techProfileSearchFormVC = new techProfileSearchVC({
         name: 'techprofilesearchform',
         $element: $('#home-searchform-techprofiles .searchform-container', view.$element),
         template: techProfileSearchVT
@@ -107,7 +102,7 @@ loadSearchBar = function() {
 
     vanSearchVC = require('./vansearchform.js');
     vanSearchVT = require('../../templates/vansearchform.html');
-    view.vanSearchFormVC = new vanSearchVC.constructor({
+    view.vanSearchFormVC = new vanSearchVC({
         name: 'vansearchform',
         $element: $('#home-searchform-vans .searchform-container', view.$element),
         template: vanSearchVT
@@ -116,7 +111,7 @@ loadSearchBar = function() {
     view.vanSearchFormVC.render();
 };
 
-renderTestimonials = function() {
+Home.prototype.renderTestimonials = function() {
     var view = this,
         TestimonialTemplate;
 
@@ -142,12 +137,12 @@ renderTestimonials = function() {
     });
 };
 
-loadFooter = function() {
+Home.prototype.loadFooter = function() {
     var view = this,
         FooterController, FooterTemplate;
     FooterController = require('./footer.js');
     FooterTemplate = require('../../templates/footer.html');
-    view.footer = new FooterController.constructor({
+    view.footer = new FooterController({
         name: 'footer',
         $element: $('footer', view.$element),
         template: FooterTemplate
@@ -156,7 +151,7 @@ loadFooter = function() {
     view.footer.render();
 };
 
-handleTab = function(event) {
+Home.prototype.handleTab = function(event) {
     var $this = $(this),
         view = event.data,
         id;
@@ -174,7 +169,7 @@ handleTab = function(event) {
     $('#home-searchform-' + id.substring(9), view.$element).removeClass('hidden'); //9 is the length of 'home-tab-'
 };
 
-handleLogin = function() {
+Home.prototype.handleLogin = function() {
     App.user.login(function(error) {
         if (!error) {
             App.router.navigateTo('dashboard');
@@ -185,7 +180,7 @@ handleLogin = function() {
     });
 };
 
-handleScrollDown = function(event) {
+Home.prototype.handleScrollDown = function(event) {
     var view = event.data;
 
     $('html,body').animate({
@@ -193,15 +188,4 @@ handleScrollDown = function(event) {
     }, 1000);
 };
 
-module.exports = ViewController.inherit({
-    didInitialize: didInitialize,
-    didRender: didRender,
-
-    loadSearchBar: loadSearchBar,
-    renderTestimonials: renderTestimonials,
-    loadFooter: loadFooter,
-
-    handleTab: handleTab,
-    handleLogin: handleLogin,
-    handleScrollDown: handleScrollDown
-});
+module.exports = Home;

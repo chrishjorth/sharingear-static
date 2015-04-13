@@ -10,16 +10,15 @@
 var _ = require('underscore'),
 
     App = require('../app.js'),
-    Model = require('../model.js'),
+    Model = require('../model.js');
 
-    didInitialize,
-    createTechProfile,
-    save,
-    update,
-    getAvailability,
-    setAvailability;
+function TechProfile(options) {
+    Model.call(this, options);
+}
 
-didInitialize = function didInitialize() {
+TechProfile.prototype = new Model();
+
+TechProfile.prototype.didInitialize = function didInitialize() {
     if (this.data === null) {
         this.data = {
             id: null,
@@ -50,7 +49,7 @@ didInitialize = function didInitialize() {
     }
 };
 
-createTechProfile = function createGear(callback) {
+TechProfile.prototype.createTechProfile = function createGear(callback) {
     var model = this,
         newTechProfile = this.data,
         postData;
@@ -95,7 +94,7 @@ createTechProfile = function createGear(callback) {
     });
 };
 
-save = function(callback) {
+TechProfile.prototype.save = function(callback) {
     var saveData = {
         about: this.data.about,
         currently: this.data.currently,
@@ -133,7 +132,7 @@ save = function(callback) {
     });
 };
 
-update = function(userID, callback) {
+TechProfile.prototype.update = function(userID, callback) {
     var model = this;
     this.get('/roadies/' + this.data.id, function(error, techProfile) {
         if (error) {
@@ -146,7 +145,7 @@ update = function(userID, callback) {
     });
 };
 
-getAvailability = function(callback) {
+TechProfile.prototype.getAvailability = function(callback) {
     if (App.user.data.id === null) {
         callback(null, {
             alwaysFlag: 0,
@@ -167,7 +166,7 @@ getAvailability = function(callback) {
 /**
  * @param availabilityArray: List of start and end days in the format "YYYY-MM-DD HH:MM:SS".
  */
-setAvailability = function(availabilityArray, alwaysFlag, callback) {
+TechProfile.prototype.setAvailability = function(availabilityArray, alwaysFlag, callback) {
     var postData;
     postData = {
         availability: JSON.stringify(availabilityArray),
@@ -183,11 +182,4 @@ setAvailability = function(availabilityArray, alwaysFlag, callback) {
     });
 };
 
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-    createTechProfile: createTechProfile,
-    save: save,
-    update: update,
-    getAvailability: getAvailability,
-    setAvailability: setAvailability
-});
+module.exports = TechProfile;

@@ -9,12 +9,15 @@
 var mangoPay = require('exports?mangoPay!../libraries/mangopay-kit.min.js'),
 	
 	Config = require('../config.js'),
-	Model = require('../model.js'),
+	Model = require('../model.js');
 
-    didInitialize,
-    registerCard;
+function Card(options) {
+    Model.call(this, options);
+}
 
-didInitialize = function() {
+Card.prototype = new Model();
+
+Card.prototype.didInitialize = function() {
     if (Config.isProduction() === true) {
         mangoPay.cardRegistration.baseURL = 'https://api.mangopay.com'; //Production
     } else {
@@ -23,7 +26,7 @@ didInitialize = function() {
     mangoPay.cardRegistration.clientId = 'sharingear';
 };
 
-registerCard = function(userID, cardData, callback) {
+Card.prototype.registerCard = function(userID, cardData, callback) {
     this.get('/users/' + userID + '/cardobject', function(error, data) {
         if (error) {
             console.log('Error getting card object: ' + error);
@@ -46,8 +49,4 @@ registerCard = function(userID, cardData, callback) {
     });
 };
 
-
-module.exports = Model.inherit({
-    didInitialize: didInitialize,
-    registerCard: registerCard
-});
+module.exports = Card;
