@@ -539,7 +539,6 @@ AddGear.prototype.savePriceLocation = function() {
         geocoder.geocode({
             'address': addressOneliner
         }, function(results, status) {
-            console.log(GoogleMaps.GeocoderStatus);
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.newGear.data.longitude = results[0].geometry.location.lng();
                 view.newGear.data.latitude = results[0].geometry.location.lat();
@@ -563,7 +562,7 @@ AddGear.prototype.renderAvailability = function() {
     $calendarContainer.removeClass('hidden');
 
     $('#addgear-darkgray-left', this.$element).hide();
-    $('#addgear-darkgray-left-calendar', this.$element).removeClass('hidden');s
+    $('#addgear-darkgray-left-calendar', this.$element).removeClass('hidden');
 
     CalendarVC = require('./availabilitycalendar.js');
     calendarVT = require('../../templates/availabilitycalendar.html');
