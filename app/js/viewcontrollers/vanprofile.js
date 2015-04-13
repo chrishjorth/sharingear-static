@@ -228,8 +228,8 @@ VanProfile.prototype.renderPricing = function() {
             return;
         }
         $('#vanprofile-displayed_price_a', view.$element).html(Math.ceil(convertedPrices[0]));
-        $('#vanprofile-displayed_price_b', view.$element).html(Math.ceil(convertedPrices[0]));
-        $('#vanprofile-displayed_price_c', view.$element).html(Math.ceil(convertedPrices[0]));
+        $('#vanprofile-displayed_price_b', view.$element).html(Math.ceil(convertedPrices[1]));
+        $('#vanprofile-displayed_price_c', view.$element).html(Math.ceil(convertedPrices[2]));
     });
 };
 
