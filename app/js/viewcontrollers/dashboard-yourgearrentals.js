@@ -84,22 +84,60 @@ DashboardYourGearRentals.prototype.populateYourRentals = function(callback) {
             defaultGear.img_url = defaultGear.images.split(',')[0];
         }
         $gearItem = $(yourRentalsItemTemplate(defaultGear));
-        $('.sg-bg-image', $gearItem).css({
-            'background-image': 'url("' + defaultGear.img_url + '")'
-        });
-
 
         status = gear.data.booking_status;
         if (status !== 'waiting') {
+
             if (status === 'pending') {
                 $('.request', $gearItem).removeClass('hidden');
             }
+
             if (status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
                 $('.accepted', $gearItem).removeClass('hidden');
             }
+
             if (status === 'denied') {
                 $('.denied', $gearItem).removeClass('hidden');
             }
+
+            //Add unique class for every image
+            $('.sg-bg-image', $gearItem).addClass('gear-item-'+i);
+
+            // Create an image object
+            var img = new Image();
+            img.resultNum = i;
+
+            //Get thumbURL from the imageURL
+            var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+            imageURL = defaultGear.img_url;
+            
+            thumbURL = imageURL.split('/');
+            imgName = thumbURL.pop();
+            thumbURL = thumbURL.join('/');
+            imgNameComponents = imgName.split('.');
+            imgName = imgNameComponents[0];
+            imgExt = imgNameComponents[1];
+            if (window.window.devicePixelRatio > 1) {
+                thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+            } else {
+                thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+            }
+
+            //Assign the img source to the the thumbURL
+            $('.sg-bg-image', $gearItem).css({
+                'background-image': 'url("' + thumbURL + '")'
+            });
+            img.src = thumbURL;
+
+            //Make the pictures fit the boxes
+            img.onload = function(){
+                    if (this.width < this.height) {
+                        $('.gear-item-'+this.resultNum).addClass('search-result-gear-vertical');
+                    } else {
+                        $('.gear-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+                    }
+            };
+
 
             $gearBlock.append($gearItem);
             displayedRentals++;

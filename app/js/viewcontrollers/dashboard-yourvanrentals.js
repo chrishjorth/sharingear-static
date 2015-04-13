@@ -81,10 +81,6 @@ DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
             defaultVan.img_url = defaultVan.images.split(',')[0];
         }
         $vanItem = $(yourRentalsItemTemplate(defaultVan));
-        $('.sg-bg-image', $vanItem).css({
-            'background-image': 'url("' + defaultVan.img_url + '")'
-        });
-
 
         status = van.data.booking_status;
         if (status !== 'waiting') {
@@ -97,6 +93,44 @@ DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
             if (status === 'denied') {
                 $('.denied', $vanItem).removeClass('hidden');
             }
+
+            //Add unique class for every image
+            $('.sg-bg-image', $vanItem).addClass('van-item-'+i);
+
+            // Create an image object
+            var img = new Image();
+            img.resultNum = i;
+
+            //Get thumbURL from the imageURL
+            var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
+            imageURL = defaultVan.img_url;
+            
+            thumbURL = imageURL.split('/');
+            imgName = thumbURL.pop();
+            thumbURL = thumbURL.join('/');
+            imgNameComponents = imgName.split('.');
+            imgName = imgNameComponents[0];
+            imgExt = imgNameComponents[1];
+            if (window.window.devicePixelRatio > 1) {
+                thumbURL = thumbURL + '/' + imgName + '_thumb@2x.' + imgExt;
+            } else {
+                thumbURL = thumbURL + '/' + imgName + '_thumb.' + imgExt;
+            }
+
+            //Assign the img source to the the thumbURL
+            $('.sg-bg-image', $vanItem).css({
+                'background-image': 'url("' + thumbURL + '")'
+            });
+            img.src = thumbURL;
+
+            //Make the pictures fit the boxes
+            img.onload = function(){
+                    if (this.width < this.height) {
+                        $('.van-item-'+this.resultNum).addClass('search-result-gear-vertical');
+                    } else {
+                        $('.van-item-'+this.resultNum).addClass('search-result-gear-horizontal');
+                    }
+            };
 
             $vanBlock.append($vanItem);
             displayedRentals++;
