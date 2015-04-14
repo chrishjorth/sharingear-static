@@ -75,6 +75,8 @@ Home.prototype.didRender = function() {
 
     this.setupEvent('click', '.sg-tabbar li .sg-btn-square', this, this.handleTab);
     this.setupEvent('click', '#home-scroll-btn', this, this.handleScrollDown);
+
+    window.mixpanel.track('View home');
 };
 
 Home.prototype.loadSearchBar = function() {

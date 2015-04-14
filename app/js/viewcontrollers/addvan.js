@@ -88,6 +88,8 @@ AddVan.prototype.didRender = function() {
 
     this.setupEvent('change', '.price', this, this.handlePriceChange);
     this.setupEvent('change', '#van-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
+
+    window.mixpanel.track('View addvan');
 };
 
 AddVan.prototype.getTabID = function() {
@@ -264,8 +266,8 @@ AddVan.prototype.saveVan = function() {
 
         view.showPanel('#addvan-panel-photos');
         view.populatePriceSuggestions();
-
         view.toggleLoading();
+        window.mixpanel.track('View addvan-photos');
     });
 
 };
@@ -443,8 +445,10 @@ AddVan.prototype.savePriceLocation = function() {
             view.showPanel('#addvan-panel-availability');
             if (App.user.isSubMerchant() === false) {
                 view.renderSubmerchantForm();
+                window.mixpanel.track('View addvan-submerchantform');
             } else {
                 view.renderAvailability();
+                window.mixpanel.track('View addvan-availability');
             }
 
         });
@@ -578,6 +582,7 @@ AddVan.prototype.saveAvailability = function() {
         view.showPanel('#addvan-panel-final');
         view.setupEvent('click', '.profile-btn', view, view.handleViewVanProfile);
         view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreVans);
+        window.mixpanel.track('View addvan-final');
     });
 };
 
@@ -598,6 +603,7 @@ AddVan.prototype.handleNext = function(event) {
         case 'addvan-panel-photos':
             if (view.isLoading === false) {
                 view.showPanel('#addvan-panel-pricelocation');
+                window.mixpanel.track('View addvan-pricelocation');
             }
             break;
         case 'addvan-panel-pricelocation':
@@ -615,6 +621,7 @@ AddVan.prototype.handleNext = function(event) {
                     view.submerchantFormVC.close();
                     view.submerchantFormVC = null;
                     view.renderAvailability();
+                    window.mixpanel.track('View addvan-availability');
                 });
             } else {
                 view.saveAvailability();
