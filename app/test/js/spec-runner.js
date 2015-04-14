@@ -6,6 +6,16 @@
 /*jslint node: true */
 'use strict';
 
+//Mixpanel empty function for development environment.
+if(!window.mixpanel) {
+	window.mixpanel = {};
+    window.mixpanel.track = function() {};
+    window.mixpanel.identify = function() {};
+    window.mixpanel.people = {
+        set: function() {}
+    };
+}
+
 var _ = require('underscore');
 
 require('phantomjs-polyfill');
