@@ -233,7 +233,6 @@ TechProfile.prototype.handleBooking = function(event) {
                 view.initialize();
                 view.render();
                 App.rootVC.header.render();
-                window.mixpanel.track('Login from tech profile booking');
             } else {
                 alert('You need to be logged in, in order to hire a technician.');
             }

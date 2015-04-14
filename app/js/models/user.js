@@ -135,6 +135,13 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
             '$last_login': new Date()
         });
 
+        if(user.data.new_user === true) {
+            window.mixpanel.track('Login new user');
+        }
+        else {
+            window.mixpanel.track('Login existing user');
+        }
+
         Localization.setCurrentTimeZone(user.data.time_zone);
 
         if (callback && typeof callback === 'function') {
