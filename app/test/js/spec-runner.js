@@ -6,9 +6,9 @@
 /*jslint node: true */
 'use strict';
 
-//Mixpanel empty function for development environment.
+//Mixpanel empty function for test environment.
 if(!window.mixpanel) {
-	window.mixpanel = {};
+    window.mixpanel = {};
     window.mixpanel.track = function() {};
     window.mixpanel.identify = function() {};
     window.mixpanel.people = {
