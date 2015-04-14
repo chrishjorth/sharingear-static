@@ -44,7 +44,6 @@ run = function(callback) {
             if (app.rootVC && app.rootVC !== null) {
                 app.rootVC.refresh();
             }
-            window.mixpanel.track('Login auto at app load');
         }
     });
 
