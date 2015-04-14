@@ -132,7 +132,16 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
         window.mixpanel.identify(user.data.id);
         window.mixpanel.people.set({
             '$email': user.data.email,
-            '$last_login': new Date()
+            '$last_login': new Date(),
+            '$phone': user.data.phone,
+            '$first_name': user.data.name,
+            '$last_name': user.data.surname,
+            '$name': user.data.name + ' ' + user.data.surname,
+            'hometown': user.data.city,
+            'homecountry': user.data.country,
+            'birthdate': user.data.birthdate,
+            'currency': user.data.currency,
+            'has_bank': user.data.hasBank
         });
 
         if(user.data.new_user === true) {
