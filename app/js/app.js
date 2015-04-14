@@ -39,9 +39,12 @@ run = function(callback) {
     });
     this.user.initialize();
 
-    this.user.login(function() {
-        if (app.rootVC && app.rootVC !== null) {
-            app.rootVC.refresh();
+    this.user.login(function(error) {
+        if (!error) {
+            if (app.rootVC && app.rootVC !== null) {
+                app.rootVC.refresh();
+            }
+            window.mixpanel.track('Login auto at app load');
         }
     });
 

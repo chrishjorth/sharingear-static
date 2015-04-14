@@ -265,6 +265,7 @@ GearProfile.prototype.handleBooking = function(event) {
                 view.initialize();
                 view.render();
                 App.rootVC.header.render();
+                window.mixpanel.track('Login from gear profile booking');
             } else {
                 alert('You need to be logged in, in order to book an instrument.');
             }

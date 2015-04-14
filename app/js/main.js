@@ -13,6 +13,11 @@ if (!window.console) {
     };
 }
 
+//Mixpanel empty function for development environment.
+if(!window.mixpanel) {
+    window.mixpanel.track = function() {};
+}
+
 var _ = require('underscore'),
     $ = require('jquery'),
 

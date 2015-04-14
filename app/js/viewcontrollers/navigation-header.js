@@ -158,6 +158,7 @@ NavigationHeader.prototype.handleLogin = function(event, callback) {
 
     user.login(function(error) {
         if (!error) {
+            window.mixpanel.track('Login via menu');
             App.router.navigateTo('dashboard');
             view.render();
         } else {
