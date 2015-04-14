@@ -80,6 +80,8 @@ AddTechProfile.prototype.didRender = function() {
     this.setupEvent('click', '#addtechprofile-startyear', this, this.handleExperienceStartYearChange);
 
     this.setupEvent('change', '.price', this, this.handlePriceChange);
+
+    window.mixpanel.track('View addtechprofile');
 };
 
 AddTechProfile.prototype.getTabID = function() {
@@ -191,6 +193,7 @@ AddTechProfile.prototype.saveTechProfile = function() {
         view.showPanel('#addtechprofile-panel-experience');
         view.populateYearsOfExperience();
         view.toggleLoading();
+        window.mixpanel.track('View addgear-experience');
     });
 
 };
@@ -242,6 +245,7 @@ AddTechProfile.prototype.saveExperience = function() {
     });
     this.populatePriceSuggestions();
     this.showPanel('#addtechprofile-panel-pricelocation');
+    window.mixpanel.track('View addtechprofile-pricelocation');
 };
 
 AddTechProfile.prototype.populateCountries = function($select) {
@@ -370,8 +374,10 @@ AddTechProfile.prototype.savePriceLocation = function() {
             view.showPanel('#addtechprofile-panel-availability');
             if (App.user.isSubMerchant() === false) {
                 view.renderSubmerchantForm();
+                window.mixpanel.track('View addtechprofile-submerchantform');
             } else {
                 view.renderAvailability();
+                window.mixpanel.track('View addtechprofile-availability');
             }
         });
     };
@@ -504,6 +510,7 @@ AddTechProfile.prototype.saveAvailability = function() {
         view.showPanel('#addtechprofile-panel-final');
         view.setupEvent('click', '.profile-btn', view, view.handleViewTechProfile);
         view.setupEvent('click', '.addmore-btn', view, view.handleAddMoreTechProfiles);
+        window.mixpanel.track('View addtechprofile-final');
     });
 };
 
@@ -539,6 +546,7 @@ AddTechProfile.prototype.handleNext = function(event) {
                     view.submerchantFormVC.close();
                     view.submerchantFormVC = null;
                     view.renderAvailability();
+                    window.mixpanel.track('View addtechprofile-availability');
                 });
 
             } else {
