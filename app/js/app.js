@@ -34,6 +34,8 @@ run = function(callback) {
     GoogleMaps.load();
     Facebook.load();
 
+    window.mixpanel.track('App loaded');
+
     this.user = new User({
         rootURL: Config.API_URL
     });
