@@ -233,6 +233,7 @@ TechProfile.prototype.handleBooking = function(event) {
                 view.initialize();
                 view.render();
                 App.rootVC.header.render();
+                window.mixpanel.track('Login from tech profile booking');
             } else {
                 alert('You need to be logged in, in order to hire a technician.');
             }
@@ -306,6 +307,8 @@ TechProfile.prototype.renderTechProfileList = function() {
                 return html + '<a href="#techprofile/' + entry.id + '">' + entry.roadie_type + '</a>  ';
             });
         });
+    }else{
+        $('.techprofilelistborder',view.$element).addClass('hidden');
     }
 
 };

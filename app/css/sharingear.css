@@ -1419,7 +1419,7 @@ button:active .sg-gray-bg {
 .sg-btn-invisible:hover {
 	-moz-appearance: none;
 	-webkit-appearance: none;
-	background-color: inherit;
+	background-color: transparent;
 	border: none;
 	cursor: pointer;
 	min-width: 44px;
@@ -1433,7 +1433,7 @@ button:active .sg-gray-bg {
 .sg-btn-invisible-square:hover {
 	-moz-appearance: none;
 	-webkit-appearance: none;
-	background-color: inherit;
+	background-color: transparent;
 	border: none;
 	cursor: pointer;
 	min-width: 44px;
@@ -1493,7 +1493,7 @@ button:active .sg-gray-bg {
 .sg-btn-invisible-gray {
 	-moz-appearance: none;
 	-webkit-appearance: none;
-	background-color: inherit;
+	background-color: transparent;
 	border: none;
 	cursor: pointer;
 	min-width: 44px;
@@ -1506,7 +1506,7 @@ button:active .sg-gray-bg {
 .sg-btn-invisible-blue {
 	-moz-appearance: none;
 	-webkit-appearance: none;
-	background-color: inherit;
+	background-color: transparent;
 	border: none;
 	cursor: pointer;
 	min-width: 44px;
