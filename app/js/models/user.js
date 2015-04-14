@@ -129,6 +129,12 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
             window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
         }
 
+        window.mixpanel.identify(user.data.id);
+        window.mixpanel.people.set({
+            '$email': user.data.email,
+            '$last_login': new Date()
+        });
+
         Localization.setCurrentTimeZone(user.data.time_zone);
 
         if (callback && typeof callback === 'function') {
