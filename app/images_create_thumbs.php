@@ -3,7 +3,7 @@
  * Read JPEG and PNG images from Google Cloud Storage Bucket, resize if needed, create thumbs.
  * @author: Chris Hjorth
  */
-//exit();
+exit();
 
 require_once 'autoload.php';
 
