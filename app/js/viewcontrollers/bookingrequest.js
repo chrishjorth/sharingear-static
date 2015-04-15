@@ -67,6 +67,7 @@ BookingRequest.prototype.didRender = function() {
     this.renderCalendar();
     this.setupEvent('click', '#bookingrequest-cancel-btn', this, this.handleCancel);
     this.setupEvent('click', '#bookingrequest-next', this, this.handleNext);
+    window.mixpanel.track('View bookingrequest');
 };
 
 BookingRequest.prototype.renderCalendar = function() {

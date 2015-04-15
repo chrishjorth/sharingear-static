@@ -190,6 +190,7 @@ TechProfileSearchForm.prototype.handleSearch = function(event) {
     } else {
         App.router.navigateTo('search');
     }
+    window.mixpanel.track('Search');
     return false;
 };
 

@@ -168,6 +168,8 @@ TechProfile.prototype.didRender = function() {
         });
         paymentSuccessModalOpen = true;
     }
+
+    window.mixpanel.track('View techprofile');
 };
 
 TechProfile.prototype.renderOwnerPicture = function() {
@@ -256,6 +258,7 @@ TechProfile.prototype.handleBooking = function(event) {
                 alwaysFlag: result.alwaysFlag,
                 owner: view.owner
             };
+            window.mixpanel.track('Book van');
             App.router.openModalView('bookingrequest', passedData);
         });
     }
