@@ -129,7 +129,15 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
             window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
         }
 
-        window.mixpanel.identify(user.data.id);
+        if(user.data.new_user === true) {
+            window.mixpanel.alias(user.data.id); //We need to alias the mixpanel distinct_id given to unknown user to the new user id
+            window.mixpanel.track('Login new user');
+        }
+        else {
+            window.mixpanel.identify(user.data.id);
+            window.mixpanel.track('Login existing user');
+        }
+        
         window.mixpanel.people.set({
             '$email': user.data.email,
             '$last_login': new Date(),
@@ -144,12 +152,7 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
             'has_bank': user.data.hasBank
         });
 
-        if(user.data.new_user === true) {
-            window.mixpanel.track('Login new user');
-        }
-        else {
-            window.mixpanel.track('Login existing user');
-        }
+
 
         Localization.setCurrentTimeZone(user.data.time_zone);
 
