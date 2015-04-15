@@ -157,6 +157,8 @@ VanProfile.prototype.didRender = function() {
         });
         paymentSuccessModalOpen = true;
     }
+
+    window.mixpanel.track('View vanprofile');
 };
 
 VanProfile.prototype.renderAccessories = function() {
@@ -284,6 +286,7 @@ VanProfile.prototype.handleBooking = function(event) {
                 alwaysFlag: result.alwaysFlag,
                 owner: view.owner
             };
+            window.mixpanel.track('Book van');
             App.router.openModalView('bookingrequest', passedData);
         });
     }

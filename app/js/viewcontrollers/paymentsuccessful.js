@@ -120,6 +120,8 @@ PaymentSuccessful.prototype.didRender = function() {
         $('.payment-failure', this.$element).removeClass('hidden');
     }
     this.setupEvent('click', '#paymentsuccessful-close-btn', this, this.handleClose);
+
+    window.mixpanel.track('Payment successful');
 };
 
 PaymentSuccessful.prototype.handleClose = function() {

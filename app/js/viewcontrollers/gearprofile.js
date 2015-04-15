@@ -161,6 +161,8 @@ GearProfile.prototype.didRender = function() {
         });
         paymentSuccessModalOpen = true;
     }
+
+    window.mixpanel.track('View gearprofile');
 };
 
 GearProfile.prototype.renderAccessories = function() {
@@ -288,6 +290,7 @@ GearProfile.prototype.handleBooking = function(event) {
                 alwaysFlag: result.alwaysFlag,
                 owner: view.owner
             };
+            window.mixpanel.track('Book gear');
             App.router.openModalView('bookingrequest', passedData);
         });
     }

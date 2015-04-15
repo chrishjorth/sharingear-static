@@ -99,6 +99,8 @@ Payment.prototype.didRender = function() {
     this.setupEvent('click', '#payment-back-btn', this, this.handleBack);
     this.setupEvent('click', '#payment-next-btn', this, this.handleNext);
     this.setupEvent('change', '#payment-birthdate-year, #payment-birthdate-month', this, this.handleBirthdateChange);
+
+    window.mixpanel.track('View payment');
 };
 
 Payment.prototype.initExpiration = function() {
@@ -226,6 +228,8 @@ Payment.prototype.handleNext = function(event) {
         needToUpdateUser = false,
         day, month, year,
         cardNumber, expirationDateMonth, expirationDateYear, expirationDate, CSC;
+
+    window.mixpanel.track('Payment processing');
 
     if (userData.birthdate === null || userData.birthdate === '') {
         day = $('#payment-birthdate-day', view.$element).val();
