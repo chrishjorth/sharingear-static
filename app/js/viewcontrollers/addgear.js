@@ -547,6 +547,13 @@ AddGear.prototype.savePriceLocation = function() {
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.newGear.data.longitude = results[0].geometry.location.lng();
                 view.newGear.data.latitude = results[0].geometry.location.lat();
+
+                for (var i=0; i<results[0].address_components.length; i++){
+                    if (results[0].address_components[i].types[0] === "country") {
+                        view.newGear.data.country = results[0].address_components[i].long_name;
+                    }
+                }                
+
                 saveCall();
             } else {
                 console.log('Error geocoding: ' + status);
