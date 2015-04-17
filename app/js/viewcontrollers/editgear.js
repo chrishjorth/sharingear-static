@@ -119,9 +119,9 @@ EditGear.prototype.initAccessories = function() {
 
                 //Check the checkbox if the specific accessory was selected for this gear before
                 if (view.gear.data.accessories.indexOf(gearSubtypes[i].accessories[j]) > -1) {
-                    html += '<input type="checkbox" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '" checked> ' + gearSubtypes[i].accessories[j];
+                    html += '<input type="checkbox" style="margin-left:15px;" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '" checked> ' + gearSubtypes[i].accessories[j];
                 } else {
-                    html += '<input type="checkbox" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '"> ' + gearSubtypes[i].accessories[j];
+                    html += '<input type="checkbox" style="margin-left:15px;" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '"> ' + gearSubtypes[i].accessories[j];
                 }
             }
         }
