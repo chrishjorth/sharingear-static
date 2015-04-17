@@ -274,6 +274,7 @@ PickupDeliveryCalendar.prototype.handleDaySelection = function(event) {
     if (view.pickupActive === true) {
         //We are in the pickup tab
         view.pickupDate = new Moment.tz($dayBox.data('date') + '/' + $dayBox.data('month') + '/' + $dayBox.data('year'), 'DD/MM/YYYY', Localization.getCurrentTimeZone());
+
         $('div', $pickupTab).html(view.pickupDate.format('DD/MM/YYYY'));
         view.deliveryDate = null;
         $('div', $deliveryTab).html('-');
@@ -346,7 +347,7 @@ PickupDeliveryCalendar.prototype.handleDeliveryDateClick = function(event) {
 
 PickupDeliveryCalendar.prototype.switchToDeliveryTab = function() {
     var $pickupTab, $deliveryTab;
-
+    
     $pickupTab = $('#pickupdeliverycalendar-pickupdate', this.$element);
     $deliveryTab = $('#pickupdeliverycalendar-deliverydate', this.$element);
 
@@ -356,7 +357,7 @@ PickupDeliveryCalendar.prototype.switchToDeliveryTab = function() {
 
     $('.hint', this.$element).html(deliveryHintText);
 
-    if (this.deliveryDate === null) {
+    if (this.deliveryDate === null) {        
         this.deliveryDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
         this.deliveryDate.add(1, 'days');
         this.deliveryDate.hours(12);
@@ -367,6 +368,8 @@ PickupDeliveryCalendar.prototype.switchToDeliveryTab = function() {
     if (_.isFunction(this.passedData.parent.handleDeliverySelection) === true) {
         this.passedData.parent.handleDeliverySelection(this, true);
     }
+
+    this.displayedDeliveryMonth = new Moment.tz(this.deliveryDate, Localization.getCurrentTimeZone());
 
     this.clearSelections();
     this.populateMonthCalendar(this.displayedDeliveryMonth, $('.calendar', this.$element));
