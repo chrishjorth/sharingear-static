@@ -3848,6 +3848,15 @@ button:focus,div:focus {
 	content: "\e60a";
 }
 
+.icon-dashboard-search{
+	font-family: FontAwesome;
+	float: left;
+	margin: 0px 4%;
+	font-size: 26px;
+	font-style: normal;
+	font-weight: 500;
+}
+
 .icon-dashboard-profile:before {
 	content: "\e60b";
 }
