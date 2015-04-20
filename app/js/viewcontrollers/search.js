@@ -148,6 +148,7 @@ Search.prototype.handleFBShare = function(event) {
         tab, item, searchParameters, description;
 
     tab = view.getCurrentTab();
+    
     switch (tab) {
         case 'gear':
             searchParameters = view.gearSearchFormVC.getSearchParameters;
@@ -162,7 +163,7 @@ Search.prototype.handleFBShare = function(event) {
             item = searchParameters.techProfileString;
             break;
     }
-
+    
     description = 'Hey, I am looking for a ' + item + ' near ' + searchParameters.locationString + ' - anyone? Help me out at www.sharingear.com, because I am willing to rent it from you!';
 
     FB.ui({
