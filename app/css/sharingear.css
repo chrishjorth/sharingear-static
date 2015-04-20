@@ -2228,6 +2228,11 @@ button:active .sg-gray-bg {
 	text-align: center;
 }
 
+.no-results{
+	padding: 30px;
+	padding-top: 0;
+}
+
 /*----- 8.c DASHBOARD ------*/
 .dashboard {
 	background-color: #f7f7f7;
