@@ -72,7 +72,7 @@ BookingRequest.prototype.didRender = function() {
 
 BookingRequest.prototype.renderCalendar = function() {
     var view = this,
-        $calendarContainer, passedData, calendarVC, calendarVT;
+        $calendarContainer, passedData, CalendarVC, calendarVT;
 
     $calendarContainer = $('.pickupdeliverycalendar-container', view.$element);
     passedData = {
@@ -81,10 +81,10 @@ BookingRequest.prototype.renderCalendar = function() {
         parent: view
     };
 
-    calendarVC = require('./pickupdeliverycalendar.js');
+    CalendarVC = require('./pickupdeliverycalendar.js');
     calendarVT = require('../../templates/pickupdeliverycalendar.html');
 
-    view.calendarVC = new calendarVC({
+    view.calendarVC = new CalendarVC({
         name: 'pickupdeliverycalendar',
         $element: $calendarContainer,
         template: calendarVT,
