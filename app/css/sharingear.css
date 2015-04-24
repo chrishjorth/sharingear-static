@@ -829,6 +829,31 @@ body {
 	width: 100%;
 }
 
+.image-popup {
+	background-color: transparent;
+	width: 100%;
+	max-height: 100%;
+	overflow: hidden;
+}
+
+.popup-image-container {
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	max-height: 100%;
+	text-align: center;
+}
+
+.popup-image-container img{
+	max-width: 100%;
+}
+
+.cancel-image-button{
+	position: absolute;
+	top: 10px;
+	right: 20px;
+}
+
 /******* 3. TRANSITIONS *******/
 /**
  * These are element transitions. Please keep them as generic and reusable as possible.
@@ -2781,6 +2806,10 @@ text-align: left;
 		font-size: 10px;
 		margin-bottom: -10px;
 	}
+}
+
+.picture-entry{
+	cursor: pointer;
 }
 
 /*------ 8.h BOOKING REQUEST ------*/
