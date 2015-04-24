@@ -19,6 +19,7 @@ var _ = require('underscore'),
 	Localization = require('../models/localization.js'),
 	Gear = require('../models/gear.js'),
 	User = require('../models/user.js'),
+    ImagePopup = require('../popups/imagepopup.js'),
 
 	paymentSuccessModalOpen = false;
 
@@ -144,6 +145,7 @@ GearProfile.prototype.didRender = function() {
     this.setupEvent('click', '#gearprofile-action-edit', this, this.handleEditProfile);
     this.setupEvent('click', '#gearprofile-fb-btn', this, this.handleFacebookShare);
     this.setupEvent('click', '#gearprofile-tw-btn', this, this.handleTwitterShare);
+    this.setupEvent('click', '.picture-entry', this, this.handlePictureClick);
 
     //Check for querystring sent by a booking payment process
     preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
@@ -214,7 +216,7 @@ GearProfile.prototype.renderGearPictures = function() {
 
     for (i = 0; i < images.length; i++) {
         if (images[i].length > 0) {
-            html += '<div class="item"><img src="' + images[i] + '" alt="' + description + '" ></div>';
+            html += '<div class="item picture-entry"><img src="' + images[i] + '" alt="' + description + '" ></div>';
         }
     }
     $owlContainer.append(html);
@@ -315,6 +317,15 @@ GearProfile.prototype.handleFacebookShare = function(event) {
         link: url,
         description: description
     });
+};
+
+GearProfile.prototype.handlePictureClick = function(event) {
+    var pictureURL = $(this).children('img').attr('src');
+    var imagePopup = new ImagePopup();
+
+    imagePopup.initialize();
+    imagePopup.show();
+    imagePopup.setImage(pictureURL);
 };
 
 GearProfile.prototype.handleTwitterShare = function(event) {
