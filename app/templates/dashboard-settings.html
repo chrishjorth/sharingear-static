@@ -3,14 +3,83 @@
 		<div class="col-sm-12">
 			<form id="dashboard-settings-form" onsubmit="return false;">
 				<div class="row">
-					<div class="col-sm-12">
-						<label for="">Set your timezone:</label>
-						<select id="dashboard-settings-timezone">
-						</select>
+					<div class="form-group">
+						<label for="dashboard-settings-birthdate-day" class="col-sm-3 dashboard-profile-form-label control-label">Date of birth  <i class="fa fa-lock fa-2x private-field-lock" style="color:rgb(254, 181, 0)"></i></label>
+						
+						<div class="col-sm-8">
+							<div class="birthday-select">
+								<select id="dashboard-settings-birthdate-date" class="birthday-form-styles" name="birthdate-day"></select>
+								<select id="dashboard-settings-birthdate-month" name="birthdate-month" class="birthday-form-styles"></select>
+								<select id="dashboard-settings-birthdate-year" name="birthdate-year" class="birthday-form-styles"></select>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-3 col-sm-offset-9">
+				<div class="form-group">
+					<label for="dashboard-settings-address" class="col-sm-3 dashboard-profile-form-label control-label">Address  <i class="fa fa-lock fa-2x private-field-lock" style="color:rgb(254, 181, 0)"></i></label>
+					<div class="col-sm-8">
+						<input type="text" name="address" id="dashboard-settings-address" class="form-control">
+					</div>
+				</div>
+				</div>
+				<div class="row">
+				<div class="form-group">
+					<label for="dashboard-settings-postalcode" class="col-sm-3 dashboard-profile-form-label control-label">Postal code  <i class="fa fa-lock fa-2x private-field-lock" style="color:rgb(254, 181, 0)"></i></label>
+					<div class="col-sm-8">
+						<input type="text" name="postalcode" id="dashboard-settings-postalcode" class="form-control">
+					</div>
+				</div>
+</div>
+				<div class="row">
+				<div class="form-group">
+					<label for="hometown" class="col-sm-3 dashboard-profile-form-label control-label">City  <i class="fa fa-lock fa-2x private-field-lock" style="color:rgb(254, 181, 0)"></i></label>
+					<div class="col-sm-8">
+						<input type="text" name="hometown" id="hometown" class="form-control">
+					</div>
+				</div>
+</div>
+				<div class="row">
+				<div class="form-group">
+					<label for="dashboard-settings-country" class="col-sm-3 dashboard-profile-form-label control-label">Country&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<div class="col-sm-8">
+						<select name="country" id="dashboard-settings-country" class="form-control">
+							<option value="">Select your country</option>
+						</select>
+					</div>
+				</div>
+</div>
+				<div class="row">
+				<div class="form-group">
+					<label for="dashboard-settings-phone" class="col-sm-3 dashboard-profile-form-label control-label">Phone  <i class="fa fa-lock fa-2x private-field-lock" style="color:rgb(254, 181, 0)"></i></label>
+					<div class="col-sm-8">
+						<input type="text" name="phone" id="dashboard-settings-phone" class="form-control">
+					</div>
+				</div>
+</div>
+				<div class="row">
+					<div class="form-group">
+						<label for="dashboard-settings-nationalities" class="col-sm-3 dashboard-profile-form-label control-label">Nationality  <i class="fa fa-lock fa-2x private-field-lock" style="color:rgb(254, 181, 0)"></i></label>
+						<div class="col-sm-8">
+							<select name="nationality" id="dashboard-settings-nationalities" class="form-control">
+								<option value="">Select your nationality</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="form-group">
+						<label for="dashboard-settings-timezone" class="col-sm-3 dashboard-profile-form-label control-label">Set your timezone  <i class="fa fa-lock fa-2x private-field-lock" style="color:rgb(254, 181, 0)"></i></label>
+						<div class="col-sm-8">
+							<select id="dashboard-settings-timezone" class="form-control">
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-3 col-sm-offset-8" style="margin-top:20px;height: 30px;">
 						<button type="submit" id="dashboard-settings-savebtn" class="sg-btn sg-blue-bg sg-white sg-btn-save">Save</button>
 					</div>
 				</div>
