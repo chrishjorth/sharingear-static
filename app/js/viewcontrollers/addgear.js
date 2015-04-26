@@ -287,6 +287,26 @@ AddGear.prototype.handleSelectSubtype = function(event) {
 AddGear.prototype.handleSelectBrand = function(event) {
     var view = event.data;
     $('#addgear-form-geardetails-container', view.$element).removeClass('hidden');
+    var gearSubType = $('#addgear-form-subtype').val();
+    if(gearSubType==='Acoustic drums'||gearSubType==='Cymbals'||
+        gearSubType==='Electronic drums'||gearSubType==='Percussion'){
+        
+        $('#addgear-form-description', view.$element).attr("placeholder", "Please remember to specify the size of the each item in the set.");
+        $('#addgear-form-model', view.$element).attr("placeholder", "");
+
+    }else if (gearSubType==='Snare drum'){
+        $('#addgear-form-model', view.$element).attr("placeholder", 'Ex: Snare Drum Black Beauty 14x4"');
+        $('#addgear-form-description', view.$element).attr("placeholder", "");
+    }else if(gearSubType==='Floor tom'){
+        $('#addgear-form-model', view.$element).attr("placeholder", 'Ex: Roadshow Floor Tom 14x14"');
+        $('#addgear-form-description', view.$element).attr("placeholder", "");
+    }else if(gearSubType==='Bass drum'){
+        $('#addgear-form-model', view.$element).attr("placeholder", 'Ex: Maple Bass Drum 22x18"');
+        $('#addgear-form-description', view.$element).attr("placeholder", "");
+    }else if(gearSubType==='Rack tom'){
+        $('#addgear-form-model', view.$element).attr("placeholder", 'Ex: Rocker Rack Tom 12x8"');
+        $('#addgear-form-description', view.$element).attr("placeholder", "");
+    }
 };
 
 AddGear.prototype.saveInstrument = function() {
@@ -547,6 +567,13 @@ AddGear.prototype.savePriceLocation = function() {
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.newGear.data.longitude = results[0].geometry.location.lng();
                 view.newGear.data.latitude = results[0].geometry.location.lat();
+
+                for (var i=0; i<results[0].address_components.length; i++){
+                    if (results[0].address_components[i].types[0] === "country") {
+                        view.newGear.data.country = results[0].address_components[i].long_name;
+                    }
+                }                
+
                 saveCall();
             } else {
                 console.log('Error geocoding: ' + status);

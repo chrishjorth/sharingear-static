@@ -4,6 +4,7 @@
 var load,
     getLoginStatus,
     login,
+    ui,
 
     FB = null;
 
@@ -56,8 +57,20 @@ login = function(callback, options) {
     FB.login(callback, options);
 };
 
+ui = function(options, callback) {
+    var module = this;
+    if(FB === null) {
+        setTimeout(function(){
+            module.ui(options, callback);
+        }, 10);
+    }
+
+    FB.ui(options, callback);
+};
+
 module.exports = {
     load: load,
     getLoginStatus: getLoginStatus,
-    login: login
+    login: login,
+    ui: ui
 };

@@ -19,6 +19,7 @@ var _ = require('underscore'),
     Localization = require('../models/localization.js'),
     User = require('../models/user.js'),
     Van = require('../models/van.js'),
+    ImagePopup = require('../popups/imagepopup.js'),
 
     paymentSuccessModalOpen = false;
 
@@ -140,6 +141,7 @@ VanProfile.prototype.didRender = function() {
     this.setupEvent('click', '#vanprofile-action-edit', this, this.handleEditProfile);
     this.setupEvent('click', '#vanprofile-fb-btn', this, this.handleFacebookShare);
     this.setupEvent('click', '#vanprofile-tw-btn', this, this.handleTwitterShare);
+    this.setupEvent('click', '.picture-entry', this, this.handlePictureClick);
 
     //Check for querystring sent by a booking payment process
     preAuthorizationID = Utilities.getQueryStringParameterValue(window.location.search, 'preAuthorizationId');
@@ -210,7 +212,7 @@ VanProfile.prototype.renderVanPictures = function() {
 
     for (i = 0; i < images.length; i++) {
         if (images[i].length > 0) {
-            html += '<div class="item"><img src="' + images[i] + '" alt="' + description + '" ></div>';
+            html += '<div class="item picture-entry"><img src="' + images[i] + '" alt="' + description + '" ></div>';
         }
     }
     $owlContainer.append(html);
@@ -295,6 +297,15 @@ VanProfile.prototype.handleBooking = function(event) {
 VanProfile.prototype.handleEditProfile = function(event) {
     var view = event.data;
     App.router.openModalView('editvan', view.van);
+};
+
+VanProfile.prototype.handlePictureClick = function(event) {
+    var pictureURL = $(this).children('img').attr('src');
+    var imagePopup = new ImagePopup();
+
+    imagePopup.initialize();
+    imagePopup.show();
+    imagePopup.setImage(pictureURL);
 };
 
 VanProfile.prototype.handleFacebookShare = function(event) {

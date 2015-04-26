@@ -119,9 +119,9 @@ EditGear.prototype.initAccessories = function() {
 
                 //Check the checkbox if the specific accessory was selected for this gear before
                 if (view.gear.data.accessories.indexOf(gearSubtypes[i].accessories[j]) > -1) {
-                    html += '<input type="checkbox" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '" checked> ' + gearSubtypes[i].accessories[j];
+                    html += '<input type="checkbox" style="margin-left:15px;" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '" checked> ' + gearSubtypes[i].accessories[j];
                 } else {
-                    html += '<input type="checkbox" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '"> ' + gearSubtypes[i].accessories[j];
+                    html += '<input type="checkbox" style="margin-left:15px;" name="' + gearSubtypes[i].accessories[j] + '" value="' + gearSubtypes[i].accessories[j] + '"> ' + gearSubtypes[i].accessories[j];
                 }
             }
         }
@@ -175,24 +175,14 @@ EditGear.prototype.handleSubmerchantFormSubmit = function(event) {
     var view = event.data,
         $button = $(this);
     $button.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
-    if (view.submerchantFormVC !== null) {
         if (view.submerchantFormVC.formSubmitted === false) {
             view.submerchantFormVC.submitForm(function(error) {
                 if (error) {
                     console.log('Error submitting form: ' + error);
                     return;
                 }
-                $button.html('Accept');
-            });
-        } else {
-            view.submerchantFormVC.acceptTerms(function(error) {
-                if (error) {
-                    console.log('Error accepting terms: ' + error);
-                    return;
-                }
                 view.renderAvailability();
             });
-        }
     }
 };
 

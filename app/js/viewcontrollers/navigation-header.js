@@ -68,7 +68,7 @@ NavigationHeader.prototype.populateMainMenu = function() {
         $menuList = $('.list-group', $dropdownMenu);
     }
 
-    html += '<a href="#search" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Search</div></a>';
+    html += '<a href="#search" class="list-group-item"><i class="fa-search icon-dashboard-search"></i><div class="list-group-item-text">Search</div></a>';
 
     if (App.user && App.user.data.id !== null) {
         html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
