@@ -55,6 +55,7 @@ DashboardSettings.prototype.didRender = function() {
         $('#dashboard-settings-birthdate-date', view.$element).val(birthdate.date());
     }
 
+    $('#dashboard-settings-vatnum', this.$element).val(userData.vatnum);
     $('#dashboard-settings-address', this.$element).val(userData.address);
     $('#dashboard-settings-postalcode', view.$element).val(userData.postal_code);
     $('#dashboard-settings-form #hometown', this.$element).val(userData.city);
@@ -204,7 +205,8 @@ DashboardSettings.prototype.handleSave = function(event) {
         postal_code: $('#dashboard-settings-postalcode', view.$element).val(),
         country: $('#dashboard-settings-country', view.$element).val(),
         phone: $('#dashboard-settings-phone', view.$element).val(),
-        nationality: $('#dashboard-settings-nationalities', view.$element).val()
+        nationality: $('#dashboard-settings-nationalities', view.$element).val(),
+        vatnum: $('#dashboard-settings-vatnum', this.$element).val()
     };
 
     if (birthdate.isValid() === false) {

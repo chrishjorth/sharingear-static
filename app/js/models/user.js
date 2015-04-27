@@ -36,6 +36,7 @@ User.prototype.didInitialize = function() {
             nationality: null,
             currency: 'EUR',
             time_zone: 'UTC',
+            vatnum: '',
             currentCity: '' //Detected location
         };
     }
