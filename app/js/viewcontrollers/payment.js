@@ -26,7 +26,7 @@ Payment.prototype = new ViewController();
 Payment.prototype.didInitialize = function() {
     //var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
     var view = this,
-        startMoment, endMoment, duration, months, weeks, days, fee;
+        startMoment, endMoment, duration, months, weeks, days, hours, fee;
 
     this.booking = this.passedData.booking;
     this.owner = this.passedData.owner;
@@ -43,6 +43,25 @@ Payment.prototype.didInitialize = function() {
     endMoment.subtract(weeks, 'weeks');
     duration = Moment.duration(endMoment.diff(startMoment));
     days = parseInt(duration.days(), 10);
+    endMoment.subtract(days, 'days');
+
+    duration = Moment.duration(endMoment.diff(startMoment));
+    hours = parseInt(duration.hours(),10);
+
+    //In case <24 hours are selected the user should pay for one day
+    //In case 25 hours are selected, the user should pay for two days and so on
+    //In case 6 days and 1 hour is selected, the user should pay for 1 week and so on
+    if(hours!==0 && hours%24!==0){
+            days++;    
+        if (days===7) {
+            weeks++;
+            days = 0;
+        }
+        if(weeks===4){
+            months++;
+            weeks = 0;
+        }
+    }
 
     view.templateParameters = {
         item_name: this.booking.data.item_name,
