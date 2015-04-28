@@ -111,17 +111,39 @@ BookingRequest.prototype.calculatePrice = function() {
     var view = this,
         startMoment = new Moment.tz(this.newBooking.data.start_time, Localization.getCurrentTimeZone()),
         endMoment = new Moment.tz(this.newBooking.data.end_time, Localization.getCurrentTimeZone()),
-        duration, months, weeks, days;
+        duration, months, weeks, days, hours;
 
     //Get number of months, get number of weeks from remainder, get number of days from remainder
     duration = Moment.duration(endMoment.diff(startMoment));
     months = parseInt(duration.months(), 10);
     endMoment.subtract(months, 'months');
+    
     duration = Moment.duration(endMoment.diff(startMoment));
     weeks = parseInt(duration.weeks(), 10);
     endMoment.subtract(weeks, 'weeks');
+    
     duration = Moment.duration(endMoment.diff(startMoment));
-    days = parseInt(duration.days(), 10);
+    days = parseInt(duration.days(), 10);  
+    endMoment.subtract(days, 'days');
+
+    duration = Moment.duration(endMoment.diff(startMoment));
+    hours = parseInt(duration.hours(),10);
+
+    //In case <24 hours are selected the user should pay for one day
+    //In case 25 hours are selected, the user should pay for two days and so on
+    //In case 6 days and 1 hour is selected, the user should pay for 1 week and so on
+    if(hours!==0 && hours%24!==0){
+            days++;    
+        
+        if (days===7) {
+            weeks++;
+            days = 0;
+        }
+        if(weeks===4){
+            months++;
+            weeks = 0;
+        }
+    }
 
     $('#bookingrequest-days', this.$element).html(days);
     $('#bookingrequest-weeks', this.$element).html(weeks);
@@ -134,7 +156,7 @@ BookingRequest.prototype.calculatePrice = function() {
             return;
         }
         price = months * Math.ceil(convertedPrices[2]) + weeks * Math.ceil(convertedPrices[1]) + days * Math.ceil(convertedPrices[0]);
-
+        
         $('#bookingrequest-price', view.$element).html(price);
     });
 };
