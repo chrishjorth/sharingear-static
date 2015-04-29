@@ -18,6 +18,7 @@ if(!window.mixpanel) {
     window.mixpanel = {};
     window.mixpanel.track = function() {};
     window.mixpanel.identify = function() {};
+    window.mixpanel.alias = function() {};
     window.mixpanel.people = {
         set: function() {}
     };
