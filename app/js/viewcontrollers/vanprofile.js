@@ -80,14 +80,14 @@ VanProfile.prototype.didInitialize = function() {
             var publicInfoDeferred = $.Deferred(),
                 availabilityDeferred = $.Deferred();
             if (error) {
-                console.log(error);
+                console.error(error);
                 return;
             }
             view.owner.data.id = view.van.data.owner_id;
             view.owner.getPublicInfo(function(error) {
                 var vanData, ownerData;
                 if (error) {
-                    console.log(error);
+                    console.error(error);
                     return;
                 }
                 vanData = view.van.data;
@@ -108,7 +108,7 @@ VanProfile.prototype.didInitialize = function() {
 
             view.van.getAvailability(function(error, result) {
                 if (error) {
-                    console.log('Error getting van availability: ' + error);
+                    console.error('Error getting van availability: ' + error);
                     return;
                 }
                 view.availability = result;
@@ -228,7 +228,7 @@ VanProfile.prototype.renderPricing = function() {
     var view = this;
     Localization.convertPrices([this.van.data.price_a, this.van.data.price_b, this.van.data.price_c], this.van.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert prices: ' + error);
+            console.error('Could not convert prices: ' + error);
             return;
         }
         $('#vanprofile-displayed_price_a', view.$element).html(Math.ceil(convertedPrices[0]));
@@ -273,7 +273,7 @@ VanProfile.prototype.handleBooking = function(event) {
         view.van.getAvailability(function(error, result) {
             var passedData;
             if (error) {
-                console.log(error);
+                console.error(error);
                 alert('Error checking van availability.');
                 return;
             }

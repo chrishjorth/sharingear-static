@@ -29,7 +29,7 @@ Card.prototype.didInitialize = function() {
 Card.prototype.registerCard = function(userID, cardData, callback) {
     this.get('/users/' + userID + '/cardobject', function(error, data) {
         if (error) {
-            console.log('Error getting card object: ' + error);
+            console.error('Error getting card object: ' + error);
             return;
         }
         mangoPay.cardRegistration.init({
@@ -42,8 +42,7 @@ Card.prototype.registerCard = function(userID, cardData, callback) {
             callback(null, result.CardId);
         }, function(result) {
             var error = 'Error registering card: ' + result.ResultMessage;
-            console.log(error);
-            console.log(result);
+            console.error(error);
             callback(error);
         });
     });

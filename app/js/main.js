@@ -9,7 +9,8 @@
 //ie9 console.log fix
 if (!window.console) {
     window.console = {
-        log: function() {}
+        log: function() {},
+        error: function() {}
     };
 }
 

@@ -164,7 +164,7 @@ Van.prototype.update = function(userID, callback) {
     var model = this;
     this.get('/vans/' + this.data.id, function(error, vans) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }
@@ -183,7 +183,7 @@ Van.prototype.getAvailability = function(callback) {
     }
     this.get('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', function(error, result) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }
@@ -202,7 +202,7 @@ Van.prototype.setAvailability = function(availabilityArray, alwaysFlag, callback
     };
     this.post('/users/' + App.user.data.id + '/vans/' + this.data.id + '/availability', postData, function(error) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }

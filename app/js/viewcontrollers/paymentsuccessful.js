@@ -58,7 +58,7 @@ PaymentSuccessful.prototype.didInitialize = function() {
 
     booking.update(App.user.data.id, function(error) {
         if (error) {
-            console.log('Error updating booking: ' + error);
+            console.error('Error updating booking: ' + error);
             view.paymentSuccessful = false;
             view.render();
             return;
@@ -67,7 +67,7 @@ PaymentSuccessful.prototype.didInitialize = function() {
             //var startMoment, endMoment, duration, months, weeks, days, price, VAT, priceVAT, fee, feeVAT;
             var startMoment, endMoment, duration, months, weeks, days, price, fee;
             if (error) {
-                console.log('Error getting booking info: ' + error);
+                console.error('Error getting booking info: ' + error);
                 return;
             }
 

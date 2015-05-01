@@ -51,7 +51,7 @@ User.prototype.didInitialize = function() {
 
     this.user.fetch(function(error) {
         if (error) {
-            console.log('Error fetching user: ' + error);
+            console.error('Error fetching user: ' + error);
             return;
         }
         view.templateParameters = {

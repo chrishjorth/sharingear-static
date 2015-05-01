@@ -174,7 +174,7 @@ Gear.prototype.update = function(userID, callback) {
     var model = this;
     this.get('/gear/' + this.data.id, function(error, gear) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }
@@ -193,7 +193,7 @@ Gear.prototype.getAvailability = function(userID, callback) {
     }
     this.get('/users/' + userID + '/gear/' + this.data.id + '/availability', function(error, result) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }
@@ -212,7 +212,7 @@ Gear.prototype.setAvailability = function(userID, availabilityArray, alwaysFlag,
     };
     this.post('/users/' + userID + '/gear/' + this.data.id + '/availability', postData, function(error) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }

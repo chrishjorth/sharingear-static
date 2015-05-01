@@ -33,7 +33,7 @@ Localization.prototype.fetch = function() {
     var model = this;
     this.get('/localization', function(error, data) {
         if (error) {
-            console.log('Error retrieving localization data.');
+            console.error('Error retrieving localization data.');
             return;
         }
         model.data = data;

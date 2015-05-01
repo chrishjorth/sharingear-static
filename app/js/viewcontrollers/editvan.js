@@ -168,7 +168,7 @@ EditVan.prototype.handleSubmerchantFormSubmit = function(event) {
     if (view.submerchantFormVC.formSubmitted === false) {
         view.submerchantFormVC.submitForm(function(error) {
             if (error) {
-                console.log('Error submitting form: ' + error);
+                console.error('Error submitting form: ' + error);
                 return;
             }
             view.renderAvailability();
@@ -212,7 +212,7 @@ EditVan.prototype.populatePricing = function() {
     var view = this;
     Localization.convertPrices([this.van.data.price_a, this.van.data.price_b, this.van.data.price_c], this.van.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert prices: ' + error);
+            console.error('Could not convert prices: ' + error);
             return;
         }
         $('#price_a', view.$element).val(Math.ceil(convertedPrices[0]));
@@ -236,7 +236,7 @@ EditVan.prototype.populatePriceSuggestions = function() {
     }
     Localization.convertPrices([suggestionA, suggestionB, suggestionC], 'EUR', App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert price suggestions: ' + error);
+            console.error('Could not convert price suggestions: ' + error);
             return;
         }
         $('#editvan-price_a-suggestion', view.$element).html(Math.ceil(convertedPrices[0]));
@@ -306,7 +306,7 @@ EditVan.prototype.handleImageUpload = function(event) {
         $('#editvan-form-imageupload').val('');
         if (error) {
             alert('Error uploading file.');
-            console.log(error);
+            console.error(error);
             view.toggleLoading();
             return;
         }
@@ -358,7 +358,7 @@ EditVan.prototype.handleSave = function(event) {
         view.van.setAvailability(availabilityArray, alwaysFlag, function(error) {
             if (error) {
                 alert('Error saving availability.');
-                console.log(error);
+                console.error(error);
                 view.toggleLoading();
             }
         });
@@ -464,7 +464,7 @@ EditVan.prototype.handleSave = function(event) {
         view.van.save(function(error) {
             if (error) {
                 alert('Error updating van.');
-                console.log(error);
+                console.error(error);
                 view.toggleLoading();
                 return;
             }

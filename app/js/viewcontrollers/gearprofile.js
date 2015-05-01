@@ -82,14 +82,14 @@ GearProfile.prototype.didInitialize = function() {
             var publicInfoDeferred = $.Deferred(), 
                 availabilityDeferred = $.Deferred();
             if (error) {
-                console.log(error);
+                console.error(error);
                 return;
             }
             view.owner.data.id = view.gear.data.owner_id;
             view.owner.getPublicInfo(function(error) {
                 var gearData, ownerData;
                 if (error) {
-                    console.log(error);
+                    console.error(error);
                     return;
                 }
                 gearData = view.gear.data;
@@ -112,7 +112,7 @@ GearProfile.prototype.didInitialize = function() {
 
             view.gear.getAvailability(App.user.data.id, function(error, result) {
                 if (error) {
-                    console.log('Error getting gear availability: ' + error);
+                    console.error('Error getting gear availability: ' + error);
                     return;
                 }
                 view.availability = result;
@@ -232,7 +232,7 @@ GearProfile.prototype.renderPricing = function() {
     var view = this;
     Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert prices: ' + error);
+            console.error('Could not convert prices: ' + error);
             return;
         }
         $('#gearprofile-displayed_price_a', view.$element).html(Math.ceil(convertedPrices[0]));
@@ -277,7 +277,7 @@ GearProfile.prototype.handleBooking = function(event) {
         view.gear.getAvailability(App.user.data.id, function(error, result) {
             var passedData;
             if (error) {
-                console.log(error);
+                console.error(error);
                 alert('Error checking gear availability.');
                 return;
             }

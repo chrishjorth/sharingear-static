@@ -36,7 +36,7 @@ ContentClassification.prototype.getClassification = function(callback) {
 
     this.get('/contentclassification', function(error, contentClassification) {
         if (error) {
-            console.log(error);
+            console.error(error);
             return;
         }
         model.data = contentClassification;

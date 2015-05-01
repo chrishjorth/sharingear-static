@@ -181,7 +181,7 @@ Search.prototype.handleLogin = function() {
             App.rootVC.header.render();
             return;
         }
-        console.log(error);
+        console.error(error);
     });
 };
 
@@ -219,7 +219,7 @@ Search.prototype.performGearSearch = function() {
                         view.setCurrentLocation(results[0].formatted_address);
                     });
                 } else {
-                    console.log('Error geocoding: ' + status);
+                    console.error('Error geocoding: ' + status);
                     alert('Couldn\'t find this location. You can use the keyword all, to get locationless results.');
                     view.populateSearchBlock([], $('#' + gearSearchBlockID, view.$element));
                     view.renderMap([]);
@@ -277,7 +277,7 @@ Search.prototype.performTechProfileSearch = function() {
                         view.setCurrentLocation(results[0].formatted_address);
                     });
                 } else {
-                    console.log('Error geocoding: ' + status);
+                    console.error('Error geocoding: ' + status);
                     alert('Couldn\'t find this location. You can use the keyword all, to get locationless results.');
                     view.populateSearchBlock([], $('#' + techProfileSearchBlockID, view.$element));
                     view.renderMap([]);
@@ -334,7 +334,7 @@ Search.prototype.performVanSearch = function() {
                         view.setCurrentLocation(results[0].formatted_address);
                     });
                 } else {
-                    console.log('Error geocoding: ' + status);
+                    console.error('Error geocoding: ' + status);
                     alert('Couldn\'t find this location. You can use the keyword all, to get locationless results.');
                     view.populateSearchBlock([], $('#' + vanSearchBlockID, view.$element));
                     view.renderMap([]);
@@ -458,7 +458,7 @@ Search.prototype.populateSearchBlock = function(searchResults, $searchBlock, cal
         var $price = $('#search-results-' + resultNum + ' .price_a', $searchBlock);
         Localization.convertPrices([searchResults[resultNum].data.price_a], searchResults[resultNum].data.currency, App.user.data.currency, function(error, convertedPrice) {
             if (error) {
-                console.log('Could not convert price: ' + error);
+                console.error('Could not convert price: ' + error);
                 return;
             }
             $price.html(Math.ceil(convertedPrice));

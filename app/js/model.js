@@ -28,8 +28,8 @@ Model.prototype.get = function(url, callback) {
         type: 'GET',
         url: encodedURL,
         error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR);
-            console.log(textStatus);
+            console.error(jqXHR);
+            console.error(textStatus);
             callback('Error executing GET request: ' + errorThrown);
         },
         success: function(data) {
@@ -78,7 +78,7 @@ Model.prototype.put = function(url, data, callback) {
         },
         success: function(data) {
             if (data.error) {
-                console.log(data.error);
+                console.error(data.error);
                 callback('Error putting resource to server: ' + data.error);
             } else {
                 callback(null, data);

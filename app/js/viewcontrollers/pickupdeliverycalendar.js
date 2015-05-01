@@ -47,7 +47,6 @@ PickupDeliveryCalendar.prototype.didInitialize = function() {
     if (this.passedData.deliveryDate && Moment.isMoment(this.passedData.deliveryDate) === true) {
         this.deliveryDate = this.passedData.deliveryDate;
         if (this.deliveryDate.isBefore(this.pickupDate) === true) {
-            console.log('BEFORE');
             this.deliveryDate = new Moment.tz(this.pickupDate, Localization.getCurrentTimeZone());
             this.deliveryDate.add(1, 'days');
         }

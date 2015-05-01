@@ -117,7 +117,7 @@ Booking.prototype.update = function(userID, callback) {
 
     this.put(url, updateData, function(error, booking) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }

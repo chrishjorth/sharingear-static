@@ -253,7 +253,7 @@ DashboardSettings.prototype.handleSave = function(event) {
         view.isSaving = false;
         if (error) {
             alert('Error saving settings.');
-            console.log('Error saving settings: ' + error);
+            console.error('Error saving settings: ' + error);
             return;
         }
         $successMessage.removeClass('hidden');

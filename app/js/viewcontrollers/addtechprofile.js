@@ -110,7 +110,7 @@ AddTechProfile.prototype.populatePriceSuggestions = function() {
     }
     Localization.convertPrices([suggestionA, suggestionB, suggestionC], 'EUR', App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert price suggestions: ' + error);
+            console.error('Could not convert price suggestions: ' + error);
             return;
         }
         $('#addtechprofile-price_a-suggestion', view.$element).html(Math.ceil(convertedPrices[0]));
@@ -392,7 +392,7 @@ AddTechProfile.prototype.savePriceLocation = function() {
                 view.newTechProfile.data.latitude = results[0].geometry.location.lat();
                 saveCall();
             } else {
-                console.log('Error geocoding: ' + status);
+                console.error('Error geocoding: ' + status);
                 alert('Address error');
                 view.toggleLoading();
             }
@@ -430,7 +430,7 @@ AddTechProfile.prototype.renderAvailability = function() {
             availabilityArray, i, startMoment, endMoment;
 
         if (error) {
-            console.log('Error retrieving techprofile availability: ' + error);
+            console.error('Error retrieving techprofile availability: ' + error);
             return;
         }
 
@@ -502,7 +502,7 @@ AddTechProfile.prototype.saveAvailability = function() {
     view.newTechProfile.setAvailability(availabilityArray, alwaysFlag, function(error) {
         if (error) {
             alert('Error saving tech profile availability.');
-            console.log(error);
+            console.error(error);
             return;
         }
         view.toggleLoading();
@@ -540,7 +540,7 @@ AddTechProfile.prototype.handleNext = function(event) {
                 view.submerchantFormVC.submitForm(function(error) {
                     view.toggleLoading();
                     if (error) {
-                        console.log(error);
+                        console.error(error);
                         return;
                     }
                     view.submerchantFormVC.close();
@@ -554,7 +554,7 @@ AddTechProfile.prototype.handleNext = function(event) {
             }
             break;
         default:
-            console.log('Something went wrong.');
+            console.error('Something went wrong in addtechprofile viewcontroller method handleNext.');
     }
 };
 
