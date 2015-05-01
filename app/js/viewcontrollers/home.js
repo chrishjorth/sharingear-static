@@ -178,7 +178,7 @@ Home.prototype.handleLogin = function() {
             App.rootVC.header.render();
             return;
         }
-        console.log(error);
+        console.error(error);
     });
 };
 

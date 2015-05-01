@@ -45,7 +45,7 @@ AvailabilityCalendar.prototype.didInitialize = function() {
         view.setAlwaysState(result.alwaysFlag);
 
         if (error) {
-            console.log('Error retrieving gear availability: ' + error);
+            console.error('Error retrieving gear availability: ' + error);
             return;
         }
 
@@ -60,9 +60,6 @@ AvailabilityCalendar.prototype.didInitialize = function() {
                 endMoment: endMoment
             });
         }
-        //console.log('AVAILABILITY:');
-        //console.log(view.alwaysFlag);
-        //console.log(view.selections);
         view.renderSelections();
     };
 

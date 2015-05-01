@@ -138,7 +138,7 @@ EditTechProfile.prototype.handleSubmerchantFormSubmit = function(event) {
     if (view.submerchantFormVC.formSubmitted === false) {
         view.submerchantFormVC.submitForm(function(error) {
             if (error) {
-                console.log('Error submitting form: ' + error);
+                console.error('Error submitting form: ' + error);
                 return;
             }
 
@@ -240,7 +240,7 @@ EditTechProfile.prototype.populatePricing = function() {
     var view = this;
     Localization.convertPrices([this.techProfile.data.price_a, this.techProfile.data.price_b, this.techProfile.data.price_c], this.techProfile.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert prices: ' + error);
+            console.error('Could not convert prices: ' + error);
             return;
         }
         $('#price_a', view.$element).val(Math.ceil(convertedPrices[0]));
@@ -264,7 +264,7 @@ EditTechProfile.prototype.populatePriceSuggestions = function() {
     }
     Localization.convertPrices([suggestionA, suggestionB, suggestionC], 'EUR', App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert price suggestions: ' + error);
+            console.error('Could not convert price suggestions: ' + error);
             return;
         }
         $('#edittechprofile-price_a-suggestion', view.$element).html(Math.ceil(convertedPrices[0]));
@@ -329,7 +329,7 @@ EditTechProfile.prototype.handleSave = function(event) {
         view.techProfile.setAvailability(availabilityArray, alwaysFlag, function(error) {
             if (error) {
                 alert('Error saving availability.');
-                console.log(error);
+                console.error(error);
                 view.toggleLoading();
             }
         });
@@ -431,7 +431,7 @@ EditTechProfile.prototype.handleSave = function(event) {
         view.techProfile.save(function(error) {
             if (error) {
                 alert('Error updating technician profile.');
-                console.log(error);
+                console.error(error);
                 view.toggleLoading();
                 return;
             }

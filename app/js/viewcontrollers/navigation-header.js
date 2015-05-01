@@ -162,7 +162,7 @@ NavigationHeader.prototype.handleLogin = function(event, callback) {
             view.render();
         } else {
             alert('Could not connect to Facebook.');
-            console.log(error);
+            console.error(error);
         }
 
         if (callback && typeof callback === 'function') {

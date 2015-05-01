@@ -117,21 +117,21 @@ AddGear.prototype.populatePriceSuggestions = function() {
     }
     Localization.convertPrice(suggestionA, App.user.data.currency, function(error, convertedPrice) {
         if (error) {
-            console.log('Could not convert price: ' + error);
+            console.error('Could not convert price: ' + error);
             return;
         }
         $('#addgear-price_a-suggestion', view.$element).html(Math.ceil(convertedPrice));
     });
     Localization.convertPrice(suggestionB, App.user.data.currency, function(error, convertedPrice) {
         if (error) {
-            console.log('Could not convert price: ' + error);
+            console.error('Could not convert price: ' + error);
             return;
         }
         $('#addgear-price_b-suggestion', view.$element).html(Math.ceil(convertedPrice));
     });
     Localization.convertPrice(suggestionC, App.user.data.currency, function(error, convertedPrice) {
         if (error) {
-            console.log('Could not convert price: ' + error);
+            console.error('Could not convert price: ' + error);
             return;
         }
         $('#addgear-price_c-suggestion', view.$element).html(Math.ceil(convertedPrice));
@@ -401,7 +401,7 @@ AddGear.prototype.handleImageUpload = function(event) {
         var $thumbList, html;
         if (error) {
             alert('Error uploading file.');
-            console.log(error);
+            console.error(error);
             view.toggleLoading();
             return;
         }
@@ -576,7 +576,7 @@ AddGear.prototype.savePriceLocation = function() {
 
                 saveCall();
             } else {
-                console.log('Error geocoding: ' + status);
+                console.error('Error geocoding: ' + status);
                 alert('Address error');
                 view.toggleLoading();
             }
@@ -613,7 +613,7 @@ AddGear.prototype.renderAvailability = function() {
             availabilityArray, i, startMoment, endMoment;
 
         if (error) {
-            console.log('Error retrieving van availability: ' + error);
+            console.error('Error retrieving van availability: ' + error);
             return;
         }
 
@@ -686,7 +686,7 @@ AddGear.prototype.saveAvailability = function() {
     view.newGear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
         if (error) {
             alert('Error saving gear availability.');
-            console.log(error);
+            console.error(error);
             return;
         }
         view.toggleLoading();
@@ -727,7 +727,7 @@ AddGear.prototype.handleNext = function(event) {
                 view.submerchantFormVC.submitForm(function(error) {
                     view.toggleLoading();
                     if (error) {
-                        console.log(error);
+                        console.error(error);
                         return;
                     }
                     view.submerchantFormVC.close();
@@ -740,7 +740,7 @@ AddGear.prototype.handleNext = function(event) {
             }
             break;
         default:
-            console.log('Something went wrong.');
+            console.error('Something went wrong in addgear viewcontroller method handleNext.');
     }
 };
 

@@ -118,7 +118,7 @@ AddVan.prototype.populatePriceSuggestions = function() {
     }
     Localization.convertPrices([suggestionA, suggestionB, suggestionC], 'EUR', App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert price suggestions: ' + error);
+            console.error('Could not convert price suggestions: ' + error);
             return;
         }
         $('#addvan-price_a-suggestion', view.$element).html(Math.ceil(convertedPrices[0]));
@@ -295,7 +295,7 @@ AddVan.prototype.handleImageUpload = function(event) {
         var $thumbList, html;
         if (error) {
             alert('Error uploading file.');
-            console.log(error);
+            console.error(error);
             view.toggleLoading();
             return;
         }
@@ -464,7 +464,7 @@ AddVan.prototype.savePriceLocation = function() {
                 view.newVan.data.latitude = results[0].geometry.location.lat();
                 saveCall();
             } else {
-                console.log('Error geocoding: ' + status);
+                console.error('Error geocoding: ' + status);
                 alert('Address error');
                 view.toggleLoading();
             }
@@ -501,7 +501,7 @@ AddVan.prototype.renderAvailability = function() {
             availabilityArray, i, startMoment, endMoment;
 
         if (error) {
-            console.log('Error retrieving van availability: ' + error);
+            console.error('Error retrieving van availability: ' + error);
             return;
         }
 
@@ -574,7 +574,7 @@ AddVan.prototype.saveAvailability = function() {
     view.newVan.setAvailability(availabilityArray, alwaysFlag, function(error) {
         if (error) {
             alert('Error saving van availability.');
-            console.log(error);
+            console.error(error);
             return;
         }
         view.toggleLoading();
@@ -615,7 +615,7 @@ AddVan.prototype.handleNext = function(event) {
                 view.submerchantFormVC.submitForm(function(error) {
                     view.toggleLoading();
                     if (error) {
-                        console.log(error);
+                        console.error(error);
                         return;
                     }
                     view.submerchantFormVC.close();
@@ -628,7 +628,7 @@ AddVan.prototype.handleNext = function(event) {
             }
             break;
         default:
-            console.log('Something went wrong.');
+            console.error('Something went wrong in addvan viewcontroller method handleNext.');
     }
 };
 

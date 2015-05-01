@@ -98,7 +98,7 @@ BookingRequest.prototype.renderPricing = function() {
     var view = this;
     Localization.convertPrices([this.passedData.price_a, this.passedData.price_b, this.passedData.price_c], this.passedData.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Error converting prices: ' + error);
+            console.error('Error converting prices: ' + error);
             return;
         }
         $('.price_a', view.$element).html(Math.ceil(convertedPrices[0]));
@@ -152,7 +152,7 @@ BookingRequest.prototype.calculatePrice = function() {
     Localization.convertPrices([this.passedData.price_a, this.passedData.price_b, this.passedData.price_c], this.passedData.currency, App.user.data.currency, function(error, convertedPrices) {
         var price;
         if (error) {
-            console.log('Error converting prices: ' + error);
+            console.error('Error converting prices: ' + error);
             return;
         }
         price = months * Math.ceil(convertedPrices[2]) + weeks * Math.ceil(convertedPrices[1]) + days * Math.ceil(convertedPrices[0]);

@@ -30,7 +30,7 @@ TechProfileList.prototype.search = function(location, gear, daterange, callback)
     }
     this.get('/roadies/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback([]);
         } else {
             view.loadFromArray(searchResults);
@@ -43,7 +43,7 @@ TechProfileList.prototype.getUserTechProfiles = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/roadies', function(error, userGear) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback([]);
         } else {
             view.loadFromArray(userGear);
@@ -56,7 +56,7 @@ TechProfileList.prototype.getUserTechProfileRentals = function(userID, callback)
     var view = this;
     this.get('/users/' + userID + '/roadierentals', function(error, userHires) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback([]);
         } else {
             view.loadFromArray(userHires);

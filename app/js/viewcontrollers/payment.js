@@ -87,7 +87,7 @@ Payment.prototype.didInitialize = function() {
     Localization.convertPrices([this.booking.data.price_a, this.booking.data.price_b, this.booking.data.price_c], this.booking.data.currency, App.user.data.currency, function(error, convertedPrices, rate) {
         var price;
         if (error) {
-            console.log('Error converting prices: ' + error);
+            console.error('Error converting prices: ' + error);
             return;
         }
         price = months * Math.ceil(convertedPrices[2]) + weeks * Math.ceil(convertedPrices[1]) + days * Math.ceil(convertedPrices[0]);
@@ -364,11 +364,11 @@ Payment.prototype.handleNext = function(event) {
     if (needToUpdateUser === true) {
         App.user.update(function(error) {
             if (error) {
-                console.log('Error updating user: ' + error);
+                console.error('Error updating user: ' + error);
                 return;
             }
             if (App.user.data.hasWallet === false) {
-                console.log('Error creating wallet for user.');
+                console.error('Error creating wallet for user.');
                 return;
             }
             view.processPayment(cardNumber, expirationDate, CSC);
@@ -402,7 +402,7 @@ Payment.prototype.processPayment = function(cardNumber, expirationDate, CSC) {
     };
     card.registerCard(App.user.data.id, cardData, function(error, cardId) {
         if (error) {
-            console.log(error);
+            console.error(error);
             alert('Error processing card information.');
             view.resetPayButton();
             return;
@@ -410,7 +410,7 @@ Payment.prototype.processPayment = function(cardNumber, expirationDate, CSC) {
         //Pre-authorize the card for the withdrawal
         view.booking.createBooking(cardId, function(error) {
             if (error) {
-                console.log('Error creating booking: ' + error);
+                console.error('Error creating booking: ' + error);
                 view.resetPayButton();
                 return;
             }

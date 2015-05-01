@@ -100,7 +100,7 @@ DashboardProfile.prototype.handleImageUpload = function(event) {
 
         if (error) {
             alert('Error uploading file.');
-            console.log(error);
+            console.error(error);
             return;
         }
         App.user.data.image_url = url;
@@ -153,7 +153,7 @@ DashboardProfile.prototype.handleSave = function(event) {
         $('#saveButton', view.$element).text('Save');
 
         if (error) {
-            console.log(error);
+            console.error(error);
             return;
         }
         $('#saveSuccessDiv', view.$element).html('Your profile has been updated.');

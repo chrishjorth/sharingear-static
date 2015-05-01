@@ -178,7 +178,7 @@ EditGear.prototype.handleSubmerchantFormSubmit = function(event) {
         if (view.submerchantFormVC.formSubmitted === false) {
             view.submerchantFormVC.submitForm(function(error) {
                 if (error) {
-                    console.log('Error submitting form: ' + error);
+                    console.error('Error submitting form: ' + error);
                     return;
                 }
                 view.renderAvailability();
@@ -260,7 +260,7 @@ EditGear.prototype.populatePricing = function() {
     var view = this;
     Localization.convertPrices([this.gear.data.price_a, this.gear.data.price_b, this.gear.data.price_c], this.gear.data.currency, App.user.data.currency, function(error, convertedPrices) {
         if (error) {
-            console.log('Could not convert prices: ' + error);
+            console.error('Could not convert prices: ' + error);
             return;
         }
         $('#price_a', view.$element).val(Math.ceil(convertedPrices[0]));
@@ -286,21 +286,21 @@ EditGear.prototype.populatePriceSuggestions = function() {
     }
     Localization.convertPrice(suggestionA, App.user.data.currency, function(error, convertedPrice) {
         if (error) {
-            console.log('Could not convert price: ' + error);
+            console.error('Could not convert price: ' + error);
             return;
         }
         $('#editgear-price_a-suggestion').html(Math.ceil(convertedPrice));
     });
     Localization.convertPrice(suggestionB, App.user.data.currency, function(error, convertedPrice) {
         if (error) {
-            console.log('Could not convert price: ' + error);
+            console.error('Could not convert price: ' + error);
             return;
         }
         $('#editgear-price_b-suggestion').html(Math.ceil(convertedPrice));
     });
     Localization.convertPrice(suggestionC, App.user.data.currency, function(error, convertedPrice) {
         if (error) {
-            console.log('Could not convert price: ' + error);
+            console.error('Could not convert price: ' + error);
             return;
         }
         $('#editgear-price_c-suggestion').html(Math.ceil(convertedPrice));
@@ -367,18 +367,16 @@ EditGear.prototype.handleImageUpload = function(event) {
     view.gear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
         var $thumbList, html;
         $('#editgear-form-imageupload').val('');
+        view.toggleLoading();
         if (error) {
             alert('Error uploading file.');
-            console.log(error);
-            view.toggleLoading();
+            console.error(error);
             return;
         }
 
         $thumbList = $('#editgear-photos-form .thumb-list-container ul', view.$element);
         html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
         $thumbList.append(html);
-
-        view.toggleLoading();
     });
 };
 
@@ -421,7 +419,7 @@ EditGear.prototype.handleSave = function(event) {
         view.gear.setAvailability(App.user.data.id, availabilityArray, alwaysFlag, function(error) {
             if (error) {
                 alert('Error saving availability.');
-                console.log(error);
+                console.error(error);
                 view.toggleLoading();
             }
         });
@@ -527,7 +525,7 @@ EditGear.prototype.handleSave = function(event) {
         view.gear.save(App.user.data.id, function(error) {
             if (error) {
                 alert('Error updating gear.');
-                console.log(error);
+                console.error(error);
                 view.toggleLoading();
                 return;
             }

@@ -19,7 +19,7 @@ if (IS_PRODUCTION === true) {
     API_URL = 'https://api.sharingear.com';
 }
 
-// API_URL = 'http://localhost:1338'; //Uncomment for testing local API
+//API_URL = 'http://localhost:1338'; //Uncomment for testing local API
 
 isProduction = function() {
     return (this.IS_PRODUCTION === true);

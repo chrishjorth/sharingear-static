@@ -136,7 +136,7 @@ TechProfile.prototype.update = function(userID, callback) {
     var model = this;
     this.get('/roadies/' + this.data.id, function(error, techProfile) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }
@@ -155,7 +155,7 @@ TechProfile.prototype.getAvailability = function(callback) {
     }
     this.get('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', function(error, result) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }
@@ -174,7 +174,7 @@ TechProfile.prototype.setAvailability = function(availabilityArray, alwaysFlag, 
     };
     this.post('/users/' + App.user.data.id + '/roadies/' + this.data.id + '/availability', postData, function(error) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback(error);
             return;
         }

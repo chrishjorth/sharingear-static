@@ -31,7 +31,7 @@ VanList.prototype.search = function(location, gear, daterange, callback) {
     }
     this.get('/vans/search/' + location + '/' + gear + '/' + daterange, function(error, searchResults) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback([]);
         } else {
             view.loadFromArray(searchResults);
@@ -44,7 +44,7 @@ VanList.prototype.getUserVans = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/vans', function(error, userGear) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback([]);
         } else {
             view.loadFromArray(userGear);
@@ -57,7 +57,7 @@ VanList.prototype.getUserVanRentals = function(userID, callback) {
     var view = this;
     this.get('/users/' + userID + '/vanrentals', function(error, userRentals) {
         if (error) {
-            console.log(error);
+            console.error(error);
             callback([]);
         } else {
             view.loadFromArray(userRentals);

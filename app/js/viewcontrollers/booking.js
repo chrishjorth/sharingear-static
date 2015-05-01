@@ -70,7 +70,7 @@ Booking.prototype.didInitialize = function() {
         var start_time, end_time, price, fee, total;
 
         if (error) {
-            console.log('Error retrieving booking: ' + error);
+            console.error('Error retrieving booking: ' + error);
             return;
         }
 
@@ -107,7 +107,7 @@ Booking.prototype.didInitialize = function() {
         view.peerUser.getPublicInfo(function(error) {
             var userData = view.peerUser.data;
             if (error) {
-                console.log('Error retrieving user info: ' + error);
+                console.error('Error retrieving user info: ' + error);
                 return;
             }
             _.extend(view.templateParameters, {
@@ -206,7 +206,7 @@ Booking.prototype.handleDeny = function(event) {
     view.booking.data.booking_status = 'denied';
     view.booking.update(App.user.data.id, function(error) {
         if (error) {
-            console.log(error);
+            console.error(error);
             alert('Error updating booking.');
             return;
         } else {
@@ -226,7 +226,7 @@ Booking.prototype.handleConfirm = function(event) {
     view.booking.data.booking_status = 'accepted';
     view.booking.update(App.user.data.id, function(error) {
         if (error) {
-            console.log(error);
+            console.error(error);
             alert('Error updating booking.');
             view.toggleLoading($('#booking-confirm-btn', view.$element), 'Confirm');
             return;
@@ -246,15 +246,13 @@ Booking.prototype.handleEnd = function(event) {
     view.toggleLoading($('#booking-end-btn', view.$element), 'End booking');
     view.booking.data.booking_status = (view.passedData.mode === 'owner' ? 'owner-returned' : 'renter-returned');
     view.booking.update(App.user.data.id, function(error) {
+        view.toggleLoading($('#booking-end-btn', view.$element), 'End booking');
         if (error) {
-            console.log(error);
+            console.error(error);
             alert('Error updating booking.');
-            view.toggleLoading($('#booking-end-btn', view.$element), 'End booking');
             return;
-        } else {
-            view.toggleLoading($('#booking-end-btn', view.$element), 'End booking');
-            App.router.closeModalView();
-        }
+        }   
+        App.router.closeModalView();
     });
 };
 
@@ -267,7 +265,7 @@ Booking.prototype.handleClose = function(event) {
         view.booking.data.booking_status = 'ended-denied';
         view.booking.update(App.user.data.id, function(error) {
             if (error) {
-                console.log('Error updating booking status: ' + error);
+                console.error('Error updating booking status: ' + error);
             }
         });
     }
