@@ -196,21 +196,21 @@ PickupDeliveryCalendar.prototype.populateMonthCalendar = function(moment, $calen
 
             if (this.pickupActive === true && this.pickupDate !== null) {
                 //We need to granulate to day, as pickupDate might have a pickup time set
-                if (iteratorMoment.isSame(this.pickupDate, 'day') === true && iteratorMoment.isSame(this.pickupDate, 'month') === true && iteratorMoment.isSame(this.pickupDate, 'year') === true) {
+                if (iteratorMoment.isSame(this.pickupDate, 'day') === true && iteratorMoment.isSame(this.pickupDate, 'month') === true && iteratorMoment.isSame(this.pickupDate, 'year') === true && iteratorMoment.isSame(moment, 'month') === true) {
                     $dayBox.addClass('selected');
                 }
             }
             if (this.pickupActive === false && this.deliveryDate !== null) {
-                if (iteratorMoment.isSame(this.pickupDate, 'day') === true && iteratorMoment.isSame(this.pickupDate, 'month') === true && iteratorMoment.isSame(this.pickupDate, 'year') === true) {
+                if (iteratorMoment.isSame(this.pickupDate, 'day') === true && iteratorMoment.isSame(this.pickupDate, 'month') === true && iteratorMoment.isSame(this.pickupDate, 'year') === true && iteratorMoment.isSame(moment, 'month') === true) {
                     $dayBox.addClass('pickup');
                 }
 
-                if (iteratorMoment.isAfter(this.pickupDate, 'day') === true && iteratorMoment.isBefore(this.deliveryDate, 'day') === true && iteratorMoment.month() === this.displayedDeliveryMonth.month()) {
+                if (iteratorMoment.isAfter(this.pickupDate, 'day') === true && iteratorMoment.isBefore(this.deliveryDate, 'day') === true && iteratorMoment.month() === this.displayedDeliveryMonth.month() && iteratorMoment.isSame(moment, 'month') === true) {
                     $dayBox.addClass('selected');
                 }
 
                 //We need to granulate to day, as deliveryDate might have a delivery time set
-                if (iteratorMoment.isSame(this.deliveryDate, 'day') === true && iteratorMoment.isSame(this.deliveryDate, 'month') === true && iteratorMoment.isSame(this.deliveryDate, 'year') === true) {
+                if (iteratorMoment.isSame(this.deliveryDate, 'day') === true && iteratorMoment.isSame(this.deliveryDate, 'month') === true && iteratorMoment.isSame(this.deliveryDate, 'year') === true && iteratorMoment.isSame(moment, 'month') === true) {
                     $dayBox.addClass('selected');
                 }
             }
