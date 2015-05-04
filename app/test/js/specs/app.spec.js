@@ -48,7 +48,7 @@ describe('App', function() {
 
     it('Can initialize Sharingear', function(done) {
         var spec = this;
-        this.loginSpy = sinon.stub(User.prototype, 'login', function(callback) {
+        this.restoreLoginSpy = sinon.stub(User.prototype, 'restoreLogin', function(callback) {
             callback({
                 status: null //We simulate the situation of a user that is not logged in. The initialization of Sharingear is the same anyhow for this module.
             });
@@ -62,13 +62,13 @@ describe('App', function() {
             sinon.assert.calledOnce(spec.FacebookLoadStub);
             
             expect(App.user instanceof User).to.equal(true);
-            sinon.assert.calledOnce(spec.loginSpy);
+            sinon.assert.calledOnce(spec.restoreLoginSpy);
             
             sinon.assert.calledOnce(spec.ContentClassificationStub);
             
             sinon.assert.calledOnce(spec.setUserLocationSpy);
             
-            User.prototype.login.restore();
+            User.prototype.restoreLogin.restore();
             Localization.fetch.restore();
             ContentClassification.getClassification.restore();
             done();

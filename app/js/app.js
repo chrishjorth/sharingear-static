@@ -41,7 +41,7 @@ run = function(callback) {
     });
     this.user.initialize();
 
-    this.user.login(function(error) {
+    this.user.restoreLogin(function(error) {
         if (!error) {
             if (app.rootVC && app.rootVC !== null) {
                 app.rootVC.refresh();
