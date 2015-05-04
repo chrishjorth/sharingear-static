@@ -175,11 +175,12 @@ NavigationHeader.prototype.handleLogin = function(event, callback) {
  * @param title: the text to display as title, if null title is set to default
  */
 NavigationHeader.prototype.setTitle = function(title) {
+    console.log("SET TITLE");
     if (!title || title === null) {
         title = defaultTitle;
     }
     this.title = title;
-    this._updateTitle();
+    //this._updateTitle();
 };
 
 NavigationHeader.prototype._updateTitle = function() {
