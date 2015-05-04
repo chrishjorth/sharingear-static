@@ -40,6 +40,7 @@
  *	8.s VAN PROFILE
  *	8.t TECH PROFILE
  *	8.u INDEX
+ *	8.v NAVIGATION-HEADER
  * 9. HELPERS
  * 10. ICONS
  *
@@ -3747,6 +3748,11 @@ text-align: left;
 }
 .sg-loader .col-xs-12 {
 	margin-top: 20%;
+}
+
+/*------ 8.v NAVIGATION-HEADER ------*/
+.sg-navbar .sg-navbar-dropdownmenu .sg-btn-invisible {
+	padding: 6px 10px 6px 10px;
 }
 
 /******* 9. HELPERS *******/
