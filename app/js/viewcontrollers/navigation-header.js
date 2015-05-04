@@ -179,7 +179,7 @@ NavigationHeader.prototype.setTitle = function(title) {
         title = defaultTitle;
     }
     this.title = title;
-    //this._updateTitle();
+    this._updateTitle();
 };
 
 NavigationHeader.prototype._updateTitle = function() {
