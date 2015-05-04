@@ -59,14 +59,16 @@ DashboardSettings.prototype.didRender = function() {
     $('#dashboard-settings-address', this.$element).val(userData.address);
     $('#dashboard-settings-postalcode', view.$element).val(userData.postal_code);
     $('#dashboard-settings-form #hometown', this.$element).val(userData.city);
-
+    
+    
     $countriesSelect = $('#dashboard-settings-country', this.$element);
     this.populateCountries($countriesSelect);
     $countriesSelect.val(userData.country);
 
 
     $('#dashboard-settings-phone', view.$element).val(userData.phone);
-
+    $('#dashboard-settings-email', view.$element).val(userData.email);
+    
     $nationalitiesSelect = $('#dashboard-settings-nationalities', this.$element);
     this.populateCountries($nationalitiesSelect);
     $nationalitiesSelect.val(userData.nationality);
@@ -205,6 +207,7 @@ DashboardSettings.prototype.handleSave = function(event) {
         postal_code: $('#dashboard-settings-postalcode', view.$element).val(),
         country: $('#dashboard-settings-country', view.$element).val(),
         phone: $('#dashboard-settings-phone', view.$element).val(),
+        email: $('#dashboard-settings-email', view.$element).val(),
         nationality: $('#dashboard-settings-nationalities', view.$element).val(),
         vatnum: $('#dashboard-settings-vatnum', this.$element).val()
     };
@@ -236,6 +239,11 @@ DashboardSettings.prototype.handleSave = function(event) {
 
     if ($('#dashboard-settings-form #dashboard-settings-phone', view.$element).val() === '') {
         alert('The phone field is required.');
+        return;
+    }
+
+    if ($('#dashboard-settings-form #dashboard-settings-email', view.$element).val() === '') {
+        alert('The email field is required.');
         return;
     }
 

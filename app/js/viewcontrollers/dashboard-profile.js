@@ -58,9 +58,11 @@ DashboardProfile.prototype.didRender = function() {
         App.rootVC.header.setTitle('Your profile');
     }
 
+
     $('#dashboard-profile-form #name', this.$element).val(userData.name);
     $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
-    $('#dashboard-profile-form #email', this.$element).val(userData.email);
+    $('#dashboard-profile-form #dashboard-profile-band', this.$element).val(userData.band_name);
+    $('#dashboard-profile-form #dashboard-profile-company', this.$element).val(userData.company_name);
 
     $.when(this.profileImgLoaded).then(function() {
         var $profilePic = $('#dashboard-profile-pic', view.$element),
@@ -123,7 +125,8 @@ DashboardProfile.prototype.handleSave = function(event) {
     saveData = {
         name: $('#dashboard-profile-form #name', view.$element).val(),
         surname: $('#dashboard-profile-form #surname', view.$element).val(),
-        email: $('#dashboard-profile-form #email', view.$element).val(),
+        band_name: $('#dashboard-profile-form #dashboard-profile-band', this.$element).val(),
+        company_name: $('#dashboard-profile-form #dashboard-profile-company', this.$element).val()
     };
 
     if ($('#dashboard-profile-form #name', view.$element).val() === '') {
@@ -133,11 +136,6 @@ DashboardProfile.prototype.handleSave = function(event) {
 
     if ($('#dashboard-profile-form #surname', view.$element).val() === '') {
         alert('The surname field is required.');
-        return;
-    }
-
-    if ($('#dashboard-profile-form #email', view.$element).val() === '') {
-        alert('The email field is required.');
         return;
     }
 
