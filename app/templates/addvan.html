@@ -1,216 +1,212 @@
 <div class="container-fluid view sidebarpanel-container addvan">
-
-  <div class="row addvan-panel" id="addvan-panel-type">
-    <form id="addvan-form-type" onsubmit="return false;">
-      <div class="col-sm-3 sg-darkgray-bg">
-        <div class="vanbuttonlist-container"></div>
-      </div>
-      <div class="col-sm-9">
-        <div class="row">
-          <div class="col-sm-12 hint1 text-center">
-            Please select the van or bus type.
-          </div>
-        </div>
-
-        
-        <div class="row">
-          <div class="form-group">
-            <div class="col-sm-3">
-              <label for="addvan-form-model">Model:</label>
+    <div class="row addvan-panel" id="addvan-panel-type">
+        <form id="addvan-form-type" onsubmit="return false;">
+            <div class="col-sm-3 sg-darkgray-bg">
+                <div class="vanbuttonlist-container"></div>
             </div>
             <div class="col-sm-9">
-              <input type="text" id="addvan-form-model" class="form-control">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            <div class="col-sm-3">
-              <label for="addgvan-form-description">Description:</label>
-            </div>
-            <div class="col-sm-9">
-              <textarea class="form-control" id="addvan-form-description"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="row" id="addvan-accessories">
-          <div class="form-group">
-            <div class="col-sm-3">
-              <label for="addvan-form-accessories">Accessories:</label>
-            </div>
-            <div class="col-sm-9">
-              <div id="addvan-accessories-container"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-
-  <div class="row addvan-panel hidden" id="addvan-panel-photos">
-  <div class="col-sm-12 full-height">
-    <div class="row full-height">
-      <div class="col-sm-3 full-height sg-darkgray-bg">
-        <div class="vertical-align">
-            <div class="row text-center"><img src="images/important.png"/></div>
-            <div class="row text-center submerchant-sidebar-text">
-              <div class="col-sm-12">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>
-            </div>  
-        </div>
-      </div>
-      <div class="col-sm-9 full-height">
-        
-      <form id="dashboard-addvanphotos-form" onsubmit="return false;">
-        <div class="col-sm-12">
-          <div class="row">
-            <div class="col-sm-12 addphotos-center">
-              <div class="form-group">
-                  <div class="row"><img src="images/add-photos.png"/></div>
-                  <div class="row"><label class="sg-gray-headline" for="dashboard-addvanphotos-form-imageupload">Add a photo or two!</label></div>
-                  <div class="row">
-                    <div class="addphotos-upload sg-btn-square sg-blue-bg">
-                      <span>Add Photos</span>  
-                      <input type="file" id="dashboard-addvanphotos-form-imageupload" name="vanpic">
+                <div class="row">
+                    <div class="col-sm-12 hint1 text-center">
+                        Please select the van or bus type.
                     </div>
-                  </div>
-              </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label for="addvan-form-model">Model:</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" id="addvan-form-model" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label for="addgvan-form-description">Description:</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="addvan-form-description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="addvan-accessories">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label for="addvan-form-accessories">Accessories:</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <div id="addvan-accessories-container"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="thumb-list-container">
-                <ul>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-  
-      </div>
+        </form>
     </div>
-  </div>
-  </div>
-
-  <div class="row addvan-panel hidden" id="addvan-panel-pricelocation">
-    <div class="col-sm-12 full-height">
-      <div class="row full-height">
-        <div class="col-sm-3 full-height sg-darkgray-bg">
-          
-          <div class="vertical-align">
-            <div class="row text-center"><img src="images/light_bulb.png"/></div>
-            <div class="row text-center submerchant-sidebar-text">
-              <div class="col-sm-12" style="margin-bottom: 15px;">For this type of vehicle we recommend the following prices.</div>
-              <div class="row">
-                <div class="col-xs-6 text-right">Daily:</div>
-                <div class="col-xs-6 text-left"><span id="addvan-price_a-suggestion"></span> {{currency}}</div>
-              </div>
-              <div class="row">
-                <div class="col-xs-6 text-right">Weekly:</div>
-                <div class="col-xs-6 text-left"><span id="addvan-price_b-suggestion"></span> {{currency}}</div>
-              </div>
-              <div class="row">
-                <div class="col-xs-6 text-right">Monthly:</div>
-                <div class="col-xs-6 text-left"><span id="addvan-price_c-suggestion"></span> {{currency}}</div>
-              </div>
-            </div>    
-          </div>
-        </div>
-        <div class="col-sm-9 full-height">
-          <form id="dashboard-addvanprice-form" onsubmit="return false;">
-      <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-6 form-left">
-            <div class="form-group">
-              <label for="price_a">Daily rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_a" id="price_a" class="form-control price"></div>
-              <label for="price_b">Weekly rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_b" id="price_b" class="form-control price"></div>
-              <label for="price_c">Monthly rental price ({{currency}}):</label>
-              <div class="form-control-price"><input type="text" name="price_c" id="price_c" class="form-control price"></div>
+    <div class="row addvan-panel hidden" id="addvan-panel-photos">
+        <div class="col-sm-12 full-height">
+            <div class="row full-height">
+                <div class="col-sm-3 full-height sg-darkgray-bg helper-box">
+                    <div class="vertical-align">
+                        <div class="row text-center"><img src="images/important.png" /></div>
+                        <div class="row text-center submerchant-sidebar-text">
+                            <div class="col-sm-12">Sharingear accounts are intended for members to upload original photos that they themselves have created. Due to copyright issues we do not permit photos taken from Google or any other third party service.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9 full-height">
+                    <form id="dashboard-addvanphotos-form" onsubmit="return false;">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12 addphotos-center">
+                                    <div class="form-group">
+                                        <div class="row"><img src="images/add-photos.png" /></div>
+                                        <div class="row">
+                                            <label class="sg-gray-headline" for="dashboard-addvanphotos-form-imageupload">Add a photo or two!</label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="addphotos-upload sg-btn-square sg-blue-bg">
+                                                <span>Add Photos</span>
+                                                <input type="file" id="dashboard-addvanphotos-form-imageupload" name="vanpic">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="thumb-list-container">
+                                        <ul>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </div>
-
-          <div class="col-sm-6 form-right">
-            <div class="form-group">
-              <label for="dashboard-addvanprice-address">Street</label>
-              <input type="text" name="address" id="dashboard-addvanprice-address" class="form-control">
-              <label for="dashboard-addvanprice-postalcode">Postal code</label>
-              <input type="text" name="postalcode" id="dashboard-addvanprice-postalcode" class="form-control">
-              <label for="dashboard-addvanprice-city">City</label>
-              <input type="text" name="city" id="dashboard-addvanprice-city" class="form-control">
-              <!--<label for="dashboard-addvanprice-region">Region</label>
+        </div>
+    </div>
+    <div class="row addvan-panel hidden" id="addvan-panel-pricelocation">
+        <div class="col-sm-12 full-height">
+            <div class="row full-height">
+                <div class="col-sm-3 full-height sg-darkgray-bg helper-box">
+                    <div class="vertical-align">
+                        <div class="row text-center"><img src="images/light_bulb.png" /></div>
+                        <div class="row text-center submerchant-sidebar-text">
+                            <div class="col-sm-12" style="margin-bottom: 15px;">For this type of vehicle we recommend the following prices.</div>
+                            <div class="row">
+                                <div class="col-xs-6 text-right">Daily:</div>
+                                <div class="col-xs-6 text-left"><span id="addvan-price_a-suggestion"></span> {{currency}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 text-right">Weekly:</div>
+                                <div class="col-xs-6 text-left"><span id="addvan-price_b-suggestion"></span> {{currency}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 text-right">Monthly:</div>
+                                <div class="col-xs-6 text-left"><span id="addvan-price_c-suggestion"></span> {{currency}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9 full-height">
+                    <form id="dashboard-addvanprice-form" onsubmit="return false;">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-6 form-left">
+                                    <div class="form-group">
+                                        <label for="price_a">Daily rental price ({{currency}}):</label>
+                                        <div class="form-control-price">
+                                            <input type="text" name="price_a" id="price_a" class="form-control price">
+                                        </div>
+                                        <label for="price_b">Weekly rental price ({{currency}}):</label>
+                                        <div class="form-control-price">
+                                            <input type="text" name="price_b" id="price_b" class="form-control price">
+                                        </div>
+                                        <label for="price_c">Monthly rental price ({{currency}}):</label>
+                                        <div class="form-control-price">
+                                            <input type="text" name="price_c" id="price_c" class="form-control price">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 form-right">
+                                    <div class="form-group">
+                                        <label for="dashboard-addvanprice-address">Street</label>
+                                        <input type="text" name="address" id="dashboard-addvanprice-address" class="form-control">
+                                        <label for="dashboard-addvanprice-postalcode">Postal code</label>
+                                        <input type="text" name="postalcode" id="dashboard-addvanprice-postalcode" class="form-control">
+                                        <label for="dashboard-addvanprice-city">City</label>
+                                        <input type="text" name="city" id="dashboard-addvanprice-city" class="form-control">
+                                        <!--<label for="dashboard-addvanprice-region">Region</label>
               <input type="text" name="region" id="dashboard-addvanprice-region" class="form-control">-->
-              <label for="dashboard-addvanprice-country">Country</label>
-              <select name="country" id="dashboard-addvanprice-country" class="form-control">
-                <option value="">Select country</option>
-              </select>
+                                        <label for="dashboard-addvanprice-country">Country</label>
+                                        <select name="country" id="dashboard-addvanprice-country" class="form-control">
+                                            <option value="">Select country</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </div>
         </div>
-
-      </div>
-    </form>
-
-        </div>
-      </div>
-    </div>  
-  </div>
-
-  <div class="row addvan-panel hidden" id="addvan-panel-availability">
-    <div class="col-sm-12 submerchant-height">
-    <div class="row submerchant-height">
-      
-       <div id="addvan-darkgray-left" class="col-sm-3 sg-darkgray-bg submerchant-height">
-        <div class="vertical-align">
-            <div class="row text-center"><img src="images/submerchant.png"/></div>
-              <div class="row text-center submerchant-sidebar-text">
-                <div class="col-sm-12">In order to put your van up for rent we need some extra information about you so that we can pay you.</div>
-              </div>  
-        </div>
-      </div>
-
-      <div id="addvan-darkgray-left-calendar" class="col-sm-3 sg-darkgray-bg submerchant-height hidden">
-        <div class="vertical-align">
-            <div class="row text-center"><img src="images/submerchant.png"/></div>
-              <div class="row text-center submerchant-sidebar-text">
-                <div class="col-sm-12">In order to put your van up for rent, please select the period in which it will be available.</div>
-              </div>  
-        </div>
-      </div>
-
-    <div class="col-sm-9 submerchant-height" id="addvan-availability-calendar"></div>
-
-    </div>      
     </div>
-  </div>
-
-  <div class="row addvan-panel hidden" id="addvan-panel-final">
-    <div class="col-sm-12">
-      <div class="row">
-        <div class="col-sm-12"><h3 class="text-center">Vehicle added!</h3></div>
-      </div>
-      <div class="row actions">
-        <div class="col-sm-6"><button class="sg-btn-square sg-blue-bg sg-white profile-btn">View vehicle profile</button></div>
-        <div class="col-sm-6 right"><button class="sg-btn-square sg-blue-bg sg-white addmore-btn">Add more vans or busses</button></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row footer bs-reset">
-    <div class="col-sm-3">
-    </div>
-    <div class="col-sm-9 bs-reset">
-      <div class="row sg-modal-header">
-        <div class="col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center">
-          <button class="sg-btn-square sg-inherit-bg sg-blue cancel-btn">Cancel <i class="fa fa-times-circle"></i></button>
+    <div class="row addvan-panel hidden" id="addvan-panel-availability">
+        <div class="col-sm-12 submerchant-height">
+            <div class="row submerchant-height">
+                <div id="addvan-darkgray-left" class="col-sm-3 sg-darkgray-bg helper-box submerchant-height">
+                    <div class="vertical-align">
+                        <div class="row text-center"><img src="images/submerchant.png" /></div>
+                        <div class="row text-center submerchant-sidebar-text">
+                            <div class="col-sm-12">In order to put your van up for rent we need some extra information about you so that we can pay you.</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="addvan-darkgray-left-calendar" class="col-sm-3 sg-darkgray-bg helper-box submerchant-height hidden">
+                    <div class="vertical-align">
+                        <div class="row text-center"><img src="images/submerchant.png" /></div>
+                        <div class="row text-center submerchant-sidebar-text">
+                            <div class="col-sm-12">In order to put your van up for rent, please select the period in which it will be available.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9 submerchant-height" id="addvan-availability-calendar"></div>
+            </div>
         </div>
-        <div class="col-xs-8"><h2 class="text-center">Add vans &amp; busses</h2></div>
-        <div class="col-xs-2 col-sm-2 text-center">
-          <button class="sg-btn-square sg-white-bg sg-blue next-btn">Next <i class="fa fa-arrow-circle-right"></i></button>
-        </div>
-      </div>
     </div>
-  </div>
-
+    <div class="row addvan-panel hidden" id="addvan-panel-final">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="text-center">Vehicle added!</h3>
+                </div>
+            </div>
+            <div class="row actions">
+                <div class="col-sm-6">
+                    <button class="sg-btn-square sg-blue-bg sg-white profile-btn">View vehicle profile</button>
+                </div>
+                <div class="col-sm-6 right">
+                    <button class="sg-btn-square sg-blue-bg sg-white addmore-btn">Add more vans or busses</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row footer bs-reset">
+        <div class="col-sm-3">
+        </div>
+        <div class="col-sm-9 bs-reset">
+            <div class="row sg-modal-header">
+                <div class="col-xs-offset-0 col-xs-2 col-sm-offset-8 col-sm-2 text-center">
+                    <button class="sg-btn-square sg-inherit-bg sg-blue cancel-btn">Cancel <i class="fa fa-times-circle"></i></button>
+                </div>
+                <div class="col-xs-8">
+                    <h2 class="text-center">Add vans &amp; busses</h2></div>
+                <div class="col-xs-2 col-sm-2 text-center">
+                    <button class="sg-btn-square sg-white-bg sg-blue next-btn">Next <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
