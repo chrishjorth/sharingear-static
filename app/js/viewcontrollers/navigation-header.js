@@ -183,10 +183,16 @@ NavigationHeader.prototype.setTitle = function(title) {
 };
 
 NavigationHeader.prototype._updateTitle = function() {
+    var content = $('.sg-navbar-brand', this.$element).html(),
+        newContent;
     if (Utilities.isMobile() === true) {
-        $('.sg-navbar-brand', this.$element).html(this.title);
+        newContent = this.title;
     } else {
-        $('.sg-navbar-brand', this.$element).html(defaultTitle);
+        newContent = defaultTitle;
+    }
+    //We don't want unneccessary DOM rewrites
+    if (content !== newContent) {
+        $('.sg-navbar-brand', this.$element).html(newContent);
     }
 };
 
