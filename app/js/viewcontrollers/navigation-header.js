@@ -175,7 +175,6 @@ NavigationHeader.prototype.handleLogin = function(event, callback) {
  * @param title: the text to display as title, if null title is set to default
  */
 NavigationHeader.prototype.setTitle = function(title) {
-    console.log("SET TITLE");
     if (!title || title === null) {
         title = defaultTitle;
     }
@@ -184,10 +183,16 @@ NavigationHeader.prototype.setTitle = function(title) {
 };
 
 NavigationHeader.prototype._updateTitle = function() {
+    var content = $('.sg-navbar-brand', this.$element).html(),
+        newContent;
     if (Utilities.isMobile() === true) {
-        $('.sg-navbar-brand', this.$element).html(this.title);
+        newContent = this.title;
     } else {
-        $('.sg-navbar-brand', this.$element).html(defaultTitle);
+        newContent = defaultTitle;
+    }
+    //We don't want unneccessary DOM rewrites
+    if (content !== newContent) {
+        $('.sg-navbar-brand', this.$element).html(newContent);
     }
 };
 
