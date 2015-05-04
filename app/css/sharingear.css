@@ -204,6 +204,27 @@ body {
 		display: none;
 	}
 }
+
+.desktop-signin-signup-menu-text{
+	display: none;
+	line-height: 43px;
+	font-weight: 700;
+	font-size: 14px;
+	text-transform: uppercase;
+	float: right;
+}
+
+@media (min-width: 768px) {
+	.desktop-signin-signup-menu-text {
+		display: block;
+		line-height: 43px;
+		font-weight: 700;
+		font-size: 14px;
+		text-transform: uppercase;
+		float: right;
+	}
+}
+
 .modal-view-container .sg-navbar {
 	width: 100%;
 	border: none;

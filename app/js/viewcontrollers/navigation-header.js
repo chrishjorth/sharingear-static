@@ -33,6 +33,8 @@ NavigationHeader.prototype.didRender = function() {
 
     this.setupEvent('click', '.sg-navbar-toggle', this, this.handleNavbarToggle);
     this.setupEvent('click', '#navigation-header-login', this, this.handleLogin);
+    this.setupEvent('click', '#navigation-header-signin', this, this.handleLogin);
+    this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
     this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
 };
 
@@ -59,6 +61,10 @@ NavigationHeader.prototype.populateMainMenu = function() {
         }
         $menuList = $('.list-group', $slideMenu);
         html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+    
+        $('#navigation-header-signin-signup', this.$element).hide();
+        $('#navigation-header-dropdownmenu-left', this.$element).show();
+    
     } else {
         this.isMobile = false;
         $dropdownMenu.removeClass('hidden');
@@ -66,6 +72,14 @@ NavigationHeader.prototype.populateMainMenu = function() {
             $slideMenu.addClass('hidden');
         }
         $menuList = $('.list-group', $dropdownMenu);
+
+        if (App.user && App.user.data.id !== null) {
+            $('#navigation-header-signin-signup', this.$element).hide();
+            $('#navigation-header-dropdownmenu-left', this.$element).show();
+        }else{
+            $('#navigation-header-signin-signup', this.$element).show();
+            $('#navigation-header-dropdownmenu-left', this.$element).hide();
+        }
     }
 
     html += '<a href="#search" class="list-group-item"><i class="fa-search icon-dashboard-search"></i><div class="list-group-item-text">Search</div></a>';
@@ -83,7 +97,8 @@ NavigationHeader.prototype.populateMainMenu = function() {
         html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
         html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
     } else {
-        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-login"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Login</div></a>';
+        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-signin"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Sign in</div></a>';
+        html += '<a href="javascript:;" class="list-group-item" id="navigation-header-signup"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Sign up</div></a>';
     }
 
     $menuList.html(html);

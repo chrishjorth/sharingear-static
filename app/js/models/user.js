@@ -37,6 +37,8 @@ User.prototype.didInitialize = function() {
             currency: 'EUR',
             time_zone: 'UTC',
             vatnum: '',
+            band_name: '',
+            company_name: '',
             currentCity: '' //Detected location
         };
     }
@@ -183,6 +185,7 @@ User.prototype.update = function(callback) {
             callback('Error updating user: ' + error);
             return;
         }
+           
         _.extend(user.data, data);
         Localization.setCurrentTimeZone(user.data.time_zone);
         callback(null);
