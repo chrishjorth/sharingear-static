@@ -889,7 +889,7 @@ body {
 	transition-property: left;
 }
 
-/*------ 2.a TRANSITION POSITIONS ------*/
+/*------ 3.a TRANSITION POSITIONS ------*/
 .slide-right {
 	left: 80%;
 	position: fixed;
@@ -902,6 +902,25 @@ body {
 /**
  * These are the stylings for the view elements that repeat across views. They should define the general look of Sharingear views.
  */
+.vertical-align {
+	position: relative;
+	top: 50%;
+}
+@media (min-width: 768px){
+	.vertical-align {
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		-o-transform: translateY(-50%);
+		transform: translateY(-50%);
+	}
+}
+
+.helper-box {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
 .sg-navbar-brand img {
 	height: 34px;
 	margin-left: auto;
@@ -2543,22 +2562,6 @@ text-align: left;
 	margin-top: 30px;
 	margin-right: 20px;
 	margin-left: 20px;
-}
-
-/* TODO: Rename or add parent class, vertical align what? */
-.vertical-align {
-	position: relative;
-	top: 50%;
-	transform: translateY(0%);
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-@media (min-width: 768px){
-	.vertical-align {
-		transform: translateY(-50%);
-		padding: 0;
-	}
 }
 
 /*------ 8.g GEAR PROFILE ------*/
