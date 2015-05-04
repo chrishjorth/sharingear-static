@@ -19,10 +19,7 @@ var _ = require('underscore'),
     ContentClassification = require('../models/contentclassification.js'),
     TechProfile = require('../models/techprofile.js'),
 
-    countryDefault = 'Select country:',
-    geocoder;
-
-geocoder = new GoogleMaps.Geocoder();
+    countryDefault = 'Select country:';
 
 function AddTechProfile(options) {
     ViewController.call(this, options);
@@ -62,6 +59,8 @@ AddTechProfile.prototype.didInitialize = function() {
     this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
     this.alwaysFlag = 1; //New tech profiles are always available by default
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
+
+    this.geocoder = new GoogleMaps.Geocoder();
 };
 
 AddTechProfile.prototype.didRender = function() {
@@ -280,6 +279,16 @@ AddTechProfile.prototype.savePriceLocation = function() {
         return;
     }
 
+    //We cannot proceed without Google Maps anyhow
+    if(GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.savePriceLocation();
+        }, 10);
+        return;
+    }
+
+    view.geocoder = new GoogleMaps.Geocoder();
+
     currentAddress = this.newTechProfile.address;
     currentPostalCode = this.newTechProfile.postal_code;
     currentCity = this.newTechProfile.city;
@@ -384,7 +393,7 @@ AddTechProfile.prototype.savePriceLocation = function() {
 
     if (isLocationSame === false) {
         addressOneliner = newTechProfileData.address + ', ' + newTechProfileData.postal_code + ' ' + newTechProfileData.city + ', ' + newTechProfileData.country;
-        geocoder.geocode({
+        view.geocoder.geocode({
             'address': addressOneliner
         }, function(results, status) {
             if (status === GoogleMaps.GeocoderStatus.OK) {

@@ -63,8 +63,19 @@ ajajFileUpload = function(url, secretProof, fileName, file, callback) {
 };
 
 getCityFromCoordinates = function(latitude, longitude, callback) {
-    var geocoder = new GoogleMaps.Geocoder(),
-        latLng = new GoogleMaps.LatLng(latitude, longitude);
+    var utilities = this,
+        geocoder, latLng;
+
+    if (GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            utilities.getCityFromCoordinates(latitude, longitude, callback);
+        }, 10);
+        return;
+    }
+
+    geocoder = new GoogleMaps.Geocoder();
+    latLng = new GoogleMaps.LatLng(latitude, longitude);
+
     //Use Google Geocoder to translate the coordinates to city name
     geocoder.geocode({
         'latLng': latLng

@@ -23,7 +23,16 @@ AboutUs.prototype.didRender = function() {
 };
 
 AboutUs.prototype.renderMap = function() {
-    var mapOptions, latlong, marker;
+    var view = this,
+        mapOptions, latlong, marker;
+
+    if (GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.renderMap();
+        }, 10);
+        return;
+    }
+
     latlong = new GoogleMaps.LatLng(55.6805421, 12.6037284);
     mapOptions = {
         center: latlong,

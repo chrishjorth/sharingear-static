@@ -19,10 +19,7 @@ var _ = require('underscore'),
     ContentClassification = require('../models/contentclassification.js'),
     Van = require('../models/van.js'),
 
-    countryDefault = 'Select country:',
-    geocoder;
-
-geocoder = new GoogleMaps.Geocoder();
+    countryDefault = 'Select country:';
 
 function AddVan(options) {
     ViewController.call(this, options);
@@ -351,6 +348,16 @@ AddVan.prototype.savePriceLocation = function() {
         return;
     }
 
+    //We cannot proceed without Google Maps anyhow
+    if(GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.savePriceLocation();
+        }, 10);
+        return;
+    }
+
+    view.geocoder = new GoogleMaps.Geocoder();
+
     currentAddress = this.newVan.address;
     currentPostalCode = this.newVan.postal_code;
     currentCity = this.newVan.city;
@@ -456,7 +463,7 @@ AddVan.prototype.savePriceLocation = function() {
 
     if (isLocationSame === false) {
         addressOneliner = newVanData.address + ', ' + newVanData.postal_code + ' ' + newVanData.city + ', ' + newVanData.country;
-        geocoder.geocode({
+        view.geocoder.geocode({
             'address': addressOneliner
         }, function(results, status) {
             if (status === GoogleMaps.GeocoderStatus.OK) {

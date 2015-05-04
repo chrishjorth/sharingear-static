@@ -15,9 +15,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
-    MessagePopup = require('../popups/messagepopup.js'),
-
-    geocoder = new GoogleMaps.Geocoder();
+    MessagePopup = require('../popups/messagepopup.js');
 
 function SubmerchantRegistration(options) {
     ViewController.call(this, options);
@@ -27,6 +25,7 @@ SubmerchantRegistration.prototype = new ViewController();
 
 SubmerchantRegistration.prototype.didInitialize = function() {
     this.formSubmitted = false;
+    this.geocoder = new GoogleMaps.Geocoder();
 };
 
 SubmerchantRegistration.prototype.didRender = function() {
@@ -186,6 +185,15 @@ SubmerchantRegistration.prototype.submitForm = function(callback) {
         tempUser = {},
         day, month, year, addressOneliner, $select, content, iban, swift, ibanRegEx, swiftRegEx, accountNumber, accountNumberRegEx, aba, abaRegEx;
 
+    if (GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.submitForm(callback);
+        }, 10);
+        return;
+    }
+
+    view.geocoder = new GoogleMaps.Geocoder();
+
     _.extend(tempUser, user);
 
     if (user.birthdate === null) {
@@ -302,7 +310,7 @@ SubmerchantRegistration.prototype.submitForm = function(callback) {
     }
 
     addressOneliner = tempUser.address + ', ' + tempUser.postal_code + ' ' + tempUser.city + ', ' + tempUser.country;
-    geocoder.geocode({
+    view.geocoder.geocode({
         'address': addressOneliner
     }, function(results, status) {
         if (status === GoogleMaps.GeocoderStatus.OK) {

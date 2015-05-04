@@ -15,9 +15,7 @@ var _ = require('underscore'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
-    ContentClassification = require('../models/contentclassification.js'),
-
-    geocoder = new GoogleMaps.Geocoder();
+    ContentClassification = require('../models/contentclassification.js');
 
 function EditTechProfile(options) {
     ViewController.call(this, options);
@@ -40,6 +38,8 @@ EditTechProfile.prototype.didInitialize = function() {
     this.templateParameters.currency = App.user.data.currency;
 
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
+
+    this.geocoder = new GoogleMaps.Geocoder();
 };
 
 EditTechProfile.prototype.didRender = function() {
@@ -307,6 +307,15 @@ EditTechProfile.prototype.handleSave = function(event) {
         return;
     }
 
+    if (GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.handleSave(event);
+        }, 10);
+        return;
+    }
+
+    view.geocoder = new GoogleMaps.Geocoder();
+
     view.toggleLoading();
 
     //If user has not registered as submerchant, the calendar view is not loaded
@@ -447,7 +456,7 @@ EditTechProfile.prototype.handleSave = function(event) {
 
     if (isLocationSame === false) {
         addressOneliner = updatedVanData.address + ', ' + updatedVanData.postal_code + ' ' + updatedVanData.city + ', ' + updatedVanData.country;
-        geocoder.geocode({
+        view.geocoder.geocode({
             'address': addressOneliner
         }, function(results, status) {
             if (status === GoogleMaps.GeocoderStatus.OK) {

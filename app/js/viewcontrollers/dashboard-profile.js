@@ -13,6 +13,7 @@ var _ = require('underscore'),
     Config = require('../config.js'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
     Localization = require('../models/localization.js');
 
@@ -52,7 +53,8 @@ DashboardProfile.prototype.didInitialize = function() {
 DashboardProfile.prototype.didRender = function() {
     var view = this,
         userData = this.user.data,
-        birthdate, $countriesSelect, $nationalitiesSelect;
+        userClassification = ContentClassification.data.userClassification, 
+        i ,userType, birthdate, $countriesSelect, $nationalitiesSelect;
 
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your profile');
@@ -60,7 +62,8 @@ DashboardProfile.prototype.didRender = function() {
 
     $('#dashboard-profile-form #name', this.$element).val(userData.name);
     $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
-    $('#dashboard-profile-form #email', this.$element).val(userData.email);
+    $('#dashboard-profile-form #dashboard-profile-band', this.$element).val(userData.band_name);
+    $('#dashboard-profile-form #dashboard-profile-company', this.$element).val(userData.company_name);
 
     $.when(this.profileImgLoaded).then(function() {
         var $profilePic = $('#dashboard-profile-pic', view.$element),
@@ -123,7 +126,8 @@ DashboardProfile.prototype.handleSave = function(event) {
     saveData = {
         name: $('#dashboard-profile-form #name', view.$element).val(),
         surname: $('#dashboard-profile-form #surname', view.$element).val(),
-        email: $('#dashboard-profile-form #email', view.$element).val(),
+        band_name: $('#dashboard-profile-form #dashboard-profile-band', this.$element).val(),
+        company_name: $('#dashboard-profile-form #dashboard-profile-company', this.$element).val()
     };
 
     if ($('#dashboard-profile-form #name', view.$element).val() === '') {
@@ -133,11 +137,6 @@ DashboardProfile.prototype.handleSave = function(event) {
 
     if ($('#dashboard-profile-form #surname', view.$element).val() === '') {
         alert('The surname field is required.');
-        return;
-    }
-
-    if ($('#dashboard-profile-form #email', view.$element).val() === '') {
-        alert('The email field is required.');
         return;
     }
 
