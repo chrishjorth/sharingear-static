@@ -242,8 +242,17 @@ GearProfile.prototype.renderPricing = function() {
 };
 
 GearProfile.prototype.renderMap = function() {
-    var gear = this.gear.data,
+    var view = this,
+        gear = this.gear.data,
         mapOptions, latlong, marker;
+
+    if (GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.renderMap();
+        }, 10);
+        return;
+    }
+
     if (gear.latitude !== null && gear.longitude !== null) {
         latlong = new GoogleMaps.LatLng(gear.latitude, gear.longitude);
         mapOptions = {
@@ -319,7 +328,7 @@ GearProfile.prototype.handleFacebookShare = function(event) {
     });
 };
 
-GearProfile.prototype.handlePictureClick = function(event) {
+GearProfile.prototype.handlePictureClick = function() {
     var pictureURL = $(this).children('img').attr('src');
     var imagePopup = new ImagePopup();
 

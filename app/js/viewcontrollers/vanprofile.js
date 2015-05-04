@@ -238,8 +238,17 @@ VanProfile.prototype.renderPricing = function() {
 };
 
 VanProfile.prototype.renderMap = function() {
-    var van = this.van.data,
+    var view = this,
+        van = this.van.data,
         mapOptions, latlong, marker;
+
+    if (GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.renderMap();
+        }, 10);
+        return;
+    }
+
     if (van.latitude !== null && van.longitude !== null) {
         latlong = new GoogleMaps.LatLng(van.latitude, van.longitude);
         mapOptions = {
@@ -299,7 +308,7 @@ VanProfile.prototype.handleEditProfile = function(event) {
     App.router.openModalView('editvan', view.van);
 };
 
-VanProfile.prototype.handlePictureClick = function(event) {
+VanProfile.prototype.handlePictureClick = function() {
     var pictureURL = $(this).children('img').attr('src');
     var imagePopup = new ImagePopup();
 

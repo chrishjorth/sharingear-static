@@ -80,7 +80,7 @@ TechProfile.prototype.didInitialize = function() {
         }
 
         view.techProfile.update(App.user.data.id, function(error) {
-            var publicInfoDeferred = $.Deferred(), 
+            var publicInfoDeferred = $.Deferred(),
                 availabilityDeferred = $.Deferred();
 
             if (error) {
@@ -208,8 +208,17 @@ TechProfile.prototype.renderPricing = function() {
 };
 
 TechProfile.prototype.renderMap = function() {
-    var techProfile = this.techProfile.data,
+    var view = this,
+        techProfile = this.techProfile.data,
         mapOptions, latlong, marker;
+
+    if (GoogleMaps.isLoaded() === false) {
+        setTimeout(function() {
+            view.renderMap();
+        }, 10);
+        return;
+    }
+
     if (techProfile.latitude !== null && techProfile.longitude !== null) {
         latlong = new GoogleMaps.LatLng(techProfile.latitude, techProfile.longitude);
         mapOptions = {
@@ -309,8 +318,8 @@ TechProfile.prototype.renderTechProfileList = function() {
                 return html + '<a href="#techprofile/' + entry.id + '">' + entry.roadie_type + '</a>  ';
             });
         });
-    }else{
-        $('.techprofilelistborder',view.$element).addClass('hidden');
+    } else {
+        $('.techprofilelistborder', view.$element).addClass('hidden');
     }
 
 };
