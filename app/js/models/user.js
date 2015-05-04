@@ -69,7 +69,7 @@ User.prototype.login = function(callback) {
     }
 
     //We need to make sure Facebook has not changed the status on their side.
-    this.getLoginStatus(function(response) {
+    //this.getLoginStatus(function(response) {
         if (user.fbStatus !== 'connected') {
             FB.login(function(response) {
                 var error;
@@ -99,7 +99,7 @@ User.prototype.login = function(callback) {
         } else {
             user.loginToBackend(response, callback);
         }
-    });
+    //});
 };
 
 User.prototype.loginToBackend = function(FBResponse, callback) {
@@ -155,13 +155,22 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
             'has_bank': user.data.hasBank
         });
 
-
-
         Localization.setCurrentTimeZone(user.data.time_zone);
 
         if (callback && typeof callback === 'function') {
             callback(null, data);
         }
+    });
+};
+
+User.prototype.restoreLogin = function(callback) {
+    var user = this;
+    this.getLoginStatus(function(response) {
+        if (user.fbStatus !== 'connected') {
+            callback('User not logged in to FB.');
+            return;
+        }
+        user.loginToBackend(response, callback);
     });
 };
 
