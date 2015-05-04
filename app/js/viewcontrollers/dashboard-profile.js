@@ -13,6 +13,7 @@ var _ = require('underscore'),
     Config = require('../config.js'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
+    ContentClassification = require('../models/contentclassification.js'),
 
     Localization = require('../models/localization.js');
 
@@ -52,12 +53,12 @@ DashboardProfile.prototype.didInitialize = function() {
 DashboardProfile.prototype.didRender = function() {
     var view = this,
         userData = this.user.data,
-        birthdate, $countriesSelect, $nationalitiesSelect;
+        userClassification = ContentClassification.data.userClassification, 
+        i ,userType, birthdate, $countriesSelect, $nationalitiesSelect;
 
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your profile');
     }
-
 
     $('#dashboard-profile-form #name', this.$element).val(userData.name);
     $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
