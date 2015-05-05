@@ -54,6 +54,7 @@ User.prototype.getLoginStatus = function(callback) {
     }
     FB.getLoginStatus(function(response) {
         user.fbStatus = response.status;
+        user.authResponse = response.authResponse;
         if (callback && typeof callback === 'function') {
             callback(response);
         }
@@ -73,7 +74,6 @@ User.prototype.login = function(callback) {
         if (user.fbStatus !== 'connected') {
             FB.login(function(response) {
                 var error;
-                //console.log(response);
                 if (response.status === 'connected') {
                     error = null;
                     user.loginToBackend(response, callback);
@@ -97,7 +97,10 @@ User.prototype.login = function(callback) {
                 scope: 'email'
             });
         } else {
-            user.loginToBackend(response, callback);
+            user.loginToBackend({
+                status: user.fbStatus,
+                authResponse: user.authResponse
+            }, callback);
         }
     //});
 };
