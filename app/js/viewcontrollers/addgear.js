@@ -735,14 +735,12 @@ AddGear.prototype.handleNext = function(event) {
                 view.toggleLoading();
                 view.submerchantFormVC.submitForm(function(error) {
                     view.toggleLoading();
-                    if (error) {
-                        console.error(error);
-                        return;
+                    if (!error) {
+                        view.submerchantFormVC.close();
+                        view.submerchantFormVC = null;
+                        view.renderAvailability();
+                        window.mixpanel.track('View addgear-availability');
                     }
-                    view.submerchantFormVC.close();
-                    view.submerchantFormVC = null;
-                    view.renderAvailability();
-                    window.mixpanel.track('View addgear-availability');
                 });
             } else {
                 view.saveAvailability();

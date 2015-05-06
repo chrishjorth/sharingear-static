@@ -175,14 +175,13 @@ EditGear.prototype.handleSubmerchantFormSubmit = function(event) {
     var view = event.data,
         $button = $(this);
     $button.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
-        if (view.submerchantFormVC.formSubmitted === false) {
-            view.submerchantFormVC.submitForm(function(error) {
-                if (error) {
-                    console.error('Error submitting form: ' + error);
-                    return;
-                }
+    if (view.submerchantFormVC.formSubmitted === false) {
+        view.submerchantFormVC.submitForm(function(error) {
+            $button.html('Submit');
+            if (!error) {
                 view.renderAvailability();
-            });
+            }
+        });
     }
 };
 

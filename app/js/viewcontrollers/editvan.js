@@ -75,7 +75,6 @@ EditVan.prototype.didRender = function() {
     this.setupEvent('change', '#editvan-photos-form-imageupload', this, this.handleImageUpload);
     this.setupEvent('change', '#van-delivery-available-checkbox', this, this.handleDeliveryCheckbox);
     this.setupEvent('change', '.price', this, this.handlePriceChange);
-    this.setupEvent('change', '#editvan-subtype', this, this.handleSubtypeChange);
     this.setupEvent('click', '#editvan-cancel-symbol', this, this.handleCancel);
     this.setupEvent('click', '#editvan-submerchantform-submit', this, this.handleSubmerchantFormSubmit);
 };
@@ -164,14 +163,12 @@ EditVan.prototype.handleSubmerchantFormSubmit = function(event) {
     var view = event.data,
         $button = $(this);
     $button.html('<i class="fa fa-circle-o-notch fa-fw fa-spin">');
-        
     if (view.submerchantFormVC.formSubmitted === false) {
         view.submerchantFormVC.submitForm(function(error) {
-            if (error) {
-                console.error('Error submitting form: ' + error);
-                return;
+            $button.html('Submit');
+            if (!error) {
+                view.renderAvailability();
             }
-            view.renderAvailability();
         });
     }
 };
