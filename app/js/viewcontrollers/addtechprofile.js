@@ -280,7 +280,7 @@ AddTechProfile.prototype.savePriceLocation = function() {
     }
 
     //We cannot proceed without Google Maps anyhow
-    if(GoogleMaps.isLoaded() === false) {
+    if (GoogleMaps.isLoaded() === false) {
         setTimeout(function() {
             view.savePriceLocation();
         }, 10);
@@ -548,14 +548,12 @@ AddTechProfile.prototype.handleNext = function(event) {
                 view.toggleLoading();
                 view.submerchantFormVC.submitForm(function(error) {
                     view.toggleLoading();
-                    if (error) {
-                        console.error(error);
-                        return;
+                    if (!error) {
+                        view.submerchantFormVC.close();
+                        view.submerchantFormVC = null;
+                        view.renderAvailability();
+                        window.mixpanel.track('View addtechprofile-availability');
                     }
-                    view.submerchantFormVC.close();
-                    view.submerchantFormVC = null;
-                    view.renderAvailability();
-                    window.mixpanel.track('View addtechprofile-availability');
                 });
 
             } else {

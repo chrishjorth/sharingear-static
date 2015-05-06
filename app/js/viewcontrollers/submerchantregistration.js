@@ -200,6 +200,12 @@ SubmerchantRegistration.prototype.submitForm = function(callback) {
         day = $('#submerchantregistration-birthdate-date', view.$element).val();
         month = $('#submerchantregistration-birthdate-month', view.$element).val();
         year = $('#submerchantregistration-birthdate-year', view.$element).val();
+        //If only the day is set Moment initializes with default values, which are invalid for our purpose, so we do a preliminary check that all three have been selected.
+        if(day === '-' || month === '-' || year === '-') {
+            day = '-';
+            month = '-';
+            year = '-';
+        }
         tempUser.birthdate = (new Moment.tz(day + '/' + month + '/' + year, 'DD/MM/YYYY', Localization.getCurrentTimeZone())).format('YYYY-MM-DD');
     }
     if (user.address === null) {
@@ -317,7 +323,7 @@ SubmerchantRegistration.prototype.submitForm = function(callback) {
             _.extend(user, tempUser);
             view.acceptTerms(callback);
         } else {
-            alert('The address is not valid!');
+            alert('The address is not recognized by Google Maps and hence not valid.');
             callback('Invalid address.');
         }
     });
