@@ -33,7 +33,13 @@ function ViewController(options) {
  */
 ViewController.prototype.initialize = function() {
     this.setSubPath();
+
+    //In case initialize is being called a second time and events have been registered.
+    if(this.userEvents && this.userEvents.length > 0) {
+        this.unbindEvents();
+    }
     this.userEvents = [];
+
     this.events = {
         close: []
     };
