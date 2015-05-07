@@ -127,7 +127,8 @@ DashboardProfile.prototype.handleSave = function(event) {
         name: $('#dashboard-profile-form #name', view.$element).val(),
         surname: $('#dashboard-profile-form #surname', view.$element).val(),
         band_name: $('#dashboard-profile-form #dashboard-profile-band', this.$element).val(),
-        company_name: $('#dashboard-profile-form #dashboard-profile-company', this.$element).val()
+        company_name: $('#dashboard-profile-form #dashboard-profile-company', this.$element).val(),
+        bio: $('#dashboard-profile-form #bio', this.$element).val()
     };
 
     if ($('#dashboard-profile-form #name', view.$element).val() === '') {
