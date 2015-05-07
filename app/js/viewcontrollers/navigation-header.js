@@ -61,10 +61,10 @@ NavigationHeader.prototype.populateMainMenu = function() {
         }
         $menuList = $('.list-group', $slideMenu);
         html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
-    
+
         $('#navigation-header-signin-signup', this.$element).hide();
         $('#navigation-header-dropdownmenu-left', this.$element).show();
-    
+
     } else {
         this.isMobile = false;
         $dropdownMenu.removeClass('hidden');
@@ -76,7 +76,7 @@ NavigationHeader.prototype.populateMainMenu = function() {
         if (App.user && App.user.data.id !== null) {
             $('#navigation-header-signin-signup', this.$element).hide();
             $('#navigation-header-dropdownmenu-left', this.$element).show();
-        }else{
+        } else {
             $('#navigation-header-signin-signup', this.$element).show();
             $('#navigation-header-dropdownmenu-left', this.$element).hide();
         }
@@ -139,6 +139,7 @@ NavigationHeader.prototype.handleNavbarToggle = function(event) {
 
     $navbar = $('.sg-navbar', view.$element);
     $tabbar = $('.sg-tabbar-container', $viewContainer);
+
     if ($tabbar.css('position') !== 'fixed') {
         //We are not in a mobile situation
         $tabbar = $('');
