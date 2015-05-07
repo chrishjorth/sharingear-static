@@ -120,6 +120,12 @@ a:focus {
 	outline: none;
 }
 
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+    border: none;
+}
+
 /******* 2. VIEW STRUCTURE *******/
 /**
  * These are rules that define the positioning of views and hence the appearance of navigation on the site.
