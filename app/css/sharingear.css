@@ -314,7 +314,7 @@ body {
 	height: 57px;
 	border: none;
 	color: #00aeff;
-	background-color: inherit;
+	background-color: transparent;
 	border-radius: 0;
 	box-shadow: none;
 	outline: none;
@@ -323,9 +323,9 @@ body {
 .sg-navbar-dropdownmenu .dropdown .btn:hover,
 .sg-navbar-dropdownmenu .dropdown .btn:active {
 	border: none;
-	color: #0397dc;
+	color: #00aeff;
 	/*background-color: inherit;*/
-	background-color: #ffffff;
+	background-color: transparent;
 	border-radius: 0;
 	box-shadow: none;
 }
@@ -340,7 +340,7 @@ body {
     float: left;
 }
 .sg-navbar-dropdownmenu .dropdown:hover .profile-pic {
-	border-color: #0397dc;
+	border-color: #00aeff;
 	float: left;
 }
 .sg-navbar-dropdownmenu .dropdown .menu-text {
@@ -1540,7 +1540,6 @@ button:active .sg-gray-bg {
 	padding: 0;
 	display: inline-block;
 	text-decoration: none;
-	/*text-align: center;*/
 	opacity: 1;
 }
 
