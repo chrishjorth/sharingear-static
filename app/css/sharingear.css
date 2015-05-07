@@ -1101,7 +1101,8 @@ body {
 }
 
 .sg-inherit-bg {
-	background-color: inherit;
+	/*background-color: inherit;*/
+	background-color: transparent;
 }
 
 .sg-black {
