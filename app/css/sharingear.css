@@ -150,6 +150,7 @@ a:focus {
 	overflow-x: hidden;
 	/*-webkit-overflow-scrolling: auto;*/
 	-webkit-overflow-scrolling: scroll;
+	-webkit-transform: translateZ(0);
 }
 @media (min-width: 768px) {
 	.view-container .view {
