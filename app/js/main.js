@@ -43,6 +43,11 @@ window.jQuery = $;
 console.log('Scripts loaded...');
 
 $(document).ready(function() {
+
+    $(document).on('scroll', function() {
+        console.log('SCROLLING...');
+    });
+
     //We need to ensure basic data structures get created with default values before the views start loading
     app.run(function() {
         console.log('App initialized.');
