@@ -140,6 +140,7 @@ a:focus {
 	min-height: 100%;
 	overflow-x: hidden;
 	/*-webkit-overflow-scrolling: auto;*/
+	overflow-y: scroll;
 	-webkit-overflow-scrolling: scroll;
 	background-color: #ffffff;
 }
@@ -149,6 +150,7 @@ a:focus {
 	width: 100%;
 	overflow-x: hidden;
 	/*-webkit-overflow-scrolling: auto;*/
+	overflow-y: scroll;
 	-webkit-overflow-scrolling: scroll;
 	-webkit-transform: translateZ(0);
 }
