@@ -142,6 +142,7 @@ a:focus {
 	/*-webkit-overflow-scrolling: auto;*/
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: scroll;
+	-webkit-transform: translateZ(0);
 	background-color: #ffffff;
 }
 .view-container .view {
