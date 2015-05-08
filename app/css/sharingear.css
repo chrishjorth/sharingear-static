@@ -139,7 +139,8 @@ a:focus {
 	width: 100%;
 	min-height: 100%;
 	overflow-x: hidden;
-	-webkit-overflow-scrolling: auto;
+	/*-webkit-overflow-scrolling: auto;*/
+	-webkit-overflow-scrolling: scroll;
 	background-color: #ffffff;
 }
 .view-container .view {
@@ -147,7 +148,8 @@ a:focus {
 	min-height: 100%;
 	width: 100%;
 	overflow-x: hidden;
-	-webkit-overflow-scrolling: auto;
+	/*-webkit-overflow-scrolling: auto;*/
+	-webkit-overflow-scrolling: scroll;
 }
 @media (min-width: 768px) {
 	.view-container .view {
