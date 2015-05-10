@@ -1642,6 +1642,15 @@ button:active .sg-gray-bg {
 	padding-right: 0;
 }
 
+.sg-navbar-back {
+	height: 44px;
+	min-width: 40px;
+	font-size: 32px;
+	line-height: 44px;
+	padding-left: 0;
+	padding-right: 0;
+}
+
 .sg-btn-round-gray {
 	-moz-appearance: none;
 	-webkit-appearance: none;
