@@ -137,6 +137,7 @@ TechProfile.prototype.didRender = function() {
 
     if (App.rootVC.header) {
         App.rootVC.header.setTitle(this.techProfile.data.roadie_type);
+        App.rootVC.header.enableBackButton();
     }
 
     this.renderPricing();

@@ -36,6 +36,7 @@ NavigationHeader.prototype.didRender = function() {
     this.setupEvent('click', '#navigation-header-signin', this, this.handleLogin);
     this.setupEvent('click', '#navigation-header-signup', this, this.handleLogin);
     this.setupEvent('click', '.sg-navbar-slidemenu .list-group-item', this, this.handleNavbarToggle);
+    this.setupEvent('click', '.sg-navbar-back', this, this.handleNavbarBack);
 };
 
 NavigationHeader.prototype.didResize = function(event) {
@@ -215,6 +216,22 @@ NavigationHeader.prototype._updateTitle = function() {
 NavigationHeader.prototype.changeActiveState = function($menuItem) {
     $('.list-group-item', this.$element).removeClass('list-group-item-selected');
     $menuItem.addClass('list-group-item-selected');
+};
+
+NavigationHeader.prototype.enableBackButton = function() {
+    if(App.router.canNavigateBack() === false) {
+        return;
+    }
+    
+    $('.sg-navbar-toggle', this.$element).addClass('hidden');
+    $('.sg-navbar-back', this.$element).removeClass('hidden');
+};
+
+NavigationHeader.prototype.handleNavbarBack = function(event) {
+    var view = event.data;
+    App.router.navigateBack();
+    $('.sg-navbar-back', view.$element).addClass('hidden');
+    $('.sg-navbar-toggle', view.$element).removeClass('hidden');
 };
 
 module.exports = NavigationHeader;

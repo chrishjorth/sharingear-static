@@ -11,6 +11,7 @@ var _ = require('underscore'),
 
     Config = require('../config.js'),
     ViewController = require('../viewcontroller.js'),
+    App = require('../app.js'),
 
     UserModel = require('../models/user.js'),
     GearList = require('../models/gearlist.js'),
@@ -87,6 +88,11 @@ User.prototype.didInitialize = function() {
 };
 
 User.prototype.didRender = function() {
+    if (App.rootVC !== null && App.rootVC.header) {
+        App.rootVC.header.setTitle('User');
+        App.rootVC.header.enableBackButton();
+    }
+
     this.renderProfilePic();
     this.renderTabs();
     this.populateGear();

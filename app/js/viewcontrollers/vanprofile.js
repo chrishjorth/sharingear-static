@@ -127,6 +127,7 @@ VanProfile.prototype.didRender = function() {
 
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle(this.van.data.van_type);
+        App.rootVC.header.enableBackButton();
     }
 
     this.renderPricing();

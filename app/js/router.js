@@ -18,6 +18,8 @@ var Router,
 	getRoute,
 	handleHashChange,
 	navigateTo,
+	canNavigateBack,
+	navigateBack,
 	openModalView,
 	openModalSiblingView,
 	closeModalView,
@@ -81,6 +83,14 @@ navigateTo = function(route, data, callback) {
 			callback();
 		}
 	});
+};
+
+canNavigateBack = function() {
+	return window.history.length > 1; //The length is the number of pages visited, if 1 then the user has only visited one page and hence there is no history to go back to
+};
+
+navigateBack = function() {
+	window.history.back();
 };
 
 openModalView = function(route, data, callback) {
@@ -147,6 +157,8 @@ Router = {
 	getRoute: getRoute,
 	handleHashChange: handleHashChange,
 	navigateTo: navigateTo,
+	canNavigateBack: canNavigateBack,
+	navigateBack: navigateBack,
 	openModalView: openModalView,
 	openModalSiblingView: openModalSiblingView,
 	closeModalView: closeModalView,

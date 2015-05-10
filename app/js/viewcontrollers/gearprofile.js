@@ -131,6 +131,7 @@ GearProfile.prototype.didRender = function() {
 
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle(this.gear.data.gear_type);
+        App.rootVC.header.enableBackButton();
     }
 
     this.renderPricing();
