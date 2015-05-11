@@ -394,6 +394,8 @@ AddGear.prototype.handleImageUpload = function(event) {
     var view = event.data,
         $file = $(this);
 
+    console.log('Uploading image...');
+
     view.toggleLoading();
 
     view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
@@ -404,6 +406,8 @@ AddGear.prototype.handleImageUpload = function(event) {
             view.toggleLoading();
             return;
         }
+
+        console.log('Image uploaded, displaying thumb.');
 
         $thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
         html = '<li><img src="' + url + '" alt="Gear thumb"></li>';
