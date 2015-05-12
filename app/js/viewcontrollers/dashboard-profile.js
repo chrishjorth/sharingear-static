@@ -8,14 +8,10 @@
 
 var _ = require('underscore'),
     $ = require('jquery'),
-    Moment = require('moment-timezone'),
 
-    Config = require('../config.js'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
-    ContentClassification = require('../models/contentclassification.js'),
-
-    Localization = require('../models/localization.js');
+    ContentClassification = require('../models/contentclassification.js');
 
 function DashboardProfile(options) {
     ViewController.call(this, options);
@@ -53,8 +49,7 @@ DashboardProfile.prototype.didInitialize = function() {
 
 DashboardProfile.prototype.didRender = function() {
     var view = this,
-        userData = this.user.data,
-        i ,userType, birthdate, $countriesSelect, $nationalitiesSelect;
+        userData = this.user.data;
 
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your profile');
@@ -88,21 +83,24 @@ DashboardProfile.prototype.didRender = function() {
 
 DashboardProfile.prototype.renderUserTypes = function() {
     var view = this,
-        userClassification = ContentClassification.data.userClassification, 
-        numberOfUserTypes = userClassification.length,
+        userClassification = ContentClassification.data.userClassification,
         html = '';
+
+    if(!userClassification) {
+        return;
+    }
 
     userClassification.forEach(function(entry){
         if (Array.isArray(view.user.data.user_types)) {
 
             if (view.user.data.user_types.indexOf(entry.user_type) > -1) {
-                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"checked> ' + entry.user_type + "<br>";
+                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"checked> ' + entry.user_type + '<br>';
             } else {
-                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"> ' + entry.user_type + "<br>";
+                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"> ' + entry.user_type + '<br>';
             }
 
         }else{
-                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"> ' + entry.user_type + "<br>";
+                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"> ' + entry.user_type + '<br>';
         }
     });
 
