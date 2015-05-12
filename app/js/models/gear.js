@@ -96,6 +96,9 @@ Gear.prototype.createGear = function createGear(user, callback) {
  */
 Gear.prototype.uploadImage = function(file, filename, userID, callback) {
     var model = this;
+
+    //console.log('Model uploading image');
+
     //Get filename and secret from backend
     this.get('/users/' + userID + '/newfilename/' + filename, function(error, data) {
         if (error) {
@@ -104,6 +107,9 @@ Gear.prototype.uploadImage = function(file, filename, userID, callback) {
             }
             return;
         }
+
+        //console.log('got filename');
+
         Utilities.ajajFileUpload('fileupload.php', data.secretProof, data.fileName, file, function(error, data) {
             var postData;
             if (error) {
@@ -112,6 +118,9 @@ Gear.prototype.uploadImage = function(file, filename, userID, callback) {
                 }
                 return;
             }
+
+            //console.log('File uploaded, sending url to backend...');
+
             //Add image url to backend
             postData = {
                 user_id: userID,
@@ -126,6 +135,9 @@ Gear.prototype.uploadImage = function(file, filename, userID, callback) {
                     }
                     return;
                 }
+
+                //console.log('Backend updated...');
+
                 model.data.images = images.images;
                 callback(null, data.url);
             });
