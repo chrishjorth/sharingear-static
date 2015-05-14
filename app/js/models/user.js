@@ -39,6 +39,7 @@ User.prototype.didInitialize = function() {
             vatnum: '',
             band_name: '',
             company_name: '',
+            user_types: null,
             currentCity: '' //Detected location
         };
     }

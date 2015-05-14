@@ -8,14 +8,10 @@
 
 var _ = require('underscore'),
     $ = require('jquery'),
-    Moment = require('moment-timezone'),
 
-    Config = require('../config.js'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
-    ContentClassification = require('../models/contentclassification.js'),
-
-    Localization = require('../models/localization.js');
+    ContentClassification = require('../models/contentclassification.js');
 
 function DashboardProfile(options) {
     ViewController.call(this, options);
@@ -48,18 +44,18 @@ DashboardProfile.prototype.didInitialize = function() {
         profileImgLoaded.resolve();
     };
     this.profileImg.src = this.user.data.image_url;
+
 };
 
 DashboardProfile.prototype.didRender = function() {
     var view = this,
-        userData = this.user.data,
-        userClassification = ContentClassification.data.userClassification, 
-        i ,userType, birthdate, $countriesSelect, $nationalitiesSelect;
+        userData = this.user.data;
 
     if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Your profile');
     }
 
+    view.renderUserTypes();
     $('#dashboard-profile-form #name', this.$element).val(userData.name);
     $('#dashboard-profile-form #surname', this.$element).val(userData.surname);
     $('#dashboard-profile-form #dashboard-profile-band', this.$element).val(userData.band_name);
@@ -83,6 +79,32 @@ DashboardProfile.prototype.didRender = function() {
     this.setupEvent('click', '.dashboard-profile-pic-upload-btn', this, this.handleUploadPicButton);
     this.setupEvent('change', '#profile-pic', this, this.handleImageUpload);
     this.setupEvent('submit', '#dashboard-profile-form', this, this.handleSave);
+};
+
+DashboardProfile.prototype.renderUserTypes = function() {
+    var view = this,
+        userClassification = ContentClassification.data.userClassification,
+        html = '';
+
+    if(!userClassification) {
+        return;
+    }
+
+    userClassification.forEach(function(entry){
+        if (Array.isArray(view.user.data.user_types)) {
+
+            if (view.user.data.user_types.indexOf(entry.user_type) > -1) {
+                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"checked> ' + entry.user_type + '<br>';
+            } else {
+                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"> ' + entry.user_type + '<br>';
+            }
+
+        }else{
+                html += '<input type="checkbox" name="' + entry.user_type + '" value="' + entry.user_type + '"> ' + entry.user_type + '<br>';
+        }
+    });
+
+    $('#dashboard-profile-usertypes', view.$element).html(html);
 };
 
 DashboardProfile.prototype.handleUploadPicButton = function(event) {
@@ -117,19 +139,27 @@ DashboardProfile.prototype.handleImageUpload = function(event) {
 
 DashboardProfile.prototype.handleSave = function(event) {
     var view = event.data,
+        userTypeArray = [],
         saveData;
 
     if (view.isSaving === true) {
         return;
     }
 
+    //Push the checked checkboxes to the array
+    $('#dashboard-profile-usertypes input:checked', view.$element).each(function() {
+        userTypeArray.push(this.name);
+    });
+
     saveData = {
         name: $('#dashboard-profile-form #name', view.$element).val(),
         surname: $('#dashboard-profile-form #surname', view.$element).val(),
         band_name: $('#dashboard-profile-form #dashboard-profile-band', this.$element).val(),
         company_name: $('#dashboard-profile-form #dashboard-profile-company', this.$element).val(),
-        bio: $('#dashboard-profile-form #bio', this.$element).val()
+        bio: $('#dashboard-profile-form #bio', this.$element).val(),
+        user_types: userTypeArray
     };
+
 
     if ($('#dashboard-profile-form #name', view.$element).val() === '') {
         alert('The name field is required.');
