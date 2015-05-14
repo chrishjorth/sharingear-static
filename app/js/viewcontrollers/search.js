@@ -489,13 +489,13 @@ Search.prototype.populateSearchBlock = function(searchResults, $searchBlock, cal
         _.extend(workingSearchResults, defaultSearchResults, searchResult);
         if (tab === 'gear') {
             workingSearchResults.item_type = workingSearchResults.brand + ' ' + workingSearchResults.subtype;
-            workingSearchResults.href = '#gearprofile/' + workingSearchResults.id;
+            workingSearchResults.href = '#!gearprofile/' + workingSearchResults.id;
         } else if (tab === 'vans') {
             workingSearchResults.item_type = workingSearchResults.van_type;
-            workingSearchResults.href = '#vanprofile/' + workingSearchResults.id;
+            workingSearchResults.href = '#!vanprofile/' + workingSearchResults.id;
         } else {
             workingSearchResults.item_type = workingSearchResults.roadie_type;
-            workingSearchResults.href = '#techprofile/' + workingSearchResults.id;
+            workingSearchResults.href = '#!techprofile/' + workingSearchResults.id;
         }
         html += searchResultTemplate(workingSearchResults);
 

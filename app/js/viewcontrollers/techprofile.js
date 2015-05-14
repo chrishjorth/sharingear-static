@@ -283,7 +283,7 @@ TechProfile.prototype.handleFacebookShare = function(event) {
     var view = event.data;
     var url, description;
 
-    url = 'https://www.sharingear.com/#techprofile/' + view.techProfile.data.id;
+    url = 'https://www.sharingear.com/#!techprofile/' + view.techProfile.data.id;
     description = 'Check out this ' + view.techProfile.data.roadie_type + ' on Sharingear!' + url;
 
     FB.ui({
@@ -297,7 +297,7 @@ TechProfile.prototype.handleFacebookShare = function(event) {
 TechProfile.prototype.handleTwitterShare = function(event) {
     var view = event.data,
         twtTitle = 'Check out this ' + view.techProfile.data.roadie_type + ' on www.sharingear.com',
-        twtUrl = 'https://www.sharingear.com/#techprofile/' + view.techProfile.data.id,
+        twtUrl = 'https://www.sharingear.com/#!techprofile/' + view.techProfile.data.id,
         maxLength = 140 - (twtUrl.length + 1),
         twtLink;
 
@@ -316,7 +316,7 @@ TechProfile.prototype.renderTechProfileList = function() {
         container.html('');
         techProfile.techprofilelist.forEach(function(entry) {
             container.html(function(_, html) {
-                return html + '<a href="#techprofile/' + entry.id + '">' + entry.roadie_type + '</a>  ';
+                return html + '<a href="#!techprofile/' + entry.id + '">' + entry.roadie_type + '</a>  ';
             });
         });
     } else {

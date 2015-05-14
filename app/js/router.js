@@ -45,7 +45,7 @@ getRoute = function(route) {
  */
 handleHashChange = function() {
 	hashUpdated = true;
-	Router.navigateTo(window.location.hash.substring(1));
+	Router.navigateTo(window.location.hash.substring(2)); //2 because we use hashbangs #!
 };
 
 navigateTo = function(route, data, callback) {
@@ -54,13 +54,13 @@ navigateTo = function(route, data, callback) {
 	if(hashUpdated === false) {
 		//Hash change event not fired
 		//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
-		if(window.location.hash !== '#' + route) {
+		if(window.location.hash !== '#!' + route) {
 			newLocation = window.location.pathname;
 			queryString = Utilities.getQueryString();
 			if(queryString) {
 				newLocation += '?' + queryString;
 			}
-			newLocation += '#' + route;
+			newLocation += '#!' + route;
 			history.pushState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
 		}
 	}
