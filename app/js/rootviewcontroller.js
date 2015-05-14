@@ -33,7 +33,7 @@ initialize = function(callback) {
     //Load page based on hash
     hash = window.location.hash;
     if (hash.length > 0) {
-        route = hash.substring(1);
+        route = hash.substring(2); //2 because we use hashbangs #!
     } else {
         route = 'home';
     }

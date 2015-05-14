@@ -45,6 +45,7 @@ getRoute = function(route) {
  */
 handleHashChange = function() {
 	hashUpdated = true;
+	console.log('Route: ' + window.location.hash.substring(2));
 	Router.navigateTo(window.location.hash.substring(2)); //2 because we use hashbangs #!
 };
 
