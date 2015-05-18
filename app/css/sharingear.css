@@ -1061,6 +1061,7 @@ a:focus {
     column-count: 2;
     -moz-column-count: 2;
     -webkit-column-count: 2;
+    min-height: 100%; /*We need to override bootstraps default 1px which hides stuff in safari in some cases*/
 }
 
 .sg-three-columns{
