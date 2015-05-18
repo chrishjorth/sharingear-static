@@ -34,7 +34,8 @@ function GearProfile(options) {
 GearProfile.prototype = new ViewController();
 
 GearProfile.prototype.didInitialize = function() {
-    var view = this;
+    var view = this,
+        subPathComponents;
 
     Localization.getCurrentTimeZone();
 
@@ -74,7 +75,8 @@ GearProfile.prototype.didInitialize = function() {
             });
             view.gear.initialize();
 
-            view.gear.data.id = view.subPath;
+            subPathComponents = view.subPath.split('/');
+            view.gear.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
         }
 

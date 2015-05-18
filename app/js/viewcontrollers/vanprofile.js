@@ -34,7 +34,8 @@ function VanProfile(options) {
 VanProfile.prototype = new ViewController();
 
 VanProfile.prototype.didInitialize = function() {
-    var view = this;
+    var view = this,
+        subPathComponents;
 
     Localization.getCurrentTimeZone();
 
@@ -71,8 +72,8 @@ VanProfile.prototype.didInitialize = function() {
                 rootURL: Config.API_URL
             });
             view.van.initialize();
-
-            view.van.data.id = view.subPath;
+            subPathComponents = view.subPath.split('/');
+            view.van.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
         }
 

@@ -33,7 +33,8 @@ function TechProfile(options) {
 TechProfile.prototype = new ViewController();
 
 TechProfile.prototype.didInitialize = function() {
-    var view = this;
+    var view = this,
+        subPathComponents;
 
     Localization.getCurrentTimeZone();
 
@@ -75,7 +76,8 @@ TechProfile.prototype.didInitialize = function() {
                 rootURL: Config.API_URL
             });
             view.techProfile.initialize();
-            view.techProfile.data.id = view.subPath;
+            subPathComponents = view.subPath.split('/');
+            view.techProfile.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
         }
 

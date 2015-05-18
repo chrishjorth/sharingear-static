@@ -39,7 +39,6 @@ getRoute = function(route) {
     if (routeRoot.length <= 0) {
         routeRoot = route;
     }
-
     return routeRoot;
 };
 
