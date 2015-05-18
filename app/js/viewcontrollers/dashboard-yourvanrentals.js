@@ -90,7 +90,7 @@ DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
             if (status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
                 $('.accepted', $vanItem).removeClass('hidden');
             }
-            if (status === 'denied') {
+            if (status === 'denied' || status === 'ended-denied') {
                 $('.denied', $vanItem).removeClass('hidden');
             }
 
