@@ -22,7 +22,8 @@ var _ = require('underscore'),
     App,
 
     run,
-    setUserLocation;
+    setUserLocation,
+    setupRouteMappings;
 
 run = function(callback) {
     var app = this,
@@ -52,6 +53,8 @@ run = function(callback) {
     ContentClassification.getClassification();
 
     this.setUserLocation();
+
+    this.setupRouteMappings();
 
     if (!window.history.pushState) {
         //The browser is not supported. pushState is a feature available only in moderne (ie9+) browsers
@@ -86,13 +89,20 @@ setUserLocation = function(location, callback) {
     }
 };
 
+setupRouteMappings = function() {
+    this.router.mapRouteToView('search-gear', 'search');
+    this.router.mapRouteToView('search-vans', 'search');
+    this.router.mapRouteToView('search-technicians', 'search');
+};
+
 App = {
     router: Router,
     user: null,
     rootVC: null,
 
     run: run,
-    setUserLocation: setUserLocation
+    setUserLocation: setUserLocation,
+    setupRouteMappings: setupRouteMappings
 };
 
 module.exports = App;

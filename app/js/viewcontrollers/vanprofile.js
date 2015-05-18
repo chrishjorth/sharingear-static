@@ -34,7 +34,8 @@ function VanProfile(options) {
 VanProfile.prototype = new ViewController();
 
 VanProfile.prototype.didInitialize = function() {
-    var view = this;
+    var view = this,
+        subPathComponents;
 
     Localization.getCurrentTimeZone();
 
@@ -71,8 +72,8 @@ VanProfile.prototype.didInitialize = function() {
                 rootURL: Config.API_URL
             });
             view.van.initialize();
-
-            view.van.data.id = view.subPath;
+            subPathComponents = view.subPath.split('/');
+            view.van.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
         }
 
@@ -322,7 +323,7 @@ VanProfile.prototype.handleFacebookShare = function(event) {
     var view = event.data;
     var url, description;
 
-    url = 'https://www.sharingear.com/#vanprofile/' + view.van.data.id;
+    url = 'https://www.sharingear.com/#!vanprofile/' + view.van.data.id;
     description = 'Check out this ' + view.van.data.van_type + ' on Sharingear!' + url;
 
     FB.ui({
@@ -336,7 +337,7 @@ VanProfile.prototype.handleFacebookShare = function(event) {
 VanProfile.prototype.handleTwitterShare = function(event) {
     var view = event.data,
         twtTitle = 'Check out this ' + view.van.data.van_type + ' on www.sharingear.com',
-        twtUrl = 'https://www.sharingear.com/#vanprofile/' + view.van.data.id,
+        twtUrl = 'https://www.sharingear.com/#!vanprofile/' + view.van.data.id,
         maxLength = 140 - (twtUrl.length + 1),
         twtLink;
 

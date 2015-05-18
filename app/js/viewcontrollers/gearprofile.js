@@ -34,7 +34,8 @@ function GearProfile(options) {
 GearProfile.prototype = new ViewController();
 
 GearProfile.prototype.didInitialize = function() {
-    var view = this;
+    var view = this,
+        subPathComponents;
 
     Localization.getCurrentTimeZone();
 
@@ -74,7 +75,8 @@ GearProfile.prototype.didInitialize = function() {
             });
             view.gear.initialize();
 
-            view.gear.data.id = view.subPath;
+            subPathComponents = view.subPath.split('/');
+            view.gear.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
         }
 
@@ -317,7 +319,7 @@ GearProfile.prototype.handleFacebookShare = function(event) {
     var view = event.data;
     var url, instrument, description;
 
-    url = 'https://www.sharingear.com/#gearprofile/' + view.gear.data.id;
+    url = 'https://www.sharingear.com/#!gearprofile/' + view.gear.data.id;
     instrument = view.gear.data.brand;
     description = 'Check out this ' + instrument + ' on Sharingear!' + url;
 
@@ -341,7 +343,7 @@ GearProfile.prototype.handlePictureClick = function() {
 GearProfile.prototype.handleTwitterShare = function(event) {
     var view = event.data,
         twtTitle = 'Check out this ' + view.gear.data.brand + ' on www.sharingear.com',
-        twtUrl = 'https://www.sharingear.com/#gearprofile/' + view.gear.data.id,
+        twtUrl = 'https://www.sharingear.com/#!gearprofile/' + view.gear.data.id,
         maxLength = 140 - (twtUrl.length + 1),
         twtLink;
 

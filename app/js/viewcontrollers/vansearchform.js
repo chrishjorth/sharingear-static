@@ -188,7 +188,7 @@ VanSearchForm.prototype.handleSearch = function(event) {
     if (App.router.currentViewController.name === 'search') {
         App.router.currentViewController.performVanSearch(searchParams.vanString, searchParams.locationString, searchParams.dateRangeString);
     } else {
-        App.router.navigateTo('search');
+        App.router.navigateTo('search-vans');
     }
     window.mixpanel.track('Search');
     return false;

@@ -42,7 +42,7 @@ Dashboard.prototype.didRender = function() {
 
 Dashboard.prototype.didRenderSubview = function() {
     var $menuItem;
-    $menuItem = $('a[href="#' + this.path + '"]');
+    $menuItem = $('a[href="#!' + this.path + '"]');
     this.changeActiveState($menuItem);
 };
 

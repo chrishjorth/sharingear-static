@@ -13,7 +13,7 @@ var $ = require('jquery'),
     Utilities = require('../utilities.js'),
     App = require('../app.js'),
 
-    defaultTitle = '<a href="#home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+    defaultTitle = '<a href="#!home"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
 
 function NavigationHeader(options) {
     ViewController.call(this, options);
@@ -61,7 +61,7 @@ NavigationHeader.prototype.populateMainMenu = function() {
             $dropdownMenu.addClass('hidden');
         }
         $menuList = $('.list-group', $slideMenu);
-        html += '<a href="#home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
+        html += '<a href="#!home" class="list-group-item"><img src="images/logotop@2x.png" alt="Sharingear logo"></a>';
 
         $('#navigation-header-signin-signup', this.$element).hide();
         $('#navigation-header-dropdownmenu-left', this.$element).show();
@@ -83,20 +83,20 @@ NavigationHeader.prototype.populateMainMenu = function() {
         }
     }
 
-    html += '<a href="#search" class="list-group-item"><i class="fa-search icon-dashboard-search"></i><div class="list-group-item-text">Search</div></a>';
+    html += '<a href="#!search" class="list-group-item"><i class="fa-search icon-dashboard-search"></i><div class="list-group-item-text">Search</div></a>';
 
     if (App.user && App.user.data.id !== null) {
-        html += '<a href="#dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
-        html += '<a href="#dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
-        html += '<a href="#dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
-        html += '<a href="#dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
-        html += '<a href="#dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
-        html += '<a href="#dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
-        html += '<a href="#dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
-        html += '<a href="#dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
-        html += '<a href="#dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
-        html += '<a href="#dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
-        html += '<a href="#dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
+        html += '<a href="#!dashboard/profile" class="list-group-item"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Your profile</div></a>';
+        html += '<a href="#!dashboard/yourgear" class="list-group-item"><div class="sg-icon icon-dashboard-yourgear"></div><div class="list-group-item-text">Your gear</div></a>';
+        html += '<a href="#!dashboard/yourtechprofiles" class="list-group-item"><div class="sg-icon icon-dashboard-yourtechprofile"></div><div class="list-group-item-text">Your tech profiles</div></a>';
+        html += '<a href="#!dashboard/yourvans" class="list-group-item"><div class="sg-icon icon-dashboard-yourvans"></div><div class="list-group-item-text">Your vans</div></a>';
+        html += '<a href="#!dashboard/yourgearrentals" class="list-group-item"><div class="sg-icon icon-dashboard-gearrentals"></div><div class="list-group-item-text">Gear rentals</div></a>';
+        html += '<a href="#!dashboard/yourtechprofilerentals" class="list-group-item"><div class="sg-icon icon-dashboard-techhires"></div><div class="list-group-item-text">Tech hires</div></a>';
+        html += '<a href="#!dashboard/yourvanrentals" class="list-group-item"><div class="sg-icon icon-dashboard-vanrentals"></div><div class="list-group-item-text">Van rentals</div></a>';
+        html += '<a href="#!dashboard/yourgearreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Gear reservations</div></a>';
+        html += '<a href="#!dashboard/yourtechprofilereservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Tech reservations</div></a>';
+        html += '<a href="#!dashboard/yourvanreservations" class="list-group-item"><div class="sg-icon icon-dashboard-reservations"></div><div class="list-group-item-text">Van reservations</div></a>';
+        html += '<a href="#!dashboard/settings" class="list-group-item"><div class="sg-icon icon-dashboard-settings"></div><div class="list-group-item-text">Settings</div></a>';
     } else {
         html += '<a href="javascript:;" class="list-group-item" id="navigation-header-signin"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Sign in</div></a>';
         html += '<a href="javascript:;" class="list-group-item" id="navigation-header-signup"><div class="sg-icon icon-dashboard-profile"></div><div class="list-group-item-text">Sign up</div></a>';
