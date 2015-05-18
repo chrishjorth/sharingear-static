@@ -114,9 +114,9 @@ NavigationHeader.prototype.renderProfilePicture = function() {
             var isVertical, backgroundSize;
             isVertical = img.width < img.height;
             if (isVertical === true) {
-                backgroundSize = '30px auto';
+                backgroundSize = '40px auto';
             } else {
-                backgroundSize = 'auto 30px';
+                backgroundSize = 'auto 40px';
             }
             $('.profile-pic', view.$element).css({
                 'background-image': 'url(' + img.src + ')',
