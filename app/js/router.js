@@ -19,6 +19,7 @@ var routeMappings = [],
     getRoute,
     handleHashChange,
     navigateTo,
+    navigateToError,
     canNavigateBack,
     navigateBack,
     openModalView,
@@ -77,9 +78,11 @@ navigateTo = function(route, data, callback) {
     }
 
     view = this.getRoute(route);
+    console.log('Load view');
     ViewLoader.loadView(view, route, data, function(error, loadedViewController) {
         var mappedView;
         if (error) {
+            console.log('error...');
             //check if the route has a mapping
             mappedView = router.getMappedView(view);
             if (mappedView !== null) {
@@ -87,16 +90,30 @@ navigateTo = function(route, data, callback) {
                     if (!error) {
                         router.currentViewController = loadedViewController;
                     }
+                    else {
+                        router.navigateToError();
+                    }
                     if (_.isFunction(callback)) {
                         callback();
                     }
                 });
+            }
+            else {
+                router.navigateToError();
             }
         } else {
             router.currentViewController = loadedViewController;
             if (_.isFunction(callback)) {
                 callback();
             }
+        }
+    });
+};
+
+navigateToError = function() {
+    ViewLoader.loadView('error', 'error', null, function(error, errorViewController) {
+        if(error) {
+            console.error('Error loading error view');
         }
     });
 };
@@ -192,6 +209,7 @@ Router = {
     getRoute: getRoute,
     handleHashChange: handleHashChange,
     navigateTo: navigateTo,
+    navigateToError: navigateToError,
     canNavigateBack: canNavigateBack,
     navigateBack: navigateBack,
     openModalView: openModalView,

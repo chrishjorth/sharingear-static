@@ -93,7 +93,7 @@ YourTechProfileRentals.prototype.populateYourRentals = function(callback) {
             if (status === 'accepted' || status === 'rented-out' || status === 'renter-returned' || status === 'owner-returned' || status === 'ended') {
                 $('.accepted', $techProfileItem).removeClass('hidden');
             }
-            if (status === 'denied') {
+            if (status === 'denied' || status === 'ended-denied') {
                 $('.denied', $techProfileItem).removeClass('hidden');
             }
 

@@ -96,7 +96,7 @@ DashboardYourGearRentals.prototype.populateYourRentals = function(callback) {
                 $('.accepted', $gearItem).removeClass('hidden');
             }
 
-            if (status === 'denied') {
+            if (status === 'denied' || status === 'ended-denied') {
                 $('.denied', $gearItem).removeClass('hidden');
             }
 
