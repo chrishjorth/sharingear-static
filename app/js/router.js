@@ -8,161 +8,199 @@
 
 var _ = require('underscore'),
 
-	ViewLoader = require('./viewloader.js'),
-	Utilities = require('./utilities.js');
+    ViewLoader = require('./viewloader.js'),
+    Utilities = require('./utilities.js');
 
-var Router,
-			
-	hashUpdated,
+var routeMappings = [],
+    Router,
 
-	getRoute,
-	handleHashChange,
-	navigateTo,
-	canNavigateBack,
-	navigateBack,
-	openModalView,
-	openModalSiblingView,
-	closeModalView,
-	setQueryString;
-		
+    hashUpdated,
+
+    getRoute,
+    handleHashChange,
+    navigateTo,
+    canNavigateBack,
+    navigateBack,
+    openModalView,
+    openModalSiblingView,
+    closeModalView,
+    setQueryString,
+    mapRouteToView,
+    getMappedView;
+
 hashUpdated = false; //Semaphore variable
 
 /**
  * Validates the route and returns error if route does not exist.
  */
 getRoute = function(route) {
-	//Extract route root
-	var routeRoot = route.substring(0, route.indexOf('/'));
-	if(routeRoot.length <= 0) {
-		routeRoot = route;
-	}
+    //Extract route root
+    var routeRoot = route.substring(0, route.indexOf('/'));
+    if (routeRoot.length <= 0) {
+        routeRoot = route;
+    }
 
-	return routeRoot;
+    return routeRoot;
 };
 
 /**
  * NOTE: This function is triggered when the hash in the URL changes, no matter wether it is by code or by user interaction.
  */
 handleHashChange = function() {
-	hashUpdated = true;
-	Router.navigateTo(window.location.hash.substring(2)); //2 because we use hashbangs #!
+    hashUpdated = true;
+    Router.navigateTo(window.location.hash.substring(2)); //2 because we use hashbangs #!
 };
 
 navigateTo = function(route, data, callback) {
-	var router = this,
-		queryIndex, newLocation, queryString;
-	if(hashUpdated === false) {
-		//Hash change event not fired
-		//We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
-		if(window.location.hash !== '#!' + route) {
-			newLocation = window.location.pathname;
-			queryString = Utilities.getQueryString();
-			if(queryString) {
-				newLocation += '?' + queryString;
-			}
-			newLocation += '#!' + route;
-			history.pushState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
-		}
-	}
-	else {
-		//Hash change event fired
-		hashUpdated = false;
-	}
+    var router = this,
+        queryIndex, newLocation, queryString, view;
+    if (hashUpdated === false) {
+        //Hash change event not fired
+        //We only change hash if the current one does not match the route, to avoid giving the semaphore a wrong state
+        if (window.location.hash !== '#!' + route) {
+            newLocation = window.location.pathname;
+            queryString = Utilities.getQueryString();
+            if (queryString) {
+                newLocation += '?' + queryString;
+            }
+            newLocation += '#!' + route;
+            history.pushState({}, '', newLocation); //This is to avoid calling handleHashChange by setting window.location.hash directly
+        }
+    } else {
+        //Hash change event fired
+        hashUpdated = false;
+    }
 
-	//Strip querystring from route
-	queryIndex = route.indexOf('?');
-	if(queryIndex >= 0) {
-		route = route.substring(0, queryIndex);
-	}
+    //Strip querystring from route
+    queryIndex = route.indexOf('?');
+    if (queryIndex >= 0) {
+        route = route.substring(0, queryIndex);
+    }
 
-	ViewLoader.loadView(this.getRoute(route), route, data, function(error, loadedViewController) {
-		if(!error) {
-			router.currentViewController = loadedViewController;
-		}
-		if(_.isFunction(callback)) {
-			callback();
-		}
-	});
+    view = this.getRoute(route);
+    ViewLoader.loadView(view, route, data, function(error, loadedViewController) {
+        var mappedView;
+        if (error) {
+            //check if the route has a mapping
+            mappedView = router.getMappedView(view);
+            if (mappedView !== null) {
+                ViewLoader.loadView(mappedView, route, data, function(error, loadedViewController) {
+                    if (!error) {
+                        router.currentViewController = loadedViewController;
+                    }
+                    if (_.isFunction(callback)) {
+                        callback();
+                    }
+                });
+            }
+        } else {
+            router.currentViewController = loadedViewController;
+            if (_.isFunction(callback)) {
+                callback();
+            }
+        }
+    });
 };
 
 canNavigateBack = function() {
-	return window.history.length > 1; //The length is the number of pages visited, if 1 then the user has only visited one page and hence there is no history to go back to
+    return window.history.length > 1; //The length is the number of pages visited, if 1 then the user has only visited one page and hence there is no history to go back to
 };
 
 navigateBack = function() {
-	window.history.back();
+    window.history.back();
 };
 
 openModalView = function(route, data, callback) {
-	var router = this,
-		view = this.getRoute(route);
-			
-	ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
-		if(!error) {
-			router.currentModalViewController = loadedViewController;
-		}
-		if(_.isFunction(callback)) {
-			callback();
-		}
-	});
+    var router = this,
+        view = this.getRoute(route);
+
+    ViewLoader.loadModalView(view, route, data, function(error, loadedViewController) {
+        if (!error) {
+            router.currentModalViewController = loadedViewController;
+        }
+        if (_.isFunction(callback)) {
+            callback();
+        }
+    });
 };
 
 /**
  * Opens a modal view by closing any current open modals.
  */
 openModalSiblingView = function(route, data, callback) {
-	var router = this,
-		view = this.getRoute(route);
+    var router = this,
+        view = this.getRoute(route);
 
-	ViewLoader.loadModalViewSibling(view, route, data, function(error, loadedViewController) {
-		if(!error) {
-			router.currentModalViewController = loadedViewController;
-		}
-		if(_.isFunction(callback)) {
-			callback();
-		}
-	});
+    ViewLoader.loadModalViewSibling(view, route, data, function(error, loadedViewController) {
+        if (!error) {
+            router.currentModalViewController = loadedViewController;
+        }
+        if (_.isFunction(callback)) {
+            callback();
+        }
+    });
 };
 
 closeModalView = function(callback) {
-	var router = this;
-	ViewLoader.closeModalView(function(error, currentModalViewController) {
-		if(!error) {
-			router.currentModalViewController = currentModalViewController;
-		}
-		if(_.isFunction(callback)) {
-			callback();
-		}
-	});
+    var router = this;
+    ViewLoader.closeModalView(function(error, currentModalViewController) {
+        if (!error) {
+            router.currentModalViewController = currentModalViewController;
+        }
+        if (_.isFunction(callback)) {
+            callback();
+        }
+    });
 };
 
 setQueryString = function(queryString) {
-	var hash = window.location.hash,
-		newLocation;
-	if(!queryString || queryString === '') {
-		newLocation = window.location.pathname + hash;
+    var hash = window.location.hash,
+        newLocation;
+    if (!queryString || queryString === '') {
+        newLocation = window.location.pathname + hash;
+    } else {
+        newLocation = window.location.pathname + '?' + queryString + hash;
+    }
+    history.replaceState({}, '', newLocation);
+};
+
+/**
+ * Use this function to map multiple routes to the same view. Make sure that the view renders different content for each route.
+ */
+mapRouteToView = function(route, view) {
+    routeMappings.push({
+        route: route,
+        view: view
+    });
+};
+
+getMappedView = function(view) {
+	var i;
+	for(i = 0; i < routeMappings.length; i++) {
+		if(routeMappings[i].route === view) {
+			return routeMappings[i].view;
+		}
 	}
-	else {
-		newLocation = window.location.pathname + '?' + queryString + hash;
-	}
-	history.replaceState({}, '', newLocation);
+	return null;
 };
 
 Router = {
-	routes: ['error'], //The default error route must always be present for error handling
-	currentViewController: null,
-	currentModalViewController: null,
-	viewLoader: ViewLoader,
+    routes: ['error'], //The default error route must always be present for error handling
+    currentViewController: null,
+    currentModalViewController: null,
+    viewLoader: ViewLoader,
 
-	getRoute: getRoute,
-	handleHashChange: handleHashChange,
-	navigateTo: navigateTo,
-	canNavigateBack: canNavigateBack,
-	navigateBack: navigateBack,
-	openModalView: openModalView,
-	openModalSiblingView: openModalSiblingView,
-	closeModalView: closeModalView,
-	setQueryString: setQueryString
+    getRoute: getRoute,
+    handleHashChange: handleHashChange,
+    navigateTo: navigateTo,
+    canNavigateBack: canNavigateBack,
+    navigateBack: navigateBack,
+    openModalView: openModalView,
+    openModalSiblingView: openModalSiblingView,
+    closeModalView: closeModalView,
+    setQueryString: setQueryString,
+    mapRouteToView: mapRouteToView,
+    getMappedView: getMappedView
 };
 
 window.onhashchange = Router.handleHashChange;

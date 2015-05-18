@@ -188,7 +188,7 @@ TechProfileSearchForm.prototype.handleSearch = function(event) {
     if (App.router.currentViewController.name === 'search') {
         App.router.currentViewController.performTechProfileSearch(searchParams.techProfileString, searchParams.locationString, searchParams.dateRangeString);
     } else {
-        App.router.navigateTo('search');
+        App.router.navigateTo('search-technicians');
     }
     window.mixpanel.track('Search');
     return false;

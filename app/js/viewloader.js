@@ -57,8 +57,15 @@ loadView = function(view, path, data, callback) {
         return;
     }
 
-    ViewController = require('./viewcontrollers/' + view + '.js');
-    ViewTemplate = require('../templates/' + view + '.html');
+    try {
+        ViewController = require('./viewcontrollers/' + view + '.js');
+        ViewTemplate = require('../templates/' + view + '.html');
+    }
+    catch(error) {
+        callback(error.message);
+        return;
+    }
+    
 
     //Close the previous controller properly before loading a new one
     if (viewLoader.currentViewController !== null) {

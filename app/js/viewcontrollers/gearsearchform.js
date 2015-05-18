@@ -188,7 +188,7 @@ GearSearchForm.prototype.handleSearch = function(event) {
     if (App.router.currentViewController.name === 'search') {
         App.router.currentViewController.performGearSearch(searchParams.gearString, searchParams.locationString, searchParams.dateRangeString);
     } else {
-        App.router.navigateTo('search');
+        App.router.navigateTo('search-gear');
     }
     window.mixpanel.track('Search');
     return false;
