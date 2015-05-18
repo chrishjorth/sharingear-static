@@ -111,10 +111,11 @@ navigateTo = function(route, data, callback) {
 };
 
 navigateToError = function() {
-    ViewLoader.loadView('error', 'error', null, function(error, errorViewController) {
+    ViewLoader.loadView('home', 'home', null, function(error) {
         if(error) {
-            console.error('Error loading error view');
+            console.error('Error loading home view as error view.');
         }
+        history.replaceState({}, '', window.location.pathname + window.location.search + '#!home');
     });
 };
 
