@@ -26,8 +26,8 @@ ImagePopup.prototype.didRender = function() {
     this.setupEvent('click', '.cancel-btn', this, this.handleCancel);
 };
 
-ImagePopup.prototype.setImage = function(imageURL) {
-    $('#popup-image-container', this.$element).html('<img src="'+imageURL+'" alt="Image" />');
+ImagePopup.prototype.setImage = function(imageURL, altText) {
+    $('#popup-image-container', this.$element).html('<img src="' + imageURL + '" alt="' + altText + '" />');
 };
 
 ImagePopup.prototype.getWasClosed = function() {

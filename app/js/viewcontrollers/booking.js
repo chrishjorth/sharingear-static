@@ -190,6 +190,7 @@ Booking.prototype.renderPeerPic = function() {
             'background-size': backgroundSize
         });
     };
+    img.alt = 'Image of the booking peer user ' + view.peerUser.data.name + '.';
     img.src = view.peerUser.data.image_url;
 };
 

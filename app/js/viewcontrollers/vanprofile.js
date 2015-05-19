@@ -204,19 +204,19 @@ VanProfile.prototype.renderOwnerPicture = function() {
             'background-size': backgroundSize
         });
     };
+    img.alt = 'Sharingear user ' + this.owner.data.name;
     img.src = this.owner.data.image_url;
 };
 
 VanProfile.prototype.renderVanPictures = function() {
     var $owlContainer = $('.owl-carousel', this.$element),
         images = this.van.data.images.split(','),
-        description = 'Van picture.',
         html = '',
         i;
 
     for (i = 0; i < images.length; i++) {
         if (images[i].length > 0) {
-            html += '<div class="item picture-entry"><img src="' + images[i] + '" alt="' + description + '" ></div>';
+            html += '<div class="item picture-entry"><img src="' + images[i] + '" alt="Thumb image for ' + this.van.data.van_type + ' ' + this.van.data.model + '" ></div>';
         }
     }
     $owlContainer.append(html);
@@ -318,7 +318,7 @@ VanProfile.prototype.handlePictureClick = function() {
 
     imagePopup.initialize();
     imagePopup.show();
-    imagePopup.setImage(pictureURL);
+    imagePopup.setImage(pictureURL, 'A ' + this.templateParameters.van_type + ' ' + this.templateParameters.model);
 };
 
 VanProfile.prototype.handleFacebookShare = function(event) {

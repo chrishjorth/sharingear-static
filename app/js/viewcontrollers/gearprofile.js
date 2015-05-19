@@ -210,19 +210,19 @@ GearProfile.prototype.renderOwnerPicture = function() {
             'background-size': backgroundSize
         });
     };
+    img.alt = 'Sharingear user ' + this.owner.data.name;
     img.src = this.owner.data.image_url;
 };
 
 GearProfile.prototype.renderGearPictures = function() {
     var $owlContainer = $('.owl-carousel', this.$element),
         images = this.gear.data.images.split(','),
-        description = 'Gear picture.',
         html = '',
         i;
 
     for (i = 0; i < images.length; i++) {
         if (images[i].length > 0) {
-            html += '<div class="item picture-entry"><img src="' + images[i] + '" alt="' + description + '" ></div>';
+            html += '<div class="item picture-entry"><img src="' + images[i] + '" alt="Thumb image of a ' + this.gear.data.brand + ' ' + this.gear.data.model + ' ' + this.gear.data.subtype + '" ></div>';
         }
     }
     $owlContainer.append(html);
@@ -340,7 +340,7 @@ GearProfile.prototype.handlePictureClick = function() {
 
     imagePopup.initialize();
     imagePopup.show();
-    imagePopup.setImage(pictureURL);
+    imagePopup.setImage(pictureURL, 'A ' + this.templateParameters.brand + ' ' + this.templateParameters.model + ' ' + this.templateParameters.subtype);
 };
 
 GearProfile.prototype.handleTwitterShare = function(event) {

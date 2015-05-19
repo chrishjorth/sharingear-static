@@ -197,6 +197,7 @@ TechProfile.prototype.renderOwnerPicture = function() {
             'background-size': backgroundSize
         });
     };
+    img.alt = 'Sharingear user ' + this.owner.data.name;
     img.src = this.owner.data.image_url;
 };
 
