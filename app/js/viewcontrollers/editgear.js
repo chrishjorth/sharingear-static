@@ -229,6 +229,10 @@ EditGear.prototype.populateSubtypeSelect = function() {
     $subtypeSelect = $('#editgear-subtype', this.$element);
     $subtypeSelect.empty();
 
+    if(!gearClassification) {
+        return;
+    }
+
     gearSubtypes = gearClassification[this.gear.data.gear_type];
     for (i = 0; i < gearSubtypes.length; i++) {
         html += '<option value="' + gearSubtypes[i].subtype + '">' + gearSubtypes[i].subtype + '</option>';
