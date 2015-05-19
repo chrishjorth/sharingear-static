@@ -64,6 +64,7 @@ Home.prototype.didInitialize = function() {
     this.vanSearchFormVC = null;
 
     this.setTitle('Sharingear - The ultimate marketplace for touring musicians');
+    this.setDescription('Sharingear is a community where musicians rent gear, find transportation and hire technicians for concerts and tours. Ease your life and play more!');
 };
 
 Home.prototype.didRender = function() {

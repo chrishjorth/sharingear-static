@@ -55,6 +55,7 @@ Search.prototype.didInitialize = function() {
     this.longitude = 0.0;
 
     this.setTitle('Sharingear - Search');
+    this.setDescription('Search for gear, transportation and technicians for your live event or tour.');
 };
 
 Search.prototype.didRender = function() {

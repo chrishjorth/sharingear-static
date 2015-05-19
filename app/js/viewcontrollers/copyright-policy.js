@@ -18,6 +18,7 @@ Copyright.prototype = new ViewController();
 
 Copyright.prototype.didInitialize = function() {
     this.setTitle('Sharingear - Copyright policy');
+    this.setDescription('Sharingear respects and expects its users to respect the intellectual property of others.');
 };
 
 Copyright.prototype.didRender = function() {

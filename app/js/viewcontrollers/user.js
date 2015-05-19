@@ -61,6 +61,7 @@ User.prototype.didInitialize = function() {
         };
         view.render();
         view.setTitle('Sharingear - ' + view.templateParameters.name);
+        view.setDescription(view.user.data.bio);
     });
 
     this.userGear = new GearList({

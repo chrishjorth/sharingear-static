@@ -34,6 +34,7 @@ DashboardYourVans.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear Dashboard - Your vans');
+    this.setDescription('An overview of all your vans listed on Sharingear.');
 };
 
 DashboardYourVans.prototype.didRender = function() {

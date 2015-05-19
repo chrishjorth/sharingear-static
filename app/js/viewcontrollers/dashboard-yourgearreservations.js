@@ -35,6 +35,7 @@ DashboardYourGearReservations.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear Dashboard - Your gear reservations');
+    this.setDescription('An overview of all your gear reservations: requested, in progress and completed.');
 };
 
 DashboardYourGearReservations.prototype.didRender = function() {

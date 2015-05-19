@@ -42,6 +42,7 @@ EditGear.prototype.didInitialize = function() {
     this.geocoder = new GoogleMaps.Geocoder();
 
     this.setTitle('Sharingear - Edit gear');
+    this.setDescription('Edit subtype, brand, model, price, location and availability of your gear and upload photos.');
 };
 
 EditGear.prototype.didRender = function() {

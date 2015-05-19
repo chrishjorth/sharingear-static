@@ -112,6 +112,7 @@ GearProfile.prototype.didInitialize = function() {
                 publicInfoDeferred.resolve();
 
                 view.setTitle('Sharingear - ' + gearData.brand + ' ' + gearData.subtype + ' ' + gearData.model);
+                view.setDescription(gearData.description);
             });
 
             view.gear.getAvailability(App.user.data.id, function(error, result) {

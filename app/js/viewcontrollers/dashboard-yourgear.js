@@ -34,6 +34,7 @@ DashboardYourGear.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear Dashboard - Your gear');
+    this.setDescription('An overview of all your gear listed on Sharingear.');
 };
 
 DashboardYourGear.prototype.didRender = function() {

@@ -34,6 +34,7 @@ YourTechProfiles.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear Dashboard - Your technician profiles');
+    this.setDescription('An overview of all your technician profiles listed on Sharingear.');
 };
 
 YourTechProfiles.prototype.didRender = function() {

@@ -112,6 +112,7 @@ PaymentSuccessful.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear - Booking confirmation');
+    this.setDescription('If the reservation was successful your booking is confirmed and waiting for acceptance by the owner.');
 };
 
 PaymentSuccessful.prototype.didRender = function() {

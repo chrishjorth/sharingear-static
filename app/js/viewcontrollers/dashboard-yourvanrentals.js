@@ -37,6 +37,7 @@ DashboardYourVanRentals.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear Dashboard - Your van rentals');
+    this.setDescription('An overview of all your van rentals: pending, accepted, denied, in progress and ended.');
 };
 
 DashboardYourVanRentals.prototype.didRender = function() {

@@ -63,6 +63,7 @@ AddTechProfile.prototype.didInitialize = function() {
     this.geocoder = new GoogleMaps.Geocoder();
 
     this.setTitle('Sharingear - Add technician profile');
+    this.setDescription('Add your technician profile to showcase your skills.');
 };
 
 AddTechProfile.prototype.didRender = function() {

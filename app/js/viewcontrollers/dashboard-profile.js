@@ -46,6 +46,7 @@ DashboardProfile.prototype.didInitialize = function() {
     this.profileImg.src = this.user.data.image_url;
 
     this.setTitle('Sharingear Dashboard - Your profile');
+    this.setDescription('An overview of the data shown on your public profile on Sharingear.');
 };
 
 DashboardProfile.prototype.didRender = function() {
