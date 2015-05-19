@@ -59,6 +59,8 @@ AddVan.prototype.didInitialize = function() {
     this.selections = {}; //key value pairs where keys are months and values are arrays of start and end dates
     this.alwaysFlag = 1; //New vans are always available by default
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
+
+    this.setTitle('Sharingear - Add van');
 };
 
 AddVan.prototype.didRender = function() {

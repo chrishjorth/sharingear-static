@@ -36,8 +36,9 @@ DashboardSettings.prototype.didInitialize = function() {
     userData = this.user.data;
     this.isSaving = false;
 
-
     this.selectedTimeZone = Localization.getCurrentTimeZone();
+
+    this.setTitle('Sharingear Dashboard - Settings');
 };
 
 DashboardSettings.prototype.didRender = function() {
@@ -84,8 +85,7 @@ DashboardSettings.prototype.handleBirthdateChange = function(event) {
     view.populateBirthdateInput();
 };
 
-DashboardSettings.prototype.handlePrivatePopup = function(event) {
-    var view = event.data;
+DashboardSettings.prototype.handlePrivatePopup = function() {
     var messagePopup = new MessagePopup();
     var message = '<div class="row" style="text-align:center;"><i class="fa fa-lock fa-5x private-field-lock" style="color:rgb(254, 181, 0)"></i></div><div class="row" style="padding: 0 20px;">This information is private, and it will not be shared in public or with any other user.</div>';
 

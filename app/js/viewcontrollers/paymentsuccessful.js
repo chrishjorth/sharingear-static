@@ -110,6 +110,8 @@ PaymentSuccessful.prototype.didInitialize = function() {
             view.render();
         });
     });
+
+    this.setTitle('Sharingear - Booking confirmation');
 };
 
 PaymentSuccessful.prototype.didRender = function() {

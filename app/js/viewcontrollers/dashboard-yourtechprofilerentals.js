@@ -35,6 +35,8 @@ YourTechProfileRentals.prototype.didInitialize = function() {
         view.didFetch = true;
         view.render();
     });
+
+    this.setTitle('Sharingear Dashboard - Your technician rentals');
 };
 
 YourTechProfileRentals.prototype.didRender = function() {

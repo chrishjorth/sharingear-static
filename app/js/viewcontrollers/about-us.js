@@ -17,6 +17,10 @@ function AboutUs(options) {
 
 AboutUs.prototype = new ViewController();
 
+AboutUs.prototype.didInitialize = function() {
+    this.setTitle('Sharingear - About us');
+};
+
 AboutUs.prototype.didRender = function() {
     this.renderMap();
     this.loadFooter();

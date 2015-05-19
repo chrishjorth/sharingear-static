@@ -16,6 +16,10 @@ function Copyright(options) {
 
 Copyright.prototype = new ViewController();
 
+Copyright.prototype.didInitialize = function() {
+    this.setTitle('Sharingear - Copyright policy');
+};
+
 Copyright.prototype.didRender = function() {
     this.loadFooter();
 };

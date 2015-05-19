@@ -53,6 +53,8 @@ Search.prototype.didInitialize = function() {
 
     this.latitude = 0.0;
     this.longitude = 0.0;
+
+    this.setTitle('Sharingear - Search');
 };
 
 Search.prototype.didRender = function() {

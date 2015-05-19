@@ -105,6 +105,7 @@ VanProfile.prototype.didInitialize = function() {
                     owner_id: vanData.owner_id
                 });
                 publicInfoDeferred.resolve();
+                view.setTitle('Sharingear - ' + vanData.van_type + ' ' + vanData.model);
             });
 
             view.van.getAvailability(function(error, result) {

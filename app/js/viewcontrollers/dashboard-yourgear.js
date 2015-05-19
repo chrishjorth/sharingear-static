@@ -32,6 +32,8 @@ DashboardYourGear.prototype.didInitialize = function() {
     view.gearList.getUserGear(App.user.data.id, function() {
         view.render();
     });
+
+    this.setTitle('Sharingear Dashboard - Your gear');
 };
 
 DashboardYourGear.prototype.didRender = function() {
@@ -51,7 +53,7 @@ DashboardYourGear.prototype.didRender = function() {
 
 DashboardYourGear.prototype.populateYourGear = function(callback) {
     var view = this,
-        YourGearItemTemplate;
+        handleImageLoad, YourGearItemTemplate;
 
     YourGearItemTemplate = require('../../templates/yourgear-item.html');
     var yourGearItemTemplate = _.template(YourGearItemTemplate),
@@ -59,6 +61,14 @@ DashboardYourGear.prototype.populateYourGear = function(callback) {
         $gearBlock, defaultGear, gear, i, $gearItem;
 
     $gearBlock = $('#' + gearBlockID, view.$element);
+
+    handleImageLoad = function() {
+        if (this.width < this.height) {
+            $('.gear-item-' + this.resultNum).addClass('search-result-gear-vertical');
+        } else {
+            $('.gear-item-' + this.resultNum).addClass('search-result-gear-horizontal');
+        }
+    };
 
     for (i = 0; i < yourGear.length; i++) {
         defaultGear = {
@@ -85,7 +95,7 @@ DashboardYourGear.prototype.populateYourGear = function(callback) {
         $gearItem = $(yourGearItemTemplate(defaultGear));
 
         //Add unique class for every image
-        $('.sg-bg-image', $gearItem).addClass('gear-item-'+i);
+        $('.sg-bg-image', $gearItem).addClass('gear-item-' + i);
 
         // Create an image object
         var img = new Image();
@@ -94,7 +104,7 @@ DashboardYourGear.prototype.populateYourGear = function(callback) {
         //Get thumbURL from the imageURL
         var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
         imageURL = defaultGear.img_url;
-        
+
         thumbURL = imageURL.split('/');
         imgName = thumbURL.pop();
         thumbURL = thumbURL.join('/');
@@ -114,13 +124,7 @@ DashboardYourGear.prototype.populateYourGear = function(callback) {
         img.src = thumbURL;
 
         //Make the pictures fit the boxes
-        img.onload = function(){
-                if (this.width < this.height) {
-                    $('.gear-item-'+this.resultNum).addClass('search-result-gear-vertical');
-                } else {
-                    $('.gear-item-'+this.resultNum).addClass('search-result-gear-horizontal');
-                }
-        };
+        img.onload = handleImageLoad;
 
         $gearBlock.append($gearItem);
     }

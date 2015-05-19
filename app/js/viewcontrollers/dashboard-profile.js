@@ -45,6 +45,7 @@ DashboardProfile.prototype.didInitialize = function() {
     };
     this.profileImg.src = this.user.data.image_url;
 
+    this.setTitle('Sharingear Dashboard - Your profile');
 };
 
 DashboardProfile.prototype.didRender = function() {

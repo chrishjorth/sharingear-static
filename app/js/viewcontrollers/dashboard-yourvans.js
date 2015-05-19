@@ -32,6 +32,8 @@ DashboardYourVans.prototype.didInitialize = function() {
     view.vanList.getUserVans(App.user.data.id, function() {
         view.render();
     });
+
+    this.setTitle('Sharingear Dashboard - Your vans');
 };
 
 DashboardYourVans.prototype.didRender = function() {
@@ -51,12 +53,21 @@ DashboardYourVans.prototype.didRender = function() {
 
 DashboardYourVans.prototype.populateYourVans = function(callback) {
     var view = this,
-        YourVansItemTemplate;
+        YourVansItemTemplate, handleImageLoad;
+
     YourVansItemTemplate = require('../../templates/yourvans-item.html');
 
     var yourVansItemTemplate = _.template(YourVansItemTemplate),
         yourVans = view.vanList.data,
         $vanBlock, defaultVan, van, i, $vanItem;
+
+    handleImageLoad = function() {
+        if (this.width < this.height) {
+            $('.van-item-' + this.resultNum).addClass('search-result-gear-vertical');
+        } else {
+            $('.van-item-' + this.resultNum).addClass('search-result-gear-horizontal');
+        }
+    };
 
     $vanBlock = $('#' + vanBlockID, view.$element);
 
@@ -81,7 +92,7 @@ DashboardYourVans.prototype.populateYourVans = function(callback) {
         $vanItem = $(yourVansItemTemplate(defaultVan));
 
         //Add unique class for every image
-        $('.sg-bg-image', $vanItem).addClass('van-item-'+i);
+        $('.sg-bg-image', $vanItem).addClass('van-item-' + i);
 
         // Create an image object
         var img = new Image();
@@ -90,7 +101,7 @@ DashboardYourVans.prototype.populateYourVans = function(callback) {
         //Get thumbURL from the imageURL
         var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
         imageURL = defaultVan.img_url;
-        
+
         thumbURL = imageURL.split('/');
         imgName = thumbURL.pop();
         thumbURL = thumbURL.join('/');
@@ -111,13 +122,7 @@ DashboardYourVans.prototype.populateYourVans = function(callback) {
         img.src = thumbURL;
 
         //Make the pictures fit the boxes
-        img.onload = function(){
-                if (this.width < this.height) {
-                    $('.van-item-'+this.resultNum).addClass('search-result-gear-vertical');
-                } else {
-                    $('.van-item-'+this.resultNum).addClass('search-result-gear-horizontal');
-                }
-        };
+        img.onload = handleImageLoad;
 
         $vanBlock.append($vanItem);
     }

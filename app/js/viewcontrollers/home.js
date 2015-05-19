@@ -62,6 +62,8 @@ Home.prototype.didInitialize = function() {
     this.hasSubviews = true;
     this.gearSearchFormVC = null;
     this.vanSearchFormVC = null;
+
+    this.setTitle('Sharingear - The ultimate marketplace for touring musicians');
 };
 
 Home.prototype.didRender = function() {

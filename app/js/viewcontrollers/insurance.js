@@ -16,6 +16,10 @@ function Insurance(options) {
 
 Insurance.prototype = new ViewController();
 
+Insurance.prototype.didInitialize = function() {
+    this.setTitle('Sharingear - Insurance');
+};
+
 Insurance.prototype.didRender = function() {
     this.loadFooter();
 };

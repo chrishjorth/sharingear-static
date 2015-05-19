@@ -104,6 +104,8 @@ Payment.prototype.didInitialize = function() {
         });
         view.render();
     });
+
+    this.setTitle('Sharingear - Payment');
 };
 
 Payment.prototype.didRender = function() {

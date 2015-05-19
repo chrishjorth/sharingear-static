@@ -33,10 +33,12 @@ DashboardYourVanReservations.prototype.didInitialize = function() {
         view.didFetch = true;
         view.render();
     });
+
+    this.setTitle('Sharingear Dashboard - Your van reservations');
 };
 
 DashboardYourVanReservations.prototype.didRender = function() {
-    if(App.rootVC !== null && App.rootVC.header) {
+    if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Van reservations');
     }
     if (this.didFetch === true) {
@@ -48,7 +50,8 @@ DashboardYourVanReservations.prototype.didRender = function() {
 
 DashboardYourVanReservations.prototype.populateYourReservations = function(callback) {
     var view = this,
-        YourReservationsItemTemplate;
+        YourReservationsItemTemplate, handleImageLoad;
+
     YourReservationsItemTemplate = require('../../templates/yourvanreservations-item.html');
 
     var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
@@ -62,6 +65,14 @@ DashboardYourVanReservations.prototype.populateYourReservations = function(callb
         }
         return;
     }
+
+    handleImageLoad = function() {
+        if (this.width < this.height) {
+            $('.van-reservation-item-' + this.resultNum).addClass('search-result-gear-vertical');
+        } else {
+            $('.van-reservation-item-' + this.resultNum).addClass('search-result-gear-horizontal');
+        }
+    };
 
     $reservationBlock = $('#' + reservationBlockID, view.$element);
 
@@ -101,7 +112,7 @@ DashboardYourVanReservations.prototype.populateYourReservations = function(callb
         }
 
         //Add unique class for every image
-        $('.sg-bg-image', $reservationItem).addClass('van-reservation-item-'+i);
+        $('.sg-bg-image', $reservationItem).addClass('van-reservation-item-' + i);
 
         // Create an image object
         var img = new Image();
@@ -110,7 +121,7 @@ DashboardYourVanReservations.prototype.populateYourReservations = function(callb
         //Get thumbURL from the imageURL
         var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
         imageURL = defaultReservation.img_url;
-        
+
         thumbURL = imageURL.split('/');
         imgName = thumbURL.pop();
         thumbURL = thumbURL.join('/');
@@ -131,13 +142,7 @@ DashboardYourVanReservations.prototype.populateYourReservations = function(callb
         img.src = thumbURL;
 
         //Make the pictures fit the boxes
-        img.onload = function(){
-                if (this.width < this.height) {
-                    $('.van-reservation-item-'+this.resultNum).addClass('search-result-gear-vertical');
-                } else {
-                    $('.van-reservation-item-'+this.resultNum).addClass('search-result-gear-horizontal');
-                }
-        };
+        img.onload = handleImageLoad;
 
         $reservationBlock.append($reservationItem);
     }
