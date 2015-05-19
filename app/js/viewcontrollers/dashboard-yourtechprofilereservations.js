@@ -33,6 +33,8 @@ YourTechProfileReservations.prototype.didInitialize = function() {
         view.didFetch = true;
         view.render();
     });
+
+    this.setTitle('Sharingear Dashboard - Your technician reservations');
 };
 
 YourTechProfileReservations.prototype.didRender = function() {

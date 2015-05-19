@@ -8,4 +8,14 @@
 
 var ViewController = require('../viewcontroller.js');
 
-module.exports = ViewController;
+function Terms(options) {
+	ViewController.call(this, options);
+}
+
+Terms.prototype = new ViewController();
+
+Terms.prototype.didInitialize = function() {
+	this.setTitle('Sharingear - Terms of service');
+};
+
+module.exports = Terms;

@@ -119,6 +119,8 @@ Booking.prototype.didInitialize = function() {
             view.render();
         });
     });
+
+    this.setTitle('Sharingear - Booking');
 };
 
 Booking.prototype.didRender = function() {

@@ -60,6 +60,7 @@ User.prototype.didInitialize = function() {
             bio: view.user.data.bio
         };
         view.render();
+        view.setTitle('Sharingear - ' + view.templateParameters.name);
     });
 
     this.userGear = new GearList({

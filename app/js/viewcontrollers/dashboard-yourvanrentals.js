@@ -35,10 +35,12 @@ DashboardYourVanRentals.prototype.didInitialize = function() {
         view.didFetch = true;
         view.render();
     });
+
+    this.setTitle('Sharingear Dashboard - Your van rentals');
 };
 
 DashboardYourVanRentals.prototype.didRender = function() {
-    if(App.rootVC !== null && App.rootVC.header) {
+    if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Van rentals');
     }
 
@@ -51,7 +53,8 @@ DashboardYourVanRentals.prototype.didRender = function() {
 
 DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
     var view = this,
-        YourRentalsItemTemplate;
+        YourRentalsItemTemplate, handleImageLoad;
+        
     YourRentalsItemTemplate = require('../../templates/yourvanrentals-item.html');
     var yourRentalsItemTemplate = _.template(YourRentalsItemTemplate),
         yourRentals = view.vanList.data,
@@ -59,6 +62,14 @@ DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
         $vanBlock, defaultVan, van, i, $vanItem, status;
 
     $vanBlock = $('#' + vanBlockID, view.$element);
+
+    handleImageLoad = function() {
+        if (this.width < this.height) {
+            $('.van-item-' + this.resultNum).addClass('search-result-gear-vertical');
+        } else {
+            $('.van-item-' + this.resultNum).addClass('search-result-gear-horizontal');
+        }
+    };
 
     for (i = 0; i < yourRentals.length; i++) {
         defaultVan = {
@@ -95,7 +106,7 @@ DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
             }
 
             //Add unique class for every image
-            $('.sg-bg-image', $vanItem).addClass('van-item-'+i);
+            $('.sg-bg-image', $vanItem).addClass('van-item-' + i);
 
             // Create an image object
             var img = new Image();
@@ -104,7 +115,7 @@ DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
             //Get thumbURL from the imageURL
             var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
             imageURL = defaultVan.img_url;
-            
+
             thumbURL = imageURL.split('/');
             imgName = thumbURL.pop();
             thumbURL = thumbURL.join('/');
@@ -124,13 +135,7 @@ DashboardYourVanRentals.prototype.populateYourRentals = function(callback) {
             img.src = thumbURL;
 
             //Make the pictures fit the boxes
-            img.onload = function(){
-                    if (this.width < this.height) {
-                        $('.van-item-'+this.resultNum).addClass('search-result-gear-vertical');
-                    } else {
-                        $('.van-item-'+this.resultNum).addClass('search-result-gear-horizontal');
-                    }
-            };
+            img.onload = handleImageLoad;
 
             $vanBlock.append($vanItem);
             displayedRentals++;

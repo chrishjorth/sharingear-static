@@ -16,6 +16,10 @@ function Privacy(options) {
 
 Privacy.prototype = new ViewController();
 
+Privacy.prototype.didInitialize = function() {
+    this.setTitle('Sharingear - Privacy policy');
+};
+
 Privacy.prototype.didRender = function() {
     this.loadFooter();
 };

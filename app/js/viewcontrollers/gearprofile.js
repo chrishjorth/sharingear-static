@@ -110,6 +110,8 @@ GearProfile.prototype.didInitialize = function() {
                     owner_id: gearData.owner_id
                 });
                 publicInfoDeferred.resolve();
+
+                view.setTitle('Sharingear - ' + gearData.brand + ' ' + gearData.subtype + ' ' + gearData.model);
             });
 
             view.gear.getAvailability(App.user.data.id, function(error, result) {

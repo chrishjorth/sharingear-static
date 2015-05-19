@@ -145,4 +145,8 @@ ViewController.prototype.on = function(eventType, callback) {
     }
 };
 
+ViewController.prototype.setTitle = function(title) {
+    document.title = title;
+};
+
 module.exports = ViewController;

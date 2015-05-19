@@ -59,6 +59,8 @@ BookingRequest.prototype.didInitialize = function() {
         this.newBooking.data.price_c = this.passedData.price_c;
         this.newBooking.data.currency = this.passedData.currency;
     }
+
+    this.setTitle('Sharingear - Booking request');
 };
 
 BookingRequest.prototype.didRender = function() {

@@ -40,6 +40,8 @@ EditGear.prototype.didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 
     this.geocoder = new GoogleMaps.Geocoder();
+
+    this.setTitle('Sharingear - Edit gear');
 };
 
 EditGear.prototype.didRender = function() {

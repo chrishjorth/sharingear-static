@@ -33,10 +33,12 @@ DashboardYourGearReservations.prototype.didInitialize = function() {
         view.didFetch = true;
         view.render();
     });
+
+    this.setTitle('Sharingear Dashboard - Your gear reservations');
 };
 
 DashboardYourGearReservations.prototype.didRender = function() {
-    if(App.rootVC !== null && App.rootVC.header) {
+    if (App.rootVC !== null && App.rootVC.header) {
         App.rootVC.header.setTitle('Gear reservations');
     }
     if (this.didFetch === true) {
@@ -48,7 +50,8 @@ DashboardYourGearReservations.prototype.didRender = function() {
 
 DashboardYourGearReservations.prototype.populateYourReservations = function(callback) {
     var view = this,
-        YourReservationsItemTemplate;
+        YourReservationsItemTemplate, handleImageLoad;
+        
     YourReservationsItemTemplate = require('../../templates/yourgearreservations-item.html');
     var yourReservationsItemTemplate = _.template(YourReservationsItemTemplate),
         yourReserv = view.gearList.data,
@@ -61,6 +64,14 @@ DashboardYourGearReservations.prototype.populateYourReservations = function(call
         }
         return;
     }
+
+    handleImageLoad = function() {
+        if (this.width < this.height) {
+            $('.gear-reservation-item-' + this.resultNum).addClass('search-result-gear-vertical');
+        } else {
+            $('.gear-reservation-item-' + this.resultNum).addClass('search-result-gear-horizontal');
+        }
+    };
 
     $reservationBlock = $('#' + reservationBlockID, view.$element);
 
@@ -103,7 +114,7 @@ DashboardYourGearReservations.prototype.populateYourReservations = function(call
         }
 
         //Add unique class for every image
-        $('.sg-bg-image', $reservationItem).addClass('gear-reservation-item-'+i);
+        $('.sg-bg-image', $reservationItem).addClass('gear-reservation-item-' + i);
 
         // Create an image object
         var img = new Image();
@@ -112,7 +123,7 @@ DashboardYourGearReservations.prototype.populateYourReservations = function(call
         //Get thumbURL from the imageURL
         var thumbURL, imgName, imgNameComponents, imgExt, imageURL;
         imageURL = defaultReservation.img_url;
-        
+
         thumbURL = imageURL.split('/');
         imgName = thumbURL.pop();
         thumbURL = thumbURL.join('/');
@@ -132,13 +143,7 @@ DashboardYourGearReservations.prototype.populateYourReservations = function(call
         img.src = thumbURL;
 
         //Make the pictures fit the boxes
-        img.onload = function(){
-                if (this.width < this.height) {
-                    $('.gear-reservation-item-'+this.resultNum).addClass('search-result-gear-vertical');
-                } else {
-                    $('.gear-reservation-item-'+this.resultNum).addClass('search-result-gear-horizontal');
-                }
-        };
+        img.onload = handleImageLoad;
 
         $reservationBlock.append($reservationItem);
     }

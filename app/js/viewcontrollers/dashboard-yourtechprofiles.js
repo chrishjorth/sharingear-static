@@ -32,6 +32,8 @@ YourTechProfiles.prototype.didInitialize = function() {
     view.techProfilesList.getUserTechProfiles(App.user.data.id, function() {
         view.render();
     });
+
+    this.setTitle('Sharingear Dashboard - Your technician profiles');
 };
 
 YourTechProfiles.prototype.didRender = function() {
