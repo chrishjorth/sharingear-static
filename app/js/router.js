@@ -78,7 +78,6 @@ navigateTo = function(route, data, callback) {
     }
 
     view = this.getRoute(route);
-    console.log('Load view');
     ViewLoader.loadView(view, route, data, function(error, loadedViewController) {
         var mappedView;
         if (error) {
