@@ -37,6 +37,7 @@ DashboardYourGearRentals.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear Dashboard - Your gear rentals');
+    this.setDescription('An overview of all your gear rentals: pending, accepted, denied, in progress and ended.');
 };
 
 DashboardYourGearRentals.prototype.didRender = function() {

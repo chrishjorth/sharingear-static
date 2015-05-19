@@ -61,6 +61,7 @@ AddVan.prototype.didInitialize = function() {
     this.dragMakeAvailable = true; //Dragging on availability sets to available if this parameter is true, sets to unavailable if false
 
     this.setTitle('Sharingear - Add van');
+    this.setDescription('Add your van to get it listed in local search results.');
 };
 
 AddVan.prototype.didRender = function() {

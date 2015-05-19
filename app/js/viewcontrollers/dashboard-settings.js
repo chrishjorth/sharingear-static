@@ -39,6 +39,7 @@ DashboardSettings.prototype.didInitialize = function() {
     this.selectedTimeZone = Localization.getCurrentTimeZone();
 
     this.setTitle('Sharingear Dashboard - Settings');
+    this.setDescription('Customize your Sharingear experience.');
 };
 
 DashboardSettings.prototype.didRender = function() {

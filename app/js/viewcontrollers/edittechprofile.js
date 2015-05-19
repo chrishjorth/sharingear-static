@@ -42,6 +42,7 @@ EditTechProfile.prototype.didInitialize = function() {
     this.geocoder = new GoogleMaps.Geocoder();
 
     this.setTitle('Sharingear - Edit technician profile');
+    this.setDescription('Edit experience, price, location and availability of your technician profile and upload photos.');
 };
 
 EditTechProfile.prototype.didRender = function() {

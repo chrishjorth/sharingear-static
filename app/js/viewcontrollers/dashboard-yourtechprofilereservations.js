@@ -35,6 +35,7 @@ YourTechProfileReservations.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear Dashboard - Your technician reservations');
+    this.setDescription('An overview of all your technician profile reservations: requested, in progress and completed.');
 };
 
 YourTechProfileReservations.prototype.didRender = function() {

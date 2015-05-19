@@ -149,4 +149,11 @@ ViewController.prototype.setTitle = function(title) {
     document.title = title;
 };
 
+ViewController.prototype.setDescription = function(description) {
+    if(description.length > 160) {
+        description = description.substr(0, 160);
+    }
+    $('meta[name="description"]').attr('content', description);
+};
+
 module.exports = ViewController;

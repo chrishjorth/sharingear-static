@@ -19,6 +19,7 @@ AboutUs.prototype = new ViewController();
 
 AboutUs.prototype.didInitialize = function() {
     this.setTitle('Sharingear - About us');
+    this.setDescription('Sharingear is the first trusted community marketplace for musicians and touring personnel. From musicians to musicians.');
 };
 
 AboutUs.prototype.didRender = function() {

@@ -61,6 +61,7 @@ BookingRequest.prototype.didInitialize = function() {
     }
 
     this.setTitle('Sharingear - Booking request');
+    this.setDescription('Book your gear for the time you need it, just select pickup and delivery dates and times in the calendar.');
 };
 
 BookingRequest.prototype.didRender = function() {

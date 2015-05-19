@@ -18,6 +18,7 @@ Insurance.prototype = new ViewController();
 
 Insurance.prototype.didInitialize = function() {
     this.setTitle('Sharingear - Insurance');
+    this.setDescription('We want you to be comfortable listing your instruments and backline on Sharingear.');
 };
 
 Insurance.prototype.didRender = function() {

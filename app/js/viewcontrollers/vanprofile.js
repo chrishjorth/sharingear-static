@@ -106,6 +106,7 @@ VanProfile.prototype.didInitialize = function() {
                 });
                 publicInfoDeferred.resolve();
                 view.setTitle('Sharingear - ' + vanData.van_type + ' ' + vanData.model);
+                view.setDescription(vanData.description);
             });
 
             view.van.getAvailability(function(error, result) {

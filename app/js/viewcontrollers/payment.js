@@ -106,6 +106,7 @@ Payment.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear - Payment');
+    this.setDescription('Pay for your booking securely with your credit card.');
 };
 
 Payment.prototype.didRender = function() {

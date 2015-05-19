@@ -65,6 +65,7 @@ AddGear.prototype.didInitialize = function() {
     this.geocoder = new GoogleMaps.Geocoder();
 
     this.setTitle('Sharingear - Add gear');
+    this.setDescription('Add your gear to your account to get it listed in localized search results.');
 };
 
 AddGear.prototype.didRender = function() {

@@ -121,6 +121,7 @@ Booking.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear - Booking');
+    this.setDescription('View the details of your booking.');
 };
 
 Booking.prototype.didRender = function() {

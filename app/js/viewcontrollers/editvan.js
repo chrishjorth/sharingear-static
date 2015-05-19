@@ -41,6 +41,7 @@ EditVan.prototype.didInitialize = function() {
     this.geocoder = new GoogleMaps.Geocoder();
 
     this.setTitle('Sharingear - Edit van');
+    this.setDescription('Edit model, price, location and availability of your van and upload photos.');
 };
 
 EditVan.prototype.didRender = function() {

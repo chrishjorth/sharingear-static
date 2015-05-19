@@ -18,6 +18,7 @@ Privacy.prototype = new ViewController();
 
 Privacy.prototype.didInitialize = function() {
     this.setTitle('Sharingear - Privacy policy');
+    this.setDescription('How Sharingear collects, stores, uses, and discloses your personal information, if any.');
 };
 
 Privacy.prototype.didRender = function() {

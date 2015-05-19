@@ -118,6 +118,7 @@ TechProfile.prototype.didInitialize = function() {
                 publicInfoDeferred.resolve();
 
                 view.setTitle('Sharingear - ' + techProfileData.roadie_type + ': ' + view.templateParameters.name);
+                view.setDescription(techProfileData.about);
             });
 
             view.techProfile.getAvailability(function(error, result) {

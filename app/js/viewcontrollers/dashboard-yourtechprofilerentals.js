@@ -37,6 +37,7 @@ YourTechProfileRentals.prototype.didInitialize = function() {
     });
 
     this.setTitle('Sharingear Dashboard - Your technician rentals');
+    this.setDescription('An overview of all your technician profile rentals: pending, accepted, denied, in progress and ended.');
 };
 
 YourTechProfileRentals.prototype.didRender = function() {

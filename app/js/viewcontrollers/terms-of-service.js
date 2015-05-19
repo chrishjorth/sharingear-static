@@ -16,6 +16,7 @@ Terms.prototype = new ViewController();
 
 Terms.prototype.didInitialize = function() {
 	this.setTitle('Sharingear - Terms of service');
+	this.setDescription('The contract between you as a user and Sharingear.');
 };
 
 module.exports = Terms;
