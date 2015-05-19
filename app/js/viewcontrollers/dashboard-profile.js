@@ -43,6 +43,7 @@ DashboardProfile.prototype.didInitialize = function() {
     this.profileImg.onload = function() {
         profileImgLoaded.resolve();
     };
+    this.profileImg.alt = 'Image of Sharingear user ' + this.user.data.name + '.';
     this.profileImg.src = this.user.data.image_url;
 
     this.setTitle('Sharingear Dashboard - Your profile');

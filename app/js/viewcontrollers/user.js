@@ -125,6 +125,7 @@ User.prototype.renderProfilePic = function() {
             'background-size': backgroundSize
         });
     };
+    img.alt = 'Sharingear user ' + this.user.data.name;
     img.src = this.user.data.image_url;
 };
 

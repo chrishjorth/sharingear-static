@@ -119,7 +119,7 @@ DashboardYourVans.prototype.populateYourVans = function(callback) {
         $('.sg-bg-image', $vanItem).css({
             'background-image': 'url("' + thumbURL + '")'
         });
-
+        img.alt = 'Thumb image of a ' + van.van_type + ' ' + van.model;
         img.src = thumbURL;
 
         //Make the pictures fit the boxes

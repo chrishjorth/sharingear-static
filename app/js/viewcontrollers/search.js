@@ -505,8 +505,13 @@ Search.prototype.populateSearchBlock = function(searchResults, $searchBlock, cal
         img = new Image();
         img.resultNum = i;
         if (tab === 'technicians') {
+            img.alt = 'Search result image of ' + workingSearchResults.item_type;
             img.src = searchResult.image;
+        } else if (tab === 'vans') {
+            img.alt = 'Search result image of a ' + workingSearchResults.item_type;
+            img.src = view.getThumbURL(searchResult.image);
         } else {
+            img.alt = 'Search result image of a ' + workingSearchResults.item_type;
             img.src = view.getThumbURL(searchResult.image);
         }
         img.onload = handleImageLoad;

@@ -141,6 +141,7 @@ DashboardYourGearReservations.prototype.populateYourReservations = function(call
         $('.sg-bg-image', $reservationItem).css({
             'background-image': 'url("' + thumbURL + '")'
         });
+        img.alt = 'Thumb image of a ' + reservation.brand + ' ' + reservation.model + ' ' + reservation.subtype;
         img.src = thumbURL;
 
         //Make the pictures fit the boxes

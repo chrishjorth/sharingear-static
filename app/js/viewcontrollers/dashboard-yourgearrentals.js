@@ -138,6 +138,7 @@ DashboardYourGearRentals.prototype.populateYourRentals = function(callback) {
             $('.sg-bg-image', $gearItem).css({
                 'background-image': 'url("' + thumbURL + '")'
             });
+            img.alt = 'Thumb image of a ' + gear.brand + ' ' + gear.model + ' ' + gear.subtype;
             img.src = thumbURL;
 
             //Make the pictures fit the boxes

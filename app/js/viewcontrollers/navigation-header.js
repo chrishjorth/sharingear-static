@@ -123,6 +123,7 @@ NavigationHeader.prototype.renderProfilePicture = function() {
                 'background-size': backgroundSize
             });
         };
+        img.alt = 'Sharingear user ' + App.user.data.name;
         img.src = App.user.data.image_url;
     }
 };

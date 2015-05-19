@@ -279,7 +279,7 @@ AddVan.prototype.populatePhotos = function() {
     for (i = 0; i < images.length; i++) {
         //Avoid empty url strings because of trailing ','
         if (images[i].length > 0) {
-            html += '<li><img src="' + images[i] + '" alt="Van thumb"></li>';
+            html += '<li><img src="' + images[i] + '" alt="Thumb image of a ' + this.newVan.data.van_type + ' ' + this.newVan.data.model + '"></li>';
         }
     }
     $('#dashboard-addvanphotos-form .thumb-list-container ul', this.$element).append(html);
@@ -301,7 +301,7 @@ AddVan.prototype.handleImageUpload = function(event) {
         }
 
         $thumbList = $('#dashboard-addvanphotos-form .thumb-list-container ul', view.$element);
-        html = '<li><img src="' + url + '" alt="Van thumb"></li>';
+        html = '<li><img src="' + url + '" alt="Thumb image of a ' + this.newVan.data.van_type + ' ' + this.newVan.data.model + '"></li>';
         $thumbList.append(html);
 
         view.toggleLoading();

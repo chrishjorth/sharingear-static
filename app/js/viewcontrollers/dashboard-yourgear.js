@@ -122,6 +122,7 @@ DashboardYourGear.prototype.populateYourGear = function(callback) {
         $('.sg-bg-image', $gearItem).css({
             'background-image': 'url("' + thumbURL + '")'
         });
+        img.alt = 'Thumb image of a ' + gear.data.brand + ' ' + gear.data.model + ' ' + gear.data.subtype;
         img.src = thumbURL;
 
         //Make the pictures fit the boxes

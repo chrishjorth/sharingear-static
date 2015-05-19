@@ -139,7 +139,7 @@ DashboardYourVanReservations.prototype.populateYourReservations = function(callb
         $('.sg-bg-image', $reservationItem).css({
             'background-image': 'url("' + thumbURL + '")'
         });
-
+        img.alt = 'Thumb image of a ' + reservation.van_type + ' ' + reservation.model;
         img.src = thumbURL;
 
         //Make the pictures fit the boxes
