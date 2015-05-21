@@ -93,6 +93,8 @@ setupRouteMappings = function() {
     this.router.mapRouteToView('search-gear', 'search');
     this.router.mapRouteToView('search-vans', 'search');
     this.router.mapRouteToView('search-technicians', 'search');
+
+    this.router.mapRouteToView('copenhagen', 'home_landing-copenhagen');
 };
 
 App = {

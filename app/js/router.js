@@ -81,7 +81,6 @@ navigateTo = function(route, data, callback) {
     ViewLoader.loadView(view, route, data, function(error, loadedViewController) {
         var mappedView;
         if (error) {
-            console.log('error...');
             //check if the route has a mapping
             mappedView = router.getMappedView(view);
             if (mappedView !== null) {

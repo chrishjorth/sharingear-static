@@ -1,5 +1,5 @@
 /**
- * Controller for the Sharingear home/landing page view.
+ * Controller for the Sharingear home page view.
  * @author: Chris Hjorth
  */
 
@@ -191,6 +191,10 @@ Home.prototype.handleScrollDown = function(event) {
     $('html,body').animate({
         scrollTop: $('#home-whatsay', view.$element).offset().top - 60
     }, 1000);
+};
+
+Home.prototype.setSubtitle = function(subtitle) {
+    $('#home-landing-subtitle', this.$element).html(subtitle);
 };
 
 module.exports = Home;

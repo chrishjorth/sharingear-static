@@ -2066,13 +2066,25 @@ button:active .sg-gray-bg {
 
 .sg-banner h2 {
 	margin-top: 30px;
-	margin-bottom: 34px;
+	margin-bottom: 0;
 }
 @media (min-width: 768px) {
 	.sg-banner h2 {
-		margin-top: 230px;
-		margin-top: 30vh;
-		margin-bottom: 74px;
+		margin-top: 180px;
+		margin-top: 26vh;
+		margin-bottom: 0;
+	}
+}
+
+.sg-banner h3 {
+	margin-bottom: 4px;
+	margin-top: 4px;
+	height: 44px;
+}
+@media (min-width: 768px) {
+	.sg-banner h3 {
+		margin-bottom: 48px;
+		margin-top: 4px;
 	}
 }
 
