@@ -106,6 +106,12 @@ setupRouteMappings = function() {
     this.router.mapRouteToView('london-van-rental', 'home_landing-london-van-rental');
     this.router.mapRouteToView('london-technician-hire', 'home_landing-london-technician-hire');
     this.router.mapRouteToView('london-backline-rental', 'home_landing-london-backline-rental');
+
+    this.router.mapRouteToView('birmingham', 'home_landing-birmingham');
+    this.router.mapRouteToView('birmingham-instruments-rental', 'home_landing-birmingham-instruments-rental');
+    this.router.mapRouteToView('birmingham-van-rental', 'home_landing-birmingham-van-rental');
+    this.router.mapRouteToView('birmingham-technician-hire', 'home_landing-birmingham-technician-hire');
+    this.router.mapRouteToView('birmingham-backline-rental', 'home_landing-birmingham-backline-rental');
 };
 
 App = {
