@@ -124,6 +124,12 @@ setupRouteMappings = function() {
     this.router.mapRouteToView('glasgow-van-rental', 'home_landing-glasgow-van-rental');
     this.router.mapRouteToView('glasgow-technician-hire', 'home_landing-glasgow-technician-hire');
     this.router.mapRouteToView('glasgow-backline-rental', 'home_landing-glasgow-backline-rental');
+
+    this.router.mapRouteToView('amsterdam', 'home_landing-amsterdam');
+    this.router.mapRouteToView('amsterdam-instruments-rental', 'home_landing-amsterdam-instruments-rental');
+    this.router.mapRouteToView('amsterdam-van-rental', 'home_landing-amsterdam-van-rental');
+    this.router.mapRouteToView('amsterdam-technician-hire', 'home_landing-amsterdam-technician-hire');
+    this.router.mapRouteToView('amsterdam-backline-rental', 'home_landing-amsterdam-backline-rental');
 };
 
 App = {
