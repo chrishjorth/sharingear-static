@@ -137,6 +137,146 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		<loc>https://www.sharingear.com/#!search-technicians</loc>
 		<lastmod><?php echo $current_date; ?></lastmod>
 	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!copenhagen</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!copenhagen-instruments-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!copenhagen-van-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!copenhagen-technician-hire</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!copenhagen-backline-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!london</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!london-instruments-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!london-van-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!london-technician-hire</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!london-backline-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!birmingham</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!birmingham-instruments-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!birmingham-van-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!birmingham-technician-hire</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!birmingham-backline-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!leeds</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!leeds-instruments-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!leeds-van-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!leeds-technician-hire</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!leeds-backline-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!glasgow</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!glasgow-instruments-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!glasgow-van-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!glasgow-technician-hire</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!glasgow-backline-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!amsterdam</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!amsterdam-instruments-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!amsterdam-van-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!amsterdam-technician-hire</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!amsterdam-backline-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!berlin</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!berlin-instruments-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!berlin-van-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!berlin-technician-hire</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
+	<url>
+		<loc>https://www.sharingear.com/#!berlin-backline-rental</loc>
+		<lastmod><?php echo $current_date; ?></lastmod>
+	</url>
 <?php
 //Add gear: https://www.sharingear.com/#!gear/310/gibson-les-paul-electric-guitar
 foreach($gear as $gear_item) {
