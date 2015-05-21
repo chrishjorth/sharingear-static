@@ -130,6 +130,12 @@ setupRouteMappings = function() {
     this.router.mapRouteToView('amsterdam-van-rental', 'home_landing-amsterdam-van-rental');
     this.router.mapRouteToView('amsterdam-technician-hire', 'home_landing-amsterdam-technician-hire');
     this.router.mapRouteToView('amsterdam-backline-rental', 'home_landing-amsterdam-backline-rental');
+
+    this.router.mapRouteToView('berlin', 'home_landing-berlin');
+    this.router.mapRouteToView('berlin-instruments-rental', 'home_landing-berlin-instruments-rental');
+    this.router.mapRouteToView('berlin-van-rental', 'home_landing-berlin-van-rental');
+    this.router.mapRouteToView('berlin-technician-hire', 'home_landing-berlin-technician-hire');
+    this.router.mapRouteToView('berlin-backline-rental', 'home_landing-berlin-backline-rental');
 };
 
 App = {
