@@ -156,22 +156,23 @@ Home.prototype.loadFooter = function() {
     view.footer.render();
 };
 
-Home.prototype.handleTab = function(event) {
-    var $this = $(this),
-        view = event.data,
-        id;
-    id = $this.attr('id');
+Home.prototype.switchToTab = function(tab) {
+    $('.sg-tabbar li .sg-btn-square', this.$element).removeClass('selected');
+    $('#home-tab-' + tab, this.$element).addClass('selected');
 
-    $('.sg-tabbar li .sg-btn-square', view.$element).removeClass('selected');
-    $this.addClass('selected');
-
-    $('.sg-tab-panel', view.$element).each(function() {
+    $('.sg-tab-panel', this.$element).each(function() {
         var $panel = $(this);
         if ($panel.hasClass('hidden') === false) {
             $panel.addClass('hidden');
         }
     });
-    $('#home-searchform-' + id.substring(9), view.$element).removeClass('hidden'); //9 is the length of 'home-tab-'
+    $('#home-searchform-' + tab, this.$element).removeClass('hidden'); 
+};
+
+Home.prototype.handleTab = function(event) {
+    var $this = $(this),
+        view = event.data;
+    view.switchToTab($this.attr('id').substring(9)); //9 is the length of 'home-tab-'
 };
 
 Home.prototype.handleLogin = function() {

@@ -94,7 +94,18 @@ setupRouteMappings = function() {
     this.router.mapRouteToView('search-vans', 'search');
     this.router.mapRouteToView('search-technicians', 'search');
 
+    //For landing pages the scheme is 'view_landing-URL'
     this.router.mapRouteToView('copenhagen', 'home_landing-copenhagen');
+    this.router.mapRouteToView('copenhagen-instruments-rental', 'home_landing-copenhagen-instruments-rental');
+    this.router.mapRouteToView('copenhagen-van-rental', 'home_landing-copenhagen-van-rental');
+    this.router.mapRouteToView('copenhagen-technician-hire', 'home_landing-copenhagen-technician-hire');
+    this.router.mapRouteToView('copenhagen-backline-rental', 'home_landing-copenhagen-backline-rental');
+
+    this.router.mapRouteToView('london', 'home_landing-london');
+    this.router.mapRouteToView('london-instruments-rental', 'home_landing-london-instruments-rental');
+    this.router.mapRouteToView('london-van-rental', 'home_landing-london-van-rental');
+    this.router.mapRouteToView('london-technician-hire', 'home_landing-london-technician-hire');
+    this.router.mapRouteToView('london-backline-rental', 'home_landing-london-backline-rental');
 };
 
 App = {
