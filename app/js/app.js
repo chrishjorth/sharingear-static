@@ -93,6 +93,49 @@ setupRouteMappings = function() {
     this.router.mapRouteToView('search-gear', 'search');
     this.router.mapRouteToView('search-vans', 'search');
     this.router.mapRouteToView('search-technicians', 'search');
+
+    //For landing pages the scheme is 'view_landing-URL'
+    this.router.mapRouteToView('copenhagen', 'home_landing-copenhagen');
+    this.router.mapRouteToView('copenhagen-instruments-rental', 'home_landing-copenhagen-instruments-rental');
+    this.router.mapRouteToView('copenhagen-van-rental', 'home_landing-copenhagen-van-rental');
+    this.router.mapRouteToView('copenhagen-technician-hire', 'home_landing-copenhagen-technician-hire');
+    this.router.mapRouteToView('copenhagen-backline-rental', 'home_landing-copenhagen-backline-rental');
+
+    this.router.mapRouteToView('london', 'home_landing-london');
+    this.router.mapRouteToView('london-instruments-rental', 'home_landing-london-instruments-rental');
+    this.router.mapRouteToView('london-van-rental', 'home_landing-london-van-rental');
+    this.router.mapRouteToView('london-technician-hire', 'home_landing-london-technician-hire');
+    this.router.mapRouteToView('london-backline-rental', 'home_landing-london-backline-rental');
+
+    this.router.mapRouteToView('birmingham', 'home_landing-birmingham');
+    this.router.mapRouteToView('birmingham-instruments-rental', 'home_landing-birmingham-instruments-rental');
+    this.router.mapRouteToView('birmingham-van-rental', 'home_landing-birmingham-van-rental');
+    this.router.mapRouteToView('birmingham-technician-hire', 'home_landing-birmingham-technician-hire');
+    this.router.mapRouteToView('birmingham-backline-rental', 'home_landing-birmingham-backline-rental');
+
+    this.router.mapRouteToView('leeds', 'home_landing-leeds');
+    this.router.mapRouteToView('leeds-instruments-rental', 'home_landing-leeds-instruments-rental');
+    this.router.mapRouteToView('leeds-van-rental', 'home_landing-leeds-van-rental');
+    this.router.mapRouteToView('leeds-technician-hire', 'home_landing-leeds-technician-hire');
+    this.router.mapRouteToView('leeds-backline-rental', 'home_landing-leeds-backline-rental');
+
+    this.router.mapRouteToView('glasgow', 'home_landing-glasgow');
+    this.router.mapRouteToView('glasgow-instruments-rental', 'home_landing-glasgow-instruments-rental');
+    this.router.mapRouteToView('glasgow-van-rental', 'home_landing-glasgow-van-rental');
+    this.router.mapRouteToView('glasgow-technician-hire', 'home_landing-glasgow-technician-hire');
+    this.router.mapRouteToView('glasgow-backline-rental', 'home_landing-glasgow-backline-rental');
+
+    this.router.mapRouteToView('amsterdam', 'home_landing-amsterdam');
+    this.router.mapRouteToView('amsterdam-instruments-rental', 'home_landing-amsterdam-instruments-rental');
+    this.router.mapRouteToView('amsterdam-van-rental', 'home_landing-amsterdam-van-rental');
+    this.router.mapRouteToView('amsterdam-technician-hire', 'home_landing-amsterdam-technician-hire');
+    this.router.mapRouteToView('amsterdam-backline-rental', 'home_landing-amsterdam-backline-rental');
+
+    this.router.mapRouteToView('berlin', 'home_landing-berlin');
+    this.router.mapRouteToView('berlin-instruments-rental', 'home_landing-berlin-instruments-rental');
+    this.router.mapRouteToView('berlin-van-rental', 'home_landing-berlin-van-rental');
+    this.router.mapRouteToView('berlin-technician-hire', 'home_landing-berlin-technician-hire');
+    this.router.mapRouteToView('berlin-backline-rental', 'home_landing-berlin-backline-rental');
 };
 
 App = {

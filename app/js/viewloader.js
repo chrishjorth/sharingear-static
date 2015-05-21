@@ -33,7 +33,7 @@ modalViewContainer = '.modal-view-container';
 //TODO: Consider turning this into recursive for the case of subviews
 loadView = function(view, path, data, callback) {
     var viewLoader = this,
-        renderSubviews, ViewController, ViewTemplate;
+        renderSubviews, ViewController, ViewTemplate, landingIndex, template;
 
     renderSubviews = function() {
         var subview = viewLoader.currentViewController.subPath;
@@ -58,14 +58,22 @@ loadView = function(view, path, data, callback) {
     }
 
     try {
-        ViewController = require('./viewcontrollers/' + view + '.js');
-        ViewTemplate = require('../templates/' + view + '.html');
-    }
-    catch(error) {
+        console.log('view: ' + view);
+        landingIndex = view.indexOf('landing-');
+        console.log('landingIndex: ' + landingIndex);
+        if (landingIndex >= 0) {
+            template = view.substring(0, landingIndex - 1); //-1 to remove the _, landing page name scheme: view_landing-customname.js
+            ViewController = require('./viewcontrollers/landingpages/' + view + '.js');
+            ViewTemplate = require('../templates/' + template + '.html');
+        } else {
+            ViewController = require('./viewcontrollers/' + view + '.js');
+            ViewTemplate = require('../templates/' + view + '.html');
+        }
+    } catch (error) {
         callback(error.message);
         return;
     }
-    
+
 
     //Close the previous controller properly before loading a new one
     if (viewLoader.currentViewController !== null) {
