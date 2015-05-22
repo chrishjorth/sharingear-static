@@ -301,7 +301,7 @@ AddVan.prototype.handleImageUpload = function(event) {
         }
 
         $thumbList = $('#dashboard-addvanphotos-form .thumb-list-container ul', view.$element);
-        html = '<li><img src="' + url + '" alt="Thumb image of a ' + this.newVan.data.van_type + ' ' + this.newVan.data.model + '"></li>';
+        html = '<li><img src="' + url + '" alt="Thumb image of a ' + view.newVan.data.van_type + ' ' + view.newVan.data.model + '"></li>';
         $thumbList.append(html);
 
         view.toggleLoading();

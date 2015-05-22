@@ -413,7 +413,7 @@ AddGear.prototype.handleImageUpload = function(event) {
         //console.log('Image uploaded, displaying thumb.');
 
         $thumbList = $('#dashboard-addgearphotos-form .thumb-list-container ul', view.$element);
-        html = '<li><img src="' + url + '" alt="Thumb image of a ' + this.newGear.data.brand + ' ' + this.newGear.data.model + ' ' + this.newGear.data.subtype + '"></li>';
+        html = '<li><img src="' + url + '" alt="Thumb image of a ' + view.newGear.data.brand + ' ' + view.newGear.data.model + ' ' + view.newGear.data.subtype + '"></li>';
         $thumbList.append(html);
 
         view.toggleLoading();
