@@ -58,9 +58,7 @@ loadView = function(view, path, data, callback) {
     }
 
     try {
-        console.log('view: ' + view);
         landingIndex = view.indexOf('landing-');
-        console.log('landingIndex: ' + landingIndex);
         if (landingIndex >= 0) {
             template = view.substring(0, landingIndex - 1); //-1 to remove the _, landing page name scheme: view_landing-customname.js
             ViewController = require('./viewcontrollers/landingpages/' + view + '.js');
