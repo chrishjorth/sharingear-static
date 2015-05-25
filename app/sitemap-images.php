@@ -91,11 +91,13 @@ foreach($gear_images as $gear_item) {
 		<loc>https://www.sharingear.com/#!gear/<?php echo $gear_item->id . '/' . $gear_item->brand . '-' . $gear_item->model . '-' . $gear_item->subtype; ?></loc>
 <?php
 	foreach($gear_item->images as $image_url) {
+		if(strlen($image_url) > 0 && strpos($image_url, 'graph.facebook.com') === false) {
 ?>
 		<image:image>
      		<image:loc><?php echo $image_url; ?></image:loc>
      	</image:image>
 <?php
+		}
 	}
 ?>
 	</url>
@@ -110,11 +112,13 @@ foreach($vans_images as $van_item) {
 		<loc>https://www.sharingear.com/#!vans/<?php echo $van_item->id . '/' . $van_item->van_type . '-' . $van_item->model; ?></loc>
 <?php
 	foreach($van_item->images as $image_url) {
+		if(strlen($image_url) > 0 && strpos($image_url, 'graph.facebook.com') === false) {
 ?>
 		<image:image>
      		<image:loc><?php echo $image_url; ?></image:loc>
      	</image:image>
 <?php
+		}
 	}
 ?>
 	</url>
@@ -125,6 +129,7 @@ foreach($roadies_images as $roadie_item) {
 	$roadie_item->name = htmlspecialchars(str_replace(' ', '-', $roadie_item->name), ENT_QUOTES);
 	$roadie_item->surname = htmlspecialchars(str_replace(' ', '-', $roadie_item->surname), ENT_QUOTES);
 	$roadie_item->roadie_type = htmlspecialchars(str_replace(' ', '-', $roadie_item->roadie_type), ENT_QUOTES);
+	if(strlen($roadie_item->image_url) > 0 && strpos($image_url, 'graph.facebook.com') === false) {
 ?>
 	<url>
 		<loc>https://www.sharingear.com/#!technicians/<?php echo $roadie_item->id . '/' . $roadie_item->name . '-' . $roadie_item->surname . '-' . $roadie_item->roadie_type; ?></loc>
@@ -133,6 +138,7 @@ foreach($roadies_images as $roadie_item) {
      	</image:image>
 	</url>
 <?php
+	}
 }
 ?>
 </urlset>
