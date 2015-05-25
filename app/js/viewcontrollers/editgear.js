@@ -113,6 +113,11 @@ EditGear.prototype.initAccessories = function() {
 
     view = this;
 
+    if(!gearClassification) {
+        console.error('Gear Classification is not loaded.');
+        return;
+    }
+
     gearSubtypes = gearClassification[view.gear.data.gear_type];
 
     for (i = 0; i < gearSubtypes.length; i++) {
