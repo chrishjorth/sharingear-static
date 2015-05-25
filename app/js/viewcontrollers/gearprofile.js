@@ -334,13 +334,14 @@ GearProfile.prototype.handleFacebookShare = function(event) {
     });
 };
 
-GearProfile.prototype.handlePictureClick = function() {
-    var pictureURL = $(this).children('img').attr('src');
-    var imagePopup = new ImagePopup();
+GearProfile.prototype.handlePictureClick = function(event) {
+    var view = event.data,
+        pictureURL = $(this).children('img').attr('src'),
+        imagePopup = new ImagePopup();
 
     imagePopup.initialize();
     imagePopup.show();
-    imagePopup.setImage(pictureURL, 'A ' + this.templateParameters.brand + ' ' + this.templateParameters.model + ' ' + this.templateParameters.subtype);
+    imagePopup.setImage(pictureURL, 'A ' + view.templateParameters.brand + ' ' + view.templateParameters.model + ' ' + view.templateParameters.subtype);
 };
 
 GearProfile.prototype.handleTwitterShare = function(event) {
