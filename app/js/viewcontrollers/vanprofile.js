@@ -312,13 +312,14 @@ VanProfile.prototype.handleEditProfile = function(event) {
     App.router.openModalView('editvan', view.van);
 };
 
-VanProfile.prototype.handlePictureClick = function() {
-    var pictureURL = $(this).children('img').attr('src');
-    var imagePopup = new ImagePopup();
+VanProfile.prototype.handlePictureClick = function(event) {
+    var view = event.data,
+        pictureURL = $(this).children('img').attr('src'),
+        imagePopup = new ImagePopup();
 
     imagePopup.initialize();
     imagePopup.show();
-    imagePopup.setImage(pictureURL, 'A ' + this.templateParameters.van_type + ' ' + this.templateParameters.model);
+    imagePopup.setImage(pictureURL, 'A ' + view.templateParameters.van_type + ' ' + view.templateParameters.model);
 };
 
 VanProfile.prototype.handleFacebookShare = function(event) {
