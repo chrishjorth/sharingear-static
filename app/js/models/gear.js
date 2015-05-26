@@ -45,6 +45,7 @@ Gear.prototype.didInitialize = function didInitialize() {
             owner_id: null
         };
     }
+    this.token = App.user.token;
 };
 
 Gear.prototype.createGear = function createGear(user, callback) {

@@ -76,6 +76,9 @@ VanProfile.prototype.didInitialize = function() {
             view.van.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
         }
+        else {
+            view.van.initialize();
+        }
 
         view.van.update(App.user.data.id, function(error) {
             var publicInfoDeferred = $.Deferred(),

@@ -9,6 +9,7 @@
 var _ = require('underscore'),
 
     Model = require('../model'),
+    App = require('../app.js'),
     Van = require('./van');
 
 function VanList(options) {
@@ -21,6 +22,7 @@ VanList.prototype.didInitialize = function() {
     if (this.data === null) {
         this.data = [];
     }
+    this.token = App.user.token;
 };
 
 VanList.prototype.search = function(location, gear, daterange, callback) {

@@ -47,6 +47,7 @@ TechProfile.prototype.didInitialize = function didInitialize() {
             techprofilelist: null
         };
     }
+    this.token = App.user.token;
 };
 
 TechProfile.prototype.createTechProfile = function createGear(callback) {
