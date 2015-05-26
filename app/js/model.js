@@ -12,6 +12,7 @@ var _ = require('underscore'),
 function Model(options) {
     this.rootURL = '';
     this.data = null;
+    this.token = null;
     _.extend(this, options);
 }
 
@@ -23,7 +24,7 @@ Model.prototype.initialize = function() {
 
 Model.prototype.get = function(url, callback) {
     var encodedURL = encodeURI(this.rootURL + url);
-    $.ajax({
+    this._ajax({
         dataType: 'json',
         type: 'GET',
         url: encodedURL,
@@ -44,18 +45,15 @@ Model.prototype.get = function(url, callback) {
 
 Model.prototype.post = function(url, data, callback) {
     var encodedURL = encodeURI(this.rootURL + url);
-
-    $.ajax({
+    this._ajax({
         dataType: 'json',
         type: 'POST',
         data: data,
         url: encodedURL,
         error: function(jqXHR, textStatus, errorThrown) {
             callback('Error executing POST request: ' + errorThrown);
-
         },
         success: function(data) {
-
             if (data.error) {
                 callback('Error sending resource to server: ' + data.error);
             } else {
@@ -67,8 +65,7 @@ Model.prototype.post = function(url, data, callback) {
 
 Model.prototype.put = function(url, data, callback) {
     var encodedURL = encodeURI(this.rootURL + url);
-
-    $.ajax({
+    this._ajax({
         dataType: 'json',
         type: 'PUT',
         data: data,
@@ -89,6 +86,16 @@ Model.prototype.put = function(url, data, callback) {
 
 Model.prototype.del = function() {
 
+};
+
+Model.prototype._ajax = function(options) {
+    var model = this;
+    if(this.token !== null) {
+        options.beforeSend = function(jqXHR) {
+            jqXHR.setRequestHeader('Authorization', 'Bearer ' + model.token);
+        };
+    }
+    $.ajax(options);
 };
 
 module.exports = Model;

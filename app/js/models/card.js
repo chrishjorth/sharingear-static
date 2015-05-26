@@ -9,7 +9,8 @@
 var mangoPay = require('exports?mangoPay!../libraries/mangopay-kit.min.js'),
 	
 	Config = require('../config.js'),
-	Model = require('../model.js');
+	Model = require('../model.js'),
+    App = require('../app.js');
 
 function Card(options) {
     Model.call(this, options);
@@ -24,6 +25,7 @@ Card.prototype.didInitialize = function() {
         mangoPay.cardRegistration.baseURL = 'https://api.sandbox.mangopay.com';
     }
     mangoPay.cardRegistration.clientId = 'sharingear';
+    this.token = App.user.token;
 };
 
 Card.prototype.registerCard = function(userID, cardData, callback) {

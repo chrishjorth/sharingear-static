@@ -8,6 +8,7 @@
 
 var _ = require('underscore'),
 	Model = require('../model.js'),
+    App = require('../app.js'),
 	TechProfile = require('./techprofile.js');
 
 function TechProfileList(options) {
@@ -20,6 +21,7 @@ TechProfileList.prototype.didInitialize = function() {
     if (this.data === null) {
         this.data = [];
     }
+    this.token = App.user.token;
 };
 
 TechProfileList.prototype.search = function(location, gear, daterange, callback) {

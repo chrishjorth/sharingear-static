@@ -130,6 +130,7 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
             user.data = {};
         }
         _.extend(user.data, data);
+        user.token = data.token;
 
         //Enable Google Analytics user tracking
         if (_.isFunction(window.ga) === true) {

@@ -9,6 +9,7 @@
 var _ = require('underscore'),
 
 	Model = require('../model.js'),
+    App = require('../app.js'),
 	Gear = require('./gear.js');
 
 function GearList(options) {
@@ -21,6 +22,7 @@ GearList.prototype.didInitialize = function() {
     if (this.data === null) {
         this.data = [];
     }
+    this.token = App.user.token;
 };
 
 GearList.prototype.search = function(location, gear, daterange, callback) {

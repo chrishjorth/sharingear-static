@@ -36,6 +36,7 @@ Booking.prototype.didInitialize = function() {
             returnURL: null
         };
     }
+    this.token = App.user.token;
 };
 
 // POST: /users/:user_id/gear/:gear_id/bookings

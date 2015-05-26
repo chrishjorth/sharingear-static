@@ -41,6 +41,7 @@ Van.prototype.didInitialize = function didInitialize() {
             owner_id: null
         };
     }
+    this.token = App.user.token;
 };
 
 Van.prototype.createVan = function createGear(callback) {
