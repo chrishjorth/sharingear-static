@@ -414,6 +414,7 @@ Payment.prototype.processPayment = function(cardNumber, expirationDate, CSC) {
         view.booking.createBooking(cardId, function(error) {
             if (error) {
                 console.error('Error creating booking: ' + error);
+                alert('An error occurred creating your booking. Please try again.');
                 view.resetPayButton();
                 return;
             }
