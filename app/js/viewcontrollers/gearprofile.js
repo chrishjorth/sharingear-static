@@ -79,6 +79,9 @@ GearProfile.prototype.didInitialize = function() {
             view.gear.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
         }
+        else {
+            view.gear.initialize(); //Model cleanup
+        }
 
         view.gear.update(App.user.data.id, function(error) {
             var publicInfoDeferred = $.Deferred(), 

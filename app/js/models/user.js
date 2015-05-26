@@ -247,7 +247,7 @@ User.prototype.uploadProfilePicture = function(file, filename, userID, callback)
 User.prototype.getPublicInfo = function(callback) {
     var model = this;
 
-    this.get('/users/' + this.data.id, function(error, user) {
+    this.get('/users/' + this.data.id + '/public', function(error, user) {
         if (error) {
             callback(error);
             return;

@@ -80,6 +80,9 @@ TechProfile.prototype.didInitialize = function() {
             view.techProfile.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
         }
+        else {
+            view.techProfile.initialize();
+        }
 
         view.techProfile.update(App.user.data.id, function(error) {
             var publicInfoDeferred = $.Deferred(),
