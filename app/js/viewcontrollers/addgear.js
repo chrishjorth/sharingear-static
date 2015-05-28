@@ -473,11 +473,12 @@ AddGear.prototype.savePriceLocation = function() {
 
     view.geocoder = new GoogleMaps.Geocoder();
 
-    currentAddress = this.newGear.address;
-    currentPostalCode = this.newGear.postal_code;
-    currentCity = this.newGear.city;
-    currentRegion = this.newGear.region;
-    currentCountry = this.newGear.country;
+    currentAddress = this.newGear.data.address;
+    currentPostalCode = this.newGear.data.postal_code;
+    currentCity = this.newGear.data.city;
+    currentRegion = this.newGear.data.region;
+    console.log(this.newGear.data.country);
+    currentCountry = this.newGear.data.country;
     didLocationChange = false;
 
     _.extend(this.newGear.data, {
@@ -583,13 +584,6 @@ AddGear.prototype.savePriceLocation = function() {
             if (status === GoogleMaps.GeocoderStatus.OK) {
                 view.newGear.data.longitude = results[0].geometry.location.lng();
                 view.newGear.data.latitude = results[0].geometry.location.lat();
-
-                for (var i = 0; i < results[0].address_components.length; i++) {
-                    if (results[0].address_components[i].types[0] === 'country') {
-                        view.newGear.data.country = results[0].address_components[i].long_name;
-                    }
-                }
-
                 saveCall();
             } else {
                 console.error('Error geocoding: ' + status);

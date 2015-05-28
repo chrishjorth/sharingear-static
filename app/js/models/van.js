@@ -35,7 +35,7 @@ Van.prototype.didInitialize = function didInitialize() {
             postal_code: '',
             city: '',
             region: '',
-            country: '',
+            country: null,
             latitude: null,
             longitude: null,
             owner_id: null
