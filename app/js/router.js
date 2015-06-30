@@ -77,6 +77,8 @@ navigateTo = function(route, data, callback) {
         route = route.substring(0, queryIndex);
     }
 
+    ViewLoader.closeAllModalViews();
+
     view = this.getRoute(route);
     ViewLoader.loadView(view, route, data, function(error, loadedViewController) {
         var mappedView;

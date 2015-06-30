@@ -121,6 +121,10 @@ GearProfile.prototype.didInitialize = function() {
             view.gear.getAvailability(App.user.data.id, function(error, result) {
                 if (error) {
                     console.error('Error getting gear availability: ' + error);
+                    if(error.code === Config.ERR_AUTH) {
+                        alert('Your login session expired.');
+                        App.router.navigateTo('home');
+                    }
                     return;
                 }
                 view.availability = result;
@@ -297,6 +301,10 @@ GearProfile.prototype.handleBooking = function(event) {
             if (error) {
                 console.error(error);
                 alert('Error checking gear availability.');
+                if(error.code === Config.ERR_AUTH) {
+                    alert('Your login session expired.');
+                    App.router.navigateTo('home');
+                }
                 return;
             }
             passedData = {

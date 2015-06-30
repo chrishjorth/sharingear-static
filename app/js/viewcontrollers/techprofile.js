@@ -127,6 +127,10 @@ TechProfile.prototype.didInitialize = function() {
             view.techProfile.getAvailability(function(error, result) {
                 if (error) {
                     console.error('Error getting tech profile availability: ' + error);
+                    if(error.code === Config.ERR_AUTH) {
+                        alert('Your login session expired.');
+                        App.router.navigateTo('home');
+                    }
                     return;
                 }
                 view.availability = result;
@@ -264,6 +268,10 @@ TechProfile.prototype.handleBooking = function(event) {
             if (error) {
                 console.error(error);
                 alert('Error checking tech profile availability.');
+                if(error.code === Config.ERR_AUTH) {
+                    alert('Your login session expired.');
+                    App.router.navigateTo('home');
+                }
                 return;
             }
             passedData = {

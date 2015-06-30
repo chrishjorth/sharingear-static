@@ -41,11 +41,13 @@ run = function(callback) {
         rootURL: Config.API_URL
     });
     this.user.initialize();
-
-    this.user.restoreLogin(function(error) {
-        if (!error) {
+    this.user.restore(function(error) {
+        console.log('restore error?');
+        console.log(error);
+        if (error === null) {
+            console.log('User restored');
             if (app.rootVC && app.rootVC !== null) {
-                app.rootVC.refresh();
+                //app.rootVC.refresh();
             }
         }
     });
@@ -68,7 +70,7 @@ run = function(callback) {
 
 setUserLocation = function(location, callback) {
     if ((!location || location === null) && navigator.geolocation && App.user.data.id !== null) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        /*navigator.geolocation.getCurrentPosition(function(position) {
             var lat, lon;
             lat = position.coords.latitude;
             lon = position.coords.longitude;
@@ -78,7 +80,7 @@ setUserLocation = function(location, callback) {
                     callback();
                 }
             });
-        });
+        });*/
     } else if (!location || location === null) {
         App.user.data.currentCity = null;
     } else {

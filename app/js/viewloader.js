@@ -20,6 +20,7 @@ var _ = require('underscore'),
     loadModalView,
     loadModalViewSibling,
     closeModalView,
+    closeAllModalViews,
 
     _loadModalView;
 
@@ -231,6 +232,14 @@ closeModalView = function(callback) {
     }
 };
 
+closeAllModalViews = function() {
+    if(this.currentModalViewController === null) {
+        return;
+    }
+    this.openModalViews = [];
+    this.closeModalView();
+};
+
 ViewLoader = {
     currentViewController: null,
     currentSubViewController: null,
@@ -241,6 +250,7 @@ ViewLoader = {
     loadSubview: loadSubview,
     loadModalView: loadModalView,
     loadModalViewSibling: loadModalViewSibling,
-    closeModalView: closeModalView
+    closeModalView: closeModalView,
+    closeAllModalViews: closeAllModalViews
 };
 module.exports = ViewLoader;

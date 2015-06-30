@@ -11,6 +11,7 @@ var _ = require('underscore'),
     GoogleMaps = require('../libraries/mscl-googlemaps.js'),
     Moment = require('moment-timezone'),
 
+    Config = require('../config.js'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
@@ -305,6 +306,11 @@ EditVan.prototype.handleImageUpload = function(event) {
         var $thumbList, html;
         $('#editvan-form-imageupload').val('');
         if (error) {
+            if(error.code === Config.ERR_AUTH) {
+                alert('Your login session expired.');
+                App.router.navigateTo('home');
+                return;
+            }
             alert('Error uploading file.');
             console.error(error);
             view.toggleLoading();

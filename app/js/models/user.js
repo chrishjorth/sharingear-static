@@ -72,37 +72,37 @@ User.prototype.login = function(callback) {
 
     //We need to make sure Facebook has not changed the status on their side.
     //this.getLoginStatus(function(response) {
-        if (user.fbStatus !== 'connected') {
-            FB.login(function(response) {
-                var error;
-                if (response.status === 'connected') {
-                    error = null;
-                    user.loginToBackend(response, callback);
-                    return;
-                } else if (response.status === 'not_authorized') {
-                    error = {
-                        error: 'FB App not authorized'
-                    };
-                } else {
-                    error = {
-                        error: 'FB login failed'
-                    };
-                }
+    if (user.fbStatus !== 'connected') {
+        FB.login(function(response) {
+            var error;
+            if (response.status === 'connected') {
+                error = null;
+                user.loginToBackend(response, callback);
+                return;
+            } else if (response.status === 'not_authorized') {
+                error = {
+                    error: 'FB App not authorized'
+                };
+            } else {
+                error = {
+                    error: 'FB login failed'
+                };
+            }
 
-                user.fbStatus = response.status;
+            user.fbStatus = response.status;
 
-                if (callback && typeof callback === 'function') {
-                    callback(error);
-                }
-            }, {
-                scope: 'email'
-            });
-        } else {
-            user.loginToBackend({
-                status: user.fbStatus,
-                authResponse: user.authResponse
-            }, callback);
-        }
+            if (callback && typeof callback === 'function') {
+                callback(error);
+            }
+        }, {
+            scope: 'email'
+        });
+    } else {
+        user.loginToBackend({
+            status: user.fbStatus,
+            authResponse: user.authResponse
+        }, callback);
+    }
     //});
 };
 
@@ -131,21 +131,24 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
         }
         _.extend(user.data, data);
         user.token = data.token;
+        sessionStorage.setItem('user', JSON.stringify({
+            id: user.id,
+            token: user.token
+        }));
 
         //Enable Google Analytics user tracking
         if (_.isFunction(window.ga) === true) {
             window.ga('set', '&uid', user.data.id); // Set the user ID using signed-in user_id.
         }
 
-        if(user.data.new_user === true) {
+        if (user.data.new_user === true) {
             window.mixpanel.alias(user.data.id); //We need to alias the mixpanel distinct_id given to unknown user to the new user id
             window.mixpanel.track('Login new user');
-        }
-        else {
+        } else {
             window.mixpanel.identify(user.data.id);
             window.mixpanel.track('Login existing user');
         }
-        
+
         window.mixpanel.people.set({
             '$email': user.data.email,
             '$last_login': new Date(),
@@ -168,15 +171,23 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
     });
 };
 
-User.prototype.restoreLogin = function(callback) {
-    var user = this;
-    this.getLoginStatus(function(response) {
-        if (user.fbStatus !== 'connected') {
-            callback('User not logged in to FB.');
-            return;
-        }
-        user.loginToBackend(response, callback);
-    });
+User.prototype.restore = function(callback) {
+    var storedUser = sessionStorage.getItem('user');
+    try {
+        storedUser = JSON.parse(storedUser);
+    }
+    catch(error) {
+        callback('No stored user.');
+        return;
+    }
+    if (storedUser && (storedUser.id && storedUser.token)) {
+        this.data.id = storedUser.id;
+        this.data.token = storedUser.token;
+        this.fetch(callback);
+    }
+    else {
+        callback('No stored user.');
+    }
 };
 
 User.prototype.fetch = function(callback) {
@@ -199,7 +210,7 @@ User.prototype.update = function(callback) {
             callback('Error updating user: ' + error);
             return;
         }
-           
+
         _.extend(user.data, data);
         Localization.setCurrentTimeZone(user.data.time_zone);
         callback(null);

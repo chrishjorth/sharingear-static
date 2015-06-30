@@ -35,7 +35,7 @@ Model.prototype.get = function(url, callback) {
         },
         success: function(data) {
             if (data.error) {
-                callback('Error retrieving resource from server: ' + data.error);
+                callback(data);
             } else {
                 callback(null, data);
             }
@@ -55,7 +55,7 @@ Model.prototype.post = function(url, data, callback) {
         },
         success: function(data) {
             if (data.error) {
-                callback('Error sending resource to server: ' + data.error);
+                callback(data);
             } else {
                 callback(null, data);
             }
@@ -75,8 +75,7 @@ Model.prototype.put = function(url, data, callback) {
         },
         success: function(data) {
             if (data.error) {
-                console.error(data.error);
-                callback('Error putting resource to server: ' + data.error);
+                callback(data);
             } else {
                 callback(null, data);
             }
