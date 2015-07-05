@@ -16,6 +16,9 @@ var _ = require('underscore'),
 
 function DashboardProfile(options) {
     ViewController.call(this, options);
+    this.templateParameters = {
+        bio: ''
+    };
 }
 
 DashboardProfile.prototype = new ViewController();

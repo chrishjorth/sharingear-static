@@ -54,10 +54,13 @@ initialize = function(callback) {
 refresh = function() {
     this.header.initialize();
     this.header.render();
-    if(App.router.currentViewController) {
+    App.router.refresh();
+    /*if(App.router.currentViewController) {
+        console.log('current view controller:');
+        console.log(App.router.currentViewController);
         App.router.currentViewController.initialize();
         App.router.currentViewController.render();
-    }
+    }*/
 };
 
 /**

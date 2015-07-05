@@ -118,11 +118,13 @@ loadSubview = function(data, callback) {
         passedData: data
     });
     viewLoader.currentSubViewController.initialize();
-    viewLoader.currentSubViewController.render(function() {
-        if (_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
-            viewLoader.currentViewController.didRenderSubview();
-        }
-    });
+    if (viewLoader.currentSubViewController.ready === true) {
+        viewLoader.currentSubViewController.render(function() {
+            if (_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
+                viewLoader.currentViewController.didRenderSubview();
+            }
+        });
+    }
     if (_.isFunction(callback) === true) {
         callback(null, viewLoader.currentSubViewController);
     }
@@ -233,7 +235,7 @@ closeModalView = function(callback) {
 };
 
 closeAllModalViews = function() {
-    if(this.currentModalViewController === null) {
+    if (this.currentModalViewController === null) {
         return;
     }
     this.openModalViews = [];

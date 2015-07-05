@@ -12,7 +12,6 @@ var _ = require('underscore'),
 
     Config = require('./config.js'),
     Router = require('./router.js'),
-    Utilities = require('./utilities.js'),
 
     Localization = require('./models/localization.js'),
     User = require('./models/user.js'),
@@ -26,8 +25,7 @@ var _ = require('underscore'),
     setupRouteMappings;
 
 run = function(callback) {
-    var app = this,
-        messagePopup = new MessagePopup(),
+    var messagePopup = new MessagePopup(),
         message = 'Your browser is outdated and does not support some important features. Please dowload the latest version of your browser of preference.';
 
     //Load libraries that require external data
@@ -41,15 +39,8 @@ run = function(callback) {
         rootURL: Config.API_URL
     });
     this.user.initialize();
-    this.user.restore(function(error) {
-        console.log('restore error?');
-        console.log(error);
-        if (error === null) {
-            console.log('User restored');
-            if (app.rootVC && app.rootVC !== null) {
-                //app.rootVC.refresh();
-            }
-        }
+    this.user.restore(function() {
+        App.router.refresh();
     });
 
     ContentClassification.getClassification();

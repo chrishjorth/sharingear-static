@@ -8,6 +8,7 @@
 
 var _ = require('underscore'),
     FB = require('../libraries/mscl-facebook.js'),
+    Config = require('../config.js'),
     Localization = require('./localization.js'),
     Model = require('../model.js'),
     Utilities = require('../utilities.js');
@@ -132,7 +133,7 @@ User.prototype.loginToBackend = function(FBResponse, callback) {
         _.extend(user.data, data);
         user.token = data.token;
         sessionStorage.setItem('user', JSON.stringify({
-            id: user.id,
+            id: user.data.id,
             token: user.token
         }));
 
@@ -175,17 +176,16 @@ User.prototype.restore = function(callback) {
     var storedUser = sessionStorage.getItem('user');
     try {
         storedUser = JSON.parse(storedUser);
-    }
-    catch(error) {
+    } catch (error) {
         callback('No stored user.');
         return;
     }
     if (storedUser && (storedUser.id && storedUser.token)) {
         this.data.id = storedUser.id;
         this.data.token = storedUser.token;
+        this.token = storedUser.token;
         this.fetch(callback);
-    }
-    else {
+    } else {
         callback('No stored user.');
     }
 };
@@ -194,6 +194,9 @@ User.prototype.fetch = function(callback) {
     var user = this;
     user.get('/users/' + user.data.id, function(error, data) {
         if (error) {
+            if (error.code === Config.ERR_AUTH) {
+                user.logout();
+            }
             callback(error);
             return;
         }
@@ -304,6 +307,32 @@ User.prototype.getIntervalEnd = function() {
 
 User.prototype.isLoggedIn = function() {
     return this.data.id !== null;
+};
+
+User.prototype.logout = function() {
+    this.data = {
+        id: null,
+        name: '',
+        surname: '',
+        city: '',
+        image_url: '',
+        bio: '',
+        birthdate: null,
+        address: null,
+        postal_code: null,
+        country: null,
+        phone: null,
+        nationality: null,
+        currency: 'EUR',
+        time_zone: 'UTC',
+        vatnum: '',
+        band_name: '',
+        company_name: '',
+        user_types: null,
+        currentCity: '' //Detected location
+    };
+    this.token = null;
+    sessionStorage.clear();
 };
 
 module.exports = User;
