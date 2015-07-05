@@ -408,6 +408,10 @@ Payment.prototype.processPayment = function(cardNumber, expirationDate, CSC) {
             console.error(error);
             alert('Error processing card information.');
             view.resetPayButton();
+            if(error.code === Config.ERR_AUTH) {
+                alert('Your login session expired.');
+                App.router.navigateTo('home');
+            }
             return;
         }
         //Pre-authorize the card for the withdrawal

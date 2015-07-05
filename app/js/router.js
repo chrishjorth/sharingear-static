@@ -27,7 +27,8 @@ var routeMappings = [],
     closeModalView,
     setQueryString,
     mapRouteToView,
-    getMappedView;
+    getMappedView,
+    refresh;
 
 hashUpdated = false; //Semaphore variable
 
@@ -76,6 +77,8 @@ navigateTo = function(route, data, callback) {
     if (queryIndex >= 0) {
         route = route.substring(0, queryIndex);
     }
+
+    ViewLoader.closeAllModalViews();
 
     view = this.getRoute(route);
     ViewLoader.loadView(view, route, data, function(error, loadedViewController) {
@@ -199,6 +202,12 @@ getMappedView = function(view) {
 	return null;
 };
 
+refresh = function() {
+    if(this.currentViewController !== null) {
+        this.navigateTo(this.currentViewController.path);
+    }
+};
+
 Router = {
     routes: ['error'], //The default error route must always be present for error handling
     currentViewController: null,
@@ -216,7 +225,8 @@ Router = {
     closeModalView: closeModalView,
     setQueryString: setQueryString,
     mapRouteToView: mapRouteToView,
-    getMappedView: getMappedView
+    getMappedView: getMappedView,
+    refresh: refresh
 };
 
 window.onhashchange = Router.handleHashChange;

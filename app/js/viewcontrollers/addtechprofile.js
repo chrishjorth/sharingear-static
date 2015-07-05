@@ -443,6 +443,10 @@ AddTechProfile.prototype.renderAvailability = function() {
 
         if (error) {
             console.error('Error retrieving techprofile availability: ' + error);
+            if(error.code === Config.ERR_AUTH) {
+                alert('Your login session expired.');
+                App.router.navigateTo('home');
+            }
             return;
         }
 

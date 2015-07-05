@@ -75,8 +75,7 @@ VanProfile.prototype.didInitialize = function() {
             subPathComponents = view.subPath.split('/');
             view.van.data.id = subPathComponents[0];
             view.subPath = ''; //To avoid rendering a subview based on the gear id
-        }
-        else {
+        } else {
             view.van.initialize();
         }
 
@@ -115,6 +114,10 @@ VanProfile.prototype.didInitialize = function() {
             view.van.getAvailability(function(error, result) {
                 if (error) {
                     console.error('Error getting van availability: ' + error);
+                    if (error.code === Config.ERR_AUTH) {
+                        alert('Your login session expired.');
+                        App.router.navigateTo('home');
+                    }
                     return;
                 }
                 view.availability = result;
@@ -291,6 +294,10 @@ VanProfile.prototype.handleBooking = function(event) {
             if (error) {
                 console.error(error);
                 alert('Error checking van availability.');
+                if (error.code === Config.ERR_AUTH) {
+                    alert('Your login session expired.');
+                    App.router.navigateTo('home');
+                }
                 return;
             }
             passedData = {

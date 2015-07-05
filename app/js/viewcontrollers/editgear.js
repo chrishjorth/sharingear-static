@@ -12,6 +12,7 @@ var _ = require('underscore'),
     Moment = require('moment-timezone'),
     GoogleMaps = require('../libraries/mscl-googlemaps.js'),
 
+    Config = require('../config.js'),
     App = require('../app.js'),
     ViewController = require('../viewcontroller.js'),
     Localization = require('../models/localization.js'),
@@ -382,6 +383,10 @@ EditGear.prototype.handleImageUpload = function(event) {
         if (error) {
             alert('Error uploading file.');
             console.error(error);
+            if(error.code === Config.ERR_AUTH) {
+                alert('Your login session expired.');
+                App.router.navigateTo('home');
+            }
             return;
         }
 

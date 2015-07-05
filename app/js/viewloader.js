@@ -20,6 +20,7 @@ var _ = require('underscore'),
     loadModalView,
     loadModalViewSibling,
     closeModalView,
+    closeAllModalViews,
 
     _loadModalView;
 
@@ -117,11 +118,13 @@ loadSubview = function(data, callback) {
         passedData: data
     });
     viewLoader.currentSubViewController.initialize();
-    viewLoader.currentSubViewController.render(function() {
-        if (_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
-            viewLoader.currentViewController.didRenderSubview();
-        }
-    });
+    if (viewLoader.currentSubViewController.ready === true) {
+        viewLoader.currentSubViewController.render(function() {
+            if (_.isFunction(viewLoader.currentViewController.didRenderSubview) === true) {
+                viewLoader.currentViewController.didRenderSubview();
+            }
+        });
+    }
     if (_.isFunction(callback) === true) {
         callback(null, viewLoader.currentSubViewController);
     }
@@ -231,6 +234,14 @@ closeModalView = function(callback) {
     }
 };
 
+closeAllModalViews = function() {
+    if (this.currentModalViewController === null) {
+        return;
+    }
+    this.openModalViews = [];
+    this.closeModalView();
+};
+
 ViewLoader = {
     currentViewController: null,
     currentSubViewController: null,
@@ -241,6 +252,7 @@ ViewLoader = {
     loadSubview: loadSubview,
     loadModalView: loadModalView,
     loadModalViewSibling: loadModalViewSibling,
-    closeModalView: closeModalView
+    closeModalView: closeModalView,
+    closeAllModalViews: closeAllModalViews
 };
 module.exports = ViewLoader;

@@ -10,6 +10,8 @@ var IS_PRODUCTION = true, //This variable should be set and saved according to t
     MIN_USER_AGE = 13,
     AVG_USER_AGE = 27,
     MIN_XP_START_YEAR = 1960,
+    ERR_AUTH = 101,
+    ERR_RUN = 102,
     API_URL,
     isProduction;
 
@@ -31,5 +33,7 @@ module.exports = {
     MIN_USER_AGE: MIN_USER_AGE,
     AVG_USER_AGE: AVG_USER_AGE,
     MIN_XP_START_YEAR: MIN_XP_START_YEAR,
+    ERR_AUTH: ERR_AUTH,
+    ERR_RUN: ERR_RUN,
     isProduction: isProduction
 };

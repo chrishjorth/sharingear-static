@@ -404,6 +404,11 @@ AddGear.prototype.handleImageUpload = function(event) {
     view.newGear.uploadImage($file.get(0).files[0], $file.val().split('\\').pop(), App.user.data.id, function(error, url) {
         var $thumbList, html;
         if (error) {
+            if(error.code === Config.ERR_AUTH) {
+                alert('Your login session expired.');
+                App.router.navigateTo('home');
+                return;
+            }
             alert('Error uploading file.');
             console.error(error);
             view.toggleLoading();
@@ -624,6 +629,10 @@ AddGear.prototype.renderAvailability = function() {
 
         if (error) {
             console.error('Error retrieving van availability: ' + error);
+            if(error.code === Config.ERR_AUTH) {
+                alert('Your login session expired.');
+                App.router.navigateTo('home');
+            }
             return;
         }
 

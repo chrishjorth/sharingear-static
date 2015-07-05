@@ -12,7 +12,6 @@ var _ = require('underscore'),
 
     Config = require('./config.js'),
     Router = require('./router.js'),
-    Utilities = require('./utilities.js'),
 
     Localization = require('./models/localization.js'),
     User = require('./models/user.js'),
@@ -26,8 +25,7 @@ var _ = require('underscore'),
     setupRouteMappings;
 
 run = function(callback) {
-    var app = this,
-        messagePopup = new MessagePopup(),
+    var messagePopup = new MessagePopup(),
         message = 'Your browser is outdated and does not support some important features. Please dowload the latest version of your browser of preference.';
 
     //Load libraries that require external data
@@ -41,13 +39,8 @@ run = function(callback) {
         rootURL: Config.API_URL
     });
     this.user.initialize();
-
-    this.user.restoreLogin(function(error) {
-        if (!error) {
-            if (app.rootVC && app.rootVC !== null) {
-                app.rootVC.refresh();
-            }
-        }
+    this.user.restore(function() {
+        App.router.refresh();
     });
 
     ContentClassification.getClassification();
@@ -68,7 +61,7 @@ run = function(callback) {
 
 setUserLocation = function(location, callback) {
     if ((!location || location === null) && navigator.geolocation && App.user.data.id !== null) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        /*navigator.geolocation.getCurrentPosition(function(position) {
             var lat, lon;
             lat = position.coords.latitude;
             lon = position.coords.longitude;
@@ -78,7 +71,7 @@ setUserLocation = function(location, callback) {
                     callback();
                 }
             });
-        });
+        });*/
     } else if (!location || location === null) {
         App.user.data.currentCity = null;
     } else {

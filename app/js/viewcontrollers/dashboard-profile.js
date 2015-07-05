@@ -9,12 +9,16 @@
 var _ = require('underscore'),
     $ = require('jquery'),
 
+    Config = require('../config.js'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
     ContentClassification = require('../models/contentclassification.js');
 
 function DashboardProfile(options) {
     ViewController.call(this, options);
+    this.templateParameters = {
+        bio: ''
+    };
 }
 
 DashboardProfile.prototype = new ViewController();
@@ -129,6 +133,10 @@ DashboardProfile.prototype.handleImageUpload = function(event) {
         if (error) {
             alert('Error uploading file.');
             console.error(error);
+            if(error.code === Config.ERR_AUTH) {
+                console.log('Your login session expired.');
+                App.router.navigateTo('home');
+            }
             return;
         }
         App.user.data.image_url = url;

@@ -9,6 +9,7 @@
 var $ = require('jquery'),
     Moment = require('moment-timezone'),
 
+    Config = require('../config.js'),
     ViewController = require('../viewcontroller.js'),
     App = require('../app.js'),
 
@@ -39,15 +40,22 @@ AvailabilityCalendar.prototype.didInitialize = function() {
     this.alwaysFlag = 0;
 
     handleAvailability = function(error, result) {
-        var availabilityArray = result.availabilityArray,
-            i, startMoment, endMoment;
-
-        view.setAlwaysState(result.alwaysFlag);
+        var availabilityArray, i, startMoment, endMoment;
 
         if (error) {
             console.error('Error retrieving gear availability: ' + error);
+            console.log('error.code: ' + error.code);
+            console.log('Config.ERR_AUTH: ' + Config.ERR_AUTH);
+            if(error.code === Config.ERR_AUTH) {
+                alert('Your login session expired.');
+                App.router.navigateTo('home');
+            }
             return;
         }
+
+        availabilityArray = result.availabilityArray;
+
+        view.setAlwaysState(result.alwaysFlag);
 
         for (i = 0; i < availabilityArray.length; i++) {
             startMoment = new Moment.tz(availabilityArray[i].start, 'YYYY-MM-DD HH:mm:ss', Localization.getCurrentTimeZone());
