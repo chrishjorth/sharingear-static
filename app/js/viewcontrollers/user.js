@@ -26,10 +26,10 @@ User.prototype = new ViewController();
 
 User.prototype.didInitialize = function() {
     var view = this,
-        pathSections, gearID;
+        pathSections, userID;
 
     pathSections = this.subPath.split('/');
-    gearID = pathSections[0];
+    userID = pathSections[0];
     if (pathSections.length > 1 && pathSections[1] !== '') {
         this.currentTab = pathSections[1];
     } else {
@@ -40,7 +40,7 @@ User.prototype.didInitialize = function() {
     this.user = new UserModel({
         rootURL: Config.API_URL,
         data: {
-            id: gearID
+            id: userID
         }
     });
     this.user.initialize();
@@ -50,7 +50,7 @@ User.prototype.didInitialize = function() {
         bio: ''
     };
 
-    this.user.fetch(function(error) {
+    this.user.getPublicInfo(function(error) {
         if (error) {
             console.error('Error fetching user: ' + error);
             return;
