@@ -54,13 +54,14 @@ $sdk = new Aws\Sdk($sharedConfig);
 
 $client = $sdk->createS3();
 
-echo 'bucket: ' . $bucket . "<br>";
-echo 'key: ' . $filename . "<br>";
-
 $result = $client->getObject([
     'Bucket' => $bucket,
     'Key'    => $filename
 ]);
+
+$file_size = $result['ContentLength'];
+
+echo "file size: " . $file_size . "<br>";
 
 var_dump($result);
 exit;
