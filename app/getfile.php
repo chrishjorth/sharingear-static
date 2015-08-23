@@ -37,7 +37,7 @@ $file = $http_request->getResponseBody();
 */
 
 //Get file for AWS S3 with AWS SDK for PHP
-require 'vendor/autoload.php';
+require '/home/ubuntu/vendor/autoload.php';
 
 define('AWS_SDK_KEY', 'AKIAIALFH3A36MGWPM6A');
 define('AWS_SDK_SECRET', '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');
