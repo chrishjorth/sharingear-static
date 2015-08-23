@@ -61,11 +61,6 @@ $result = $client->getObject([
 
 $file_size = $result['ContentLength'];
 
-echo "file size: " . $file_size . "<br>";
-
-var_dump($result);
-exit;
-
 $file = $result['Body'];
 
 header("Content-Type: image/" . $ext);
