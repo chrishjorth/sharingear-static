@@ -43,7 +43,7 @@ define('AWS_SDK_KEY', 'AKIAIALFH3A36MGWPM6A');
 define('AWS_SDK_SECRET', '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');
 
 $sharedConfig = [
-    'region'  => 'us-west-2',
+    'region'  => 'eu-west-1',
     'version' => 'latest',
     'credentials' => [
     	'key' => AWS_SDK_KEY,
@@ -55,7 +55,7 @@ $sdk = new Aws\Sdk($sharedConfig);
 $client = $sdk->createS3();
 
 echo 'bucket: ' . $bucket . "<br>";
-echo 'key: ' . $key . "<br>";
+echo 'key: ' . $filename . "<br>";
 
 $result = $client->getObject([
     'Bucket' => $bucket,
