@@ -54,7 +54,7 @@ $sdk = new Aws\Sdk($sharedConfig);
 
 $client = $sdk->createS3();
 
-$result = $s3Client->getObject([
+$result = $client->getObject([
     'Bucket' => $bucket,
     'Key'    => $filename
 ]);
