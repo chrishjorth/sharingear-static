@@ -3,21 +3,17 @@
  * Accept JPEG and PNG uploads and scale them to be a maximum of 4000px wide.
  * @author: Chris Hjorth
  */
-require_once 'autoload.php';
+
 
 define('IS_PRODUCTION', false);
 define('FILENAME', 'uploadedfile');
 define('SHARINGEAR_SECRET', '95b95a4a2e59ddc98136ce54b8a0f8d2');
 define('SG_MAX_FILE_SIZE', 4000000); //4MB
-define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/google_api.p12');
-define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
 define('MAX_SIZE', 2048); //1024 in retina
 define('THUMB_SIZE', 512);
 
-$bucket = 'gearimages';
 $accepted_host = 'dev.sharingear.com';
 if(IS_PRODUCTION) {
-    $bucket = 'sg-prod-images';
     $accepted_host = 'www.sharingear.com';
 }
 
@@ -131,24 +127,6 @@ else {
 
 $img->writeImage($tmpPath);
 
-
-//Get Google authorization for service accounts
-$client = new Google_Client();
-$client->setApplicationName('Sharingear');
-$key = file_get_contents(GOOGLE_API_KEY_LOCATION);
-$cred = new Google_Auth_AssertionCredentials(GOOGLE_API_EMAIL, array('https://www.googleapis.com/auth/devstorage.read_write'), $key);
-$client->setAssertionCredentials($cred);
-
-//Send file to Google Cloud Storage with Google API
-$storage = new Google_Service_Storage($client);
-$obj = new Google_Service_Storage_StorageObject();
-$obj->setName($filename);
-$storage->objects->insert(
-    $bucket,
-    $obj,
-    ['name' => $filename, 'data' => file_get_contents($tmpPath), 'uploadType' => 'media']
-);
-
 //Create thumbs
 $thumb1 = clone $img;
 $thumb2 = clone $img;
@@ -166,6 +144,34 @@ $filename_components = explode('.', $filename);
 $name = $filename_components[0];
 $ext = $filename_components[1];
 
+/*
+//Upload for Google Storage
+require_once 'autoload.php';
+
+define('GOOGLE_API_KEY_LOCATION', '/home/chrishjorth/keys/google_api.p12');
+define('GOOGLE_API_EMAIL', '157922460020-pu8ef7l5modnl618mgp8ovunssb1n7n8@developer.gserviceaccount.com');
+
+$bucket = 'gearimages';
+if(IS_PRODUCTION) {
+    $bucket = 'sg-prod-images';
+}
+//Get Google authorization for service accounts
+$client = new Google_Client();
+$client->setApplicationName('Sharingear');
+$key = file_get_contents(GOOGLE_API_KEY_LOCATION);
+$cred = new Google_Auth_AssertionCredentials(GOOGLE_API_EMAIL, array('https://www.googleapis.com/auth/devstorage.read_write'), $key);
+$client->setAssertionCredentials($cred);
+
+//Send file to Google Cloud Storage with Google API
+$storage = new Google_Service_Storage($client);
+$obj = new Google_Service_Storage_StorageObject();
+$obj->setName($filename);
+$storage->objects->insert(
+    $bucket,
+    $obj,
+    ['name' => $filename, 'data' => file_get_contents($tmpPath), 'uploadType' => 'media']
+);
+
 $obj_thumb1 = new Google_Service_Storage_StorageObject();
 $obj_thumb1->setName($name . '_thumb.' . $ext);
 $storage->objects->insert(
@@ -180,7 +186,52 @@ $storage->objects->insert(
     $bucket,
     $obj_thumb2,
     ['name' => $name . '_thumb@2x.' . $ext, 'data' => $thumb2->getImageBlob(), 'uploadType' => 'media']
-);
+);*/
+
+//Upload to AWS S3 with AWS SDK for PHP
+require '/home/ubuntu/vendor/autoload.php';
+
+define('AWS_SDK_KEY', 'AKIAIALFH3A36MGWPM6A');
+define('AWS_SDK_SECRET', '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');
+
+$bucket = 'sg-dev-images';
+if(IS_PRODUCTION) {
+    $bucket = 'sg-prod-images';
+}
+
+$sharedConfig = [
+    'region'  => 'eu-west-1',
+    'version' => 'latest',
+    'credentials' => [
+        'key' => AWS_SDK_KEY,
+        'secret' => AWS_SDK_SECRET
+    ]
+];
+$sdk = new Aws\Sdk($sharedConfig);
+
+$client = $sdk->createS3();
+
+$result = $client->putObject(array(
+    'Bucket' => $bucket,
+    'Key' => $filename,
+    'SourceFile' => $tmpPath,
+    'ContentType' => 'image/' . $ext
+));
+
+$result = $client->putObject(array(
+    'Bucket' => $bucket,
+    'Key' => $name . '_thumb.' . $ext,
+    'Body' => $thumb1->getImageBlob(),
+    'ContentType' => 'image/' . $ext
+));
+
+$result = $client->putObject(array(
+    'Bucket' => $bucket,
+    'Key' => $name . '_thumb@2x.' . $ext,
+    'Body' => $thumb2->getImageBlob(),
+    'ContentType' => 'image/' . $ext
+));
+
 
 //Clean up Imagick objects
 $img->clear();
